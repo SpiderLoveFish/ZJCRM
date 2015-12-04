@@ -1,0 +1,50 @@
+IP        :::1
+Time      :2015/11/13 12:46:28
+URL       :http://localhost:50455/Data/login.ashx?Rnd=1447389987178&Action=qq_login
+Details   :===========================================分割线=============================================
+------------------------------------------------------------
+IP        :::1
+Time      :2015/11/13 12:46:28
+URL       :http://localhost:50455/Data/login.ashx?Rnd=1447389987178&Action=qq_login
+Details   :第一步：开始跳转至QQ登陆URL：https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101248086&state=a6d09186d08f45f5a180eb99e4389a33&redirect_uri=http%3a%2f%2fmb.xczs.co%2fQQ_Login.aspx&scope=get_user_info,get_info,get_other_info
+------------------------------------------------------------
+IP        :::1
+Time      :2015/11/13 15:46:16
+URL       :http://localhost:50455/Data/login.ashx?Rnd=1447400775876&Action=qq_login
+Details   :===========================================分割线=============================================
+------------------------------------------------------------
+IP        :::1
+Time      :2015/11/13 15:46:16
+URL       :http://localhost:50455/Data/login.ashx?Rnd=1447400775876&Action=qq_login
+Details   :第一步：开始跳转至QQ登陆URL：https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101248086&state=2d302f836b48452e9c43039bf8c2813f&redirect_uri=http%3a%2f%2fmb.xczs.co%2fQQ_Login.aspx&scope=get_user_info,get_info,get_other_info
+------------------------------------------------------------
+IP        :::1
+Time      :2015/11/14 10:45:57
+URL       :http://localhost:50455/Data/login.ashx?Rnd=1447469157265&Action=qq_login
+Details   :===========================================分割线=============================================
+------------------------------------------------------------
+IP        :::1
+Time      :2015/11/14 10:45:57
+URL       :http://localhost:50455/Data/login.ashx?Rnd=1447469157265&Action=qq_login
+Details   :第一步：开始跳转至QQ登陆URL：https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101248086&state=8322a9fc31be4708851ceae83089c2bc&redirect_uri=http%3a%2f%2fmb.xczs.co%2fQQ_Login.aspx&scope=get_user_info,get_info,get_other_info
+------------------------------------------------------------
+IP        :::1
+Time      :2015/11/30 11:07:52
+URL       :http://localhost:50455/Data/login.ashx?Rnd=1448852872299&Action=qq_login
+Details   :===========================================分割线=============================================
+------------------------------------------------------------
+IP        :::1
+Time      :2015/11/30 11:07:52
+URL       :http://localhost:50455/Data/login.ashx?Rnd=1448852872299&Action=qq_login
+Details   :第一步：开始跳转至QQ登陆URL：https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101248086&state=bc63be5fbd5f49fda635c6f1919cee0c&redirect_uri=http%3a%2f%2fmb.xczs.co%2fQQ_Login.aspx&scope=get_user_info,get_info,get_other_info
+------------------------------------------------------------
+IP        :::1
+Time      :2015/11/30 11:07:58
+URL       :http://localhost:50455/Data/login.ashx?Rnd=1448852877978&Action=qq_login
+Details   :===========================================分割线=============================================
+------------------------------------------------------------
+IP        :::1
+Time      :2015/11/30 11:07:58
+URL       :http://localhost:50455/Data/login.ashx?Rnd=1448852877978&Action=qq_login
+Details   :第一步：开始跳转至QQ登陆URL：https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101248086&state=8a759bc7279d44f7908815ec3d4fa315&redirect_uri=http%3a%2f%2fmb.xczs.co%2fQQ_Login.aspx&scope=get_user_info,get_info,get_other_info
+------------------------------------------------------------

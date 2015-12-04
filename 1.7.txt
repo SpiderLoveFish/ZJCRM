@@ -1,0 +1,14 @@
+INSERT [dbo].[Sys_Menu] ([Menu_id], [Menu_name], [parentid], [parentname], [App_id], [Menu_url], [Menu_icon], [Menu_handler], [Menu_order], [Menu_type]) VALUES (102, N'客户地图', 3, N'客户管理', 2, N'crm/customer/customer_map.aspx', N'images/icon/67.png', NULL, 30, N'sys')
+
+
+---加入菜单，注意，id可能不一样
+
+
+ALTER TABLE [dbo].[CRM_Customer] ADD xy varchar(50)
+ALTER TABLE [dbo].[hr_employee] ADD default_city varchar(50)
+
+
+---加入2个表的字段
+
+需要拷贝的有CRM,DATA,JS,BIN
+最好做个备份先。
