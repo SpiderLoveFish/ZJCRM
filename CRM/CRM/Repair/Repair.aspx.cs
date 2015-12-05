@@ -23,9 +23,9 @@ namespace Repair
                     string sortname = Request["sortname"];
                     string sortorder = Request["sortorder"];
                     if (string.IsNullOrEmpty(sortname))
-                        sortname = " InDate ";
+                        sortname = " orderwc,InDate ";
                     if (string.IsNullOrEmpty(sortorder))
-                        sortorder = "DESC";
+                        sortorder = "desc";
                     string sorttext = sortname + " " + sortorder;
                     string serchtxt = "IsDel=''N'' ";
                     if (!string.IsNullOrEmpty(Request["Khmc"]))
