@@ -12,3 +12,6 @@ ALTER TABLE [dbo].[hr_employee] ADD default_city varchar(50)
 
 需要拷贝的有CRM,DATA,JS,BIN
 最好做个备份先。
+
+
+???
