@@ -1,4 +1,4 @@
---修改员工表
+-11--修改员工表
 ALTER TABLE hr_employee ADD rqlx VARCHAR(50)
 
 --修改客户表
