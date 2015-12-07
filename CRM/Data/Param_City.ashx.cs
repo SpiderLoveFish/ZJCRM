@@ -193,7 +193,7 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "getAddressByID")
             {
-                string address = SqlDB.ExecuteDataTable("SELECT Provinces+'  '+ City+'  '+Towns +'  ' + Name +'  ' AS AddressList FROM CRM_Building WHERE ID='" + request["pid"] + "'").Output1.Rows[0][0].ToString();
+                string address = SqlDB.ExecuteDataTable("SELECT Towns+Name  AS AddressList FROM CRM_Building WHERE ID='" + request["pid"] + "'").Output1.Rows[0][0].ToString();
 
                 context.Response.Write(address);
             }

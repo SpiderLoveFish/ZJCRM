@@ -105,6 +105,18 @@
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }
+        function savemap(item, dialog) {
+            var xy = dialog.frame.f_save();
+            if (xy) {
+                //  $.ligerDialog.success(xy);
+                $("#T_xy").val(xy);
+                dialog.close();
+            }
+        }
+            function map() {
+                var url = "../../CRM/Building/map_mark.aspx?type=mark&xy=" + $("#T_xy").val();
+                f_openWindow(url, "楼盘标记【" + $("#Name").val() + "】", 800, 500, savemap, 9003);
+            }
     </script>
 </head>
 <body>
@@ -151,8 +163,19 @@
                     <div style="width: 100px; text-align: right; float: right">楼盘地址：</div>
                 </td>
                 <td colspan="3">
-                    <input type="text" id="Address" name="Address" ltype="text" ligerui="{width:410}" />
+                   
+                
+                     <div style="float: left; width: 365px;">
+                       <input type="text" id="Address" name="Address" ltype="text" ligerui="{width:350}" /> 
+                    </div>
+                    <div style="float: left; width: 40px;">
+                        <input type="button" value="地图" style="width: 40px;"  onclick="map()"/>
+                    </div>
+                    <input type="hidden" id="T_xy" name="T_xy" />
+
                 </td>
+
+               
             </tr>
             <tr>
                 <td>

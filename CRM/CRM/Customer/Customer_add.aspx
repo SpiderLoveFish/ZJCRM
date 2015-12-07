@@ -157,10 +157,10 @@
                                         
                                         var address = data;
                                         if ($("#T_BNo").val() != "")
-                                            address = address + $("#T_BNo").val() + '集  '
+                                            address = address + $("#T_BNo").val() + '集'
 
                                         if ($("#T_RNo").val() != "")
-                                            address = address + $("#T_RNo").val() + '弅  '
+                                            address = address + $("#T_RNo").val() + '弅'
 
                                         $("#T_address").val(address);//T_BNo T_RNo
                                         $("#h_address").val(data);
@@ -176,10 +176,10 @@
                         //if ($("#h_address").val() == "") return;
                         var address = $("#h_address").val();
                         if ($("#T_BNo").val() != "")
-                            address = address + $("#T_BNo").val() + '集  '
+                            address = address + $("#T_BNo").val() + '集'
 
                         if ($("#T_RNo").val() != "")
-                            address = address + $("#T_RNo").val() + '弅  '
+                            address = address + $("#T_RNo").val() + '弅'
 
                         $("#T_address").val(address);//T_BNo T_RNo 
                     });

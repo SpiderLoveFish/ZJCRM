@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
     <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
@@ -42,23 +42,17 @@
         function remind() {
             if ($("#remind").attr("checked") == true || $(this).attr("checked") == "checked") {
                 $("#tr1").show();
-                $("#tr2").show();
-                $("#tr3").show();
-                $("#tr4").show();
 
-                $("#StartTime").rules("add", { required: true });
-                $("#EndTime").rules("add", { required: true });
-                $("#Content").rules("add", { required: true });
+
+                $("#PicUrl").rules("add", { required: true });
+
             }
             else {
                 $("#tr1").hide();
-                $("#tr2").hide();
-                $("#tr3").hide();
-                $("#tr4").hide();
 
-                $("#StartTime").rules("add", { required: false });
-                $("#EndTime").rules("add", { required: false });
-                $("#Content").rules("add", { required: false });
+
+                $("#PicUrl").rules("add", { required: false });
+
             }
         }
         function f_save() {
@@ -81,13 +75,70 @@
                     }
                     $("#FollowContent").val(obj.FollowContent);
                     $("#FollowType").ligerComboBox({ width: 352, initValue: obj.FollowTypeID, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=4&rnd=" + Math.random() });
+                    if (obj.PicUrl) {
+                        $("#PicUrl").val(obj.PicUrl);
+                        $("#userheadimg").attr("src", "../../images/upload/repair/" + obj.PicUrl);
+                    }
                 },
+
                 error: function (ex) {
                     top.$.ligerDialog.error('操作失败，错误信息：' + ex.responseText);
                 }
             });
         }
+
+
+        function uploadimg() {
+            top.$.ligerDialog.open({
+                zindex: 9004,
+                width: 800, height: 500,
+                title: '上传图片',
+                url: 'CRM/Repair/UploadImg.aspx',
+                buttons: [
+                {
+                    text: '保存', onclick: function (item, dialog) {
+                        saveheadimg(item, dialog);
+                    }
+                },
+                {
+                    text: '关闭', onclick: function (item, dialog) {
+                        dialog.close();
+                    }
+                }
+                ],
+                isResize: true
+            });
+        }
+
+
+        function saveheadimg(item, dialog) {
+            var upfile = dialog.frame.f_save();
+            if (upfile) {
+                dialog.close();
+                $.ligerDialog.waitting('数据保存中,请稍候...');
+
+                $.ajax({
+                    url: "../../data/upload.ashx", type: "POST",
+                    data: upfile,
+                    success: function (responseText) {
+                        $("#PicUrl").val(responseText);
+                        $("#userheadimg").attr("src", "../../images/upload/Repair/" + responseText);
+                        $.ligerDialog.closeWaitting();
+                    },
+                    error: function () {
+                        $.ligerDialog.closeWaitting();
+                        $.ligerDialog.error('操作失败！');
+                    }
+                });
+            }
+        }
     </script>
+    <style type="text/css">
+        .auto-style1 {
+            font-family: Verdana;
+            color: #FF0000;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" onsubmit="return false">
@@ -113,57 +164,15 @@
             </tr>
             <tr>
                 <td class="table_title1" colspan="2" id="remindtr">
-                    <div style="width:40px;float:left">提醒</div>
+                    <div style="width:170px;float:left">点击<span class="auto-style1">上传/显示</span>跟进照片</div> 
                     <div style="width:40px;float:left">
                         <input type="checkbox" id="remind"/>
                     </div>
+ 
                 </td>
             </tr>
             <tr id="tr1">
-                <td style="width: 85px">
-                    <div style="width: 80px; text-align: right; float: right">注：</div>
-                </td>
-                <td>提醒内容将出现在日程里面</td>
-            </tr>
-            <tr id="tr2">
-                <td style="width: 85px">
-                    <div style="width: 80px; text-align: right; float: right">全天提醒：</div>
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <td>
-                                <input type="radio" value="True" name="allday" />
-                            </td>
-                            <td>是 </td>
-                            <td>
-                                <input type="radio" value="False" name="allday" checked="checked" />
-                            </td>
-                            <td>否 </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr id="tr3">
-                <td style="width: 85px">
-                    <div style="width: 80px; text-align: right; float: right">提醒时间：</div>
-                </td>
-                <td>
-                    <div style="float: left; width: 175px;">
-                        <input type="text" id="StartTime" name="StartTime" ltype="date" ligerui="{width:172,showTime:true}" />
-                    </div>
-                    <div style="float: left; width: 175px;">
-                        <input type="text" id="EndTime" name="EndTime" ltype="date" ligerui="{width:176,showTime:true}" />
-                    </div>
-                </td>
-            </tr>
-            <tr id="tr4">
-                <td>
-                    <div style="width: 80px; text-align: right; float: right">提醒内容：</div>
-                </td>
-                <td>
-                    <textarea id="Content" name="Content" cols="100" rows="3" class="l-textarea" style="width: 350px;"></textarea>
-                </td>
+                <td colspan="2" align="center" valign="middle" style="width: 85px"><input type="hidden" id="PicUrl" name="PicUrl" /><img id="userheadimg" ondblclick="uploadimg()" alt="双击上传问题图片" title="双击上传问题图片" style="border-radius: 4px; box-shadow: 1px 1px 3px #111; width: 225px; height: 300px; margin-left: 5px; background: #d2d2f2; border: 3px solid #fff; behavior: url(../css/pie.htc);" /></td>
             </tr>
         </table>
     </form>

@@ -12,7 +12,8 @@ namespace Repair
     public partial class Repair_Add : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
-        {
+        {  
+
             var cmd = Request["cmd"];
             if (cmd == "form")
             {
@@ -80,7 +81,7 @@ namespace Repair
                     {
                         if (Khbh == "")
                             Khbh = "0";
-                        sb.AppendLine("INSERT INTO dbo.CRM_Repair (Sfkh,Khbh,Khmc,Khdh,Khyx,Khdz,Khxq,Khxb,Wxrq,Wxsj,WxlbID,Wxyy,IsDel,InEmpID,InDate) ");
+                        sb.AppendLine("INSERT INTO dbo.CRM_Repair (Sfkh,Khbh,Khmc,Khdh,Khyx,Khdz,Khxq,Khxb,Wxrq,Wxsj,PicUrl,t_content,WxlbID,Wxyy,IsDel,InEmpID,InDate) ");
                         sb.AppendLine("VALUES  ('" + Request["Sfkh"].ToString() + "', ");
                         sb.AppendLine("         '" + Khbh + "', ");
                         sb.AppendLine("         '" + Request["Khmc"] + "', ");
@@ -91,6 +92,8 @@ namespace Repair
                         sb.AppendLine("         '" + Request["Khxb"] + "', ");
                         sb.AppendLine("         '" + Request["Wxrq"] + "', ");
                         sb.AppendLine("         '" + Request["Wxsj"] + "', ");
+                        sb.AppendLine("         '" + Request["PicUrl"] + "', ");
+                        sb.AppendLine("         '" + Server.HtmlEncode(Request["t_content"]) + "', ");
                         sb.AppendLine("         '" + Request["Wxlb_val"] + "', ");
                         sb.AppendLine("         '" + Request["Wxyy"] + "', ");
                         sb.AppendLine("         'N', ");
@@ -127,6 +130,7 @@ namespace Repair
                         }
                         if (dr[0]["Khxq"].ToString() != Request["Khxq"])
                         {
+
                             sb.AppendLine("INSERT INTO dbo.Sys_log (EventType,EventID,EventTitle,Original_txt,Current_txt,UserID,UserName,IPStreet,EventDate) ");
                             sb.AppendLine("SELECT '报修信息编辑','" + RepairID + "','" + Request["Khxq"] + "','【所在小区】" + dr[0]["Khxq"].ToString() + "','【所在小区】" + Request["Khxq"] + "',ID,Name,'" + Request.UserHostAddress + "',GETDATE() ");
                             sb.AppendLine("FROM dbo.hr_employee WHERE ID='" + userid + "'");
@@ -142,6 +146,8 @@ namespace Repair
                         sb.AppendLine("         Khxb='" + Request["Khxb"] + "', ");
                         sb.AppendLine("         Wxrq='" + Request["Wxrq"] + "', ");
                         sb.AppendLine("         Wxsj='" + Request["Wxsj"] + "', ");
+                        sb.AppendLine("         PicUrl='" + Request["PicUrl"] + "', ");
+                        sb.AppendLine("         t_content='" + Server.HtmlEncode(Request["t_content"]) + "', ");
                         sb.AppendLine("         WxlbID='" + Request["Wxlb_val"] + "', ");
                         sb.AppendLine("         Wxyy='" + Request["Wxyy"] + "', ");
                         sb.AppendLine("         EditEmpID='" + userid + "',");

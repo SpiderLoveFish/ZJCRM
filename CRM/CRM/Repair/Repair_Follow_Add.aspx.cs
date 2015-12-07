@@ -63,10 +63,12 @@ namespace Repair
                     {
                         sb.AppendLine("UPDATE dbo.CRM_Repair_Follow SET IsLastIn='N' ");
                         sb.AppendLine("WHERE RepairID='" + RepairID + "' AND ISNULL(IsLastIn,'Y')='Y' ");
-                        sb.AppendLine("INSERT INTO dbo.CRM_Repair_Follow (RepairID,FollowTypeID,FollowContent,IsDel,IsLastIn,InEmpID,InDate) ");
+                        sb.AppendLine("INSERT INTO dbo.CRM_Repair_Follow (RepairID,FollowTypeID,FollowContent,PicUrl,IsDel,IsLastIn,InEmpID,InDate) ");
                         sb.AppendLine("VALUES  ('" + RepairID + "', ");
                         sb.AppendLine("         '" + Request["FollowType_val"] + "', ");
                         sb.AppendLine("         '" + Request["FollowContent"] + "', ");
+                        sb.AppendLine("         '" + Request["PicUrl"] + "', ");
+
                         sb.AppendLine("         'N', ");
                         sb.AppendLine("         'Y', ");
                         sb.AppendLine("         '" + userid + "', ");
@@ -81,6 +83,7 @@ namespace Repair
                         sb.AppendLine("         RepairID='" + RepairID + "', ");
                         sb.AppendLine("         FollowTypeID='" + Request["FollowType_val"] + "',");
                         sb.AppendLine("         FollowContent='" + Request["FollowContent"] + "', ");
+                        sb.AppendLine("         PicUrl='" + Request["PicUrl"] + "', ");
                         sb.AppendLine("         IsLastEdit='Y', ");
                         sb.AppendLine("         EditEmpID='" + userid + "',");
                         sb.AppendLine("         EditDate=GETDATE() ");

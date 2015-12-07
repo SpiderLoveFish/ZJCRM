@@ -18,7 +18,7 @@
       <publishTime>08/20/2011 22:18:48</publishTime>
     </File>
     <File Include="bin/CRM.dll">
-      <publishTime>12/04/2015 17:01:50</publishTime>
+      <publishTime>12/07/2015 01:10:14</publishTime>
     </File>
     <File Include="bin/Excel.dll">
       <publishTime>08/20/2011 22:18:48</publishTime>
@@ -51,7 +51,7 @@
       <publishTime>08/20/2011 22:18:52</publishTime>
     </File>
     <File Include="bin/XHD.BLL.dll">
-      <publishTime>12/04/2015 16:55:52</publishTime>
+      <publishTime>12/06/2015 22:22:12</publishTime>
     </File>
     <File Include="bin/XHD.Comm.dll">
       <publishTime>10/09/2015 09:54:18</publishTime>
@@ -60,7 +60,7 @@
       <publishTime>05/18/2015 16:28:59</publishTime>
     </File>
     <File Include="bin/XHD.DAL.dll">
-      <publishTime>12/04/2015 16:55:47</publishTime>
+      <publishTime>12/06/2015 22:22:12</publishTime>
     </File>
     <File Include="bin/XHD.DBUtility.dll">
       <publishTime>10/09/2015 09:54:21</publishTime>
@@ -78,13 +78,13 @@
       <publishTime>08/27/2015 12:04:06</publishTime>
     </File>
     <File Include="CRM/Building/Building_Add.aspx">
-      <publishTime>08/06/2015 23:23:02</publishTime>
+      <publishTime>12/05/2015 01:15:53</publishTime>
     </File>
     <File Include="CRM/Customer/Customer.aspx">
-      <publishTime>08/28/2015 17:54:05</publishTime>
+      <publishTime>12/06/2015 16:40:27</publishTime>
     </File>
     <File Include="CRM/Customer/Customer_add.aspx">
-      <publishTime>12/04/2015 16:01:49</publishTime>
+      <publishTime>12/06/2015 16:21:51</publishTime>
     </File>
     <File Include="CRM/Customer/Customer_Contact.aspx">
       <publishTime>04/06/2015 00:58:03</publishTime>
@@ -219,7 +219,7 @@
       <publishTime>12/02/2015 15:46:04</publishTime>
     </File>
     <File Include="CRM/Product/ProductPrintStyle.aspx">
-      <publishTime>12/04/2015 18:32:30</publishTime>
+      <publishTime>12/04/2015 18:47:21</publishTime>
     </File>
     <File Include="CRM/Product/product_add.aspx">
       <publishTime>12/02/2015 10:02:48</publishTime>
@@ -240,22 +240,25 @@
       <publishTime>12/03/2015 08:46:14</publishTime>
     </File>
     <File Include="CRM/Repair/Repair.aspx">
-      <publishTime>12/02/2015 09:30:04</publishTime>
+      <publishTime>12/07/2015 00:37:54</publishTime>
     </File>
     <File Include="CRM/Repair/Repairphone.aspx">
       <publishTime>11/17/2015 10:43:59</publishTime>
     </File>
     <File Include="CRM/Repair/Repair_Add.aspx">
-      <publishTime>12/02/2015 09:42:49</publishTime>
+      <publishTime>12/07/2015 00:08:54</publishTime>
     </File>
     <File Include="CRM/Repair/Repair_Follow_Add.aspx">
-      <publishTime>11/18/2015 15:52:16</publishTime>
+      <publishTime>12/07/2015 00:45:46</publishTime>
     </File>
     <File Include="CRM/Repair/Repair_Print.aspx">
-      <publishTime>05/03/2015 21:45:07</publishTime>
+      <publishTime>12/06/2015 22:21:52</publishTime>
     </File>
     <File Include="CRM/Repair/Repair_Process.aspx">
       <publishTime>06/03/2015 23:02:18</publishTime>
+    </File>
+    <File Include="CRM/Repair/UploadImg.aspx">
+      <publishTime>12/06/2015 20:03:35</publishTime>
     </File>
     <File Include="CRM/Sale/contract.aspx">
       <publishTime>04/06/2015 00:59:13</publishTime>
@@ -5372,6 +5375,9 @@
     <File Include="Images/Toolbar/tb_border.gif">
       <publishTime>02/11/2015 10:59:14</publishTime>
     </File>
+    <File Include="Images/upload/Repair/NoPic.png">
+      <publishTime>12/06/2015 22:34:25</publishTime>
+    </File>
     <File Include="Images/user - 副本.gif">
       <publishTime>05/24/2014 17:41:10</publishTime>
     </File>
@@ -5796,7 +5802,7 @@
       <publishTime>02/11/2015 11:01:14</publishTime>
     </File>
     <File Include="JS/XHD.js">
-      <publishTime>12/04/2015 15:47:30</publishTime>
+      <publishTime>12/07/2015 00:55:57</publishTime>
     </File>
     <File Include="lib/inject.js">
       <publishTime>02/11/2015 11:00:29</publishTime>
@@ -9951,7 +9957,7 @@
       <publishTime>05/27/2015 09:44:17</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/04/2015 18:43:27</publishTime>
+      <publishTime>12/07/2015 01:10:19</publishTime>
     </File>
     <File Include="welcome.htm">
       <publishTime>08/28/2015 11:08:27</publishTime>

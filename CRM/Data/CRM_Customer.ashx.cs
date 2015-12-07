@@ -598,6 +598,24 @@ namespace XHD.CRM.Data
                 context.Response.Write(dt);
             }
 
+            if (request["Action"] == "getBMapList")
+            {
+
+
+                string serchtxt = " xy is not null";
+                //权限
+                //serchtxt += DataAuth();
+                DataSet ds = customer.GetBMapList(serchtxt);
+                string dt = GetGridJSON.DataTableToJSON(ds.Tables[0]);
+                if (dt == "")
+                {
+                    dt = "{}";
+                }
+
+
+                context.Response.Write(dt);
+            }
+
             //regain            
             if (request["Action"] == "regain")
             {

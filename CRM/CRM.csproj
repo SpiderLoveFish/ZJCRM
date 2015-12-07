@@ -137,6 +137,7 @@
     <Content Include="CRM\Product\GetProduct.aspx" />
     <Content Include="CRM\Product\Product_QrCode_Print.aspx" />
     <Content Include="CRM\Repair\Repairphone.aspx" />
+    <Content Include="CRM\Repair\UploadImg.aspx" />
     <Content Include="CSS\base.css" />
     <Content Include="CSS\imgareaselect-default.css" />
     <Content Include="CSS\Login.css" />
@@ -167,6 +168,7 @@
     <Content Include="Images\login_11.gif" />
     <Content Include="Images\login_12.gif" />
     <Content Include="Images\login_bg.jpg" />
+    <Content Include="Images\upload\Repair\NoPic.png" />
     <Content Include="Images\user - 副本.gif" />
     <Content Include="Images\zwlogo - 副本.gif" />
     <Content Include="Images\分隔符.gif" />
@@ -216,7 +218,6 @@
     <Content Include="HR\QuickAddPost.aspx" />
     <Content Include="HR\emp_personal_update.aspx" />
     <Content Include="Images\IsAccessary.gif" />
-    <Content Include="Images\logo\xhd.png" />
     <Content Include="Images\swfupload\163_blue_s_css.txt" />
     <Content Include="Images\swfupload\del.gif" />
     <Content Include="Images\swfupload\globle_css.txt" />
