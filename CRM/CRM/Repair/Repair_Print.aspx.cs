@@ -27,6 +27,13 @@ namespace XHD.CRM.CRM.Repair
                     lbKhdh.Text = dr1[0]["Khdh"].ToString();
                     lbKhxq.Text = dr1[0]["Khxq"].ToString();
                     lbWxyy.Text = dr1[0]["Wxyy"].ToString().Replace("\n", "<br/>");
+                    var PicUrl = dr1[0]["PicUrl"].ToString();
+                    if (PicUrl == "")
+                       Image1.ImageUrl = "../../images/upload/Repair/NoPic.png" ;
+                    else
+                    Image1.ImageUrl = "../../images/upload/Repair/" + dr1[0]["PicUrl"].ToString();
+                    
+                   
                 }
 
                 DataRow[] dr2 = Caches.CRM_Repair_Follow.Select("RepairID='" + Request["rid"].ToString() + "'");

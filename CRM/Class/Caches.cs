@@ -75,7 +75,7 @@ public class Caches
                 sb.AppendLine("SELECT A.FollowID,A.RepairID,A.FollowTypeID,B.params_name AS FollowTypeName,A.FollowContent,A.IsDel, ");
                 sb.AppendLine(" A.InEmpID,C.name AS InEmpName,CONVERT(VARCHAR(20),A.InDate,120) AS InDate, ");
                 sb.AppendLine(" A.EditEmpID,D.name AS EditEmpName,CONVERT(VARCHAR(20),A.EditDate,120) AS EditDate, ");
-                sb.AppendLine(" A.DelEmpID,E.name AS DelEmpName,CONVERT(VARCHAR(20),A.DelDate,120) AS DelDate ");
+                sb.AppendLine(" A.DelEmpID,E.name AS DelEmpName,CONVERT(VARCHAR(20),A.DelDate,120) AS DelDate,A.PicUrl ");
                 sb.AppendLine("FROM dbo.CRM_Repair_Follow A");
                 sb.AppendLine("LEFT JOIN dbo.Param_SysParam B ON A.FollowTypeID=B.ID ");
                 sb.AppendLine("LEFT JOIN dbo.hr_employee C ON A.InEmpID=C.ID ");

@@ -37,7 +37,7 @@
             initLayout();
             $(window).resize(function () {
                 initLayout();
-            }); 
+            });
             $("#maingrid4").ligerGrid({
                 columns: [
                     {
@@ -245,11 +245,7 @@
             //        });
             //    }, emptyText: '（空）'
             //});
-            a = $('#T_Community').ligerComboBox({
-                width: 96,
-                //url: "../../data/Param_City.ashx?Action=combo&rnd=" + Math.random(),
-                emptyText: '（空）'
-            });
+
             b = $('#T_Towns').ligerComboBox({
                 width: 97,
                 //url: "../../data/Param_City.ashx?Action=combo&rnd=" + Math.random(),
@@ -289,7 +285,7 @@
             $('#customertype').ligerComboBox({ width: 97, emptyText: '（空）', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=1&rnd=" + Math.random() });
             $('#customerlevel').ligerComboBox({ width: 96, emptyText: '（空）', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=2&rnd=" + Math.random() });
             $('#cus_sourse').ligerComboBox({ width: 120, emptyText: '（空）', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=3&rnd=" + Math.random() });
-            $('#industry').ligerComboBox({ width: 120, emptyText: '（空）', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=8&rnd=" + Math.random() });
+            $('#T_Community').ligerComboBox({ width: 120, emptyText: '（空）', url: "../../data/Param_City.ashx?Action=getBuilding&rnd=" + Math.random() });
             var e = $('#employee').ligerComboBox({ width: 96, emptyText: '（空）' });
             var f = $('#department').ligerComboBox({
                 width: 97,
@@ -669,13 +665,13 @@
                 </tr>
                 <tr>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>所属行业：</div>
+                        <div style='width: 60px; text-align: right; float: right'>所在楼盘：</div>
                     </td>
                     <td>
-                        <input id='industry' name="industry" type='text' /></td>
+                        <input id='T_Community' name="T_Community" type='text' /></td>
 
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>所属地区：</div>
+                        <div style='width: 60px; text-align: right; float: right'>所属省市：</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
@@ -706,15 +702,13 @@
                         <input type='text' id='tel' name='tel' ltype='text' ligerui='{width:120}' />
                     </td>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>所属小区：</div>
+                        <div style='width: 60px; text-align: right; float: right'>所属区镇：</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
                             <input type='text' id='T_Towns' name='T_Towns' />
                         </div>
-                        <div style='width: 98px; float: left'>
-                            <input type='text' id='T_Community' name='T_Community' />
-                        </div>
+              
                     </td>           
                     
                     <td>

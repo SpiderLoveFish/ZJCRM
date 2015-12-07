@@ -55,7 +55,7 @@ namespace Building
                     var sb = new System.Text.StringBuilder();
                     if (string.IsNullOrWhiteSpace(ID) || ID == "null")
                     {
-                        sb.AppendLine("INSERT INTO dbo.CRM_Building (Provinces,ProvincesID,City,CityID,Towns,TownsID,Name,Address,Jzlb,Rjl,Lhl,Kpsj,Wygs,Wydh,Wyf,Sldh,Kfs,Jtzk,Jj,Remark,IsDel,InEmpID,InDate) ");
+                        sb.AppendLine("INSERT INTO dbo.CRM_Building (Provinces,ProvincesID,City,CityID,Towns,TownsID,Name,Address,Jzlb,Rjl,Lhl,Kpsj,Wygs,Wydh,Wyf,Sldh,Kfs,Jtzk,Jj,Remark,IsDel,InEmpID,InDate,xy) ");
                         sb.AppendLine("VALUES  ('" + Request["Provinces"] + "', ");
                         sb.AppendLine("         '" + Request["Provinces_val"] + "', ");
                         sb.AppendLine("         '" + Request["City"] + "', ");
@@ -78,7 +78,8 @@ namespace Building
                         sb.AppendLine("         '" + Request["Remark"] + "', ");
                         sb.AppendLine("         'N', ");
                         sb.AppendLine("         '" + ticket.UserData+ "', ");
-                        sb.AppendLine("         GETDATE()  ");
+                        sb.AppendLine("         GETDATE(),  ");
+                        sb.AppendLine("         '" + Request["T_xy"] + "' ");
                         sb.AppendLine("         ) ");
                     }
                     else
@@ -104,6 +105,7 @@ namespace Building
                         sb.AppendLine("         Jtzk='" + Request["Jtzk"] + "', ");
                         sb.AppendLine("         Jj='" + Request["Jj"] + "', ");
                         sb.AppendLine("         Remark='" + Request["Remark"] + "', ");
+                        sb.AppendLine("         xy='" + Request["T_xy"] + "', ");
                         sb.AppendLine("         EditEmpID='" + ticket.UserData + "',");
                         sb.AppendLine("         EditDate=GETDATE() ");
                         sb.AppendLine("WHERE ID='" + ID + "' ");

@@ -118,6 +118,37 @@ namespace XHD.CRM.Data
                 context.Response.Write(nowfileName);
 
             }
+
+            if (request["Action"] == "uprepair")
+            {
+                int x1 = int.Parse(request["x1"]);
+                int y1 = int.Parse(request["y1"]);
+                int w = int.Parse(request["w"]);
+                int h = int.Parse(request["h"]);
+
+                string fileName = request["upload"];
+                fileName = fileName.Substring(fileName.LastIndexOf('\\') + 1);
+                string sExt = fileName.Substring(fileName.LastIndexOf(".")).ToLower();
+
+                DateTime now = DateTime.Now;
+                string nowfileName = now.ToString("yyyyMMddHHmmss") + GetRandom(6) + sExt;
+
+                System.Web.UI.Page page = new Page();
+
+                string oldpath = page.Server.MapPath(@"~/images/upload/temp/" + fileName);
+                string currpath = page.Server.MapPath(@"~/images/upload/repair/" + nowfileName);
+
+                System.Drawing.Image originalImg = System.Drawing.Image.FromFile(oldpath);
+
+                ZoomImage.SaveCutPic(oldpath, currpath, 0, 0, w, h, x1, y1, Convert.ToInt32(300 * originalImg.Width / originalImg.Height), 300);
+
+                originalImg.Dispose();
+
+                System.IO.File.Delete(oldpath);
+
+                context.Response.Write(nowfileName);
+
+            }
             if (request["Action"] == "contract")
             {
                 try

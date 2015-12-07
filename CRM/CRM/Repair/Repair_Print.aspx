@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <style>
         @media print {
@@ -41,6 +41,7 @@
     <title></title>
 </head>
 <body>
+    <form id="form1" runat="server">
     <input type="button" value=" 打  印 " class="noprint" onclick="javascript: window.print();" />
     <div style="width:720px;">
         <table style="border-collapse:collapse;width:100%;height:100%">
@@ -76,12 +77,16 @@
             </tr>
             <tr>
                 <td style="height:300px;">维修项目</td>
-                <td colspan="8" style="text-align:left;vertical-align:top;">
+                <td colspan="5" style="text-align:left;vertical-align:top;">
                     <div>维修原因:</div>
                     <div><asp:Label CssClass="lite" ID="lbWxyy" runat="server" /></div>
                     <div>跟进明细:</div>
                     <div><asp:Label CssClass="lite" ID="lbGjxx" runat="server" /></div>
+                   
                 </td>
+                 <td colspan="3" style="text-align:left;vertical-align:top;"><div>
+                       <asp:Image ID="Image1" runat="server" Height="300px" Width="225px" />
+                    </div></td>
             </tr>
             <tr>
                 <td colspan="2">上门时间</td>
@@ -162,5 +167,6 @@
         </table>
         <!--<div class="footer">&nbsp;选择心诚&nbsp;心想事成&nbsp;&nbsp;&nbsp;&nbsp;地址:新城域商业街7-5号&nbsp;&nbsp;公司网址:www.xczs.com&nbsp;&nbsp;服务电话:4001152088</div>-->
     </div>
+    </form>
 </body>
 </html>

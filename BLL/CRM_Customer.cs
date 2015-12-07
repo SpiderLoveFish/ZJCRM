@@ -389,6 +389,11 @@ namespace XHD.BLL
             return dal.GetMapList(strWhere);
         }
 
+        public DataSet GetBMapList(string strWhere)
+        {
+            return dal.GetBMapList(strWhere);
+        }
+
         #endregion  Method
     }
 }

@@ -279,11 +279,11 @@
         function add() {
             if (request("Nv") != "") {
                
-                f_openWindow("Repair_add.aspx?tel=" + request("Khdh"), "报修登记", 770, 530);
+                f_openWindow("Repair_add.aspx?tel=" + request("Khdh"), "报修登记", 850, 590);
             }
             else {
               
-                f_openWindow("CRM/Repair/Repair_add.aspx", "报修登记", 770, 530);
+                f_openWindow("CRM/Repair/Repair_add.aspx", "报修登记", 850, 590);
             }
         }
         function addfollow() {
@@ -291,9 +291,9 @@
             var row = manager.getSelectedRow();
             if (row) {
                 if (request("Nv") != "")
-                    follow_openWindow("Repair_Follow_Add.aspx?rid=" + row.RepairID, "新增跟进", 530, 400);
+                    follow_openWindow("Repair_Follow_Add.aspx?rid=" + row.RepairID, "新增跟进", 530, 530);
                 else
-                follow_openWindow("CRM/Repair/Repair_Follow_Add.aspx?rid=" + row.RepairID, "新增跟进", 530, 400);
+                    follow_openWindow("CRM/Repair/Repair_Follow_Add.aspx?rid=" + row.RepairID, "新增跟进", 530, 530);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
@@ -303,8 +303,8 @@
             var row = manager.getSelectedRow();
             if (row) {
                 if (request("Nv") != "")
-                    f_openWindow("Repair_Add.aspx?cid=" + row.RepairID, "报修维护", 770, 530);
-               else f_openWindow("CRM/Repair/Repair_Add.aspx?cid=" + row.RepairID, "报修维护", 770, 530);
+                    f_openWindow("Repair_Add.aspx?cid=" + row.RepairID, "报修维护", 850, 590);
+                else f_openWindow("CRM/Repair/Repair_Add.aspx?cid=" + row.RepairID, "报修维护", 850, 590);
             }
             else {
                 $.ligerDialog.warn('请选择行！');
@@ -332,8 +332,8 @@
             if (row) {
               
                 if (request("Nv") != "")
-                    follow_openWindow("Repair_Follow_Add.aspx?fid=" + row.FollowID + "&rid=" + row.RepairID, "修改跟进", 530, 400);
-               else follow_openWindow("CRM/Repair/Repair_Follow_Add.aspx?fid=" + row.FollowID + "&rid=" + row.RepairID, "修改跟进", 530, 400);
+                    follow_openWindow("Repair_Follow_Add.aspx?fid=" + row.FollowID + "&rid=" + row.RepairID, "修改跟进", 530, 530);
+                else follow_openWindow("CRM/Repair/Repair_Follow_Add.aspx?fid=" + row.FollowID + "&rid=" + row.RepairID, "修改跟进", 530, 530);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }

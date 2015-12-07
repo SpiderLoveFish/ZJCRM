@@ -1084,7 +1084,18 @@ namespace XHD.DAL
             return DbHelperSQL.Query(strSql.ToString());
         }
 
-
+        public DataSet GetBMapList(string strWhere)
+        {
+            var strSql = new StringBuilder();
+            strSql.Append("SELECT ");
+            strSql.Append("     [id],[name],[sl],[xy]     ");
+            strSql.Append("FROM [dbo].[V_building] ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
         #endregion  Method
     }
 }

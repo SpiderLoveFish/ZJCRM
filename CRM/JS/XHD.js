@@ -526,7 +526,7 @@ function view(type, id, id1) {
         case 1: width = 770, height = 520, title = "客户详情", url = "CRM/Customer/Customer_info.aspx?cid=" + id; break;
         case 11: width = 770, height = 520, title = "客户详情", url = "../../CRM/Customer/Customer_info.aspx?cid=" + id; break;
         case 2: width = 530, height = 400, title = "查看跟进", url = "CRM/Customer/Customer_follow_add.aspx?fid=" + id; break;
-        case 22: width = 530, height = 400, title = "查看跟进", url = "CRM/Repair/Repair_Follow_Add.aspx?fid=" + id; break;
+        case 22: width = 530, height = 530, title = "查看跟进", url = "CRM/Repair/Repair_Follow_Add.aspx?fid=" + id; break;
         case 3: width = 730, height = 450, title = "查看联系人", url = "CRM/Customer/Customer_Contact_add.aspx?cid=" + id; break;
         case 4: width = 770, height = 490, title = "查看订单", url = "CRM/sale/order_add.aspx?orderid=" + id; break;
         case 5: width = 867, height = 490, title = "查看合同", url = "CRM/sale/contract_view.aspx?cid=" + id; break;
