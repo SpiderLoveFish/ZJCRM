@@ -4,6 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <meta name="viewport" content="initial-scale=1, user-scalable=0, minimal-ui"/>  
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>六家居装企系统</title>
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
