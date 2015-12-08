@@ -6,6 +6,7 @@ using System.Data;
 using System.Text;
 using XHD.Common;
 using System.Web.Security;
+using XHD.BLL;
 
 namespace XHD.CRM.Data
 {
