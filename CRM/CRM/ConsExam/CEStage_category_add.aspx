@@ -186,7 +186,7 @@
             <tr>
                 <td height="23" colspan="2">
 
-                    <div align="left" style="width: 62px">上级类别：</div>
+                    <div align="left" style="width: 62px">总分数：</div>
                 </td>
                 <td height="23">
                     <input type="text" id="T_category_totalscorce" name="T_category_totalscorce" validate="{required:true}" />

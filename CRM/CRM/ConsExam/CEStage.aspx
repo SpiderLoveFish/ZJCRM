@@ -23,22 +23,27 @@
             $("#maingrid4").ligerGrid({
                 columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
-                    { display: '考核等级名称', name: 'StageDescription', width: 250, align: 'left' },
-                     { display: '考核总分', name: 'TotalScorce', width: 250, align: 'left' },
+                     { display: '编号', name: 'id', width: 50, align: 'left' },
 
-                   {
-                        display: '图标', name: 'Stage_icon', width: 50, render: function (item) {
-                            return "<div style='margin-top:3px;'><img src='../../" + item.Stage_icon + "'/></div>";
-                        }
-                    }
+                     { display: '客户编号', name: 'CustomerID', width: 50, align: 'left' },
+                      { display: '客户姓名', name: 'CustomerName', width: 250, align: 'left' },
+                       { display: '客户电话', name: 'tel', width: 120, align: 'left' },
+                      { display: '施工监理', name: 'sgjl', width: 120, align: 'left' },
+                        { display: '业务员', name: 'ywy', width: 120, align: 'left' },
+                    { display: '设计师', name: 'sjs', width: 120, align: 'left' },
+                    { display: '特殊加分', name: 'SpecialScore', width: 120, align: 'left' },
+                { display: '考核得分', name: 'StageScore', width: 120, align: 'left' },
+                        { display: '状态', name: 'Stage_icon', width: 120, align: 'left' }
+
+                    
                 ],
                 dataAction: 'local',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/Crm_CEStage.ashx?Action=grid&grid=tree",
+                url: "../../data/Crm_CEStage.ashx?Action=grid",
                 width: '100%',
                 height: '100%',
-                tree: { columnName: 'StageDescription' },
+                //tree: { columnName: 'StageDescription' },
                 heightDiff: -1,
                 onRClickToSelect: true,
                 onContextmenu: function (parm, e) {
@@ -99,14 +104,14 @@
 
 
         function add() {
-            f_openWindow("crm/product/product_category_add.aspx", "新增类别", 480, 320);
+            f_openWindow("crm/ConsExam/CEStage_add.aspx", "新增客户", 700, 330);
         }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('crm/product/product_category_add.aspx?cid=' + row.id, "修改类别", 480, 320);
+                   f_openWindow('crm/ConsExam/CEStage_add.aspx?cid=' + row.id, "修改客户", 700, 330);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
@@ -126,12 +131,7 @@
                                     top.$.ligerDialog.closeWaitting();
                                     f_reload();
                                 }
-                                else if (responseText == "false:product") {
-                                    top.$.ligerDialog.error('此类别下含有产品信息，不允许删除！');
-                                }
-                                else if (responseText == "false:parent") {
-                                    top.$.ligerDialog.error('此类别下含有下级，不允许删除！');
-                                }
+                                 
                                 else {
                                     top.$.ligerDialog.closeWaitting();
                                     top.$.ligerDialog.error('删除失败！');
@@ -148,8 +148,11 @@
                 $.ligerDialog.warn("请选择类别！");
             }
         }
+
         function f_save(item, dialog) {
+            
             var issave = dialog.frame.f_save();
+          
             if (issave) {
                 dialog.close();
                 top.$.ligerDialog.waitting('数据保存中,请稍候...');
@@ -160,7 +163,7 @@
                         top.$.ligerDialog.closeWaitting();
                         if (responseText == "false:type")
                         {
-                            top.$.ligerDialog.error('操作失败，上级类别不能是自己！');
+                            top.$.ligerDialog.error('操作失败，施工监理不能为空，请先到客户档案维护！');
                         }
                         else
                         {                              

@@ -122,6 +122,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crm_CEDetail.cs" />
+    <Compile Include="CRM_CEStage.cs" />
+    <Compile Include="CRM_CEStageDetail.cs" />
+    <Compile Include="CRM_CEStage_category.cs" />
     <Compile Include="CRM_Contact.cs" />
     <Compile Include="CRM_contract.cs" />
     <Compile Include="CRM_contract_attachment.cs" />

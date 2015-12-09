@@ -3,7 +3,7 @@ using System.Data;
 using System.Text;
 using System.Data.SqlClient;
 using XHD.DBUtility;//Please add references
-namespace xhd.DAL
+namespace XHD.DAL
 {
 	/// <summary>
 	/// 数据访问类:CRM_CEStage
@@ -19,24 +19,21 @@ namespace xhd.DAL
 		/// </summary>
 		public int GetMaxId()
 		{
-		return DbHelperSQL.GetMaxID("CstomerID", "CRM_CEStage"); 
+		return DbHelperSQL.GetMaxID("id", "CRM_CEStage"); 
 		}
 
 		/// <summary>
 		/// 是否存在该记录
 		/// </summary>
-		public bool Exists(int CstomerID,int EmpID,int StageID)
+		public bool Exists(int id)
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("select count(1) from CRM_CEStage");
-			strSql.Append(" where CstomerID=@CstomerID and EmpID=@EmpID and StageID=@StageID ");
+			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
-					new SqlParameter("@CstomerID", SqlDbType.Int,4),
-					new SqlParameter("@EmpID", SqlDbType.Int,4),
-					new SqlParameter("@StageID", SqlDbType.Int,4)			};
-			parameters[0].Value = CstomerID;
-			parameters[1].Value = EmpID;
-			parameters[2].Value = StageID;
+					new SqlParameter("@id", SqlDbType.Int,4)
+			};
+			parameters[0].Value = id;
 
 			return DbHelperSQL.Exists(strSql.ToString(),parameters);
 		}
@@ -45,86 +42,107 @@ namespace xhd.DAL
 		/// <summary>
 		/// 增加一条数据
 		/// </summary>
-		public bool Add(xhd.Model.CRM_CEStage model)
+		public int Add(XHD.Model.CRM_CEStage model)
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into CRM_CEStage(");
-			strSql.Append("CstomerID,EmpID,StageID,StageDescription,Stage_icon,isdelete,deleteid,deletetime,EmpIDs,StageScore,SpecialScore)");
+			strSql.Append("CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse)");
 			strSql.Append(" values (");
-			strSql.Append("@CstomerID,@EmpID,@StageID,@StageDescription,@Stage_icon,@isdelete,@deleteid,@deletetime,@EmpIDs,@StageScore,@SpecialScore)");
+			strSql.Append("@CustomerID,@tel,@CustomerName,@sgjl,@sgjlid,@sjs,@sjsid,@ywy,@ywyid,@StageScore,@SpecialScore,@Stage_icon,@Remarks,@IsColse)");
+			strSql.Append(";select @@IDENTITY");
 			SqlParameter[] parameters = {
-					new SqlParameter("@CstomerID", SqlDbType.Int,4),
-					new SqlParameter("@EmpID", SqlDbType.Int,4),
-					new SqlParameter("@StageID", SqlDbType.Int,4),
-					new SqlParameter("@StageDescription", SqlDbType.VarChar,200),
-					new SqlParameter("@Stage_icon", SqlDbType.VarChar,200),
-					new SqlParameter("@isdelete", SqlDbType.Int,4),
-					new SqlParameter("@deleteid", SqlDbType.Int,4),
-					new SqlParameter("@deletetime", SqlDbType.DateTime),
-					new SqlParameter("@EmpIDs", SqlDbType.VarChar,200),
+					new SqlParameter("@CustomerID", SqlDbType.Int,4),
+					new SqlParameter("@tel", SqlDbType.VarChar,20),
+					new SqlParameter("@CustomerName", SqlDbType.NVarChar,20),
+					new SqlParameter("@sgjl", SqlDbType.NVarChar,20),
+					new SqlParameter("@sgjlid", SqlDbType.Int,4),
+					new SqlParameter("@sjs", SqlDbType.NVarChar,20),
+					new SqlParameter("@sjsid", SqlDbType.Int,4),
+					new SqlParameter("@ywy", SqlDbType.NVarChar,20),
+					new SqlParameter("@ywyid", SqlDbType.Int,4),
 					new SqlParameter("@StageScore", SqlDbType.Decimal,9),
-					new SqlParameter("@SpecialScore", SqlDbType.Decimal,9)};
-			parameters[0].Value = model.CstomerID;
-			parameters[1].Value = model.EmpID;
-			parameters[2].Value = model.StageID;
-			parameters[3].Value = model.StageDescription;
-			parameters[4].Value = model.Stage_icon;
-			parameters[5].Value = model.isdelete;
-			parameters[6].Value = model.deleteid;
-			parameters[7].Value = model.deletetime;
-			parameters[8].Value = model.EmpIDs;
+					new SqlParameter("@SpecialScore", SqlDbType.Decimal,9),
+					new SqlParameter("@Stage_icon", SqlDbType.VarChar,50),
+					new SqlParameter("@Remarks", SqlDbType.VarChar,50),
+					new SqlParameter("@IsColse", SqlDbType.Int,4)};
+			parameters[0].Value = model.CustomerID;
+			parameters[1].Value = model.tel;
+			parameters[2].Value = model.CustomerName;
+			parameters[3].Value = model.sgjl;
+			parameters[4].Value = model.sgjlid;
+			parameters[5].Value = model.sjs;
+			parameters[6].Value = model.sjsid;
+			parameters[7].Value = model.ywy;
+			parameters[8].Value = model.ywyid;
 			parameters[9].Value = model.StageScore;
 			parameters[10].Value = model.SpecialScore;
+			parameters[11].Value = model.Stage_icon;
+			parameters[12].Value = model.Remarks;
+			parameters[13].Value = model.IsColse;
 
-			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
-			if (rows > 0)
+			object obj = DbHelperSQL.GetSingle(strSql.ToString(),parameters);
+			if (obj == null)
 			{
-				return true;
+				return 0;
 			}
 			else
 			{
-				return false;
+				return Convert.ToInt32(obj);
 			}
 		}
 		/// <summary>
 		/// 更新一条数据
 		/// </summary>
-		public bool Update(xhd.Model.CRM_CEStage model)
+		public bool Update(XHD.Model.CRM_CEStage model)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("update CRM_CEStage set ");
-			strSql.Append("StageDescription=@StageDescription,");
+            strSql.Append("update CRM_CEStage set ");
+            strSql.Append("CustomerID=@CustomerID,");
+            strSql.Append("tel=@tel,");
+            strSql.Append("CustomerName=@CustomerName,");
+            strSql.Append("sgjl=@sgjl,");
+            strSql.Append("sgjlid=@sgjlid,");
+            strSql.Append("sjs=@sjs,");
+            strSql.Append("sjsid=@sjsid,");
+            strSql.Append("ywy=@ywy,");
+            strSql.Append("ywyid=@ywyid,");
+            //strSql.Append("StageScore=@StageScore,");
+			strSql.Append("SpecialScore=@SpecialScore,");
 			strSql.Append("Stage_icon=@Stage_icon,");
-			strSql.Append("isdelete=@isdelete,");
-			strSql.Append("deleteid=@deleteid,");
-			strSql.Append("deletetime=@deletetime,");
-			strSql.Append("EmpIDs=@EmpIDs,");
-			strSql.Append("StageScore=@StageScore,");
-			strSql.Append("SpecialScore=@SpecialScore");
-			strSql.Append(" where CstomerID=@CstomerID and EmpID=@EmpID and StageID=@StageID ");
+			strSql.Append("Remarks=@Remarks,");
+			strSql.Append("IsColse=@IsColse");
+			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
-					new SqlParameter("@StageDescription", SqlDbType.VarChar,200),
-					new SqlParameter("@Stage_icon", SqlDbType.VarChar,200),
-					new SqlParameter("@isdelete", SqlDbType.Int,4),
-					new SqlParameter("@deleteid", SqlDbType.Int,4),
-					new SqlParameter("@deletetime", SqlDbType.DateTime),
-					new SqlParameter("@EmpIDs", SqlDbType.VarChar,200),
-					new SqlParameter("@StageScore", SqlDbType.Decimal,9),
+					new SqlParameter("@CustomerID", SqlDbType.Int,4),
+					new SqlParameter("@tel", SqlDbType.VarChar,20),
+					new SqlParameter("@CustomerName", SqlDbType.NVarChar,20),
+					new SqlParameter("@sgjl", SqlDbType.NVarChar,20),
+					new SqlParameter("@sgjlid", SqlDbType.Int,4),
+					new SqlParameter("@sjs", SqlDbType.NVarChar,20),
+					new SqlParameter("@sjsid", SqlDbType.Int,4),
+					new SqlParameter("@ywy", SqlDbType.NVarChar,20),
+					new SqlParameter("@ywyid", SqlDbType.Int,4),
+                    //new SqlParameter("@StageScore", SqlDbType.Decimal,9),
 					new SqlParameter("@SpecialScore", SqlDbType.Decimal,9),
-					new SqlParameter("@CstomerID", SqlDbType.Int,4),
-					new SqlParameter("@EmpID", SqlDbType.Int,4),
-					new SqlParameter("@StageID", SqlDbType.Int,4)};
-			parameters[0].Value = model.StageDescription;
-			parameters[1].Value = model.Stage_icon;
-			parameters[2].Value = model.isdelete;
-			parameters[3].Value = model.deleteid;
-			parameters[4].Value = model.deletetime;
-			parameters[5].Value = model.EmpIDs;
-			parameters[6].Value = model.StageScore;
-			parameters[7].Value = model.SpecialScore;
-			parameters[8].Value = model.CstomerID;
-			parameters[9].Value = model.EmpID;
-			parameters[10].Value = model.StageID;
+					new SqlParameter("@Stage_icon", SqlDbType.VarChar,50),
+					new SqlParameter("@Remarks", SqlDbType.VarChar,50),
+					new SqlParameter("@IsColse", SqlDbType.Int,4),
+					new SqlParameter("@id", SqlDbType.Int,4)};
+			parameters[0].Value = model.CustomerID;
+			parameters[1].Value = model.tel;
+			parameters[2].Value = model.CustomerName;
+			parameters[3].Value = model.sgjl;
+			parameters[4].Value = model.sgjlid;
+			parameters[5].Value = model.sjs;
+			parameters[6].Value = model.sjsid;
+			parameters[7].Value = model.ywy;
+			parameters[8].Value = model.ywyid;
+            //parameters[9].Value = model.StageScore;
+			parameters[9].Value = model.SpecialScore;
+			parameters[10].Value = model.Stage_icon;
+			parameters[11].Value = model.Remarks;
+			parameters[11].Value = model.IsColse;
+			parameters[12].Value = model.id;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -140,21 +158,36 @@ namespace xhd.DAL
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>
-		public bool Delete(int CstomerID,int EmpID,int StageID)
+		public bool Delete(int id)
 		{
 			
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("delete from CRM_CEStage ");
-			strSql.Append(" where CstomerID=@CstomerID and EmpID=@EmpID and StageID=@StageID ");
+			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
-					new SqlParameter("@CstomerID", SqlDbType.Int,4),
-					new SqlParameter("@EmpID", SqlDbType.Int,4),
-					new SqlParameter("@StageID", SqlDbType.Int,4)			};
-			parameters[0].Value = CstomerID;
-			parameters[1].Value = EmpID;
-			parameters[2].Value = StageID;
+					new SqlParameter("@id", SqlDbType.Int,4)
+			};
+			parameters[0].Value = id;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+			if (rows > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// 批量删除数据
+		/// </summary>
+		public bool DeleteList(string idlist )
+		{
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("delete from CRM_CEStage ");
+			strSql.Append(" where id in ("+idlist + ")  ");
+			int rows=DbHelperSQL.ExecuteSql(strSql.ToString());
 			if (rows > 0)
 			{
 				return true;
@@ -169,21 +202,18 @@ namespace xhd.DAL
 		/// <summary>
 		/// 得到一个对象实体
 		/// </summary>
-		public xhd.Model.CRM_CEStage GetModel(int CstomerID,int EmpID,int StageID)
+		public XHD.Model.CRM_CEStage GetModel(int id)
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 CstomerID,EmpID,StageID,StageDescription,Stage_icon,isdelete,deleteid,deletetime,EmpIDs,StageScore,SpecialScore from CRM_CEStage ");
-			strSql.Append(" where CstomerID=@CstomerID and EmpID=@EmpID and StageID=@StageID ");
+			strSql.Append("select  top 1 id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse from CRM_CEStage ");
+			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
-					new SqlParameter("@CstomerID", SqlDbType.Int,4),
-					new SqlParameter("@EmpID", SqlDbType.Int,4),
-					new SqlParameter("@StageID", SqlDbType.Int,4)			};
-			parameters[0].Value = CstomerID;
-			parameters[1].Value = EmpID;
-			parameters[2].Value = StageID;
+					new SqlParameter("@id", SqlDbType.Int,4)
+			};
+			parameters[0].Value = id;
 
-			xhd.Model.CRM_CEStage model=new xhd.Model.CRM_CEStage();
+			XHD.Model.CRM_CEStage model=new XHD.Model.CRM_CEStage();
 			DataSet ds=DbHelperSQL.Query(strSql.ToString(),parameters);
 			if(ds.Tables[0].Rows.Count>0)
 			{
@@ -199,46 +229,50 @@ namespace xhd.DAL
 		/// <summary>
 		/// 得到一个对象实体
 		/// </summary>
-		public xhd.Model.CRM_CEStage DataRowToModel(DataRow row)
+		public XHD.Model.CRM_CEStage DataRowToModel(DataRow row)
 		{
-			xhd.Model.CRM_CEStage model=new xhd.Model.CRM_CEStage();
+			XHD.Model.CRM_CEStage model=new XHD.Model.CRM_CEStage();
 			if (row != null)
 			{
-				if(row["CstomerID"]!=null && row["CstomerID"].ToString()!="")
+				if(row["id"]!=null && row["id"].ToString()!="")
 				{
-					model.CstomerID=int.Parse(row["CstomerID"].ToString());
+					model.id=int.Parse(row["id"].ToString());
 				}
-				if(row["EmpID"]!=null && row["EmpID"].ToString()!="")
+				if(row["CustomerID"]!=null && row["CustomerID"].ToString()!="")
 				{
-					model.EmpID=int.Parse(row["EmpID"].ToString());
+					model.CustomerID=int.Parse(row["CustomerID"].ToString());
 				}
-				if(row["StageID"]!=null && row["StageID"].ToString()!="")
+				if(row["tel"]!=null)
 				{
-					model.StageID=int.Parse(row["StageID"].ToString());
+					model.tel=row["tel"].ToString();
 				}
-				if(row["StageDescription"]!=null)
+				if(row["CustomerName"]!=null)
 				{
-					model.StageDescription=row["StageDescription"].ToString();
+					model.CustomerName=row["CustomerName"].ToString();
 				}
-				if(row["Stage_icon"]!=null)
+				if(row["sgjl"]!=null)
 				{
-					model.Stage_icon=row["Stage_icon"].ToString();
+					model.sgjl=row["sgjl"].ToString();
 				}
-				if(row["isdelete"]!=null && row["isdelete"].ToString()!="")
+				if(row["sgjlid"]!=null && row["sgjlid"].ToString()!="")
 				{
-					model.isdelete=int.Parse(row["isdelete"].ToString());
+					model.sgjlid=int.Parse(row["sgjlid"].ToString());
 				}
-				if(row["deleteid"]!=null && row["deleteid"].ToString()!="")
+				if(row["sjs"]!=null)
 				{
-					model.deleteid=int.Parse(row["deleteid"].ToString());
+					model.sjs=row["sjs"].ToString();
 				}
-				if(row["deletetime"]!=null && row["deletetime"].ToString()!="")
+				if(row["sjsid"]!=null && row["sjsid"].ToString()!="")
 				{
-					model.deletetime=DateTime.Parse(row["deletetime"].ToString());
+					model.sjsid=int.Parse(row["sjsid"].ToString());
 				}
-				if(row["EmpIDs"]!=null)
+				if(row["ywy"]!=null)
 				{
-					model.EmpIDs=row["EmpIDs"].ToString();
+					model.ywy=row["ywy"].ToString();
+				}
+				if(row["ywyid"]!=null && row["ywyid"].ToString()!="")
+				{
+					model.ywyid=int.Parse(row["ywyid"].ToString());
 				}
 				if(row["StageScore"]!=null && row["StageScore"].ToString()!="")
 				{
@@ -247,6 +281,18 @@ namespace xhd.DAL
 				if(row["SpecialScore"]!=null && row["SpecialScore"].ToString()!="")
 				{
 					model.SpecialScore=decimal.Parse(row["SpecialScore"].ToString());
+				}
+				if(row["Stage_icon"]!=null)
+				{
+					model.Stage_icon=row["Stage_icon"].ToString();
+				}
+				if(row["Remarks"]!=null)
+				{
+					model.Remarks=row["Remarks"].ToString();
+				}
+				if(row["IsColse"]!=null && row["IsColse"].ToString()!="")
+				{
+					model.IsColse=int.Parse(row["IsColse"].ToString());
 				}
 			}
 			return model;
@@ -258,7 +304,7 @@ namespace xhd.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select CstomerID,EmpID,StageID,StageDescription,Stage_icon,isdelete,deleteid,deletetime,EmpIDs,StageScore,SpecialScore ");
+			strSql.Append("select id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse ");
 			strSql.Append(" FROM CRM_CEStage ");
 			if(strWhere.Trim()!="")
 			{
@@ -278,7 +324,7 @@ namespace xhd.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" CstomerID,EmpID,StageID,StageDescription,Stage_icon,isdelete,deleteid,deletetime,EmpIDs,StageScore,SpecialScore ");
+			strSql.Append(" id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse ");
 			strSql.Append(" FROM CRM_CEStage ");
 			if(strWhere.Trim()!="")
 			{
@@ -323,7 +369,7 @@ namespace xhd.DAL
 			}
 			else
 			{
-				strSql.Append("order by T.StageID desc");
+				strSql.Append("order by T.id desc");
 			}
 			strSql.Append(")AS Row, T.*  from CRM_CEStage T ");
 			if (!string.IsNullOrEmpty(strWhere.Trim()))
@@ -351,7 +397,7 @@ namespace xhd.DAL
 					new SqlParameter("@strWhere", SqlDbType.VarChar,1000),
 					};
 			parameters[0].Value = "CRM_CEStage";
-			parameters[1].Value = "StageID";
+			parameters[1].Value = "id";
 			parameters[2].Value = PageSize;
 			parameters[3].Value = PageIndex;
 			parameters[4].Value = 0;
@@ -362,8 +408,55 @@ namespace xhd.DAL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        public DataSet GetListDetail(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + " * FROM CRM_CEStage ");
+            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_CEStage ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(id) FROM CRM_CEStage ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        public DataSet GetListCustomer(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "  id AS CustomerID,tel,Customer AS CustomerName,Emp_sg AS sgjl, ");
+            strSql.Append(" Emp_id_sg AS sgjlid,Emp_sj AS sjs,Emp_id_sj AS sjsid, ");
+            strSql.Append(" Employee AS ywy,Employee_id AS ywyid FROM CRM_Customer ");
+            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_Customer ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(id) FROM CRM_Customer ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+    
 
 		#endregion  ExtensionMethod
 	}
 }
 
+ 

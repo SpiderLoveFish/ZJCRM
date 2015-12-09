@@ -35,27 +35,27 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "save")
             {
-                //string parentid = PageValidate.InputText(request["T_category_parent_val"], 50);
-                //model.parentid = int.Parse(parentid);
-                //model.CEStageDetail_category = Common.PageValidate.InputText(request["T_category_name"], 250);
-                //model.CEStageDetail_icon = Common.PageValidate.InputText(request["T_category_icon"], 250);
-
-                //string id = PageValidate.InputText(request["id"], 50);
+                string parentid = PageValidate.InputText(request["T_CEStage_id"], 50);
+                model.StageID = int.Parse(parentid.Split('-')[0]);
+                model.StageDetailID = int.Parse(PageValidate.InputText(request["T_CEStage_detail_id"], 50));
+                model.Description = Common.PageValidate.InputText(request["T_CEStage_name"], 250);
+                model.StageContent = PageValidate.InputText(request["T_content"], int.MaxValue);
+                string id = PageValidate.InputText(request["pdetailid"], 50);
                 //string pid = PageValidate.InputText(request["T_category_parent_val"], 50);
-                //if (!string.IsNullOrEmpty(id) && id != "null")
-                //{
-                //    model.id = int.Parse(id);
+                if (!string.IsNullOrEmpty(id) && id != "null")
+                {
+                    //model.StageID = int.Parse(parentid);
 
-                //    DataSet ds = ccpc.GetList(" id=" + int.Parse(id));
-                //    DataRow dr = ds.Tables[0].Rows[0];
+                    //DataSet ds = ccpc.GetList(" id=" + int.Parse(parentid));
+                    //DataRow dr = ds.Tables[0].Rows[0];
 
-                //    if (int.Parse(id) == int.Parse(pid))
-                //    {
-                //        context.Response.Write("false:type");
-                //    }
-                //    else
-                //    {
-                //        ccpc.Update(model);
+                    //if (int.Parse(id) == int.Parse(pid))
+                    //{
+                    //    context.Response.Write("false:type");
+                    //}
+                    //else
+                    //{
+                        ccpc.Update(model);
 
 
                 //        //日志
@@ -79,16 +79,24 @@ namespace XHD.CRM.Data
                 //        {
                 //            log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "上级类别", dr["parentid"].ToString(), request["T_category_parent_val"]);
                 //        }
-                //    }
-                //}
+                     //}
+               }
 
-                //else
-                //{
-                //    //model.isDelete = 0;
-                //    //ccpc.Add(model);
-                //}
+                else
+                {
+                   // model. = 0;
+                    ccpc.Add(model);
+                }
             }
+            if (request["Action"] == "getmaxdetailid")
+            {
+               // string dt = "";
 
+                int detailid = ccpc.GetMaxDetailId(PageValidate.InputText(request["pid"],50));
+                string josnstr = "{ 'detailid':"+detailid+"}";
+                //{"status": 1, "sum": 9}
+                context.Response.Write(josnstr);
+            }
             if (request["Action"] == "grid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
@@ -105,21 +113,23 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
-                 
-                if (!string.IsNullOrEmpty(request["startdate_del"]))
+
+                if (!string.IsNullOrEmpty(request["categoryid"]))
                 {
-                    serchtxt += " and Delete_time >= '" + PageValidate.InputText(request["startdate_del"], 50) + "'";
+                    serchtxt += "  and StageID=" + PageValidate.InputText(request["categoryid"], 50);
+                    //serchtxt += " and Delete_time >= '" + PageValidate.InputText(request["startdate_del"], 50) + "'";
                 }
-                if (!string.IsNullOrEmpty(request["enddate_del"]))
-                {
-                    DateTime enddate = DateTime.Parse(request["enddate_del"]);
-                    serchtxt += " and Delete_time  <= '" + enddate.AddHours(23).AddMinutes(59).AddSeconds(59) + "'";
-                }
+                //if (!string.IsNullOrEmpty(request["pdetailid"]))
+                //{
+                //    //DateTime enddate = DateTime.Parse(request["enddate_del"]);
+                //    serchtxt += " and StageDetailID=" + PageValidate.InputText(request["pdetailid"], 50);
+                //        //" and StageDetailID  <= '" + enddate.AddHours(23).AddMinutes(59).AddSeconds(59) + "'";
+                //}
                 //权限
 
 
                 string dt = "";
-                 
+                //DataSet ds = ccpc.GetListByPage(PageSize, PageIndex, serchtxt, sorttext);
                     DataSet ds = ccpc.GetList(PageSize, PageIndex, serchtxt, sorttext, out Total);
                     dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
                 
@@ -153,7 +163,7 @@ namespace XHD.CRM.Data
                 string dt;
                 if (PageValidate.IsNumber(cid) && PageValidate.IsNumber(cdetailid))
                 {
-                    DataSet ds = ccpc.GetList("StageID=" + cid + " AND StageDetailID=" + cdetailid);
+                    DataSet ds = ccpc.GetList_Main(" StageID=" + cid + " AND StageDetailID=" + cdetailid);
                     dt = Common.DataToJson.DataToJSON(ds);
                 }
                 else
@@ -171,17 +181,14 @@ namespace XHD.CRM.Data
                 string c_id = PageValidate.InputText(request["stageid"], 50);
                 string c_detail_id = PageValidate.InputText(request["stagedetailid"], 50);
 
-                DataSet ds = ccpc.GetList(" StageID=" + int.Parse(c_id) + " AND StageDetailID" + int.Parse(c_detail_id));
+                 DataSet ds = ccpc.GetList(" StageID=" + int.Parse(c_id) + " AND StageDetailID=" + int.Parse(c_detail_id));
 
-                BLL.CRM_CEStageDetail CEStageDetail = new BLL.CRM_CEStageDetail();
-                if (CEStageDetail.GetList(" StageID=" + int.Parse(c_id) + " and StageDetailID" + int.Parse(c_detail_id)).Tables[0].Rows.Count > 0)
+                 BLL.Crm_CEDetail CEDetail = new BLL.Crm_CEDetail();
+                 if (CEDetail.GetList(" id=" + int.Parse(c_id)).Tables[0].Rows.Count > 0)
                 {
-                    context.Response.Write("false:CEStageDetail");
+                    context.Response.Write("false:CEDetail");
                 }
-                else if (ccpc.GetList("parentid=" + int.Parse(c_id)).Tables[0].Rows.Count > 0)
-                {
-                    context.Response.Write("false:parent");
-                }
+                 
                 else
                 {
                     bool isdel = ccpc.Delete(int.Parse(c_id),int.Parse(c_detail_id));

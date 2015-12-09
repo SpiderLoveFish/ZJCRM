@@ -77,11 +77,17 @@
             //    }
             //});
 
-            $("T_CEStage_id").val(getparastr("categoryid"));
+            $("#T_CEStage_id").val(getparastr("categoryid") +"-"+ getparastr("catname"));
+            if (getparastr("categoryid") && getparastr("catdetailid") == null)
+            {
+                getmaxdetailid(getparastr("categoryid"));
+            }
+            else
+                $("#T_CEStage_detail_id").val(getparastr("catdetailid"));
 
 
-            if (getparastr("pid")) {
-                loadForm(getparastr("pid"));
+            if (getparastr("categoryid") && getparastr("catdetailid")) {
+            loadForm(getparastr("categoryid"), getparastr("catdetailid"));
             }
         });
 
@@ -89,16 +95,35 @@
             if ($(form1).valid()) {
                 var arr = [];
                 arr.push(UE.getEditor('editor').getContent());
-                var sendtxt = "&Action=save&pid=" + getparastr("pid") + "&T_content=" + escape(arr);;
+                var sendtxt = "&Action=save&pid=" + getparastr("categoryid") + "&pdetailid=" + getparastr("catdetailid") + "&T_content=" + escape(arr);
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }
+        function getmaxdetailid(oaid)
+        { $.ajax({
+            type: "get",
+            url: "../../data/Crm_CEStageDetail.ashx", /* 注意后面的名字对应CS的方法名称 */
+            data: { Action: 'getmaxdetailid', pid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var obj = eval(result);
+                for (var n in obj) {
+                    if (obj[n] == "null" || obj[n] == null)
+                        obj[n] = "";
+                }
+                //alert(obj.constructor); //String 构造函数
+                $("#T_CEStage_detail_id").val(obj.detailid);
 
-        function loadForm(oaid) {
+            }
+        });
+        }
+
+        function loadForm(oaid,detailid) {
             $.ajax({
                 type: "get",
                 url: "../../data/Crm_CEStageDetail.ashx", /* 注意后面的名字对应CS的方法名称 */
-                data: { Action: 'form', pid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                data: { Action: 'form', StageID: oaid, StageDetailID: detailid, rnd: Math.random() }, /* 注意参数的格式和名称 */
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
@@ -109,9 +134,9 @@
                     }
                     //alert(obj.constructor); //String 构造函数
                     $("#T_CEStage_name").val(obj.Description);
-                    $("#T_CEStage_id").val(obj.StageID);
+                    $("#T_CEStage_id").val(obj.StageID + '-' + obj.CEStage_category);
                     $("#T_CEStage_detail_id").val(obj.StageDetailID);
-                    UE.getEditor('editor').setContent(myHTMLDeCode(obj.t_content));
+                    UE.getEditor('editor').setContent(myHTMLDeCode(obj.StageContent));
                    
                    
                 }
@@ -135,14 +160,14 @@
                 <td>
                     <input type="text" id="T_CEStage_id" name="T_CEStage_id" validate="{required:true}" ltype='text' ligerui="{width:280,disabled:true}" /></td>
                 <td>
-                    <div align="left" style="width: 60px">考核明细：</div>
+                    <div align="left" style="width: 90px">考核明细ID：</div>
                 </td>
                 <td>
-                    <input type='text' id="T_CEStage_detail_id" name="T_CEStage_detail_id" ltype='text' ligerui="{width:280,disabled:true}" /></td>
+                    <input type='text' id="T_CEStage_detail_id" name="T_CEStage_detail_id" ltype='text' ligerui="{width:240,disabled:true}" /></td>
             </tr>
   <tr>
                 <td>
-                    <div align="left" style="width:60px">简单描述：</div>
+                    <div align="left" style="width:60px">明细标题：</div>
                 </td>
                 <td colspan="3">
                     <input type='text' id="T_CEStage_name" name="T_CEStage_name" ltype="text" ligerui="{width:637}" validate="{required:true}" /></td>

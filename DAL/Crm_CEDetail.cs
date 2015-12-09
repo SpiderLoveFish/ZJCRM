@@ -3,7 +3,7 @@ using System.Data;
 using System.Text;
 using System.Data.SqlClient;
 using XHD.DBUtility;//Please add references
-namespace xhd.DAL
+namespace XHD.DAL
 {
 	/// <summary>
 	/// 数据访问类:Crm_CEDetail

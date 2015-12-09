@@ -22,6 +22,14 @@ namespace XHD.BLL
 		{
 			return dal.GetMaxId();
 		}
+        /// <summary>
+        /// 得到最大ID
+        /// </summary>
+        public int GetMaxDetailId(string stageid)
+        {
+            return dal.GetMaxDetailId(stageid);
+        }
+
 
 		/// <summary>
 		/// 是否存在该记录
@@ -96,6 +104,14 @@ namespace XHD.BLL
 		{
 			return dal.GetList(strWhere);
 		}
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetList_Main(string strWhere)
+        {
+            return dal.GetList_Main(strWhere);
+        }
+
 		/// <summary>
 		/// 获得前几行数据
 		/// </summary>

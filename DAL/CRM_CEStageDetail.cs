@@ -23,6 +23,24 @@ namespace XHD.DAL
         }
 
         /// <summary>
+        /// 得到最大detaolID
+        /// </summary>
+        public int GetMaxDetailId(string StageID)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select max(StageDetailID)+1 from CRM_CEStageDetail where StageID=" + StageID);
+            object obj = DbHelperSQL.GetSingle(strSql.ToString());
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+
+        /// <summary>
         /// 是否存在该记录
         /// </summary>
         public bool Exists(int StageID, int StageDetailID)
@@ -200,6 +218,22 @@ namespace XHD.DAL
         }
 
         /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetList_Main(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select StageID,StageDetailID,Description,StageContent,B.CEStage_category ");
+            strSql.Append(" FROM CRM_CEStageDetail A  ");
+            strSql.Append(" INNER JOIN  dbo.CRM_CEStage_category B ON A.StageID=B.id ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+        /// <summary>
         /// 获得前几行数据
         /// </summary>
         public DataSet GetList(int Top, string strWhere, string filedOrder)
@@ -275,9 +309,9 @@ namespace XHD.DAL
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
             strSql.Append(" top " + PageSize + " * FROM CRM_CEStageDetail ");
-            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_CEStageDetail ");
+            strSql.Append(" WHERE StageDetailID not in ( SELECT top " + (PageIndex - 1) * PageSize + " StageDetailID FROM CRM_CEStageDetail ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-            strSql1.Append(" select count(id) FROM CRM_CEStageDetail ");
+            strSql1.Append(" select count(StageID) FROM CRM_CEStageDetail ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);

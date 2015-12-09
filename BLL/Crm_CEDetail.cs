@@ -2,15 +2,15 @@
 using System.Data;
 using System.Collections.Generic;
 using XHD.Common;
-using xhd.Model;
-namespace xhd.BLL
+using XHD.Model;
+namespace XHD.BLL
 {
 	/// <summary>
 	/// Crm_CEDetail
 	/// </summary>
 	public partial class Crm_CEDetail
 	{
-		private readonly xhd.DAL.Crm_CEDetail dal=new xhd.DAL.Crm_CEDetail();
+        private readonly XHD.DAL.Crm_CEDetail dal = new XHD.DAL.Crm_CEDetail();
 		public Crm_CEDetail()
 		{}
 		#region  BasicMethod

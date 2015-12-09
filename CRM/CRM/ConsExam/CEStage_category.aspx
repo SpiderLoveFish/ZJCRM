@@ -126,12 +126,10 @@
                                     top.$.ligerDialog.closeWaitting();
                                     f_reload();
                                 }
-                                else if (responseText == "false:CEStage") {
+                                else if (responseText == "false:CEStageDetail") {
                                     top.$.ligerDialog.error('此类别下含有产品信息，不允许删除！');
                                 }
-                                else if (responseText == "false:parent") {
-                                    top.$.ligerDialog.error('此类别下含有下级，不允许删除！');
-                                }
+                                 
                                 else {
                                     top.$.ligerDialog.closeWaitting();
                                     top.$.ligerDialog.error('删除失败！');

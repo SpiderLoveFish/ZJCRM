@@ -182,14 +182,15 @@ namespace XHD.CRM.Data
 
                 DataSet ds = ccpc.GetList(" id=" + int.Parse(c_id));
                 //xhd.BLL.CRM_CEStage CEStage = new xhd.BLL.CRM_CEStage();
-                BLL.CRM_CEStage CEStage = new BLL.CRM_CEStage();
-                if (CEStage.GetList(" category_id=" + int.Parse(c_id)).Tables[0].Rows.Count > 0)
+                BLL.CRM_CEStageDetail CEStageDetail = new BLL.CRM_CEStageDetail();
+
+                if (CEStageDetail.GetList(" StageID=" + int.Parse(c_id)).Tables[0].Rows.Count <= 0)
                 {
-                    context.Response.Write("false:CEStage");
+                    context.Response.Write("false:CEStageDetail");
                 }
-                else if(ccpc.GetList("parentid="+int.Parse(c_id)).Tables[0].Rows.Count>0){
-                    context.Response.Write("false:parent");
-                }
+                //else if(ccpc.GetList("parentid="+int.Parse(c_id)).Tables[0].Rows.Count>0){
+                //    context.Response.Write("false:parent");
+                //}
                 else
                 {
                     bool isdel = ccpc.Delete(int.Parse(c_id));

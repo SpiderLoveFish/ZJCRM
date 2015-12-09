@@ -29,6 +29,7 @@
                 url: '../../data/crm_CEStage_category.ashx?Action=tree&rnd=' + Math.random(),
                 onSelect: onSelect,
                 idFieldName: 'id',
+                nameFieldName: 'CEStage_category',
                 //parentIDFieldName: 'pid',
                 usericon: 'd_icon',
                 checkbox: false,
@@ -73,7 +74,11 @@
                     //        return html;
                     //    }
                     //},
-                    { display: 'øº∫À√˜œ∏√˚≥∆', name: 'CEStage_name', width: 200 }
+                    { display: '¿‡–Õ±‡∫≈', name: 'StageID', width: 120 },
+                  
+                     { display: '√˜œ∏±‡∫≈', name: 'StageDetailID', width: 120 },
+                  
+                    { display: 'øº∫À√˜œ∏√˚≥∆', name: 'Description', width: 300 }
                     //{ display: 'øº∫À¿‡±', name: 'category_name', width: 120 },
                     //{ display: 'øº∫ÀπÊ∏Ò', name: 'specifications', width: 120 },
                     //{
@@ -169,9 +174,11 @@
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
-            var rows = manager.getCheckedRows();
-            if (rows.length == 1)
-                f_openWindow('crm/ConsExam/CEStage_Detail_add.aspx?pid=' + rows[0].CEStage_id + '&pdid=' + rows[0].CEStage_detail_id, "–ﬁ∏ƒøº∫À", 790, 600);
+            var row = manager.getSelectedRow();
+            if (row) {
+
+                f_openWindow('crm/ConsExam/CEStage_Detail_add.aspx?categoryid=' + row.StageID + '&catname=' + row.Description + '&catdetailid=' + row.StageDetailID, "–ﬁ∏ƒøº∫À", 790, 600);
+            }
             else
                 $.ligerDialog.warn('«Î—°‘Òøº∫À£°');
         }
@@ -180,7 +187,7 @@
             var notes = $("#tree1").ligerGetTreeManager().getSelected();
 
             if (notes != null && notes != undefined) {
-                f_openWindow('crm/ConsExam/CEStage_Detail_add.aspx?categoryid=' + notes.data.id, "–¬‘ˆøº∫À", 790, 600);
+                f_openWindow('crm/ConsExam/CEStage_Detail_add.aspx?categoryid=' + notes.data.id+'&catname='+notes.data.text, "–¬‘ˆøº∫À", 790, 600);
             }
             else {
                 $.ligerDialog.warn('«Î—°‘Òøº∫À¿‡±£°');
@@ -189,19 +196,19 @@
 
         function del() {
             var manager = $("#maingrid4").ligerGetGridManager();
-            var rows = manager.getCheckedRows();
-            if (rows.length == 1) {
+            var row = manager.getSelectedRow();
+            if (row) {
                 $.ligerDialog.confirm("øº∫À…æ≥˝≤ªƒ‹ª÷∏¥£¨»∑∂®…æ≥˝£ø", function (yes) {
                     if (yes) {
                         $.ajax({
                             url: "../../data/CRM_CEStageDetail.ashx", type: "POST",
-                            data: { Action: "del", stageid: rows[0].CEStage_id, stagedetailid: rows[0].CEStage_detail_id, rnd: Math.random() },
+                            data: { Action: "del", stageid: row.StageID, stagedetailid: row.StageDetailID, rnd: Math.random() },
                             success: function (responseText) {
                                 if (responseText == "true") {
                                     top.$.ligerDialog.closeWaitting();
                                     f_load();
                                 }
-                                else if (responseText == "false:order") {
+                                else if (responseText == "false:CEDetail") {
                                     top.$.ligerDialog.error('¥Àøº∫Àœ¬∫¨”–∂©µ•–≈œ¢£¨≤ª‘ –Ì…æ≥˝£°');
                                 }
                                 else {
@@ -222,17 +229,7 @@
         }
 
         
-        function prt() {
-            var manager = $("#maingrid4").ligerGetGridManager();
-            var rowid = checkedID.join(',');
-            if (rowid.length > 0)
-                ViewwStyle(rowid);
-                //print_openWindow("crm/CEStage/CEStage_QrCode_Print.aspx?id=" + rowid, "¥Ú”°øº∫À", 700, 700);
-               //window.open("CEStage_QrCode_Print.aspx?id=" + rowid,"_blank", 'top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=no,location=n o, status=no');
-             else
-                $.ligerDialog.warn('«Î—°‘Òøº∫À£°');
-        }
-
+         
         function f_save(item, dialog) {
             var issave = dialog.frame.f_save();
             if (issave) {
