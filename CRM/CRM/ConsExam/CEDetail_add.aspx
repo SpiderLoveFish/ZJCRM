@@ -19,7 +19,8 @@
     <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-
+     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
+   
     <script src="../../lib/jquery-validation/jquery.validate.js" type="text/javascript"></script>
     <script src="../../lib/jquery-validation/jquery.metadata.js" type="text/javascript"></script>
     <script src="../../lib/jquery-validation/messages_cn.js" type="text/javascript"></script>
@@ -27,7 +28,8 @@
     <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-
+    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+    
     <script type="text/javascript" charset="utf-8" src="../../ueditor1_2_5_1-utf8-net/editor_config.js"></script>
     <script src="../../ueditor1_2_5_1-utf8-net/editor_all.js" type="text/javascript"></script>
     <script src="../../ueditor1_2_5_1-utf8-net/lang/zh-cn/zh-cn.js" type="text/javascript"></script>
@@ -58,44 +60,81 @@
                 autoHeightEnabled: false
             });
 
-            $("#T_product_category").ligerComboBox({
-                width: 280,
-                selectBoxWidth: 280,
-                selectBoxHeight: 280,
-                valueField: 'id',
-                textField: 'text',
-                initValue: getparastr("categoryid"),
-                treeLeafOnly: false,
-                tree: {
-                    url: '../../data/crm_product_category.ashx?Action=tree&rnd=' + Math.random(),
-                    //onSelect: onSelect,
-                    idFieldName: 'id',
-                    valueField: 'text',
-                    usericon: 'd_icon',
-                    checkbox: false,
-                    itemopen: false
-                }
+            
+            $("#T_projectid").val(getparastr("pid"));
+            $("#T_Stage1").val(getparastr("sid"));
+            $("#T_Stage").val(getparastr("sid") + "-" + getparastr("sname"));
+            getmaxverid(getparastr("sid"), getparastr("pid"), getparastr("style"))
+            if (getparastr("pid") && getparastr("sid"))
+                loadForm(getparastr("sid"), getparastr("pid"), $("#T_versions").val(), getparastr("style"));
+            
+            initLayout();
+            $(window).resize(function () {
+                initLayout();
             });
 
-            if (getparastr("pid")) {
-                loadForm(getparastr("pid"));
-            }
+            toolbar();
         });
 
         function f_save() {
             if ($(form1).valid()) {
                 var arr = [];
                 arr.push(UE.getEditor('editor').getContent());
-                var sendtxt = "&Action=save&pid=" + getparastr("pid") + "&T_content=" + escape(arr);;
+                var sendtxt = "&Action=save&sid=" + getparastr("sid") + "&style=" + getparastr("style") + "&pid=" + getparastr("pid") + "&T_content=" + escape(arr);
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }
+        function toolbar() {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=39&rnd=" + Math.random(), function (data, textStatus) {
+                //alert(data);
+                var items = [];
+                var arr = data.Items;
+                for (var i = 0; i < arr.length; i++) {
+                    arr[i].icon = "../../" + arr[i].icon;
+                    items.push(arr[i]);
+                }
 
-        function loadForm(oaid) {
+                $("#toolbar").ligerToolBar({
+                    items: items
+
+                });
+                menu = $.ligerMenu({
+                    width: 120, items: getMenuItems(data)
+                });
+               
+            });
+        }
+
+
+        function getmaxverid(stageid,projectid,sty)
+        {
+            //top.$.ligerDialog.error("11");
+            $.ajax({
+            type: "get",
+            url: "../../data/Crm_CEDetail.ashx", /* 注意后面的名字对应CS的方法名称 */
+            data: { Action: 'getmaxverid', sid: stageid, pid: projectid,style:sty, rnd: Math.random() }, /* 注意参数的格式和名称 */
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var obj = eval(result);
+                for (var n in obj) {
+                    if (obj[n] == "null" || obj[n] == null)
+                        obj[n] = "";
+                }
+               // top.$.ligerDialog.error(obj.verid); //String 构造函数
+                $("#T_versions").val(obj.verid);
+
+            }
+        });
+        }
+
+        function loadForm(oaid, id,verid, sty) {
+           
+          
             $.ajax({
                 type: "get",
-                url: "../../data/Crm_product.ashx", /* 注意后面的名字对应CS的方法名称 */
-                data: { Action: 'form', pid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                url: "../../data/Crm_CEDetail.ashx", /* 注意后面的名字对应CS的方法名称 */
+                data: { Action: 'getdetailgrid', sid: oaid, pid: id, vid: verid, rnd: Math.random() }, /* 注意参数的格式和名称 */
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
@@ -105,122 +144,112 @@
                             obj[n] = "";
                     }
                     //alert(obj.constructor); //String 构造函数
-                    $("#T_product_name").val(obj.product_name);
-                    $("#T_product_unit").val(obj.unit);
-                    $("#T_specifications").val(obj.specifications);
-                    $("#T_remarks").val(obj.remarks);
-                    $("#T_url").val(obj.url);
-                    $("#T_price").val(toMoney(obj.price));
-                    UE.getEditor('editor').setContent(myHTMLDeCode(obj.t_content));
-                    $("#T_product_category").ligerGetComboBoxManager().selectValue(obj.category_id);
-                    $("#T_nbj").val(toMoney(obj.InternalPrice));
-                    $("#T_xh").val(obj.ProModel);
-                    $("#T_gys").val(obj.Suppliers);
-                    $("#T_xl").val(obj.ProSeries);
-                    $("#T_zt").val(obj.Themes);
-                    $("#T_pp").val(obj.Brand);
+                     
+                  
+                    $("#T_Stage").val(obj.StageID);
+                     
+                    $("#T_AssTime").val(obj.AssTime);
+                    $("#T_checked").ligerGetComboBoxManager().selectValue(obj.isChecked);
+                    $("#T_isclose").ligerGetComboBoxManager().selectValue(obj.IsClose);
+
+                    UE.getEditor('editor').setContent(myHTMLDeCode(obj.StageContent));
+                   
+                   
                 }
             });
         }
 
-        function set_tomoney(value) {
-            $("#T_price").val(toMoney(value));
-           
+        function f_openWindow(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+                        {
+                            text: '保存', onclick: function (item, dialog) {
+                                f_save(item, dialog);
+                            }
+                        },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
-        function set_tomoney_nbj(value) {
-          
-            $("#T_nbj").val(toMoney(value));
+
+        function edit() {
+            
+            var sid = getparastr("sid");
+            var pid = getparastr("pid");
+            var verid = $("#T_versions").val();
+            f_openWindow('crm/ConsExam/CEDetail_add.aspx?&sid=' + sid + '&pid=' + pid + '&sname=' + verid, "修改评分", 790, 600);
+            
+        }
+
+        function add() {
+            var sid = getparastr("sid");
+            var pid = getparastr("pid");
+            var verid = $("#T_versions").val();
+            f_openWindow('crm/ConsExam/CEDetail_add.aspx?&sid=' + sid + '&pid=' + pid + '&sname=' + verid, "新增评分", 790, 600);
+             
         }
 
 
     </script>
 </head>
 <body>
-    <form id="form1" onsubmit="return false">     
+    <form id="form1" onsubmit="return false"> 
+        <div id="layout1" style="margin: -1px">
+             
+        <div position="center">
+                <div id="toolbar"></div>
+                <div id="maingrid4" style="margin: -1px;">
+           
         <table align="left" border="0" cellpadding="3" cellspacing="1">
-            <tr>
-                <td>
-                    <div align="left" style="width:60px">产品名称：</div>
-                </td>
-                <td colspan="3">
-                    <input type='text' id="T_product_name" name="T_product_name" ltype="text" ligerui="{width:637}" validate="{required:true}" /></td>
-            </tr>
+           
 
             <tr>
                 <td>
-                    <div align="left" style="width: 60px">产品类别：</div>
+                    <div align="left" style="width: 60px">项目编号：</div>
                 </td>
                 <td>
-                    <input type="text" id="T_product_category" name="T_product_category" validate="{required:true}"  ligerui="{width:280}" /></td>
+                    <input type="text" id="T_projectid" name="T_projectid" validate="{required:true}" ltype='text' ligerui="{width:280,disabled:true}" /></td>
                 <td>
-                    <div align="left" style="width: 60px">单位：</div>
+                    <div align="left" style="width: 90px">版本号（V）：</div>
                 </td>
                 <td>
-                    <input type='text' id="T_product_unit" name="T_product_unit" ltype='text' ligerui="{width:280}" /></td>
+                    <input type='text' id="T_versions" name="T_versions" ltype='text' ligerui="{width:240,disabled:true}" /></td>
             </tr>
+  <tr>
+                     <td>
+                    <div align="left" style="width: 60px">评分类别：</div>
+                
+                     </td>
+                <td>
+                    <input type="text" id="T_Stage" name="T_Stage" validate="{required:true}" ltype='text' ligerui="{width:280,disabled:true}" /></td>
+                  <input id="T_Stage1" name="T_Stage1" type="hidden" />
+                  <td>
+                    <div align="left" style="width: 90px">本次评分：</div>
+                </td>
+                <td>
+                    <input type='text' id="T_AssTime" name="T_AssTime" ltype='text' ligerui="{width:240,disabled:true}" /></td>
+              </tr>
+              <tr>
+                     <td>
+                    <div align="left" style="width: 60px">结束本版本：</div>
+                
+                     </td>
+                <td>
+                   <input id="T_checked" name="T_checked" type="text" ltype="select" 
+                        ligerui="{width:196,data:[{id:'1',text:'结束'},{id:'0',text:'未结束'}]}" validate="{required:false}" /></td>
+              <td>
+                    <div align="left" style="width: 90px">结束本类别：</div>
+                </td>
+                <td>
+                <input id="T_isclose" name="T_isclose" type="text" ltype="select" 
+                        ligerui="{width:196,data:[{id:'1',text:'结案'},{id:'0',text:'未结案'}]}" validate="{required:false}" /></td>
+               </tr>
 
-            <tr>
-                <td>
-                    <div align="left" style="width: 60px">价格(元)：</div>
-                </td>
-                <td>
-                    <input type="text" id="T_price" name="T_price" value="0.00" ltype='text' onchange="set_tomoney(this.value)" style="text-align:right" ligerui="{width:280,number:true}" validate="{required:true}" /></td>
-                <td>
-                    <div align="left" style="width: 60px">产品规格：</div>
-                </td>
-                <td>
-                    <input type='text' id="T_specifications" name="T_specifications" ltype="text" ligerui="{width:280}" /></td>
-            </tr>
-
-            <tr>
-                <td>
-                    <div align="left" style="width: 60px">网址：</div>
-                </td>
-                <td>
-                    <input type="text" id="T_url" name="T_url" ltype='text' ligerui="{width:280}" validate="{required:false,url:true}" /></td>
-                <td style="vertical-align: top">
-                    <div align="left" style="width: 60px">备注：</div>
-                </td>
-                <td>
-                    <input type='text' id="T_remarks" name="T_remarks" ltype="text" ligerui="{width:280}" /></td>
-            </tr>
-            <tr>
-                <td>
-                    <div align="left" style="width: 60px">型号：</div>
-                </td>
-                <td>
-                    <input type="text" id="T_xh" name="T_xh" ltype='text' ligerui="{width:280}"   /></td>
-                <td style="vertical-align: top">
-                    <div align="left" style="width: 60px">系列：</div>
-                </td>
-                <td>
-                    <input type='text' id="T_xl" name="T_xl" ltype="text" ligerui="{width:280}" /></td>
-            </tr>
-            <tr>
-                <td>
-                    <div align="left" style="width: 60px">品牌：</div>
-                </td>
-                <td>
-                          <input type='text' id="T_pp" name="T_pp" ltype="text" ligerui="{width:280}" /></td>
-          <td>
-                    <div align="left" style="width: 60px">主题：</div>
-                </td>
-                <td>
-                    <input type='text' id="T_zt" name="T_zt" ltype="text" ligerui="{width:280}" /></td>
-            </tr>
-             <tr>
-                <td>
-                    <div align="left" style="width:60px">供应商：</div>
-                </td>
-                <td >
-                    <input type='text' id="T_gys" name="T_gys" ltype="text" ligerui="{width:280}"   /></td>
-           <td>
-                    <div align="left" style="width: 60px">内部价(元)：</div>
-                </td>
-                <td>
-                    <input type="text" id="T_nbj" name="T_nbj" value="0.00" ltype='text' onchange="set_tomoney_nbj(this.value)" style="text-align:right" ligerui="{width:280,number:true}" validate="{required:true}" /></td>
-               
-                  </tr>
             <tr>
                 <td colspan="4">
                     <textarea id="editor" style="width: 637px;"></textarea>
@@ -228,6 +257,8 @@
             </tr>
 
         </table>
+                     </div>
+        </div></div>
     </form>
 </body>
 </html>

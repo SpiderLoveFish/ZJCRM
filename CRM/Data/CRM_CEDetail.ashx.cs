@@ -12,7 +12,7 @@ namespace XHD.CRM.Data
     /// <summary>
     /// CRM_CEStage 的摘要说明
     /// </summary>
-    public class CRM_CEStage : IHttpHandler
+    public class CRM_CEDetail : IHttpHandler
     {
 
         public void ProcessRequest(HttpContext context)
@@ -20,8 +20,8 @@ namespace XHD.CRM.Data
             context.Response.ContentType = "text/plain";
             HttpRequest request = context.Request;
 
-            BLL.CRM_CEStage ccpc = new BLL.CRM_CEStage();
-            Model.CRM_CEStage model = new Model.CRM_CEStage();
+            BLL.Crm_CEDetail ccpc = new BLL.Crm_CEDetail();
+            Model.Crm_CEDetail model = new Model.Crm_CEDetail();
 
             var cookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
             var ticket = FormsAuthentication.Decrypt(cookie.Value);
@@ -37,34 +37,35 @@ namespace XHD.CRM.Data
             {
                 //string parentid = PageValidate.InputText(request["T_category_parent_val"], 50);
                 //model.parentid = int.Parse(parentid);
-                //model.product_category = Common.PageValidate.InputText(request["T_category_name"], 250);
-                //model.product_icon = Common.PageValidate.InputText(request["T_category_icon"], 250);
-                model.CustomerID = int.Parse(Common.PageValidate.InputText(request["T_companyid"], 50));
-                model.CustomerName = Common.PageValidate.InputText(request["T_company"], 250);
-                model.sgjl = Common.PageValidate.InputText(request["T_employee_sg"], 250);
-                model.sgjlid = StringToInt(Common.PageValidate.InputText(request["T_employee1_sg"], 50));
-                model.sjs = Common.PageValidate.InputText(request["T_employee_sj"], 250);
-                model.sjsid = StringToInt(Common.PageValidate.InputText(request["T_employee1_sj"], 50));
-                model.SpecialScore = StringToDecimal(Common.PageValidate.InputText(request["T_SpecialScore"], 50));
-                model.tel = Common.PageValidate.InputText(request["T_company_tel"], 250);
-                model.ywy = Common.PageValidate.InputText(request["T_employee"], 250);
-                model.ywyid = StringToInt(Common.PageValidate.InputText(request["T_employee1"], 50));
-                model.Stage_icon = Common.PageValidate.InputText(request["T_private"], 250);
-                string id = PageValidate.InputText(request["id"], 50);
-                //string pid = PageValidate.InputText(request["T_category_parent_val"], 50);
-                model.Remarks = Common.PageValidate.InputText(request["T_remarks"], 250);
-                if (!string.IsNullOrEmpty(id) && id != "null")
+                model.versions =int.Parse( Common.PageValidate.InputText(request["T_versions"], 50));
+                model.AssTime = int.Parse( Common.PageValidate.InputText(request["T_AssTime"], 50));
+                //model.CustomerID = int.Parse(Common.PageValidate.InputText(request["T_companyid"], 50));
+                //model.CustomerName = Common.PageValidate.InputText(request["T_company"], 250);
+                //model.sgjl = Common.PageValidate.InputText(request["T_employee_sg"], 250);
+                //model.sgjlid = StringToInt(Common.PageValidate.InputText(request["T_employee1_sg"], 50));
+                //model.sjs = Common.PageValidate.InputText(request["T_employee_sj"], 250);
+                //model.sjsid = StringToInt(Common.PageValidate.InputText(request["T_employee1_sj"], 50));
+                //model.SpecialScore = StringToDecimal(Common.PageValidate.InputText(request["T_SpecialScore"], 50));
+                //model.tel = Common.PageValidate.InputText(request["T_company_tel"], 250);
+                //model.ywy = Common.PageValidate.InputText(request["T_employee"], 250);
+                model.IsClose = bool.Parse(Common.PageValidate.InputText(request["T_isclose"], 50));
+                model.isChecked = bool.Parse(Common.PageValidate.InputText(request["T_checked"], 50));
+                string sid = PageValidate.InputText(request["sid"], 50);
+                string pid = PageValidate.InputText(request["pid"], 50);
+                 string style = PageValidate.InputText(request["style"], 50);
+                //model.Remarks = Common.PageValidate.InputText(request["T_remarks"], 250);
+                if (style=="edit")
                 {
-                    model.id = int.Parse(id);
+                    //model.id = int.Parse(id);
 
                     //DataSet ds = ccpc.GetList(" id=" + int.Parse(id));
                     //DataRow dr = ds.Tables[0].Rows[0];
 
-                    if (model.sgjl == "" || model.sgjl == "null" || string.IsNullOrEmpty(model.sgjl))
-                        context.Response.Write("false:type");
-                    else
+                    //if (model.sgjl == "" || model.sgjl == "null" || string.IsNullOrEmpty(model.sgjl))
+                    //    context.Response.Write("false:type");
+                    //else
                     {
-                       bool aa= ccpc.Update(model,StringToInt(id));
+                       ccpc.Update(model);
                     }
 
 
@@ -92,17 +93,46 @@ namespace XHD.CRM.Data
                     
                 }
 
-                else
+                else if (style=="add")
                 {
-                    if (model.sgjl == "" || model.sgjl == "null" || string.IsNullOrEmpty(model.sgjl))
-                        context.Response.Write("false:type");
-                   // model.isDelete = 0;
-                    else
+                   // if (model.sgjl == "" || model.sgjl == "null" || string.IsNullOrEmpty(model.sgjl))
+                   //     context.Response.Write("false:type");
+                   //// model.isDelete = 0;
+                   // else
                     ccpc.Add(model);
                 }
             }
+            if (request["Action"] == "getdetailgrid")
+            {
 
-            if (request["Action"] == "getcustomer")
+                string verid = request["vid"];
+                string sid = request["sid"];
+                string pid = request["pid"];
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+                string Total;
+                string serchtxt = "1=1";
+                serchtxt += " and projectid=" + pid + "  AND	 stageid=" + sid + "  ";
+                serchtxt += " AND versions="+verid+" ";
+
+
+                string dt = "";
+
+                DataSet ds = ccpc.GetListDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "getgrid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
                 int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
@@ -117,12 +147,52 @@ namespace XHD.CRM.Data
                 string sorttext = " " + sortname + " " + sortorder;
                 string Total;
                 string serchtxt = "1=1";
-               serchtxt +=" and id not in(SELECT CustomerID FROM dbo.CRM_CEStage) ";
-               
+                serchtxt += " and stage_icon!='结案' ";
+                 serchtxt += " AND id NOT IN(SELECT projectid FROM	 crm_cedetail WHERE isclose=1) ";
+
 
                 string dt = "";
 
-                DataSet ds = ccpc.GetListCustomer(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                DataSet ds = ccpc.GetListStage(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "getmaxverid")
+            {
+                // string dt = "";
+
+                int detailid = ccpc.GetMaxVerId(PageValidate.InputText(request["sid"], 50),
+                    PageValidate.InputText(request["pid"], 50),
+                    PageValidate.InputText(request["style"], 50)
+                    );
+                string josnstr = "{ 'verid':" + detailid + "}";
+                //{"status": 1, "sum": 9}
+                context.Response.Write(josnstr);
+            }
+
+            if (request["Action"] == "getstage")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+                string Total;
+                string serchtxt = "1=1";
+                serchtxt += " and stage_icon!='结案' ";
+                serchtxt += " AND id NOT IN(SELECT projectid FROM	 crm_cedetail WHERE isclose=1) ";
+
+
+                string dt = "";
+
+                DataSet ds = ccpc.GetListStage(PageSize, PageIndex, serchtxt, sorttext, out Total);
                 dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
 
                 context.Response.Write(dt);
@@ -130,6 +200,7 @@ namespace XHD.CRM.Data
             }
             if (request["Action"] == "grid")
             {
+                
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
                 int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
                 string sortname = request["sortname"];
@@ -144,24 +215,12 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
-                //if (!string.IsNullOrEmpty(request["company"]))
-                //    serchtxt += " and product_category like N'%" + PageValidate.InputText(request["company"], 50) + "%'";
-
-                //if (!string.IsNullOrEmpty(request["startdate_del"]))
-                //{
-                //    serchtxt += " and Delete_time >= '" + PageValidate.InputText(request["startdate_del"], 50) + "'";
-                //}
-                //if (!string.IsNullOrEmpty(request["enddate_del"]))
-                //{
-                //    DateTime enddate = DateTime.Parse(request["enddate_del"]);
-                //    serchtxt += " and Delete_time  <= '" + enddate.AddHours(23).AddMinutes(59).AddSeconds(59) + "'";
-                //}
-                //权限
+             
 
 
                 string dt = "";
-               
-                    DataSet ds = ccpc.GetListDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                BLL.CRM_CEStage cestage = new BLL.CRM_CEStage();
+                DataSet ds = cestage.GetListDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
                     dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
                  
                 context.Response.Write(dt);
@@ -240,13 +299,13 @@ namespace XHD.CRM.Data
                     str.Append(row[i].ToString());
                     str.Append("'");
                 }
-                if (GetTasksString((int)row["id"], table).Length > 0)
-                {
-                    str.Append(",children:[");
-                    str.Append(GetTasksString((int)row["id"], table));
-                    str.Append("]},");
-                }
-                else
+                //if (GetTasksString((int)row["id"], table).Length > 0)
+                //{
+                //    str.Append(",children:[");
+                //    str.Append(GetTasksString((int)row["id"], table));
+                //    str.Append("]},");
+                //}
+                //else
                 {
                     str.Append("},");
                 }
@@ -264,13 +323,13 @@ namespace XHD.CRM.Data
             {
                 str.Append("{id:" + (int)row["id"] + ",text:'" + (string)row["product_category"] + "',d_icon:'../../" + (string)row["product_icon"] + "'");
 
-                if (GetTreeString((int)row["id"], table).Length > 0)
-                {
-                    str.Append(",children:[");
-                    str.Append(GetTreeString((int)row["id"], table));
-                    str.Append("]},");
-                }
-                else
+                //if (GetTreeString((int)row["id"], table).Length > 0)
+                //{
+                //    str.Append(",children:[");
+                //    str.Append(GetTreeString((int)row["id"], table));
+                //    str.Append("]},");
+                //}
+                //else
                 {
                     str.Append("},");
                 }

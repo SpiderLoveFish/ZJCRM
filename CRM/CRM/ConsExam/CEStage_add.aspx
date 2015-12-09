@@ -84,7 +84,7 @@
                     $("#T_employee1_sj").val(obj.sjsid);
                     $("#T_SpecialScore").val(obj.SpecialScore);
                     $("#T_StageScore").val(obj.StageScore);
-
+                    $("#T_remarks").val(obj.Remarks);
                     //×´Ì¬ 
                     $("#T_private").ligerGetComboBoxManager().selectValue(obj.Stage_icon);
 
@@ -128,7 +128,7 @@
             $("#T_companyid").val(id);
             $("#T_company").val(emp);
             $("#T_company_tel").val(tel);
-            $("#T_private").val("");
+            $("#T_private").val("Î´½á°¸");
             $("#T_employee").val(ywy);
             $("#T_employee1").val(ywyid);
             $("#T_employee_sg").val(sgjl);
@@ -137,6 +137,7 @@
             $("#T_employee_sj1").val(sjsid);
             $("#T_SpecialScore").val("0");
             $("#T_StageScore").val("0");
+            $("#T_remarks").val("");
         //    $("#T_employee").val("¡¾" + dep + "¡¿" + emp);
         //    $("#T_employee1").val(emp);
         //    $("#T_employee_val").val(empid);
@@ -224,6 +225,13 @@
                     <input id="T_StageScore" name="T_StageScore" ltype="text" validate="{required:false}" ligerui="{width:180,disabled:true}"  />
                     
                 </td>
+            </tr><tr id="tr_contact4">
+                <td>
+                    <div style="width: 80px; text-align: right; float: right">±¸×¢£º</div>
+                </td>
+                <td colspan="3">
+
+                    <input id="T_remarks" name="T_remarks" type="text" ltype="text" ligerui="{width:490}" /></td>
             </tr>
         </table>
 

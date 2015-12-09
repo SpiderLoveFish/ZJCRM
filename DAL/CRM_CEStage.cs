@@ -90,6 +90,38 @@ namespace XHD.DAL
 				return Convert.ToInt32(obj);
 			}
 		}
+
+        public bool Update(XHD.Model.CRM_CEStage model,int id)
+		{
+            StringBuilder sb =new StringBuilder();
+            sb.Append("update CRM_CEStage set ");
+            sb.Append("SpecialScore=@SpecialScore,");
+            sb.Append("Stage_icon=@Stage_icon,");
+			sb.Append("Remarks=@Remarks,");
+			sb.Append("IsColse=@IsColse");
+            sb.Append(" where id="+id+"");
+            SqlParameter[] parameters = {
+                    new SqlParameter("@SpecialScore", SqlDbType.Decimal,9),
+					new SqlParameter("@Stage_icon", SqlDbType.VarChar,50),
+					new SqlParameter("@Remarks", SqlDbType.VarChar,50),
+					new SqlParameter("@IsColse", SqlDbType.Int,4),
+					new SqlParameter("@id", SqlDbType.Int,4)};
+            parameters[0].Value = model.SpecialScore;
+			parameters[1].Value = model.Stage_icon;
+			parameters[2].Value = model.Remarks;
+			parameters[3].Value = model.IsColse;
+			parameters[4].Value = model.id;
+            int rows=DbHelperSQL.ExecuteSql(sb.ToString(),parameters);
+			if (rows > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+             
+        }
 		/// <summary>
 		/// 更新一条数据
 		/// </summary>
@@ -444,10 +476,10 @@ namespace XHD.DAL
             strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_Customer ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(id) FROM CRM_Customer ");
-            if (strWhere.Trim() != "")
+             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);
-                strSql1.Append(" where " + strWhere);
+                strSql1.Append(" and  " + strWhere);
             }
             strSql.Append(" order by " + filedOrder);
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();

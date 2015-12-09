@@ -48,51 +48,24 @@
 
             $("#maingrid4").ligerGrid({
                 columns: [
-                    { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
-                    //{
-                    //    display: '', width: 40, render: function (item) {
-                    //        var html = "<a href='javascript:void(0)' onclick=view(" + item.CEStage_id + ")>详细</a>"
-                    //        return html;
-                    //    }
-                    //},
-                    //{
-                    //    display: '', width: 50, render: function (item) {
-                    //        var html = "<a href='javascript:void(0)' onclick=QrCode(" + item.CEStage_id + ")>二维码</a>"
-                    //        return html;
-                    //    }
-                    //},
-                    //{
-                    //    display: '网址', width: 50, render: function (item) {
-                    //        var html;
-                    //        if (item.url != "" && item.url != null) {
-                    //            html = "<a href='" + item.url + "' target='_blank'>";
-                    //            html += "查看";
-                    //            html += "</a>";
-                    //        }
-                    //        else
-                    //            html = "无";
-                    //        return html;
-                    //    }
-                    //},
-                    { display: '类型编号', name: 'StageID', width: 120 },
-                  
-                     { display: '明细编号', name: 'StageDetailID', width: 120 },
-                  
-                    { display: '考核明细名称', name: 'Description', width: 300 }
-                    //{ display: '考核类别', name: 'category_name', width: 120 },
-                    //{ display: '考核规格', name: 'specifications', width: 120 },
-                    //{
-                    //    display: '价格（￥）', name: 'price', width: 120, align: 'right', render: function (item) {
-                    //        return toMoney(item.price);
-                    //    }
-                    //},
-                    //{ display: '单位', name: 'unit', width: 40 },
-                    //{ display: '备注', name: 'remarks', width: 120 }
-
+                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
+                      { display: '项目编号', name: 'id', width: 50, align: 'left' },
+                      { display: '客户编号', name: 'CustomerID', width: 50, align: 'left' },
+                       { display: '客户姓名', name: 'CustomerName', width: 250, align: 'left' },
+                        { display: '客户电话', name: 'tel', width: 120, align: 'left' },
+                       { display: '施工监理', name: 'sgjl', width: 120, align: 'left' },
+                         { display: '业务员', name: 'ywy', width: 120, align: 'left' },
+                     { display: '设计师', name: 'sjs', width: 120, align: 'left' },
+                     { display: '特殊加分', name: 'SpecialScore', width: 120, align: 'left' },
+                 { display: '考核得分', name: 'StageScore', width: 120, align: 'left' },
+                         { display: '状态', name: 'Stage_icon', width: 120, align: 'left' },
+                 { display: '备注', name: 'Remarks', width: 120, align: 'left' }
+                    
                 ],
+
+                    
                 dataAction: 'server',
-                url: "../../data/CRM_CEStageDetail.ashx?Action=grid&categoryid=0&rnd=" + Math.random(),
-                pageSize: 30,
+                url: "../../data/CRM_CEDetail.ashx?Action=grid", pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
                 width: '100%',
                 height: '100%',
@@ -115,7 +88,7 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-              
+
                 $("#toolbar").ligerToolBar({
                     items: items
 
@@ -131,7 +104,7 @@
         function onSelect(note) {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.showData({ Rows: [], Total: 0 });
-            var url = "../../data/CRM_CEStageDetail.ashx?Action=grid&categoryid=" + note.data.id + "&rnd=" + Math.random();
+            var url = "../../data/Crm_CEDetail.ashx?Action=getstage&cid=" + note.data.id + "&rnd=" + Math.random();
             manager.GetDataByURL(url);
             checkedID = [];
         }
@@ -141,7 +114,7 @@
             var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
 
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL("../../data/CRM_CEStageDetail.ashx?" + serchtxt);
+            manager.GetDataByURL("../../data/Crm_CEDetail.ashx?" + serchtxt);
         }
 
         //重置
@@ -170,25 +143,40 @@
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
-        
+
 
         function edit() {
-            var manager = $("#maingrid4").ligerGetGridManager();
-            var row = manager.getSelectedRow();
-            if (row) {
+            var notes = $("#tree1").ligerGetTreeManager().getSelected();
 
-                f_openWindow('crm/ConsExam/CEStage_Detail_add.aspx?categoryid=' + row.StageID + '&catname=' + row.Description + '&catdetailid=' + row.StageDetailID, "修改考核", 790, 600);
+            if (notes != null && notes != undefined) {
+
+                var manager = $("#maingrid4").ligerGetGridManager();
+                var row = manager.getSelectedRow();
+                if (row) {
+
+                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=edit&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + notes.data.text, "修改评分", 790, 400);
+                }
+                else
+                    $.ligerDialog.warn('请选择考核项目！');
             }
-            else
-                $.ligerDialog.warn('请选择考核！');
+            else {
+                $.ligerDialog.warn('请选择考核类别！');
+            }
         }
 
         function add() {
             var notes = $("#tree1").ligerGetTreeManager().getSelected();
 
             if (notes != null && notes != undefined) {
-                f_openWindow('crm/ConsExam/CEStage_Detail_add.aspx?categoryid=' + notes.data.id+'&catname='+notes.data.text, "新增考核", 790, 600);
-            }
+               // url: "../../data/CRM_CEDetail.ashx?Action=grid", pageSize: 30,
+                var manager = $("#maingrid4").ligerGetGridManager();
+                var row = manager.getSelectedRow();
+                if (row) {
+                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=add&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + notes.data.text, "新增评分", 790, 400);
+                }
+                else
+                    $.ligerDialog.warn('请选择考核项目！');
+                }
             else {
                 $.ligerDialog.warn('请选择考核类别！');
             }
@@ -228,8 +216,8 @@
                 $.ligerDialog.warn('请选择考核！');
         }
 
-        
-         
+
+
         function f_save(item, dialog) {
             var issave = dialog.frame.f_save();
             if (issave) {
@@ -259,7 +247,7 @@
             //treemanager.FlushData();
         }
 
-        
+
     </script>
 </head>
 <body style="padding: 0px;overflow:hidden;">

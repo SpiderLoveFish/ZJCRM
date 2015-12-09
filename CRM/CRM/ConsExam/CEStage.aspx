@@ -24,7 +24,6 @@
                 columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
                      { display: '编号', name: 'id', width: 50, align: 'left' },
-
                      { display: '客户编号', name: 'CustomerID', width: 50, align: 'left' },
                       { display: '客户姓名', name: 'CustomerName', width: 250, align: 'left' },
                        { display: '客户电话', name: 'tel', width: 120, align: 'left' },
@@ -33,8 +32,8 @@
                     { display: '设计师', name: 'sjs', width: 120, align: 'left' },
                     { display: '特殊加分', name: 'SpecialScore', width: 120, align: 'left' },
                 { display: '考核得分', name: 'StageScore', width: 120, align: 'left' },
-                        { display: '状态', name: 'Stage_icon', width: 120, align: 'left' }
-
+                        { display: '状态', name: 'Stage_icon', width: 120, align: 'left' },
+                { display: '备注', name: 'Remarks', width: 120, align: 'left' }
                     
                 ],
                 dataAction: 'local',
@@ -111,7 +110,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                   f_openWindow('crm/ConsExam/CEStage_add.aspx?cid=' + row.id, "修改客户", 700, 330);
+                   f_openWindow("crm/ConsExam/CEStage_add.aspx?cid=" + row.id, "修改客户", 700, 330);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }

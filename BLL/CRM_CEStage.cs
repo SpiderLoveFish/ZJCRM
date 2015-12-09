@@ -46,6 +46,13 @@ namespace XHD.BLL
         {
             return dal.Update(model);
         }
+        /// <summary>
+        /// 更新一条数据
+        /// </summary>
+        public bool Update(XHD.Model.CRM_CEStage model,int id)
+        {
+            return dal.Update(model,id);
+        }
 
         /// <summary>
         /// 删除一条数据

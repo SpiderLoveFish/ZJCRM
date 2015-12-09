@@ -90,12 +90,13 @@
     <Content Include="CRM\Building\Building.aspx" />
     <Content Include="CRM\Building\Building_Add.aspx" />
     <Content Include="CRM\ConsExam\CEStage.aspx" />
-    <Content Include="CRM\ConsExam\CEDetail_add.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category_add.aspx" />
     <Content Include="CRM\ConsExam\CEStage_Detail.aspx" />
     <Content Include="CRM\ConsExam\CEStage_Detail_add.aspx" />
     <Content Include="CRM\ConsExam\CEStage_add.aspx" />
+    <Content Include="CRM\ConsExam\CEDetail.aspx" />
+    <Content Include="CRM\ConsExam\CEDetail_add.aspx" />
     <Content Include="CRM\ConsExam\SelectCEStageCustomer.aspx" />
     <Content Include="CRM\Customer\Customer.aspx" />
     <Content Include="CRM\Customer\Customer_add.aspx" />
@@ -254,6 +255,7 @@
     <Content Include="Data\CRM_CEStage.ashx" />
     <Content Include="Data\CRM_CEStage_category.ashx" />
     <Content Include="Data\CRM_CEStageDetail.ashx" />
+    <Content Include="Data\CRM_CEDetail.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -3515,6 +3517,9 @@
       <DependentUpon>base.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\CalendarViewFormat.cs" />
+    <Compile Include="Data\CRM_CEDetail.ashx.cs">
+      <DependentUpon>CRM_CEDetail.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Data\CRM_CEStageDetail.ashx.cs">
       <DependentUpon>CRM_CEStageDetail.ashx</DependentUpon>
     </Compile>
