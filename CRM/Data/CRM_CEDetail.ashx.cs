@@ -37,21 +37,13 @@ namespace XHD.CRM.Data
             {
                 //string parentid = PageValidate.InputText(request["T_category_parent_val"], 50);
                 //model.parentid = int.Parse(parentid);
-                model.versions =int.Parse( Common.PageValidate.InputText(request["T_versions"], 50));
-                model.AssTime = int.Parse( Common.PageValidate.InputText(request["T_AssTime"], 50));
-                //model.CustomerID = int.Parse(Common.PageValidate.InputText(request["T_companyid"], 50));
-                //model.CustomerName = Common.PageValidate.InputText(request["T_company"], 250);
-                //model.sgjl = Common.PageValidate.InputText(request["T_employee_sg"], 250);
-                //model.sgjlid = StringToInt(Common.PageValidate.InputText(request["T_employee1_sg"], 50));
-                //model.sjs = Common.PageValidate.InputText(request["T_employee_sj"], 250);
-                //model.sjsid = StringToInt(Common.PageValidate.InputText(request["T_employee1_sj"], 50));
-                //model.SpecialScore = StringToDecimal(Common.PageValidate.InputText(request["T_SpecialScore"], 50));
-                //model.tel = Common.PageValidate.InputText(request["T_company_tel"], 250);
-                //model.ywy = Common.PageValidate.InputText(request["T_employee"], 250);
-                model.IsClose = bool.Parse(Common.PageValidate.InputText(request["T_isclose"], 50));
-                model.isChecked = bool.Parse(Common.PageValidate.InputText(request["T_checked"], 50));
-                string sid = PageValidate.InputText(request["sid"], 50);
-                string pid = PageValidate.InputText(request["pid"], 50);
+                model.versions = StringToInt(Common.PageValidate.InputText(request["T_versions"], 50));
+                model.AssTime = StringToInt(Common.PageValidate.InputText(request["T_AssTime"], 50));
+               model.IsClose = StringToBool(Common.PageValidate.InputText(request["T_isclose"], 50));
+                model.isChecked = StringToBool(Common.PageValidate.InputText(request["T_checked"], 50));
+                model.AssDescription = Common.PageValidate.InputText(request["T_content"],  int.MaxValue);
+                model.StageID = StringToInt(PageValidate.InputText(request["sid"], 50));
+                model.projectid = StringToInt(PageValidate.InputText(request["pid"], 50));
                  string style = PageValidate.InputText(request["style"], 50);
                 //model.Remarks = Common.PageValidate.InputText(request["T_remarks"], 250);
                 if (style=="edit")
@@ -68,29 +60,7 @@ namespace XHD.CRM.Data
                        ccpc.Update(model);
                     }
 
-
-                //        //日志
-                //        C_Sys_log log = new C_Sys_log();
-
-                //        int UserID = emp_id;
-                //        string UserName = empname;
-                //        string IPStreet = request.UserHostAddress;
-                //        string EventTitle = model.product_category;
-                //        string EventType = "产品类别修改";
-                //        int EventID = model.id;
-                //        if (dr["product_category"].ToString() != request["T_category_name"])
-                //        {
-                //            log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "产品类别", dr["product_category"].ToString(), request["T_category_name"]);
-                //        }
-                //        if (dr["product_icon"].ToString() != request["T_category_icon"])
-                //        {
-                //            log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "类别图标", dr["product_icon"].ToString(), request["T_category_icon"]);
-                //        }
-                //        if (dr["parentid"].ToString() != request["T_category_parent_val"])
-                //        {
-                //            log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "上级类别", dr["parentid"].ToString(), request["T_category_parent_val"]);
-                //        }
-                    
+ 
                 }
 
                 else if (style=="add")
@@ -101,6 +71,37 @@ namespace XHD.CRM.Data
                    // else
                     ccpc.Add(model);
                 }
+            }
+            //专门显示下面隐藏的内容
+            if (request["Action"] == "Acgrid")
+            {
+
+
+                string pid = request["pid"];
+                
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+                string Total;
+                string serchtxt = "1=1";
+                serchtxt += " and      projectid=" + pid;
+              
+
+
+                string dt = "";
+
+                DataSet ds = ccpc.GetListDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
             }
             if (request["Action"] == "getdetailgrid")
             {
@@ -121,8 +122,9 @@ namespace XHD.CRM.Data
                 string sorttext = " " + sortname + " " + sortorder;
                 string Total;
                 string serchtxt = "1=1";
-                serchtxt += " and projectid=" + pid + "  AND	 stageid=" + sid + "  ";
-                serchtxt += " AND versions="+verid+" ";
+                serchtxt += " and projectid=" + pid + "  AND	 StageID=" + sid + "  ";
+                serchtxt += "  and isChecked=0 ";
+                //永远只能一个版本在用 AND versions="+verid+"
 
 
                 string dt = "";
@@ -170,7 +172,18 @@ namespace XHD.CRM.Data
                 //{"status": 1, "sum": 9}
                 context.Response.Write(josnstr);
             }
+            if (request["Action"] == "IsExistVer")
+            {
+                // string dt = "";
 
+                bool ischecked= ccpc.ExistsChecked(PageValidate.InputText(request["sid"], 50),
+                    PageValidate.InputText(request["pid"], 50),
+                    PageValidate.InputText(request["style"], 50)
+                    );
+                 if(ischecked==false)
+                context.Response.Write("false");
+                 else context.Response.Write("true");
+            }
             if (request["Action"] == "getstage")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
@@ -182,13 +195,13 @@ namespace XHD.CRM.Data
                     sortname = " id";
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
-
+                int cid = StringToInt(request["cid"]);
                 string sorttext = " " + sortname + " " + sortorder;
                 string Total;
                 string serchtxt = "1=1";
                 serchtxt += " and stage_icon!='结案' ";
-                serchtxt += " AND id NOT IN(SELECT projectid FROM	 crm_cedetail WHERE isclose=1) ";
-
+                //serchtxt += " AND id NOT IN(SELECT projectid FROM	 crm_cedetail WHERE isChecked=1 and id=" + cid + ") ";
+                //还有个条件：必须上一个类别评分完毕
 
                 string dt = "";
 
@@ -212,10 +225,10 @@ namespace XHD.CRM.Data
                     sortorder = " desc";
 
                 string sorttext = " " + sortname + " " + sortorder;
-
+               
                 string Total;
                 string serchtxt = "1=1";
-             
+                
 
 
                 string dt = "";
@@ -337,6 +350,13 @@ namespace XHD.CRM.Data
             return str[str.Length - 1] == ',' ? str.ToString(0, str.Length - 1) : str.ToString();
         }
 
+        private static bool StringToBool(string code)
+        {
+            try {
+                return bool.Parse(code);
+            }
+            catch { return false; }
+        }
         private static int StringToInt(string code)
         {
             try {

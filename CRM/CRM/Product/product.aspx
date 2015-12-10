@@ -92,7 +92,7 @@
                 width: '100%',
                 height: '100%',
                 heightDiff: -1,
-                checkbox: true, checkboxAll:false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
+                checkbox: true, name:"ischecked", checkboxAll:false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
                 onContextmenu: function (parm, e) {
                     actionproduct_id = parm.data.id;
                     menu.show({ top: e.pageY, left: e.pageX });

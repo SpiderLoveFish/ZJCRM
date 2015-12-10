@@ -70,10 +70,34 @@
                 width: '100%',
                 height: '100%',
                 heightDiff: -1,
-                onContextmenu: function (parm, e) {
-                    actionCEStage_id = parm.data.id;
-                    menu.show({ top: e.pageY, left: e.pageX });
-                    return false;
+              
+                onRClickToSelect: true, 
+                detail: {
+                    onShowDetail: function (r, p) {
+                        for (var n in r) {
+                            if (r[n] == null) r[n] = "";
+                        }
+                        var grid = document.createElement('div');
+                        $(p).append(grid);
+                        $(grid).css('margin', 3).ligerGrid({
+                            columns: [
+                                    { display: '序号', width: 30, render: function (item, i) { return i + 1; } },
+                                     { display: '项目编号', name: 'projectid', width: 60 },
+                                      { display: '评分类型', name: 'CEStage_category', width: 120 },
+                                    { display: '版本号', name: 'versions', width: 60 },
+                                     { display: '评分完成', name: 'isChecked', width: 80 },
+                                       { display: '是否结案', name: 'IsClose', width: 80 },
+                                    { display: '评分', name: 'AssTime', width: 60, type: 'float' }
+                                    
+                            ],
+                            usePager: false,
+                            checkbox: false,
+                            url: "../../data/CRM_CEDetail.ashx?Action=Acgrid&pid=" + r.id,
+                            width: '99%', height: '100',
+                            heightDiff: 0
+                        })
+                    }
+                    
                 }
             });
             toolbar();
@@ -165,6 +189,8 @@
         }
 
         function add() {
+           
+
             var notes = $("#tree1").ligerGetTreeManager().getSelected();
 
             if (notes != null && notes != undefined) {
@@ -181,7 +207,7 @@
                 $.ligerDialog.warn('请选择考核类别！');
             }
         }
-
+   
         function del() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
@@ -224,7 +250,7 @@
                 dialog.close();
                 top.$.ligerDialog.waitting('数据保存中,请稍候...');
                 $.ajax({
-                    url: "../../data/CRM_CEStageDetail.ashx", type: "POST",
+                    url: "../../data/CRM_CEDetail.ashx", type: "POST",
                     data: issave,
                     success: function (responseText) {
                         top.$.ligerDialog.closeWaitting();
@@ -246,6 +272,30 @@
             //treemanager.clear();
             //treemanager.FlushData();
         }
+        function IsExistVer(stageid, projectid, verid) {
+            //top.$.ligerDialog.error("11");
+            $.ajax({
+                url: "../../data/Crm_CEDetail.ashx", type: "POST", /* 注意后面的名字对应CS的方法名称 */
+                data: { Action: 'IsExistVer', sid: stageid, pid: projectid, vid: verid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                success: function (responseText) {
+                    if (responseText == "false") {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+
+                },
+
+                error: function () {
+                    return false;
+                }
+
+
+            }
+             );
+        }
+
 
 
     </script>

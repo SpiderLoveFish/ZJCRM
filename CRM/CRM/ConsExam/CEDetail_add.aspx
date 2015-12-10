@@ -85,7 +85,7 @@
             }
         }
         function toolbar() {
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=39&rnd=" + Math.random(), function (data, textStatus) {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=123&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
                 var items = [];
                 var arr = data.Items;
@@ -159,12 +159,35 @@
             });
         }
 
+        function f_saveitem(item, dialog) {
+            var issave = dialog.frame.f_saveitem();
+            if (issave) {
+                dialog.close();
+                top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                $.ajax({
+                    url: "../../data/CRM_CEScore.ashx", type: "POST",
+                    data: issave,
+                    success: function (responseText) {
+                        
+                        top.$.ligerDialog.closeWaitting();
+                        f_load();
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+                        top.$.ligerDialog.error('操作失败！');
+                    }
+                });
+
+            }
+        }
+
         function f_openWindow(url, title, width, height) {
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
                         {
-                            text: '保存', onclick: function (item, dialog) {
-                                f_save(item, dialog);
+                            text: '提交', onclick: function (item, dialog) {
+                                f_saveitem(item, dialog);
+                                f_load();
                             }
                         },
                         {
@@ -182,7 +205,7 @@
             var sid = getparastr("sid");
             var pid = getparastr("pid");
             var verid = $("#T_versions").val();
-            f_openWindow('crm/ConsExam/CEDetail_add.aspx?&sid=' + sid + '&pid=' + pid + '&sname=' + verid, "修改评分", 790, 600);
+            f_openWindow('crm/ConsExam/CEScore.aspx?&sid=' + sid + '&pid=' + pid + '&vid=' + verid + '&style=edit' , "修改评分", 790, 500);
             
         }
 
@@ -190,11 +213,19 @@
             var sid = getparastr("sid");
             var pid = getparastr("pid");
             var verid = $("#T_versions").val();
-            f_openWindow('crm/ConsExam/CEDetail_add.aspx?&sid=' + sid + '&pid=' + pid + '&sname=' + verid, "新增评分", 790, 600);
+          
+
+            f_openWindow('crm/ConsExam/CEScore.aspx?&sid=' + sid + '&pid=' + pid + '&vid=' + verid + '&style=add' , "新增评分", 790, 500);
              
         }
+        function f_load() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            manager.loadData(true);
 
-
+            //treemanager = $("#tree1").ligerGetTreeManager();
+            //treemanager.clear();
+            //treemanager.FlushData();
+        }
     </script>
 </head>
 <body>
