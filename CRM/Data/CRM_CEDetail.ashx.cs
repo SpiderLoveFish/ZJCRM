@@ -39,7 +39,7 @@ namespace XHD.CRM.Data
                 //model.parentid = int.Parse(parentid);
                 model.versions = StringToInt(Common.PageValidate.InputText(request["T_versions"], 50));
                 model.AssTime = StringToInt(Common.PageValidate.InputText(request["T_AssTime"], 50));
-               model.IsClose = StringToBool(Common.PageValidate.InputText(request["T_isclose"], 50));
+                model.IsClose = StringToBool(Common.PageValidate.InputText(request["T_isclose"], 50));
                 model.isChecked = StringToBool(Common.PageValidate.InputText(request["T_checked"], 50));
                 model.AssDescription = Common.PageValidate.InputText(request["T_content"],  int.MaxValue);
                 model.StageID = StringToInt(PageValidate.InputText(request["sid"], 50));
@@ -48,7 +48,9 @@ namespace XHD.CRM.Data
                 //model.Remarks = Common.PageValidate.InputText(request["T_remarks"], 250);
                 if (style=="edit")
                 {
-                    //model.id = int.Parse(id);
+                    //关键字没设置好。。。
+                    int id = StringToInt(PageValidate.InputText(request["T_id"], 50));
+                    model.id = id;
 
                     //DataSet ds = ccpc.GetList(" id=" + int.Parse(id));
                     //DataRow dr = ds.Tables[0].Rows[0];
@@ -106,9 +108,9 @@ namespace XHD.CRM.Data
             if (request["Action"] == "getdetailgrid")
             {
 
-                string verid = request["vid"];
-                string sid = request["sid"];
-                string pid = request["pid"];
+                
+                string sid = PageValidate.InputText(request["sid"],50);
+                string pid = PageValidate.InputText(request["pid"],50);
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
                 int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
                 string sortname = request["sortname"];
@@ -119,19 +121,30 @@ namespace XHD.CRM.Data
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
 
+                int detailid = ccpc.GetMaxVerId(sid,pid,
+                    PageValidate.InputText(request["style"], 50)
+                    );
+
                 string sorttext = " " + sortname + " " + sortorder;
                 string Total;
                 string serchtxt = "1=1";
-                serchtxt += " and projectid=" + pid + "  AND	 StageID=" + sid + "  ";
-                serchtxt += "  and isChecked=0 ";
-                //永远只能一个版本在用 AND versions="+verid+"
+                serchtxt += " and projectid=" + pid + "  AND	 StageID=" + sid;
+                serchtxt += "  AND versions=" + detailid;
+                //  and isChecked=0 
 
 
                 string dt = "";
-
-                DataSet ds = ccpc.GetListDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
-                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
-
+                if (PageValidate.IsNumber(detailid.ToString()))
+                // dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                {
+                    DataSet ds = ccpc.GetListCrm_CEDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                
+                    dt = Common.DataToJson.DataToJSON(ds);
+                }
+                else
+                {
+                    dt = "{}";
+                }
                 context.Response.Write(dt);
             }
             if (request["Action"] == "getgrid")
@@ -349,10 +362,18 @@ namespace XHD.CRM.Data
             }
             return str[str.Length - 1] == ',' ? str.ToString(0, str.Length - 1) : str.ToString();
         }
-
+        /// <summary>
+        /// 如果传入的是汉字，2个字为真，否为假
+        /// 如果不是，则转bool，兼容0,1和多位汉字为假
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         private static bool StringToBool(string code)
         {
             try {
+                if (code.Length == 2)
+                    return true;
+                else
                 return bool.Parse(code);
             }
             catch { return false; }

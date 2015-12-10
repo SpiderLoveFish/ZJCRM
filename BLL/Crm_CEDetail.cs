@@ -190,6 +190,12 @@ namespace XHD.BLL
         {
             return dal.GetListDetail(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
+        public DataSet GetListCrm_CEDetail(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetListCrm_CEDetail(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+        
+
         public DataSet GetListStage(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
         {
             return dal.GetListStage(PageSize, PageIndex, strWhere, filedOrder, out Total);
