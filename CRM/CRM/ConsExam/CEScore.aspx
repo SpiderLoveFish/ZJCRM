@@ -38,7 +38,14 @@
                     { display: '编号', name: 'StageDetailID', width: 60 },
                     { display: '评分名称', name: 'Description', width: 200 },                     
                     //{ display: '类别编号', name: 'StageID', width: 60 },
-                    { display: '类别名称', name: 'CEStage_category', width: 200 }
+                    { display: '类别名称', name: 'CEStage_category', width: 200 },
+                    {
+                        display: '', width: 40, render: function (item) {
+                            var html = "<a href='javascript:void(0)' onclick=view(" + item.StageDetailID + ")>查看规则</a>"
+                            //," + item.StageID + ",'" + item.CEStage_category + "'
+                            return html;
+                        }
+                    }
 
                     ],
             dataAction: 'server',
@@ -69,16 +76,23 @@
             return false;
         }
 
-        function onSelect(note) {
-            var manager = $("#maingrid4").ligerGetGridManager();
-            manager.showData({ Rows: [], Total: 0 });
-            var url = "../../data/Crm_product.ashx?Action=grid&categoryid=" + note.data.id + "&rnd=" + Math.random();
-            manager.GetDataByURL(url);
-            checkedID = [];
-        }
+        
         
  
-        
+        //查看 
+        function view(detailid, id, name) {
+            
+            var dialogOptions = {
+                width: 770, height: 510, title: "查看规则", url: '../../CRM/ConsExam/CEStage_Detail_add.aspx?categoryid=' + getparastr("sid")  + '&catdetailid=' + detailid + '&rnd=' + Math.random(), buttons: [
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
 
  
  

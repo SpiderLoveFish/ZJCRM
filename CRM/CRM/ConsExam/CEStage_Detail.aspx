@@ -177,7 +177,7 @@
             var row = manager.getSelectedRow();
             if (row) {
 
-                f_openWindow('crm/ConsExam/CEStage_Detail_add.aspx?categoryid=' + row.StageID + '&catname=' + row.Description + '&catdetailid=' + row.StageDetailID, "ÐÞ¸Ä¿¼ºË", 790, 600);
+                f_openWindow('crm/ConsExam/CEStage_Detail_add.aspx?categoryid=' + row.StageID + '&catname=' + row.Description + '&catdetailid=' + row.StageDetailID, "ÐÞ¸Ä¿¼ºË", 790, 500);
             }
             else
                 $.ligerDialog.warn('ÇëÑ¡Ôñ¿¼ºË£¡');
@@ -187,7 +187,7 @@
             var notes = $("#tree1").ligerGetTreeManager().getSelected();
 
             if (notes != null && notes != undefined) {
-                f_openWindow('crm/ConsExam/CEStage_Detail_add.aspx?categoryid=' + notes.data.id+'&catname='+notes.data.text, "ÐÂÔö¿¼ºË", 790, 600);
+                f_openWindow('crm/ConsExam/CEStage_Detail_add.aspx?categoryid=' + notes.data.id+'&catname='+notes.data.text, "ÐÂÔö¿¼ºË", 790, 500);
             }
             else {
                 $.ligerDialog.warn('ÇëÑ¡Ôñ¿¼ºËÀà±ð£¡');

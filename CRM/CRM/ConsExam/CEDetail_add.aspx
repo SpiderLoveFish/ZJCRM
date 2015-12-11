@@ -8,10 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=8" />
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
-      <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
-     <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-      <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-   
+    
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
@@ -22,6 +19,9 @@
     <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
      <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
      <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
+     <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+     <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+      <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
    
     <script src="../../lib/jquery-validation/jquery.validate.js" type="text/javascript"></script>
     <script src="../../lib/jquery-validation/jquery.metadata.js" type="text/javascript"></script>
@@ -76,7 +76,7 @@
                    // initValue: obj.Community_id,
                     url: "../../data/Crm_CEDetail.ashx?Action=combo&sid=" + getparastr("sid") + "&pid=" + getparastr("pid") + "&rnd=" + Math.random(),
                     onSelected: function (newvalue, newtext) {
-                        debugger
+                       // debugger
                         if (!newvalue) {
                             newvalue = -1;
                             $('#T_AssTime').val("");
@@ -204,7 +204,7 @@
                         data: issave,
                         success: function (responseText) {
                             top.$.ligerDialog.closeWaitting();
-
+                            f_load();
 
                         },
                         error: function () {
@@ -222,7 +222,7 @@
                             {
                                 text: '提交', onclick: function (item, dialog) {
                                     f_saveitem(item, dialog);
-                                    //    f_load();
+                                        f_load();
                                 }
                             },
                             {
@@ -269,11 +269,11 @@
             function del() {
                 top.$.ligerDialog.error("无法删除！！！");
             }
-            //function f_load() {
-            //    var manager = $("#maingrid4").ligerGetGridManager();
-            //    manager.loadData(true);
+            function f_load() {
+                var manager = $("#maingrid4").ligerGetGridManager();
+                manager.loadData(true);
 
-            //};
+            };
         
     </script>
 </head>
