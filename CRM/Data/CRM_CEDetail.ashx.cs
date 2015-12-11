@@ -6,6 +6,8 @@ using System.Data;
 using System.Text;
 using XHD.Common;
 using System.Web.Security;
+using XHD.DBUtility;
+using System.Data.SqlClient;
 
 namespace XHD.CRM.Data
 {
@@ -33,6 +35,8 @@ namespace XHD.CRM.Data
             string empname = dsemp.Tables[0].Rows[0]["name"].ToString();
             string uid = dsemp.Tables[0].Rows[0]["uid"].ToString();
 
+
+
             if (request["Action"] == "save")
             {
                 //string parentid = PageValidate.InputText(request["T_category_parent_val"], 50);
@@ -52,27 +56,49 @@ namespace XHD.CRM.Data
                     int id = StringToInt(PageValidate.InputText(request["T_id"], 50));
                     model.id = id;
 
-                    //DataSet ds = ccpc.GetList(" id=" + int.Parse(id));
-                    //DataRow dr = ds.Tables[0].Rows[0];
-
-                    //if (model.sgjl == "" || model.sgjl == "null" || string.IsNullOrEmpty(model.sgjl))
-                    //    context.Response.Write("false:type");
-                    //else
-                    {
-                       ccpc.Update(model);
-                    }
-
- 
+                    ccpc.Update(model);
+                    
                 }
 
                 else if (style=="add")
                 {
-                   // if (model.sgjl == "" || model.sgjl == "null" || string.IsNullOrEmpty(model.sgjl))
-                   //     context.Response.Write("false:type");
-                   //// model.isDelete = 0;
-                   // else
-                    ccpc.Add(model);
+                    string serchtxt = "1=1";
+                    serchtxt += " and      projectid=" + StringToInt(PageValidate.InputText(request["pid"], 50));
+                    serchtxt += " and      StageID=" + StringToInt(PageValidate.InputText(request["sid"], 50));
+                    serchtxt += " and      versions=" + StringToInt(PageValidate.InputText(request["vid"], 50));
+
+
+                    DataSet dds = ccpc.GetList(serchtxt);
+                    if (dds.Tables[0].Rows.Count > 0)
+                    {
+                        model.id =StringToInt(dds.Tables[0].Rows[0]["id"].ToString());
+                        ccpc.Update(model);
+                    }
+                    else
+                        ccpc.Add(model);
                 }
+            }
+            //编辑状态下显示版本号
+            if (request["Action"] == "combo")
+            {
+                string sid = PageValidate.InputText(request["sid"], 50);
+                string pid = PageValidate.InputText(request["pid"], 50);
+               // string parentid = PageValidate.InputText(request["parentid"], 50);
+
+                DataSet ds = ccpc.GetList("   projectid=" + int.Parse(pid) + " and StageID=" + sid);
+
+                StringBuilder str = new StringBuilder();
+
+                str.Append("[");
+                //str.Append("{id:0,text:'无'},");
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    str.Append("{id:" + ds.Tables[0].Rows[i]["versions"].ToString() + ",text:'" + ds.Tables[0].Rows[i]["versions"] + "'},");
+                }
+                str.Replace(",", "", str.Length - 1, 1);
+                str.Append("]");
+
+                context.Response.Write(str);
             }
             //专门显示下面隐藏的内容
             if (request["Action"] == "Acgrid")
@@ -111,6 +137,7 @@ namespace XHD.CRM.Data
                 
                 string sid = PageValidate.InputText(request["sid"],50);
                 string pid = PageValidate.InputText(request["pid"],50);
+                string vid = PageValidate.InputText(request["vid"], 50);
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
                 int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
                 string sortname = request["sortname"];
@@ -121,20 +148,20 @@ namespace XHD.CRM.Data
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
 
-                int detailid = ccpc.GetMaxVerId(sid,pid,
-                    PageValidate.InputText(request["style"], 50)
-                    );
+                //int detailid = ccpc.GetMaxVerId(sid,pid,
+                //    PageValidate.InputText(request["style"], 50)
+                //    );
 
                 string sorttext = " " + sortname + " " + sortorder;
                 string Total;
                 string serchtxt = "1=1";
                 serchtxt += " and projectid=" + pid + "  AND	 StageID=" + sid;
-                serchtxt += "  AND versions=" + detailid;
+                serchtxt += "  AND versions=" + vid;
                 //  and isChecked=0 
 
 
                 string dt = "";
-                if (PageValidate.IsNumber(detailid.ToString()))
+                if (PageValidate.IsNumber(vid))
                 // dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
                 {
                     DataSet ds = ccpc.GetListCrm_CEDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
@@ -185,18 +212,18 @@ namespace XHD.CRM.Data
                 //{"status": 1, "sum": 9}
                 context.Response.Write(josnstr);
             }
-            if (request["Action"] == "IsExistVer")
-            {
-                // string dt = "";
+            //if (request["Action"] == "IsExistVer")
+            //{
+            //    // string dt = "";
 
-                bool ischecked= ccpc.ExistsChecked(PageValidate.InputText(request["sid"], 50),
-                    PageValidate.InputText(request["pid"], 50),
-                    PageValidate.InputText(request["style"], 50)
-                    );
-                 if(ischecked==false)
-                context.Response.Write("false");
-                 else context.Response.Write("true");
-            }
+            //    bool ischecked= ccpc.ExistsChecked(PageValidate.InputText(request["sid"], 50),
+            //        PageValidate.InputText(request["pid"], 50),
+            //        PageValidate.InputText(request["style"], 50)
+            //        );
+            //     if(ischecked==false)
+            //    context.Response.Write("false");
+            //     else context.Response.Write("true");
+            //}
             if (request["Action"] == "getstage")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
@@ -400,7 +427,8 @@ namespace XHD.CRM.Data
                 return 0;
             }
         }
-
+        /// <summary>
+        
 
         public bool IsReusable
         {

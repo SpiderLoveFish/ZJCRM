@@ -178,7 +178,7 @@
                 var row = manager.getSelectedRow();
                 if (row) {
 
-                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=edit&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + notes.data.text, "修改评分", 790, 400);
+                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=edit&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + notes.data.text, "修改评分版本", 790, 400);
                 }
                 else
                     $.ligerDialog.warn('请选择考核项目！');
@@ -198,7 +198,7 @@
                 var manager = $("#maingrid4").ligerGetGridManager();
                 var row = manager.getSelectedRow();
                 if (row) {
-                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=add&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + notes.data.text, "新增评分", 790, 400);
+                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=add&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + notes.data.text, "新增评分版本", 790, 400);
                 }
                 else
                     $.ligerDialog.warn('请选择考核项目！');
@@ -208,41 +208,7 @@
             }
         }
    
-        function del() {
-            var manager = $("#maingrid4").ligerGetGridManager();
-            var row = manager.getSelectedRow();
-            if (row) {
-                $.ligerDialog.confirm("考核删除不能恢复，确定删除？", function (yes) {
-                    if (yes) {
-                        $.ajax({
-                            url: "../../data/CRM_CEStageDetail.ashx", type: "POST",
-                            data: { Action: "del", stageid: row.StageID, stagedetailid: row.StageDetailID, rnd: Math.random() },
-                            success: function (responseText) {
-                                if (responseText == "true") {
-                                    top.$.ligerDialog.closeWaitting();
-                                    f_load();
-                                }
-                                else if (responseText == "false:CEDetail") {
-                                    top.$.ligerDialog.error('此考核下含有订单信息，不允许删除！');
-                                }
-                                else {
-                                    top.$.ligerDialog.closeWaitting();
-                                    top.$.ligerDialog.error('删除失败！');
-                                }
-                            },
-                            error: function () {
-                                top.$.ligerDialog.closeWaitting();
-                                top.$.ligerDialog.error('删除失败！');
-                            }
-                        });
-                    }
-                })
-            }
-            else
-                $.ligerDialog.warn('请选择考核！');
-        }
-
-
+     
 
         function f_save(item, dialog) {
             var issave = dialog.frame.f_save();

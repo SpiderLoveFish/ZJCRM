@@ -42,6 +42,8 @@ namespace XHD.CRM.Data
                
                 string style = PageValidate.InputText(request["style"], 50);
                 //model.Remarks = Common.PageValidate.InputText(request["T_remarks"], 250);
+                if (detailid == "undefined"  )
+                    detailid = "";
                 if (style=="edit")
                 {
 

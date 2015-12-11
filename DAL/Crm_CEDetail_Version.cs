@@ -42,8 +42,10 @@ namespace XHD.DAL
         public int UpdateCrm_CEDetail_Version(string style,int stageid,string strsdetailid,int pid,int vid)
         {
             var sb = new System.Text.StringBuilder();
-            if (style == "add")
-            {
+            //if (style == "add")
+            //{
+                sb.AppendLine("DELETE Crm_CEDetail_Version WHERE projectid="+pid+" AND stageid=" + stageid + " and version=" + vid + " ");
+           
                 sb.AppendLine(" INSERT INTO dbo.Crm_CEDetail_Version ");
                 sb.AppendLine("		          ( projectid , ");
                 sb.AppendLine("		            stageid , ");
@@ -53,11 +55,11 @@ namespace XHD.DAL
                 sb.AppendLine("		          ) ");
                 sb.AppendLine("		SELECT "+pid+", StageID,StageDetailID,0,"+vid+" ");
                 sb.AppendLine("FROM  dbo.CRM_CEStageDetail  where	StageID=" + stageid + " ");
-            }
-            sb.AppendLine("UPDATE Crm_CEDetail_Version SET ischecked=0 WHERE stageid="+stageid+" ");
+            //}
+           // sb.AppendLine("UPDATE Crm_CEDetail_Version SET ischecked=0 WHERE stageid=" + stageid + " and version=" + vid + " AND projectid=" + pid + " ");
             if (strsdetailid != "")
             {
-                sb.AppendLine("UPDATE dbo.Crm_CEDetail_Version SET ischecked=1 WHERE stageid=" + stageid + "");
+                sb.AppendLine("UPDATE dbo.Crm_CEDetail_Version SET ischecked=1 WHERE stageid=" + stageid + " and version=" + vid + " AND projectid=" + pid + "");
                 sb.AppendLine("AND stagedetailid IN(" + strsdetailid + ") ");
                 sb.AppendLine(" ");
             }

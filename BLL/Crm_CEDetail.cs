@@ -37,7 +37,7 @@ namespace XHD.BLL
         /// <summary>
         /// 是否存在该记录
         /// </summary>
-        public bool ExistsChecked(string StageID, string pid, string verid)
+        public bool ExistsChecked(int StageID, int pid, int verid)
         {
             return dal.ExistsChecked(StageID, pid, verid);
         }
@@ -200,7 +200,18 @@ namespace XHD.BLL
         {
             return dal.GetListStage(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
-		#endregion  ExtensionMethod
+
+
+        /// <summary>
+        /// 更新一条数据
+        /// </summary>
+        public bool Update(int sid, int pid, int vid, bool ischecked, bool isclose, string assdes)
+        {
+            return dal.Update(sid,pid,vid,ischecked,isclose,assdes);
+        }
+
+
+        #endregion  ExtensionMethod
 	}
 }
 

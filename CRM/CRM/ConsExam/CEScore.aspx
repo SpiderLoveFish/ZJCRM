@@ -42,7 +42,7 @@
 
                     ],
             dataAction: 'server',
-            url: "../../data/CRM_CEScore.ashx?Action=getdetailgrid&sid=" + getparastr("sid") + "&vid=" + getparastr("vid") + "&pid=" + getparastr("pid") + "&sty=" + getparastr("style") + "&rnd=" + Math.random(),
+            url: "../../data/CRM_CEScore.ashx?Action=getdetailgrid&sid=" + getparastr("sid") + "&vid=" + getparastr("vid") + "&pid=" + getparastr("pid")  + "&sty=" + getparastr("style") + "&rnd=" + Math.random(),
             pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
                 width: '100%',
@@ -101,6 +101,10 @@
             return $("form :input").fieldSerialize() + sendtxt;
         }
 
+        function GetStyle()
+        {
+            return getparastr("style");
+        }
 
         function prt() {
             var manager = $("#maingrid4").ligerGetGridManager();

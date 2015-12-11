@@ -10,10 +10,8 @@
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
       <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
      <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-    <script src="../../JS/XHD.js" type="text/javascript"></script>
-      <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
-     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-
+      <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+   
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
@@ -68,9 +66,33 @@
             $("#T_projectid").val(getparastr("pid"));
             $("#T_Stage1").val(getparastr("sid"));
             $("#T_Stage").val(getparastr("sid") + "-" + getparastr("sname"));
-            getmaxverid(getparastr("sid"), getparastr("pid"), getparastr("style"))
-            if (getparastr("pid") && getparastr("sid"))
-                loadForm(getparastr("sid"), getparastr("pid"), getparastr("style"));
+            if (getparastr("style") == "add")
+                getmaxverid(getparastr("sid"), getparastr("pid"), getparastr("style"))
+            else {
+               
+                // version
+                $('#T_versions').ligerComboBox({
+                    width: 196,
+                   // initValue: obj.Community_id,
+                    url: "../../data/Crm_CEDetail.ashx?Action=combo&sid=" + getparastr("sid") + "&pid=" + getparastr("pid") + "&rnd=" + Math.random(),
+                    onSelected: function (newvalue, newtext) {
+                        debugger
+                        if (!newvalue) {
+                            newvalue = -1;
+                            $('#T_AssTime').val("");
+                        } else {
+                          
+                            loadForm(getparastr("sid"), getparastr("pid"), newvalue, getparastr("style"));
+
+
+                        }
+                    },
+                    emptyText: '（空）'
+                });
+
+            }
+            //if (getparastr("pid") && getparastr("sid"))
+            //    loadForm(getparastr("sid"), getparastr("pid"), getparastr("style"));
           
             initLayout();
             $(window).resize(function () {
@@ -80,16 +102,23 @@
             toolbar();
         });
 
+    
+
         function f_save() {
-           
+            var verid = $("#T_versions").val();
+            if (verid == "")
+                top.$.ligerDialog.error("请选择一个有效版本号维护！！！");
+            else
             if ($(form1).valid()) {
+               
                 var arr = [];
                 arr.push(UE.getEditor('editor').getContent());
-                var sendtxt = "&Action=save&sid=" + getparastr("sid") + "&style=" + getparastr("style") + "&pid=" + getparastr("pid") + "&T_content=" + escape(arr);
+                var sendtxt = "&Action=save&sid=" + getparastr("sid") + "&style=" + getparastr("style") + "&pid=" + getparastr("pid") + "&vid=" + verid + "&T_content=" + escape(arr);
                 //alert(sendtxt);
              return $("form :input").fieldSerialize() + sendtxt;
              }
         }
+
         function toolbar() {
             $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=123&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
@@ -134,11 +163,11 @@
         });
         }
 
-        function loadForm(oaid, id, sty) {  
+        function loadForm(oaid, id, verid,sty) {  
             $.ajax({
                 type: "get",
                 url: "../../data/Crm_CEDetail.ashx", /* 注意后面的名字对应CS的方法名称 */
-                data: { Action: 'getdetailgrid', sid: oaid, pid: id, style: sty, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                data: { Action: 'getdetailgrid', sid: oaid, pid: id,vid:verid, style: sty, rnd: Math.random() }, /* 注意参数的格式和名称 */
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
@@ -165,72 +194,87 @@
         }
 
         function f_saveitem(item, dialog) {
-            var issave = dialog.frame.f_saveitem();
-            if (issave) {
-                dialog.close();
-                top.$.ligerDialog.waitting('数据保存中,请稍候...');
-                $.ajax({
-                    url: "../../data/CRM_CEScore.ashx", type: "POST",
-                    data: issave,
-                    success: function (responseText) {
-                        
-                        top.$.ligerDialog.closeWaitting();
-                        f_load();
-                    },
-                    error: function () {
-                        top.$.ligerDialog.closeWaitting();
-                        top.$.ligerDialog.error('操作失败！');
-                    }
-                });
+            
+                var issave = dialog.frame.f_saveitem();
+                if (issave) {
+                    dialog.close();
+                    top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                    $.ajax({
+                        url: "../../data/CRM_CEScore.ashx", type: "POST",
+                        data: issave,
+                        success: function (responseText) {
+                            top.$.ligerDialog.closeWaitting();
 
-            }
-        }
 
-        function f_openWindow(url, title, width, height) {
-            var dialogOptions = {
-                width: width, height: height, title: title, url: url, buttons: [
-                        {
-                            text: '提交', onclick: function (item, dialog) {
-                                f_saveitem(item, dialog);
-                                f_load();
-                            }
                         },
-                        {
-                            text: '关闭', onclick: function (item, dialog) {
-                                dialog.close();
-                            }
+                        error: function () {
+                            top.$.ligerDialog.closeWaitting();
+                            top.$.ligerDialog.error('操作失败！');
                         }
-                ], isResize: true, showToggle: true, timeParmName: 'a'
-            };
-            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
-        }
+                    });
 
-        function edit() {
-            
-            var sid = getparastr("sid");
-            var pid = getparastr("pid");
-            var verid = $("#T_versions").val();
-            f_openWindow('crm/ConsExam/CEScore.aspx?&sid=' + sid + '&pid=' + pid + '&vid=' + verid + '&style=edit' , "修改评分", 790, 500);
-            
-        }
+                }
+            }
 
-        function add() {
-            var sid = getparastr("sid");
-            var pid = getparastr("pid");
-            var verid = $("#T_versions").val();
-          
+            function f_openWindow(url, title, width, height) {
+                var dialogOptions = {
+                    width: width, height: height, title: title, url: url, buttons: [
+                            {
+                                text: '提交', onclick: function (item, dialog) {
+                                    f_saveitem(item, dialog);
+                                    //    f_load();
+                                }
+                            },
+                            {
+                                text: '关闭', onclick: function (item, dialog) {
+                                    dialog.close();
+                                }
+                            }
+                    ], isResize: true, showToggle: true, timeParmName: 'a'
+                };
+                activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+            }
 
-            f_openWindow('crm/ConsExam/CEScore.aspx?&sid=' + sid + '&pid=' + pid + '&vid=' + verid + '&style=add' , "新增评分", 790, 500);
-             
-        }
-        function f_load() {
-            var manager = $("#maingrid4").ligerGetGridManager();
-            manager.loadData(true);
+            function edit() {
 
-            //treemanager = $("#tree1").ligerGetTreeManager();
-            //treemanager.clear();
-            //treemanager.FlushData();
-        }
+                var sid = getparastr("sid");
+                var pid = getparastr("pid");
+                var verid = $("#T_versions").val();
+                if (getparastr("style") == "add")
+                { top.$.ligerDialog.error("新增状态下不允许修改！！！"); }
+                else
+                {
+                    if (verid == "")
+                        top.$.ligerDialog.error("请选择一个有效版本号维护！！！");
+                    else
+                        f_openWindow('crm/ConsExam/CEScore.aspx?&sid=' + sid + '&pid=' + pid + '&vid=' + verid + '&style=edit', "修改评分", 790, 500);
+                }
+            }
+
+            function add() {
+                var sid = getparastr("sid");
+                var pid = getparastr("pid");
+                var verid = $("#T_versions").val();
+                //if (getparastr("style") == "edit")
+                //{ top.$.ligerDialog.error("维护修改状态下不允许新增！！！"); }
+                //else
+                //{
+                    if (verid == "")
+                        top.$.ligerDialog.error("请选择一个有效版本号维护！！！");
+                    else
+                        f_openWindow('crm/ConsExam/CEScore.aspx?&sid=' + sid + '&pid=' + pid + '&vid=' + verid + '&style=add', "新增评分", 790, 500);
+               // }
+            }
+
+            function del() {
+                top.$.ligerDialog.error("无法删除！！！");
+            }
+            //function f_load() {
+            //    var manager = $("#maingrid4").ligerGetGridManager();
+            //    manager.loadData(true);
+
+            //};
+        
     </script>
 </head>
 <body>

@@ -36,7 +36,7 @@ namespace XHD.DAL
             object obj = DbHelperSQL.GetSingle(strSql.ToString());
             if (obj == null)
             {
-                return 0;
+                return 1;
             }
             else
             {
@@ -63,18 +63,18 @@ namespace XHD.DAL
         /// <summary>
         /// 是否存在该记录
         /// </summary>
-        public bool ExistsChecked(string StageID, string pid, string verid)
+        public bool ExistsChecked(int StageID, int pid, int verid)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select count(1) from Crm_CEDetail");
-            strSql.Append(" where  	isChecked=0 AND projectid=@pid AND StageID=@sid AND versions=@verid");
+            strSql.Append(" where    projectid=@pid AND StageID=@sid AND versions=@verid");
             SqlParameter[] parameters = {
 					new SqlParameter("@pid", SqlDbType.Int,4),
                     new SqlParameter("@sid", SqlDbType.Int,4),
                     new SqlParameter("@verid", SqlDbType.Int,4)
 			};
-            parameters[0].Value = StageID;
-            parameters[1].Value = pid;
+            parameters[0].Value = pid ;
+            parameters[1].Value = StageID;
             parameters[2].Value = verid;
             return DbHelperSQL.Exists(strSql.ToString(), parameters);
         }
@@ -87,11 +87,13 @@ namespace XHD.DAL
 		public int Add(XHD.Model.Crm_CEDetail model)
 		{
 			StringBuilder strSql=new StringBuilder();
+           
 			strSql.Append("insert into Crm_CEDetail(");
 			strSql.Append("projectid,versions,StageID,AssTime,isChecked,AssDescription,IsClose)");
 			strSql.Append(" values (");
 			strSql.Append("@projectid,@versions,@StageID,@AssTime,@isChecked,@AssDescription,@IsClose)");
-			strSql.Append(";select @@IDENTITY");
+            strSql.Append(";select @@IDENTITY");
+           
 			SqlParameter[] parameters = {
 					new SqlParameter("@projectid", SqlDbType.Int,4),
 					new SqlParameter("@versions", SqlDbType.Int,4),
@@ -118,21 +120,43 @@ namespace XHD.DAL
 				return Convert.ToInt32(obj);
 			}
 		}
+
+
+        public bool Update(int sid,int pid,int vid,bool ischecked,bool isclose,string assdes)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update Crm_CEDetail set");
+            strSql.Append("isChecked="+ischecked+",");
+            strSql.Append("AssDescription="+assdes+",");
+            strSql.Append("IsClose="+isclose+" ");
+            strSql.Append(" where StageID="+sid+" and projectid="+pid+"  and versions="+vid+"");
+
+            SqlParameter[] parameters = {
+                                       };
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+     
 		/// <summary>
 		/// 更新一条数据
 		/// </summary>
 		public bool Update(XHD.Model.Crm_CEDetail model)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("update Crm_CEDetail set ");
-			strSql.Append("projectid=@projectid,");
-			strSql.Append("versions=@versions,");
-			strSql.Append("StageID=@StageID,");
-			strSql.Append("AssTime=@AssTime,");
-			strSql.Append("isChecked=@isChecked,");
-			strSql.Append("AssDescription=@AssDescription,");
-			strSql.Append("IsClose=@IsClose");
-			strSql.Append(" where id=@id");
+            strSql.Append(" update Crm_CEDetail set");
+            strSql.Append(" isChecked=@isChecked,");
+            strSql.Append(" AssDescription=@AssDescription, ");
+            strSql.Append(" IsClose=@IsClose ");
+            strSql.Append(" where   StageID=@StageID and projectid=@projectid  and versions=@versions");
+ 
 			SqlParameter[] parameters = {
 					new SqlParameter("@projectid", SqlDbType.Int,4),
 					new SqlParameter("@versions", SqlDbType.Int,4),
@@ -141,7 +165,8 @@ namespace XHD.DAL
 					new SqlParameter("@isChecked", SqlDbType.Bit,1),
 					new SqlParameter("@AssDescription", SqlDbType.VarChar,-1),
 					new SqlParameter("@IsClose", SqlDbType.Bit,1),
-					new SqlParameter("@id", SqlDbType.Int,4)};
+                     new SqlParameter("@id", SqlDbType.Int,4)
+                                        };
 			parameters[0].Value = model.projectid;
 			parameters[1].Value = model.versions;
 			parameters[2].Value = model.StageID;
@@ -149,8 +174,7 @@ namespace XHD.DAL
 			parameters[4].Value = model.isChecked;
 			parameters[5].Value = model.AssDescription;
 			parameters[6].Value = model.IsClose;
-			parameters[7].Value = model.id;
-
+            parameters[7].Value = model.id; 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
 			{
