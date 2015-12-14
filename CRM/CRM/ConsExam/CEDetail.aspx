@@ -48,19 +48,46 @@
 
             $("#maingrid4").ligerGrid({
                 columns: [
-                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
-                      { display: '项目编号', name: 'id', width: 50, align: 'left' },
-                      { display: '客户编号', name: 'CustomerID', width: 50, align: 'left' },
-                       { display: '客户姓名', name: 'CustomerName', width: 250, align: 'left' },
-                        { display: '客户电话', name: 'tel', width: 120, align: 'left' },
-                       { display: '施工监理', name: 'sgjl', width: 120, align: 'left' },
-                         { display: '业务员', name: 'ywy', width: 120, align: 'left' },
-                     { display: '设计师', name: 'sjs', width: 120, align: 'left' },
-                     { display: '特殊加分', name: 'SpecialScore', width: 120, align: 'left' },
-                 { display: '考核得分', name: 'StageScore', width: 120, align: 'left' },
-                         { display: '状态', name: 'Stage_icon', width: 120, align: 'left' },
-                 { display: '备注', name: 'Remarks', width: 120, align: 'left' }
-                    
+     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
+      { display: '客户姓名', name: 'CustomerName', width: 80, align: 'left' },
+                       { display: '客户电话', name: 'tel', width: 100, align: 'left' },
+                        { display: '客户地址', name: 'address', width: 250, align: 'left' },
+                      { display: '施工监理', name: 'sgjl', width: 80, align: 'left' },
+                        { display: '业务员', name: 'ywy', width: 80, align: 'left' },
+                   // { display: '设计师', name: 'sjs', width: 120, align: 'left' },
+                    { display: '附加分', name: 'SpecialScore', width: 50, align: 'right' },
+                {
+                    display: '考核分', name: 'StageScore', width: 50, align: 'right', render: function (item) {
+                        return "<div style='color:#135294'>" + item.StageScore + "</div>";
+                    }
+                },
+                 { display: '总得分', name: 'sum_Score', width: 50, align: 'right' },
+                 { display: '满分', name: 'TotalScorce', width: 50, align: 'right' },
+                 {
+                     display: '达成率', name: 'Scoring', width: 80, align: 'right', render: function (item) {
+
+                         var html;
+                         if (item.sum_Score / item.TotalScorce > 0.9) {
+                             html = "<div style='color:#008040'>";
+                             if (item.Scoring)
+                                 html += item.Scoring;
+                             html += "</div>";
+                         }
+                         else
+                             if (item.sum_Score / item.TotalScorce > 0.5) {
+                                 html = "<div style='color:#800040'>";
+                                 if (item.Scoring)
+                                     html += item.Scoring;
+                                 html += "</div>";
+                             }
+                             else
+                                 html = "<div style='color:#F00'>" + item.Scoring + "</div>";
+                         return html;
+                     }
+                 },
+                        { display: '状态', name: 'Stage_icon', width: 80, align: 'left' },
+                { display: '备注', name: 'Remarks', width: 200, align: 'left' }
+
                 ],
 
                     
@@ -83,11 +110,12 @@
                             columns: [
                                     { display: '序号', width: 30, render: function (item, i) { return i + 1; } },
                                      { display: '项目编号', name: 'projectid', width: 60 },
-                                      { display: '评分类型', name: 'CEStage_category', width: 120 },
-                                    { display: '版本号', name: 'versions', width: 60 },
-                                     { display: '评分完成', name: 'isChecked', width: 80 },
-                                       { display: '是否结案', name: 'IsClose', width: 80 },
-                                    { display: '评分', name: 'AssTime', width: 60, type: 'float' }
+                                      { display: '考核类型', name: 'CEStage_category', width: 120 },
+                                   // { display: '版本号', name: 'versions', width: 60 },
+                                    // { display: '评分完成', name: 'isChecked', width: 80 },
+                                      // { display: '是否结案', name: 'IsClose', width: 80 },
+                                    { display: '考核结果', name: 'AssTime', width: 60, type: 'float' },
+                                     { display: '考核时间', name: 'Cdate', width: 100, type: 'date' }
                                     
                             ],
                             usePager: false,
@@ -178,7 +206,7 @@
                 var row = manager.getSelectedRow();
                 if (row) {
 
-                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=edit&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + notes.data.text, "修改评分版本", 790, 400);
+                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=edit&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + notes.data.text, "修改考核", 790, 550);
                 }
                 else
                     $.ligerDialog.warn('请选择考核项目！');
@@ -198,7 +226,7 @@
                 var manager = $("#maingrid4").ligerGetGridManager();
                 var row = manager.getSelectedRow();
                 if (row) {
-                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=add&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + notes.data.text, "新增评分版本", 790, 400);
+                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=add&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + notes.data.text, "开始考核", 790, 550);
                 }
                 else
                     $.ligerDialog.warn('请选择考核项目！');

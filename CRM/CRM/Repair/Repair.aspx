@@ -100,7 +100,29 @@
                         }
                     },
                 { display: '维修类别', name: 'Wxlb', width: 80 },
-                    { display: '完成状态', name: 'Wczt', width: 80 },
+        
+                    {
+                        display: '完成状态', name: 'Wczt', width: 80, render: function (item) {
+
+                            var html;
+                            if (item.Wczt == "未处理") {
+                                html = "<div style='color:#F00000'>" ;
+                            if (item.Wczt)
+                                    html += item.Wczt;
+                                html += "</div>";
+                            }
+                            else
+                                if (item.Wczt == "未完成") {
+                                    html = "<div style='color:#F0F'>";
+                                    if (item.Wczt)
+                                        html += item.Wczt;
+                                    html += "</div>";
+                                }
+                                else
+                                html = item.Wczt;
+                            return html;
+                        }
+        },
                     { display: '登记人员', name: 'InEmpName', width: 80 },
                     { display: '登记时间', name: 'InDate', width: 145 },
                      

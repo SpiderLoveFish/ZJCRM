@@ -189,7 +189,7 @@ namespace XHD.CRM.Data
                 string sorttext = " " + sortname + " " + sortorder;
                 string Total;
                 string serchtxt = "1=1";
-                serchtxt += " and stage_icon!='结案' ";
+                serchtxt += " and stage_icon!='施工完成' ";
                  serchtxt += " AND id NOT IN(SELECT projectid FROM	 crm_cedetail WHERE isclose=1) ";
 
 
@@ -239,7 +239,7 @@ namespace XHD.CRM.Data
                 string sorttext = " " + sortname + " " + sortorder;
                 string Total;
                 string serchtxt = "1=1";
-                serchtxt += " and stage_icon!='结案' ";
+                serchtxt += " and stage_icon!='施工完成' ";
                 //serchtxt += " AND id NOT IN(SELECT projectid FROM	 crm_cedetail WHERE isChecked=1 and id=" + cid + ") ";
                 //还有个条件：必须上一个类别评分完毕
 

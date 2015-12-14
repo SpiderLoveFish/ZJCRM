@@ -336,8 +336,8 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse ");
-			strSql.Append(" FROM CRM_CEStage ");
+            strSql.Append("select id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,address,sum_Score,TotalScorce,Scoring ");
+            strSql.Append(" FROM V_CRM_CEStage ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -356,8 +356,8 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse ");
-			strSql.Append(" FROM CRM_CEStage ");
+            strSql.Append(" id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,address,sum_Score,TotalScorce,Scoring ");
+			strSql.Append(" FROM V_CRM_CEStage ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -403,7 +403,7 @@ namespace XHD.DAL
 			{
 				strSql.Append("order by T.id desc");
 			}
-			strSql.Append(")AS Row, T.*  from CRM_CEStage T ");
+			strSql.Append(")AS Row, T.*  from V_CRM_CEStage T ");
 			if (!string.IsNullOrEmpty(strWhere.Trim()))
 			{
 				strSql.Append(" WHERE " + strWhere);
@@ -448,7 +448,7 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " * FROM CRM_CEStage ");
+            strSql.Append(" top " + PageSize + " * FROM V_CRM_CEStage ");
             strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_CEStage ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(id) FROM CRM_CEStage ");

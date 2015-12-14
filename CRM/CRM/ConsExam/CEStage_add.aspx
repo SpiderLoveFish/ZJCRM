@@ -128,7 +128,7 @@
             $("#T_companyid").val(id);
             $("#T_company").val(emp);
             $("#T_company_tel").val(tel);
-            $("#T_private").val("未结案");
+            $("#T_private").val("正在施工");
             $("#T_employee").val(ywy);
             $("#T_employee1").val(ywyid);
             $("#T_employee_sg").val(sgjl);
@@ -164,7 +164,7 @@
                     <div style="width: 80px; text-align: right; float: right">客户姓名：</div>
                 </td>
                 <td>
-                         <input type="text" id="T_company" name="T_company" ltype="text" ligerui="{width:180,disabled:true}" validate="{required:true}" />
+                         <input type="text" id="T_company" name="T_company"  ltype="text" ligerui="{width:180}" validate="{required:true}" />
                      <input id="T_companyid" name="T_companyid" type="hidden" />
                    
                   
@@ -184,7 +184,7 @@
                 <td>
                       <%--<input id="T_private" name="T_private" type="text" validate="{required:true}" style="width: 196px" />--%>
                     <input id="T_private" name="T_private" type="text" ltype="select" 
-                        ligerui="{width:196,data:[{id:'结案',text:'结案'},{id:'未结案',text:'未结案'}]}" validate="{required:false}" /></td>
+                        ligerui="{width:180,data:[{id:'正在施工',text:'正在施工'},{id:'施工完成',text:'施工完成'}]}" validate="{required:false}" /></td>
                 <td>
                     <div style="width: 80px; text-align: right; float: right">业务员：</div>
                 </td>
@@ -214,10 +214,10 @@
             </tr>
                   <tr>
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">特殊分数：</div>
+                    <div style="width: 80px; text-align: right; float: right">附加分值：</div>
                 </td>
                 <td>
-                      <input id="T_SpecialScore" name="T_SpecialScore" type="text" validate="{required:false}" style="width: 196px" />
+                      <input id="T_SpecialScore" name="T_SpecialScore" type="text"  ltype="text" validate="{required:false}" style="width: 180px" />
                      <td>
                     <div style="width: 80px; text-align: right; float: right">总分数：</div>
                 </td>

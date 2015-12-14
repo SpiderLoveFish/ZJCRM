@@ -183,9 +183,9 @@
                     $("#T_id").val(obj.id);
                     $("#T_AssTime").val(obj.AssTime);
                     //var check = (obj.isChecked == true) ? a = "true" : a = "false"; obj.isChecked == true ? "结束" : "未结束"
-                    $("#T_checked").ligerGetComboBoxManager().selectValue(((obj.isChecked == true)) ? "结束" : "未结束");
-                    $("#T_isclose").ligerGetComboBoxManager().selectValue((obj.IsClose == true) ? "结案" : "未结案");
-                    //alert(obj.AssDescription);
+                    //$("#T_checked").ligerGetComboBoxManager().selectValue(((obj.isChecked == true)) ? "结束" : "未结束");
+                    //$("#T_isclose").ligerGetComboBoxManager().selectValue((obj.IsClose == true) ? "结案" : "未结案");
+                    ////alert(obj.AssDescription);
                     UE.getEditor('editor').setContent(myHTMLDeCode(obj.AssDescription));
                    
                    
@@ -296,40 +296,28 @@
                     <input type="text" id="T_projectid" name="T_projectid" validate="{required:true}" ltype='text' ligerui="{width:280,disabled:true}" /></td>
                 <input type="hidden" id="T_id" name="T_id" />
                 <td>
-                    <div align="left" style="width: 90px">版本号（V）：</div>
+                    <div align="left" style="width: 90px">考核时间：</div>
                 </td>
                 <td>
                     <input type='text' id="T_versions" name="T_versions" ltype='text' ligerui="{width:240,disabled:true}" /></td>
             </tr>
   <tr>
                      <td>
-                    <div align="left" style="width: 60px">评分类别：</div>
+                    <div align="left" style="width: 60px">考核类别：</div>
                 
                      </td>
                 <td>
-                    <input type="text" id="T_Stage" name="T_Stage" validate="{required:true}" ltype='text' ligerui="{width:280,disabled:true}" /></td>
+                    <input type="text" id="T_Stage" name="T_Stage" validate="{required:true}" ltype='text' ligerui="{width:280,disabled:true}" /><input id="T_checked" name="T_checked" type="hidden" ltype="hidden" 
+                        ligerui="{width:196,data:[{id:'结束',text:'结束'},{id:'未结束',text:'未结束'}]}" validate="{required:false}" /></td>
                   <input id="T_Stage1" name="T_Stage1" type="hidden" />
                   <td>
-                    <div align="left" style="width: 90px">本次评分：</div>
+                    <div align="left" style="width: 90px">考核得分：</div>
                 </td>
                 <td>
-                    <input type='text' id="T_AssTime" name="T_AssTime" ltype='text' ligerui="{width:240,disabled:true}" /></td>
-              </tr>
-              <tr>
-                     <td>
-                    <div align="left" style="width: 60px">结束本版本：</div>
-                
-                     </td>
-                <td>
-                   <input id="T_checked" name="T_checked" type="text" ltype="select" 
-                        ligerui="{width:196,data:[{id:'结束',text:'结束'},{id:'未结束',text:'未结束'}]}" validate="{required:false}" /></td>
-              <td>
-                    <div align="left" style="width: 90px">结束本类别：</div>
-                </td>
-                <td>
-                <input id="T_isclose" name="T_isclose" type="text" ltype="select" 
+                    <input type='text' id="T_AssTime" name="T_AssTime" ltype='text' ligerui="{width:240,disabled:true}" /><input id="T_isclose" name="T_isclose" type="hidden" ltype="hidden" 
                         ligerui="{width:196,data:[{id:'结案',text:'结案'},{id:'未结案',text:'未结案'}]}" validate="{required:false}" /></td>
-               </tr>
+              </tr>
+              
 
             <tr>
                 <td colspan="4">

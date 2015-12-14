@@ -481,7 +481,7 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " * FROM CRM_CEStage ");
+            strSql.Append(" top " + PageSize + " * FROM V_CRM_CEStage ");
             strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_CEStage ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(id) FROM CRM_CEStage ");

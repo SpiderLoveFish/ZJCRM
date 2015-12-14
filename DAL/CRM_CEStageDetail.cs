@@ -153,7 +153,7 @@ namespace XHD.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select  top 1 StageID,StageDetailID,Description,StageContent from CRM_CEStageDetail ");
+            strSql.Append("select  top 1 StageID,StageDetailID,Description,StageContent,Cdate from CRM_CEStageDetail ");
             strSql.Append(" where StageID=@StageID and StageDetailID=@StageDetailID ");
             SqlParameter[] parameters = {
 					new SqlParameter("@StageID", SqlDbType.Int,4),
@@ -223,7 +223,7 @@ namespace XHD.DAL
         public DataSet GetList_Main(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select StageID,StageDetailID,Description,StageContent,B.CEStage_category ");
+            strSql.Append("select StageID,StageDetailID,Description,StageContent,B.CEStage_category,A.Cdate ");
             strSql.Append(" FROM CRM_CEStageDetail A  ");
             strSql.Append(" INNER JOIN  dbo.CRM_CEStage_category B ON A.StageID=B.id ");
             if (strWhere.Trim() != "")
@@ -244,7 +244,7 @@ namespace XHD.DAL
             {
                 strSql.Append(" top " + Top.ToString());
             }
-            strSql.Append(" StageID,StageDetailID,Description,StageContent ");
+            strSql.Append(" StageID,StageDetailID,Description,StageContent,Cdate ");
             strSql.Append(" FROM CRM_CEStageDetail ");
             if (strWhere.Trim() != "")
             {
