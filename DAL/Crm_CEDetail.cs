@@ -210,6 +210,36 @@ namespace XHD.DAL
 				return false;
 			}
 		}
+
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public bool Delete(int sid,int pid,int vid)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from Crm_CEDetail ");
+            strSql.Append(" WHERE projectid=@pid AND StageID=@sid AND versions=@vid");
+            SqlParameter[] parameters = {
+					new SqlParameter("@sid", SqlDbType.Int,4),
+                    new SqlParameter("@pid", SqlDbType.Int,4),
+                    new SqlParameter("@vid", SqlDbType.Int,4)
+			};
+            parameters[0].Value = sid;
+            parameters[1].Value = pid;
+            parameters[2].Value = vid;
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 		/// <summary>
 		/// 批量删除数据
 		/// </summary>
@@ -321,7 +351,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select id,projectid,versions,StageID,AssTime,isChecked,AssDescription,IsClose ");
+            strSql.Append("select id,projectid,versions,StageID,AssTime,isChecked,AssDescription,IsClose,Cdate ");
 			strSql.Append(" FROM Crm_CEDetail ");
 			if(strWhere.Trim()!="")
 			{

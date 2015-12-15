@@ -62,17 +62,17 @@
                 autoHeightEnabled: false
             });
 
-            
+
             $("#T_projectid").val(getparastr("pid"));
-            $("#T_Stage1").val(getparastr("sid"));
+            $("#T_Stage1").val(getparastr("sid") );
             $("#T_Stage").val(getparastr("sid") + "-" + getparastr("sname"));
             if (getparastr("style") == "add")
                 getmaxverid(getparastr("sid"), getparastr("pid"), getparastr("style"))
             else {
                
                 // version
-                $('#T_versions').ligerComboBox({
-                    width: 196,
+                $('#T_versions_Show').ligerComboBox({
+                    width: 240,
                    // initValue: obj.Community_id,
                     url: "../../data/Crm_CEDetail.ashx?Action=combo&sid=" + getparastr("sid") + "&pid=" + getparastr("pid") + "&rnd=" + Math.random(),
                     onSelected: function (newvalue, newtext) {
@@ -80,8 +80,9 @@
                         if (!newvalue) {
                             newvalue = -1;
                             $('#T_AssTime').val("");
+                            $('#T_versions').val("");
                         } else {
-                          
+                            $('#T_versions').val(newvalue);
                             loadForm(getparastr("sid"), getparastr("pid"), newvalue, getparastr("style"));
 
 
@@ -156,9 +157,10 @@
                     if (obj[n] == "null" || obj[n] == null)
                         obj[n] = "";
                 }
-               // top.$.ligerDialog.error(obj.verid); //String 构造函数
-                $("#T_versions").val(obj.verid);
-                
+                // top.$.ligerDialog.error(obj.verid); //String 构造函数
+                       d = new Date(); 
+                       $("#T_versions_Show").val("("+obj.verid+")"+ formatTimebytype(d.getDate().toString(), 'yyyy-MM-dd'));
+                       $("#T_versions").val(obj.verid);
             }
         });
         }
@@ -267,7 +269,40 @@
             }
 
             function del() {
-                top.$.ligerDialog.error("无法删除！！！");
+                var verid = $("#T_versions").val();
+                if (verid == "")
+                    top.$.ligerDialog.error("请选择一个有效版本号维护！！！");
+                else {
+                    $.ligerDialog.confirm("数据删除不能恢复，确定删除？", function (yes) {
+                        if (yes) {
+                            $.ajax({
+                                url: "../../data/Crm_CEDetail.ashx", type: "POST",
+                                data: { Action: "del", pid: getparastr("pid"), sid: getparastr("sid"), vid: verid, rnd: Math.random() },
+                                success: function (responseText) {
+                                    if (responseText == "true") {
+                                        top.$.ligerDialog.closeWaitting();
+                                        f_load();
+                                    }
+                                    else if (responseText == "false:sorce") {
+                                        top.$.ligerDialog.closeWaitting();
+                                        top.$.ligerDialog.error('已经有明细评分，无法删除！');
+                                    }
+                                    else {
+                                        top.$.ligerDialog.closeWaitting();
+                                        top.$.ligerDialog.error('删除失败！' + responseText);
+                                    }
+                                },
+                                error: function () {
+                                    top.$.ligerDialog.closeWaitting();
+                                    top.$.ligerDialog.error('删除失败！', "", null, 9003);
+                                }
+                            });
+                        }
+                    })
+                }
+                
+                
+               // top.$.ligerDialog.error("无法删除！！！");
             }
             function f_load() {
                 var manager = $("#maingrid4").ligerGetGridManager();
@@ -299,7 +334,9 @@
                     <div align="left" style="width: 90px">考核时间：</div>
                 </td>
                 <td>
-                    <input type='text' id="T_versions" name="T_versions" ltype='text' ligerui="{width:240,disabled:true}" /></td>
+                    <input type='text' id="T_versions_Show" name="T_versions_Show" ltype='text' ligerui="{width:240,disabled:true}" /></td>
+                     <input id="T_versions" name="T_versions" type="hidden" />
+                  
             </tr>
   <tr>
                      <td>

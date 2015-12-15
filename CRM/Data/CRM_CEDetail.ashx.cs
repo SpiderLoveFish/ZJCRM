@@ -93,7 +93,7 @@ namespace XHD.CRM.Data
                 //str.Append("{id:0,text:'无'},");
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
-                    str.Append("{id:" + ds.Tables[0].Rows[i]["versions"].ToString() + ",text:'" + ds.Tables[0].Rows[i]["versions"] + "'},");
+                    str.Append("{id:" + ds.Tables[0].Rows[i]["versions"].ToString() + ",text:'(" + ds.Tables[0].Rows[i]["versions"] + ")'+'" + StringToDate(ds.Tables[0].Rows[i]["Cdate"].ToString()) + "'},");
                 }
                 str.Replace(",", "", str.Length - 1, 1);
                 str.Append("]");
@@ -106,7 +106,7 @@ namespace XHD.CRM.Data
 
 
                 string pid = request["pid"];
-                
+                string sid = request["sid"];
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
                 int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
                 string sortname = request["sortname"];
@@ -121,7 +121,7 @@ namespace XHD.CRM.Data
                 string Total;
                 string serchtxt = "1=1";
                 serchtxt += " and      projectid=" + pid;
-              
+                serchtxt += " and      StageID=" + sid;
 
 
                 string dt = "";
@@ -242,6 +242,20 @@ namespace XHD.CRM.Data
                 serchtxt += " and stage_icon!='施工完成' ";
                 //serchtxt += " AND id NOT IN(SELECT projectid FROM	 crm_cedetail WHERE isChecked=1 and id=" + cid + ") ";
                 //还有个条件：必须上一个类别评分完毕
+                if (!string.IsNullOrEmpty(request["khstext"]))
+                    serchtxt += " and CustomerName like N'%" + PageValidate.InputText(request["khstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["dzstext"]))
+                    serchtxt += " and address like N'%" + PageValidate.InputText(request["dzstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["dhstext"]))
+                    serchtxt += " and tel like N'%" + PageValidate.InputText(request["dhstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["sgstext"]))
+                    serchtxt += " and sgjl like N'%" + PageValidate.InputText(request["sgstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["ztstext"]))
+                    serchtxt += " and Stage_icon like N'%" + PageValidate.InputText(request["ztstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["dclbstext"]))
+                    serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))>= " + StringToDecimal(PageValidate.InputText(request["dclbstext"], 50)) + "%";
+                if (!string.IsNullOrEmpty(request["dclestext"]))
+                    serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))<= " + StringToDecimal(PageValidate.InputText(request["dclestext"], 50)) + "%";
 
                 string dt = "";
 
@@ -268,7 +282,21 @@ namespace XHD.CRM.Data
                
                 string Total;
                 string serchtxt = "1=1";
-                
+                if (!string.IsNullOrEmpty(request["khstext"]))
+                    serchtxt += " and CustomerName like N'%" + PageValidate.InputText(request["khstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["dzstext"]))
+                    serchtxt += " and address like N'%" + PageValidate.InputText(request["dzstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["dhstext"]))
+                    serchtxt += " and tel like N'%" + PageValidate.InputText(request["dhstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["sgstext"]))
+                    serchtxt += " and sgjl like N'%" + PageValidate.InputText(request["sgstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["ztstext"]))
+                    serchtxt += " and Stage_icon like N'%" + PageValidate.InputText(request["ztstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["dclbstext"]))
+                    serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))>= " + StringToDecimal( PageValidate.InputText(request["dclbstext"], 50)) + "%";
+                if (!string.IsNullOrEmpty(request["dclestext"]))
+                    serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))<= " + StringToDecimal(PageValidate.InputText(request["dclestext"], 50)) + "%";
+
 
 
                 string dt = "";
@@ -301,34 +329,42 @@ namespace XHD.CRM.Data
             if (request["Action"] == "del")
             {
                 //参数安全过滤
-                string c_id = PageValidate.InputText(request["id"], 50);
-
-                DataSet ds = ccpc.GetList(" id=" + int.Parse(c_id));
- 
-                    bool isdel = ccpc.Delete(int.Parse(c_id));
+                int sid = StringToInt(PageValidate.InputText(request["sid"], 50));
+                int pid = StringToInt(PageValidate.InputText(request["pid"], 50));
+                int vid = StringToInt(PageValidate.InputText(request["vid"], 50));
+                string wherestr = "";
+                //DataSet ds = ccpc.GetList(" id=" + int.Parse(c_id));
+                BLL.Crm_CEDetail_Version sorce = new BLL.Crm_CEDetail_Version();
+                if (sorce.GetList(" projectid=" + pid + " AND version=" + vid + " AND stageid=" + vid + "").Tables[0].Rows.Count > 0)
+                    context.Response.Write("false:sorce");
+                else
+                {
+                    bool isdel = ccpc.Delete(sid, pid, vid);
                     if (isdel)
                     {
                         //日志
                         string EventType = "施工项目删除";
-
-                        int UserID = emp_id;
-                        string UserName = empname;
-                        string IPStreet = request.UserHostAddress;
-                        int EventID = int.Parse(c_id);
-                        string EventTitle = ds.Tables[0].Rows[0]["id"].ToString();
-                        string Original_txt = null;
-                        string Current_txt = null;
-
-                        C_Sys_log log = new C_Sys_log();
-
-                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, null, Original_txt, Current_txt);
-
+                        
                         context.Response.Write("true");
+                        //int UserID = emp_id;
+                        //string UserName = empname;
+                        //string IPStreet = request.UserHostAddress;
+                        //int EventID = int.Parse(c_id);
+                        //string EventTitle = ds.Tables[0].Rows[0]["id"].ToString();
+                        //string Original_txt = null;
+                        //string Current_txt = null;
+
+                        //C_Sys_log log = new C_Sys_log();
+
+                        //log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, null, Original_txt, Current_txt);
+
+
                     }
                     else
                     {
                         context.Response.Write("false");
                     }
+                }
                 
 
             }
@@ -415,6 +451,19 @@ namespace XHD.CRM.Data
                 return 0;
             }
         }
+        private static string StringToDate(string code)
+        {
+            try
+            {
+                return DateTime.Parse(code).ToString("yyyy-MM-dd");
+            }
+            catch
+            {
+
+                return "1990-01-01";
+            }
+        }
+
         private static decimal StringToDecimal(string code)
         {
             try
