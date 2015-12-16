@@ -158,11 +158,16 @@
                         obj[n] = "";
                 }
                 // top.$.ligerDialog.error(obj.verid); //String ¹¹Ôìº¯Êý
-                       d = new Date(); 
-                       $("#T_versions_Show").val("("+obj.verid+")"+ formatTimebytype(d.getDate().toString(), 'yyyy-MM-dd'));
+                var date = new Date();
+                $("#T_versions_Show").val("(" + obj.verid + ")" + FormatDate(date));
                        $("#T_versions").val(obj.verid);
             }
         });
+        }
+
+        function FormatDate(strTime) {
+            var date = new Date(strTime);
+            return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
         }
 
         function loadForm(oaid, id, verid,sty) {  
