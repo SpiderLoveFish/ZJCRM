@@ -1,28 +1,38 @@
 <%@ Page Language="C#" AutoEventWireup="true" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
+      <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
+     <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-    <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
+    <link href="../../CSS/input.css" rel="stylesheet" />
 
-    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+  <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-    <script src="../../JS/XHD.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-
+    <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
+    <script src="../../JS/XHD.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+   
     <script type="text/javascript">
         var manager = "";
         var treemanager;
+        var InitSid = 1;//临时默认值
         $(function () {
             $("#layout1").ligerLayout({ leftWidth: 200, allowLeftResize: false, allowLeftCollapse: true, space: 2, heightDiff: -1 });
             $("#tree1").ligerTree({
@@ -31,11 +41,13 @@
                 idFieldName: 'id',
                 nameFieldName: 'CEStage_category',
                 //parentIDFieldName: 'pid',
+               
                 usericon: 'd_icon',
                 checkbox: false,
                 itemopen: false,
                 onSuccess: function () {
                     $(".l-first div:first").click();
+                  //  InitSid = onselect.id;//获取默认值
                 }
             });
 
@@ -115,12 +127,12 @@
                                     // { display: '评分完成', name: 'isChecked', width: 80 },
                                       // { display: '是否结案', name: 'IsClose', width: 80 },
                                     { display: '考核结果', name: 'AssTime', width: 60, type: 'float' },
-                                     { display: '考核时间', name: 'Cdate', width: 100, type: 'date' }
+                                     { display: '考核时间' + r.id, name: 'Cdate', width: 100, type: 'date' }
                                     
                             ],
                             usePager: false,
                             checkbox: false,
-                            url: "../../data/CRM_CEDetail.ashx?Action=Acgrid&pid=" + r.id,
+                            url: "../../data/CRM_CEDetail.ashx?Action=Acgrid&pid=" + r.id + "&sid=" + InitSid,
                             width: '99%', height: '100',
                             heightDiff: 0
                         })
@@ -140,6 +152,23 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
+                items.push({
+                    type: 'serchbtn',
+                    text: '高级搜索',
+                    icon: '../../images/search.gif',
+                    disable: true,
+                    click: function () {
+                        serchpanel();
+                    }
+                });
+                //items.push({ type: 'textbox', id: 'khstext', text: '客户：' });
+                //items.push({ type: 'textbox', id: 'dzstext', text: '地址：' });
+                //items.push({ type: 'textbox', id: 'dhstext', text: '电话：' });
+                //items.push({ type: 'textbox', id: 'sgstext', text: '施工监理：' });
+                //items.push({ type: 'textbox', id: 'ztstext', text: '状态：' });
+                //items.push({ type: 'textbox', id: 'dclbstext', text: '达成率(范围)：' });
+                //items.push({ type: 'textbox', id: 'dclestext', text: '~：' });
+                //items.push({ type: 'button', text: '搜索', icon: '../../images/search.gif', disable: true, click: function () { doserch() } });
 
                 $("#toolbar").ligerToolBar({
                     items: items
@@ -148,34 +177,65 @@
                 menu = $.ligerMenu({
                     width: 120, items: getMenuItems(data)
                 });
-                $("#stext").ligerTextBox({ width: 200 });
+                //$("#khstext").ligerTextBox({ width: 200 });
+                //$("#dzstext").ligerTextBox({ width: 200 });
+                //$("#dhstext").ligerTextBox({ width: 200 });
+                //$("#sgstext").ligerTextBox({ width: 200 });
+                //$("#ztstext").ligerTextBox({ width: 200 });
+                //$("#dclbstext").ligerTextBox({ width: 200 });
+                //$("#dclestext").ligerTextBox({ width: 200 });
                 $("#maingrid4").ligerGetGridManager().onResize();
             });
         }
 
+        function serchpanel() {
+            initSerchForm();
+            if ($(".az").css("display") == "none") {
+                $("#grid").css("margin-top", $(".az").height() + "px");
+                $("#maingrid4").ligerGetGridManager().onResize();
+               
+            }
+            else {
+                $("#grid").css("margin-top", "0px");
+                $("#maingrid4").ligerGetGridManager().onResize();
+                
+            }
+            
+        }
+        function initSerchForm() {
+            $("#khstext").ligerTextBox();
+            $("#dzstext").ligerTextBox();
+            $("#dhstext").ligerTextBox();
+            $("#sgjlstext").ligerTextBox();
+            $("#ztstext").ligerTextBox();
+            $("#dclbstext").ligerTextBox();
+            $("#dclestext").ligerTextBox();
+        }
+
+
         function onSelect(note) {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.showData({ Rows: [], Total: 0 });
-            var url = "../../data/Crm_CEDetail.ashx?Action=getstage&cid=" + note.data.id + "&rnd=" + Math.random();
-            manager.GetDataByURL(url);
+            InitSid = note.data.id;
+            var sendtxt = "&Action=getstage&cid=" + note.data.id + "&rnd=" + Math.random();
+            var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
+            // alert(serchtxt);
+            var manager = $("#maingrid4").ligerGetGridManager();
+            //var url = "../../data/Crm_CEDetail.ashx?Action=getstage&cid=" + note.data.id + "&rnd=" + Math.random();
+         
+            manager.GetDataByURL("../../data/Crm_CEDetail.ashx?" + serchtxt);
             checkedID = [];
         }
         //查询
         function doserch() {
-            var sendtxt = "&Action=grid&rnd=" + Math.random();
-            var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
-
+            var sendtxt = "&Action=getstage&cid="+InitSid+"&rnd=" + Math.random();
+            var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
+           // alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.GetDataByURL("../../data/Crm_CEDetail.ashx?" + serchtxt);
         }
 
-        //重置
-        function doclear() {
-            //var serchtxt = $("#serchform :input").reset();
-            $("#form1").each(function () {
-                this.reset();
-            });
-        }
+      
 
         var activeDialog = null;
         function f_openWindow(url, title, width, height) {
@@ -289,13 +349,20 @@
             }
              );
         }
-
+        function doclear() {
+            //var serchtxt = $("#serchform :input").reset();
+            $("#serchform").each(function () {
+                this.reset();
+                $(".l-selected").removeClass("l-selected");
+            });
+        }
 
 
     </script>
 </head>
 <body style="padding: 0px;overflow:hidden;">
     <form id="form1" onsubmit="return false">
+
         <div id="layout1" style="margin: -1px">
             <div position="left" title="考核类别">
                 <div id="treediv" style="width: 250px; height: 100%; margin: -1px; float: left; border: 1px solid #ccc; overflow: auto;">
@@ -304,9 +371,81 @@
             </div>
             <div position="center">
                 <div id="toolbar"></div>
+                 <div id="grid">
                 <div id="maingrid4" style="margin: -1px;"></div>
+                     </div>
             </div>
         </div>
     </form>
+       <div class="az">
+        <form id='serchform'>
+            <table style='width: 960px' class="bodytable1">
+                <tr>
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>客户姓名：</div>
+                    </td>
+                    <td>
+
+                        <input ltype='text' ligerui='{width:120}' type='text' id='khstext' name='khstext'  /></td>
+
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>客户地址：</div>
+                    </td>
+                    <td>
+                        <div style='width: 100px; float: left'>
+                            <input type='text' id='dzstext' name='dzstext' ltype='text' ligerui='{width:120}'  />
+                        </div>
+                    
+                    </td>
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>客户电话：</div>
+                    </td>
+                    <td>
+                        <div style='width: 100px; float: left'>
+                            <input type='text' id='dhstext' name='dhstext'   ltype='text' ligerui='{width:120}'  />
+                        </div>
+                       
+                    </td>
+                    <td>
+
+                        <input id='Button2' type='button' value='重置' style='width: 80px; height: 24px'
+                            onclick="doclear()" />
+                        <input id='Button1' type='button' value='搜索' style='width: 80px; height: 24px' onclick="doserch()" />
+                    </td> 
+                </tr>
+                <tr>
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>施工监理：</div>
+                    </td>
+                    <td>
+                        <input id='sgjlstext' name="sgjlstext" type='text'  ltype='text' ligerui='{width:120, nullText: "输入"}'}' /></td>
+
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>状态：</div>
+                    </td>
+                    <td>
+                        <div style='width: 100px; float: left'>
+                            <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui='{width:120}' />
+                        </div>
+                         
+                    </td>
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>达成率：</div>
+                    </td>
+                    <td>
+                        <div style='width: 100px; float: left'>
+                            <input type='text' id='dclbstext' name='dclbstext'    ltype='text' ligerui='{width:120}'  />
+                        </div>
+                        <div style='width: 98px; float: left'>
+                            <input type='text' id='dclestext' name='dclestext'    ltype='text' ligerui='{width:120}'  />
+                        </div>
+                    </td>
+
+                </tr>
+            
+            </table>
+        </form>
+    </div>
+
 </body>
 </html>

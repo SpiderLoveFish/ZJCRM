@@ -66,6 +66,15 @@ namespace XHD.BLL
 			
 			return dal.Delete(id);
 		}
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public bool Delete(int sid,int pid,int vid)
+        {
+
+            return dal.Delete(sid,pid,vid);
+        }
+
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>

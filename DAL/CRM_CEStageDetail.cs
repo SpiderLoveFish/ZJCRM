@@ -223,7 +223,7 @@ namespace XHD.DAL
         public DataSet GetList_Main(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select StageID,StageDetailID,Description,StageContent,B.CEStage_category,A.Cdate ");
+            strSql.Append("select StageID,StageDetailID,Description,StageContent,B.CEStage_category ");
             strSql.Append(" FROM CRM_CEStageDetail A  ");
             strSql.Append(" INNER JOIN  dbo.CRM_CEStage_category B ON A.StageID=B.id ");
             if (strWhere.Trim() != "")
