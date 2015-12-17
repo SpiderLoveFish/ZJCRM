@@ -89,6 +89,16 @@
     <Content Include="copyright.html" />
     <Content Include="CRM\Building\Building.aspx" />
     <Content Include="CRM\Building\Building_Add.aspx" />
+    <Content Include="CRM\ConsExam\CEStage.aspx" />
+    <Content Include="CRM\ConsExam\CEStage_category.aspx" />
+    <Content Include="CRM\ConsExam\CEStage_category_add.aspx" />
+    <Content Include="CRM\ConsExam\CEStage_Detail.aspx" />
+    <Content Include="CRM\ConsExam\CEStage_Detail_add.aspx" />
+    <Content Include="CRM\ConsExam\CEStage_add.aspx" />
+    <Content Include="CRM\ConsExam\CEDetail.aspx" />
+    <Content Include="CRM\ConsExam\CEDetail_add.aspx" />
+    <Content Include="CRM\ConsExam\CEScore.aspx" />
+    <Content Include="CRM\ConsExam\SelectCEStageCustomer.aspx" />
     <Content Include="CRM\Customer\Customer.aspx" />
     <Content Include="CRM\Customer\Customer_add.aspx" />
     <Content Include="CRM\Customer\Customer_Contact.aspx" />
@@ -243,6 +253,11 @@
     <Content Include="Data\public_help.ashx" />
     <Content Include="Data\public_data.ashx" />
     <Content Include="Data\qqMessageList.ashx" />
+    <Content Include="Data\CRM_CEStage.ashx" />
+    <Content Include="Data\CRM_CEStage_category.ashx" />
+    <Content Include="Data\CRM_CEStageDetail.ashx" />
+    <Content Include="Data\CRM_CEDetail.ashx" />
+    <Content Include="Data\CRM_CEScore.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -3504,6 +3519,21 @@
       <DependentUpon>base.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\CalendarViewFormat.cs" />
+    <Compile Include="Data\CRM_CEScore.ashx.cs">
+      <DependentUpon>CRM_CEScore.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CRM_CEDetail.ashx.cs">
+      <DependentUpon>CRM_CEDetail.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CRM_CEStageDetail.ashx.cs">
+      <DependentUpon>CRM_CEStageDetail.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CRM_CEStage_category.ashx.cs">
+      <DependentUpon>CRM_CEStage_category.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CRM_CEStage.ashx.cs">
+      <DependentUpon>CRM_CEStage.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Data\CRM_Contact.ashx.cs">
       <DependentUpon>CRM_Contact.ashx</DependentUpon>
     </Compile>

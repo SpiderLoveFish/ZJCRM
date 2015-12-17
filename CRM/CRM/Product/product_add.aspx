@@ -86,7 +86,7 @@
             if ($(form1).valid()) {
                 var arr = [];
                 arr.push(UE.getEditor('editor').getContent());
-                var sendtxt = "&Action=save&pid=" + getparastr("pid") + "&T_content=" + escape(arr);;
+                var sendtxt = "&Action=save&pid=" + getparastr("pid") + "&T_content=" + escape(arr);
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }
