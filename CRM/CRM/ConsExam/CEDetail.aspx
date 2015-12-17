@@ -111,9 +111,7 @@
                                     { display: '序号', width: 30, render: function (item, i) { return i + 1; } },
                                      { display: '项目编号', name: 'projectid', width: 60 },
                                       { display: '考核类型', name: 'CEStage_category', width: 120 },
-                                   // { display: '版本号', name: 'versions', width: 60 },
-                                    // { display: '评分完成', name: 'isChecked', width: 80 },
-                                      // { display: '是否结案', name: 'IsClose', width: 80 },
+                                 
                                     { display: '考核结果', name: 'AssTime', width: 60, type: 'float' },
                                      { display: '考核时间', name: 'Cdate', width: 100, type: 'date' }
                                     
