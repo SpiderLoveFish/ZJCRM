@@ -7,24 +7,20 @@
       <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
      <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-    <link href="../../CSS/input.css" rel="stylesheet" />
+    <link href="../../CSS/input.css"  type="text/css"  rel="stylesheet" />
 
   <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <script src="../../lib/jquery.form.js" type="text/javascript"></script>
+     <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+      <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
-    <script src="../../lib/jquery.form.js" type="text/javascript"></script>
+      <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
@@ -203,13 +199,13 @@
             
         }
         function initSerchForm() {
-            $("#khstext").ligerTextBox();
-            $("#dzstext").ligerTextBox();
-            $("#dhstext").ligerTextBox();
-            $("#sgjlstext").ligerTextBox();
-            $("#ztstext").ligerTextBox();
-            $("#dclbstext").ligerTextBox();
-            $("#dclestext").ligerTextBox();
+            $("#khstext").addClass("l-text");
+            $("#dzstext").addClass("l-text");
+            $("#dhstext").addClass("l-text");
+            $("#sgjlstext").addClass("l-text");
+            $("#ztstext").addClass("l-text");
+            $("#dclbstext").addClass("l-text");
+            $("#dclestext").addClass("l-text");
         }
 
 
@@ -359,6 +355,26 @@
 
 
     </script>
+    <style>
+        input 
+        /* 文本框、下来框、日期框、调整器都使用到这个 */
+.l-text { position: relative; border: 1px solid #AECAF0; height: 22px; line-height: 20px; width: 130px; background: white; }
+.l-text-over { border: 1px solid #9370db;}
+.l-text-focus { border: 1px solid #ffa500; }   
+.l-text-invalid { background: #FFEEEE url(../../ext/images/common/invalid-line.gif) repeat-x 60% 100%; border-color: #F77; }
+/*只读时边框*/
+.l-text-disabled { border-color: #AECAF0!important; background: #eee!important; }
+    /*只读时文本框*/
+    .l-text-disabled .l-text-field { background: #eee!important; }
+/* 编辑状态 */
+.l-text-editing { margin-top:-1px; }
+
+/* 表单文本框 input:text */
+.l-text-field { position: absolute; top: 2px; left: 1px; width: 108px; border: 0; margin: 0; outline: none; }
+/* 表单文本框 内容为空时 */
+.l-text-field-null { color: #C1C1C1; }
+
+    </style>
 </head>
 <body style="padding: 0px;overflow:hidden;">
     <form id="form1" onsubmit="return false">
@@ -386,7 +402,7 @@
                     </td>
                     <td>
 
-                        <input ltype='text' ligerui='{width:120}' type='text' id='khstext' name='khstext'  /></td>
+                        <input  ltype='text' ligerui='{width:120}' type='text' id='khstext' name='khstext'  /></td>
 
                     <td>
                         <div style='width: 60px; text-align: right; float: right'>客户地址：</div>
