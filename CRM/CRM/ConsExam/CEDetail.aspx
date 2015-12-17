@@ -1,25 +1,34 @@
 <%@ Page Language="C#" AutoEventWireup="true" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
+      <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
+     <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-    <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
+    <link href="../../CSS/input.css" rel="stylesheet" />
 
-    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+  <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-    <script src="../../JS/XHD.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-
+    <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
+    <script src="../../JS/XHD.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+   
     <script type="text/javascript">
         var manager = "";
         var treemanager;
@@ -194,6 +203,13 @@
             
         }
         function initSerchForm() {
+            $("#khstext").ligerTextBox();
+            $("#dzstext").ligerTextBox();
+            $("#dhstext").ligerTextBox();
+            $("#sgjlstext").ligerTextBox();
+            $("#ztstext").ligerTextBox();
+            $("#dclbstext").ligerTextBox();
+            $("#dclestext").ligerTextBox();
         }
 
 
@@ -346,6 +362,7 @@
 </head>
 <body style="padding: 0px;overflow:hidden;">
     <form id="form1" onsubmit="return false">
+
         <div id="layout1" style="margin: -1px">
             <div position="left" title="考核类别">
                 <div id="treediv" style="width: 250px; height: 100%; margin: -1px; float: left; border: 1px solid #ccc; overflow: auto;">
@@ -354,7 +371,9 @@
             </div>
             <div position="center">
                 <div id="toolbar"></div>
+                 <div id="grid">
                 <div id="maingrid4" style="margin: -1px;"></div>
+                     </div>
             </div>
         </div>
     </form>
@@ -366,14 +385,15 @@
                         <div style='width: 60px; text-align: right; float: right'>客户姓名：</div>
                     </td>
                     <td>
-                        <input type='text' id='khstext' name='khstext' ltype='text' ligerui='{width:120}' /></td>
+
+                        <input ltype='text' ligerui='{width:120}' type='text' id='khstext' name='khstext'  /></td>
 
                     <td>
                         <div style='width: 60px; text-align: right; float: right'>客户地址：</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
-                            <input type='text' id='dzstext' name='dzstext' />
+                            <input type='text' id='dzstext' name='dzstext' ltype='text' ligerui='{width:120}'  />
                         </div>
                     
                     </td>
@@ -382,7 +402,7 @@
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
-                            <input type='text' id='dhstext' name='dhstext'   ligerui='{width:97}' />
+                            <input type='text' id='dhstext' name='dhstext'   ltype='text' ligerui='{width:120}'  />
                         </div>
                        
                     </td>
@@ -398,14 +418,14 @@
                         <div style='width: 60px; text-align: right; float: right'>施工监理：</div>
                     </td>
                     <td>
-                        <input id='sgjlstext' name="sgjlstext" type='text' /></td>
+                        <input id='sgjlstext' name="sgjlstext" type='text'  ltype='text' ligerui='{width:120, nullText: "输入"}'}' /></td>
 
                     <td>
                         <div style='width: 60px; text-align: right; float: right'>状态：</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
-                            <input type='text' id='ztstext' name='ztstext' />
+                            <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui='{width:120}' />
                         </div>
                          
                     </td>
@@ -414,10 +434,10 @@
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
-                            <input type='text' id='dclbstext' name='dclbstext'   ligerui='{width:97}' />
+                            <input type='text' id='dclbstext' name='dclbstext'    ltype='text' ligerui='{width:120}'  />
                         </div>
                         <div style='width: 98px; float: left'>
-                            <input type='text' id='dclestext' name='dclestext'   ligerui='{width:96}' />
+                            <input type='text' id='dclestext' name='dclestext'    ltype='text' ligerui='{width:120}'  />
                         </div>
                     </td>
 

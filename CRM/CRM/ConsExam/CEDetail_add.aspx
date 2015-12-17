@@ -6,9 +6,10 @@
 <head >
     <title></title>
     <meta http-equiv="X-UA-Compatible" content="IE=8" />
+       <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-    <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
-    
+    <link href="../../CSS/input.css" rel="stylesheet" />
+
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
