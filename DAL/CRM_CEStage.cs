@@ -485,7 +485,36 @@ namespace XHD.DAL
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
             return DbHelperSQL.Query(strSql.ToString());
         }
-    
+
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetListCountScorce(string strWhere, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("SELECT COUNT(versions) AS ver,A.projectid,A.stageid ");
+             strSql.Append(" ,B.CEStage_category,B.TotalScorce,A.AssTime, ");
+             strSql.Append(" (a.AssTime/CASE WHEN B.TotalScorce=0 THEN 1 ELSE B.TotalScorce END)*100 AS dcl ");
+              strSql.Append(" FROM dbo.Crm_CEDetail A ");
+             strSql.Append(" INNER JOIN  dbo.CRM_CEStage_category B ON	 A.stageid =B.id ");
+ 
+           
+            strSql1.Append(" select count(versions) FROM Crm_CEDetail A ");
+           if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+                strSql1.Append(" where  " + strWhere);
+            }
+           strSql1.Append(" GROUP BY A.projectid ,A.stageid	 ,A.AssTime  ");
+
+           strSql.Append(" GROUP BY A.projectid ,A.stageid	 ,B.CEStage_category,B.TotalScorce,A.AssTime  ");
+
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+           
+            return DbHelperSQL.Query(strSql.ToString());
+        }
 
 		#endregion  ExtensionMethod
 	}

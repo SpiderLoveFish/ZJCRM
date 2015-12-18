@@ -11,7 +11,8 @@
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
 
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
+   <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
     <script src="../../lib/json2.js" type="text/javascript"></script>
@@ -19,6 +20,7 @@
     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
+        var manager = "";
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
@@ -98,6 +100,15 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
+                items.push({
+                    type: 'serchbtn',
+                    text: '高级搜索',
+                    icon: '../../images/search.gif',
+                    disable: true,
+                    click: function () {
+                        serchpanel();
+                    }
+                });
                 $("#toolbar").ligerToolBar({
                     items: items
 
@@ -109,6 +120,47 @@
                 $("#maingrid4").ligerGetGridManager().onResize();
             });
         }
+
+        function serchpanel() {
+            initSerchForm();
+            if ($(".az").css("display") == "none") {
+                $("#grid").css("margin-top", $(".az").height() + "px");
+                $("#maingrid4").ligerGetGridManager().onResize();
+
+            }
+            else {
+                $("#grid").css("margin-top", "0px");
+                $("#maingrid4").ligerGetGridManager().onResize();
+
+            }
+
+        }
+        function initSerchForm() {
+            $("#khstext").addClass("l-text");
+            $("#dzstext").addClass("l-text");
+            $("#dhstext").addClass("l-text");
+            $("#sgjlstext").addClass("l-text");
+            $("#ztstext").addClass("l-text");
+            $("#dclbstext").addClass("l-text");
+            $("#dclestext").addClass("l-text");
+        }
+
+        //查询
+        function doserch() {
+            var sendtxt = "&Action=grid&rnd=" + Math.random();
+            var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
+            //  alert(serchtxt);
+            var manager = $("#maingrid4").ligerGetGridManager();
+            manager.GetDataByURL("../../data/Crm_CEStage.ashx?" + serchtxt);
+        }
+        function doclear() {
+            //var serchtxt = $("#serchform :input").reset();
+            $("#serchform").each(function () {
+                this.reset();
+                $(".l-selected").removeClass("l-selected");
+            });
+        }
+
 
         var activeDialog = null;
         function f_openWindow(url, title, width, height) {
@@ -133,7 +185,13 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-            f_openWindow("crm/ConsExam/CEStage_ViewDetail.aspx?pid"+row.id, "明细查询", 700, 530);
+                f_openWindow("crm/ConsExam/CEStage_ViewDetail.aspx?pid=" + row.id
+                    + "&name=" + row.CustomerName
+                    + "&address=" + row.address
+                    + "&sgjl=" + row.sgjl
+                     + "&zf=" + row.TotalScorce
+                    + "&dcl=" + row.Scoring,
+                    "明细查询", 700, 530);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
@@ -228,15 +286,85 @@
     </style>
 
 </head>
-<body>
+<body style="padding: 0px;overflow:hidden;">
 
     <form id="form1" onsubmit="return false">
         <div>
             <div id="toolbar"></div>
-            
+              <div id="grid">
             <div id="maingrid4" style="margin: -1px;"></div>
+                  </div>
         </div>
     </form>
+      <div class="az">
+        <form id='serchform'>
+            <table style='width: 960px' class="bodytable1">
+                <tr>
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>客户姓名：</div>
+                    </td>
+                    <td>
+
+                        <input  ltype='text' ligerui='{width:120}' type='text' id='khstext' name='khstext'  /></td>
+
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>客户地址：</div>
+                    </td>
+                    <td>
+                        <div style='width: 100px; float: left'>
+                            <input type='text' id='dzstext' name='dzstext' ltype='text' ligerui='{width:120}'  />
+                        </div>
+                    
+                    </td>
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>客户电话：</div>
+                    </td>
+                    <td>
+                        <div style='width: 100px; float: left'>
+                            <input type='text' id='dhstext' name='dhstext'   ltype='text' ligerui='{width:120}'  />
+                        </div>
+                       
+                    </td>
+                    <td>
+                          <input id='Button1' type='button' value='搜索' style='width: 80px; height: 24px' onclick="doserch()" />
+                  
+                        <input id='Button2' type='button' value='重置' style='width: 80px; height: 24px'
+                            onclick="doclear()" />
+                        </td> 
+                </tr>
+                <tr>
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>施工监理：</div>
+                    </td>
+                    <td>
+                        <input id='sgjlstext' name="sgjlstext" type='text'  ltype='text' ligerui='{width:120, nullText: "输入"}'}' /></td>
+
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>状态：</div>
+                    </td>
+                    <td>
+                        <div style='width: 100px; float: left'>
+                            <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui='{width:120}' />
+                        </div>
+                         
+                    </td>
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>达成率：</div>
+                    </td>
+                    <td>
+                        <div style='width: 100px; float: left'>
+                            <input type='text' id='dclbstext' name='dclbstext'    ltype='text' ligerui='{width:120}'  />
+                        </div>
+                        <div style='width: 98px; float: left'>
+                            <input type='text' id='dclestext' name='dclestext'    ltype='text' ligerui='{width:120}'  />
+                        </div>
+                    </td>
+
+                </tr>
+            
+            </table>
+        </form>
+    </div>
 
 
 </body>

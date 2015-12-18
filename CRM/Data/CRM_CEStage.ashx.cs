@@ -128,6 +128,20 @@ namespace XHD.CRM.Data
                 context.Response.Write(dt);
 
             }
+            if (request["Action"] == "viewgrid")
+            {
+                string pid = request["pid"];
+                string serchtxt = "1=1";
+                if (!string.IsNullOrEmpty(request["pid"]))
+                    serchtxt += " and projectid =" + PageValidate.InputText(request["pid"], 50);
+
+                string dt = "";
+                 string Total;
+                 DataSet ds = ccpc.GetListCountScorce(serchtxt,out Total);
+                 dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "grid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
@@ -144,19 +158,21 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
-                //if (!string.IsNullOrEmpty(request["company"]))
-                //    serchtxt += " and product_category like N'%" + PageValidate.InputText(request["company"], 50) + "%'";
+                 if (!string.IsNullOrEmpty(request["khstext"]))
+                    serchtxt += " and CustomerName like N'%" + PageValidate.InputText(request["khstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["dzstext"]))
+                    serchtxt += " and address like N'%" + PageValidate.InputText(request["dzstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["dhstext"]))
+                    serchtxt += " and tel like N'%" + PageValidate.InputText(request["dhstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["sgstext"]))
+                    serchtxt += " and sgjl like N'%" + PageValidate.InputText(request["sgstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["ztstext"]))
+                    serchtxt += " and Stage_icon like N'%" + PageValidate.InputText(request["ztstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["dclbstext"]))
+                    serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))>= " + StringToDecimal(PageValidate.InputText(request["dclbstext"], 50)) + "%";
+                if (!string.IsNullOrEmpty(request["dclestext"]))
+                    serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))<= " + StringToDecimal(PageValidate.InputText(request["dclestext"], 50)) + "%";
 
-                //if (!string.IsNullOrEmpty(request["startdate_del"]))
-                //{
-                //    serchtxt += " and Delete_time >= '" + PageValidate.InputText(request["startdate_del"], 50) + "'";
-                //}
-                //if (!string.IsNullOrEmpty(request["enddate_del"]))
-                //{
-                //    DateTime enddate = DateTime.Parse(request["enddate_del"]);
-                //    serchtxt += " and Delete_time  <= '" + enddate.AddHours(23).AddMinutes(59).AddSeconds(59) + "'";
-                //}
-                //权限
 
 
                 string dt = "";

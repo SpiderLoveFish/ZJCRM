@@ -194,6 +194,10 @@ namespace XHD.BLL
         {
             return dal.GetListCustomer(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
+        public DataSet GetListCountScorce(string wherestr, out string Total)
+        {
+            return dal.GetListCountScorce(wherestr,out  Total);
+         }
         #endregion  ExtensionMethod
     }
 }

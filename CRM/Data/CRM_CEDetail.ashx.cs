@@ -142,7 +142,7 @@ namespace XHD.CRM.Data
                 int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
                 string sortname = request["sortname"];
                 string sortorder = request["sortorder"];
-
+                string style = PageValidate.InputText(request["style"], 50);
                 if (string.IsNullOrEmpty(sortname))
                     sortname = " id";
                 if (string.IsNullOrEmpty(sortorder))
@@ -153,20 +153,30 @@ namespace XHD.CRM.Data
                 //    );
 
                 string sorttext = " " + sortname + " " + sortorder;
-                string Total;
+                string Total, Totalcv;
                 string serchtxt = "1=1";
                 serchtxt += " and projectid=" + pid + "  AND	 StageID=" + sid;
                 serchtxt += "  AND versions=" + vid;
                 //  and isChecked=0 
-
+                string serchtxtcv = " 1=1 ";
 
                 string dt = "";
                 if (PageValidate.IsNumber(vid))
                 // dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
                 {
                     DataSet ds = ccpc.GetListCrm_CEDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
-                
-                    dt = Common.DataToJson.DataToJSON(ds);
+                    if (style == "View")
+                    {
+                        BLL.Crm_CEDetail_Version cv = new BLL.Crm_CEDetail_Version();
+
+                        serchtxtcv += " and stageid=" + sid + "  and projectid=" + pid + " and version=" + vid + "";
+
+                        DataSet dscv = cv.GetListCEDetail_VersionDetail(PageSize, PageIndex, serchtxtcv, " StageDetailID ", out Totalcv);
+
+                        DataSet dss = RetrunDetailDS(ds, dscv);
+                        dt = Common.DataToJson.DataToJSON(dss);
+                    }
+                    else dt = Common.DataToJson.DataToJSON(ds);
                 }
                 else
                 {
@@ -401,7 +411,70 @@ namespace XHD.CRM.Data
             }
             return str[str.Length - 1] == ',' ? str.ToString(0, str.Length - 1) : str.ToString();
         }
-        private static string GetTreeString(int Id, DataTable table)
+
+
+
+        private static DataSet RetrunDetailDS(DataSet ds, DataSet dscv)
+        {
+            
+            System.Text.StringBuilder sb    =new StringBuilder();
+            if (dscv == null) return ds;
+            else
+            {
+                sb.Append("&lt;table width=&quot;712&quot;&gt;&lt;tbody&gt;&lt;");
+                sb.Append("tr&gt;&lt;");
+                int tr = 0;
+                for (int i = 0; i < dscv.Tables[0].Rows.Count; i++)
+                {
+                    tr++;
+                    string aa = "";
+                    if (dscv.Tables[0].Rows[i]["ischecked"].ToString() == "0")
+                        aa = "span style=&quot;color:#ff0000&quot;&gt;X&lt;/span";
+                    else aa = "span style=&quot;color:#00b050&quot;&gt;√&lt;/span";
+                    sb.Append("td valign=&quot;top&quot; width=&quot;121&quot;&gt;" + dscv.Tables[0].Rows[i]["Description"].ToString() + " &nbsp;&lt;" + aa + "&gt;&lt;");
+                    sb.Append("/td&gt;&lt;");
+                    if (tr == 5)
+                    {
+                        sb.Append("/tr&gt;&lt;");
+                        sb.Append("tr&gt;&lt;");
+                        tr = 0;
+                    }
+                    if (i == dscv.Tables[0].Rows.Count - 1)
+                    {
+                        if (tr < 5)
+                            for (int c=tr+1; c <= 5; c++)
+                            {
+                                sb.Append("td valign=&quot;top&quot; width=&quot;121&quot;&gt;&lt;");
+                                sb.Append("/td&gt;&lt;");
+                                if(c==5)
+                                    sb.Append("/tr&gt;&lt;");
+                            }
+                    }
+
+
+
+                } 
+                sb.Append("/tbody&gt;&lt;");
+                sb.Append("/table&gt;&lt;p&gt; &lt;/p&gt;");
+                
+                try
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                         
+                        foreach (DataRow dw in ds.Tables[0].Rows)
+                        {
+                            dw["AssDescription"] = sb.ToString() + dw["AssDescription"].ToString();
+                            string dd = dw["AssDescription"].ToString();
+                        }
+                        ds.Tables[0].AcceptChanges();
+                    }
+                }
+                catch { }
+            }
+            return ds;
+        }
+            private static string GetTreeString(int Id, DataTable table)
         {
             DataRow[] rows = table.Select(string.Format("parentid={0}", Id));
 

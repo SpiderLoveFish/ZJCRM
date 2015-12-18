@@ -30,6 +30,7 @@
         var treemanager;
         var InitSid = 1;//临时默认值
         $(function () {
+
             $("#layout1").ligerLayout({ leftWidth: 200, allowLeftResize: false, allowLeftCollapse: true, space: 2, heightDiff: -1 });
             $("#tree1").ligerTree({
                 url: '../../data/crm_CEStage_category.ashx?Action=tree&rnd=' + Math.random(),
@@ -355,26 +356,7 @@
 
 
     </script>
-    <style>
-        input 
-        /* 文本框、下来框、日期框、调整器都使用到这个 */
-.l-text { position: relative; border: 1px solid #AECAF0; height: 22px; line-height: 20px; width: 130px; background: white; }
-.l-text-over { border: 1px solid #9370db;}
-.l-text-focus { border: 1px solid #ffa500; }   
-.l-text-invalid { background: #FFEEEE url(../../ext/images/common/invalid-line.gif) repeat-x 60% 100%; border-color: #F77; }
-/*只读时边框*/
-.l-text-disabled { border-color: #AECAF0!important; background: #eee!important; }
-    /*只读时文本框*/
-    .l-text-disabled .l-text-field { background: #eee!important; }
-/* 编辑状态 */
-.l-text-editing { margin-top:-1px; }
-
-/* 表单文本框 input:text */
-.l-text-field { position: absolute; top: 2px; left: 1px; width: 108px; border: 0; margin: 0; outline: none; }
-/* 表单文本框 内容为空时 */
-.l-text-field-null { color: #C1C1C1; }
-
-    </style>
+ 
 </head>
 <body style="padding: 0px;overflow:hidden;">
     <form id="form1" onsubmit="return false">
@@ -423,11 +405,11 @@
                        
                     </td>
                     <td>
-
+                            <input id='Button1' type='button' value='搜索' style='width: 80px; height: 24px' onclick="doserch()" />
+                  
                         <input id='Button2' type='button' value='重置' style='width: 80px; height: 24px'
                             onclick="doclear()" />
-                        <input id='Button1' type='button' value='搜索' style='width: 80px; height: 24px' onclick="doserch()" />
-                    </td> 
+                      </td> 
                 </tr>
                 <tr>
                     <td>
