@@ -90,7 +90,7 @@
             toolbar();
         });
         function toolbar() {
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=44&rnd=" + Math.random(), function (data, textStatus) {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=125&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
                 var items = [];
                 var arr = data.Items;
@@ -128,8 +128,20 @@
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
-
-
+        //明细
+        function detail() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+            f_openWindow("crm/ConsExam/CEStage_ViewDetail.aspx?pid"+row.id, "明细查询", 700, 530);
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
+            }
+        //施工进度
+        function process() {
+           // f_openWindow("crm/ConsExam/CEStage_add.aspx", "新增客户", 700, 330);
+        }
         function add() {
             f_openWindow("crm/ConsExam/CEStage_add.aspx", "新增客户", 700, 330);
         }
