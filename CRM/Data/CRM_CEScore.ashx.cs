@@ -44,6 +44,9 @@ namespace XHD.CRM.Data
                 //model.Remarks = Common.PageValidate.InputText(request["T_remarks"], 250);
                 if (detailid == "undefined"  )
                     detailid = "";
+
+
+
                 if (style=="edit")
                 {
 
@@ -77,23 +80,30 @@ namespace XHD.CRM.Data
                     sortname = " StageDetailID";
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
-
+                bool isexist = ccpc.Exists(StringToInt(sid), StringToInt(pid), StringToInt(verid));
+             
                 string sorttext = " " + sortname + " " + sortorder;
                 string Total;
                 string serchtxt = "1=1";
-                if (style=="add")
-                serchtxt += " and stageid=" + sid + " ";
-                else if (style == "edit")
-                    serchtxt += " and stageid=" + sid + "  and projectid=" + pid + " and version=" + verid + "";
+                //if (style=="add")
+                //serchtxt += " and stageid=" + sid + " ";
+                //else if (style == "edit")
+                //    serchtxt += " and stageid=" + sid + "  and projectid=" + pid + " and version=" + verid + "";
                
+                if(isexist)
+                    serchtxt += " and stageid=" + sid + "  and projectid=" + pid + " and version=" + verid + "";
+                else serchtxt += " and stageid=" + sid + " ";
+
                 string dt = "";
-                if (style == "add")
-                {
+                //if (style == "add")
+                //{
+                 if(!isexist)
+                 {
                     DataSet ds = ccpc.GetListDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
                     dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
 
                 }
-                else if (style == "edit")
+                else //if (style == "edit")
                 {
                     DataSet ds = ccpc.GetListCEDetail_VersionDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
                     dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);

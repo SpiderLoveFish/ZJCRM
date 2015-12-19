@@ -248,15 +248,15 @@
                 var sid = getparastr("sid");
                 var pid = getparastr("pid");
                 var verid = $("#T_versions").val();
-                if (getparastr("style") == "add")
-                { top.$.ligerDialog.error("新增状态下不允许修改！！！"); }
-                else
-                {
+                //if (getparastr("style") == "add")
+                //{ top.$.ligerDialog.error("新增状态下不允许修改！！！"); }
+                //else
+                //{
                     if (verid == "")
                         top.$.ligerDialog.error("请选择一个有效版本号维护！！！");
                     else
                         f_openWindow('crm/ConsExam/CEScore.aspx?&sid=' + sid + '&pid=' + pid + '&vid=' + verid + '&style=edit', "修改评分", 790, 500);
-                }
+                //}
             }
 
             function add() {

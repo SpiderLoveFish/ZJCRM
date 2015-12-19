@@ -37,7 +37,26 @@ namespace XHD.DAL
 
 			return DbHelperSQL.Exists(strSql.ToString(),parameters);
 		}
+        /// <summary>
+        /// 是否存在该记录
+        /// </summary>
+        public bool Exists(int sid, int pid, int vid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select count(1) from Crm_CEDetail_Version");
+            strSql.Append(" where stageid=@sid   and version=@vid AND projectid=@pid");
+            SqlParameter[] parameters = {
+					new SqlParameter("@sid", SqlDbType.Int,4),
+					new SqlParameter("@pid", SqlDbType.Int,4),
+					new SqlParameter("@vid", SqlDbType.Int,4),
+                                     };
+            parameters[0].Value = sid;
+            parameters[1].Value = pid;
+            parameters[2].Value = vid;
+        
 
+            return DbHelperSQL.Exists(strSql.ToString(), parameters);
+        }
 
         public int UpdateCrm_CEDetail_Version(string style,int stageid,string strsdetailid,int pid,int vid)
         {

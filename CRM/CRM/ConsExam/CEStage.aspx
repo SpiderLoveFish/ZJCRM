@@ -161,7 +161,20 @@
             });
         }
 
-
+        var activeDialogs = null;
+        function f_openWindowview(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+                         
+                        {
+                            text: '¹Ø±Õ', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialogs = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
         var activeDialog = null;
         function f_openWindow(url, title, width, height) {
             var dialogOptions = {
@@ -185,7 +198,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("crm/ConsExam/CEStage_ViewDetail.aspx?pid=" + row.id
+                f_openWindowview("crm/ConsExam/CEStage_ViewDetail.aspx?pid=" + row.id
                     + "&name=" + row.CustomerName
                     + "&address=" + row.address
                     + "&sgjl=" + row.sgjl

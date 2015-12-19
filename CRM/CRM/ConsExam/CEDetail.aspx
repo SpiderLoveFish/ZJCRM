@@ -57,8 +57,8 @@
 
             $("#maingrid4").ligerGrid({
                 columns: [
-     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
-      { display: '客户姓名', name: 'CustomerName', width: 80, align: 'left' },
+       { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
+                  { display: '客户姓名', name: 'CustomerName', width: 80, align: 'left' },
                        { display: '客户电话', name: 'tel', width: 100, align: 'left' },
                         { display: '客户地址', name: 'address', width: 250, align: 'left' },
                       { display: '施工监理', name: 'sgjl', width: 80, align: 'left' },

@@ -495,8 +495,8 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("SELECT COUNT(versions) AS ver,A.projectid,A.stageid ");
-             strSql.Append(" ,B.CEStage_category,B.TotalScorce,A.AssTime, ");
-             strSql.Append(" (a.AssTime/CASE WHEN B.TotalScorce=0 THEN 1 ELSE B.TotalScorce END)*100 AS dcl ");
+             strSql.Append(" ,B.CEStage_category,B.TotalScorce  ");
+             //strSql.Append(" ,A.AssTime,(a.AssTime/CASE WHEN B.TotalScorce=0 THEN 1 ELSE B.TotalScorce END)*100 AS dcl ");
               strSql.Append(" FROM dbo.Crm_CEDetail A ");
              strSql.Append(" INNER JOIN  dbo.CRM_CEStage_category B ON	 A.stageid =B.id ");
  
@@ -507,9 +507,9 @@ namespace XHD.DAL
                 strSql.Append(" where " + strWhere);
                 strSql1.Append(" where  " + strWhere);
             }
-           strSql1.Append(" GROUP BY A.projectid ,A.stageid	 ,A.AssTime  ");
+           strSql1.Append(" GROUP BY A.projectid ,A.stageid	   ");
 
-           strSql.Append(" GROUP BY A.projectid ,A.stageid	 ,B.CEStage_category,B.TotalScorce,A.AssTime  ");
+           strSql.Append(" GROUP BY A.projectid ,A.stageid	 ,B.CEStage_category,B.TotalScorce   ");
 
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
            

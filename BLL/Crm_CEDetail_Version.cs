@@ -31,6 +31,14 @@ namespace XHD.BLL
 			return dal.Exists(id);
 		}
 
+        /// <summary>
+        /// 是否存在该记录
+        /// </summary>
+        public bool Exists(int sid, int pid, int vid)
+        {
+            return dal.Exists(sid,pid,vid);
+        }
+
         public int RunProcedureComputerSUM(int sid, int pid, int vid)
         {
             return dal.RunProcedureComputerSUM(sid,pid,vid);
