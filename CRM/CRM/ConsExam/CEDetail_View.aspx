@@ -59,7 +59,7 @@
             $("#T_Stage").val(getparastr("sid") + "-" + getparastr("sname"));
             $('#T_versions').val(getparastr("vid"));
 
-            loadForm(getparastr("sid"), getparastr("pid"), getparastr("vid"), "edit");
+            loadForm(getparastr("sid"), getparastr("pid"), getparastr("vid"), "View");
 
                
             
