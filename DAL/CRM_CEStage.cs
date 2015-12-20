@@ -470,7 +470,7 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + "  id AS CustomerID,tel,Customer AS CustomerName,Emp_sg AS sgjl, ");
+            strSql.Append(" top " + PageSize + "  id AS CustomerID,tel,Customer AS CustomerName,Emp_sg AS sgjl,address, ");
             strSql.Append(" Emp_id_sg AS sgjlid,Emp_sj AS sjs,Emp_id_sj AS sjsid, ");
             strSql.Append(" Employee AS ywy,Employee_id AS ywyid FROM CRM_Customer ");
             strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_Customer ");

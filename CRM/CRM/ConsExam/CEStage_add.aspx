@@ -41,7 +41,7 @@
                
             }
             else
-            $('#T_company').ligerComboBox({ width: 196, onBeforeOpen: f_selectContact });
+            $('#T_company').ligerComboBox({ width: 180, onBeforeOpen: f_selectContact });
           
             
         })

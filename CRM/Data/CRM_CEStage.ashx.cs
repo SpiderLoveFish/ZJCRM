@@ -118,7 +118,9 @@ namespace XHD.CRM.Data
                 string Total;
                 string serchtxt = "1=1";
                serchtxt +=" and id not in(SELECT CustomerID FROM dbo.CRM_CEStage) ";
-               
+               if (!string.IsNullOrEmpty(request["company"]))
+                   serchtxt += " and Customer like N'%" + PageValidate.InputText(request["company"], 255) + "%'";
+
 
                 string dt = "";
 
