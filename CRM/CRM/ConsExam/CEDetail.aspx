@@ -141,7 +141,7 @@
             $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
         });
         function toolbar() {
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=124&rnd=" + Math.random(), function (data, textStatus) {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=136&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
                 var items = [];
                 var arr = data.Items;

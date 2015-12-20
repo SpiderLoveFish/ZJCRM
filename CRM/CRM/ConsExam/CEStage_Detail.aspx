@@ -107,7 +107,7 @@
             $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
         });
         function toolbar() {
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=39&rnd=" + Math.random(), function (data, textStatus) {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=134&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
                 var items = [];
                 var arr = data.Items;
