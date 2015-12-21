@@ -29,7 +29,8 @@
             $("#sgjlstext").ligerTextBox(); $("#sgjlstext").val(getparastr("sgjl"))
             $("#dclstext").ligerTextBox(); $("#dclstext").val(getparastr("dcl"))
             $("#khzfstext").ligerTextBox(); $("#khzfstext").val(getparastr("zf"))
-            $("#khdzstext").ligerTextBox(); $("#khdzstext").val(getparastr("adress"))
+            $("#khdzstext").ligerTextBox(); $("#khdzstext").val(getparastr("address"))
+            $("#khdfstext").ligerTextBox(); $("#khdfstext").val(getparastr("df"))
 
 
             $("#maingrid4").ligerGrid({
@@ -37,9 +38,10 @@
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                      
                     { display: '考核项目', name: 'CEStage_category', width: 160 },
+                    { display: '考核得分', name: 'AssTime', width: 60,type:"float" },
                     { display: '考核满分', name: 'TotalScorce', width: 100 },
                     //{ display: '类别编号', name: 'StageID', width: 60 },
-                    //{ display: '达成率', name: 'dcl', width: 100 },
+                   { display: '达成率%', name: 'dcl', width: 100, type: "float" },
                       { display: '考核次数', name: 'ver', width: 100 }
                    
 
@@ -149,11 +151,13 @@
                         <input  ltype='text' ligerui='{width:100,disabled:true}' type='text' id='sgjlstext' name='sgjlstext'  /></td>
 
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>考核总分：</div>
+                        <div style='width: 80px; text-align: right; float: right'>得分/总分：</div>
                     </td>
                     <td>
-                        <div style='width: 100px; float: left'>
-                            <input type='text' id='khzfstext' name='khzfstext' ltype='text' ligerui='{width:100,disabled:true}'  />
+                        <div style='width: 60px; float: left'>
+                            <input type='text' id='khdfstext' name='khdfstext' ltype='text' ligerui='{width:45,disabled:true}'  />
+                        </div>  <div style='width: 20px; float: left'>/</div><div style='width: 45px; float: left'>
+                            <input type='text' id='khzfstext' name='khzfstext' ltype='text' ligerui='{width:45,disabled:true}'  />
                         </div>
                     
                     </td>

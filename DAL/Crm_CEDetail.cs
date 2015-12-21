@@ -313,7 +313,7 @@ namespace XHD.DAL
 				}
 				if(row["AssTime"]!=null && row["AssTime"].ToString()!="")
 				{
-					model.AssTime=int.Parse(row["AssTime"].ToString());
+                    model.AssTime = decimal.Parse(row["AssTime"].ToString());
 				}
 				if(row["isChecked"]!=null && row["isChecked"].ToString()!="")
 				{

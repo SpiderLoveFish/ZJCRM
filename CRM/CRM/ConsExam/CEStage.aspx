@@ -203,7 +203,8 @@
                     + "&address=" + row.address
                     + "&sgjl=" + row.sgjl
                      + "&zf=" + row.TotalScorce
-                    + "&dcl=" + row.Scoring,
+                    + "&dcl=" + row.Scoring
+                    + "&df=" + row.sum_Score,
                     "明细查询", 700, 530);
             } else {
                 $.ligerDialog.warn('请选择行！');

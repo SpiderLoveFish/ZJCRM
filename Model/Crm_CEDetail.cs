@@ -14,7 +14,7 @@ namespace XHD.Model
 		private int? _projectid;
 		private int? _versions;
 		private int? _stageid;
-		private int? _asstime;
+		private decimal? _asstime;
 		private bool _ischecked= false;
 		private string _assdescription;
 		private bool _isclose= false;
@@ -53,7 +53,7 @@ namespace XHD.Model
 		/// <summary>
 		/// 考核次数
 		/// </summary>
-		public int? AssTime
+        public decimal? AssTime
 		{
 			set{ _asstime=value;}
 			get{return _asstime;}
