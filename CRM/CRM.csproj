@@ -99,6 +99,7 @@
     <Content Include="CRM\ConsExam\CEDetail_add.aspx" />
     <Content Include="CRM\ConsExam\CEScore.aspx" />
     <Content Include="CRM\ConsExam\CEDetail_View.aspx" />
+    <Content Include="CRM\ConsExam\CERep_Schedule_bak.aspx" />
     <Content Include="CRM\ConsExam\CERep_Schedule.aspx" />
     <Content Include="CRM\ConsExam\SelectCEStageCustomer.aspx" />
     <Content Include="CRM\Customer\Customer.aspx" />

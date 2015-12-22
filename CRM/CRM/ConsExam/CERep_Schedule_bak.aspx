@@ -31,49 +31,39 @@
             $(window).resize(function () {
                 initLayout();
             });
-            var urlheadcol = "../../data/CERep_Schedule.ashx?Action=getprogrid&rnd=" + Math.random();
+            var urlheadcol = "../../data/CERep_Schedule.ashx?Action=getheadcol&rnd=" + Math.random();
             $.getJSON(urlheadcol,
             function (json, textStatus)
             {
                 var colnames = "";
-                
-                for (var i in json.Rows[0]) { //在这里读json的列名，当作表格的列名
-                    //for (var i = 0; i < json.Rows.length; i++) {
+               // $.ligerDialog.warn(json);
+               // for (var i in json.Rows[0])  //在这里读json的列名，当作表格的列名
+                    for (var i = 0; i < json.Rows.length; i++) {
                         //display: '序号', //表头列显示的文本,支持html 
                         ////表头内容自定义函数 
                         //headerRender: function (column) { 
                         //    return "<b>" + column.display + "</b>"; 
-                    //}, json.Rows[i]["testid"]
-                     
-                    
-                        colnames += ",{name:'" + i + "',display:'" + i + "', width: 60 " +
-                         " }";
-                      
-                    //else {
-                    //    colnames += ",{name:'" + i + "',display:'" + i + "', width: 35 " +
-                    //        ", render: function (item) {" +
-                    //        "   return \"<div class='abc'>"+i+"</div>\";" +
-                    //        "}" +
-                    //" }";
-                    //}
+                        //}, 
+                        colnames += ",{name:'" + json.Rows[i]["testid"] + "',display:'" + json.Rows[i]["testname"] + "', width: 35}";
             }colnames=colnames.substr(1,colnames.length);
             //$.ligerDialog.warn(colnames);
             j=json;
             eval(
+
                     "grid=$('#maingrid4').ligerGrid({" +
 
                     "checkbox: false," +
-                    
+                    "delayLoad: true, "+
                     "columns:[" + colnames + "]," +  //然后么拼字符串                        
-              
-                     "data:j,"+    //这么写适合不分页的grid,还少读一次数据库
+                
+                    //"data:j,"+    //这么写适合不分页的grid,还少读一次数据库
                     //" + urlheadcol + "
-                    //"url:'"+urlheadcol+"'," +
+                    "url:''," +
                     "heightDiff: -1," +
                     "dataAction:'server'," +
                     " isScroll:true," +
                  
-                    "pageSize:15,pageSizeOptions: [15, 20, 30, 50, 100]" +
+                    "pageSize:10,pageSizeOptions: [10, 15, 20, 30, 50, 100]" +
 
                     "});"
 
@@ -111,6 +101,7 @@
             //        return false;
             //    }
             //});
+            $(".l-grid-hd-cell-text").css("height", "auto")
             
            
         });

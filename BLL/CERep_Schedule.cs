@@ -185,6 +185,11 @@ namespace XHD.BLL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
+
+        public DataSet RunProcedureView_Schedule(out string Total)
+        {
+            return dal.RunProcedureView_Schedule(out Total);
+        }
          /// <summary>
         /// 获得表头数据列表
         /// </summary>

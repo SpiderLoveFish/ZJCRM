@@ -112,7 +112,15 @@ namespace XHD.CRM.Data
                 }
                 context.Response.Write(dt);
             }
-            
+            if (request["Action"] == "getprogrid")
+            {
+                string dt = "";
+                string Total="";
+                DataSet ds = ccpc.RunProcedureView_Schedule(out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "grid")
             {
                 

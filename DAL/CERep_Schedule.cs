@@ -415,6 +415,18 @@ namespace XHD.DAL
             return DbHelperSQL.Query(strSql.ToString());
         }
 
+        public DataSet RunProcedureView_Schedule(out string Total)
+        {
+            SqlParameter[] parameters = {
+				 
+                                     };
+
+            string sql = "SELECT COUNT(1) FROM testxm";
+            DataSet ds = DbHelperSQL.RunProcedure("USP_View_Schedule", parameters, "schedule");
+            Total = DbHelperSQL.Query(sql).Tables[0].Rows[0][0].ToString();
+           
+            return ds;
+        }
 
 
         /// <summary>
