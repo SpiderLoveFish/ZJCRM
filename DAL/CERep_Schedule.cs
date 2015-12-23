@@ -415,18 +415,53 @@ namespace XHD.DAL
             return DbHelperSQL.Query(strSql.ToString());
         }
 
+        //public DataSet RunProcedureView_Schedule(out string Total)
+        //{
+        //    SqlParameter[] parameters = {
+				 
+        //                             };
+
+        //    string sql = "SELECT COUNT(1) FROM testxm";
+        //    DataSet ds = DbHelperSQL.RunProcedure("USP_View_Schedule", parameters, "schedule");
+        //    Total = DbHelperSQL.Query(sql).Tables[0].Rows[0][0].ToString();
+           
+        //    return ds;
+        //}
+
         public DataSet RunProcedureView_Schedule(out string Total)
         {
             SqlParameter[] parameters = {
-				 
-                                     };
+					new SqlParameter("@TName", SqlDbType.Text),
+                    new SqlParameter("@GColumn", SqlDbType.Text),
+                    new SqlParameter("@RC", SqlDbType.Text),
+                     new SqlParameter("@RCValue", SqlDbType.Text),
+                      new SqlParameter("@RCValues", SqlDbType.Text),
+                        new SqlParameter("@sql_where", SqlDbType.Text)
+			};
+            parameters[0].Value = "KHJD_LIST_VIEW_LIST";
+             parameters[1].Value = "CID";
+             parameters[2].Value = "XMMC";
+             parameters[3].Value = "Cpro,Cname";
+             parameters[4].Value = "(jdys+';项目:'+XMMC+';'+Cname+';'+remark+';'+CONVERT(VARCHAR(20),lrrq,120))";
+             parameters[5].Value = "WHERE 1=1";
+             string sql = "select  COUNT(1)  from (SELECT DISTINCT cid FROM OLD_XCZS.dbo.KHJD_LIST_VIEW_LIST)T	";
 
-            string sql = "SELECT COUNT(1) FROM testxm";
-            DataSet ds = DbHelperSQL.RunProcedure("USP_View_Schedule", parameters, "schedule");
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("EXEC OLD_XCZS.dbo.USP_View_Schedule @TName = 'KHJD_LIST_VIEW_LIST', -- varchar(20) ");
+            sb.AppendLine("    @GColumn = 'CID', -- varchar(20) ");
+            sb.AppendLine("    @RC = 'XMMC', -- varchar(20) ");
+            sb.AppendLine("	@RCValue = 'Cpro,Cname', -- varchar(20) ");
+            sb.AppendLine("    @RCValues = '(jdys+'';项目:''+XMMC+'';''+Cname+'';''+remark+'';''+CONVERT(VARCHAR(20),lrrq,120))', -- varchar(20) ");
+            sb.AppendLine("    @sql_where = N'WHERE 1=1' ");
+            sb.AppendLine(" ");
+            DataSet ds = DbHelperSQL.RunProcedure("OLD_XCZS.dbo.USP_View_Schedule", 
+                parameters,
+                "schedule");
             Total = DbHelperSQL.Query(sql).Tables[0].Rows[0][0].ToString();
-           
+
             return ds;
         }
+
 
 
         /// <summary>

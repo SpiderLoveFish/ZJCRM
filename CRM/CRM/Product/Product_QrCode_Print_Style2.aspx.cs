@@ -18,7 +18,8 @@ namespace XHD.CRM.CRM.Product
             {
                 DataTable dt = new DataTable();
                 var sb = new System.Text.StringBuilder();
-                sb.AppendLine("SELECT ROW_NUMBER() OVER (ORDER BY product_id) as xh,product_id ,  ");
+                sb.AppendLine("SELECT ROW_NUMBER() OVER (ORDER BY product_id) as xh, ");
+                sb.AppendLine(" product_id ,c_code,  ");
                 sb.AppendLine("                          product_name ,  ");
                 sb.AppendLine("                          category_id ,  ");
                 sb.AppendLine("                          category_name ,  ");
@@ -114,7 +115,10 @@ namespace XHD.CRM.CRM.Product
                 prid1 = Convert.ToInt32(DataBinder.Eval(e.Item.DataItem, "product_id"));
             }
             catch { }
-            lbcp.Text = prid1.ToString("0000");
+            string code = Convert.ToString(DataBinder.Eval(e.Item.DataItem, "c_code"));
+            if (code == "")
+                lbcp.Text = prid1.ToString("0000");
+            else lbcp.Text = code.ToString().PadLeft(4,'0');
            
             //if (!string.IsNullOrWhiteSpace(Convert.ToString(DataBinder.Eval(e.Item.DataItem, "id3"))))
             //{

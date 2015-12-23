@@ -45,9 +45,9 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into CRM_product(");
-            strSql.Append("product_name,category_id,category_name,specifications,status,unit,remarks,price,isDelete,Delete_time,t_content,url,InternalPrice	 ,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand )");
+            strSql.Append("product_name,category_id,category_name,specifications,status,unit,remarks,price,isDelete,Delete_time,t_content,url,InternalPrice	 ,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand,C_code )");
             strSql.Append(" values (");
-            strSql.Append("@product_name,@category_id,@category_name,@specifications,@status,@unit,@remarks,@price,@isDelete,@Delete_time,@t_content,@url,@nbj,@gys,@xh,@xl,@zt,@pp)");
+            strSql.Append("@product_name,@category_id,@category_name,@specifications,@status,@unit,@remarks,@price,@isDelete,@Delete_time,@t_content,@url,@nbj,@gys,@xh,@xl,@zt,@pp,@C_code )");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
 					new SqlParameter("@product_name", SqlDbType.VarChar,250),
@@ -67,7 +67,8 @@ namespace XHD.DAL
                     new SqlParameter("@gys", SqlDbType.VarChar,250),
 					new SqlParameter("@zt", SqlDbType.VarChar,250),
                     new SqlParameter("@pp", SqlDbType.VarChar,250),
-                    new SqlParameter("@url", SqlDbType.VarChar,250)};
+                    new SqlParameter("@url", SqlDbType.VarChar,250),
+                    new SqlParameter("@C_code", SqlDbType.VarChar,250)};
             parameters[0].Value = model.product_name;
             parameters[1].Value = model.category_id;
             parameters[2].Value = model.category_name;
@@ -86,6 +87,7 @@ namespace XHD.DAL
             parameters[15].Value = model.zt;
             parameters[16].Value = model.pp;
             parameters[17].Value = model.url;
+            parameters[18].Value = model.C_code;
 
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
@@ -119,7 +121,8 @@ namespace XHD.DAL
             strSql.Append("ProSeries=@xl,");
             strSql.Append("Themes=@zt,");
             strSql.Append("Brand=@pp,");
-            strSql.Append("url=@url");
+            strSql.Append("url=@url,");
+            strSql.Append("C_code=@C_code");
 
             strSql.Append(" where product_id=@product_id");
             SqlParameter[] parameters = {
@@ -139,7 +142,9 @@ namespace XHD.DAL
                     new SqlParameter("@gys", SqlDbType.VarChar,250),
 					new SqlParameter("@zt", SqlDbType.VarChar,250),
                     new SqlParameter("@pp", SqlDbType.VarChar,250),
-                    new SqlParameter("@url", SqlDbType.VarChar,250)};
+                    new SqlParameter("@url", SqlDbType.VarChar,250),
+                   new SqlParameter("@C_code", SqlDbType.VarChar,250)
+                                        };
             parameters[0].Value = model.product_name;
             parameters[1].Value = model.category_id;
             parameters[2].Value = model.category_name;
@@ -157,6 +162,7 @@ namespace XHD.DAL
             parameters[14].Value = model.zt;
             parameters[15].Value = model.pp;
             parameters[16].Value = model.url;
+            parameters[17].Value = model.C_code;
 
             int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -239,7 +245,7 @@ namespace XHD.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select top 1 product_id,product_name,category_id,category_name,specifications,status,unit,remarks,price,isDelete,Delete_time,t_content,url from CRM_product ");
+            strSql.Append("select top 1 product_id,product_name,category_id,category_name,specifications,status,unit,remarks,price,isDelete,Delete_time,t_content,url,C_code from CRM_product ");
             strSql.Append("  ,InternalPrice,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand ");
             strSql.Append(" where product_id=@product_id");
             SqlParameter[] parameters = {
@@ -327,6 +333,10 @@ namespace XHD.DAL
                 {
                     model.pp = ds.Tables[0].Rows[0]["Brand"].ToString();
                 }
+                if (ds.Tables[0].Rows[0]["C_code"] != null && ds.Tables[0].Rows[0]["C_code"].ToString() != "")
+                {
+                    model.pp = ds.Tables[0].Rows[0]["C_code"].ToString();
+                }
                 return model;
             }
             else
@@ -342,7 +352,7 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select product_id,product_name,category_id,category_name,specifications,status,unit,remarks,price,isDelete,Delete_time,t_content,url ");
-            strSql.Append("  ,InternalPrice,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand ");
+            strSql.Append("  ,InternalPrice,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand,C_code ");
             strSql.Append(" FROM CRM_product ");
             if (strWhere.Trim() != "")
             {
@@ -363,7 +373,7 @@ namespace XHD.DAL
                 strSql.Append(" top " + Top.ToString());
             }
             strSql.Append(" product_id,product_name,category_id,category_name,specifications,status,unit,remarks,price,isDelete,Delete_time,t_content,url ");
-            strSql.Append("  ,InternalPrice,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand ");
+            strSql.Append("  ,InternalPrice,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand,C_code ");
             strSql.Append(" FROM CRM_product ");
             if (strWhere.Trim() != "")
             {

@@ -119,6 +119,7 @@
                     $("#T_xl").val(obj.ProSeries);
                     $("#T_zt").val(obj.Themes);
                     $("#T_pp").val(obj.Brand);
+                    $("#C_code").val(obj.C_code);
                 }
             });
         }
@@ -215,10 +216,23 @@
                 <td >
                     <input type='text' id="T_gys" name="T_gys" ltype="text" ligerui="{width:280}"   /></td>
            <td>
-                    <div align="left" style="width: 60px">内部价(元)：</div>
+                    <div align="left" style="width: 60px">内部价：</div>
                 </td>
                 <td>
                     <input type="text" id="T_nbj" name="T_nbj" value="0.00" ltype='text' onchange="set_tomoney_nbj(this.value)" style="text-align:right" ligerui="{width:280,number:true}" validate="{required:true}" /></td>
+               
+                  </tr>
+                         <tr>
+                <td>
+                    <div align="left" style="width:60px">物料代码：</div>
+                </td>
+                <td >
+                    <input type='text' id="C_code" name="C_code" ltype="text" ligerui="{width:280}"   /></td>
+           <td>
+                    <div align="left" style="width: 60px"></div>
+                </td>
+                <td>
+                 </td>
                
                   </tr>
             <tr>

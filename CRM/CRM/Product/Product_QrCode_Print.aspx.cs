@@ -135,10 +135,15 @@ namespace XHD.CRM.CRM.Product
             int prid1 = 0;
             try
             {
-               prid1= Convert.ToInt32(DataBinder.Eval(e.Item.DataItem, "id1"));
+                prid1 = Convert.ToInt32(DataBinder.Eval(e.Item.DataItem, "id1"));
             }
             catch { }
-            lbsys1.Text = prid1.ToString("0000");
+             
+                string code1 = Convert.ToString(DataBinder.Eval(e.Item.DataItem, "C_code1"));
+            if(code1=="")
+                lbsys1.Text = prid1.ToString("0000");
+            else
+                lbsys1.Text = code1.ToString().PadLeft(4, '0');
             //int d2 = 0;
             //try
             //{
@@ -166,7 +171,12 @@ namespace XHD.CRM.CRM.Product
                     prid2 = Convert.ToInt32(DataBinder.Eval(e.Item.DataItem, "id2"));
                 }
                 catch { }
-                lbsys2.Text = prid2.ToString("0000");
+
+                string code2= Convert.ToString(DataBinder.Eval(e.Item.DataItem, "C_code2"));
+                if (code2== "")
+                    lbsys2.Text = prid2.ToString("0000");
+                else
+                    lbsys2.Text = code2.ToString().PadLeft(4, '0');
             }
             else
                 p2.Visible = false;

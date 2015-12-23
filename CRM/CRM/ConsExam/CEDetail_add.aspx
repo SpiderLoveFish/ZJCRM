@@ -255,7 +255,7 @@
                     if (verid == "")
                         top.$.ligerDialog.error("请选择一个有效版本号维护！！！");
                     else
-                        f_openWindow('crm/ConsExam/CEScore.aspx?&sid=' + sid + '&pid=' + pid + '&vid=' + verid + '&style=edit', "修改评分", 790, 500);
+                        f_openWindow('crm/ConsExam/CEScore.aspx?&sid=' + sid + '&pid=' + pid + '&vid=' + verid + '&style=edit', "开始评选（请在合格项目前打勾）", 790, 500);
                 //}
             }
 

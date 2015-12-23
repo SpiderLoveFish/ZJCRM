@@ -35,8 +35,9 @@
             $.getJSON(urlheadcol,
             function (json, textStatus)
             {
-                var colnames = "";
                 
+                var colnames = "";
+                var x = 0;
                 for (var i in json.Rows[0]) { //在这里读json的列名，当作表格的列名
                     //for (var i = 0; i < json.Rows.length; i++) {
                         //display: '序号', //表头列显示的文本,支持html 
@@ -44,9 +45,19 @@
                         //headerRender: function (column) { 
                         //    return "<b>" + column.display + "</b>"; 
                     //}, json.Rows[i]["testid"]
-                     
-                    
-                        colnames += ",{name:'" + i + "',display:'" + i + "', width: 60 " +
+                    x++;
+                    if(x<5)
+                        colnames += ",{name:'" + i + "',display:'" + i + "', width: 80,bgcolor:'#800040'   " +
+                            " }";  
+                    else //+ '</br>'+i.substring(2,3) +
+                        colnames += ",{name:'" + i + "',display:'" + i + "', width: 35,bgcolor:'#800040' " +
+                          "   , render: function (record, rowindex, value, column) { " +
+                              "  var r;  var html; this.bgcolor='#800040'; " +
+                              //"   html = \"&lt;div&nbsp;style='color:\#800040'&gt;\"; " +
+                              "  if(value!=null)  {r= value.split(';')[3];if(r.length>0)html=\"██\";} " +//&lt;a\ &gt;
+                               //" html += \"&lt;/div&gt;\"; " +
+                    " return  html;  " +
+                              "   }         "+
                          " }";
                       
                     //else {
@@ -57,10 +68,10 @@
                     //" }";
                     //}
             }colnames=colnames.substr(1,colnames.length);
-            //$.ligerDialog.warn(colnames);
+           // $.ligerDialog.warn(colnames);
             j=json;
             eval(
-                    "grid=$('#maingrid4').ligerGrid({" +
+                    "$('#maingrid4').ligerGrid({" +
 
                     "checkbox: false," +
                     
@@ -72,46 +83,43 @@
                     "heightDiff: -1," +
                     "dataAction:'server'," +
                     " isScroll:true," +
-                 
-                    "pageSize:15,pageSizeOptions: [15, 20, 30, 50, 100]" +
+                "resizable: true,"+
+                    "pageSize:18,pageSizeOptions: [15, 20, 30, 50, 100]" +
 
                     "});"
 
-                );
+                    );
+          
+             //$("#maingrid4").ligerGrid({
+             //    columns: [
+             //        {
+             //            name: '量淋浴房', display: '量淋浴房', width: 35,
+             //            render: function (record, rowindex, value, column)
+             //            {
+             //                var r; var html; html = "<div style='color:#135294'>";
+             //                if (value != null) {
+             //                    r = value.split(';')[3];
+             //                    if (r.length > 0) html = "▇";
+             //                } html += "</div>"; return html;
+             //            }
+             //        }
+             //    ],
+             //       dataAction: 'server',
+             //       data: j,
+             //       //url: urlheadcol ,
+             //        pageSize: 20,
+             //        pageSize: 18, pageSizeOptions: [15, 20, 30, 50, 100],
+             //       width: '100%',
+             //       height: '100%',
+             //       heightDiff: -1,
+             //       isScroll: true,
+             //       checkbox: false 
+             //   });
+
+           
 
             });
-            //$("#maingrid4").ligerGrid({
-            //        columns: [
-            //        { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
-                     
-            //        { display: '编号', name: 'StageDetailID', width: 60 },
-            //        { display: '评分名称', name: 'Description', width: 200 },                     
-            //        //{ display: '类别编号', name: 'StageID', width: 60 },
-            //        { display: '类别名称', name: 'CEStage_category', width: 200 },
-            //        {
-            //            display: '', width: 40, render: function (item) {
-            //                var html = "<a href='javascript:void(0)' onclick=view(" + item.StageDetailID + ")>查看规则</a>"
-            //                //," + item.StageID + ",'" + item.CEStage_category + "'
-            //                return html;
-            //            }
-            //        }
-
-            //        ],
-            //dataAction: 'server',
-            //url: "../../data/CRM_CEScore.ashx?Action=getdetailgrid&sid=" + getparastr("sid") + "&vid=" + getparastr("vid") + "&pid=" + getparastr("pid")  + "&sty=" + getparastr("style") + "&rnd=" + Math.random(),
-            //pageSize: 30,
-            //    pageSizeOptions: [20, 30, 50, 100],
-            //    width: '100%',
-            //    height: '100%',
-            //    heightDiff: -1,
-            //    checkbox: true, checkboxAll: false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
-            //    onContextmenu: function (parm, e) {
-            //        actionStageDetailID = parm.data.StageDetailID;
-            //        menu.show({ top: e.pageY, left: e.pageX });
-            //        return false;
-            //    }
-            //});
-            
+           
            
         });
         

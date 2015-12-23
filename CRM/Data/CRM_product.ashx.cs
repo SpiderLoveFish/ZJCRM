@@ -50,6 +50,7 @@ namespace XHD.CRM.Data
                 model.gys = PageValidate.InputText(request["T_gys"], 255);
                 model.zt = PageValidate.InputText(request["T_zt"], 255);
                 model.pp = PageValidate.InputText(request["T_pp"], 255);
+                model.C_code = PageValidate.InputText(request["C_code"], 255);
                 string pid = PageValidate.InputText(request["pid"], 50);
                 if (!string.IsNullOrEmpty(pid) && pid != "null")
                 {
@@ -114,6 +115,10 @@ namespace XHD.CRM.Data
                     if (dr["Brand"].ToString() != request["T_pp"])
                     {
                         log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "品牌", dr["Brand"].ToString(), request["T_pp"]);
+                    }
+                    if (dr["C_code"].ToString() != request["C_code"])
+                    {
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "物料代码", dr["C_code"].ToString(), request["C_code"]);
                     }
                 }
                 else

@@ -35,12 +35,12 @@
                     columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                      
-                    { display: '编号', name: 'StageDetailID', width: 60 },
-                    { display: '评分名称', name: 'Description', width: 200 },                     
+                   // { display: '项目编号', name: 'StageDetailID', width: 60 },
+                    { display: '考核项目', name: 'Description', width: 200 },                     
                     //{ display: '类别编号', name: 'StageID', width: 60 },
-                    { display: '类别名称', name: 'CEStage_category', width: 200 },
+                    { display: '考核类别', name: 'CEStage_category', width: 200 },
                     {
-                        display: '', width: 40, render: function (item) {
+                        display: '', width: 80, render: function (item) {
                             var html = "<a href='javascript:void(0)' onclick=view(" + item.StageDetailID + ")>查看规则</a>"
                             //," + item.StageID + ",'" + item.CEStage_category + "'
                             return html;

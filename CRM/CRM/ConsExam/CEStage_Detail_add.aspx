@@ -155,19 +155,19 @@
 
             <tr>
                 <td>
-                    <div align="left" style="width: 60px">考核等级：</div>
+                    <div align="left" style="width: 60px">考核类别：</div>
                 </td>
                 <td>
                     <input type="text" id="T_CEStage_id" name="T_CEStage_id" validate="{required:true}" ltype='text' ligerui="{width:280,disabled:true}" /></td>
                 <td>
-                    <div align="left" style="width: 90px">考核明细ID：</div>
+                    <div align="left" style="width: 90px">项目编号：</div>
                 </td>
                 <td>
                     <input type='text' id="T_CEStage_detail_id" name="T_CEStage_detail_id" ltype='text' ligerui="{width:240,disabled:true}" /></td>
             </tr>
   <tr>
                 <td>
-                    <div align="left" style="width:60px">明细标题：</div>
+                    <div align="left" style="width:60px">考核项目：</div>
                 </td>
                 <td colspan="3">
                     <input type='text' id="T_CEStage_name" name="T_CEStage_name" ltype="text" ligerui="{width:637}" validate="{required:true}" /></td>

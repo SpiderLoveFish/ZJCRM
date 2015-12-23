@@ -38,10 +38,12 @@
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                      
                     { display: '考核项目', name: 'CEStage_category', width: 160 },
-                    { display: '考核得分', name: 'AssTime', width: 60,type:"float" },
-                    { display: '考核满分', name: 'TotalScorce', width: 100 },
+                    { display: '考核得分', name: 'AssTime', width: 60, type: "float", render: function (item) { return item.AssTime.toFixed(2); } },
+                    { display: '考核满分', name: 'TotalScore', width: 100 },
                     //{ display: '类别编号', name: 'StageID', width: 60 },
-                   { display: '达成率%', name: 'dcl', width: 100, type: "float" },
+                   {
+                       display: '达成率%', name: 'dcl', width: 100, type: "float", render: function (item) { return item.dcl.toFixed(2); }
+        },
                       { display: '考核次数', name: 'ver', width: 100 }
                    
 

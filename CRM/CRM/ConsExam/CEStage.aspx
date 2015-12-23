@@ -140,9 +140,12 @@
             $("#dzstext").addClass("l-text");
             $("#dhstext").addClass("l-text");
             $("#sgjlstext").addClass("l-text");
-            $("#ztstext").addClass("l-text");
+            $("#ztstext").ligerComboBox({ width: 100 })
+            //$("#dclbstext").ligerTextBox({ width: 100 });
+
             $("#dclbstext").addClass("l-text");
             $("#dclestext").addClass("l-text");
+     
         }
 
         //查询
@@ -322,7 +325,7 @@
                         <input  ltype='text' ligerui='{width:120}' type='text' id='khstext' name='khstext'  /></td>
 
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>客户地址：</div>
+                        <div style='width: 60px; text-align: right; float: right'>地址：</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
@@ -331,7 +334,7 @@
                     
                     </td>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>客户电话：</div>
+                        <div style='width: 60px; text-align: right; float: right'>电话：</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
@@ -351,14 +354,14 @@
                         <div style='width: 60px; text-align: right; float: right'>施工监理：</div>
                     </td>
                     <td>
-                        <input id='sgjlstext' name="sgjlstext" type='text'  ltype='text' ligerui='{width:120, nullText: "输入"}'}' /></td>
+                        <input id='sgjlstext' name="sgjlstext" type='text'  ltype='text' ligerui='{width:120}' /></td>
 
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>状态：</div>
+                        <div style='width: 60px; text-align: right; float: right' >状态：</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
-                            <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui='{width:120}' />
+                            <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui="{width:196,data:[{id:'正在施工',text:'正在施工'},{id:'施工完成',text:'施工完成'}]}" validate="{required:false}" />
                         </div>
                          
                     </td>
@@ -366,11 +369,12 @@
                         <div style='width: 60px; text-align: right; float: right'>达成率：</div>
                     </td>
                     <td>
-                        <div style='width: 100px; float: left'>
-                            <input type='text' id='dclbstext' name='dclbstext'    ltype='text' ligerui='{width:120}'  />
-                        </div>
-                        <div style='width: 98px; float: left'>
-                            <input type='text' id='dclestext' name='dclestext'    ltype='text' ligerui='{width:120}'  />
+                        <div style='width: 300px; float: left'>
+                            <input type='text' id='dclbstext' name='dclbstext'    ltype='text'  ligerui="{width:50}" />
+                    
+                         -->
+                   
+                            <input type='text' id='dclestext' name='dclestext'    ltype='text' ligerui="{width:50}"  />
                         </div>
                     </td>
 

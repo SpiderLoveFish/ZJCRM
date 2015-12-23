@@ -495,8 +495,8 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("SELECT COUNT(versions) AS ver,A.projectid,A.stageid ");
-             strSql.Append(" ,B.CEStage_category,B.TotalScorce  ");
-             strSql.Append(" ,AVG(A.AssTime*1.00)AssTime,(AVG(a.AssTime*1.00)/CASE WHEN B.TotalScore=0 THEN 1 ELSE B.TotalScore END)*100 AS dcl ");
+            strSql.Append(" ,B.CEStage_category,AVG(A.TotalScore) AS TotalScore  ");
+             strSql.Append(" ,AVG(A.AssTime*1.00) AS AssTime,SUM(a.AssTime*1.00)/SUM(A.TotalScore)*100 AS dcl ");
               strSql.Append(" FROM dbo.Crm_CEDetail A ");
              strSql.Append(" INNER JOIN  dbo.CRM_CEStage_category B ON	 A.stageid =B.id ");
  
@@ -509,7 +509,7 @@ namespace XHD.DAL
             }
            strSql1.Append(" GROUP BY A.projectid ,A.stageid	   ");
 
-           strSql.Append(" GROUP BY A.projectid ,A.stageid	 ,B.CEStage_category,B.TotalScorce   ");
+           strSql.Append(" GROUP BY A.projectid ,A.stageid	 ,B.CEStage_category");
 
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
            

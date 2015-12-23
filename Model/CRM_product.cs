@@ -30,6 +30,7 @@ namespace XHD.Model
         private string _gys;
         private string _zt;
         private string _pp;
+        private string _C_code;
 
 		/// <summary>
 		/// 
@@ -183,6 +184,12 @@ namespace XHD.Model
         {
             set { _pp = value; }
             get { return _pp; }
+        }
+
+        public string C_code
+        {
+            set { _C_code = value; }
+            get { return _C_code; }
         }
 		#endregion Model
 
