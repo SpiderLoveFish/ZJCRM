@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" %>
+ï»¿<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -11,21 +11,23 @@
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
 
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+   <script src="../../jlui3.2/lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script>
+  
+    <%--  <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
     <script src="../../lib/json2.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>--%>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
-
+     
     <link href="../../jlui3.2/lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css">
-    <script src="../../jlui3.2/lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script>
-    <script src="../../jlui3.2/lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+     <script src="../../jlui3.2/lib/ligerUI/js/core/base.js" type="text/javascript"></script>
     <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script> 
         <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
     <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-
+     <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
+  
 
     <script type="text/javascript">
         var g;
@@ -38,87 +40,111 @@
                 var colnames = "";
                 var col = [];
                 var x = 0;
-                for (var i in json.Rows[0]) { //ÔÚÕâÀï¶ÁjsonµÄÁĞÃû£¬µ±×÷±í¸ñµÄÁĞÃû
+                for (var i in json.Rows[0]) { //åœ¨è¿™é‡Œè¯»jsonçš„åˆ—åï¼Œå½“ä½œè¡¨æ ¼çš„åˆ—å
                     //for (var i = 0; i < json.Rows.length; i++) {
-                    //display: 'ĞòºÅ', //±íÍ·ÁĞÏÔÊ¾µÄÎÄ±¾,Ö§³Öhtml 
-                    ////±íÍ·ÄÚÈİ×Ô¶¨Òåº¯Êı 
+                    //display: 'åºå·', //è¡¨å¤´åˆ—æ˜¾ç¤ºçš„æ–‡æœ¬,æ”¯æŒhtml 
+                    ////è¡¨å¤´å†…å®¹è‡ªå®šä¹‰å‡½æ•° 
                     //headerRender: function (column) { 
                     //    return "<b>" + column.display + "</b>"; 
                     //}, json.Rows[i]["testid"]
                     x++;
                     if (x < 5) {
-                        col.push({ name: i, display: i, width: 80, frozen: true });
-                         colnames += ",{name:'" + i + "',display:'" + i + "', width: 80, frozen: true    " +
-                            " }";
+                          col.push({ display: i, name: i, align: 'left', width: 80});
+                         //colnames += ",{name:'" + i + "',display:'" + i + "', width: 80, frozen: true    " +
+                         //   " }";
                     }
                     else //+ '</br>'+i.substring(2,3) +
                     {
-                        col.push({ name: i, display: i, width: 80});
+                        col.push({
+                            name: i, display: i, width: 30, render: function (record, rowindex, value, column) {
+                                var r; var html=[];
+                             
+                                if (value != null) {
+                                    r = value.split(';')[0];
+                                    if (r.length > 0)
+                                        html = "<div class='tips' style='background:#" + r + "'> "
+                                       // html.push("<div style=' width:30,heigth:40,background-color::#800040'>'");
+                                    if (value.split(';')[3].length > 0) html += "Û";
+                                     
+                                    html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + value.split(';')[1] + "&nbsp;;";
+                                    html += value.split(';')[2] + "&nbsp;;";
+                                    html += value.split(';')[3] + "&nbsp;;";
+                                        html += value.split(';')[4];
+                                    
+                                  //  if (r.length > 0)
+                                    html += "</div>"
+                                }
+                                return html;
+                                
+                            }});
 
-                        colnames += ",{name:'" + i + "',display:'" + i + "', width: 35,bgcolor:'#800040' " +
-                          "   , render: function (record, rowindex, value, column) { " +
-                              "  var r;  var html;var htmls = [];  " +
-                              //" htmls.push('&lt;div&nbsp;style=\"background-color:Black;\"&gt;');" +
-                              //"   html = \"&lt;div&nbsp;style='color:#800040'&gt;\"; " +
-                              "  if(value!=null)  {r= value.split(';')[3];if(r.length>0)html=\"¨€¨€\";} " +//&lt;a\ &gt;
-                               //" html += \"&lt;/div&gt;\"; " +
-                               //"htmls.push('&lt;/div&gt;');" +
-                    " return  html;  " +
-                              "   }         " +
+           
                          " }";
                     }
                      
-                }colnames=colnames.substr(1,colnames.length);
+                }
+                //colnames = colnames.substr(1, colnames.length);
                 // $.ligerDialog.warn(eval(colnames));
                 j=json;
-                eval(
-                            "g=$('#maingrid4').ligerGrid({" +
+                //eval(
+                //            "g=$('#maingrid4').ligerGrid({" +
 
-                        "checkbox: false," +
-                        "height: '100%'," +
-                        "columns:[" + colnames + "]," +  //È»ºóÃ´Æ´×Ö·û´®                        
+                //        "checkbox: false," +
+                //        "height: '100%'," +
+                //        "columns:[" + colnames + "]," +  //ç„¶åä¹ˆæ‹¼å­—ç¬¦ä¸²                        
               
-                         "data:j,"+    //ÕâÃ´Ğ´ÊÊºÏ²»·ÖÒ³µÄgrid,»¹ÉÙ¶ÁÒ»´ÎÊı¾İ¿â
-                        //" + urlheadcol + "
-                        //"url:'"+urlheadcol+"'," +
-                        "heightDiff: -1," +
-                        "dataAction:'server'," +
-                        " isScroll:true," +
-                        "resizable: true,"+
-                        "pageSize:20,pageSizeOptions: [15, 20, 30, 50, 100]" +
+                //         "data:j,"+    //è¿™ä¹ˆå†™é€‚åˆä¸åˆ†é¡µçš„grid,è¿˜å°‘è¯»ä¸€æ¬¡æ•°æ®åº“
+                //        //" + urlheadcol + "
+                //        //"url:'"+urlheadcol+"'," +
+                //        "heightDiff: -1," +
+                //        "dataAction:'server'," +
+                //        " isScroll:true," +
+                //        "resizable: true,"+
+                //        "pageSize:20,pageSizeOptions: [15, 20, 30, 50, 100]" +
 
-                        "});"
+                //        "});"
 
-                     );
+                //     );
            
-                //g = $("#maingrid4").ligerGrid({
-                //        columns: [
-                         
-                //     ],
-                //        dataAction: 'server',
-                //        data: j,
-                //        //url: urlheadcol ,
-                //         pageSize: 20,
-                //         pageSize: 18, pageSizeOptions: [15, 20, 30, 50, 100],
-                //        width: '100%',
-                //        height: '100%',
-                //        heightDiff: -1,
-                //        isScroll: true,
-                //        checkbox: false 
-
-                //    });
-                // var a=[];
-                // a.push({ display: 'NewÖ÷¼ü', name: 'CID', align: 'left', width: 220 });
-                // a.push({ display: 'New¹«Ë¾Ãû', name: 'Cname', width: 140 });
+                g = $("#maingrid4").ligerGrid({
+                        columns: [
+                         //{ display: "å®¢æˆ·ç¼–å·", name: "CID", align: 'left', width: 80, frozen: true },
+                         //  { display: "å®¢æˆ·åœ°å€", name: "Cpro", align: 'left', width: 80, frozen: true },
+                         //     { display: "å®¢æˆ·å§“å", name: "Cname", align: 'left', width: 80, frozen: true }
+                        ],
+                        onAfterShowData: function (grid) {
+                            $(".tips").hover(function (e) {
+                                $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                            }, function (e) {
+                                $(this).ligerHideTip(e);
+                            });
+                        },
+                        dataType: 'local',
+                        dataAction: 'server',
+                        data: j,
+                        //url: urlheadcol ,
+                         pageSize: 20,
+                         pageSize: 18, pageSizeOptions: [15, 20, 30, 50, 100],
+                     
+                        height: '100%',
+                        isScroll: true,
+                        heightDiff: -1,
+                        onRClickToSelect: true,
+                    
+                    });
+                  //var a=[];
+                  //a.push({ display: 'Newä¸»é”®', name: 'CID', align: 'left', width: 220 });
+                  //a.push({ display: 'Newå…¬å¸å', name: 'Cname', width: 140 });
                 // var b;
-                // b = "{ display: 'NewÖ÷¼ü', name: 'CID', align: 'left', width: 220 }," +
-                //     "{ display: 'New¹«Ë¾Ãû', name: 'Cname', width: 140 }";
+                // b = "{ display: 'Newä¸»é”®', name: 'CID', align: 'left', width: 220 }," +
+                //     "{ display: 'Newå…¬å¸å', name: 'Cname', width: 140 }";
                 ////    //function f_setColumns() {
                 //var columns = [
-                //  b
+                // { display: 'Newä¸»é”®', name: 'CID', align: 'left', width: 220 }
                 //];
-                //g.set('columns', a.join());
-                //g.reRender();
+               // alert(a.join());
+                g.set('columns', col);
+                g.reRender();
 
                 //}
 
