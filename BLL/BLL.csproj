@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CERep_Schedule.cs" />
+    <Compile Include="CE_Para.cs" />
     <Compile Include="Crm_CEDetail.cs" />
     <Compile Include="Crm_CEDetail_Version.cs" />
     <Compile Include="CRM_CEStage.cs" />

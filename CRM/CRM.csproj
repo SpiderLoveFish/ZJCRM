@@ -99,8 +99,9 @@
     <Content Include="CRM\ConsExam\CEDetail_add.aspx" />
     <Content Include="CRM\ConsExam\CEScore.aspx" />
     <Content Include="CRM\ConsExam\CEDetail_View.aspx" />
-    <Content Include="CRM\ConsExam\CERep_Schedule_bak.aspx" />
     <Content Include="CRM\ConsExam\CERep_Schedule.aspx" />
+    <Content Include="CRM\ConsExam\JD_LIST_add.aspx" />
+    <Content Include="CRM\ConsExam\JD_LIST.aspx" />
     <Content Include="CRM\ConsExam\SelectCEStageCustomer.aspx" />
     <Content Include="CRM\Customer\Customer.aspx" />
     <Content Include="CRM\Customer\Customer_add.aspx" />
@@ -156,7 +157,9 @@
     <Content Include="CSS\Login.css" />
     <Content Include="CSS\reset.css" />
     <Content Include="CSS\showfav.css" />
+    <Content Include="CSS\spectrum.css" />
     <Content Include="GetRegNum.aspx" />
+    <Content Include="Images\big_bgcolor.jpg" />
     <Content Include="Images\bt_92X120.png" />
     <Content Include="Images\bt_blue_76X24.png" />
     <Content Include="Images\from.gif" />
@@ -183,6 +186,7 @@
     <Content Include="Images\login_bg.jpg" />
     <Content Include="Images\upload\Repair\NoPic.png" />
     <Content Include="Images\user - 副本.gif" />
+    <Content Include="Images\xiaoguotu.JPG" />
     <Content Include="Images\zwlogo - 副本.gif" />
     <Content Include="Images\分隔符.gif" />
     <Content Include="Images\复件 expandable-last.gif" />
@@ -626,7 +630,9 @@
     <Content Include="jlui3.2\lib\ligerUI\skins\Tab\images\win\dialog-winbtns.gif" />
     <Content Include="jlui3.2\lib\ligerUI\skins\Tab\images\win\dialogbtn.gif" />
     <Content Include="jlui3.2\lib\ligerUI\skins\Tab\images\win\dialogicon.gif" />
+    <Content Include="JS\colorpick.js" />
     <Content Include="JS\remember.js" />
+    <Content Include="JS\spectrum.js" />
     <Content Include="NoVerified\NVRepairTelphone.aspx" />
     <Content Include="QQ_Login.aspx" />
     <Content Include="qq_rebind.aspx" />
@@ -702,6 +708,7 @@
     <Content Include="Data\CRM_CEDetail.ashx" />
     <Content Include="Data\CRM_CEScore.ashx" />
     <Content Include="Data\CERep_Schedule.ashx" />
+    <Content Include="Data\CE_Para.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -3965,6 +3972,9 @@
     <Compile Include="Data\CalendarViewFormat.cs" />
     <Compile Include="Data\CERep_Schedule.ashx.cs">
       <DependentUpon>CERep_Schedule.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CE_Para.ashx.cs">
+      <DependentUpon>CE_Para.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\CRM_CEScore.ashx.cs">
       <DependentUpon>CRM_CEScore.ashx</DependentUpon>
