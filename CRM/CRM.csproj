@@ -89,7 +89,6 @@
     <Content Include="copyright.html" />
     <Content Include="CRM\Building\Building.aspx" />
     <Content Include="CRM\Building\Building_Add.aspx" />
-    <Content Include="CRM\ConsExam\CERep_ScheduleA.aspx" />
     <Content Include="CRM\ConsExam\CEStage.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category_add.aspx" />
@@ -3819,13 +3818,6 @@
     </Compile>
     <Compile Include="CRM\Building\Building_Add.aspx.designer.cs">
       <DependentUpon>Building_Add.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CRM\ConsExam\CERep_ScheduleA.aspx.cs">
-      <DependentUpon>CERep_ScheduleA.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CRM\ConsExam\CERep_ScheduleA.aspx.designer.cs">
-      <DependentUpon>CERep_ScheduleA.aspx</DependentUpon>
     </Compile>
     <Compile Include="CRM\DataShare\Favorites_View.aspx.cs">
       <DependentUpon>Favorites_View.aspx</DependentUpon>

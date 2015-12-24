@@ -56,13 +56,16 @@
                     else //+ '</br>'+i.substring(2,3) +
                     {
                         col.push({
-                            name: i, display: i, width: 30, render: function (record, rowindex, value, column) {
+                            name: i, display: i, width: 30,background:'#', render: function (record, rowindex, value, column) {
                                 var r; var html=[];
                              
                                 if (value != null) {
                                     r = value.split(';')[0];
-                                    if (r.length > 0)
+                                   
+                                    if (r.length > 0) {
+                                       
                                         html = "<div class='tips' style='background:#" + r + "'> "
+                                    }
                                        // html.push("<div style=' width:30,heigth:40,background-color::#800040'>'");
                                     if (value.split(';')[3].length > 0) html += "۞";
                                      
@@ -108,10 +111,7 @@
            
                 g = $("#maingrid4").ligerGrid({
                         columns: [
-                         //{ display: "客户编号", name: "CID", align: 'left', width: 80, frozen: true },
-                         //  { display: "客户地址", name: "Cpro", align: 'left', width: 80, frozen: true },
-                         //     { display: "客户姓名", name: "Cname", align: 'left', width: 80, frozen: true }
-                        ],
+                           ],
                         onAfterShowData: function (grid) {
                             $(".tips").hover(function (e) {
                                 $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
@@ -132,8 +132,8 @@
                         onRClickToSelect: true,
                     
                     });
-                  //var a=[];
-                  //a.push({ display: 'New主键', name: 'CID', align: 'left', width: 220 });
+                  var a=[];
+                  a.push({ display: 'New主键', name: 'CID', align: 'left', width: 220, frozen: true });
                   //a.push({ display: 'New公司名', name: 'Cname', width: 140 });
                 // var b;
                 // b = "{ display: 'New主键', name: 'CID', align: 'left', width: 220 }," +
@@ -143,9 +143,10 @@
                 // { display: 'New主键', name: 'CID', align: 'left', width: 220 }
                 //];
                // alert(a.join());
-                g.set('columns', col);
+                g.set('columns',col);
                 g.reRender();
-
+              
+               // f_reload();
                 //}
 
             });
@@ -183,8 +184,8 @@
 
        
         function f_reload() {
-            //var manager = $("#maingrid4").ligerGetGridManager();
-            //manager.loadData(true);
+            var manager = $("#maingrid4").ligerGetGridManager();
+            manager.loadData(true);
             
         };
     </script>
