@@ -56,8 +56,9 @@
 
             $("#T_color").spectrum({
                 color: vcolor,
-                flat: true,
-                showInput: true,
+               // showPaletteOnly: true,//只显示固定的
+              //  flat: true,
+               // showInput: true,//是否需要点击显示
                 className: "full-spectrum",
                 showInitial: true,
                 showPalette: true,
@@ -66,8 +67,8 @@
                 preferredFormat: "hex",
                 hideAfterPaletteSelect:true,
                 localStorageKey: "spectrum.demo",
-                chooseText: "确定选择颜色",
-                cancelText: "取消",
+                showButtons: false,//不需要确定下再保存
+                
                 move: function (color) {
 
                 },
