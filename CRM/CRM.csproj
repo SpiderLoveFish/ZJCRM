@@ -630,6 +630,7 @@
     <Content Include="jlui3.2\lib\ligerUI\skins\Tab\images\win\dialog-winbtns.gif" />
     <Content Include="jlui3.2\lib\ligerUI\skins\Tab\images\win\dialogbtn.gif" />
     <Content Include="jlui3.2\lib\ligerUI\skins\Tab\images\win\dialogicon.gif" />
+    <Content Include="JS\calendar.js" />
     <Content Include="JS\colorpick.js" />
     <Content Include="JS\remember.js" />
     <Content Include="JS\spectrum.js" />
