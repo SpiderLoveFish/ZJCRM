@@ -28,6 +28,7 @@
     <script src="../lib/jquery.form.js" type="text/javascript"></script>
 
     <script src="../lib/json2.js" type="text/javascript"></script>
+    <script src="../js/calendar.js" type="text/javascript"></script>
 
     <script src="../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -53,7 +54,9 @@
                     checkbox: false
                 }
             })
-
+           
+      
+         
             if (getparastr("empid")) {
                 loadForm(getparastr("empid"));
             }
@@ -82,7 +85,44 @@
                 width: '446px', height: '95px',
                 heightDiff: 0
             })
+            
+             $('#T_rqlx').bind('select propertychange', function () { searchCustomer(); });
+             $('T_birthday').bind('input propertychange', function () { searchCustomer(); });
+             $(".abc").hover(function (e) {
+                $(this).ligerTip(
+                    {
+                        content: $('#birthday').val(),//$(this).text(),
+                    width: 200,
+                    distanceX: event.clientX - $(this).offset().left - $(this).width() + 15
+                });
+            }, function (e) {
+                $(this).ligerHideTip(e);
+            });
+            
+          
+
         });
+
+        function searchCustomer() {
+            var a;var b= $('#T_birthday').val();
+
+            var kk = $('#T_birthday').val().split("-");//以逗号作为分隔字符串
+            if ($('#T_rqlx').val() == "阳历") {
+                /**公历年月日转农历数据 返回json**/
+                var c = calendar.solar2lunar(kk[0], kk[1], kk[2]);
+                a = "阳历：" + $('#T_birthday').val() + ";阴历" + c.lYear + '-' + c.lMonth + '-' + c.lDay;
+            } else if ($('#T_rqlx').val() == "阴历") {
+                /**农历年月日转公历年月日**/
+                
+                var c = calendar.lunar2solar(kk[0], kk[1], kk[2]);
+               // alert(i);
+                a = "阳历：" + c.cYear + '-' + c.cMonth + '-' + c.cDay + ";阴历" + b;
+               
+            }
+            $('#birthday').val(a);
+           
+        }
+
         function onAfterShowData() {
             //遍历复选框 并加上事件
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -98,6 +138,7 @@
             }).ligerCheckBox();
 
         }
+        
 
 
         function loadForm(oaid) {
@@ -138,7 +179,7 @@
                     $("input[type=radio][value=" + obj.canlogin + "]").attr("checked", 'checked');
                     $("#headurl").val(obj.title);
                     $("#userheadimg").attr("src", "../images/upload/portrait/" + obj.title);
-
+                    searchCustomer();
                 }
             });
         }
@@ -265,6 +306,8 @@
             return checked;
         }
         
+        
+
     </script>
 
 </head>
@@ -305,11 +348,13 @@
                     </td>
                     <td>
                         <%--<input type="text" id="T_birthday" name="T_birthday" ltype="date" ligerui="{width:180}" />--%>
-                        <div style="width: 120px; float: left">
+                        <div style="width: 120px; float: left"  class='abc'>
                             <input type="text" id="T_birthday" name="T_birthday" ltype="date" ligerui="{width:116}" validate="{required:true}" />
+                        <input type="hidden" id="birthday"/>
                         </div>
                         <div style="width: 58px; float: left">
-                            <input type="text" id="T_rqlx" name="T_rqlx" style="width: 56px" ltype="select" ligerui="{width:56,data:[{id:'阳历',text:'阳历'},{id:'阴历',text:'阴历'}]}" validate="{required:true}" />
+                            <input type="text" id="T_rqlx" name="T_rqlx" style="width: 56px" 
+                                ltype="select" ligerui="{width:56,data:[{id:'阳历',text:'阳历'},{id:'阴历',text:'阴历'}]}" validate="{required:true}" />
                         </div>
                     </td>
                 </tr>
