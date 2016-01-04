@@ -13,6 +13,12 @@ body { /* Setting default text color, background and a font stack */ color: #555
 
 .green { background-color: #A5F88B; border: 1px solid #98E775; }
 
+.red { background-color: #FFB0D8; border: 1px solid #FF80C0; }
+
+.black { background-color: #C9C9C9; border: 1px solid #737373; }
+
+.blackred { background-color: #C488FF; border: 1px solid #AD5BFF; }
+
 /* Each note has a data span, which holds its ID */
 span.data { display: none; }
 

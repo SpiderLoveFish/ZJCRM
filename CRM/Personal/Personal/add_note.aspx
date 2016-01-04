@@ -23,7 +23,9 @@
         <div class="color yellow"></div>
         <div class="color blue"></div>
         <div class="color green"></div>
-
+         <div class="color red"></div>
+        <div class="color black"></div>
+          <div class="color blackred"></div>
         <!-- The green submit button: -->
         <a id="note-submit" href="" class="green-button">Ã·Ωª</a>
 
