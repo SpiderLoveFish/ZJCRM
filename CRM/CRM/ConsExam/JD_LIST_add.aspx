@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" %>
+ï»¿<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -36,39 +36,38 @@
     <script type="text/javascript">
         var color = "#ECC";
         $(function () {
-           
+
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
 
             $("form").ligerForm();
-          
-           
 
-              if (getparastr("cid") != null) {
-                  loadForm(getparastr("cid"));
 
-              } else BindColor(color);
-           
+
+            if (getparastr("cid") != null) {
+                loadForm(getparastr("cid"));
+
+            } else BindColor(color);
+
         })
 
-        function BindColor(vcolor)
-        {
+        function BindColor(vcolor) {
 
             $("#T_color").spectrum({
                 color: vcolor,
-               // showPaletteOnly: true,//Ö»ÏÔÊ¾¹Ì¶¨µÄ
-              //  flat: true,
-               // showInput: true,//ÊÇ·ñĞèÒªµã»÷ÏÔÊ¾
+                // showPaletteOnly: true,//åªæ˜¾ç¤ºå›ºå®šçš„
+                //  flat: true,
+                // showInput: true,//æ˜¯å¦éœ€è¦ç‚¹å‡»æ˜¾ç¤º
                 className: "full-spectrum",
                 showInitial: true,
                 showPalette: true,
                 showSelectionPalette: true,
                 maxPaletteSize: 10,
                 preferredFormat: "hex",
-                hideAfterPaletteSelect:true,
+                hideAfterPaletteSelect: true,
                 localStorageKey: "spectrum.demo",
-                showButtons: false,//²»ĞèÒªÈ·¶¨ÏÂÔÙ±£´æ
-                
+                showButtons: false,//ä¸éœ€è¦ç¡®å®šä¸‹å†ä¿å­˜
+
                 move: function (color) {
 
                 },
@@ -106,21 +105,21 @@
         function f_save() {
             //if ($('#T_employee_sg').val == "" || $('#T_employee_sg').val == null)
             //{
-               // alert('²Ù×÷Ê§°Ü£¬Ê©¹¤¼àÀí²»ÄÜÎª¿Õ£¬ÇëÏÈµ½¿Í»§µµ°¸ÖĞÎ¬»¤£¡');
+            // alert('æ“ä½œå¤±è´¥ï¼Œæ–½å·¥ç›‘ç†ä¸èƒ½ä¸ºç©ºï¼Œè¯·å…ˆåˆ°å®¢æˆ·æ¡£æ¡ˆä¸­ç»´æŠ¤ï¼');
             //    return;
             //}
             //if ($(form1).valid()) {
-                var sendtxt = "&Action=save&id=" + getparastr("cid");
-               // alert($("form :input").fieldSerialize() + sendtxt);
-                return $("form :input").fieldSerialize() + sendtxt;
+            var sendtxt = "&Action=save&id=" + getparastr("cid");
+            // alert($("form :input").fieldSerialize() + sendtxt);
+            return $("form :input").fieldSerialize() + sendtxt;
             //}
         }
-       
+
         function loadForm(oaid) {
-             $.ajax({
+            $.ajax({
                 type: "GET",
-                url: "../../data/CE_Para.ashx", /* ×¢ÒâºóÃæµÄÃû×Ö¶ÔÓ¦CSµÄ·½·¨Ãû³Æ */
-                data: { Action: 'form', cid: oaid, rnd: Math.random() }, /* ×¢Òâ²ÎÊıµÄ¸ñÊ½ºÍÃû³Æ */
+                url: "../../data/CE_Para.ashx", /* æ³¨æ„åé¢çš„åå­—å¯¹åº”CSçš„æ–¹æ³•åç§° */
+                data: { Action: 'form', cid: oaid, rnd: Math.random() }, /* æ³¨æ„å‚æ•°çš„æ ¼å¼å’Œåç§° */
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
@@ -129,24 +128,24 @@
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
                     }
-                    //alert(result); //String ¹¹Ôìº¯Êı
+                    //alert(result); //String æ„é€ å‡½æ•°
                     $("#T_px").val(obj.JDPX);
                     $("#T_name").val(obj.JDMC);
                     //$("#T_color").spectrum.bind("#" + obj.JDYS);
                     // $("#T_color").val("#" + obj.JDYS);
                     BindColor("#" + obj.JDYS);
                     $("#T_remarks").val(obj.REMARK);
-                    
-                     
+
+
 
                 }
             });
         }
-         
-         
-        
-         
-         
+
+
+
+
+
 
     </script>
 </head>
@@ -155,11 +154,11 @@
         <input type="hidden" id="h_address" value="" />
         <table style="width: 550px; margin: 5px;" class='bodytable1'>
             <tr>
-                <td colspan="3" class="table_title1">½ø¶ÈÊôĞÔÎ¬»¤</td>
+                <td colspan="3" class="table_title1">è¿›åº¦å±æ€§ç»´æŠ¤</td>
             </tr>
             <tr>
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">Ãû³Æ£º</div>
+                    <div style="width: 80px; text-align: right; float: right">åç§°ï¼š</div>
                 </td>
                 <td>
                          <input type="text" id="T_name" name="T_name"  ltype="text"  ligerui="{width:180}"  validate="{required:true}" />
@@ -171,7 +170,7 @@
          
             <tr>
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">ÅÅĞò£º</div>
+                    <div style="width: 80px; text-align: right; float: right">æ’åºï¼š</div>
                 </td>
                 <td>
                     <input id="T_px" name="T_px" ltype="text"  ligerui="{width:180}"  validate="{required:true}" />
@@ -181,7 +180,7 @@
             </tr>
             <tr id="tr_contact4">
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">ÃèÊö£º</div>
+                    <div style="width: 80px; text-align: right; float: right">æè¿°ï¼š</div>
                 </td>
                 <td colspan="2">
 
@@ -191,7 +190,7 @@
 
                  <tr>
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">ÑÕÉ«£º</div>
+                    <div style="width: 80px; text-align: right; float: right">é¢œè‰²ï¼š</div>
                 </td>
                 <td>
           <div   >

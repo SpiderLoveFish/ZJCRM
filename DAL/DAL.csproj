@@ -155,6 +155,8 @@
     <Compile Include="CRM_product.cs" />
     <Compile Include="CRM_product_category.cs" />
     <Compile Include="CRM_receive.cs" />
+    <Compile Include="KHJD_LIST_VIEW_LIST.cs" />
+    <Compile Include="KHJD_LIST_VIEW_LIST_person.cs" />
     <Compile Include="Param_SysParam_Type.cs" />
     <Compile Include="Personal_Calendar.cs" />
     <Compile Include="Personal_notes.cs" />
@@ -186,6 +188,7 @@
     <Compile Include="public_help.cs" />
     <Compile Include="public_help_category.cs" />
     <Compile Include="public_data.cs" />
+    <Compile Include="Xm_list.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

@@ -100,7 +100,11 @@
     <Content Include="CRM\ConsExam\CEScore.aspx" />
     <Content Include="CRM\ConsExam\CEDetail_View.aspx" />
     <Content Include="CRM\ConsExam\CERep_Schedule.aspx" />
+    <Content Include="CRM\ConsExam\SGJD_LIST.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST_add.aspx" />
+    <Content Include="CRM\ConsExam\SGJD_LIST_add.aspx" />
+    <Content Include="CRM\ConsExam\XM_LIST_add.aspx" />
+    <Content Include="CRM\ConsExam\XM_LIST.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST.aspx" />
     <Content Include="CRM\ConsExam\SelectCEStageCustomer.aspx" />
     <Content Include="CRM\Customer\Customer.aspx" />
@@ -710,6 +714,8 @@
     <Content Include="Data\CRM_CEScore.ashx" />
     <Content Include="Data\CERep_Schedule.ashx" />
     <Content Include="Data\CE_Para.ashx" />
+    <Content Include="Data\XM_LIST.ashx" />
+    <Content Include="Data\SGJD_LIST.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -3976,6 +3982,12 @@
     </Compile>
     <Compile Include="Data\CE_Para.ashx.cs">
       <DependentUpon>CE_Para.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\SGJD_LIST.ashx.cs">
+      <DependentUpon>SGJD_LIST.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\XM_LIST.ashx.cs">
+      <DependentUpon>XM_LIST.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\CRM_CEScore.ashx.cs">
       <DependentUpon>CRM_CEScore.ashx</DependentUpon>

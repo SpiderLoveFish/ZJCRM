@@ -142,6 +142,8 @@
     <Compile Include="hr_employee.cs" />
     <Compile Include="hr_position.cs" />
     <Compile Include="hr_post.cs" />
+    <Compile Include="KHJD_LIST_VIEW_LIST.cs" />
+    <Compile Include="KHJD_LIST_VIEW_LIST_person.cs" />
     <Compile Include="Param_City.cs" />
     <Compile Include="Param_SysParam.cs" />
     <Compile Include="Param_SysParam_Type.cs" />
@@ -168,6 +170,7 @@
     <Compile Include="public_help.cs" />
     <Compile Include="public_help_category.cs" />
     <Compile Include="public_data.cs" />
+    <Compile Include="Xm_list.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

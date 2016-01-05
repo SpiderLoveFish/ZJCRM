@@ -189,7 +189,47 @@ namespace XHD.CRM.Data
                  
                 context.Response.Write(dt);
             }
-             
+            if (request["Action"] == "grid1")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+                serchtxt += " and Stage_icon='正在施工' ";
+                //if (!string.IsNullOrEmpty(request["khstext"]))
+                //    serchtxt += " and CustomerName like N'%" + PageValidate.InputText(request["khstext"], 255) + "%'";
+                //if (!string.IsNullOrEmpty(request["dzstext"]))
+                //    serchtxt += " and address like N'%" + PageValidate.InputText(request["dzstext"], 255) + "%'";
+                //if (!string.IsNullOrEmpty(request["dhstext"]))
+                //    serchtxt += " and tel like N'%" + PageValidate.InputText(request["dhstext"], 255) + "%'";
+                //if (!string.IsNullOrEmpty(request["sgstext"]))
+                //    serchtxt += " and sgjl like N'%" + PageValidate.InputText(request["sgstext"], 255) + "%'";
+                //if (!string.IsNullOrEmpty(request["ztstext"]))
+                //    serchtxt += " and Stage_icon like N'%" + PageValidate.InputText(request["ztstext"], 255) + "%'";
+                //if (!string.IsNullOrEmpty(request["dclbstext"]))
+                //    serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))>= " + StringToDecimal(PageValidate.InputText(request["dclbstext"], 50)) + "%";
+                //if (!string.IsNullOrEmpty(request["dclestext"]))
+                //    serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))<= " + StringToDecimal(PageValidate.InputText(request["dclestext"], 50)) + "%";
+
+
+
+                string dt = "";
+
+                DataSet ds = ccpc.GetListDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
             
             if (request["Action"] == "form")
             {
