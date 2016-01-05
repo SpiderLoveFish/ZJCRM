@@ -90,7 +90,24 @@ namespace XHD.CRM.Data
                 context.Response.Write(dt);
             }
 
-            
+            if (request["Action"] == "combojd")
+            {
+                 
+                DataSet ds = ccpc.GetList("  1=1");
+
+                StringBuilder str = new StringBuilder();
+
+                str.Append("[");
+                //str.Append("{id:0,text:'无'},");
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    str.Append("{id:" + ds.Tables[0].Rows[i]["JDID"].ToString() + ",text:" + ds.Tables[0].Rows[i]["JDMC"] + "},");
+                }
+                str.Replace(",", "", str.Length - 1, 1);
+                str.Append("]");
+
+                context.Response.Write(str);
+            }
             if (request["Action"] == "form")
             {
                 string cid = PageValidate.InputText(request["cid"], 50);

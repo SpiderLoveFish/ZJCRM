@@ -165,7 +165,10 @@ namespace XHD.BLL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
-
+        public bool UpdateData()
+		{
+            return dal.UpdateData();
+		}
 		#endregion  ExtensionMethod
 	}
 }

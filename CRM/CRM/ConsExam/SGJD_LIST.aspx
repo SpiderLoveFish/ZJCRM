@@ -138,19 +138,29 @@
         }
        
         function add() {
-            f_openWindow("crm/ConsExam/SGJD_LIST_add.aspx", "进度跟进", 800, 600);
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow("crm/ConsExam/SGJD_LIST_add.aspx?cid=" + row.CustomerID
+                   ,
+                    "进度跟进", 800, 550);
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
+            //f_openWindow("crm/ConsExam/SGJD_LIST_add.aspx?id="+,
+            //    "进度跟进", 800, 600);
         }
 
         
         function f_save(item, dialog) {
             
             var issave = dialog.frame.f_save();
-          
+             
             if (issave) {
                 dialog.close();
                 top.$.ligerDialog.waitting('数据保存中,请稍候...');
                 $.ajax({
-                    url: "../../data/XM_LIST.ashx", type: "POST",
+                    url: "../../data/SGJD_LIST.ashx", type: "POST",
                     data: issave,
                     success: function (responseText) {
                         top.$.ligerDialog.closeWaitting();

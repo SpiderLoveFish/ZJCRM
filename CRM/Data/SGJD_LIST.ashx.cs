@@ -20,8 +20,11 @@ namespace XHD.CRM.Data
             context.Response.ContentType = "text/plain";
             HttpRequest request = context.Request;
 
-            BLL.Xm_list ccpc = new BLL.Xm_list();
-            Model.Xm_list model = new Model.Xm_list();
+            BLL.KHJD_LIST_VIEW_LIST khjd = new BLL.KHJD_LIST_VIEW_LIST();
+            Model.KHJD_LIST_VIEW_LIST khjdmodel = new Model.KHJD_LIST_VIEW_LIST();
+            BLL.KHJD_LIST_VIEW_LIST_person khjdperson = new BLL.KHJD_LIST_VIEW_LIST_person();
+            Model.KHJD_LIST_VIEW_LIST_person khjdpersonmodel = new Model.KHJD_LIST_VIEW_LIST_person();
+
 
             var cookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
             var ticket = FormsAuthentication.Decrypt(cookie.Value);
@@ -35,29 +38,52 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "save")
             {
-               model.XMMC = PageValidate.InputText(request["xmmc"], 300);
-               model.XMPX = StringToInt(PageValidate.InputText(request["xmpx"], 50));
-
-               model.REMARK = Common.PageValidate.InputText(request["T_content"], int.MaxValue);
-               model.CZR = empname;
-
-
-                 string xmid =PageValidate.InputText(request["xmid"], 50);
-
-                 if (!string.IsNullOrEmpty(xmid) && xmid != "null")
-                 {
-                     model.XMID = StringToInt(xmid);
-                    ccpc.Update(model);
-                    
-                 }
- 
+              string CID = PageValidate.InputText(request["id"], 50);
+               string Cpro = PageValidate.InputText(request["T_khxq"], 200);
+                string Ccity = PageValidate.InputText(request["T_khlh"], 300);
+                string JDID = PageValidate.InputText(request["T_private"], 50);
+                string JDMC = PageValidate.InputText(request["T_private_Val"], 200);
+                string remark = PageValidate.InputText(request["T_Remark"], 300);
+                string tel = PageValidate.InputText(request["T_tel"], 50);
+                 //string xmid =PageValidate.InputText(request["xmid"], 50);
                  
-                else  
+                string sgxm = PageValidate.InputText(request["sgxm"], 500);
+                string sgry = PageValidate.InputText(request["sgry"], 500);
+                khjdmodel.CID = CID; khjdpersonmodel.CID = CID;
+                khjdmodel.Cpro = Cpro; khjdpersonmodel.JDID = StringToInt(JDID); 
+                khjdmodel.Ccity = Ccity; khjdpersonmodel.LRRQ = DateTime.Now;
+                khjdmodel.Cname = Ccity; khjdpersonmodel.REMARK = remark;
+                khjdmodel.JDID = StringToInt(JDID); khjdpersonmodel.roleid = 0;
+                khjdmodel.JDMC = JDMC; khjdpersonmodel.rolename = "";
+                khjdmodel.Cmob = tel; khjdpersonmodel.status = StringToInt(JDID);
+                khjdmodel.LRRQ = DateTime.Now; //khjdpersonmodel.userid = emp_id;
+                khjdmodel.REMARK = remark; //khjdpersonmodel.username = empname;
+                khjdmodel.status = StringToInt(JDID); 
+                khjdmodel.CZR = empname;
+                sgxm = toString(sgxm); sgry = toString(sgry);
+                if (sgxm.Length > 0)
                 {
                     
-                    ccpc.Add(model);
+                    string[] str = sgxm.Split(';');
+                    for (int i = 0; i < str.Length; i++)
+                    {
+                        khjdmodel.XMID = StringToInt(str[i]);
+                        khjd.Add(khjdmodel);
+                        if (sgry.Length > 0)
+                        {
+                            string[] strs = sgry.Split(';');
+                            for (int a = 0; a < strs.Length; a++)
+                            {
+                                khjdpersonmodel.userid = StringToInt(str[a]);
+                                khjdperson.Add(khjdpersonmodel);
+                            }
+                        }
+                    }
                 }
                 
+                    
+                khjd.UpdateData();
+                 
             }
            
             if (request["Action"] == "grid")
@@ -82,12 +108,33 @@ namespace XHD.CRM.Data
 
                 string dt = "";
 
-                DataSet ds = ccpc.GetXMList(PageSize, PageIndex, serchtxt, sorttext, out Total);
-                    dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+               // DataSet ds = jd.GetXMList(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                   // dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
                  
                 context.Response.Write(dt);
             }
-             
+            if (request["Action"] == "formgrid")
+            {
+                 string dt;
+                 
+                    dt = "";
+                    DataSet ds = khjd.GetList("1=1");
+                    if (ds == null) { dt = ""; }
+                    else if (ds.Tables[0].Rows.Count<= 0)
+                    { dt = ""; }
+                    else {
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            dt = dt + ";" + dr["XMID"].ToString();
+                        }
+                    }
+                //if(dt.Length>0)
+                //    dt = dt.Substring(0,dt.Length-1);
+                   // dt = Common.DataToJson.DataToJSON(ds);
+                
+
+                context.Response.Write(dt);
+            }
             
             if (request["Action"] == "form")
             {
@@ -95,8 +142,9 @@ namespace XHD.CRM.Data
                 string dt;
                 if (PageValidate.IsNumber(cid))
                 {
-                    DataSet ds = ccpc.GetList("xmid=" + cid);
-                    dt = Common.DataToJson.DataToJSON(ds);
+                    dt = "{}";
+                    //DataSet ds = ccpc.GetList("xmid=" + cid);
+                    //dt = Common.DataToJson.DataToJSON(ds);
                 }
                 else
                 {
@@ -106,41 +154,7 @@ namespace XHD.CRM.Data
                 context.Response.Write(dt);
             }
 
-            //del
-            if (request["Action"] == "del")
-            {
-                //参数安全过滤
-                string c_id = PageValidate.InputText(request["xmid"], 50);
-
-                DataSet ds = ccpc.GetList(" xmid=" + int.Parse(c_id));
- 
-                    bool isdel = ccpc.Delete(int.Parse(c_id));
-                    if (isdel)
-                    {
-                        //日志
-                        string EventType = "施工项目删除";
-
-                        int UserID = emp_id;
-                        string UserName = empname;
-                        string IPStreet = request.UserHostAddress;
-                        int EventID = int.Parse(c_id);
-                        string EventTitle = ds.Tables[0].Rows[0]["xmid"].ToString();
-                        string Original_txt = null;
-                        string Current_txt = null;
-
-                        C_Sys_log log = new C_Sys_log();
-
-                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, null, Original_txt, Current_txt);
-
-                        context.Response.Write("true");
-                    }
-                    else
-                    {
-                        context.Response.Write("false");
-                    }
-                
-
-            }
+            
 
         }
         private static string GetTasksString(int Id, DataTable table)
@@ -215,6 +229,10 @@ namespace XHD.CRM.Data
 
                 return 0;
             }
+        }
+        public String toString(object s)
+        {
+            return (s == null ? "" : s.ToString());
         }
         private static decimal StringToDecimal(string code)
         {

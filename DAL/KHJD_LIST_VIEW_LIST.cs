@@ -413,6 +413,31 @@ namespace XHD.DAL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
+        public bool UpdateData( )
+        {
+            StringBuilder strSql = new StringBuilder();
+         strSql.AppendLine("  UPDATE A SET XMMC=B.XMMC,JDYS=C.JDYS ");
+           strSql.AppendLine("  FROM dbo.KHJD_LIST_VIEW_LIST A");
+         strSql.AppendLine("   INNER JOIN  dbo.Xm_list B ON A.XMID=B.XMID");
+         strSql.AppendLine("  INNER JOIN dbo.JD_list C ON A.JDID=C.JDID");
+         strSql.AppendLine(" WHERE ISNULL(A.XMMC,'')='' OR ISNULL(A.JDYS,'')=''");
+           
+           strSql.AppendLine("  UPDATE A SET username=B.name");
+       strSql.AppendLine("  FROM dbo.KHJD_LIST_VIEW_LIST_person A");
+       strSql.AppendLine(" INNER JOIN  dbo.hr_employee B ON	A.userid=B.id");
+       strSql.AppendLine("  WHERE name=''");
+            
+            SqlParameter[] parameters = { };
+         int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 		#endregion  ExtensionMethod
 	}
