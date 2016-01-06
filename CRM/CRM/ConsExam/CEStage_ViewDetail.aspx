@@ -3,6 +3,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+  <meta http-equiv="Content-Language"content="zh-cn"/> 
+      <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
     <title></title>
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
@@ -25,32 +27,32 @@
         var treemanager;
         $(function () {
             $("#khstext").ligerTextBox();
-            $("#khstext").val(getparastr("name"))
-            $("#sgjlstext").ligerTextBox(); $("#sgjlstext").val(getparastr("sgjl"))
+            $("#khstext").val(decodeURI(getparastr("name")))
+            $("#sgjlstext").ligerTextBox(); $("#sgjlstext").val(decodeURI(getparastr("sgjl")))
             $("#dclstext").ligerTextBox(); $("#dclstext").val(getparastr("dcl"))
             $("#khzfstext").ligerTextBox(); $("#khzfstext").val(getparastr("zf"))
-            $("#khdzstext").ligerTextBox(); $("#khdzstext").val(getparastr("address"))
+            $("#khdzstext").ligerTextBox(); $("#khdzstext").val(decodeURI(getparastr("address")))
             $("#khdfstext").ligerTextBox(); $("#khdfstext").val(getparastr("df"))
 
 
             $("#maingrid4").ligerGrid({
-                    columns: [
-                    { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
-                     
-                    { display: '考核项目', name: 'CEStage_category', width: 160 },
-                    { display: '考核得分', name: 'AssTime', width: 60, type: "float", render: function (item) { return item.AssTime.toFixed(2); } },
-                    { display: '考核满分', name: 'TotalScore', width: 100 },
-                    //{ display: '类别编号', name: 'StageID', width: 60 },
-                   {
-                       display: '达成率%', name: 'dcl', width: 100, type: "float", render: function (item) { return item.dcl.toFixed(2); }
-        },
-                      { display: '考核次数', name: 'ver', width: 100 }
-                   
+                columns: [
+                { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
 
-                    ],
-            dataAction: 'server',
-            url: "../../data/Crm_CEStage.ashx?Action=viewgrid&pid=" + getparastr("pid") + "&rnd=" + Math.random(),
-            pageSize: 30,
+                { display: '考核项目', name: 'CEStage_category', width: 160 },
+                { display: '考核得分', name: 'AssTime', width: 60, type: "float", render: function (item) { return item.AssTime.toFixed(2); } },
+                { display: '考核满分', name: 'TotalScore', width: 100 },
+                //{ display: '类别编号', name: 'StageID', width: 60 },
+               {
+                   display: '达成率%', name: 'dcl', width: 100, type: "float", render: function (item) { return item.dcl.toFixed(2); }
+               },
+                  { display: '考核次数', name: 'ver', width: 100 }
+
+
+                ],
+                dataAction: 'server',
+                url: "../../data/Crm_CEStage.ashx?Action=viewgrid&pid=" + getparastr("pid") + "&rnd=" + Math.random(),
+                pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
                 width: '100%',
                 height: '100%',
@@ -98,13 +100,13 @@
             });
 
         });
-        
- 
-        
+
+
+
         function f_openWindow(url, title, width, height) {
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
-                         
+
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();
@@ -115,19 +117,19 @@
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
 
- 
+
         //查看 
-        function view(sid,vid,name) {
+        function view(sid, vid, name) {
 
-            f_openWindow('crm/ConsExam/CEDetail_View.aspx?&sid=' + sid + '&pid=' + getparastr("pid")+'&vid='+vid+'&sname='+name, "查看评分", 790, 500);
-              }
+            f_openWindow('crm/ConsExam/CEDetail_View.aspx?&sid=' + sid + '&pid=' + getparastr("pid") + '&vid=' + vid + '&sname=' + name, "查看评分", 790, 500);
+        }
 
- 
- 
-      
 
-         
- 
+
+
+
+
+
         function f_load() {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);
@@ -137,7 +139,7 @@
             //treemanager.FlushData();
         }
 
-       
+
     </script>
    
 </head>

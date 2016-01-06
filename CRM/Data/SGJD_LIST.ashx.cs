@@ -41,12 +41,12 @@ namespace XHD.CRM.Data
               string CID = PageValidate.InputText(request["id"], 50);
                string Cpro = PageValidate.InputText(request["T_khxq"], 200);
                 string Ccity = PageValidate.InputText(request["T_khlh"], 300);
-                string JDID = PageValidate.InputText(request["T_private"], 50);
-                string JDMC = PageValidate.InputText(request["T_private_Val"], 200);
+                string JDID = PageValidate.InputText(request["T_private_Val"], 50);
+                string JDMC = PageValidate.InputText(request["T_private"], 200);
                 string remark = PageValidate.InputText(request["T_Remark"], 300);
                 string tel = PageValidate.InputText(request["T_tel"], 50);
                  //string xmid =PageValidate.InputText(request["xmid"], 50);
-                 
+                int maxid = khjd.GetMaxId();
                 string sgxm = PageValidate.InputText(request["sgxm"], 500);
                 string sgry = PageValidate.InputText(request["sgry"], 500);
                 khjdmodel.CID = CID; khjdpersonmodel.CID = CID;
@@ -58,9 +58,11 @@ namespace XHD.CRM.Data
                 khjdmodel.Cmob = tel; khjdpersonmodel.status = StringToInt(JDID);
                 khjdmodel.LRRQ = DateTime.Now; //khjdpersonmodel.userid = emp_id;
                 khjdmodel.REMARK = remark; //khjdpersonmodel.username = empname;
-                khjdmodel.status = StringToInt(JDID); 
+                khjdmodel.status = StringToInt(JDID); khjdpersonmodel.KHJDID = maxid;
                 khjdmodel.CZR = empname;
+                khjdmodel.KHJDID = maxid;
                 sgxm = toString(sgxm); sgry = toString(sgry);
+                if (sgry == "null") sgry = "";
                 if (sgxm.Length > 0)
                 {
                     
@@ -116,24 +118,40 @@ namespace XHD.CRM.Data
             if (request["Action"] == "formgrid")
             {
                  string dt;
-                 
+                  string CID = PageValidate.InputText(request["cid"], 50);
                     dt = "";
-                    DataSet ds = khjd.GetList("1=1");
+                    DataSet ds = khjd.GetLastList(" CID=" + CID);
+                    string Bdata = "{\"B\":[";
+                    string Adata = "\"A\":[";
                     if (ds == null) { dt = ""; }
                     else if (ds.Tables[0].Rows.Count<= 0)
                     { dt = ""; }
                     else {
                         foreach (DataRow dr in ds.Tables[0].Rows)
                         {
-                            dt = dt + ";" + dr["XMID"].ToString();
+                            //dt = dt + ";" + dr["XMID"].ToString();
+                            Bdata += "{\"color\":\"" + dr["JDYS"].ToString() + "\",\"id\": " + decimal.Parse(dr["XMID"].ToString()) + "},";
+
                         }
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                             dt = dt + ";" + dr["XMID"].ToString();
+                            
+                        }
+                         Adata += "{\"ids\":\"" + dt + "\"},";
+
+                        Bdata = Bdata.ToString().TrimEnd(',');
+                        Bdata += "],";
+                        Adata = Adata.ToString().TrimEnd(',');
+                        Adata += "]}";
                     }
+                    string jdata = Bdata + Adata ;
                 //if(dt.Length>0)
                 //    dt = dt.Substring(0,dt.Length-1);
                    // dt = Common.DataToJson.DataToJSON(ds);
                 
 
-                context.Response.Write(dt);
+                context.Response.Write(jdata);
             }
             
             if (request["Action"] == "form")

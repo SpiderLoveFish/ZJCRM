@@ -169,6 +169,15 @@ namespace XHD.BLL
 		{
             return dal.UpdateData();
 		}
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetLastList(string strWhere)
+        {
+            return dal.GetLastList(strWhere);
+        }
+
 		#endregion  ExtensionMethod
 	}
 }

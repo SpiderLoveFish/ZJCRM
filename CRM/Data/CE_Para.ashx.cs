@@ -101,7 +101,7 @@ namespace XHD.CRM.Data
                 //str.Append("{id:0,text:'无'},");
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
-                    str.Append("{id:" + ds.Tables[0].Rows[i]["JDID"].ToString() + ",text:" + ds.Tables[0].Rows[i]["JDMC"] + "},");
+                    str.Append("{id:" + ds.Tables[0].Rows[i]["JDID"].ToString() + ",text:'" + ds.Tables[0].Rows[i]["JDMC"] + "',jdys:'" + ds.Tables[0].Rows[i]["JDYS"] + "'},");
                 }
                 str.Replace(",", "", str.Length - 1, 1);
                 str.Append("]");

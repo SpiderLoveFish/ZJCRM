@@ -4,6 +4,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
     <title></title>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/Toolbar.css" rel="stylesheet" type="text/css" />
@@ -202,9 +204,9 @@
             var row = manager.getSelectedRow();
             if (row) {
                 f_openWindowview("crm/ConsExam/CEStage_ViewDetail.aspx?pid=" + row.id
-                    + "&name=" + row.CustomerName
-                    + "&address=" + row.address
-                    + "&sgjl=" + row.sgjl
+                    + "&name=" + encodeURI(row.CustomerName)
+                    + "&address=" + encodeURI(row.address)
+                    + "&sgjl=" + encodeURI(row.sgjl)
                      + "&zf=" + row.TotalScorce
                     + "&dcl=" + row.Scoring
                     + "&df=" + row.sum_Score,

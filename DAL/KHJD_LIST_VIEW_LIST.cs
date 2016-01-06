@@ -439,6 +439,35 @@ namespace XHD.DAL
             }
         }
 
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetLastList(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            //strSql.Append("select KHJDID,CID,Cpro,Ccity,JDID,JDMC,XMID,XMMC,REMARK,LRRQ,JDYS,Cname,CZR,Cmob,status ");
+            //strSql.Append(" FROM KHJD_LIST_VIEW_LIST ");
+            strSql.Append(" SELECT A.* FROM KHJD_LIST_VIEW_LIST A  ");
+           strSql.Append(" INNER JOIN   ");
+          strSql.Append("  ( ");
+           strSql.Append(" SELECT DISTINCT  XMID,MAX(LRRQ) lrrq ");
+           strSql.Append("  FROM  dbo.KHJD_LIST_VIEW_LIST  ");
+           if (strWhere.Trim() != "")
+           {
+               strSql.Append(" where " + strWhere);
+           }
+          strSql.Append("   GROUP BY XMID ");
+          strSql.Append("  )B ON A.LRRQ = B.lrrq AND A.XMID = B.XMID ");
+
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+
 		#endregion  ExtensionMethod
 	}
 }

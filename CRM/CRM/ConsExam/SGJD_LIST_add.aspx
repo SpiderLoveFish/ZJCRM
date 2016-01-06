@@ -7,21 +7,21 @@
     <title></title>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/input.css" rel="stylesheet" />
+        <link href="../../CSS/styles.css" rel="stylesheet" />
     <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-     <script src="../../jlui3.2/lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script>
-   <script src="../../jlui3.2/lib/ligerUI/js/ligerui.all.js"></script>
+    <script src="../../jlui3.2/lib/ligerUI/js/ligerui.all.js"></script>
     <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerCheckBoxList.js"></script>
    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerRadioList.js"></script>
    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerListBox.js"></script>
  
-    <script src="../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-     
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+      <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+   
      <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
@@ -40,20 +40,16 @@
     <script src="../../JS/XHD.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-
+        var manager, g;
         $(function () {
-
+            
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
-            $('#T_private').ligerComboBox({
-                width: 150,
-                url: "../../data/CE_Para.ashx?Action=combojd&rnd=" + Math.random(),
-               // url: "../../data/Crm_CEDetail.ashx?Action=combo&sid=" + 1+ "&pid=" + 3 + "&rnd=" + Math.random(),
-                    
-                emptyText: '（空）'
-            });
-            $("form").ligerForm();
            
+            $("form").ligerForm();
+
+           
+
             initLayout();
             $(window).resize(function () {
                 initLayout();
@@ -62,8 +58,49 @@
                 loadForm(getparastr("cid"));
 
             }
-             
+            
+            divchecksgxmInit();
+            divsgryInit();
+            T_privateInit();
+            
+            
            
+           
+        });
+
+        function divsgryInit()
+        {
+             
+
+        }
+
+
+        function T_privateInit()
+        {
+            var columns = [
+                 { header: 'ID', name: 'id', width: 30 },
+                 { header: '名字', name: 'text', width: 80 },
+                      {
+                          header: '顏色', name: 'jdys', width: 60,
+                          render: function (value) {
+                              var html = [];
+                              html = "<div style='background:#" + value + "'> "
+                              html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                              html += "</div>"
+                              return html;
+                          }
+                      }
+            ];
+            $('#T_private').ligerComboBox({
+                width: 150,
+                columns: columns,
+                //emptyText: '（空）',
+                url: "../../data/CE_Para.ashx?Action=combojd&rnd=" + Math.random()
+            });
+        }
+
+        function divchecksgxmInit()
+        {
             $.ajax({
                 type: 'post',
                 url: "../../data/XM_LIST.ashx?Action=formgrid&rdm=" + Math.random(),
@@ -72,43 +109,58 @@
                     $("#divchecksgxm").ligerCheckBoxList({
                         rowSize: 11,
                         data: datar,
-                        valueField: 'XMID',                      
+                        valueField: 'XMID',
                         textField: 'XMMC',
-                        //css:"background-color:yellow",
+                        //valueFieldCssClass: 'yellow',
+                        //css: 'yellow',
                     });
                     $.ajax({
-                        type: 'post',
-                        url: "../../data/SGJD_LIST.ashx?Action=formgrid&rdm=" + Math.random(),
+                        type: "GET",
+                        url: "../../data/SGJD_LIST.ashx", /* 注意后面的名字对应CS的方法名称 */
+                        data: { Action: 'formgrid', cid: getparastr("cid"), rnd: Math.random() }, /* 注意参数的格式和名称 */
+                        //url: "../../data/SGJD_LIST.ashx?Action=formgrid&cid=" + getparastr("cid") + "&rdm=" + Math.random(),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
                         success: function (result) {
-                            //var datar = eval(result);
-                           // top.$.ligerDialog.error(datar);
-                            liger.get("divchecksgxm").setValue(result);
-                           // liger.get("divchecksgxm").css("background-color", "yellow");
+                            var obj = eval(result);
+                            // top.$.ligerDialog.error(obj.A[0].ids);
+                            liger.get("divchecksgxm").setValue(obj.A[0].ids);
+                            for (var n = 0; n < obj.B.length; n++) {
+                                addcss(obj.B[n].id, "#" + obj.B[n].color);
+                            }
+                            removecheck();
+
+                        },
+                        error: function (e) {
+                            alert("Init");
                         }
                     });
-                 
+
+                    //全部禁用
+                    // $("input:checkbox", this.radioList).attr("disabled", true);
+
                 },
 
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     top.$.ligerDialog.error("失败！！！");
                 }
             });
-           
-            $("#divsgry").ligerCheckBoxList({
-                rowSize: 11,
-                data: null,
-                valueField: 'ID',
-                textField: 'name',
+        }
 
+
+        function removecheck() {
+            $('input:checkbox[name^=divchecksgxm]:checked').each(function () {
+                $("input:checkbox", this.radioList).attr("checked", false);
             });
-         
-           // $("tbody> :checkbox").attr("checked", true);
-            var label;
-            $("#divchecksgxm input:checkbox:checked").each(function () {
-                label += $(this).next().html();
+        }
+        function addcss(id,color)
+        {
+            $('input:checkbox[name^=divchecksgxm]:checked').each(function () {
+                //加條件
+                if (this.value == id)
+                    $(this).next("label").css("backgroundColor", color);
             });
-             
-        });
+        }
         
         function loadForm(oaid) {
             $.ajax({
@@ -131,62 +183,30 @@
                     $("#T_khxq").val(obj.Community);
                     $("#T_khlh").val(obj.BNo + '栋' + obj.RNo + '室');
                     $("#T_yzxm").val(obj.Customer);
-                   
-
+                    
 
                 }
             });
         }
-
-        function f_setbtn()
-        {
-
-            //var manager = $("#divchecksgxm").ligerGetGridManager();
-            //manager.gridloading.hide();
-            ////var note = treemanager.getSelected();
-            ////if (!note) return;
-
-            ////获取权限
-            //var roleid = getparastr("Role_id");
-            //var savetext = "{role_id:'" + roleid + "',";
-            //savetext += "app:'" + 1 + "'}";
-
-            //$.ajax({
-            //    type: 'post',
-            //    url: "../data/Sys_role.ashx?Action=getauth&postdata=" + savetext + '&rdm=' + Math.random(),
-            //    success: function (data) {
-            //        //alert(data);   
-            //        var arrstr = new Array();
-            //        var arrmenu = new Array();
-            //        var arrbtn = new Array();
-            //        arrstr = data.split("|");
-
-            //        arrmenu = arrstr[0].split(",");
-            //        for (var i = 0; i < arrmenu.length; i++) {
-            //            if (arrmenu[i].length > 0) {
-            //                manager.setCheck(arrmenu[i].replace("m", ""));
-            //            }
-            //        }
-
-            //        if (arrstr[1])
-            //            arrbtn = arrstr[1].split(",");
-            //        for (var j = 0; j < arrbtn.length; j++) {
-            //            if (arrbtn[j].length > 0) {
-            //                $("#" + arrbtn[j]).attr("checked", true);
-            //            }
-            //        }
-            //    },
-            //    error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //        //f_error("角色还未授权！");
-            //    }
-            //});
-        }
+ 
 
         function f_save() {
             
+            if ($("#T_private").val() == "")
+            {
+                f_error("必须选择一个有效施工进度！");
+                return;
+            }
            // var manager = $("#divchecksgxm").ligerGetCheckBoxManager();
             var sgxmvalue = liger.get("divchecksgxm").getValue();
-            var sgryvalue = liger.get("divsgry").getValue();
+            //f_error("必须选择一个有效的施工項目吧！" + sgxmvalue);
+            //return;
+            if (sgxmvalue == null || sgxmvalue == "")
+            {
+                f_error("必须选择一个有效的施工項目吧！" + sgxmvalue);
+                return;
+            }
+            //var sgryvalue = liger.get("divsgry").getValue();
             if ($(form1).valid()) {
                 var sendtxt = "&Action=save&id=" + getparastr("cid")  
                     + "&sgxm=" + sgxmvalue
@@ -213,6 +233,65 @@
             $.ligerDialog.waitting("正在保存中...");
         }
 
+        function deleteRow() {
+            
+        }
+       
+        function addNewRow() {
+            f_openWindow("system/getemp.aspx", "选择人员", 650, 400);
+            
+            
+        }
+        function f_getpost(item, dialog) {
+            var rows = null;
+            if (!dialog.frame.f_select()) {
+                alert('请选择行!');
+                return;
+            }
+            else {
+                var rid = "";
+               
+                rows = dialog.frame.f_select();
+                for (var i = 0; i < rows.length; i++) {
+                    rid += rows[i].ID + ",";
+                    var btn = $("<input type='button' class='btn1' id='" + rows[i].ID + "' value='" + rows[i].name + "||" + rows[i].zhiwu + "'>");
+                    $("#divsgry").append(btn);
+                    addBtnEvent(rows[i].ID);
+                    //alert(rows[i].ID);
+                    // manager.addRow(rows[i]);
+                }
+                
+                dialog.close();
+            }
+             
+        }
+        var activeDialog = null;
+        function f_openWindow(url, title, width, height) {
+            var dialogOptions = {
+                zindex: 9002,
+                width: width, height: height, title: title, url: url, buttons: [
+                        {
+                            text: '保存', onclick: function (item, dialog) {
+                                f_getpost(item, dialog);
+                            }
+                        },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+
+
+        function addBtnEvent(id) {
+            $("#" + id).bind("click", function () {
+                alert(id);
+            });
+        }
+        
     </script>
     <style type="text/css">
         .checkboxlist label 
@@ -220,8 +299,26 @@
 margin-right: 20px; 
 } 
     </style>
+    <style type="text/css">
+  .btn1 {
+    font-size: 9pt;
+    color: #003399;
+    border: 1px #003399 solid;
+    color: #006699;
+    border-bottom: #93bee2 1px solid;
+    border-left: #93bee2 1px solid;
+    border-right: #93bee2 1px solid;
+    border-top: #93bee2 1px solid;
+    background-image: url(../images/bluebuttonbg.gif);
+    background-color: #e8f4ff;
+    font-style: normal;
+    margin-left: 10px;
+    height: 22px;
+}
+    </style>
 </head>
 <body style="padding: 0px; overflow: hidden;">
+   
       <div id="div1" style="margin: -1px;"></div>
     <form id="form1" onsubmit="return false">
           <table align="left" border="0" cellpadding="3" cellspacing="1" class='bodytable1'>
@@ -279,8 +376,8 @@ margin-right: 20px;
                     <div align="left" style="width: 90px">施工进度：</div>
                 </td>
                 <td>
-                      <input type="text" id="T_private" name="T_private" validate="{required:true}" ltype='text' ligerui="{width:150}" /></td>
-                     <input type="hidden" id="T_pid" name="T_pid" />
+                     <input type='text' id='T_private' name='T_private' />
+                                  <input type="hidden" id="T_pid" name="T_pid" />
                  <%--   <input id="T_private" name="T_private" type="text" ltype="select"
                         ligerui="{width:180,data:[{id:'还未处理',text:'还未处理'},
                 {id:'无需施工',text:'无需施工'},
@@ -310,13 +407,18 @@ margin-right: 20px;
                 </td>
             </tr>
             <tr>
-                <td colspan="3" class="table_title1">施工人员</td>
-                <td class="table_title1">选择</td>
+                <td colspan="2" class="table_title1">施工人员</td>
+                <td   class="table_title1">
+                    <a class="l-button" style="width:80px;" onclick="addNewRow()">添加人員</a>
+                  </td>
+                <td   class="table_title1">
+                      <a class="l-button" style="width:80px;" onclick="deleteRow()">删除人員</a>
+                </td>
             </tr>
             <tr>
 
                 <td colspan="4">
-                    <div id="divsgry" style="margin: -1px;"></div>
+                    <div id="divsgry" style="margin: -1px;height:100px;   overflow:auto; " ></div>
                 </td>
             </tr>
             <%--<tr>
