@@ -9,27 +9,31 @@
     <link href="../../CSS/input.css" rel="stylesheet" />
         <link href="../../CSS/styles.css" rel="stylesheet" />
     <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
-    <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-    <script src="../../jlui3.2/lib/ligerUI/js/ligerui.all.js"></script>
-    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerCheckBoxList.js"></script>
-   <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerRadioList.js"></script>
-   <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerListBox.js"></script>
- 
-    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
-    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-      <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-   
-     <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+
+     
+    
+    <script src="../../jlui3.2/lib/jquery/jquery-1.9.0.min.js"></script>
+    
+    <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+     <script src="../../lib/ligerUI/js/ligerui.all.js"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
 
-    
-    
+   
+      <script src="../../jlui3.2/lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+         <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>    
+     <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+     <script src="../../jlui3.2/lib/ligerUI/js/ligerui.all.js"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBoxList.js"></script>
+   <script src="../../lib/ligerUI/js/plugins/ligerRadioList.js"></script>
+   <script src="../../jlib/ligerUI/js/plugins/ligerListBox.js"></script>
+     <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+
+
     <script src="../../lib/jquery-validation/jquery.validate.js" type="text/javascript"></script>
     <script src="../../lib/jquery-validation/jquery.metadata.js" type="text/javascript"></script>
     <script src="../../lib/jquery-validation/messages_cn.js" type="text/javascript"></script>
@@ -38,9 +42,13 @@
     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
     <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
+    
+
+     
 
     <script type="text/javascript">
         var manager, g;
+        var pushry = [];
         $(function () {
             
             $.metadata.setType("attr", "validate");
@@ -60,43 +68,66 @@
             }
             
             divchecksgxmInit();
-            divsgryInit();
-            T_privateInit();
+              T_privateInit();
             
             
            
            
         });
 
-        function divsgryInit()
-        {
-             
-
-        }
+        
 
 
         function T_privateInit()
         {
+            //$("#test1").ligerComboBox({
+            //    data: [
+            //        { text: '张三', id: '1' },
+            //        { text: '李四', id: '2' },
+            //        { text: '赵武', id: '44' }
+            //    ], valueFieldID: 'test3'
+            //});
             var columns = [
-                 { header: 'ID', name: 'id', width: 30 },
-                 { header: '名字', name: 'text', width: 80 },
-                      {
-                          header: '顏色', name: 'jdys', width: 60,
-                          render: function (value) {
-                              var html = [];
-                              html = "<div style='background:#" + value + "'> "
-                              html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                              html += "</div>"
-                              return html;
-                          }
-                      }
+                { header: 'ID', name: 'id', width: 30 },
+                { header: '名称', name: 'text', width: 80 },
+                     {
+                         header: '颜色', name: 'jdys', width: 60,
+                         render: function (value) {
+                             var html = [];
+                             html = "<div style='background:#" + value + "'> "
+                             html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                             html += "</div>"
+                             return html;
+                         }
+                     }
             ];
-            $('#T_private').ligerComboBox({
-                width: 150,
-                columns: columns,
-                //emptyText: '（空）',
-                url: "../../data/CE_Para.ashx?Action=combojd&rnd=" + Math.random()
+
+            $.ajax({
+                type: "GET",
+                url: "../../data/CE_Para.ashx", /* 注意后面的名字对应CS的方法名称 */
+                data: { Action: 'combojd',  rnd: Math.random() }, /* 注意参数的格式和名称 */
+                //url: "../../data/SGJD_LIST.ashx?Action=formgrid&cid=" + getparastr("cid") + "&rdm=" + Math.random(),
+                
+                success: function (result) {
+                    var obj = eval(result);
+                    $("#T_private").ligerComboBox({
+                        data: obj,
+                        columns: columns
+                    });
+
+                },
+                error: function (e) {
+                    alert("Init2");
+                }
             });
+            
+       
+            //$('#T_private').ligerComboBox({
+            //    width: 150,
+            //   // columns: columns,
+            //    //emptyText: '（空）',
+            //    url: "../../data/CE_Para.ashx?Action=combojd&rnd=" + Math.random()
+            //});
         }
 
         function divchecksgxmInit()
@@ -132,7 +163,7 @@
 
                         },
                         error: function (e) {
-                            alert("Init");
+                           // alert("Init");
                         }
                     });
 
@@ -146,7 +177,27 @@
                 }
             });
         }
+       
+        function getry() {
+            var strry="";
+            //$('input:button[name^=divchecksgxm]:checked').each(function () {
+            //加條件
+            var n = 0;
+            $("input:button").each(function () {
+                // f_error($(this).attr("value"));
+                if (n == 1)
+                {
+                    strry = strry + $(this).attr("id") + "," + $(this).attr("value") + ';';
 
+                    n = 0;
+                }
+                else {
+                    strry = strry + $(this).attr("id") + "," + $(this).attr("value") + ',';
+                    n++;
+                }
+              });
+            return strry;
+        }
 
         function removecheck() {
             $('input:checkbox[name^=divchecksgxm]:checked').each(function () {
@@ -192,6 +243,7 @@
 
         function f_save() {
             
+             f_error(getry()); return;
             if ($("#T_private").val() == "")
             {
                 f_error("必须选择一个有效施工进度！");
@@ -207,6 +259,8 @@
                 return;
             }
             //var sgryvalue = liger.get("divsgry").getValue();
+            var sgryvalue = getry();
+            
             if ($(form1).valid()) {
                 var sendtxt = "&Action=save&id=" + getparastr("cid")  
                     + "&sgxm=" + sgxmvalue
@@ -233,16 +287,18 @@
             $.ligerDialog.waitting("正在保存中...");
         }
 
-        function deleteRow() {
+        //引用
+        function RefRow() {
             
         }
-       
+       //新增打开页面
         function addNewRow() {
             f_openWindow("system/getemp.aspx", "选择人员", 650, 400);
             
             
         }
-        function f_getpost(item, dialog) {
+        //获取返回人员
+        function f_getry(item, dialog) {
             var rows = null;
             if (!dialog.frame.f_select()) {
                 alert('请选择行!');
@@ -250,17 +306,43 @@
             }
             else {
                 var rid = "";
-               
+                var tt = "<table class='bodytable1' align='left' ><tr>";
                 rows = dialog.frame.f_select();
+                var br = 0;
                 for (var i = 0; i < rows.length; i++) {
-                    rid += rows[i].ID + ",";
-                    var btn = $("<input type='button' class='btn1' id='" + rows[i].ID + "' value='" + rows[i].name + "||" + rows[i].zhiwu + "'>");
-                    $("#divsgry").append(btn);
-                    addBtnEvent(rows[i].ID);
+                  //  f_error(rows.length);
+                    br++;// rid += rows[i].ID + ",";
+                    tt += "<td><div class='divcss5' id='d" + rows[i].ID + "'> " +
+                       " <input type='button' class='btn1' id='" + rows[i].ID + "' value='" + rows[i].name + "'>"+
+                       " <input type='button' class='btn2' id='" + rows[i].zhiwuid +"-"+ rows[i].ID + "' value='" + rows[i].zhiwu + "'>" +
+                       "</div></td>";
+                   
+                  //  pushry.push(rows[i]);
+                    if (br == 5) {
+                        tt += " </tr><tr>";
+                        br = 0;
+                    }
+                    if ( i== rows.length-1)
+                    {
+                        if(br<5)
+                            for (var c=br+1; c <= 5; c++)
+                            {
+                                tt += "<td> </td>"
+                                if(c==5)
+                                    tt += " </tr>"
+                            }
+                    }
                     //alert(rows[i].ID);
                     // manager.addRow(rows[i]);
+                   
                 }
-                
+                tt += "</tr></table>"
+                var btn = $(tt);
+                $("#divsgry").append(btn);
+                for (var i = 0; i < rows.length; i++) {
+                    addBtnEvent(rows[i].zhiwuid + "-" + rows[i].ID);
+                    addBtnEventry(rows[i].ID);
+                }
                 dialog.close();
             }
              
@@ -271,8 +353,8 @@
                 zindex: 9002,
                 width: width, height: height, title: title, url: url, buttons: [
                         {
-                            text: '保存', onclick: function (item, dialog) {
-                                f_getpost(item, dialog);
+                            text: '提交', onclick: function (item, dialog) {
+                                f_getry(item, dialog);
                             }
                         },
                         {
@@ -285,12 +367,65 @@
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
 
-
+        var activeDialogs = null;
+        function f_openWindow_post(url, title, width, height) {
+            var dialogOptions = {
+                zindex: 9002,
+                width: width, height: height, title: title, url: url, buttons: [
+                        {
+                            text: '提交', onclick: function (item, dialog) {
+                                f_getpost(item, dialog);
+                            }
+                        },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialogs = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+        var chickid;
         function addBtnEvent(id) {
             $("#" + id).bind("click", function () {
-                alert(id);
+                //  alert(id);
+                chickid = id;
+                f_openWindow_post("hr/hr_getpost.aspx", "选择岗位", 650, 400);
             });
         }
+        function addBtnEventry(id) {
+            $("#" + id).bind("click", function () {
+                $.ligerDialog.confirm("是否确定删除", "是否确定删除，操作不可逆！", function (ok) {
+                    $.ligerDialog.closeWaitting();
+                    if (ok) {
+                        $("#d" + id).remove();
+                        //pushry.pop(id);
+                    }
+                    else { return;}
+                });
+              
+            });
+        }
+
+        function f_getpost(item, dialog) {
+            var rows = null;
+            if (!dialog.frame.f_select()) {
+                alert('请选择岗位!');
+                return;
+            }
+            else {
+                rows = dialog.frame.f_select();
+                //rows.default_post = "0";
+                 
+                //alert(rows.position_name);
+                $("#" + chickid).attr('value', rows.position_name);
+                chickid = null;
+                dialog.close();
+                //onAfterShowData()
+            }
+        }
+
         
     </script>
     <style type="text/css">
@@ -300,6 +435,7 @@ margin-right: 20px;
 } 
     </style>
     <style type="text/css">
+        　.divcss5{ border-style:solid; border-width:1px; border-color:#003399}
   .btn1 {
     font-size: 9pt;
     color: #003399;
@@ -309,8 +445,21 @@ margin-right: 20px;
     border-left: #93bee2 1px solid;
     border-right: #93bee2 1px solid;
     border-top: #93bee2 1px solid;
-    background-image: url(../images/bluebuttonbg.gif);
-    background-color: #e8f4ff;
+     background-color: #e8f4ff;
+    font-style: normal;
+    margin-left: 10px;
+    height: 22px;
+} 
+  .btn2 {
+    font-size: 9pt;
+    color: #000000;
+    border: 1px #FFEFDB  solid;
+    color: #000000;
+    border-bottom: #93bee2 1px solid;
+    border-left: #93bee2 1px solid;
+    border-right: #93bee2 1px solid;
+    border-top: #93bee2 1px solid;
+     background-color: #009900;
     font-style: normal;
     margin-left: 10px;
     height: 22px;
@@ -377,14 +526,8 @@ margin-right: 20px;
                 </td>
                 <td>
                      <input type='text' id='T_private' name='T_private' />
-                                  <input type="hidden" id="T_pid" name="T_pid" />
-                 <%--   <input id="T_private" name="T_private" type="text" ltype="select"
-                        ligerui="{width:180,data:[{id:'还未处理',text:'还未处理'},
-                {id:'无需施工',text:'无需施工'},
-                {id:'急需安排',text:'急需安排'},
-                {id:'正在进行',text:'正在进行'},
-                {id:'施工完成',text:'施工完成'}]}"
-                        validate="{required:false}" />--%>
+                          
+
 
                 </td>
             </tr>
@@ -396,9 +539,10 @@ margin-right: 20px;
                     <input type="text" id="T_Remark" name="T_Remark" validate="{required:true}" ltype='text' ligerui="{width:637}" /></td>
 
             </tr>
-            <tr>
+              <tr>
                 <td colspan="4" class="table_title1">施工项目</td>
             </tr>
+           
             <tr>
 
                 <td colspan="4">
@@ -412,7 +556,7 @@ margin-right: 20px;
                     <a class="l-button" style="width:80px;" onclick="addNewRow()">添加人員</a>
                   </td>
                 <td   class="table_title1">
-                      <a class="l-button" style="width:80px;" onclick="deleteRow()">删除人員</a>
+                      <a class="l-button" style="width:80px;" onclick="RefRow()">引用最新一次人员</a>
                 </td>
             </tr>
             <tr>

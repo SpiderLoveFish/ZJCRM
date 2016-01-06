@@ -48,7 +48,7 @@ namespace XHD.CRM.Data
                  //string xmid =PageValidate.InputText(request["xmid"], 50);
                 int maxid = khjd.GetMaxId();
                 string sgxm = PageValidate.InputText(request["sgxm"], 500);
-                string sgry = PageValidate.InputText(request["sgry"], 500);
+                string sgry = PageValidate.InputText(request["sgry"], int.MaxValue);
                 khjdmodel.CID = CID; khjdpersonmodel.CID = CID;
                 khjdmodel.Cpro = Cpro; khjdpersonmodel.JDID = StringToInt(JDID); 
                 khjdmodel.Ccity = Ccity; khjdpersonmodel.LRRQ = DateTime.Now;
@@ -70,13 +70,20 @@ namespace XHD.CRM.Data
                     for (int i = 0; i < str.Length; i++)
                     {
                         khjdmodel.XMID = StringToInt(str[i]);
+                        khjdpersonmodel.XMID = StringToInt(str[i]);
                         khjd.Add(khjdmodel);
                         if (sgry.Length > 0)
                         {
+                            sgry = sgry.Substring(0, sgry.Length-1);
                             string[] strs = sgry.Split(';');
                             for (int a = 0; a < strs.Length; a++)
                             {
-                                khjdpersonmodel.userid = StringToInt(str[a]);
+                                string[] mxstrs = strs[a].Split(',');
+                                khjdpersonmodel.userid = StringToInt(toString(mxstrs[0]));
+                                khjdpersonmodel.username = toString(mxstrs[1]);
+                                khjdpersonmodel.rolename = toString(mxstrs[3]);
+                                //职务不确定，不好取ID，只能取描述
+                                //khjdpersonmodel.roleid=mxstrs[2];
                                 khjdperson.Add(khjdpersonmodel);
                             }
                         }
