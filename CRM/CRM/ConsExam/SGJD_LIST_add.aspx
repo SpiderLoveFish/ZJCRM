@@ -107,9 +107,9 @@
                     var obj = eval(result);
                     $("#T_private").ligerComboBox({
                         width:150,
-                        data: obj,
-                        columns: columns
+                        data: obj 
                     });
+
 
                 },
                 error: function (e) {
@@ -394,7 +394,7 @@
             $("#" + id).bind("click", function () {
                 //  alert(id);
                 chickid = id;
-                f_openWindow_post("hr/hr_getpost.aspx", "选择岗位", 650, 400);
+                f_openWindow_post("hr/hr_position.aspx?IsGet=Y", "选择职务", 650, 400);
             });
         }
         function addBtnEventry(id) {

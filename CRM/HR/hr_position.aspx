@@ -47,11 +47,20 @@
                     return false;
                 }
             });
-
+            //选择获取新的
+           // $.ligerDialog.warn(getparastr("IsGet"));
+            if (getparastr("IsGet") != "Y")
             toolbar();
 
             
         });
+
+        function f_select() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var rows = manager.getSelectedRow();
+            return rows;
+        }
+
         function toolbar() {
             $.getJSON("../data/toolbar.ashx?Action=GetSys&mid=22&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
