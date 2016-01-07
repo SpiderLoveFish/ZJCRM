@@ -63,6 +63,7 @@ namespace XHD.CRM.Data
                 khjdmodel.KHJDID = maxid;
                 sgxm = toString(sgxm); sgry = toString(sgry);
                 if (sgry == "null") sgry = "";
+                if (sgry.Length>0) sgry = sgry.Substring(0, sgry.Length - 1);
                 if (sgxm.Length > 0)
                 {
                     
@@ -74,7 +75,6 @@ namespace XHD.CRM.Data
                         khjd.Add(khjdmodel);
                         if (sgry.Length > 0)
                         {
-                            sgry = sgry.Substring(0, sgry.Length-1);
                             string[] strs = sgry.Split(';');
                             for (int a = 0; a < strs.Length; a++)
                             {

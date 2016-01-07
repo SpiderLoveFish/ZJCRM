@@ -88,6 +88,16 @@ namespace XHD.CRM.Data
                 {
                     sql += " and name like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
                 }
+                string issgjd=PageValidate.InputText(request["issgjd"], 50);
+                if (issgjd.Trim() == "Y")
+                {
+                    string cid = PageValidate.InputText(request["cid"], 50);
+                    sql += " and ID in( SELECT DISTINCT userid FROM KHJD_LIST_VIEW_LIST_person " +
+                       "     WHERE	 KHJDID = " +
+                        "   (SELECT MAX(KHJDID) AS khjdid FROM dbo.KHJD_LIST_VIEW_LIST_person WHERE CID=" + cid + ") " +
+                       "    AND dbo.KHJD_LIST_VIEW_LIST_person.CID=" + cid + " )";
+                   }
+                sql += " and uid!='NoVerer'";
 
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
                 int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);

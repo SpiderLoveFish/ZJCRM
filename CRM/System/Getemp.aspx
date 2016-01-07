@@ -32,7 +32,8 @@
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../data/Sys_role_emp.ashx?Action=emplist&role_id=" + getparastr("role_id"),
+                url: "../data/Sys_role_emp.ashx?Action=emplist&role_id=" + getparastr("role_id")
+                    + "&cid=" + getparastr("cid") + "&issgjd=" + getparastr("issgjd"),//新增条件施工人员引用
                 width: '100%',
                 height: '100%',
                 //title: "员工列表",
@@ -65,7 +66,9 @@
         }
         //查询
         function doserch() {
-            var sendtxt = "&Action=emplist&role_id=" + getparastr("role_id") + "&rnd=" + Math.random();
+            var sendtxt = "&Action=emplist&role_id=" + getparastr("role_id")
+                      + "&cid=" + getparastr("cid") + "&issgjd=" + getparastr("issgjd")//新增条件施工人员引用
+                + "&rnd=" + Math.random();
             var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
             //alert(serchtxt);           
             var manager = $("#maingrid4").ligerGetGridManager();

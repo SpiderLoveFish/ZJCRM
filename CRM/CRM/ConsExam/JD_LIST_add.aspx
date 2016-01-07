@@ -52,7 +52,7 @@
         })
 
         function BindColor(vcolor) {
-
+            $("#T_color").val("#"+vcolor);
             $("#T_color").spectrum({
                 color: vcolor,
                 // showPaletteOnly: true,//只显示固定的
@@ -103,14 +103,10 @@
         }
 
         function f_save() {
-            //if ($('#T_employee_sg').val == "" || $('#T_employee_sg').val == null)
-            //{
-            // alert('操作失败，施工监理不能为空，请先到客户档案中维护！');
-            //    return;
-            //}
-            //if ($(form1).valid()) {
+           
             var sendtxt = "&Action=save&id=" + getparastr("cid");
-            // alert($("form :input").fieldSerialize() + sendtxt);
+            //alert($("form :input").fieldSerialize() + sendtxt);
+            //return;
             return $("form :input").fieldSerialize() + sendtxt;
             //}
         }

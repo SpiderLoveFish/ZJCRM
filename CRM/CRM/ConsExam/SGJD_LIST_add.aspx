@@ -80,21 +80,16 @@
 
         function T_privateInit()
         {
-            //$("#test1").ligerComboBox({
-            //    data: [
-            //        { text: '张三', id: '1' },
-            //        { text: '李四', id: '2' },
-            //        { text: '赵武', id: '44' }
-            //    ], valueFieldID: 'test3'
-            //});
+   
             var columns = [
-                { header: 'ID', name: 'id', width: 30 },
-                { header: '名称', name: 'text', width: 80 },
+                { header: 'ID', name: 'id', width: 10 },
+                { header: '名称', name: 'text', width: 100 },
                      {
-                         header: '颜色', name: 'jdys', width: 60,
-                         render: function (value) {
+                         header: '颜色', name: 'jdys', width: 40
+                         ,
+                         render: function (rowData) {
                              var html = [];
-                             html = "<div style='background:#" + value + "'> "
+                             html = "<div style='background:#" + rowData + "'> "
                              html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
                              html += "</div>"
                              return html;
@@ -111,6 +106,7 @@
                 success: function (result) {
                     var obj = eval(result);
                     $("#T_private").ligerComboBox({
+                        width:150,
                         data: obj,
                         columns: columns
                     });
@@ -243,7 +239,7 @@
 
         function f_save() {
             
-             f_error(getry()); return;
+             //f_error(getry()); return;
             if ($("#T_private").val() == "")
             {
                 f_error("必须选择一个有效施工进度！");
@@ -289,7 +285,8 @@
 
         //引用
         function RefRow() {
-            
+            f_openWindow("system/getemp.aspx?Action=emplist&cid=" + getparastr("cid") + "&issgjd='Y'", "选择人员", 650, 400);
+
         }
        //新增打开页面
         function addNewRow() {
@@ -308,33 +305,39 @@
                 var rid = "";
                 var tt = "<table class='bodytable1' align='left' ><tr>";
                 rows = dialog.frame.f_select();
-                var br = 0;
+                var br = 0; var flag = true;
                 for (var i = 0; i < rows.length; i++) {
-                  //  f_error(rows.length);
-                    br++;// rid += rows[i].ID + ",";
-                    tt += "<td><div class='divcss5' id='d" + rows[i].ID + "'> " +
-                       " <input type='button' class='btn1' id='" + rows[i].ID + "' value='" + rows[i].name + "'>"+
-                       " <input type='button' class='btn2' id='" + rows[i].zhiwuid +"-"+ rows[i].ID + "' value='" + rows[i].zhiwu + "'>" +
-                       "</div></td>";
-                   
-                  //  pushry.push(rows[i]);
-                    if (br == 5) {
-                        tt += " </tr><tr>";
-                        br = 0;
+                    if (pushry.length > 0) {
+                        for (var p = 0; p < pushry.length; p++) {
+                            // f_error(pushry[p]);
+                            if (pushry[p] == rows[i].ID)
+                                flag=false;
+                        }
+                    }  
+                    //  f_error(rows.length);
+                    if (flag) {
+                        br++;// rid += rows[i].ID + ",";
+                        tt += "<td><div class='divcss5' id='d" + rows[i].ID + "'> " +
+                           " <input type='button' class='btn1' id='" + rows[i].ID + "' value='" + rows[i].name + "'>" +
+                           " <input type='button' class='btn2' id='" + rows[i].zhiwuid + "-" + rows[i].ID + "' value='" + rows[i].zhiwu + "'>" +
+                           "</div></td>";
+
+                        pushry.push(rows[i].ID);
+                        if (br == 5) {
+                            tt += " </tr><tr>";
+                            br = 0;
+                        }
+                        if (i == rows.length - 1) {
+                            if (br < 5)
+                                for (var c = br + 1; c <= 5; c++) {
+                                    tt += "<td> </td>"
+                                    if (c == 5)
+                                        tt += " </tr>"
+                                }
+                        }
+                        //alert(rows[i].ID);
+                        // manager.addRow(rows[i]);
                     }
-                    if ( i== rows.length-1)
-                    {
-                        if(br<5)
-                            for (var c=br+1; c <= 5; c++)
-                            {
-                                tt += "<td> </td>"
-                                if(c==5)
-                                    tt += " </tr>"
-                            }
-                    }
-                    //alert(rows[i].ID);
-                    // manager.addRow(rows[i]);
-                   
                 }
                 tt += "</tr></table>"
                 var btn = $(tt);
@@ -400,6 +403,12 @@
                     $.ligerDialog.closeWaitting();
                     if (ok) {
                         $("#d" + id).remove();
+                        for (var p = 0; p < pushry.length; p++)
+                        {
+                            if (pushry[p] == id)
+                                pushry.splice(0, p);;
+                        }
+                      
                         //pushry.pop(id);
                     }
                     else { return;}
