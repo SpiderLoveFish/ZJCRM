@@ -169,6 +169,13 @@ namespace XHD.BLL
 		{
             return dal.UpdateData();
 		}
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetDetailList(string strWhere)
+        {
+            return dal.GetDetailList(strWhere);
+        }
 
         /// <summary>
         /// 获得数据列表

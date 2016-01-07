@@ -10,7 +10,7 @@ body{color:#535353;font-size:12px;font-family: "arial","微软雅黑";background
 .title{height:95px;line-height:95px;text-indent:280px;}
 .title h2{color:#7c7c7c;font-size:18px;font-weight:500;}
 #circle{
-	width:83px;height:83px;position:absolute;top:0;left:390px;border:6px solid rgba(0,0,0,0.15);border-radius:95px;text-indent:0;text-align:center;
+	width:83px;height:83px;position:absolute;top:0;left:30px;border:6px solid rgba(0,0,0,0.15);border-radius:95px;text-indent:0;text-align:center;
 	-webkit-transition:all 0.3s linear;
 	-moz-transition:all 0.3s linear;
 	-o-transition:all 0.3s linear;

@@ -160,7 +160,24 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(jdata);
             }
-            
+            if (request["Action"] == "detailform")
+            {
+                string cid = PageValidate.InputText(request["cid"], 50);
+
+                string dt;
+                if (PageValidate.IsNumber(cid))
+                {
+                    dt = "{}";
+                    DataSet ds = khjd.GetDetailList("cid=" + cid);
+                    dt = Common.DataToJson.GetJson(ds);
+                }
+                else
+                {
+                    dt = "{}";
+                }
+
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "form")
             {
                 string cid = PageValidate.InputText(request["xmid"], 50);
