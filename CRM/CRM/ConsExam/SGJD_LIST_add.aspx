@@ -307,6 +307,7 @@
                 rows = dialog.frame.f_select();
                 var br = 0; var flag = true;
                 for (var i = 0; i < rows.length; i++) {
+                   // alert(pushry.length);
                     if (pushry.length > 0) {
                         for (var p = 0; p < pushry.length; p++) {
                             // f_error(pushry[p]);

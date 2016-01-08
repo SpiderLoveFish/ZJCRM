@@ -155,8 +155,9 @@
             var row = manager.getSelectedRow();
             if (row) {
                 f_openWindow("crm/ConsExam/SGJD_List_View.aspx?cid=" + row.CustomerID
+                    + "&khmc=" + encodeURI(row.CustomerName + "[" + row.address + "]")
                    ,
-                    "进度查询", 800, 550);
+                    "时间轴查询", 800, 550);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
