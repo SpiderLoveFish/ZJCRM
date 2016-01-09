@@ -191,7 +191,8 @@
                 <td>
           <div   >
 		  <input type="text" id="T_color" name="T_color"       />
-           
+            <label style="color:red">注:选择右边的大颜色块，必须选定后点击空白处，色块消失，才能保存成功！</label>
+
 	  </div>
         
                     </td>

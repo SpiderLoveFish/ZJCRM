@@ -64,7 +64,7 @@
                                    
                                     if (r.length > 0) {
                                        
-                                        html = "<div class='tips' style='background:#" + r + "'> "
+                                        html = "<div class='tips' style='float:left;width:100%;height:100%;background:#" + r + "'> "
                                     }
                                        // html.push("<div style=' width:30,heigth:40,background-color::#800040'>'");
                                     if (value.split(';')[3].length > 0) html += "۞";

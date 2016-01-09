@@ -117,6 +117,20 @@
        
        
 
+        var activeDialogs = null;
+        function f_openWindow_show(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+                         
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialogs = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
         
         var activeDialog = null;
         function f_openWindow(url, title, width, height) {
@@ -154,7 +168,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("crm/ConsExam/SGJD_List_View.aspx?cid=" + row.CustomerID
+                f_openWindow_show("crm/ConsExam/SGJD_List_View.aspx?cid=" + row.CustomerID
                     + "&khmc=" + encodeURI(row.CustomerName + "[" + row.address + "]")
                    ,
                     "时间轴查询", 800, 550);

@@ -131,6 +131,11 @@
                             url: "../../data/CE_Para.ashx", type: "POST",
                             data: { Action: "del", id: row.JDID, rnd: Math.random() },
                             success: function (responseText) {
+                                if (responseText == "false:false")
+                                {
+                                    top.$.ligerDialog.error('删除失败！此项目已经在使用中！');
+                                    return;
+                                }
                                 if (responseText == "true") {
                                     top.$.ligerDialog.closeWaitting();
                                     f_reload();

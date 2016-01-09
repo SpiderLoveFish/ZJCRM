@@ -132,31 +132,39 @@ namespace XHD.CRM.Data
                 string c_id = PageValidate.InputText(request["id"], 50);
 
                 DataSet ds = ccpc.GetList(" JDID=" + int.Parse(c_id));
- 
-                    bool isdel = ccpc.Delete(int.Parse(c_id));
-                    if (isdel)
-                    {
-                        //日志
-                        string EventType = "施工状态";
+                        BLL.KHJD_LIST_VIEW_LIST khjd = new BLL.KHJD_LIST_VIEW_LIST();
+                       DataSet dskhjd= khjd.GetList(" JDID="+int.Parse(c_id));
+                       if (dskhjd.Tables[0].Rows.Count > 0)
+                           context.Response.Write("false:false");
+                       else
+                       {
+                           bool isdel = ccpc.Delete(int.Parse(c_id));
+                           if (isdel)
+                           {
 
-                        int UserID = emp_id;
-                        string UserName = empname;
-                        string IPStreet = request.UserHostAddress;
-                        int EventID = int.Parse(c_id);
-                        string EventTitle = ds.Tables[0].Rows[0]["JDID"].ToString();
-                        string Original_txt = null;
-                        string Current_txt = null;
+                               //日志
+                               string EventType = "施工状态";
 
-                        C_Sys_log log = new C_Sys_log();
+                               int UserID = emp_id;
+                               string UserName = empname;
+                               string IPStreet = request.UserHostAddress;
+                               int EventID = int.Parse(c_id);
+                               string EventTitle = ds.Tables[0].Rows[0]["JDID"].ToString();
+                               string Original_txt = null;
+                               string Current_txt = null;
 
-                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, null, Original_txt, Current_txt);
+                               C_Sys_log log = new C_Sys_log();
 
-                        context.Response.Write("true");
-                    }
-                    else
-                    {
-                        context.Response.Write("false");
-                    }
+                               log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, null, Original_txt, Current_txt);
+
+                               context.Response.Write("true");
+
+                           }
+                           else
+                           {
+                               context.Response.Write("false");
+                           }
+                       }
                 
 
             }

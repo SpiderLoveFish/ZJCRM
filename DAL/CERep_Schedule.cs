@@ -447,14 +447,14 @@ namespace XHD.DAL
              string sql = "select  COUNT(1)  from (SELECT DISTINCT cid FROM OLD_XCZS.dbo.KHJD_LIST_VIEW_LIST)T	";
 
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine("EXEC OLD_XCZS.dbo.USP_View_Schedule @TName = 'KHJD_LIST_VIEW_LIST', -- varchar(20) ");
+            sb.AppendLine("EXEC dbo.USP_View_Schedule @TName = 'KHJD_LIST_VIEW_LIST', -- varchar(20) ");
             sb.AppendLine("    @GColumn = 'CID', -- varchar(20) ");
             sb.AppendLine("    @RC = 'XMMC', -- varchar(20) ");
             sb.AppendLine("	@RCValue = 'Cpro,Cname', -- varchar(20) ");
             sb.AppendLine("    @RCValues = '(jdys+'';项目:''+XMMC+'';''+Cname+'';''+remark+'';''+CONVERT(VARCHAR(20),lrrq,120))', -- varchar(20) ");
             sb.AppendLine("    @sql_where = N'WHERE 1=1' ");
             sb.AppendLine(" ");
-            DataSet ds = DbHelperSQL.RunProcedure("OLD_XCZS.dbo.USP_View_Schedule", 
+            DataSet ds = DbHelperSQL.RunProcedure("dbo.USP_View_Schedule", 
                 parameters,
                 "schedule");
             Total = DbHelperSQL.Query(sql).Tables[0].Rows[0][0].ToString();
