@@ -33,6 +33,13 @@ namespace XHD.CRM.Data
             string empname = dsemp.Tables[0].Rows[0]["name"].ToString();
             string uid = dsemp.Tables[0].Rows[0]["uid"].ToString();
 
+            if (request["Action"] == "testmd5")
+            {
+                string a="sdfaadsasdasd";
+                string b=MD5(a);
+                context.Response.Write(b);//90d456d96750985a93508334924bb719
+            }
+
             if (request["Action"] == "save")
             {
                model.XMMC = PageValidate.InputText(request["xmmc"], 300);
@@ -247,7 +254,12 @@ namespace XHD.CRM.Data
             }
         }
 
-       
+        private static string MD5(string input)
+        {
+            string b = FormsAuthentication.HashPasswordForStoringInConfigFile(input, "MD5");
+
+            return b;
+        }
         public bool IsReusable
         {
             get

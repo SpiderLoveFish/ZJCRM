@@ -107,6 +107,7 @@
         }
 
         function edit() {
+           
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
          

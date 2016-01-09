@@ -101,6 +101,7 @@
     <Content Include="CRM\ConsExam\CEDetail_View.aspx" />
     <Content Include="CRM\ConsExam\CERep_Schedule.aspx" />
     <Content Include="CRM\ConsExam\CEStage_ViewDetail.aspx" />
+    <Content Include="CRM\ConsExam\kjl.aspx" />
     <Content Include="CRM\ConsExam\SGJD_List_View.aspx" />
     <Content Include="CRM\ConsExam\SGJD_LIST.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST_add.aspx" />
@@ -652,6 +653,7 @@
     <Content Include="NoVerified\NVRepairTelphone.aspx" />
     <Content Include="QQ_Login.aspx" />
     <Content Include="qq_rebind.aspx" />
+    <Content Include="System\SingleSignOn.aspx" />
     <Content Include="testcookie.html" />
     <Content Include="View\product_view.aspx" />
     <Content Include="CRM\Product\product.aspx" />
@@ -727,6 +729,7 @@
     <Content Include="Data\CE_Para.ashx" />
     <Content Include="Data\XM_LIST.ashx" />
     <Content Include="Data\SGJD_LIST.ashx" />
+    <Content Include="Data\SingleSignOn.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -3993,6 +3996,9 @@
     </Compile>
     <Compile Include="Data\CE_Para.ashx.cs">
       <DependentUpon>CE_Para.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\SingleSignOn.ashx.cs">
+      <DependentUpon>SingleSignOn.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\SGJD_LIST.ashx.cs">
       <DependentUpon>SGJD_LIST.ashx</DependentUpon>

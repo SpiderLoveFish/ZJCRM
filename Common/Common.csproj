@@ -145,6 +145,7 @@
     <Compile Include="DataToJson.cs" />
     <Compile Include="ECBC_CDKEY.cs" />
     <Compile Include="GetGridJSON.cs" />
+    <Compile Include="httpgeturlparadata.cs" />
     <Compile Include="HttpProc.cs" />
     <Compile Include="MailSender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
