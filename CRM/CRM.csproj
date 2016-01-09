@@ -160,7 +160,6 @@
     <Content Include="CRM\Repair\Repairphone.aspx" />
     <Content Include="CRM\Repair\UploadImg.aspx" />
     <Content Include="CSS\base.css" />
-    <Content Include="CSS\DragFlow\history.css" />
     <Content Include="CSS\imgareaselect-default.css" />
     <Content Include="CSS\Login.css" />
     <Content Include="CSS\reset.css" />
@@ -647,8 +646,6 @@
     <Content Include="JS\colorpick.js" />
     <Content Include="JS\remember.js" />
     <Content Include="JS\spectrum.js" />
-    <Content Include="JS\TimeFlow\history.js" />
-    <Content Include="JS\TimeFlow\jquery.easing.js" />
     <Content Include="JS\TimeFlow\jquery.mousewheel.js" />
     <Content Include="NoVerified\NVRepairTelphone.aspx" />
     <Content Include="QQ_Login.aspx" />
@@ -4205,6 +4202,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="CSS\DragFlow\" />
     <Folder Include="file\contract\" />
     <Folder Include="file\customer\" />
     <Folder Include="file\mail\inbox\" />
