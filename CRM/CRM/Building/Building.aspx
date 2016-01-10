@@ -35,7 +35,7 @@
         var manager;
         var manager1;
         $(function () {
-            debugger;
+           // //debugger;
             initLayout();
             $(window).resize(function () {
                 initLayout();
@@ -46,13 +46,13 @@
                     {
                         display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                         {
-                            debugger;
+                            //debugger;
                             return (page - 1) * pagesize + rowindex + 1;
                         }
                     },
                     {
                         display: '楼盘名称', name: 'Name', width: 150, align: 'left', render: function (item) {
-                            debugger;
+                            //debugger;
                             var html = "<a href='javascript:void(0)' >";//onclick=view(1," + item.ID + ")
                             if (item.Name)
                                 html += item.Name;
@@ -96,7 +96,7 @@
         });
 
         function toolbar() {
-            debugger;
+            ////debugger;
             $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=5&rnd=" + Math.random(), function (data, textStatus) {
                 var items = [];
                 var arr = data.Items;

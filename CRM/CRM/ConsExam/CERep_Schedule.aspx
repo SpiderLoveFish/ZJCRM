@@ -49,6 +49,9 @@
                     //}, json.Rows[i]["testid"]
                     x++;
                     if (x < 5) {
+                        if (x == 1)
+                            col.push({ display: i, name: i, align: 'left', width: 40 });
+                            else
                           col.push({ display: i, name: i, align: 'left', width: 80});
                          //colnames += ",{name:'" + i + "',display:'" + i + "', width: 80, frozen: true    " +
                          //   " }";
@@ -67,7 +70,7 @@
                                         html = "<div class='tips' style='float:left;width:100%;height:100%;background:#" + r + "'> "
                                     }
                                        // html.push("<div style=' width:30,heigth:40,background-color::#800040'>'");
-                                    if (value.split(';')[3].length > 0) html += "۞";
+                                    if (value.split(';')[3].length > 0) html += "&nbsp;&nbsp;&nbsp;۞";
                                      
                                     html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + value.split(';')[1] + "&nbsp;;";
                                     html += value.split(';')[2] + "&nbsp;;";
@@ -114,7 +117,7 @@
                            ],
                         onAfterShowData: function (grid) {
                             $(".tips").hover(function (e) {
-                                $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                                $(this).ligerTip({ content: $(this).text().replace("۞", "").replace(/^\s*|\s*$/g, "描述"), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
                             }, function (e) {
                                 $(this).ligerHideTip(e);
                             });

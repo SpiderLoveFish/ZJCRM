@@ -89,6 +89,8 @@
     <Content Include="copyright.html" />
     <Content Include="CRM\Building\Building.aspx" />
     <Content Include="CRM\Building\Building_Add.aspx" />
+    <Content Include="CRM\Building\Building_map.aspx" />
+    <Content Include="CRM\Building\map_mark.aspx" />
     <Content Include="CRM\ConsExam\CEStage.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category_add.aspx" />
@@ -160,11 +162,15 @@
     <Content Include="CRM\Repair\Repairphone.aspx" />
     <Content Include="CRM\Repair\UploadImg.aspx" />
     <Content Include="CSS\base.css" />
+    <Content Include="CSS\DragFlow\history.css" />
+    <Content Include="CSS\DragFlow\main.css" />
     <Content Include="CSS\imgareaselect-default.css" />
     <Content Include="CSS\Login.css" />
     <Content Include="CSS\reset.css" />
     <Content Include="CSS\showfav.css" />
     <Content Include="CSS\spectrum.css" />
+    <Content Include="FakesAssemblies\XHD.BLL.Fakes.dll" />
+    <Content Include="FakesAssemblies\XHD.BLL.Fakes.xml" />
     <Content Include="GetRegNum.aspx" />
     <Content Include="Images\big_bgcolor.jpg" />
     <Content Include="Images\bt_92X120.png" />
@@ -647,6 +653,7 @@
     <Content Include="JS\remember.js" />
     <Content Include="JS\spectrum.js" />
     <Content Include="JS\TimeFlow\jquery.mousewheel.js" />
+    <Content Include="JS\TimeFlow\jquery.timelinr-0.9.53.js" />
     <Content Include="NoVerified\NVRepairTelphone.aspx" />
     <Content Include="QQ_Login.aspx" />
     <Content Include="qq_rebind.aspx" />
@@ -727,6 +734,7 @@
     <Content Include="Data\XM_LIST.ashx" />
     <Content Include="Data\SGJD_LIST.ashx" />
     <Content Include="Data\SingleSignOn.ashx" />
+    <Content Include="FakesAssemblies\XHD.BLL.Fakes.fakesconfig" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -4202,7 +4210,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="CSS\DragFlow\" />
     <Folder Include="file\contract\" />
     <Folder Include="file\customer\" />
     <Folder Include="file\mail\inbox\" />
@@ -4261,6 +4268,7 @@
     <Content Include="ueditor1_2_5_1-utf8-net\net\scrawlUp.ashx" />
     <Content Include="file\template\customer_template.xls" />
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\11.pubxml" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
     <Content Include="View\QrCodeHandler.ashx" />
     <Content Include="View\product_handler.ashx" />

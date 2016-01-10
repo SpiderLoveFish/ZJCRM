@@ -1,14 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-您 Web 项目的发布/打包进程将使用此文件。您可以通过编辑此 MSBuild 文件
-来自定义该进程的行为。若要了解与此相关的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=208121。
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
     <LastUsedPlatform>Any CPU</LastUsedPlatform>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>E:\fb\xhcrm</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_Browsers/IE10.browser">
@@ -18,7 +17,7 @@
       <publishTime>08/20/2011 22:18:48</publishTime>
     </File>
     <File Include="bin/CRM.dll">
-      <publishTime>01/09/2016 22:58:45</publishTime>
+      <publishTime>01/09/2016 23:12:44</publishTime>
     </File>
     <File Include="bin/Excel.dll">
       <publishTime>08/20/2011 22:18:48</publishTime>
@@ -38,9 +37,6 @@
     <File Include="bin/Microsoft.QualityTools.Testing.Fakes.dll">
       <publishTime>07/26/2012 19:41:24</publishTime>
     </File>
-    <File Include="bin/Microsoft.Vbe.Interop.dll">
-      <publishTime>12/12/2011 06:54:12</publishTime>
-    </File>
     <File Include="bin/MySql.Data.dll">
       <publishTime>08/20/2011 22:18:50</publishTime>
     </File>
@@ -50,9 +46,6 @@
     <File Include="bin/Newtonsoft.Json.Net35.dll">
       <publishTime>01/04/2011 13:48:18</publishTime>
     </File>
-    <File Include="bin/office.dll">
-      <publishTime>12/12/2011 06:54:12</publishTime>
-    </File>
     <File Include="bin/OpenSmtp.dll">
       <publishTime>08/20/2011 22:18:52</publishTime>
     </File>
@@ -61,9 +54,6 @@
     </File>
     <File Include="bin/XHD.Comm.dll">
       <publishTime>01/09/2016 22:10:23</publishTime>
-    </File>
-    <File Include="bin/XHD.Common.dll">
-      <publishTime>05/18/2015 16:28:59</publishTime>
     </File>
     <File Include="bin/XHD.DAL.dll">
       <publishTime>01/09/2016 22:10:36</publishTime>
@@ -190,12 +180,6 @@
     </File>
     <File Include="CRM/Customer/map_mark.aspx">
       <publishTime>12/14/2015 05:40:02</publishTime>
-    </File>
-    <File Include="CRM/DataShare/data_category.aspx">
-      <publishTime>05/19/2015 23:06:43</publishTime>
-    </File>
-    <File Include="CRM/DataShare/data_category_add.aspx">
-      <publishTime>05/19/2015 22:24:56</publishTime>
     </File>
     <File Include="CRM/DataShare/Favorites_Adv_View.aspx">
       <publishTime>12/14/2015 05:40:02</publishTime>
@@ -362,14 +346,17 @@
     <File Include="CSS/core.css">
       <publishTime>12/14/2015 05:40:02</publishTime>
     </File>
+    <File Include="CSS/DragFlow/history.css">
+      <publishTime>01/09/2016 22:12:02</publishTime>
+    </File>
+    <File Include="CSS/DragFlow/main.css">
+      <publishTime>01/08/2016 21:14:59</publishTime>
+    </File>
     <File Include="CSS/imgareaselect-animated.css">
       <publishTime>12/14/2015 05:40:02</publishTime>
     </File>
     <File Include="CSS/imgareaselect-default.css">
       <publishTime>12/14/2015 05:40:02</publishTime>
-    </File>
-    <File Include="CSS/imgareaselect-default1.css">
-      <publishTime>06/11/2015 21:55:27</publishTime>
     </File>
     <File Include="CSS/imgareaselect-deprecated.css">
       <publishTime>12/14/2015 05:40:02</publishTime>
@@ -582,6 +569,15 @@
       <publishTime>01/05/2016 18:04:54</publishTime>
     </File>
     <File Include="Default.aspx">
+      <publishTime>12/14/2015 05:40:02</publishTime>
+    </File>
+    <File Include="FakesAssemblies/XHD.BLL.Fakes.dll">
+      <publishTime>12/14/2015 05:40:02</publishTime>
+    </File>
+    <File Include="FakesAssemblies/XHD.BLL.Fakes.fakesconfig">
+      <publishTime>12/14/2015 05:40:02</publishTime>
+    </File>
+    <File Include="FakesAssemblies/XHD.BLL.Fakes.xml">
       <publishTime>12/14/2015 05:40:02</publishTime>
     </File>
     <File Include="file/template/customer_template.xls">
@@ -5429,9 +5425,6 @@
     <File Include="Images/logo/LOGO.png">
       <publishTime>12/14/2015 05:40:02</publishTime>
     </File>
-    <File Include="Images/logo/xhd.png">
-      <publishTime>02/11/2015 15:16:34</publishTime>
-    </File>
     <File Include="Images/noheadimage.jpg">
       <publishTime>12/14/2015 05:40:02</publishTime>
     </File>
@@ -7228,6 +7221,9 @@
     </File>
     <File Include="JS/TimeFlow/jquery.mousewheel.js">
       <publishTime>01/07/2016 23:04:04</publishTime>
+    </File>
+    <File Include="JS/TimeFlow/jquery.timelinr-0.9.53.js">
+      <publishTime>01/08/2016 21:14:59</publishTime>
     </File>
     <File Include="JS/Toolbar.js">
       <publishTime>12/14/2015 05:40:02</publishTime>
@@ -10394,9 +10390,6 @@
     <File Include="System/Getemp.aspx">
       <publishTime>01/07/2016 21:06:48</publishTime>
     </File>
-    <File Include="System/GetRegNum.aspx">
-      <publishTime>04/16/2015 00:10:35</publishTime>
-    </File>
     <File Include="System/hr_changepwd.aspx">
       <publishTime>12/14/2015 05:40:02</publishTime>
     </File>
@@ -10495,9 +10488,6 @@
     </File>
     <File Include="Toolbar/Recycle/CRM/Receive.aspx">
       <publishTime>12/14/2015 05:40:02</publishTime>
-    </File>
-    <File Include="tt.aspx">
-      <publishTime>04/02/2015 09:04:41</publishTime>
     </File>
     <File Include="ueditor1_2_5_1-utf8-net/build/build_editor_css_all.js">
       <publishTime>12/14/2015 05:40:02</publishTime>
@@ -10927,24 +10917,6 @@
     </File>
     <File Include="ueditor1_2_5_1-utf8-net/net/scrawlUp.ashx">
       <publishTime>12/14/2015 05:40:02</publishTime>
-    </File>
-    <File Include="ueditor1_2_5_1-utf8-net/net/upload/2013-04-26/16e4a7f3-49a8-49f2-8680-146db40ea3a6.jpg">
-      <publishTime>02/11/2015 10:58:31</publishTime>
-    </File>
-    <File Include="ueditor1_2_5_1-utf8-net/net/upload/2013-04-26/48c10c7b-a625-43e7-abea-31c6fdd6f577.png">
-      <publishTime>02/11/2015 10:58:29</publishTime>
-    </File>
-    <File Include="ueditor1_2_5_1-utf8-net/net/upload/2013-04-26/9885044a-65ae-4a4d-aaa8-564f0a4fdf1f.jpg">
-      <publishTime>02/11/2015 10:58:29</publishTime>
-    </File>
-    <File Include="ueditor1_2_5_1-utf8-net/net/upload/2013-04-26/a29b3f3f-f93a-4d21-99ae-b2bc47cc742d.jpg">
-      <publishTime>02/11/2015 10:58:36</publishTime>
-    </File>
-    <File Include="ueditor1_2_5_1-utf8-net/net/upload/2013-04-26/dd682d3a-51d2-42aa-b62e-e31653aa3442.jpg">
-      <publishTime>02/11/2015 10:58:36</publishTime>
-    </File>
-    <File Include="ueditor1_2_5_1-utf8-net/net/upload/2013-04-26/f051eabe-fd35-452b-99ee-56fd856f83b0.jpg">
-      <publishTime>02/11/2015 10:58:29</publishTime>
     </File>
     <File Include="ueditor1_2_5_1-utf8-net/net/Uploader.cs">
       <publishTime>12/14/2015 05:40:02</publishTime>
@@ -11425,9 +11397,6 @@
     </File>
     <File Include="welcome.htm">
       <publishTime>12/14/2015 05:40:02</publishTime>
-    </File>
-    <File Include="小黄豆CRM启动器.exe">
-      <publishTime>03/11/2015 15:53:05</publishTime>
     </File>
   </ItemGroup>
 </Project>
