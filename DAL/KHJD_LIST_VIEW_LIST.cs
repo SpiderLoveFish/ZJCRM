@@ -447,7 +447,7 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             //strSql.Append("select KHJDID,CID,Cpro,Ccity,JDID,JDMC,XMID,XMMC,REMARK,LRRQ,JDYS,Cname,CZR,Cmob,status ");
             //strSql.Append(" FROM KHJD_LIST_VIEW_LIST ");
-            strSql.Append("  SELECT DISTINCT CID,KHJDID,LRRQ,");
+            strSql.Append("  SELECT DISTINCT CID,KHJDID,LRRQ,REMARK,JDMC,");
           strSql.Append("  dbo.F_GetString(CID,KHJDID,'P') AS ry ,");
           strSql.Append("  dbo.F_GetString(CID,KHJDID,'M')  AS xmmc");
           strSql.Append("   FROM KHJD_LIST_VIEW_LIST");
