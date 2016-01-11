@@ -218,7 +218,20 @@
         }
         //施工进度
         function process() {
-            // f_openWindow("crm/ConsExam/CEStage_add.aspx", "新增客户", 700, 330);
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindowview("crm/ConsExam/SGJD_List_View.aspx?cid=" + row.CustomerID
+                    + "&khmc=" + encodeURI(row.CustomerName + "[" + row.address + "]")
+                    + "&tel=" + row.tel
+                + "&sjzt=" + encodeURI(row.Stage_icon)
+                + "&sgjl=" + encodeURI(row.sgjl)
+                + "&jhdate=" + row.Jh_date
+                   ,
+                    "时间轴查询", 800, 550);
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
         }
         function add() {
             f_openWindow("crm/ConsExam/CEStage_add.aspx", "新增客户", 700, 330);

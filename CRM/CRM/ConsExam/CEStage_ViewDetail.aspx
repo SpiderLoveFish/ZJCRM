@@ -121,7 +121,7 @@
         //查看 
         function view(sid, vid, name) {
 
-            f_openWindow('crm/ConsExam/CEDetail_View.aspx?&sid=' + sid + '&pid=' + getparastr("pid") + '&vid=' + vid + '&sname=' + name, "查看评分", 790, 500);
+            f_openWindow('crm/ConsExam/CEDetail_View.aspx?&sid=' + sid + '&pid=' + getparastr("pid") + '&vid=' + vid + '&sname=' + encodeURI(name), "查看评分", 790, 500);
         }
 
 

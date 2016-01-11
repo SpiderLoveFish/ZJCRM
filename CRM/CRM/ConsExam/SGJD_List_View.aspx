@@ -19,9 +19,9 @@
    <style type="text/css">
 #timeline {width: 720px;height: 240px;overflow: hidden;margin: 10px auto;position: relative;background: url('../../Images/dot.gif') left 45px repeat-x;}
 #dates {width: 720px;height: 60px;overflow: hidden;}
-#dates li {list-style: none;float: left;width: 180px;height: 50px;font-size: 18px;text-align: center;background: url('../../Images/biggerdot.png') center bottom no-repeat;}
+#dates li {list-style: none;float: left;width: 180px;height: 50px;font-size: 16px;text-align: center;background: url('../../Images/biggerdot.png') center bottom no-repeat;}
 #dates a {line-height: 38px;padding-bottom: 10px;}
-#dates .selected {font-size: 26px; color:green}
+#dates .selected {font-size: 20px; color:green}
 #issues {width: 720px;height: 240px;overflow: hidden;}	
 #issues li {width: 720px;height: 240px;list-style: none;float: left;}
 #issues li h1 {color: #007bc4;font-size: 16px;margin: 10px 0;} /*text-shadow: #000 1px 1px 2px;*/
@@ -217,10 +217,8 @@ table {
            
              // t2 += "<td><strong>要求完工时间:</strong><lable  >" + formatTimebytype((getparastr("jhdate"), "yyyy年MM月dd日")) + "</lable></td>";
             var myDate = new Date();
-           
-            var ts = parseInt(myDate.getTime() - new Date(formatTimebytype(getparastr("jhdate"), 'yyyy/MM/dd')).getTime());
-            //alert(new Date( formatTimebytype(getparastr("jhdate"),'yyyy/MM/dd')).getTime());
-            var days = -Math.floor(ts / (24 * 3600 * 1000))
+            var days = getdays(formatTimebytype(getparastr("jhdate"), 'yyyy/MM/dd'), myDate);
+            days = -days;
            if(days<0)
                $("#lbsygq").append($("<span  class='gj'>已拖期：" + days + "天</span>"));
             else
@@ -240,6 +238,14 @@ table {
              //  f_openWindow_post("hr/hr_position.aspx?IsGet=Y", "选择职务", 650, 400);
            });
        }
+
+       function getdays(dtbegin,dtend)
+       {
+           var ts = parseInt(new Date(dtend).getTime() - new Date(dtbegin).getTime());
+           var days = Math.floor(ts / (24 * 3600 * 1000))
+           return days;
+       }
+
 	    function INIT(ryid) {
 	        $.ajax({
 	            type: "GET",
@@ -302,11 +308,21 @@ table {
 	                t = "";
 	                for (var i = 0; i < obj.length; i++) {
 	                    if (i == 0)
-	                    {$('#lbrq1').text(formatTimebytype(obj[i].LRRQ, "yyyy-MM-dd"));
-	                    $('#lbrq2').text(formatTimebytype(obj[obj.length - 1].LRRQ, "yyyy-MM-dd"));
-	                        var ts = parseInt(new Date(formatTimebytype(obj[obj.length-1].LRRQ, 'yyyy/MM/dd')) - new Date(formatTimebytype(obj[0].LRRQ, 'yyyy/MM/dd')).getTime());
-	                        //alert(new Date( formatTimebytype(getparastr("jhdate"),'yyyy/MM/dd')).getTime());
-	                        var days = Math.floor(ts / (24 * 3600 * 1000))
+	                    {
+	                        $('#lbrq1').text(formatTimebytype(obj[i].LRRQ, "yyyy-MM-dd"));
+	                        $('#lbrq2').text(formatTimebytype(obj[obj.length - 1].LRRQ, "yyyy-MM-dd"));
+	                        
+	                        if (decodeURI(getparastr("sjzt")) == "施工完成") {
+	                            $("#lbsygq").empty();
+	                             var dayss = getdays(formatTimebytype(obj[obj.length - 1].LRRQ, 'yyyy/MM/dd'), formatTimebytype(getparastr("jhdate"), 'yyyy/MM/dd'));    
+	                           if (dayss < 0)
+	                               $("#lbsygq").append($("<span  class='gj'>已拖期：" + dayss + "天</span>"));
+	                           else
+	                               $("#lbsygq").append($("<span  class='blue'>提前完工：" + dayss + "天</span>"));
+                           }  
+
+	                        var days = getdays(formatTimebytype(obj[0].LRRQ, 'yyyy/MM/dd'), formatTimebytype(obj[obj.length - 1].LRRQ, 'yyyy/MM/dd'));
+	                     
 	                        $('#lbtst2').text(days);
 	                    }
 
