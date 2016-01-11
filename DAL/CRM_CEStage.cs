@@ -506,7 +506,7 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("SELECT COUNT(versions) AS ver,A.projectid,A.stageid ");
-            strSql.Append(" ,B.CEStage_category,AVG(A.TotalScore) AS TotalScore,Jh_date  ");
+            strSql.Append(" ,B.CEStage_category,AVG(A.TotalScore) AS TotalScore  ");
              strSql.Append(" ,AVG(A.AssTime*1.00) AS AssTime,SUM(a.AssTime*1.00)/SUM(A.TotalScore)*100 AS dcl ");
               strSql.Append(" FROM dbo.Crm_CEDetail A ");
              strSql.Append(" INNER JOIN  dbo.CRM_CEStage_category B ON	 A.stageid =B.id ");

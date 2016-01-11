@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" %>
+ï»¿<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -26,47 +26,48 @@
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
-                    { display: 'ĞòºÅ', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
-                    // { display: '±àºÅ', name: 'id', width: 50, align: 'left' },
-                    // { display: '¿Í»§±àºÅ', name: 'CustomerID', width: 50, align: 'left' },
-                      { display: '¿Í»§ĞÕÃû', name: 'CustomerName', width: 80, align: 'left' },
-                       { display: '¿Í»§µç»°', name: 'tel', width: 100, align: 'left' },
-                        { display: '¿Í»§µØÖ·', name: 'address', width: 250, align: 'left' },
-                      { display: 'Ê©¹¤¼àÀí', name: 'sgjl', width: 80, align: 'left' },
-                        { display: 'ÒµÎñÔ±', name: 'ywy', width: 80, align: 'left' },
-                   // { display: 'Éè¼ÆÊ¦', name: 'sjs', width: 120, align: 'left' },
-                    { display: '¸½¼Ó·Ö', name: 'SpecialScore', width: 50, align: 'right' },
+                    { display: 'åºå·', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
+                    // { display: 'ç¼–å·', name: 'id', width: 50, align: 'left' },
+                    // { display: 'å®¢æˆ·ç¼–å·', name: 'CustomerID', width: 50, align: 'left' },
+                      { display: 'å®¢æˆ·å§“å', name: 'CustomerName', width: 80, align: 'left' },
+                       { display: 'å®¢æˆ·ç”µè¯', name: 'tel', width: 100, align: 'left' },
+                        { display: 'å®¢æˆ·åœ°å€', name: 'address', width: 250, align: 'left' },
+                      { display: 'æ–½å·¥ç›‘ç†', name: 'sgjl', width: 80, align: 'left' },
+                        { display: 'ä¸šåŠ¡å‘˜', name: 'ywy', width: 80, align: 'left' },
+                   // { display: 'è®¾è®¡å¸ˆ', name: 'sjs', width: 120, align: 'left' },
+                    { display: 'é™„åŠ åˆ†', name: 'SpecialScore', width: 50, align: 'right' },
                 {
-                    display: '¿¼ºË·Ö', name: 'StageScore', width: 50, align: 'right', render: function (item) {
+                    display: 'è€ƒæ ¸åˆ†', name: 'StageScore', width: 50, align: 'right', render: function (item) {
                         return "<div style='color:#135294'>" + item.StageScore + "</div>";
                     }
                 },
-                 { display: '×ÜµÃ·Ö', name: 'sum_Score', width: 50, align: 'right' },
-                 { display: 'Âú·Ö', name: 'TotalScorce', width: 50, align: 'right' },
-                 { display: '´ï³ÉÂÊ', name: 'Scoring', width: 80, align: 'right',  render: function (item) {
+                 { display: 'æ€»å¾—åˆ†', name: 'sum_Score', width: 50, align: 'right' },
+                 { display: 'æ»¡åˆ†', name: 'TotalScorce', width: 50, align: 'right' },
+                 {
+                     display: 'è¾¾æˆç‡', name: 'Scoring', width: 80, align: 'right', render: function (item) {
 
-                     var html;
-                     if (item.sum_Score / item.TotalScorce >0.9) {
-                         html = "<div style='color:#008040'>";
-                         if (item.Scoring)
-                             html += item.Scoring;
-                         html += "</div>";
-                     }
-                     else
-                         if (item.sum_Score / item.TotalScorce > 0.5) {
-                             html = "<div style='color:#800040'>";
+                         var html;
+                         if (item.sum_Score / item.TotalScorce > 0.9) {
+                             html = "<div style='color:#008040'>";
                              if (item.Scoring)
                                  html += item.Scoring;
                              html += "</div>";
                          }
                          else
-                             html = "<div style='color:#F00'>" + item.Scoring + "</div>";
-                     return html;
-                 }
-        },
-                        { display: '×´Ì¬', name: 'Stage_icon', width: 80, align: 'left' },
-                { display: '±¸×¢', name: 'Remarks', width: 200, align: 'left' }
-                    
+                             if (item.sum_Score / item.TotalScorce > 0.5) {
+                                 html = "<div style='color:#800040'>";
+                                 if (item.Scoring)
+                                     html += item.Scoring;
+                                 html += "</div>";
+                             }
+                             else
+                                 html = "<div style='color:#F00'>" + item.Scoring + "</div>";
+                         return html;
+                     }
+                 },
+                        { display: 'çŠ¶æ€', name: 'Stage_icon', width: 80, align: 'left' },
+                { display: 'å¤‡æ³¨', name: 'Remarks', width: 200, align: 'left' }
+
                 ],
                 dataAction: 'local',
                 pageSize: 30,
@@ -85,7 +86,7 @@
 
             });
 
-            
+
 
             initLayout();
             $(window).resize(function () {
@@ -104,7 +105,7 @@
                 }
                 items.push({
                     type: 'serchbtn',
-                    text: '¸ß¼¶ËÑË÷',
+                    text: 'é«˜çº§æœç´¢',
                     icon: '../../images/search.gif',
                     disable: true,
                     click: function () {
@@ -118,7 +119,7 @@
                 menu = $.ligerMenu({
                     width: 120, items: getMenuItems(data)
                 });
-                
+
                 $("#maingrid4").ligerGetGridManager().onResize();
             });
         }
@@ -147,10 +148,10 @@
 
             $("#dclbstext").addClass("l-text");
             $("#dclestext").addClass("l-text");
-     
+
         }
 
-        //²éÑ¯
+        //æŸ¥è¯¢
         function doserch() {
             var sendtxt = "&Action=grid&rnd=" + Math.random();
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
@@ -170,9 +171,9 @@
         function f_openWindowview(url, title, width, height) {
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
-                         
+
                         {
-                            text: '¹Ø±Õ', onclick: function (item, dialog) {
+                            text: 'å…³é—­', onclick: function (item, dialog) {
                                 dialog.close();
                             }
                         }
@@ -185,12 +186,12 @@
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
                         {
-                            text: '±£´æ', onclick: function (item, dialog) {
+                            text: 'ä¿å­˜', onclick: function (item, dialog) {
                                 f_save(item, dialog);
                             }
                         },
                         {
-                            text: '¹Ø±Õ', onclick: function (item, dialog) {
+                            text: 'å…³é—­', onclick: function (item, dialog) {
                                 dialog.close();
                             }
                         }
@@ -198,7 +199,7 @@
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
-        //Ã÷Ï¸
+        //æ˜ç»†
         function detail() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
@@ -210,26 +211,26 @@
                      + "&zf=" + row.TotalScorce
                     + "&dcl=" + row.Scoring
                     + "&df=" + row.sum_Score,
-                    "Ã÷Ï¸²éÑ¯", 700, 530);
+                    "æ˜ç»†æŸ¥è¯¢", 700, 530);
             } else {
-                $.ligerDialog.warn('ÇëÑ¡ÔñĞĞ£¡');
+                $.ligerDialog.warn('è¯·é€‰æ‹©è¡Œï¼');
             }
-            }
-        //Ê©¹¤½ø¶È
+        }
+        //æ–½å·¥è¿›åº¦
         function process() {
-           // f_openWindow("crm/ConsExam/CEStage_add.aspx", "ĞÂÔö¿Í»§", 700, 330);
+            // f_openWindow("crm/ConsExam/CEStage_add.aspx", "æ–°å¢å®¢æˆ·", 700, 330);
         }
         function add() {
-            f_openWindow("crm/ConsExam/CEStage_add.aspx", "ĞÂÔö¿Í»§", 700, 330);
+            f_openWindow("crm/ConsExam/CEStage_add.aspx", "æ–°å¢å®¢æˆ·", 700, 330);
         }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                   f_openWindow("crm/ConsExam/CEStage_add.aspx?cid=" + row.id, "ĞŞ¸Ä¿Í»§", 700, 330);
+                f_openWindow("crm/ConsExam/CEStage_add.aspx?cid=" + row.id, "ä¿®æ”¹å®¢æˆ·", 700, 330);
             } else {
-                $.ligerDialog.warn('ÇëÑ¡ÔñĞĞ£¡');
+                $.ligerDialog.warn('è¯·é€‰æ‹©è¡Œï¼');
             }
         }
 
@@ -237,7 +238,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                $.ligerDialog.confirm("É¾³ı²»ÄÜ»Ö¸´£¬È·¶¨É¾³ı£¿", function (yes) {
+                $.ligerDialog.confirm("åˆ é™¤ä¸èƒ½æ¢å¤ï¼Œç¡®å®šåˆ é™¤ï¼Ÿ", function (yes) {
                     if (yes) {
                         $.ajax({
                             url: "../../data/Crm_CEStage.ashx", type: "POST",
@@ -247,48 +248,46 @@
                                     top.$.ligerDialog.closeWaitting();
                                     f_reload();
                                 }
-                                 
+
                                 else {
                                     top.$.ligerDialog.closeWaitting();
-                                    top.$.ligerDialog.error('É¾³ıÊ§°Ü£¡');
+                                    top.$.ligerDialog.error('åˆ é™¤å¤±è´¥ï¼');
                                 }
                             },
                             error: function () {
                                 top.$.ligerDialog.closeWaitting();
-                                top.$.ligerDialog.error('É¾³ıÊ§°Ü£¡', "", null, 9003);
+                                top.$.ligerDialog.error('åˆ é™¤å¤±è´¥ï¼', "", null, 9003);
                             }
                         });
                     }
                 })
             } else {
-                $.ligerDialog.warn("ÇëÑ¡ÔñÀà±ğ£¡");
+                $.ligerDialog.warn("è¯·é€‰æ‹©ç±»åˆ«ï¼");
             }
         }
 
         function f_save(item, dialog) {
-            
+
             var issave = dialog.frame.f_save();
-          
+
             if (issave) {
                 dialog.close();
-                top.$.ligerDialog.waitting('Êı¾İ±£´æÖĞ,ÇëÉÔºò...');
+                top.$.ligerDialog.waitting('æ•°æ®ä¿å­˜ä¸­,è¯·ç¨å€™...');
                 $.ajax({
                     url: "../../data/CRM_CEStage.ashx", type: "POST",
                     data: issave,
                     success: function (responseText) {
                         top.$.ligerDialog.closeWaitting();
-                        if (responseText == "false:type")
-                        {
-                            top.$.ligerDialog.error('²Ù×÷Ê§°Ü£¬Ê©¹¤¼àÀí²»ÄÜÎª¿Õ£¬ÇëÏÈµ½¿Í»§µµ°¸Î¬»¤£¡');
+                        if (responseText == "false:type") {
+                            top.$.ligerDialog.error('æ“ä½œå¤±è´¥ï¼Œæ–½å·¥ç›‘ç†ä¸èƒ½ä¸ºç©ºï¼Œè¯·å…ˆåˆ°å®¢æˆ·æ¡£æ¡ˆç»´æŠ¤ï¼');
                         }
-                        else
-                        {                              
+                        else {
                             f_reload();
                         }
                     },
                     error: function () {
                         top.$.ligerDialog.closeWaitting();
-                        
+
                     }
                 });
 
@@ -320,14 +319,14 @@
             <table style='width: 960px' class="bodytable1">
                 <tr>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>¿Í»§ĞÕÃû£º</div>
+                        <div style='width: 60px; text-align: right; float: right'>å®¢æˆ·å§“åï¼š</div>
                     </td>
                     <td>
 
                         <input  ltype='text' ligerui='{width:120}' type='text' id='khstext' name='khstext'  /></td>
 
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>µØÖ·£º</div>
+                        <div style='width: 60px; text-align: right; float: right'>åœ°å€ï¼š</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
@@ -336,7 +335,7 @@
                     
                     </td>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>µç»°£º</div>
+                        <div style='width: 60px; text-align: right; float: right'>ç”µè¯ï¼š</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
@@ -345,30 +344,30 @@
                        
                     </td>
                     <td>
-                          <input id='Button1' type='button' value='ËÑË÷' style='width: 80px; height: 24px' onclick="doserch()" />
+                          <input id='Button1' type='button' value='æœç´¢' style='width: 80px; height: 24px' onclick="doserch()" />
                   
-                        <input id='Button2' type='button' value='ÖØÖÃ' style='width: 80px; height: 24px'
+                        <input id='Button2' type='button' value='é‡ç½®' style='width: 80px; height: 24px'
                             onclick="doclear()" />
                         </td> 
                 </tr>
                 <tr>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>Ê©¹¤¼àÀí£º</div>
+                        <div style='width: 60px; text-align: right; float: right'>æ–½å·¥ç›‘ç†ï¼š</div>
                     </td>
                     <td>
                         <input id='sgjlstext' name="sgjlstext" type='text'  ltype='text' ligerui='{width:120}' /></td>
 
                     <td>
-                        <div style='width: 60px; text-align: right; float: right' >×´Ì¬£º</div>
+                        <div style='width: 60px; text-align: right; float: right' >çŠ¶æ€ï¼š</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
-                            <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui="{width:196,data:[{id:'ÕıÔÚÊ©¹¤',text:'ÕıÔÚÊ©¹¤'},{id:'Ê©¹¤Íê³É',text:'Ê©¹¤Íê³É'}]}" validate="{required:false}" />
+                            <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui="{width:196,data:[{id:'æ­£åœ¨æ–½å·¥',text:'æ­£åœ¨æ–½å·¥'},{id:'æ–½å·¥å®Œæˆ',text:'æ–½å·¥å®Œæˆ'}]}" validate="{required:false}" />
                         </div>
                          
                     </td>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>´ï³ÉÂÊ£º</div>
+                        <div style='width: 60px; text-align: right; float: right'>è¾¾æˆç‡ï¼š</div>
                     </td>
                     <td>
                         <div style='width: 300px; float: left'>

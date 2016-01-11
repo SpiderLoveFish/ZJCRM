@@ -17,14 +17,14 @@
     
  </head>
    <style type="text/css">
-#timeline {width: 720px;height: 300px;overflow: hidden;margin: 10px auto;position: relative;background: url('../../Images/dot.gif') left 45px repeat-x;}
+#timeline {width: 720px;height: 240px;overflow: hidden;margin: 10px auto;position: relative;background: url('../../Images/dot.gif') left 45px repeat-x;}
 #dates {width: 720px;height: 60px;overflow: hidden;}
 #dates li {list-style: none;float: left;width: 180px;height: 50px;font-size: 18px;text-align: center;background: url('../../Images/biggerdot.png') center bottom no-repeat;}
 #dates a {line-height: 38px;padding-bottom: 10px;}
 #dates .selected {font-size: 26px; color:green}
-#issues {width: 720px;height: 300px;overflow: hidden;}	
-#issues li {width: 720px;height: 300px;list-style: none;float: left;}
-#issues li h1 {color: #007bc4;font-size: 18px;margin: 20px 0;} /*text-shadow: #000 1px 1px 2px;*/
+#issues {width: 720px;height: 240px;overflow: hidden;}	
+#issues li {width: 720px;height: 240px;list-style: none;float: left;}
+#issues li h1 {color: #007bc4;font-size: 16px;margin: 10px 0;} /*text-shadow: #000 1px 1px 2px;*/
 #issues li p {font-size: 14px;margin-right: 70px; margin:10px; font-weight: normal;line-height: 22px;}
 
        .gj
@@ -33,6 +33,10 @@
        .blue
        {font-size: 14px;color:blue;margin: 10px 5px 0 0;text-align: right;
        }
+       .trry {color:green;cursor:pointer;
+       }
+       .trry:hover{ text-decoration:underline; }
+
 </style>
     <style>
 
@@ -256,11 +260,11 @@ table {
 	                    }
 	                   
 	                    var tb = ""; var br = 0;
-	                    tb += "<thead> <tr>  <th colspan='6' style='cursor:pointer;' id='bb'>全体施工人员名单</th> </tr></thead>";
+	                    tb += "<thead> <tr>  <th colspan='6' class='trry' id='bb'>全体施工人员名单</th> </tr></thead>";
 	                    tb += "<tr >";
 	                    for (var i = 0;  i< str.length; i++) {
 	                        br++;
-	                        tb += " <td width='16%'><lable  style='color:green;cursor:pointer;' id='b" + i + "'>" + str[i] + "</lable></td>";
+	                        tb += " <td width='16%'><span  class='trry' id='b" + i + "'>" + str[i] + "</span></td>";
 	                      //  tb += "<td width='16%' ><lable  style='color:green' id='b" + i + "'>庞洪超</lable></td>";
 	                        
 	                        if (br == 6) {

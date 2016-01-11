@@ -70,7 +70,7 @@
                                         html = "<div class='tips' style='float:left;width:100%;height:100%;background:#" + r + "'> "
                                     }
                                        // html.push("<div style=' width:30,heigth:40,background-color::#800040'>'");
-                                    if (value.split(';')[3].length > 0) html += "&nbsp;&nbsp;&nbsp;۞";
+                                    if (value.split(';')[3].length > 0) html += "&nbsp;&nbsp;۞";
                                      
                                     html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + value.split(';')[1] + "&nbsp;;";
                                     html += value.split(';')[2] + "&nbsp;;";

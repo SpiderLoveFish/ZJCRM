@@ -312,7 +312,7 @@
             }
             function f_load() {
                 var manager = $("#maingrid4").ligerGetGridManager();
-                manager.loadData(true);
+                //manager.loadData(true);
 
             };
         

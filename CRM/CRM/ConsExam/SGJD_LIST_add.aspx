@@ -307,7 +307,7 @@
                 rows = dialog.frame.f_select();
                 var br = 0; var flag = true;
                 for (var i = 0; i < rows.length; i++) {
-                   // alert(pushry.length);
+                    // alert(pushry.length);
                     if (pushry.length > 0) {
                         for (var p = 0; p < pushry.length; p++) {
                             // f_error(pushry[p]);
@@ -406,10 +406,11 @@
                         $("#d" + id).remove();
                         for (var p = 0; p < pushry.length; p++)
                         {
+                           // alert(id); alert(pushry[p]);
                             if (pushry[p] == id)
-                                pushry.splice(0, p);;
+                                pushry.splice(0, p+1);;
                         }
-                      
+                       
                         //pushry.pop(id);
                     }
                     else { return;}
