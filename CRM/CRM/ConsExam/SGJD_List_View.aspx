@@ -30,6 +30,9 @@
        .gj
        {font-size: 14px;color:red;margin: 10px 5px 0 0;text-align: right;
        }
+       .blue
+       {font-size: 14px;color:blue;margin: 10px 5px 0 0;text-align: right;
+       }
 </style>
     <style>
 
@@ -192,7 +195,7 @@ table {
        var t = ""; var tt = "";
        $(function () {
           
-           $('#title').append("<h2 id='titleh2' class='top_title'>客户：" + decodeURI(getparastr("khmc")) + "<lable class='gj'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电话：" + getparastr("tel") + "</lable></h2>")
+           $('#title').append("<h2 id='titleh2' class='top_title'>客户：" + decodeURI(getparastr("khmc")) + "<lable >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电话：" + getparastr("tel") + "</lable></h2>")
             var t2 = "";
             //alert(getparastr("jhdate"));
             if(decodeURI(getparastr("sjzt"))=="施工完成" )
@@ -213,66 +216,100 @@ table {
            
             var ts = parseInt(myDate.getTime() - new Date(formatTimebytype(getparastr("jhdate"), 'yyyy/MM/dd')).getTime());
             //alert(new Date( formatTimebytype(getparastr("jhdate"),'yyyy/MM/dd')).getTime());
-            var days = Math.floor(ts / (24 * 3600 * 1000))
+            var days = -Math.floor(ts / (24 * 3600 * 1000))
            if(days<0)
-            $("#lbsygq").append($("<span>已施期：" + days + "</span>"));
+               $("#lbsygq").append($("<span  class='gj'>已拖期：" + days + "天</span>"));
             else
-               $("#lbsygq").append($("<span>剩余工期：" + days + "</span>"));
+               $("#lbsygq").append($("<span  class='blue'>剩余工期：" + days + "天</span>"));
           
-
-           var tb="";
-           tb+="<thead> <tr>  <th colspan='6' id='bb'>全体施工人员名单</th> </tr></thead>";
-           tb+="<tr >";
-           for(var i=0;i<3;i++)
-           {
-               tb+=" <td width='20%'><strong>设计师</strong></td>";
-               tb += "<td width='20%' ><lable id='b'" + i + ">庞洪超</lable></td>";
-
-           }
-           tb+=" </tr>";
-           $('#tbry').append($(tb));
-
-           for (var i = 0; i < 3; i++) {
-              // alert(i);
-               //$("#b" + id).text()
-               addBtnEvent(i);
-           }
-            //addBtnEvent();
-               INIT();
+               INIT("init");
            
              
        });
-       //function addBtnEvent() {
-       //    $("#bb").bind("click", function () {
-       //        alert(id);
-       //        chickid = id;
-       //        //  f_openWindow_post("hr/hr_position.aspx?IsGet=Y", "选择职务", 650, 400);
-       //    });
-       //}
+        
        function addBtnEvent(id) {
            $("#b" + id).bind("click", function () {
-                 alert(id);
-               chickid = id;
+               $('#lbryt2').text("【" + $('#b' + id).text() + "】");
+               INIT($('#b' + id).text());
+               //alert("【" + $('#b' + id).text() + "】");
+              // chickid = id;
              //  f_openWindow_post("hr/hr_position.aspx?IsGet=Y", "选择职务", 650, 400);
            });
        }
-	    function INIT() {
+	    function INIT(ryid) {
 	        $.ajax({
 	            type: "GET",
 	            url: "../../data/SGJD_LIST.ashx", /* 注意后面的名字对应CS的方法名称 */
-	            data: { Action: 'detailform', cid: getparastr("cid"), rnd: Math.random() }, /* 注意参数的格式和名称 */
+	            data: { Action: 'detailform', cid: getparastr("cid"),ry:ryid, rnd: Math.random() }, /* 注意参数的格式和名称 */
 	            //url: "../../data/SGJD_LIST.ashx?Action=formgrid&cid=" + getparastr("cid") + "&rdm=" + Math.random(),
 	            contentType: "application/json; charset=utf-8",
 	            dataType: "json",
 	            success: function (result) {      
 	                var obj = eval(result);    
-	               
-	                for (var i = 0; i < obj.length; i++) {
-	                       t+="<li><a href='#h"+i + "'>" + formatTimebytype(obj[i].LRRQ, "dd日hh时mm分") + "</a></li>";
+	               // alert(obj.length);
+	                if (obj.length > 0&& ryid=="init")
+	                {
+	                    var str = new Array();
+	                    if (obj[0].zry != 'null' && obj[0].zry != '' & obj[0].zry != 'undefined') {
+	                        str = obj[0].zry.split(";");
+
+	                    }
+	                   
+	                    var tb = ""; var br = 0;
+	                    tb += "<thead> <tr>  <th colspan='6' style='cursor:pointer;' id='bb'>全体施工人员名单</th> </tr></thead>";
+	                    tb += "<tr >";
+	                    for (var i = 0;  i< str.length; i++) {
+	                        br++;
+	                        tb += " <td width='16%'><lable  style='color:green;cursor:pointer;' id='b" + i + "'>" + str[i] + "</lable></td>";
+	                      //  tb += "<td width='16%' ><lable  style='color:green' id='b" + i + "'>庞洪超</lable></td>";
+	                        
+	                        if (br == 6) {
+	                            tb += " </tr><tr>";
+	                            br = 0;
+	                        }
+	                       
+	                        if (i == str.length - 1) {
+	                            if (br < 6)
+	                                for (var c = br + 1; c <= 6; c++) {
+	                                    tb += "<td> </td>"
+	                                    if (c == 6)
+	                                        tb += " </tr>"
+	                                }
+	                        }
+	                    }
+	                    tb += " </tr>";
+	                    $('#tbry').empty();
+	                    $('#tbry').append($(tb));
+
+	                    for (var i = 0; i < str.length; i++) {
+	                        // alert($("#b" + i).val());
+	                        //$("#b" + id).text()
+	                           addBtnEvent(i);
+	                    }
+	                    $("#bb").bind("click", function () {
+	                        $('#lbryt2').text("【全体】");
+	                        INIT("");
+	                        // chickid = id;
+	                        //  f_openWindow_post("hr/hr_position.aspx?IsGet=Y", "选择职务", 650, 400);
+	                    });
+	                    $('#lbryt2').text("【全体】");
 	                }
-	                
-	                 $('#t2remark').append("<lable class='gj'>全体用时365天，从2016-01-01到2016-01-01，共计" + obj.length + "个时间点</lable>");
-	                //var tt="";
+	                $('#lbtotalt2').text(obj.length);
+	                t = "";
+	                for (var i = 0; i < obj.length; i++) {
+	                    if (i == 0)
+	                    {$('#lbrq1').text(formatTimebytype(obj[i].LRRQ, "yyyy-MM-dd"));
+	                    $('#lbrq2').text(formatTimebytype(obj[obj.length - 1].LRRQ, "yyyy-MM-dd"));
+	                        var ts = parseInt(new Date(formatTimebytype(obj[obj.length-1].LRRQ, 'yyyy/MM/dd')) - new Date(formatTimebytype(obj[0].LRRQ, 'yyyy/MM/dd')).getTime());
+	                        //alert(new Date( formatTimebytype(getparastr("jhdate"),'yyyy/MM/dd')).getTime());
+	                        var days = Math.floor(ts / (24 * 3600 * 1000))
+	                        $('#lbtst2').text(days);
+	                    }
+
+	                    t += "<li><a href='#h" + i + "'>" + formatTimebytype(obj[i].LRRQ, "dd日hh时mm分") + "</a></li>";
+	                }
+	                 
+	                tt = "";
 	                for (var i = 0; i < obj.length; i++) {
 	                    
 	                   
@@ -285,14 +322,15 @@ table {
 	                    tt += "<p>" + obj[i].ry + "</p>";
 	                    tt += "</li>";
 	                }
-	              
+	               
 	                //tt += " <a href='#' id='next'></a>";
 	                //tt += " <a href='#' id='prev'></a>";
+	                $('#dates').find("li").remove(); 
 	                $('#dates').append($(t));
+	                $('#issues').find("li").remove();
 	                $('#issues').append($(tt));
-
+	               
 	                $().timelinr({
-
 	                    orientation: 'horizontal', //垂直滚动
 	                    issuesSpeed: 300, // 对应内容区的滚动速度，可为100～1000之间的数字，或者设置为'slow', 'normal' or 'fast'
 	                    datesSpeed: 100, //主轴滚动速度，可为100～1000之间的数字，或者设置为'slow', 'normal' or 'fast'
@@ -315,14 +353,16 @@ table {
          <div id="title"></div> 
           <table width="600px">
              <tr id="title2">
-                 <td>工程状态:</td> <td id="lbgczt"> </td>
-                  <td>施工监理:</td> <td  id="lbsgjl"> </td>
-                  <td>要求完工时间：</td> <td id="lbjhrq"> </td>
-                   <td>剩余工期：</td> <td  id="lbsygq"> </td>
+                 <td><strong>工程状态:</strong></td> <td id="lbgczt"  align="left" > </td>
+                  <td><strong>施工监理:</strong></td> <td  id="lbsgjl"  align="left"> </td>
+                  <td><strong>要求完工时间：</strong></td> <td id="lbjhrq"  align="left"> </td>
+                   <td><strong>剩余工期：</strong></td> <td  id="lbsygq"  align="left"> </td>
              </tr>
               <tr>
                    
-                  <td colspan="8" id="t2remark"></td>
+                  <td colspan="8" id="t2remark">
+                      <label class="blue" id="lbryt2"></label>用时<label  class="blue" id="lbtst2"></label>天，从<label  class="blue" id="lbrq1"></label>到<label  class="blue" id="lbrq2"></label>，共计<label  class="blue" id="lbtotalt2"></label>个时间点
+                  </td>
               </tr>
          </table>
          <div style="width:720px;height:430px;">

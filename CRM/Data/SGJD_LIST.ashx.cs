@@ -163,12 +163,21 @@ namespace XHD.CRM.Data
             if (request["Action"] == "detailform")
             {
                 string cid = PageValidate.InputText(request["cid"], 50);
-
+                string ry = PageValidate.InputText(request["ry"], 100);
+                try
+                {
+                    ry = ry.Split('】')[1];
+                }
+                catch { }
                 string dt;
+              
                 if (PageValidate.IsNumber(cid))
                 {
                     dt = "{}";
-                    DataSet ds = khjd.GetDetailList("cid=" + cid);
+                    DataSet ds = null;
+                    if(  ry=="init")
+                        ds = khjd.GetDetailList("A.cid=" + cid, "");
+                    else ds = khjd.GetDetailList("A.cid=" + cid + " AND ISNULL(B.username,'') LIKE '%" + @ry + "%'", ry);
                     dt = Common.DataToJson.GetJson(ds);
                 }
                 else

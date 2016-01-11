@@ -172,9 +172,9 @@ namespace XHD.BLL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public DataSet GetDetailList(string strWhere)
+        public DataSet GetDetailList(string strWhere,string ry)
         {
-            return dal.GetDetailList(strWhere);
+            return dal.GetDetailList(strWhere,ry);
         }
 
         /// <summary>

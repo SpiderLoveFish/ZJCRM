@@ -27,16 +27,21 @@
                 url: "../../data/SingleSignOn.ashx", type: "POST",
                 data: { Action: "GetMD5", rnd: Math.random() },
                 success: function (responseText) {
-                   // $.ligerDialog.warn(responseText);
+                    // $.ligerDialog.warn(responseText);
+                    //location.href = "http://www.baidu.com";
+                   
+                    //$.ligerDialog.warn(responseText);
+                    //$.ligerDialog.warn(obj.errorMsg);
+                   // $("#maingrid4").append("<lable >错误代码：" + obj.errorMsg + "</lable>");
                     try
                     {
-                        var obj = eval(responseText);
+                        var obj = JSON.parse(responseText);
                         if (obj.errorCode == 0)
                         {
                             location.href = obj.errorMsg;
                         }
                         else
-                            $("#maingrid4").append("<lable >错误代码：" + obj.errorMsg + "</lable>");
+                            $("#maingrid4").append("<lable >服务器错误：" + obj.errorMsg + "</lable>");
                     } catch (e)
                     {
                         $("#maingrid4").append("<lable >服务器错误：" + responseText +";客户端错误："+ e.message+"</lable>");

@@ -442,23 +442,26 @@ namespace XHD.DAL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public DataSet GetDetailList(string strWhere)
+        public DataSet GetDetailList(string strWhere,string ryname)
         {
             StringBuilder strSql = new StringBuilder();
             //strSql.Append("select KHJDID,CID,Cpro,Ccity,JDID,JDMC,XMID,XMMC,REMARK,LRRQ,JDYS,Cname,CZR,Cmob,status ");
             //strSql.Append(" FROM KHJD_LIST_VIEW_LIST ");
-            strSql.Append("  SELECT DISTINCT CID,KHJDID,LRRQ,REMARK,JDMC,");
-          strSql.Append("  dbo.F_GetString(CID,KHJDID,'P') AS ry ,");
-          strSql.Append("  dbo.F_GetString(CID,KHJDID,'M')  AS xmmc");
-          strSql.Append("   FROM KHJD_LIST_VIEW_LIST");
+            strSql.Append("  SELECT DISTINCT A.CID,A.KHJDID,A.LRRQ,A.REMARK,A.JDMC,");
+            strSql.Append("  dbo.F_GetString(A.CID,'','A','" + ryname + "') AS zry ,");
+            strSql.Append("  dbo.F_GetString(A.CID,A.KHJDID,'P','" + ryname + "') AS ry ,");
+            strSql.Append("  dbo.F_GetString(A.CID,A.KHJDID,'M','" + ryname + "')  AS xmmc");
+          strSql.Append("   FROM KHJD_LIST_VIEW_LIST A");
+          strSql.Append("  LEFT	 JOIN KHJD_LIST_VIEW_LIST_person B ON A.CID = B.CID AND A.KHJDID = B.KHJDID");
          //strSql.Append("   WHERE cid=2 AND KHJDID=2
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" where " + strWhere);
             }
+           // strSql(" GROUP BY  A.CID,A.KHJDID,A.LRRQ,A.REMARK,A.JDMC");
             return DbHelperSQL.Query(strSql.ToString());
         }
-
+        
         /// <summary>
         /// 获得数据列表
         /// </summary>
