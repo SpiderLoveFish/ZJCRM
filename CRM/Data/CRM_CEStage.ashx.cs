@@ -50,6 +50,7 @@ namespace XHD.CRM.Data
                 model.ywy = Common.PageValidate.InputText(request["T_employee"], 250);
                 model.ywyid = StringToInt(Common.PageValidate.InputText(request["T_employee1"], 50));
                 model.Stage_icon = Common.PageValidate.InputText(request["T_private"], 250);
+                model.Jh_date = DateTime.Parse(Common.PageValidate.InputText(request["T_jhrq"], 50));
                 string id = PageValidate.InputText(request["id"], 50);
                 //string pid = PageValidate.InputText(request["T_category_parent_val"], 50);
                 model.Remarks = Common.PageValidate.InputText(request["T_remarks"], 250);

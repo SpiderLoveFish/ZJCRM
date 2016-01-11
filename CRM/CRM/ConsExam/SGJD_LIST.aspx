@@ -172,8 +172,8 @@
                     + "&khmc=" + encodeURI(row.CustomerName + "[" + row.address + "]")
                     +"&tel="+row.tel
                 + "&sjzt=" + encodeURI(row.Stage_icon)
-                + "&sgjl " + encodeURI(row.sgjl)
-                + "&jhdate=" + row.JhDate
+                + "&sgjl=" + encodeURI(row.sgjl)
+                + "&jhdate=" + row.Jh_date
                    ,
                     " ±º‰÷·≤È—Ø", 800, 550);
             } else {

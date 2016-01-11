@@ -38,11 +38,13 @@
             $("form").ligerForm();
             if (getparastr("cid") != null) {
                 loadForm(getparastr("cid"));
-               
+
             }
-            else
-            $('#T_company').ligerComboBox({ width: 180, onBeforeOpen: f_selectContact });
-          
+            else {
+                var myDate = new Date()
+                $("#T_jhrq").val(formatTimebytype(myDate.getDate(), "yyyy-MM-dd"));
+                $('#T_company').ligerComboBox({ width: 180, onBeforeOpen: f_selectContact });
+            }
             
         })
         function f_save() {
@@ -71,7 +73,7 @@
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
                     }
-                    //alert(obj.constructor); //String 构造函数
+                   // alert(obj.Jh_date); //String 构造函数
                     $("#T_companyid").val(obj.CustomerID);
                     $("#T_company").val(obj.CustomerName);     
                     $("#T_company_tel").val(obj.tel);
@@ -85,6 +87,7 @@
                     $("#T_SpecialScore").val(obj.SpecialScore);
                     $("#T_StageScore").val(obj.StageScore);
                     $("#T_remarks").val(obj.Remarks);
+                    $("#T_jhrq").val(formatTimebytype(obj.Jh_date, "yyyy-MM-dd"));
                     //状态 
                     $("#T_private").ligerGetComboBoxManager().selectValue(obj.Stage_icon);
 
@@ -118,13 +121,13 @@
             }
             fillemp(data.CustomerID, data.tel, data.CustomerName,
                 data.sgjl, data.sjs
-                , data.ywy, data.sjsid, data.sgjlid, data.ywyid);
+                , data.ywy, data.sjsid, data.sgjlid, data.ywyid,data.jhdate);
             dialog.close();
         }
         function f_selectContactCancel(item, dialog) {
             dialog.close();
         }
-        function fillemp(id, tel, emp, sgjl, sjs, ywy, sjsid, sgjlid, ywyid) {
+        function fillemp(id, tel, emp, sgjl, sjs, ywy, sjsid, sgjlid, ywyid,jhdate) {
             $("#T_companyid").val(id);
             $("#T_company").val(emp);
             $("#T_company_tel").val(tel);
@@ -138,6 +141,7 @@
             $("#T_SpecialScore").val("0");
             $("#T_StageScore").val("0");
             $("#T_remarks").val("");
+            $("#T_jhrq").val(jhdate);
         //    $("#T_employee").val("【" + dep + "】" + emp);
         //    $("#T_employee1").val(emp);
         //    $("#T_employee_val").val(empid);
@@ -212,18 +216,33 @@
                  
                 </td>
             </tr>
-                  <tr>
+            <tr>
                 <td>
+                    <div style="width: 80px; text-align: right; float: right">计划工期：</div>
+                </td>
+                <td>
+                      <input id="T_jhrq" name="T_jhrq" type="text"  ltype="date" validate="{required:false}" style="width: 180px" />
+                    </td>
+               <td>
                     <div style="width: 80px; text-align: right; float: right">附加分值：</div>
                 </td>
                 <td>
                       <input id="T_SpecialScore" name="T_SpecialScore" type="text"  ltype="text" validate="{required:false}" style="width: 180px" />
-                     <td>
+             </td>
+            </tr>
+                  <tr>
+                    
+                        <td>
                     <div style="width: 80px; text-align: right; float: right">总分数：</div>
                 </td>
                 <td>
                     <input id="T_StageScore" name="T_StageScore" ltype="text" validate="{required:false}" ligerui="{width:180,disabled:true}"  />
-                    
+                  </td>
+                          <td>
+                    <div style="width: 80px; text-align: right; float: right"> </div>
+                </td> 
+                 <td>
+                   
                 </td>
             </tr><tr id="tr_contact4">
                 <td>

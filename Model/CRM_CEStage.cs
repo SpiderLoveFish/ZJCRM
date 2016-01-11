@@ -25,6 +25,7 @@ namespace XHD.Model
         private string _stage_icon;
         private string _remarks;
         private int? _iscolse = 0;
+        private DateTime _Jh_date;
         /// <summary>
         /// 
         /// </summary>
@@ -144,6 +145,14 @@ namespace XHD.Model
         {
             set { _iscolse = value; }
             get { return _iscolse; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime Jh_date
+        {
+            set { _Jh_date = value; }
+            get { return _Jh_date; }
         }
         #endregion Model
 

@@ -16,9 +16,11 @@ namespace XHD.CRM.Data
     /// <summary>
     /// sys_app 的摘要说明
     /// </summary>
+    /// 
+    
     public class SingleSignOn : IHttpHandler
     {
-
+         
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
@@ -36,67 +38,77 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "GetMD5")
             {
+                BLL.CE_Para cp = new BLL.CE_Para();
+                DataSet ds = cp.GetSingleSignOnList("  id=1");
+                if(ds.Tables[0].Rows.Count>0)
                 // 分配给每个商家的唯一的appkey和appsecret
-                const string appKey = "hsjauejdsg";
-                const string appSecret = "dhsuenndhsdhsuenndhsdhsuenndhs88";
-                // 设定API文档中提到的参数
-                const string userId = "1";
-                const string userName = "测试用户";
-                const string email = "ceshi@ceshi.com";
-                const string phone = "13233333333";
-                const string ssn = "";
-                const string address = "测试省测试市测试县测试路1号";
-                //const string avatar = "http://qhyxpic.oss.kujiale.com/avatars/72.jpg";
-                const string avatar = "http://qhyxpic.oss.kujiale.com/avatars/72.jpg";
-                
-                const string timestamp = "1418635917113";//2分钟
-                // 签名加密
-                  string sign = MD5(appSecret + appKey + userId + timestamp);
-                  IDictionary<string, string> postdata = new Dictionary<string, string>();
-                     postdata.Add( "appkey", appKey);
-                     postdata.Add( "timestamp", timestamp);
-                     postdata.Add( "appuid", userId);
-                     postdata.Add( "sign", sign);
-                     postdata.Add( "appuname", userName);
-                     postdata.Add( "appuemail", email);
-                     postdata.Add( "appuphone", phone);
-                     postdata.Add( "appussn", ssn);
-                     postdata.Add("appuAddr", address);
-                     postdata.Add( "appuavatar", avatar);
- 
-             //发送POST数据  
-                  StringBuilder buffer = new StringBuilder();
-                     if (!(postdata == null || postdata.Count == 0))
-                     {
-                       
-                         int i = 0;
-                         foreach (string key in postdata.Keys)
-                         {
-                             if (i > 0)
-                             {
-                                 buffer.AppendFormat("&{0}={1}", key, postdata[key]);
-                             }
-                             else
-                             {
-                                 buffer.AppendFormat("{0}={1}", key, postdata[key]);
-                                 i++;
-                             }
-                         }
-                     }
-                // 设置HTTP请求的参数，等同于以query string的方式附在URL后面
-                    //// API地址，生产环境域名对应为www.kujiale.com
-                 const string api = "http://partnertest.kujiale.com/p/openapi/login";
-                //// 构造HTTP请求
-                 string test = "http://wwww.baidu.com";
-                string result= "";
-                //  CookieCollection ck=new CookieCollection();
-                //result = 
-                //    Comm.HttpHelper.CreatePostHttpResponse(test, postdata, 100000, "",ck);
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        string appKey = dr["appKey"].ToString();
+                        string appSecret = dr["appSecret"].ToString();
+                        // 设定API文档中提到的参数
+                        string userId = dr["appuid"].ToString();
+                        string userName = dr["appuname"].ToString();
+                        string email = dr["appuemail"].ToString();
+                        string phone = dr["appuphone"].ToString();
+                        string ssn = dr["appussn"].ToString();
+                        string address = dr["appuAddr"].ToString();
+                        string avatar = dr["appuavatar"].ToString();
+                        object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                        string timestamp = currenttimemillis.ToString(); ;//2分钟
+                        // 签名加密
+                        string aa = "sdfaadsasdasd";
+                        string md5aa = MD5(aa);
+                        string sign = MD5(appSecret + appKey + userId + timestamp);
+                        IDictionary<string, string> postdata = new Dictionary<string, string>();
+                        postdata.Add("appkey", appKey);
+                        postdata.Add("timestamp", timestamp);
+                        postdata.Add("appuid", userId);
+                        postdata.Add("sign", sign);
+                        postdata.Add("appuname", userName);
+                        postdata.Add("appuemail", email);
+                        postdata.Add("appuphone", phone);
+                        postdata.Add("appussn", ssn);
+                        postdata.Add("appuAddr", address);
+                        postdata.Add("appuavatar", avatar);
 
-               // result = PostWebRequest(api, postdata);
-               // result = HttpPost(api, buffer.ToString());
-                result = HttpHelper_GetStr(api,buffer.ToString());
-                context.Response.Write(result);
+                        //发送POST数据  
+                        StringBuilder buffer = new StringBuilder();
+                        if (!(postdata == null || postdata.Count == 0))
+                        {
+
+                            int i = 0;
+                            foreach (string key in postdata.Keys)
+                            {
+                                if (i > 0)
+                                {
+                                    buffer.AppendFormat("&{0}={1}", key, postdata[key]);
+                                }
+                                else
+                                {
+                                    buffer.AppendFormat("{0}={1}", key, postdata[key]);
+                                    i++;
+                                }
+                            }
+                        }
+
+                        // 设置HTTP请求的参数，等同于以query string的方式附在URL后面
+                        //// API地址，生产环境域名对应为www.kujiale.com
+                        string api = dr["api"].ToString();
+                        //// 构造HTTP请求
+                        string test = "http://wwww.baidu.com";
+
+                        string result = "";
+                        //  CookieCollection ck=new CookieCollection();
+                        //result = 
+                        //    Comm.HttpHelper.CreatePostHttpResponse(test, postdata, 100000, "",ck);
+
+                        // result = PostWebRequest(api, postdata);
+                        // result = HttpPost(api, buffer.ToString());
+                        result = HttpHelper_GetStr(api, buffer.ToString());
+                        context.Response.Write(result);
+                    }
+                else context.Response.Write("请先配置参数！");
             }
         }
          private static string MD5(string input) {
@@ -114,7 +126,7 @@ namespace XHD.CRM.Data
              {
                  HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
                  request.Method = "POST";
-                 request.ContentType = "text/html";
+                 request.ContentType = "application/x-www-form-urlencoded";
                 // request.ContentType = "application/json";
                 // request.ContentLength = Encoding.UTF8.GetByteCount(postDataStr);
                  //request.CookieContainer = cookie;
@@ -157,7 +169,7 @@ namespace XHD.CRM.Data
                  Cookie = "",//字符串Cookie     可选项
                  UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:18.0) Gecko/20100101 Firefox/18.0",//用户的浏览器类型，版本，操作系统     可选项有默认值
                  Accept = "text/html, application/xhtml+xml, */*",//    可选项有默认值
-                 ContentType = "text/html",//返回类型    可选项有默认值
+                  ContentType = "application/x-www-form-urlencoded",//返回类型    可选项有默认值
                  Referer = "",//来源URL     可选项
                  //Allowautoredirect = False,//是否根据３０１跳转     可选项
                  //AutoRedirectCookie = False,//是否自动处理Cookie     可选项

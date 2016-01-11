@@ -469,6 +469,24 @@ namespace XHD.DAL
             return DbHelperSQL.Query(strSql.ToString());
         }
 
+
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetSingleSignOnList(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select * ");
+            strSql.Append(" FROM T_SingleSignOn ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+
 		#endregion  ExtensionMethod
 	}
 }

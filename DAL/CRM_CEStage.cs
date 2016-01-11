@@ -46,9 +46,9 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into CRM_CEStage(");
-			strSql.Append("CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse)");
+			strSql.Append("CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,Jh_date)");
 			strSql.Append(" values (");
-			strSql.Append("@CustomerID,@tel,@CustomerName,@sgjl,@sgjlid,@sjs,@sjsid,@ywy,@ywyid,@StageScore,@SpecialScore,@Stage_icon,@Remarks,@IsColse)");
+            strSql.Append("@CustomerID,@tel,@CustomerName,@sgjl,@sgjlid,@sjs,@sjsid,@ywy,@ywyid,@StageScore,@SpecialScore,@Stage_icon,@Remarks,@IsColse,@Jh_date)");
 			strSql.Append(";select @@IDENTITY");
 			SqlParameter[] parameters = {
 					new SqlParameter("@CustomerID", SqlDbType.Int,4),
@@ -64,7 +64,8 @@ namespace XHD.DAL
 					new SqlParameter("@SpecialScore", SqlDbType.Decimal,9),
 					new SqlParameter("@Stage_icon", SqlDbType.VarChar,50),
 					new SqlParameter("@Remarks", SqlDbType.VarChar,50),
-					new SqlParameter("@IsColse", SqlDbType.Int,4)};
+					new SqlParameter("@IsColse", SqlDbType.Int,4),
+                                        new SqlParameter("@Jh_date", SqlDbType.DateTime)};
 			parameters[0].Value = model.CustomerID;
 			parameters[1].Value = model.tel;
 			parameters[2].Value = model.CustomerName;
@@ -79,7 +80,7 @@ namespace XHD.DAL
 			parameters[11].Value = model.Stage_icon;
 			parameters[12].Value = model.Remarks;
 			parameters[13].Value = model.IsColse;
-
+            parameters[14].Value = model.Jh_date;
 			object obj = DbHelperSQL.GetSingle(strSql.ToString(),parameters);
 			if (obj == null)
 			{
@@ -98,19 +99,22 @@ namespace XHD.DAL
             sb.Append("SpecialScore=@SpecialScore,");
             sb.Append("Stage_icon=@Stage_icon,");
 			sb.Append("Remarks=@Remarks,");
+            sb.Append("Jh_date=@Jh_date,");
 			sb.Append("IsColse=@IsColse");
             sb.Append(" where id="+id+"");
             SqlParameter[] parameters = {
                     new SqlParameter("@SpecialScore", SqlDbType.Decimal,9),
 					new SqlParameter("@Stage_icon", SqlDbType.VarChar,50),
 					new SqlParameter("@Remarks", SqlDbType.VarChar,50),
+                    	new SqlParameter("@Jh_date", SqlDbType.DateTime),
 					new SqlParameter("@IsColse", SqlDbType.Int,4),
 					new SqlParameter("@id", SqlDbType.Int,4)};
             parameters[0].Value = model.SpecialScore;
 			parameters[1].Value = model.Stage_icon;
 			parameters[2].Value = model.Remarks;
-			parameters[3].Value = model.IsColse;
-			parameters[4].Value = model.id;
+            parameters[3].Value = model.Jh_date;
+			parameters[4].Value = model.IsColse;
+			parameters[5].Value = model.id;
             int rows=DbHelperSQL.ExecuteSql(sb.ToString(),parameters);
 			if (rows > 0)
 			{
@@ -142,6 +146,7 @@ namespace XHD.DAL
 			strSql.Append("SpecialScore=@SpecialScore,");
 			strSql.Append("Stage_icon=@Stage_icon,");
 			strSql.Append("Remarks=@Remarks,");
+            strSql.Append("Jh_date=@Jh_date,");
 			strSql.Append("IsColse=@IsColse");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
@@ -158,6 +163,7 @@ namespace XHD.DAL
 					new SqlParameter("@SpecialScore", SqlDbType.Decimal,9),
 					new SqlParameter("@Stage_icon", SqlDbType.VarChar,50),
 					new SqlParameter("@Remarks", SqlDbType.VarChar,50),
+                    new SqlParameter("@Jh_date", SqlDbType.DateTime),
 					new SqlParameter("@IsColse", SqlDbType.Int,4),
 					new SqlParameter("@id", SqlDbType.Int,4)};
 			parameters[0].Value = model.CustomerID;
@@ -173,8 +179,9 @@ namespace XHD.DAL
 			parameters[9].Value = model.SpecialScore;
 			parameters[10].Value = model.Stage_icon;
 			parameters[11].Value = model.Remarks;
-			parameters[11].Value = model.IsColse;
-			parameters[12].Value = model.id;
+            parameters[12].Value = model.Jh_date;
+			parameters[13].Value = model.IsColse;
+			parameters[14].Value = model.id;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -238,7 +245,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse from CRM_CEStage ");
+			strSql.Append("select  top 1 id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,Jh_date from CRM_CEStage ");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)
@@ -326,6 +333,10 @@ namespace XHD.DAL
 				{
 					model.IsColse=int.Parse(row["IsColse"].ToString());
 				}
+                if (row["Jh_date"] != null && row["Jh_date"].ToString() != "")
+                {
+                    model.Jh_date = DateTime.Parse(row["IsColse"].ToString());
+                }
 			}
 			return model;
 		}
@@ -336,7 +347,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-            strSql.Append("select id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,address,sum_Score,TotalScorce,Scoring ");
+            strSql.Append("select id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,address,sum_Score,TotalScorce,Scoring,Jh_date ");
             strSql.Append(" FROM V_CRM_CEStage ");
 			if(strWhere.Trim()!="")
 			{
@@ -495,7 +506,7 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("SELECT COUNT(versions) AS ver,A.projectid,A.stageid ");
-            strSql.Append(" ,B.CEStage_category,AVG(A.TotalScore) AS TotalScore  ");
+            strSql.Append(" ,B.CEStage_category,AVG(A.TotalScore) AS TotalScore,Jh_date  ");
              strSql.Append(" ,AVG(A.AssTime*1.00) AS AssTime,SUM(a.AssTime*1.00)/SUM(A.TotalScore)*100 AS dcl ");
               strSql.Append(" FROM dbo.Crm_CEDetail A ");
              strSql.Append(" INNER JOIN  dbo.CRM_CEStage_category B ON	 A.stageid =B.id ");

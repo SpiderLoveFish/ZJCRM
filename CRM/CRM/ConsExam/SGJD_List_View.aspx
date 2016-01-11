@@ -192,26 +192,70 @@ table {
        var t = ""; var tt = "";
        $(function () {
           
-           $('#title').append("<h2 id='titleh2' class='top_title'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户：" + decodeURI(getparastr("khmc")) + "<lable class='gj'>电话：" + getparastr("tel") + "</lable></h2>")
+           $('#title').append("<h2 id='titleh2' class='top_title'>客户：" + decodeURI(getparastr("khmc")) + "<lable class='gj'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电话：" + getparastr("tel") + "</lable></h2>")
             var t2 = "";
             //alert(getparastr("jhdate"));
             if(decodeURI(getparastr("sjzt"))=="施工完成" )
-           {
-               t2 += "<td><strong>工程状态:</strong><lable style='color:green'>" + decodeURI(getparastr("sjzt")) + "</lable></td>";
+            {
+                $("#lbgczt").append($("<span style='color:green'>" + decodeURI(getparastr("sjzt")) + "</span>"));
+              // .val(decodeURI(getparastr("sjzt")));
          
             }else   if(decodeURI(getparastr("sjzt"))=="正在施工" ){
-               t2+= "<td><strong>工程状态:</strong><lable  style='color:red'>" + decodeURI(getparastr("sjzt")) + "</lable></td>";
+                $("#lbgczt").append($("<span style='color:red'>" + decodeURI(getparastr("sjzt")) + "</span>"));
+                //t2 += "<td><strong>工程状态:</strong><lable  style='color:red'>" + decodeURI(getparastr("sjzt")) + "</lable></td>";
      
-           }
-           t2+= "<td><strong>施工监理:</strong><lable  >" + decodeURI(getparastr("sgjl")) + "</lable></td>";
-          // t2 += "<td><strong>要求完工时间:</strong><lable  >" + formatTimebytype((getparastr("jhdate"), "yyyy年MM月dd日")) + "</lable></td>";
+            }
+            $("#lbsgjl").append($("<span>" + decodeURI(getparastr("sgjl")) + "</span>"));
+            $("#lbjhrq").append($("<span>" + formatTimebytype(getparastr("jhdate"), "yyyy年MM月dd日") + "</span>"));
            
-           $('#title2').append($(t2));
+             // t2 += "<td><strong>要求完工时间:</strong><lable  >" + formatTimebytype((getparastr("jhdate"), "yyyy年MM月dd日")) + "</lable></td>";
+            var myDate = new Date();
+           
+            var ts = parseInt(myDate.getTime() - new Date(formatTimebytype(getparastr("jhdate"), 'yyyy/MM/dd')).getTime());
+            //alert(new Date( formatTimebytype(getparastr("jhdate"),'yyyy/MM/dd')).getTime());
+            var days = Math.floor(ts / (24 * 3600 * 1000))
+           if(days<0)
+            $("#lbsygq").append($("<span>已施期：" + days + "</span>"));
+            else
+               $("#lbsygq").append($("<span>剩余工期：" + days + "</span>"));
+          
 
+           var tb="";
+           tb+="<thead> <tr>  <th colspan='6' id='bb'>全体施工人员名单</th> </tr></thead>";
+           tb+="<tr >";
+           for(var i=0;i<3;i++)
+           {
+               tb+=" <td width='20%'><strong>设计师</strong></td>";
+               tb += "<td width='20%' ><lable id='b'" + i + ">庞洪超</lable></td>";
+
+           }
+           tb+=" </tr>";
+           $('#tbry').append($(tb));
+
+           for (var i = 0; i < 3; i++) {
+              // alert(i);
+               //$("#b" + id).text()
+               addBtnEvent(i);
+           }
+            //addBtnEvent();
                INIT();
            
-        
+             
        });
+       //function addBtnEvent() {
+       //    $("#bb").bind("click", function () {
+       //        alert(id);
+       //        chickid = id;
+       //        //  f_openWindow_post("hr/hr_position.aspx?IsGet=Y", "选择职务", 650, 400);
+       //    });
+       //}
+       function addBtnEvent(id) {
+           $("#b" + id).bind("click", function () {
+                 alert(id);
+               chickid = id;
+             //  f_openWindow_post("hr/hr_position.aspx?IsGet=Y", "选择职务", 650, 400);
+           });
+       }
 	    function INIT() {
 	        $.ajax({
 	            type: "GET",
@@ -227,7 +271,7 @@ table {
 	                       t+="<li><a href='#h"+i + "'>" + formatTimebytype(obj[i].LRRQ, "dd日hh时mm分") + "</a></li>";
 	                }
 	                
-	                //$('#titleh2').append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<lable class='gj'>共计" + obj.length + "个时间点</lable>");
+	                 $('#t2remark').append("<lable class='gj'>全体用时365天，从2016-01-01到2016-01-01，共计" + obj.length + "个时间点</lable>");
 	                //var tt="";
 	                for (var i = 0; i < obj.length; i++) {
 	                    
@@ -256,6 +300,8 @@ table {
 	                    //startAt: 3, //初始化起点，即初始化轴点位置，数字
 	                    mousewheel: 'true'//是否支持鼠标滚轮
 	                });
+
+	             
 	            },
 	            error: function (e) {
 	                alert("Init2");
@@ -267,10 +313,17 @@ table {
     <body>
      <div   id="main">
          <div id="title"></div> 
-         <table width="600px">
+          <table width="600px">
              <tr id="title2">
-
+                 <td>工程状态:</td> <td id="lbgczt"> </td>
+                  <td>施工监理:</td> <td  id="lbsgjl"> </td>
+                  <td>要求完工时间：</td> <td id="lbjhrq"> </td>
+                   <td>剩余工期：</td> <td  id="lbsygq"> </td>
              </tr>
+              <tr>
+                   
+                  <td colspan="8" id="t2remark"></td>
+              </tr>
          </table>
          <div style="width:720px;height:430px;">
     
@@ -285,45 +338,7 @@ table {
            </div> 
        
 <table class="bordered" id="tbry">
-    <thead>
-
-    <tr>
-        <th colspan="6">全体施工人员名单</th>
-        </tr>
-    </thead>
-    <tr >
-        <td width="20%"><strong>设计师</strong></td>
-
-        <td width="20%"> <a href="#">庞洪超</a></td>
-     
-        <td width="20%"><strong>油漆工</strong></td>
-        <td width="20%"><a href="#">刘能</a></td>
-     
-
-        <td width="20%"><strong>卫生管家</strong></td>
-        <td width="20%"><a href="#">谢大脚</a></td>
-    </tr>    
-    <tr>
-        <td><strong>木工</strong></td>
-        <td><a href="#">王五</a></td>
-
-     
-        <td><strong>瓦工</strong></td>
-        <td><a href="#">赵四</a></td>
-     
-        <td><strong>水电工</strong></td>
-
-        <td><a href="#">张三</a></td>
-    </tr>
-    <tr>
-        <td><strong>保洁员</strong></td>
-        <td><a href="#">查一</a></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-
-    </tr> 
+  
 
 </table>
            

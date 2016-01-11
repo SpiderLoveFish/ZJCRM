@@ -216,7 +216,10 @@ namespace XHD.BLL
         }
 
 
-        
+        public DataSet GetSingleSignOnList(string where)
+        {
+            return dal.GetSingleSignOnList(where);
+        }
 
         #endregion  ExtensionMethod
 	}
