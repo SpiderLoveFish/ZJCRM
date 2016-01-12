@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link href="../../jlui3.2/lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/Toolbar.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
@@ -27,7 +27,16 @@
         <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
     <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
      <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
-  
+  <style>
+      .tips
+      { 
+          width:30px;
+      }
+      .test
+      {
+          background-color:red;
+      }
+  </style>
 
     <script type="text/javascript">
         var g;
@@ -59,20 +68,20 @@
                     else //+ '</br>'+i.substring(2,3) +
                     {
                         col.push({
-                            name: i, display: i, width: 30,background:'#', render: function (record, rowindex, value, column) {
+                            name: i, display: i, width: 30,  render: function (record, rowindex, value, column) {
                                 var r; var html=[];
                              
                                 if (value != null) {
                                     r = value.split(';')[0];
                                    
                                     if (r.length > 0) {
-                                       
-                                        html = "<div class='tips' style='float:left;width:100%;height:100%;background:#" + r + "'> "
+                                        $(this).css('background', "#" + r + "")
+                                        html = "<div class='tips' style='min-width:30px;;background:#" + r + "'> "
                                     }
                                        // html.push("<div style=' width:30,heigth:40,background-color::#800040'>'");
-                                    if (value.split(';')[3].length > 0) html += "&nbsp;&nbsp;۞";
+                                    if (value.split(';')[3].length > 0) html += "&nbsp;۞";
                                      
-                                    html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + value.split(';')[1] + "&nbsp;;";
+                                    html += "</br></br>" + value.split(';')[1] + "&nbsp;";
                                     html += value.split(';')[2] + "&nbsp;;";
                                     html += value.split(';')[3] + "&nbsp;;";
                                         html += value.split(';')[4];
@@ -82,7 +91,17 @@
                                 }
                                 return html;
                                 
-                            }});
+                            }
+                            //,
+                            //rowAttrRender: function (record, rowindex, value, column) {
+                            //    var r;
+                            //    if (value != null) {
+                            //        r = value.split(';')[0];
+                            //        $(this).css('background', "#" + r + "")
+                            //    }
+                            //}
+
+                        });
 
            
                          " }";
@@ -148,15 +167,36 @@
                // alert(a.join());
                 g.set('columns',col);
                 g.reRender();
-              
-               // f_reload();
+                //$('#mydiv div').each(function(i){
+                var a = 0;
+                $('td[class^=l-grid-row-cell]').each(function () {
+                    //if (a == 9) {
+                    //    var x = $(this).find("div.tips").css('background-color');
+                    //    alert(x);
+                    //}
+                    //a++
+                     
+                    $(this).css('background', $(this).find("div.tips").css('background-color'));
+                });
+                // l - grid - row - cell - inner
+
+                // f_reload();
                 //}
 
             });
             
-
+            $.fn.getBackgroundColor = function () {
+                var rgb = $(this).css('background-color');
+                if (rgb >= 0) return rgb;//如果是一个hex值则直接返回
+                else {
+                    rgb = rgb.match(/^rgb(\d+),\s∗(\d+),\s∗(\d+)$/);
+                    function hex(x) { return ("0" + parseInt(x).toString(16)).slice(-2); }
+                    rgb = "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+                }
+                return rgb;
+            }
            
-       
+         
 
             initLayout();
             $(window).resize(function () {

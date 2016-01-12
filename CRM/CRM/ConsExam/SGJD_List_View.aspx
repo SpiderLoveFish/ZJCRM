@@ -198,174 +198,170 @@ table {
    <script type="text/javascript">
        var t = ""; var tt = "";
        $(function () {
-          
+
            $('#title').append("<h2 id='titleh2' class='top_title'>客户：" + decodeURI(getparastr("khmc")) + "<lable >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电话：" + getparastr("tel") + "</lable></h2>")
-            var t2 = "";
-            //alert(getparastr("jhdate"));
-            if(decodeURI(getparastr("sjzt"))=="施工完成" )
-            {
-                $("#lbgczt").append($("<span style='color:green'>" + decodeURI(getparastr("sjzt")) + "</span>"));
-              // .val(decodeURI(getparastr("sjzt")));
-         
-            }else   if(decodeURI(getparastr("sjzt"))=="正在施工" ){
-                $("#lbgczt").append($("<span style='color:red'>" + decodeURI(getparastr("sjzt")) + "</span>"));
-                //t2 += "<td><strong>工程状态:</strong><lable  style='color:red'>" + decodeURI(getparastr("sjzt")) + "</lable></td>";
-     
-            }
-            $("#lbsgjl").append($("<span>" + decodeURI(getparastr("sgjl")) + "</span>"));
-            $("#lbjhrq").append($("<span>" + formatTimebytype(getparastr("jhdate"), "yyyy年MM月dd日") + "</span>"));
-           
-             // t2 += "<td><strong>要求完工时间:</strong><lable  >" + formatTimebytype((getparastr("jhdate"), "yyyy年MM月dd日")) + "</lable></td>";
-            var myDate = new Date();
-            var days = getdays(formatTimebytype(getparastr("jhdate"), 'yyyy/MM/dd'), myDate);
-            days = -days;
-           if(days<0)
-               $("#lbsygq").append($("<span  class='gj'>已拖期：" + days + "天</span>"));
-            else
-               $("#lbsygq").append($("<span  class='blue'>剩余工期：" + days + "天</span>"));
-          
-               INIT("init");
-           
-             
+           var t2 = "";
+           //alert(getparastr("jhdate"));
+           if (decodeURI(getparastr("sjzt")) == "施工完成") {
+               $("#lbgczt").append($("<span style='color:green'>" + decodeURI(getparastr("sjzt")) + "</span>"));
+               // .val(decodeURI(getparastr("sjzt")));
+
+           } else if (decodeURI(getparastr("sjzt")) == "正在施工") {
+               $("#lbgczt").append($("<span style='color:red'>" + decodeURI(getparastr("sjzt")) + "</span>"));
+               //t2 += "<td><strong>工程状态:</strong><lable  style='color:red'>" + decodeURI(getparastr("sjzt")) + "</lable></td>";
+
+           }
+           $("#lbsgjl").append($("<span>" + decodeURI(getparastr("sgjl")) + "</span>"));
+           $("#lbjhrq").append($("<span>" + formatTimebytype(getparastr("jhdate"), "yyyy年MM月dd日") + "</span>"));
+
+           // t2 += "<td><strong>要求完工时间:</strong><lable  >" + formatTimebytype((getparastr("jhdate"), "yyyy年MM月dd日")) + "</lable></td>";
+           var myDate = new Date();
+           var days = getdays(formatTimebytype(getparastr("jhdate"), 'yyyy/MM/dd'), myDate);
+           days = -days;
+           if (days < 0)
+               $("#lbsygq").append($("<span  class='gj'>已拖期" + days*1 + "天</span>"));
+           else
+               $("#lbsygq").append($("<span  class='blue'>剩余工期" + days + "天</span>"));
+
+           INIT("init");
+
+
        });
-        
+
        function addBtnEvent(id) {
            $("#b" + id).bind("click", function () {
-               $('#lbryt2').text("【" + $('#b' + id).text() + "】");
+               $('#lbryt2').text($('#b' + id).text() );
                INIT($('#b' + id).text());
                //alert("【" + $('#b' + id).text() + "】");
-              // chickid = id;
-             //  f_openWindow_post("hr/hr_position.aspx?IsGet=Y", "选择职务", 650, 400);
+               // chickid = id;
+               //  f_openWindow_post("hr/hr_position.aspx?IsGet=Y", "选择职务", 650, 400);
            });
        }
 
-       function getdays(dtbegin,dtend)
-       {
+       function getdays(dtbegin, dtend) {
            var ts = parseInt(new Date(dtend).getTime() - new Date(dtbegin).getTime());
            var days = Math.floor(ts / (24 * 3600 * 1000))
            return days;
        }
 
-	    function INIT(ryid) {
-	        $.ajax({
-	            type: "GET",
-	            url: "../../data/SGJD_LIST.ashx", /* 注意后面的名字对应CS的方法名称 */
-	            data: { Action: 'detailform', cid: getparastr("cid"),ry:ryid, rnd: Math.random() }, /* 注意参数的格式和名称 */
-	            //url: "../../data/SGJD_LIST.ashx?Action=formgrid&cid=" + getparastr("cid") + "&rdm=" + Math.random(),
-	            contentType: "application/json; charset=utf-8",
-	            dataType: "json",
-	            success: function (result) {      
-	                var obj = eval(result);    
-	               // alert(obj.length);
-	                if (obj.length > 0&& ryid=="init")
-	                {
-	                    var str = new Array();
-	                    if (obj[0].zry != 'null' && obj[0].zry != '' & obj[0].zry != 'undefined') {
-	                        str = obj[0].zry.split(";");
+       function INIT(ryid) {
+           $.ajax({
+               type: "GET",
+               url: "../../data/SGJD_LIST.ashx", /* 注意后面的名字对应CS的方法名称 */
+               data: { Action: 'detailform', cid: getparastr("cid"), ry: ryid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+               //url: "../../data/SGJD_LIST.ashx?Action=formgrid&cid=" + getparastr("cid") + "&rdm=" + Math.random(),
+               contentType: "application/json; charset=utf-8",
+               dataType: "json",
+               success: function (result) {
+                   var obj = eval(result);
+                   // alert(obj.length);
+                   if (obj.length > 0 && ryid == "init") {
+                       var str = new Array();
+                       if (obj[0].zry != 'null' && obj[0].zry != '' & obj[0].zry != 'undefined') {
+                           str = obj[0].zry.split(";");
 
-	                    }
-	                   
-	                    var tb = ""; var br = 0;
-	                    tb += "<thead> <tr>  <th colspan='6' class='trry' id='bb'>全体施工人员名单</th> </tr></thead>";
-	                    tb += "<tr >";
-	                    for (var i = 0;  i< str.length; i++) {
-	                        br++;
-	                        tb += " <td width='16%'><span  class='trry' id='b" + i + "'>" + str[i] + "</span></td>";
-	                      //  tb += "<td width='16%' ><lable  style='color:green' id='b" + i + "'>庞洪超</lable></td>";
-	                        
-	                        if (br == 6) {
-	                            tb += " </tr><tr>";
-	                            br = 0;
-	                        }
-	                       
-	                        if (i == str.length - 1) {
-	                            if (br < 6)
-	                                for (var c = br + 1; c <= 6; c++) {
-	                                    tb += "<td> </td>"
-	                                    if (c == 6)
-	                                        tb += " </tr>"
-	                                }
-	                        }
-	                    }
-	                    tb += " </tr>";
-	                    $('#tbry').empty();
-	                    $('#tbry').append($(tb));
+                       }
 
-	                    for (var i = 0; i < str.length; i++) {
-	                        // alert($("#b" + i).val());
-	                        //$("#b" + id).text()
-	                           addBtnEvent(i);
-	                    }
-	                    $("#bb").bind("click", function () {
-	                        $('#lbryt2').text("【全体】");
-	                        INIT("");
-	                        // chickid = id;
-	                        //  f_openWindow_post("hr/hr_position.aspx?IsGet=Y", "选择职务", 650, 400);
-	                    });
-	                    $('#lbryt2').text("【全体】");
-	                }
-	                $('#lbtotalt2').text(obj.length);
-	                t = "";
-	                for (var i = 0; i < obj.length; i++) {
-	                    if (i == 0)
-	                    {
-	                        $('#lbrq1').text(formatTimebytype(obj[i].LRRQ, "yyyy-MM-dd"));
-	                        $('#lbrq2').text(formatTimebytype(obj[obj.length - 1].LRRQ, "yyyy-MM-dd"));
-	                        
-	                        if (decodeURI(getparastr("sjzt")) == "施工完成") {
-	                            $("#lbsygq").empty();
-	                             var dayss = getdays(formatTimebytype(obj[obj.length - 1].LRRQ, 'yyyy/MM/dd'), formatTimebytype(getparastr("jhdate"), 'yyyy/MM/dd'));    
-	                           if (dayss < 0)
-	                               $("#lbsygq").append($("<span  class='gj'>已拖期：" + dayss + "天</span>"));
-	                           else
-	                               $("#lbsygq").append($("<span  class='blue'>提前完工：" + dayss + "天</span>"));
-                           }  
+                       var tb = ""; var br = 0;
+                       tb += "<thead> <tr>  <th colspan='5' class='trry' id='bb'>全体施工人员名单</th> </tr></thead>";
+                       tb += "<tr >";
+                       for (var i = 0; i < str.length; i++) {
+                           br++;
+                           tb += " <td width='16%'><span  class='trry' id='b" + i + "'>" + str[i] + "</span></td>";
+                           //  tb += "<td width='16%' ><lable  style='color:green' id='b" + i + "'>庞洪超</lable></td>";
 
-	                        var days = getdays(formatTimebytype(obj[0].LRRQ, 'yyyy/MM/dd'), formatTimebytype(obj[obj.length - 1].LRRQ, 'yyyy/MM/dd'));
-	                     
-	                        $('#lbtst2').text(days);
-	                    }
+                           if (br == 5) {
+                               tb += " </tr><tr>";
+                               br = 0;
+                           }
 
-	                    t += "<li><a href='#h" + i + "'>" + formatTimebytype(obj[i].LRRQ, "dd日hh时mm分") + "</a></li>";
-	                }
-	                 
-	                tt = "";
-	                for (var i = 0; i < obj.length; i++) {
-	                    
-	                   
-	                    tt += "<li id='h" + i + "'>";
-	                    tt += "<p><strong>说明：</strong>" + obj[i].REMARK + " <strong>状态：</strong>" + obj[i].JDMC + "</p>";
-	                 
-	                    tt += "<h1>项目清单：</h1>";
-	                    tt += "<p>" + obj[i].xmmc + "</p>";
-	                    tt += "<h1>人员清单：</h1>";
-	                    tt += "<p>" + obj[i].ry + "</p>";
-	                    tt += "</li>";
-	                }
-	               
-	                //tt += " <a href='#' id='next'></a>";
-	                //tt += " <a href='#' id='prev'></a>";
-	                $('#dates').find("li").remove(); 
-	                $('#dates').append($(t));
-	                $('#issues').find("li").remove();
-	                $('#issues').append($(tt));
-	               
-	                $().timelinr({
-	                    orientation: 'horizontal', //垂直滚动
-	                    issuesSpeed: 300, // 对应内容区的滚动速度，可为100～1000之间的数字，或者设置为'slow', 'normal' or 'fast'
-	                    datesSpeed: 100, //主轴滚动速度，可为100～1000之间的数字，或者设置为'slow', 'normal' or 'fast'
-	                    arrowKeys: 'true', //支持方向键
-	                    //startAt: 3, //初始化起点，即初始化轴点位置，数字
-	                    mousewheel: 'true'//是否支持鼠标滚轮
-	                });
+                           if (i == str.length - 1) {
+                               if (br < 5)
+                                   for (var c = br + 1; c <= 5; c++) {
+                                       tb += "<td> </td>"
+                                       if (c == 5)
+                                           tb += " </tr>"
+                                   }
+                           }
+                       }
+                       tb += " </tr>";
+                       $('#tbry').empty();
+                       $('#tbry').append($(tb));
 
-	             
-	            },
-	            error: function (e) {
-	                alert("Init2");
-	            }
-	        });
-	    }
+                       for (var i = 0; i < str.length; i++) {
+                           // alert($("#b" + i).val());
+                           //$("#b" + id).text()
+                           addBtnEvent(i);
+                       }
+                       $("#bb").bind("click", function () {
+                           $('#lbryt2').text("【全体】");
+                           INIT("");
+                           // chickid = id;
+                           //  f_openWindow_post("hr/hr_position.aspx?IsGet=Y", "选择职务", 650, 400);
+                       });
+                       $('#lbryt2').text("【全体】");
+                   }
+                   $('#lbtotalt2').text(obj.length);
+                   t = "";
+                   for (var i = 0; i < obj.length; i++) {
+                       if (i == 0) {
+                           $('#lbrq1').text(formatTimebytype(obj[i].LRRQ, "yyyy-MM-dd"));
+                           $('#lbrq2').text(formatTimebytype(obj[obj.length - 1].LRRQ, "yyyy-MM-dd"));
+
+                           if (decodeURI(getparastr("sjzt")) == "施工完成") {
+                               $("#lbsygq").empty();
+                               var dayss = getdays(formatTimebytype(obj[obj.length - 1].LRRQ, 'yyyy/MM/dd'), formatTimebytype(getparastr("jhdate"), 'yyyy/MM/dd'));
+                               if (dayss < 0)
+                                   $("#lbsygq").append($("<span  class='gj'>拖期完工" + dayss*-1 + "天</span>"));
+                               else
+                                   $("#lbsygq").append($("<span  class='blue'>提前完工" + dayss + "天</span>"));
+                           }
+
+                           var days = getdays(formatTimebytype(obj[0].LRRQ, 'yyyy/MM/dd'), formatTimebytype(obj[obj.length - 1].LRRQ, 'yyyy/MM/dd'));
+
+                           $('#lbtst2').text(days);
+                       }
+
+                       t += "<li><a href='#h" + i + "'>" + formatTimebytype(obj[i].LRRQ, "dd日hh时mm分") + "</a></li>";
+                   }
+
+                   tt = "";
+                   for (var i = 0; i < obj.length; i++) {
+
+
+                       tt += "<li id='h" + i + "'>";
+                       tt += "<p><strong>说明：</strong>" + obj[i].REMARK + " <strong>状态：</strong>" + obj[i].JDMC + "</p>";
+
+                       tt += "<h1>项目清单：</h1>";
+                       tt += "<p>" + obj[i].xmmc + "</p>";
+                       tt += "<h1>人员清单：</h1>";
+                       tt += "<p>" + obj[i].ry + "</p>";
+                       tt += "</li>";
+                   }
+
+                   //tt += " <a href='#' id='next'></a>";
+                   //tt += " <a href='#' id='prev'></a>";
+                   $('#dates').find("li").remove();
+                   $('#dates').append($(t));
+                   $('#issues').find("li").remove();
+                   $('#issues').append($(tt));
+
+                   $().timelinr({
+                       orientation: 'horizontal', //垂直滚动
+                       issuesSpeed: 300, // 对应内容区的滚动速度，可为100～1000之间的数字，或者设置为'slow', 'normal' or 'fast'
+                       datesSpeed: 100, //主轴滚动速度，可为100～1000之间的数字，或者设置为'slow', 'normal' or 'fast'
+                       arrowKeys: 'true', //支持方向键
+                       //startAt: 3, //初始化起点，即初始化轴点位置，数字
+                       mousewheel: 'true'//是否支持鼠标滚轮
+                   });
+
+
+               },
+               error: function (e) {
+                   alert("Init2");
+               }
+           });
+       }
 	</script>
     
     <body>
@@ -373,10 +369,10 @@ table {
          <div id="title"></div> 
           <table width="600px">
              <tr id="title2">
-                 <td><strong>工程状态:</strong></td> <td id="lbgczt"  align="left" > </td>
-                  <td><strong>施工监理:</strong></td> <td  id="lbsgjl"  align="left"> </td>
-                  <td><strong>要求完工时间：</strong></td> <td id="lbjhrq"  align="left"> </td>
-                   <td><strong>剩余工期：</strong></td> <td  id="lbsygq"  align="left"> </td>
+                 <td><strong>此工地</strong><font id="lbgczt" > </font>
+                  <strong>由</strong> <font  id="lbsgjl" > </font>
+                  <strong>负责监理工作，要求</strong> <font id="lbjhrq"> </font>
+                  <strong>完成，</strong> <font  id="lbsygq"> </font></td>
              </tr>
               <tr>
                    
@@ -386,7 +382,10 @@ table {
               </tr>
          </table>
          <div style="width:720px;height:430px;">
-    
+    <table class="bordered" id="tbry">
+  
+
+</table>
               <div id="timeline">
                        
                       <ul id="dates">
@@ -397,10 +396,7 @@ table {
                     </ul>
            </div> 
        
-<table class="bordered" id="tbry">
-  
 
-</table>
            
              </div>
           </div>
