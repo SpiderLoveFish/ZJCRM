@@ -147,7 +147,8 @@
                         //url: urlheadcol ,
                          pageSize: 20,
                          pageSize: 18, pageSizeOptions: [15, 20, 30, 50, 100],
-                     
+                         resizable: false,
+                    headerRowHeight:50,
                         height: '100%',
                         isScroll: true,
                         heightDiff: -1,
