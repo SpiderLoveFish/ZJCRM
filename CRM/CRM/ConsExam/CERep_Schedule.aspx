@@ -182,37 +182,34 @@
 
                 // f_reload();
                 //}
-
+                //toolbar();
             });
-            
-            $.fn.getBackgroundColor = function () {
-                var rgb = $(this).css('background-color');
-                if (rgb >= 0) return rgb;//如果是一个hex值则直接返回
-                else {
-                    rgb = rgb.match(/^rgb(\d+),\s∗(\d+),\s∗(\d+)$/);
-                    function hex(x) { return ("0" + parseInt(x).toString(16)).slice(-2); }
-                    rgb = "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-                }
-                return rgb;
-            }
-           
-         
+     
 
             initLayout();
             $(window).resize(function () {
                 initLayout();
             });
-            //toolbar();
+            
         });
         function toolbar() {
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=44&rnd=" + Math.random(), function (data, textStatus) {
-                //alert(data);
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=141&rnd=" + Math.random(), function (data, textStatus) {
+                 alert(data);
                 var items = [];
                 var arr = data.Items;
                 for (var i = 0; i < arr.length; i++) {
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
+                items.push({
+                    type: 'serchbtn',
+                    text: '高级搜索',
+                    icon: '../../images/search.gif',
+                    disable: true,
+                    click: function () {
+                        serchpanel();
+                    }
+                });
                 $("#toolbar").ligerToolBar({
                     items: items
 
@@ -225,7 +222,20 @@
             });
         }
 
-       
+        function serchpanel() {
+            //initSerchForm();
+            if ($(".az").css("display") == "none") {
+                $("#grid").css("margin-top", $(".az").height() + "px");
+                $("#maingrid4").ligerGetGridManager().onResize();
+
+            }
+            else {
+                $("#grid").css("margin-top", "0px");
+                $("#maingrid4").ligerGetGridManager().onResize();
+
+            }
+
+        }
         function f_reload() {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);
@@ -237,13 +247,15 @@
     </style>
 
 </head>
-<body>
+<body style="padding: 0px;overflow:hidden;">
+
 
     <form id="form1" onsubmit="return false">
         <div>
             <div id="toolbar"></div>
-            
+              <div id="grid">
             <div id="maingrid4" style="margin: -1px;"></div>
+                  </div>
         </div>
     </form>
 

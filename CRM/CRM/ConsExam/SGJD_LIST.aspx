@@ -101,7 +101,15 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-                 
+                items.push({
+                    type: 'serchbtn',
+                    text: '高级搜索',
+                    icon: '../../images/search.gif',
+                    disable: true,
+                    click: function () {
+                        serchpanel();
+                    }
+                });
                 $("#toolbar").ligerToolBar({
                     items: items
 
@@ -115,7 +123,20 @@
         }
 
        
-       
+        function serchpanel() {
+           // initSerchForm();
+            if ($(".az").css("display") == "none") {
+                $("#grid").css("margin-top", $(".az").height() + "px");
+                $("#maingrid4").ligerGetGridManager().onResize();
+
+            }
+            else {
+                $("#grid").css("margin-top", "0px");
+                $("#maingrid4").ligerGetGridManager().onResize();
+
+            }
+
+        }
 
         var activeDialogs = null;
         function f_openWindow_show(url, title, width, height) {
@@ -220,6 +241,22 @@
             manager.loadData(true);
             
         };
+
+        //查询
+        function doserch() {
+            var sendtxt = "&Action=grid&rnd=" + Math.random();
+            var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
+               alert(serchtxt);
+            var manager = $("#maingrid4").ligerGetGridManager();
+            manager.GetDataByURL("../../data/Crm_CEStage.ashx?" + serchtxt);
+        }
+        function doclear() {
+            //var serchtxt = $("#serchform :input").reset();
+            $("#serchform").each(function () {
+                this.reset();
+                $(".l-selected").removeClass("l-selected");
+            });
+        }
     </script>
     
 </head>
@@ -233,7 +270,77 @@
                   </div>
         </div>
     </form>
-     
+       <div class="az">
+        <form id='serchform'>
+            <table style='width: 960px' class="bodytable1">
+                <tr>
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>客户姓名：</div>
+                    </td>
+                    <td>
+
+                        <input  ltype='text' ligerui='{width:120}' type='text' id='khstext' name='khstext'  /></td>
+
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>地址：</div>
+                    </td>
+                    <td>
+                        <div style='width: 100px; float: left'>
+                            <input type='text' id='dzstext' name='dzstext' ltype='text' ligerui='{width:120}'  />
+                        </div>
+                    
+                    </td>
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>电话：</div>
+                    </td>
+                    <td>
+                        <div style='width: 100px; float: left'>
+                            <input type='text' id='dhstext' name='dhstext'   ltype='text' ligerui='{width:120}'  />
+                        </div>
+                       
+                    </td>
+                    <td>
+                          <input id='Button1' type='button' value='搜索' style='width: 80px; height: 24px' onclick="doserch()" />
+                  
+                        <input id='Button2' type='button' value='重置' style='width: 80px; height: 24px'
+                            onclick="doclear()" />
+                        </td> 
+                </tr>
+                <tr>
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>施工监理：</div>
+                    </td>
+                    <td>
+                        <input id='sgjlstext' name="sgjlstext" type='text'  ltype='text' ligerui='{width:120}' /></td>
+
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right' >状态：</div>
+                    </td>
+                    <td>
+                        <div style='width: 100px; float: left'>
+                            <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui="{width:196,data:[{id:'正在施工',text:'正在施工'},{id:'施工完成',text:'施工完成'}]}" validate="{required:false}" />
+                        </div>
+                         
+                    </td>
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>达成率：</div>
+                    </td>
+                    <td>
+                        <div style='width: 300px; float: left'>
+                            <input type='text' id='dclbstext' name='dclbstext'    ltype='text'  ligerui="{width:50}" />
+                    
+                         -->
+                   
+                            <input type='text' id='dclestext' name='dclestext'    ltype='text' ligerui="{width:50}"  />
+                        </div>
+                    </td>
+
+                </tr>
+            
+            </table>
+        </form>
+    </div>
+
 
 </body>
 </html>

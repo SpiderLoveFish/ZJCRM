@@ -57,7 +57,7 @@ namespace XHD.CRM.Data
                 }
                 DataSet ds = btn.GetList(0, "Menu_id = " + int.Parse(request["mid"]), "convert(int,[Btn_order])");
                 Data.GetAuthorityByUid getauth = new Data.GetAuthorityByUid();
-                string toolbarscript = "{Items:[";
+                string toolbarscript = "{\"Items\":[";
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
                     if (emp_name == "NoVerer")
@@ -69,25 +69,25 @@ namespace XHD.CRM.Data
                         }
                         else { continue; }
                     toolbarscript += "{";
-                    toolbarscript += "type: 'button',";
-                    toolbarscript += "text: '" + ds.Tables[0].Rows[i]["Btn_name"].ToString() + "',";
-                    toolbarscript += "icon: '" + ds.Tables[0].Rows[i]["Btn_icon"].ToString() + "',";
+                    toolbarscript += "\"type\": 'button',";
+                    toolbarscript += "\"text\": '" + ds.Tables[0].Rows[i]["Btn_name"].ToString() + "',";
+                    toolbarscript += "\"icon\": '" + ds.Tables[0].Rows[i]["Btn_icon"].ToString() + "',";
                     if (BtnAble)
                     {
-                        toolbarscript += "disable: true,";
+                        toolbarscript += "\"disable\": true,";
                     }
                     else
                     {
-                        toolbarscript += "disable: " + getauth.GetBtnAuthority(emp_id.ToString(), ds.Tables[0].Rows[i]["Btn_id"].ToString()) + ",";
+                        toolbarscript += "\"disable\": " + getauth.GetBtnAuthority(emp_id.ToString(), ds.Tables[0].Rows[i]["Btn_id"].ToString()) + ",";
                     }
                     if (emp_name == "NoVerer")
                         if (ds.Tables[0].Rows[i]["Btn_name"].ToString() == "新增"
                            || ds.Tables[0].Rows[i]["Btn_name"].ToString() == "新增跟进"
                              )
                         {
-                            toolbarscript += "disable: true,";
+                            toolbarscript += "\"disable\": true,";
                         }
-                    toolbarscript += "click: function() {";
+                    toolbarscript += "\"click\": function() {";
                     toolbarscript += ds.Tables[0].Rows[i]["Btn_handler"].ToString().Replace("()", "(" + int.Parse(request["mid"]) + ")");
                     toolbarscript += "}";
                     toolbarscript += "},";
