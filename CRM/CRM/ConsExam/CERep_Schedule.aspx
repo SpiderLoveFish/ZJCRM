@@ -11,6 +11,7 @@
     <script src="../../jlui3.2/lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script> 
     <script src="../../jlui3.2/lib/ligerUI/js/ligerui.all.js"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
+       <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerTip.js" ></script>
 <%--     
     <link href="../../jlui3.2/lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css">
      <script src="../../jlui3.2/lib/ligerUI/js/core/base.js" type="text/javascript"></script>
@@ -63,9 +64,9 @@
                                        // html.push("<div style=' width:30,heigth:40,background-color::#800040'>'");
                                     if (value.split(';')[3].length > 0) html += "&nbsp;۞";
                                      
-                                    html += "</br></br>" + value.split(';')[1] + "&nbsp;";
-                                    html += value.split(';')[2] + "&nbsp;;";
-                                    html += value.split(';')[3] + "&nbsp;;";
+                                    html += "</br>" + value.split(';')[1] + "</br>";
+                                    html +=  value.split(';')[2] + "</br>";
+                                    html += "<span style='color:red'>" + value.split(';')[3] + "</span></br>";
                                         html += value.split(';')[4];
                                     
                                   //  if (r.length > 0)
@@ -117,52 +118,40 @@
                         columns: [
                            ],
                         onAfterShowData: function (grid) {
+                            $('td[class^=l-grid-row-cell]').each(function () {
+
+                                $(this).css('background', $(this).find("div.tips").css('background-color'));
+                            });
                             $(".tips").hover(function (e) {
-                                $(this).ligerTip({ content: $(this).text().replace("۞", "").replace(/^\s*|\s*$/g, "描述"), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                                $(this).ligerTip({ content: $(this).html().replace("۞", "").replace(/^\s*|\s*$/g, ""), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
                             }, function (e) {
                                 $(this).ligerHideTip(e);
                             });
                         },
                         autoFilter: true,
-                    enabledSort:false,
+                       enabledSort:false,
                         dataType: 'server',
                         dataAction: 'server',
                         data: j,
                         //url: urlheadcol ,
-                         pageSize: 20,
-                         pageSize: 18, pageSizeOptions: [15, 20, 30, 50, 100],
+                     
+                         pageSize: 100, pageSizeOptions: [15, 20, 30, 50, 100],
                          resizable: false,
-                    headerRowHeight:50,
+                          headerRowHeight:50,
                         height: '100%',
                         isScroll: true,
                         heightDiff: -1,
-                        onRClickToSelect: true,
-                    
+                        onRClickToSelect: true 
+                            
+                        
                     });
                   var a=[];
                   a.push({ display: 'New主键', name: 'CID', align: 'left', width: 220, frozen: true });
-                  //a.push({ display: 'New公司名', name: 'Cname', width: 140 });
-                // var b;
-                // b = "{ display: 'New主键', name: 'CID', align: 'left', width: 220 }," +
-                //     "{ display: 'New公司名', name: 'Cname', width: 140 }";
-                ////    //function f_setColumns() {
-                //var columns = [
-                // { display: 'New主键', name: 'CID', align: 'left', width: 220 }
-                //];
-               // alert(a.join());
+              
                 g.set('columns',col);
                 g.reRender();
                 //$('#mydiv div').each(function(i){
-                var a = 0;
-                $('td[class^=l-grid-row-cell]').each(function () {
-                    //if (a == 9) {
-                    //    var x = $(this).find("div.tips").css('background-color');
-                    //    alert(x);
-                    //}
-                    //a++
-                     
-                    $(this).css('background', $(this).find("div.tips").css('background-color'));
-                });
+                
                 $('DIV[class=l-panel-topbar]').css('background', '#E0EDFF');
                 // l - grid - row - cell - inner
                 $('td[class^=l-grid-hd-cell]').each(function () {

@@ -260,45 +260,46 @@ table {
                        if (obj[0].zry != 'null' && obj[0].zry != '' & obj[0].zry != 'undefined') {
                            str = obj[0].zry.split(";");
 
-                       }
 
-                       var tb = ""; var br = 0;
-                       tb += "<thead> <tr>  <th colspan='5' class='trry' id='bb'>全体施工人员名单</th> </tr></thead>";
-                       tb += "<tr >";
-                       for (var i = 0; i < str.length; i++) {
-                           br++;
-                           tb += " <td width='16%'><span  class='trry' id='b" + i + "'>" + str[i] + "</span></td>";
-                           //  tb += "<td width='16%' ><lable  style='color:green' id='b" + i + "'>庞洪超</lable></td>";
 
-                           if (br == 5) {
-                               tb += " </tr><tr>";
-                               br = 0;
+                           var tb = ""; var br = 0;
+                           tb += "<thead> <tr>  <th colspan='5' class='trry' id='bb'>全体施工人员名单</th> </tr></thead>";
+                           tb += "<tr >";
+                           for (var i = 0; i < str.length; i++) {
+                               br++;
+                               tb += " <td width='16%'><span  class='trry' id='b" + i + "'>" + str[i] + "</span></td>";
+                               //  tb += "<td width='16%' ><lable  style='color:green' id='b" + i + "'>庞洪超</lable></td>";
+
+                               if (br == 5) {
+                                   tb += " </tr><tr>";
+                                   br = 0;
+                               }
+
+                               if (i == str.length - 1) {
+                                   if (br < 5)
+                                       for (var c = br + 1; c <= 5; c++) {
+                                           tb += "<td> </td>"
+                                           if (c == 5)
+                                               tb += " </tr>"
+                                       }
+                               }
                            }
+                           tb += " </tr>";
+                           $('#tbry').empty();
+                           $('#tbry').append($(tb));
 
-                           if (i == str.length - 1) {
-                               if (br < 5)
-                                   for (var c = br + 1; c <= 5; c++) {
-                                       tb += "<td> </td>"
-                                       if (c == 5)
-                                           tb += " </tr>"
-                                   }
+                           for (var i = 0; i < str.length; i++) {
+                               // alert($("#b" + i).val());
+                               //$("#b" + id).text()
+                               addBtnEvent(i);
                            }
+                           $("#bb").bind("click", function () {
+                               $('#lbryt2').text("【全体】");
+                               INIT("");
+                               // chickid = id;
+                               //  f_openWindow_post("hr/hr_position.aspx?IsGet=Y", "选择职务", 650, 400);
+                           });
                        }
-                       tb += " </tr>";
-                       $('#tbry').empty();
-                       $('#tbry').append($(tb));
-
-                       for (var i = 0; i < str.length; i++) {
-                           // alert($("#b" + i).val());
-                           //$("#b" + id).text()
-                           addBtnEvent(i);
-                       }
-                       $("#bb").bind("click", function () {
-                           $('#lbryt2').text("【全体】");
-                           INIT("");
-                           // chickid = id;
-                           //  f_openWindow_post("hr/hr_position.aspx?IsGet=Y", "选择职务", 650, 400);
-                       });
                        $('#lbryt2').text("【全体】");
                    }
                    $('#lbtotalt2').text(obj.length);
@@ -322,7 +323,7 @@ table {
                            $('#lbtst2').text(days);
                        }
 
-                       t += "<li><a href='#h" + i + "'>" + formatTimebytype(obj[i].LRRQ, "dd日hh时mm分") + "</a></li>";
+                       t += "<li><a href='#h" + i + "'>" + formatTimebytype(obj[i].LRRQ, "yyyy年MM月dd日") + "</a></li>";
                    }
 
                    tt = "";
