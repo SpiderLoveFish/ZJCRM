@@ -34,7 +34,7 @@
                         { display: '项目排序', name: 'XMPX', width: 80, align: 'left' } ,
                 { display: '操作人', name: 'CZR', width: 80, align: 'left' }
                 ],
-                dataAction: 'local',
+                dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
                 url: "../../data/XM_LIST.ashx?Action=grid",
