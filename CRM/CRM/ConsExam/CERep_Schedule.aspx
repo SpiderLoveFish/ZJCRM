@@ -55,19 +55,19 @@
                                 var r; var html=[];
                              
                                 if (value != null) {
-                                    r = value.split(';')[0];
+                                    r = value.split(';')[1];
                                    
                                     if (r.length > 0) {
                                         $(this).css('background', "#" + r + "")
                                         html = "<div class='tips' style='min-width:30px;;background:#" + r + "'> "
                                     }
                                        // html.push("<div style=' width:30,heigth:40,background-color::#800040'>'");
-                                    if (value.split(';')[3].length > 0) html += "&nbsp;۞";
+                                    if (value.split(';')[4].length > 0) html += "&nbsp;۞";
                                      
-                                    html += "</br>" + value.split(';')[1] + "</br>";
-                                    html +=  value.split(';')[2] + "</br>";
-                                    html += "<span style='color:red'>" + value.split(';')[3] + "</span></br>";
-                                        html += value.split(';')[4];
+                                    html += "</br></br>" + value.split(';')[2] + "</br>";
+                                    html +=  value.split(';')[3] + "</br>";
+                                    html += "<span style='color:red'>" + value.split(';')[4] + "</span></br>";
+                                        html += value.split(';')[0];
                                     
                                   //  if (r.length > 0)
                                     html += "</div>"
@@ -157,6 +157,9 @@
                 $('td[class^=l-grid-hd-cell]').each(function () {
                     if ($(this).find("span.l-grid-hd-cell-text").html() == "CID")
                         $(this).find("span.l-grid-hd-cell-text").html("客户编号");
+                    var a = $(this).find("span.l-grid-hd-cell-text").html();
+                    var b = a.replace(/\d+/g, '')
+                    $(this).find("span.l-grid-hd-cell-text").html(b)
                 });
                
                 //toolbar();

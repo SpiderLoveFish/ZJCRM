@@ -442,22 +442,29 @@ namespace XHD.DAL
              parameters[1].Value = "CID";
              parameters[2].Value = "XMMC";
              parameters[3].Value = "Cpro as '小区名称',Cname as '具体地址'";
-             parameters[4].Value = "(jdys+';项目:'+XMMC+';'+Cname+';'+remark+';'+CONVERT(VARCHAR(20),lrrq,120))";
+             parameters[4].Value = "(CONVERT(VARCHAR(20),lrrq,120)+';'+jdys+';项目:'+XMMC+';'+Cpro+Cname+';'+remark)";
              parameters[5].Value = "WHERE 1=1";
-             string sql = "select  COUNT(1)  from (SELECT DISTINCT cid FROM OLD_XCZS.dbo.KHJD_LIST_VIEW_LIST)T	";
+             string sql = "select  COUNT(1)  from (SELECT DISTINCT cid FROM  dbo.KHJD_LIST_VIEW_LIST)T	";
 
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine("EXEC dbo.USP_View_Schedule @TName = 'KHJD_LIST_VIEW_LIST', -- varchar(20) ");
-            sb.AppendLine("    @GColumn = 'CID', -- varchar(20) ");
-            sb.AppendLine("    @RC = 'XMMC', -- varchar(20) ");
-            sb.AppendLine("	@RCValue = 'Cpro,Cname', -- varchar(20) ");
-            sb.AppendLine("    @RCValues = '(jdys+'';项目:''+XMMC+'';''+Cname+'';''+remark+'';''+CONVERT(VARCHAR(20),lrrq,120))', -- varchar(20) ");
-            sb.AppendLine("    @sql_where = N'WHERE 1=1' ");
+            sb.AppendLine(" SELECT A.*,RIGHT(CAST(XMPX*10000+XMPX AS VARCHAR(10)),3)+B.XMMC  AS XM ");
+           sb.AppendLine("  INTO #TEMP  ");
+            sb.AppendLine(" FROM KHJD_LIST_VIEW_LIST A");
+            sb.AppendLine(" INNER JOIN	XM_LIST B ON	A.XMID=B.XMID ");
+
+            sb.AppendLine("  EXEC dbo.USP_View_Schedule @TName = '#temp', -- varchar(20)");
+           sb.AppendLine(" @GColumn = 'CID', -- varchar(20)");
+           sb.AppendLine(" @RC = 'XM', -- varchar(20)");
+	        sb.AppendLine("@RCValue = 'Cpro as ''小区名称'',Cname as ''具体地址''', -- varchar(20)");
+            sb.AppendLine(" @RCValues = '(CONVERT(VARCHAR(20),lrrq,120)+'';''+jdys+'';项目:''+XMMC+'';''+Cpro+Cname+'';''+remark)', -- varchar(20)");
+           sb.AppendLine(" @sql_where = N'WHERE 1=1' -- nvarchar(max)");
+ 
             sb.AppendLine(" ");
-            DataSet ds = DbHelperSQL.RunProcedure("dbo.USP_View_Schedule", 
-                parameters,
-                "schedule");
-            Total = DbHelperSQL.Query(sql).Tables[0].Rows[0][0].ToString();
+            DataSet ds = DbHelperSQL.Query(sb.ToString());
+                //DbHelperSQL.RunProcedure("dbo.USP_View_Schedule", 
+               // parameters,
+               // "schedule");
+            Total = ds.Tables[0].Rows.Count.ToString();
 
             return ds;
         }

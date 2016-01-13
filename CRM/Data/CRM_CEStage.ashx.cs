@@ -172,8 +172,8 @@ namespace XHD.CRM.Data
                     serchtxt += " and address like N'%" + PageValidate.InputText(request["dzstext"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["dhstext"]))
                     serchtxt += " and tel like N'%" + PageValidate.InputText(request["dhstext"], 255) + "%'";
-                if (!string.IsNullOrEmpty(request["sgstext"]))
-                    serchtxt += " and sgjl like N'%" + PageValidate.InputText(request["sgstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["sgjlstext"]))
+                    serchtxt += " and sgjl like N'%" + PageValidate.InputText(request["sgjlstext"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["ztstext"]))
                     serchtxt += " and Stage_icon like N'%" + PageValidate.InputText(request["ztstext"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["dclbstext"]))

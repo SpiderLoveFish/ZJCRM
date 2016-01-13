@@ -934,11 +934,11 @@ namespace XHD.DAL
             strSql.Append(" isnull([7],0) as 'm7',isnull([8],0) as 'm8',isnull([9],0) as 'm9',isnull([10],0) as 'm10',isnull([11],0) as 'm11',isnull([12],0) as 'm12' ");
             strSql.Append(" from");
             strSql.Append(" (SELECT   hr_employee.ID, hr_employee.name, COUNT(derivedtbl_1.id) AS cn, YEAR(derivedtbl_1.Create_date) AS yy, ");
-            strSql.Append(" MONTH(derivedtbl_1.Create_date) AS mm");
+            strSql.Append(" MONTH(derivedtbl_1.Create_date) AS mm ");
             strSql.Append(" FROM      hr_employee LEFT OUTER JOIN");
-            strSql.Append("  (SELECT   id, Create_id, Create_date");
-            strSql.Append("  FROM      CRM_Customer");
-            strSql.Append("  WHERE isdelete=0 and  (YEAR(Create_date) = " + year + ")) AS derivedtbl_1 ON hr_employee.ID = derivedtbl_1.Create_id");
+            strSql.Append(" (SELECT '' id,userid AS Create_id,CONVERT(VARCHAR(30),LRRQ,111) Create_date ");
+            strSql.Append("  FROM  dbo.KHJD_LIST_VIEW_LIST_person ");
+            strSql.Append("  WHERE  (YEAR(LRRQ) = " + year + ")) AS derivedtbl_1 ON hr_employee.ID = derivedtbl_1.Create_id");
             strSql.Append(" WHERE hr_employee.ID in " + idlist);
             strSql.Append(" GROUP BY hr_employee.ID, hr_employee.name, YEAR(derivedtbl_1.Create_date), MONTH(derivedtbl_1.Create_date)) as tt");
             strSql.Append(" pivot");
