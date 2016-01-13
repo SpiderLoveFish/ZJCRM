@@ -48,32 +48,10 @@
 
             $("#maingrid4").ligerGrid({
                 columns: [
-                    { display: 'ÐòºÅ', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
-                    //{
-                    //    display: '', width: 40, render: function (item) {
-                    //        var html = "<a href='javascript:void(0)' onclick=view(" + item.CEStage_id + ")>ÏêÏ¸</a>"
-                    //        return html;
-                    //    }
-                    //},
-                    //{
-                    //    display: '', width: 50, render: function (item) {
-                    //        var html = "<a href='javascript:void(0)' onclick=QrCode(" + item.CEStage_id + ")>¶þÎ¬Âë</a>"
-                    //        return html;
-                    //    }
-                    //},
-                    //{
-                    //    display: 'ÍøÖ·', width: 50, render: function (item) {
-                    //        var html;
-                    //        if (item.url != "" && item.url != null) {
-                    //            html = "<a href='" + item.url + "' target='_blank'>";
-                    //            html += "²é¿´";
-                    //            html += "</a>";
-                    //        }
-                    //        else
-                    //            html = "ÎÞ";
-                    //        return html;
-                    //    }
-                    //},
+                     {
+                         display: 'ÐòºÅ', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                         { return (page - 1) * pagesize + rowindex + 1; }
+                     },
                     { display: 'ÀàÐÍ±àºÅ', name: 'StageID', width: 120 },
                   
                      { display: 'Ã÷Ï¸±àºÅ', name: 'StageDetailID', width: 120 },

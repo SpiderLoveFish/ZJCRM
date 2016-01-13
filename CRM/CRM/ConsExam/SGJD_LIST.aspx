@@ -22,10 +22,13 @@
     <script type="text/javascript">
         var manager = "";
         $(function () {
+          
             $("#maingrid4").ligerGrid({
                 columns: [
-                    { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
-                    // { display: '编号', name: 'id', width: 50, align: 'left' },
+                   {
+                       display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                       { return (page - 1) * pagesize + rowindex + 1; }
+                   },
                     // { display: '客户编号', name: 'CustomerID', width: 50, align: 'left' },
                       { display: '客户姓名', name: 'CustomerName', width: 80, align: 'left' },
                        { display: '客户电话', name: 'tel', width: 100, align: 'left' },
@@ -67,7 +70,7 @@
                 { display: '备注', name: 'Remarks', width: 200, align: 'left' }
 
                 ],
-                dataAction: 'local',
+                dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
                 url: "../../data/Crm_CEStage.ashx?Action=grid1",
@@ -124,7 +127,7 @@
 
        
         function serchpanel() {
-           // initSerchForm();
+           initSerchForm();
             if ($(".az").css("display") == "none") {
                 $("#grid").css("margin-top", $(".az").height() + "px");
                 $("#maingrid4").ligerGetGridManager().onResize();
@@ -136,6 +139,15 @@
 
             }
 
+        }
+        function initSerchForm() {
+            $("#khstext").addClass("l-text");
+            $("#dzstext").addClass("l-text");
+            $("#dhstext").addClass("l-text");
+            $("#sgjlstext").addClass("l-text");
+            $("#ztstext").ligerComboBox({ width: 100 })
+            $("#dclbstext").addClass("l-text");
+            $("#dclestext").addClass("l-text");
         }
 
         var activeDialogs = null;
@@ -246,7 +258,7 @@
         function doserch() {
             var sendtxt = "&Action=grid&rnd=" + Math.random();
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
-               alert(serchtxt);
+              // alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.GetDataByURL("../../data/Crm_CEStage.ashx?" + serchtxt);
         }

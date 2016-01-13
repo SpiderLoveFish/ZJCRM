@@ -5,38 +5,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <link href="../../jlui3.2/lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-    <link href="../../CSS/Toolbar.css" rel="stylesheet" type="text/css" />
-    <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
-    <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
-
-    <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-   <script src="../../jlui3.2/lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script>
-  
-    <%--  <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="../../lib/json2.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>--%>
+     <link href="../../jlui3.2/lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css">
+    <link href="../../jlui3.2/lib/ligerUI/skins/ligerui-icons.css" rel="stylesheet" type="text/css">
+    <link href="../../jlui3.2/lib/ligerUI/skins/Aqua/css/all.css" rel="stylesheet" type="text/css">
+    <script src="../../jlui3.2/lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script> 
+    <script src="../../jlui3.2/lib/ligerUI/js/ligerui.all.js"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
-     
+<%--     
     <link href="../../jlui3.2/lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css">
      <script src="../../jlui3.2/lib/ligerUI/js/core/base.js" type="text/javascript"></script>
     <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script> 
         <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
     <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-     <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
-  <style>
-      .tips
-      { 
-          width:30px;
-      }
-      .test
-      {
-          background-color:red;
-      }
-  </style>
+     <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>--%>
+  
 
     <script type="text/javascript">
         var g;
@@ -141,7 +123,9 @@
                                 $(this).ligerHideTip(e);
                             });
                         },
-                        dataType: 'local',
+                        autoFilter: true,
+                    enabledSort:false,
+                        dataType: 'server',
                         dataAction: 'server',
                         data: j,
                         //url: urlheadcol ,
@@ -179,10 +163,13 @@
                      
                     $(this).css('background', $(this).find("div.tips").css('background-color'));
                 });
+                $('DIV[class=l-panel-topbar]').css('background', '#E0EDFF');
                 // l - grid - row - cell - inner
-
-                // f_reload();
-                //}
+                $('td[class^=l-grid-hd-cell]').each(function () {
+                    if ($(this).find("span.l-grid-hd-cell-text").html() == "CID")
+                        $(this).find("span.l-grid-hd-cell-text").html("客户编号");
+                });
+               
                 //toolbar();
             });
      
@@ -193,50 +180,7 @@
             });
             
         });
-        function toolbar() {
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=141&rnd=" + Math.random(), function (data, textStatus) {
-                 alert(data);
-                var items = [];
-                var arr = data.Items;
-                for (var i = 0; i < arr.length; i++) {
-                    arr[i].icon = "../../" + arr[i].icon;
-                    items.push(arr[i]);
-                }
-                items.push({
-                    type: 'serchbtn',
-                    text: '高级搜索',
-                    icon: '../../images/search.gif',
-                    disable: true,
-                    click: function () {
-                        serchpanel();
-                    }
-                });
-                $("#toolbar").ligerToolBar({
-                    items: items
-
-                });
-                menu = $.ligerMenu({
-                    width: 120, items: getMenuItems(data)
-                });
-
-                $("#maingrid4").ligerGetGridManager().onResize();
-            });
-        }
-
-        function serchpanel() {
-            //initSerchForm();
-            if ($(".az").css("display") == "none") {
-                $("#grid").css("margin-top", $(".az").height() + "px");
-                $("#maingrid4").ligerGetGridManager().onResize();
-
-            }
-            else {
-                $("#grid").css("margin-top", "0px");
-                $("#maingrid4").ligerGetGridManager().onResize();
-
-            }
-
-        }
+    
         function f_reload() {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);

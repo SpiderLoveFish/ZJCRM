@@ -26,8 +26,10 @@
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
-                    { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
-                    // { display: '编号', name: 'id', width: 50, align: 'left' },
+                     {
+                         display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                         { return (page - 1) * pagesize + rowindex + 1; }
+                     },
                     // { display: '客户编号', name: 'CustomerID', width: 50, align: 'left' },
                       { display: '客户姓名', name: 'CustomerName', width: 80, align: 'left' },
                        { display: '客户电话', name: 'tel', width: 100, align: 'left' },
@@ -69,7 +71,7 @@
                 { display: '备注', name: 'Remarks', width: 200, align: 'left' }
 
                 ],
-                dataAction: 'local',
+                dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
                 url: "../../data/Crm_CEStage.ashx?Action=grid",

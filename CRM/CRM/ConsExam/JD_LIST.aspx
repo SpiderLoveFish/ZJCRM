@@ -24,8 +24,10 @@
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
-                    { display: 'ÐòºÅ', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
-                    // { display: '±àºÅ', name: 'id', width: 50, align: 'left' },
+                   {
+                       display: 'ÐòºÅ', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                       { return (page - 1) * pagesize + rowindex + 1; }
+                   },
                     // { display: '¿Í»§±àºÅ', name: 'CustomerID', width: 50, align: 'left' },
                      { display: 'ÐòºÅID', name: 'JDPX', width: 100, align: 'left' },
                      { display: 'Ãû³Æ', name: 'JDMC', width: 80, align: 'left' },
@@ -36,7 +38,7 @@
                     }
                 }
                 ],
-                dataAction: 'local',
+                dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
                 url: "../../data/CE_Para.ashx?Action=grid",

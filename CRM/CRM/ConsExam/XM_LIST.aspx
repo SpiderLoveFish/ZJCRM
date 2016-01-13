@@ -24,8 +24,10 @@
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
-                    { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
-                    // { display: '编号', name: 'id', width: 50, align: 'left' },
+                   {
+                       display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                       { return (page - 1) * pagesize + rowindex + 1; }
+                   },
                     // { display: '客户编号', name: 'CustomerID', width: 50, align: 'left' },
                      { display: '项目ID', name: 'XMID', width: 80, align: 'left' },
                      { display: '项目名称', name: 'XMMC', width: 120, align: 'left' },

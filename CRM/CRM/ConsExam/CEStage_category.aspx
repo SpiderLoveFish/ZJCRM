@@ -22,7 +22,10 @@
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
-                    { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
+                    {
+                        display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                        { return (page - 1) * pagesize + rowindex + 1; }
+                    },
                     { display: '类别名称', name: 'CEStage_category', width: 250, align: 'left' },
                      { display: '总分数', name: 'TotalScorce', width: 250, align: 'left' },
 
@@ -32,7 +35,7 @@
                         }
                     }
                 ],
-                dataAction: 'local',
+                dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
                 url: "../../data/CRM_CEStage_category.ashx?Action=grid&grid=tree",

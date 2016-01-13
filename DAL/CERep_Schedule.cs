@@ -441,7 +441,7 @@ namespace XHD.DAL
             parameters[0].Value = "KHJD_LIST_VIEW_LIST";
              parameters[1].Value = "CID";
              parameters[2].Value = "XMMC";
-             parameters[3].Value = "Cpro,Cname";
+             parameters[3].Value = "Cpro as '小区名称',Cname as '具体地址'";
              parameters[4].Value = "(jdys+';项目:'+XMMC+';'+Cname+';'+remark+';'+CONVERT(VARCHAR(20),lrrq,120))";
              parameters[5].Value = "WHERE 1=1";
              string sql = "select  COUNT(1)  from (SELECT DISTINCT cid FROM OLD_XCZS.dbo.KHJD_LIST_VIEW_LIST)T	";
