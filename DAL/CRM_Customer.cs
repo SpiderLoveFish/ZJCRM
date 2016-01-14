@@ -938,7 +938,7 @@ namespace XHD.DAL
             strSql.Append(" FROM      hr_employee LEFT OUTER JOIN");
             strSql.Append(" (SELECT '' id,userid AS Create_id,CONVERT(VARCHAR(30),LRRQ,111) Create_date ");
             strSql.Append("  FROM  dbo.KHJD_LIST_VIEW_LIST_person ");
-            strSql.Append("  WHERE  (YEAR(LRRQ) = " + year + ")) AS derivedtbl_1 ON hr_employee.ID = derivedtbl_1.Create_id");
+            strSql.Append("  WHERE  (YEAR(LRRQ) = " + year + ")  GROUP BY userid ,CONVERT(VARCHAR(30),LRRQ,111)) AS derivedtbl_1 ON hr_employee.ID = derivedtbl_1.Create_id");
             strSql.Append(" WHERE hr_employee.ID in " + idlist);
             strSql.Append(" GROUP BY hr_employee.ID, hr_employee.name, YEAR(derivedtbl_1.Create_date), MONTH(derivedtbl_1.Create_date)) as tt");
             strSql.Append(" pivot");
