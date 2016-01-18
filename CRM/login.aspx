@@ -13,7 +13,24 @@
     <script src="JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
         var isPostBack = "<%=IsPostBack%>";
-        $(function () { 
+        $(function () {
+           
+                $.ajax({
+                    type: "GET",
+                    url: "data/sys_info.ashx", /* 注意后面的名字对应CS的方法名称 */
+                    data: { Action: 'getinfo', rnd: Math.random() }, /* 注意参数的格式和名称 */
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                       
+                        var obj = eval(result);
+                        var rows = obj.Rows;
+                       
+                        //document.title =rows[0].sys_value + "CRM客户关系管理系统-小黄豆CRM";                    
+                        $("#logo").attr("src", rows[1].sys_value);
+                    }
+                });
+            
             if (isPostBack == "False") {
                 GetLastUser();
             }
@@ -146,7 +163,11 @@
                     <dt>
                         <table width="200" border="0">
                             <tr>
-                                <td>自定义图标即将开放</td>
+                                <td> <div style="width: 200px; float: left;">
+        
+                    <img id="logo" alt="" src="Images/logo/test.png" style="height: 42px; margin-left: 5px; margin-top: 2px;" />
+                    <%--</a>--%>
+                </div></td>
                             </tr>
                         </table>
                     </dt>

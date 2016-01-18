@@ -654,6 +654,7 @@
     <Content Include="JS\spectrum.js" />
     <Content Include="JS\TimeFlow\jquery.mousewheel.js" />
     <Content Include="JS\TimeFlow\jquery.timelinr-0.9.53.js" />
+    <Content Include="main.aspx" />
     <Content Include="NoVerified\NVRepairTelphone.aspx" />
     <Content Include="QQ_Login.aspx" />
     <Content Include="qq_rebind.aspx" />
@@ -750,7 +751,6 @@
     <Content Include="lib\ligerUI\js\plugins\ligerGrid - 复制.js" />
     <Content Include="lib\ligerUI\skins\ext\images\grid\grid-tree-close.png" />
     <Content Include="lib\ligerUI\skins\ext\images\grid\grid-tree-open.png" />
-    <Content Include="main.aspx" />
     <Content Include="Global.asax" />
     <Content Include="HR\Getemp.aspx" />
     <Content Include="HR\GetMultemp.aspx" />
@@ -2728,6 +2728,7 @@
     <Content Include="ueditor1_2_5_1-utf8-net\_src\ui\uibase.js" />
     <Content Include="ueditor1_2_5_1-utf8-net\_src\ui\uiutils.js" />
     <Content Include="View\QrCode_Generate.aspx" />
+    <Content Include="webserver\WebService1.asmx" />
     <Content Include="welcome.htm" />
     <Content Include="Data\install.ashx" />
     <Content Include="Default.aspx" />
@@ -4191,6 +4192,10 @@
     </Compile>
     <Compile Include="View\QrCodeHandler.ashx.cs">
       <DependentUpon>QrCodeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="webserver\WebService1.asmx.cs">
+      <DependentUpon>WebService1.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Content Include="ueditor1_2_5_1-utf8-net\net\Uploader.cs" />
     <Compile Include="System\ClareCaches.aspx.cs">
