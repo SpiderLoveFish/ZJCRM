@@ -2728,6 +2728,7 @@
     <Content Include="ueditor1_2_5_1-utf8-net\_src\ui\uibase.js" />
     <Content Include="ueditor1_2_5_1-utf8-net\_src\ui\uiutils.js" />
     <Content Include="View\QrCode_Generate.aspx" />
+    <Content Include="webserver\bbsapi.asmx" />
     <Content Include="webserver\WebService1.asmx" />
     <Content Include="welcome.htm" />
     <Content Include="Data\install.ashx" />
@@ -4192,6 +4193,10 @@
     </Compile>
     <Compile Include="View\QrCodeHandler.ashx.cs">
       <DependentUpon>QrCodeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="webserver\bbsapi.asmx.cs">
+      <DependentUpon>bbsapi.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="webserver\WebService1.asmx.cs">
       <DependentUpon>WebService1.asmx</DependentUpon>
