@@ -393,6 +393,10 @@ namespace XHD.BLL
         {
             return dal.GetBMapList(strWhere);
         }
+        public DataSet GetGYSMapList(string strWhere)
+        {
+            return dal.GetGYSMapList(strWhere);
+        }
 
         #endregion  Method
     }

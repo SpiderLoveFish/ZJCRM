@@ -34,7 +34,7 @@ namespace XHD.CRM.Data
             DataSet dsemp = emp.GetList("id=" + emp_id);
             string empname = dsemp.Tables[0].Rows[0]["name"].ToString();
             string uid = dsemp.Tables[0].Rows[0]["uid"].ToString();
-
+           
             //save
             if (request["Action"] == "save")
             {
@@ -259,12 +259,12 @@ namespace XHD.CRM.Data
                     modelcontact.C_sex = PageValidate.InputText(request["T_Gender"], 50) == "男" ? "先生" : "女士";
                     //modelcontact.C_name = PageValidate.InputText(request["T_customername"], 255);
                     //modelcontact.C_sex = PageValidate.InputText(request["T_sex"], 255);
-                    modelcontact.C_department = PageValidate.InputText(request["T_contact_dep"], 255);
-                    modelcontact.C_position = PageValidate.InputText(request["T_contact_position"], 255);
+                    modelcontact.C_department = PageValidate.InputText(request["T_Community"], 255);
+                    modelcontact.C_position = PageValidate.InputText(request["T_industry"], 255);
                     modelcontact.C_QQ = PageValidate.InputText(request["T_qq"], 255);
                     modelcontact.C_tel = PageValidate.InputText(request["T_company_tel"], 50);
                     //modelcontact.C_tel = PageValidate.InputText(request["T_tel"], 255);
-                    modelcontact.C_mob = PageValidate.InputText(request["T_mobil"], 255);
+                    modelcontact.C_mob = PageValidate.InputText(request["T_company_tel"], 255);
                     modelcontact.C_email = Common.PageValidate.InputText(request["T_email"], 255);
                     modelcontact.C_customerid = customerid;
                     modelcontact.C_customername = model.Customer;
@@ -615,7 +615,23 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "getGYSMapList")
+            {
 
+
+                string serchtxt = " xy is not null";
+                //权限
+                //serchtxt += DataAuth();
+                DataSet ds = customer.GetGYSMapList(serchtxt);
+                string dt = GetGridJSON.DataTableToJSON(ds.Tables[0]);
+                if (dt == "")
+                {
+                    dt = "{}";
+                }
+
+
+                context.Response.Write(dt);
+            }
             //regain            
             if (request["Action"] == "regain")
             {
@@ -1227,20 +1243,22 @@ namespace XHD.CRM.Data
                         case "none": returntxt = " and 1=2 ";
                             break;
                         case "my":
-                            returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + ")";
+                            returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(arr[1]) + ")";
                             break;
                         case "dep":
                             if (string.IsNullOrEmpty(arr[1]))
-                                returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + ")";
+                                returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or Create_id=" + int.Parse(uid) + ")";
                             else
-                                returntxt = " and ( privatecustomer='公客' or Department_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + ")";
+                                returntxt = " and ( privatecustomer='公客' or Department_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(uid) + ")";
                             break;
                         case "depall":
                             BLL.hr_department dep = new BLL.hr_department();
                             DataSet ds = dep.GetAllList();
                             string deptask = GetDepTask(int.Parse(arr[1]), ds.Tables[0]);
                             string intext = arr[1] + "," + deptask;
-                            returntxt = " and ( privatecustomer='公客' or Department_id in (" + intext.TrimEnd(',') + " or Dpt_id_sg in (" + intext.TrimEnd(',') + " or Dpt_id_sj in (" + intext.TrimEnd(',') + "))";
+
+                            returntxt = " and ( privatecustomer='公客' or Create_id=" + int.Parse(uid) + "  or Department_id in (" + intext.TrimEnd(',') + ") or Dpt_id_sg in (" + intext.TrimEnd(',') + ") or Dpt_id_sj in (" + intext.TrimEnd(',') + "))";
+                             //or Create_id=32 or Department_id in (" + intext.TrimEnd(',') + " or Dpt_id_sg in (" + intext.TrimEnd(',') + " or Dpt_id_sj in (" + intext.TrimEnd(',') + ")
                             break;
                     }
                 }

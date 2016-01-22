@@ -139,6 +139,7 @@
     <Compile Include="CRM_receive.cs" />
     <Compile Include="KHJD_LIST_VIEW_LIST.cs" />
     <Compile Include="KHJD_LIST_VIEW_LIST_person.cs" />
+    <Compile Include="map.cs" />
     <Compile Include="Param_SysParam_Type.cs" />
     <Compile Include="Personal_Calendar.cs" />
     <Compile Include="Personal_notes.cs" />

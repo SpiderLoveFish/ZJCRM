@@ -121,7 +121,7 @@
                             columns: [
                             { display: '行号', width: 50, render: function (item, i) { return i + 1; } },
                             { display: '联系人', name: 'C_name', width: 100 },
-                            { display: '职务', name: 'C_position', width: 100 },
+                            { display: '职业', name: 'C_position', width: 100 },
                             { display: '性别', name: 'C_sex', width: 50 },
                             //{ display: '客户姓名', name: 'C_companyname', width: 180 },
                             { display: '手机', name: 'C_mob', width: 120 },

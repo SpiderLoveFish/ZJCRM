@@ -349,20 +349,20 @@ namespace XHD.CRM.Data
                             returntxt = " and 1=2 ";
                             break;
                         case "my":
-                            returntxt = " and  C_emp_id=" + arr[1];
+                            returntxt = " and  (C_emp_id=" + arr[1] + " or create_id=" + arr[1]+")";
                             break;
                         case "dep":
                             if (string.IsNullOrEmpty(arr[1]))
-                                returntxt = " and  C_emp_id=" + int.Parse(uid);
+                                returntxt = " and  (C_emp_id=" + int.Parse(uid) + " or create_id=" + int.Parse(uid) + ")";
                             else
-                                returntxt = " and  C_dep_id=" + arr[1];
+                                returntxt = " and  (C_dep_id=" + arr[1] + " or create_id=" + int.Parse(uid) + ")";
                             break;
                         case "depall":
                             BLL.hr_department dep = new BLL.hr_department();
                             DataSet ds = dep.GetAllList();
                             string deptask = GetDepTask(int.Parse(arr[1]), ds.Tables[0]);
                             string intext = arr[1] + "," + deptask;
-                            returntxt = " and  C_dep_id in (" + intext.TrimEnd(',') + ")";
+                            returntxt = " and  (C_dep_id in (" + intext.TrimEnd(',') + ")" + " or create_id=" + int.Parse(uid) + ")";
                             break;
                     }
                 }

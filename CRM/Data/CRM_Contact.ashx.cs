@@ -256,20 +256,20 @@ namespace XHD.CRM.Data
                             returntxt = " 1=2";
                             break;
                         case "my":
-                            returntxt = " ( privatecustomer='公客' or Employee_id=" + arr[1] + ")";
+                            returntxt = " ( privatecustomer='公客' or Employee_id=" + arr[1] + " or C_createId=" + arr[1] + ")";
                             break;
                         case "dep":
-                            if (string.IsNullOrEmpty(arr[1])) 
-                                returntxt = " ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + ")";
+                            if (string.IsNullOrEmpty(arr[1]))
+                                returntxt = " ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + " or C_createId=" + int.Parse(uid) + ")";
                             else
-                                returntxt = " ( privatecustomer='公客' or Department_id=" + arr[1] + ")";
+                                returntxt = " ( privatecustomer='公客' or Department_id=" + arr[1] + " or C_createId=" + int.Parse(uid) + ")";
                             break;
                         case "depall":
                             BLL.hr_department dep = new BLL.hr_department();
                             DataSet ds = dep.GetAllList();
                             string deptask = GetDepTask(int.Parse(arr[1]), ds.Tables[0]);
                             string intext = arr[1] + "," + deptask;
-                            returntxt = " ( privatecustomer='公客' or Department_id in (" + intext.TrimEnd(',') + "))";
+                            returntxt = " ( privatecustomer='公客' or Department_id in (" + intext.TrimEnd(',') + ") or C_createId=" + int.Parse(uid) + ")";
                             break;
                     }
                 }

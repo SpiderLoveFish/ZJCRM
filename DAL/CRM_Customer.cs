@@ -1083,6 +1083,18 @@ namespace XHD.DAL
             }
             return DbHelperSQL.Query(strSql.ToString());
         }
+        public DataSet GetGYSMapList(string strWhere)
+        {
+            var strSql = new StringBuilder();
+            strSql.Append("SELECT ");
+            strSql.Append("     [id],[Name],[address],[Gsdh],[xy]      ");
+            strSql.Append("FROM [dbo].[CgGl_Gys_Main] ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
 
         public DataSet GetBMapList(string strWhere)
         {
