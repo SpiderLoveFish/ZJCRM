@@ -20,14 +20,7 @@ namespace XHD.BLL
               return dal.Getf_section();
           }
 
-          public DataSet GetBMapList(string strWhere)
-          {
-              return dal.GetBMapList(strWhere);
-          }
-          public DataSet GetGYSMapList(string strWhere)
-          {
-              return dal.GetGYSMapList(strWhere);
-          }
+           
 
     }
 }

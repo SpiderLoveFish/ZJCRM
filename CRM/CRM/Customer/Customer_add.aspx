@@ -247,7 +247,7 @@
         function f_selectContact() {
             top.$.ligerDialog.open({
                 zindex: 9003,
-                title: '选择员工', width: 850, height: 400, url: "hr/Getemp_Auth.aspx?auth=1", buttons: [
+                title: '选择员工', width: 850, height: 400, url: "hr/Getemp.aspx?isvew=Y", buttons: [
                     { text: '确定', onclick: f_selectContactOK },
                     { text: '取消', onclick: f_selectContactCancel }
                 ]
@@ -257,7 +257,7 @@
         function f_selectContact_sg() {
             top.$.ligerDialog.open({
                 zindex: 9003,
-                title: '选择员工', width: 850, height: 400, url: "hr/Getemp_Auth.aspx?auth=1", buttons: [
+                title: '选择员工', width: 850, height: 400, url: "hr/Getemp.aspx?isvew=Y", buttons: [
                     { text: '确定', onclick: f_selectContactOK_sg },
                     { text: '取消', onclick: f_selectContactCancel }
                 ]
@@ -267,7 +267,7 @@
         function f_selectContact_sj() {
             top.$.ligerDialog.open({
                 zindex: 9003,
-                title: '选择员工', width: 850, height: 400, url: "hr/Getemp_Auth.aspx?auth=1", buttons: [
+                title: '选择员工', width: 850, height: 400, url: "hr/Getemp.aspx?isvew=Y", buttons: [
                     { text: '确定', onclick: f_selectContactOK_sj },
                     { text: '取消', onclick: f_selectContactCancel }
                 ]
