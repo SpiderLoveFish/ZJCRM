@@ -18,6 +18,7 @@ namespace XHD.Model
 		private DateTime? _create_date;
 		private int? _update_id;
 		private DateTime? _update_date;
+        private string _setcolor;
 		/// <summary>
 		/// 
 		/// </summary>
@@ -82,6 +83,12 @@ namespace XHD.Model
 			set{ _update_date=value;}
 			get{return _update_date;}
 		}
+        public string setcolor
+        {
+            set { _setcolor = value; }
+            get { return _setcolor; }
+        }
+       
 		#endregion Model
 
 	}

@@ -124,6 +124,15 @@ namespace XHD.BLL
         {
             return dal.GetList(strWhere);
         }
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetPageList(int pi ,int ps)
+        {
+            return dal.GetPageList(pi,ps);
+        }
+
         /// <summary>
         /// 获得前几行数据
         /// </summary>

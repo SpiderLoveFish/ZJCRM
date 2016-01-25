@@ -44,7 +44,12 @@
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                     //{ display: 'pid', name: 'parentid', width: 50 },
                     { display: '参数名', name: 'params_name' },
-                    { display: '排序', name: 'params_order', width: 50 }
+                    { display: '排序', name: 'params_order', width: 50 },
+                       {
+                           display: '颜色', name: 'setcolor', width: 50, align: 'right', render: function (item) {
+                               return "<div class='tips' style='background:#" + item.setcolor + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>";
+                           }
+                       }
 
                 ],
                 dataAction: 'server',
@@ -120,7 +125,7 @@
         function edit() {
             var row = $("#maingrid").ligerGetGridManager().getSelectedRow();
             if (row != null && row != undefined) {
-                f_openWindow('System/Param_SysParam_add.aspx?paramid=' + row.id, "修改参数", 430, 280);
+                f_openWindow('System/Param_SysParam_add.aspx?paramid=' + row.id, "修改参数", 530, 380);
             }
             else {
                 $.ligerDialog.warn('请选择参数！');
@@ -129,7 +134,7 @@
         function add() {
             var notes = $("#tree1").ligerGetTreeManager().getSelected();
             if (notes != null && notes != undefined) {
-                f_openWindow('System/Param_SysParam_add.aspx?parentid=' + notes.data.id, "新增参数", 430, 280);
+                f_openWindow('System/Param_SysParam_add.aspx?parentid=' + notes.data.id, "新增参数", 530, 380);
             }
             else {
                 $.ligerDialog.warn('请选择参数类别！');

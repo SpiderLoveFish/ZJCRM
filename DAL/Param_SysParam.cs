@@ -45,9 +45,9 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into Param_SysParam(");
-			strSql.Append("parentid,params_name,params_order,Create_id,Create_date,Update_id,Update_date)");
+            strSql.Append("parentid,params_name,params_order,Create_id,Create_date,Update_id,Update_date,setcolor)");
 			strSql.Append(" values (");
-			strSql.Append("@parentid,@params_name,@params_order,@Create_id,@Create_date,@Update_id,@Update_date)");
+            strSql.Append("@parentid,@params_name,@params_order,@Create_id,@Create_date,@Update_id,@Update_date,@setcolor)");
 			strSql.Append(";select @@IDENTITY");
 			SqlParameter[] parameters = {
 					new SqlParameter("@parentid", SqlDbType.Int,4),
@@ -56,7 +56,9 @@ namespace XHD.DAL
 					new SqlParameter("@Create_id", SqlDbType.Int,4),
 					new SqlParameter("@Create_date", SqlDbType.DateTime),
 					new SqlParameter("@Update_id", SqlDbType.Int,4),
-					new SqlParameter("@Update_date", SqlDbType.DateTime)};
+					new SqlParameter("@Update_date", SqlDbType.DateTime),
+                                        	new SqlParameter("@setcolor", SqlDbType.VarChar,50)
+                                        };
 			parameters[0].Value = model.parentid;
 			parameters[1].Value = model.params_name;
 			parameters[2].Value = model.params_order;
@@ -64,6 +66,7 @@ namespace XHD.DAL
 			parameters[4].Value = model.Create_date;
 			parameters[5].Value = model.Update_id;
 			parameters[6].Value = model.Update_date;
+            parameters[7].Value = model.setcolor;
 
 			object obj = DbHelperSQL.GetSingle(strSql.ToString(),parameters);
 			if (obj == null)
@@ -88,6 +91,7 @@ namespace XHD.DAL
 			strSql.Append("Create_id=@Create_id,");
 			strSql.Append("Create_date=@Create_date,");
 			strSql.Append("Update_id=@Update_id,");
+            strSql.Append("setcolor=@setcolor,");
 			strSql.Append("Update_date=@Update_date");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
@@ -97,6 +101,7 @@ namespace XHD.DAL
 					new SqlParameter("@Create_id", SqlDbType.Int,4),
 					new SqlParameter("@Create_date", SqlDbType.DateTime),
 					new SqlParameter("@Update_id", SqlDbType.Int,4),
+                    new SqlParameter("@setcolor", SqlDbType.VarChar,50),
 					new SqlParameter("@Update_date", SqlDbType.DateTime),
 					new SqlParameter("@id", SqlDbType.Int,4)};
 			parameters[0].Value = model.parentid;
@@ -105,8 +110,9 @@ namespace XHD.DAL
 			parameters[3].Value = model.Create_id;
 			parameters[4].Value = model.Create_date;
 			parameters[5].Value = model.Update_id;
-			parameters[6].Value = model.Update_date;
-			parameters[7].Value = model.id;
+            parameters[6].Value = model.setcolor;
+			parameters[7].Value = model.Update_date;
+			parameters[8].Value = model.id;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -190,7 +196,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 id,parentid,params_name,params_order,Create_id,Create_date,Update_id,Update_date from Param_SysParam ");
+            strSql.Append("select  top 1 id,parentid,params_name,params_order,Create_id,Create_date,Update_id,Update_date,setcolor from Param_SysParam ");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)
@@ -233,6 +239,10 @@ namespace XHD.DAL
 				{
 					model.Update_date=DateTime.Parse(ds.Tables[0].Rows[0]["Update_date"].ToString());
 				}
+                if (ds.Tables[0].Rows[0]["setcolor"] != null && ds.Tables[0].Rows[0]["setcolor"].ToString() != "")
+                {
+                    model.setcolor =  ds.Tables[0].Rows[0]["setcolor"].ToString();
+                }
 				return model;
 			}
 			else
@@ -247,7 +257,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select id,parentid,params_name,params_order,Create_id,Create_date,Update_id,Update_date ");
+            strSql.Append("select id,parentid,params_name,params_order,Create_id,Create_date,Update_id,Update_date,setcolor ");
 			strSql.Append(" FROM Param_SysParam ");
 			if(strWhere.Trim()!="")
 			{
@@ -267,7 +277,7 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" id,parentid,params_name,params_order,Create_id,Create_date,Update_id,Update_date ");
+            strSql.Append(" id,parentid,params_name,params_order,Create_id,Create_date,Update_id,Update_date,setcolor ");
 			strSql.Append(" FROM Param_SysParam ");
 			if(strWhere.Trim()!="")
 			{

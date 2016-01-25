@@ -55,10 +55,10 @@ namespace XHD.CRM.webserver
          
         }
         [WebMethod]
-        public void GetCustomer()
+        public void GetCustomer(string where)
         {
             BLL.CRM_Customer cus = new BLL.CRM_Customer();
-            DataSet ds = cus.GetList(" 1=1 ");
+            DataSet ds = cus.GetList("id="+where);
             string returnstr = "{}";
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -69,6 +69,24 @@ namespace XHD.CRM.webserver
             Context.Response.Write("{\"Customer\":" + returnstr + "}");
             Context.Response.End();  
         }
+
+
+        [WebMethod]
+        public void GetCustomer(int pageIndex, int pageSize)
+        {
+            BLL.CRM_Customer cus = new BLL.CRM_Customer();
+            DataSet ds = cus.GetPageList(pageIndex, pageSize);
+            string returnstr = "{}";
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                returnstr = Common.DataToJson.GetJson(ds);
+            }
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write("{\"Customer\":" + returnstr + "}");
+            Context.Response.End();
+        }
+
 
         [WebMethod]
         public void GetPoduct_Category()

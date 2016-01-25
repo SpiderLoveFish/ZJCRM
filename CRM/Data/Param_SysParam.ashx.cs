@@ -103,7 +103,8 @@ namespace XHD.CRM.Data
             {
                 model.params_name = PageValidate.InputText(request["T_param_name"], 255);
                 model.params_order = int.Parse(request["T_param_order"]);
-
+                string color= PageValidate.InputText(request["T_color"], 255);
+                model.setcolor = color.Replace("#", ""); 
                 string id = request["paramid"];
 
                 if (!string.IsNullOrEmpty(id) && id != "null")
