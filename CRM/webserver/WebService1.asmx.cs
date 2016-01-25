@@ -42,7 +42,7 @@ namespace XHD.CRM.webserver
                                     string uid = ds.Tables[0].Rows[0]["uid"].ToString();
                                     string name = ds.Tables[0].Rows[0]["name"].ToString();
                                     returnstr = "{\"uid\":\"" + uid + "\",\"account\":\"" + userid + "\",\"password\":\"" + password + "\",\"name\":\"" + name + "\"}";
-                                    log.Add_log(int.Parse(userid), name, ip, "", "", 0, "手机端登录", "", "");
+                                    log.Add_log(int.Parse(userid), name, ip, "手机端登录", "手机端登录", 0, "手机端登录", "", "");
 
                                 }
                             }

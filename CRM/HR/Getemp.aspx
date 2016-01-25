@@ -49,8 +49,12 @@
         }
 
         function toolbar() {            
-                var items = [];                
+            var items = [];
+          
+            if (getparastr('isvew') != "Y")  
+                {
                 items.push({ type: 'button', text: '新增员工', icon: '../images/icon/11.png', disable: true, click: function () { addemp() } });
+                }
                 items.push({ type: 'textbox', id: 'stext', text: '姓名：' });
                 items.push({ type: 'button', text: '搜索', icon: '../images/search.gif', disable: true, click: function () { doserch() } });
 
