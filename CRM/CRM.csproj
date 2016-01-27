@@ -91,6 +91,11 @@
     <Content Include="CRM\Building\Building_Add.aspx" />
     <Content Include="CRM\Building\Building_map.aspx" />
     <Content Include="CRM\Building\map_mark.aspx" />
+    <Content Include="CRM\Cggl\Cg_order.aspx" />
+    <Content Include="CRM\Cggl\GysGl.aspx" />
+    <Content Include="CRM\Cggl\GysGl_Add.aspx" />
+    <Content Include="CRM\Cggl\GysGl_map.aspx" />
+    <Content Include="CRM\Cggl\map_mark.aspx" />
     <Content Include="CRM\ConsExam\CEStage.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category_add.aspx" />
@@ -103,6 +108,8 @@
     <Content Include="CRM\ConsExam\CEDetail_View.aspx" />
     <Content Include="CRM\ConsExam\CERep_Schedule.aspx" />
     <Content Include="CRM\ConsExam\CEStage_ViewDetail.aspx" />
+    <Content Include="CRM\ConsExam\SelectMaterials_add.aspx" />
+    <Content Include="CRM\ConsExam\SelectMaterials.aspx" />
     <Content Include="CRM\ConsExam\kjl.aspx" />
     <Content Include="CRM\ConsExam\SGJD_List_View.aspx" />
     <Content Include="CRM\ConsExam\SGJD_LIST.aspx" />
@@ -154,6 +161,8 @@
     <Content Include="CRM\Jifen\Jifen_kh_add.aspx" />
     <Content Include="CRM\Jifen\Jifen_yg.aspx" />
     <Content Include="CRM\Jifen\Jifen_yg_add.aspx" />
+    <Content Include="CRM\KcGl\Jcb_Ckgl.aspx" />
+    <Content Include="CRM\KcGl\Jcb_Ckgl_Add.aspx" />
     <Content Include="CRM\Product\ProductPrintStyle.aspx" />
     <Content Include="CRM\Product\Product_QrCode_Print_Style2.aspx" />
     <Content Include="CRM\Product\Product_QrCode_Print_Model.aspx" />
@@ -3854,6 +3863,20 @@
     <Compile Include="CRM\Building\Building_Add.aspx.designer.cs">
       <DependentUpon>Building_Add.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CRM\Cggl\GysGl.aspx.cs">
+      <DependentUpon>GysGl.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CRM\Cggl\GysGl.aspx.designer.cs">
+      <DependentUpon>GysGl.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\Cggl\GysGl_Add.aspx.cs">
+      <DependentUpon>GysGl_Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CRM\Cggl\GysGl_Add.aspx.designer.cs">
+      <DependentUpon>GysGl_Add.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CRM\DataShare\Favorites_View.aspx.cs">
       <DependentUpon>Favorites_View.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3923,6 +3946,20 @@
     </Compile>
     <Compile Include="CRM\Jifen\Jifen_yg_add.aspx.designer.cs">
       <DependentUpon>Jifen_yg_add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\KcGl\Jcb_Ckgl.aspx.cs">
+      <DependentUpon>Jcb_Ckgl.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CRM\KcGl\Jcb_Ckgl.aspx.designer.cs">
+      <DependentUpon>Jcb_Ckgl.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\KcGl\Jcb_Ckgl_Add.aspx.cs">
+      <DependentUpon>Jcb_Ckgl_Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CRM\KcGl\Jcb_Ckgl_Add.aspx.designer.cs">
+      <DependentUpon>Jcb_Ckgl_Add.aspx</DependentUpon>
     </Compile>
     <Compile Include="CRM\Product\ProductPrintStyle.aspx.cs">
       <DependentUpon>ProductPrintStyle.aspx</DependentUpon>

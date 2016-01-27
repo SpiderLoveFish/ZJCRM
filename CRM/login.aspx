@@ -156,62 +156,52 @@
 <body>
     <div id="wrap">
         <div id="Login">
-            <div class="box">
+          <div class="box">
                 <p class="a01">
                     <img src="images/login01.jpg" alt="六家居装企管理系统" /></p>
-                <dl>
+            <dl>
                     <dt>
                         <table width="200" border="0">
                             <tr>
                                 <td> <div style="width: 200px; float: left;">
         
-                    <img id="logo" alt="" src="Images/logo/test.png" style="height: 42px; margin-left: 5px; margin-top: 2px;" />
+                    <img id="logo" alt="" style="height: 42px; margin-left: 5px; margin-top: 2px;" />
                     <%--</a>--%>
                 </div></td>
                             </tr>
                         </table>
                     </dt>
 
-                </dl>
-                <table width="325" summary="登录页面" class="a02">
-                    <tr>
-                        <th width="56">用户名：</th>
-                        <td colspan="3">
-                            <input id="T_uid" name="T_uid" type="text" class="a03" /></td>
-                    </tr>
-                    <tr>
-                        <th>密  &nbsp;码：</th>
-                        <td colspan="3">
-                            <input id="T_pwd" name="T_pwd" type="password" class="a04" /></td>
-                    </tr>
-                    <tr>
-                        <th>验证码：</th>
-                        <td colspan="3">
-                            <input id="T_validate" name="T_validte" type="text" class="a05" />
-                            <img src="ValidateCode.aspx" alt="看不清楚，换一张" name="validate" width="75" height="25" id="validate" title="看不清楚，换一张" onclick="this.src=this.src+'?'" /></td>
-                    </tr>
-                    <tr>
-                        <th style="padding-bottom: 0;">&nbsp;</th>
-                        <td width="27" style="padding-bottom: 0;">
-                            <input name="T_remember_user" type="checkbox" value="" /></td>
-                        <td width="226" colspan="2" style="padding-bottom: 0;">记住用户名</td>
-                    </tr>
-                    <tr>
-                        <th style="padding-top: 0; padding-bottom: 15px;">&nbsp;</th>
-                        <td style="padding-top: 0; padding-bottom: 15px;">
-                            <input name="T_remember_user_pwd" type="checkbox" value="" /></td>
-                        <td colspan="2" style="padding-top: 0; padding-bottom: 15px;">记住用户名和密码</td>
-                    </tr>
-                    <tr>
-                        <th>&nbsp;</th>
-                        <td></td>
-                        <td valign="middle">
-                            <input type="image" src="images/login06.jpg" name="login" id="login" /></td>
-                        <td valign="middle"><a href="#">
-                            <img src="Images/bt_blue_76X24.png" width="76" height="24" onclick="qq_login()" /></a></td>
-                    </tr>
-                </table>
-                </form>
+              </dl>
+              <table width="325" summary="登录页面" class="a02">
+                  <tr>
+                      <th width="53">用户名：</th>
+                      <td colspan="3">
+                          <input id="T_uid" name="T_uid" type="text" class="a03" /></td>
+                  </tr>
+                  <tr>
+                      <th>密  &nbsp;码：</th>
+                      <td colspan="3">
+                          <input id="T_pwd" name="T_pwd" type="password" class="a04" /></td>
+                  </tr>
+                  <tr>
+                      <th>验证码：</th>
+                      <td colspan="3">
+                          <input id="T_validate" name="T_validte" type="text" class="a05" />
+                          <img src="ValidateCode.aspx" alt="看不清楚，换一张" name="validate" width="75" height="25" id="validate" title="看不清楚，换一张" onclick="this.src=this.src+'?'" /></td>
+                  </tr>
+                  <tr>
+                    <th colspan="2" align="left">&nbsp;</th>
+                    <td valign="middle">&nbsp;</td>
+                    <td valign="middle">&nbsp;</td>
+                  </tr>
+                  <tr>
+                      <th colspan="2" align="right"><input type="image" src="images/login06.png" name="login" id="login" /></th>
+                      <td width="88" align="right" valign="middle"><a href="#"><img src="Images/login/qq.png" onclick="qq_login()" /></a></td>
+                      <td width="101" valign="middle"><a href="http://www.kujiale.com/v/xczs/login" target="_blank"><img src="Images/kjl.png" /></a></td>
+                  </tr>
+              </table>
+              </form>
             </div>
             <!-- #main-->
         </div>

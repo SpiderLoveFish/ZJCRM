@@ -16,10 +16,12 @@ img { vertical-align: middle; }
 .filter-out { background: transparent url(../Images/Icon/1.png) no-repeat 2px 2px; width: 20px; }
 .filter-mail { background: transparent url(../Images/Icon/47.png) no-repeat 2px 2px; width: 30px; padding-top: -5px; text-align: right; }
 .filter-serch { background: transparent url(../images/search.gif) no-repeat 2px 2px; width: 20px; }
-.filter-theme { background: transparent url(../Images/Icon/68.png) no-repeat 2px 2px; width: 20px; }
+.filter-theme { background: transparent url(../Images/Icon/13.png) no-repeat 2px 2px; width: 20px; }
 .filter-person { background: transparent url(../Images/Icon/37.png) no-repeat 2px 2px; width: 20px; }
 .filter-home { background: transparent url(../Images/Icon/61.png) no-repeat 2px 2px; width: 20px; }
 .filter-help { background: transparent url(../Images/Icon/51.png) no-repeat 2px 2px; width: 20px; }
+.filter-kjl { background: transparent url(../Images/Icon/K.png) no-repeat 2px 2px; width: 20px; }
+
 
 .level1 { background: transparent url(../images/level1.gif) no-repeat 2px 2px; width: 20px; }
 .level2 { background: transparent url(../images/level2.gif) no-repeat 2px 2px; width: 20px; }

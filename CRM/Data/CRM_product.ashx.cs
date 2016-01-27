@@ -35,6 +35,14 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "save")
             {
+                string code = PageValidate.InputText(request["C_code"], 255);
+                DataSet codeds = ccp.GetList(" C_code='" + code + "' and product_id!=" + PageValidate.InputText(request["pid"], 50));
+                if (codeds.Tables[0].Rows.Count > 0)
+                {
+                    context.Response.Write("false:code");
+                    return;
+                }
+                
                 model.category_id = int.Parse(request["T_product_category_val"]);
                 model.category_name = PageValidate.InputText(request["T_product_category"], 255);
                 model.product_name = PageValidate.InputText(request["T_product_name"], 255);
@@ -123,8 +131,20 @@ namespace XHD.CRM.Data
                 }
                 else
                 {
+                   
                     model.isDelete = 0;
                     ccp.Add(model);
+                }
+            }
+
+            if (request["Action"] == "IsExistCode")
+            {
+                string code = PageValidate.InputText(request["C_code"], 255);
+                DataSet codeds = ccp.GetList(" C_code='" + code + "' and product_id!=" + PageValidate.InputText(request["pid"], 50));
+                if (codeds.Tables[0].Rows.Count > 0)
+                {
+                    context.Response.Write("false:code");
+                   
                 }
             }
 

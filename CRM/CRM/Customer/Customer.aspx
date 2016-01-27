@@ -45,6 +45,18 @@
                         { return (page - 1) * pagesize + rowindex + 1; }
                     },
                     {
+                        display: '效果图', width: 40, render: function (item) {
+                            var html;
+                            if (item.DesCripe != ""){
+                                html = "<a href='" + item.DesCripe + "' target='_blank'>";
+                            html += "查看";
+                            html += "</a>";
+                        }
+                        else    html="暂无";
+                            return html;
+                        }
+                    },
+                    {
                         display: '客户姓名', name: 'Customer', width: 80, align: 'left', render: function (item) {
                             var html = "<a href='javascript:void(0)' onclick=view(1," + item.id + ")>";
                             if (item.Customer)

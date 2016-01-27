@@ -430,11 +430,11 @@
 
                 </td>
                 <td colspan="3">
-                       <div style="float: left; width: 455px;">
-                    <input type="text" id="T_address" name="T_address" ltype="text" ligerui="{width:450}" />
+                       <div style="float: left; width: 435px;">
+                    <input type="text" id="T_address" name="T_address" ltype="text" ligerui="{width:430}" />
                      </div> 
                 <div style="float: left; width: 40px;">
-                        <input type="button" value="地图" style="width: 40px;"  onclick="map()"/>
+                        <input type="button" value="地图标注" style='width: 55px; height: 24px'  onclick="map()"/>
                     </div>
                     <input type="hidden" id="T_xy" name="T_xy" />
             </td>
@@ -592,7 +592,7 @@
             </tr>
             <tr>
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">客户描述：</div>
+                    <div style="width: 80px; text-align: right; float: right">效果图网址：</div>
                 </td>
                 <td colspan="3">
                     <input id="T_descript" name="T_descript" type="text" ltype="text" ligerui="{width:490}" /></td>

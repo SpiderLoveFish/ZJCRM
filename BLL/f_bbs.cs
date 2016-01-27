@@ -20,11 +20,6 @@ namespace XHD.BLL
               return dal.Getf_section();
           }
 
-<<<<<<< HEAD
-         
-=======
-           
->>>>>>> origin/master
-
+ 
     }
 }

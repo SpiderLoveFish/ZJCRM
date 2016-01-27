@@ -148,30 +148,7 @@
             //else if (hour < 22) { $("#labelwelcome").html("晚上好！") }
             //else { $("#labelwelcome").html("夜深了，注意休息！") }
         }
-        function softreg() {
-            $.ajax({
-                type: 'post', dataType: 'text',
-                url: 'Data/sys_info.ashx',
-                data: [{ name: 'Action', value: 'reg' }],
-                success: function (result) {
-                    if (result != "true") {
-                        document.title = "试用版--" + document.title;
-                        var dialog = $.ligerDialog.open({
-                            content: "<font color=red>您使用的版本暂未注册，请尽快注册使用<br>请将以下系统特征码提供给本系统技术支持人员注册<br>系统特征码：" + result + "</font>", width: 500, height: 200, title: "注册信息", buttons: [
-                                 {
-                                     text: '继续试用', onclick: function (item, dialog) {
-                                         dialog.close();
-                                     }
-                                 }
-                            ], isResize: true, timeParmName: 'a'
-                        });
-                    }
-                },
-                error: function (ex) {
-                    top.$.ligerDialog.error('获取注册信息出错，请与本系统技术支持人员联系！');
-                }
-            });
-        }
+       
         function f_heightChanged(options) {
             if (tab)
                 tab.addHeight(options.diff);
@@ -242,7 +219,7 @@
                     { id: 'filter-help', title: '系统帮助', bodyStyle: 'filter-help', handler: function () { f_addTab('help', '系统帮助', 'crm/help/help_share.aspx') } },
                     { id: 'filter-sett', title: '个人设置', bodyStyle: 'filter-person', handler: function () { personalinfoupdate() } },
                     { id: 'filter-sett', title: '修改密码', bodyStyle: 'filter-sett', handler: function () { changepwd() } },
-                    //{ id: 'filter-help', title: '版权信息', bodyStyle: 'filter-help', handler: function () { show_copyright() } },
+                    { id: 'filter-kjl', title: '酷家乐', bodyStyle: 'filter-kjl', handler: function () { show_kjl() } },
                     //{ id: 'filter-theme', title: '系统信息', bodyStyle: 'filter-theme', handler: function () { show_welcome(1) } },
                     { id: 'filter-out', title: '退出系统', bodyStyle: 'filter-out', handler: function () { logout() } }
                 ]
@@ -319,7 +296,7 @@
         function show_welcome(item) {
             if (getCookie("xhd_crm_show_wellcome") == 1 || item == 1) {
                 var dialog = $.ligerDialog.open({
-                    url: "welcome.htm", width: 800, height: 500, title: "欢迎使用小黄豆CRM系统", buttons: [
+                    url: "welcome.htm", width: 800, height: 500, title: "欢迎使用六家居装企ERP系统", buttons: [
                             {
                                 text: '关闭', onclick: function (item, dialog) {
                                     dialog.close();
@@ -340,6 +317,9 @@
                         }
                 ], isResize: true, timeParmName: 'a'
             });
+        }
+        function show_kjl() {
+            window.open("http://www.kujiale.com/v/xczs/login");
         }
         function personalinfoupdate() {
             var dialog = $.ligerDialog.open({
@@ -432,9 +412,9 @@
         <div style="background: #d2e2f2; height: 74px; overflow: hidden;">
             <div style="height: 47px; margin: 0; padding: 0;">
                 <div style="width: 278px; float: left;">
-                    <%--<a href="http://www.xhdcrm.com" target="_blank">--%>
-                    <img id="logo" alt="" src="Images/logo/xhd.png" style="height: 42px; margin-left: 5px; margin-top: 2px;" />
-                    <%--</a>--%>
+                  
+                    <img id="logo" alt="" src="Images/logo/1.png" style="height: 42px; margin-left: 5px; margin-top: 2px;" />
+         
                 </div>
 
                 <div style="float: right; width: 220px; height: 47px; margin-right: 65px;">
@@ -461,7 +441,7 @@
             </div>
             <%--<div style="clear: both"></div>--%>
             <div style="margin: 0; padding: 0; background: url(images/headbg.gif); height: 28px; overflow: hidden; border-bottom: 1px solid #8db2e3; width: 100%;">
-                <div id="toolbar" style="height: 27px; width: 850px; float: left; margin-top: 1px;"></div>
+                <div id="toolbar" style="height: 27px; width: 950px; float: left; margin-top: 1px;"></div>
                 <div id="filters" style="height: 27px; width: 200px; float: right; margin-right: 70px;"></div>
             </div>
         </div>
@@ -490,8 +470,7 @@
                     </div>--%>
             </div>
             <div position="bottom">
-                <%--Copyright ? 2013-2020 xhdcrm.com All Rights Reserved
-                <a href="http://www.xhdcrm.com" target="_blank">小黄豆软件</a>--%>
+
                 六家居装修企业客户管理系统&nbsp;&nbsp;技术支持&nbsp;QQ:4013473
             </div>
         </div>

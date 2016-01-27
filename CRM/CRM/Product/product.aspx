@@ -280,14 +280,22 @@
         function f_save(item, dialog) {
             var issave = dialog.frame.f_save();
             if (issave) {
-                dialog.close();
+               
                 top.$.ligerDialog.waitting('数据保存中,请稍候...');
                 $.ajax({
                     url: "../../data/Crm_product.ashx", type: "POST",
                     data: issave,
                     success: function (responseText) {
-                        top.$.ligerDialog.closeWaitting();
-                        f_load();
+                        if (responseText == "false:code")
+                        {
+                            top.$.ligerDialog.error("物料代码重复，请重新填写！");
+                            top.$.ligerDialog.closeWaitting();
+                        }
+                        else {
+                            dialog.close();
+                            top.$.ligerDialog.closeWaitting();
+                            f_load();
+                        }
                     },
                     error: function () {
                         top.$.ligerDialog.closeWaitting();

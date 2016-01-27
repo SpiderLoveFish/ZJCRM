@@ -10,7 +10,7 @@
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
 
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+     <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
@@ -82,13 +82,22 @@
             }
         });
 
+        function f_getcode()
+        {
+            return $("#C_code").val();
+        }
+
         function f_save() {
-            if ($(form1).valid()) {
-                var arr = [];
-                arr.push(UE.getEditor('editor').getContent());
-                var sendtxt = "&Action=save&pid=" + getparastr("pid") + "&T_content=" + escape(arr);
-                return $("form :input").fieldSerialize() + sendtxt;
-            }
+            
+           
+                        if ($(form1).valid()) {
+                            var arr = [];
+                            arr.push(UE.getEditor('editor').getContent());
+                            var sendtxt = "&Action=save&pid=" + getparastr("pid") + "&T_content=" + escape(arr);
+                            return $("form :input").fieldSerialize() + sendtxt;
+                        }
+             
+          
         }
 
         function loadForm(oaid) {

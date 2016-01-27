@@ -743,18 +743,6 @@ namespace XHD.DAL
             return DbHelperSQL.Query(strSql.ToString());
         }
 
-        public DataSet GetPageList(int pageIndex, int pageSize)
-        {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append(" SELECT * FROM ( SELECT");
-            strSql.Append(" id,");
-            strSql.Append(" ROW_NUMBER() over (order by id) AS number, Customer,address,tel,CustomerType");
-            strSql.Append(" FROM dbo.CRM_Customer)AA");
-            strSql.Append(" WHERE  number  between (" + pageIndex + "-1)*" + pageSize + " and" + pageIndex + "*" + pageSize + ")");
-            
-            return DbHelperSQL.Query(strSql.ToString());
-        }
-
         /// <summary>
         /// 获得前几行数据
         /// </summary>
@@ -784,7 +772,7 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces,City,Towns,Community,BNo,RNo,Gender,CustomerType,CustomerLevel,CustomerSource,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_date,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy FROM CRM_Customer ");
+            strSql.Append(" top " + PageSize + " id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces,City,Towns,Community,BNo,RNo,Gender,CustomerType,CustomerLevel,CustomerSource,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_date,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,DesCripe FROM CRM_Customer ");
             strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_Customer ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(id) FROM CRM_Customer ");
