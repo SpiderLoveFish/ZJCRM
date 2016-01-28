@@ -280,6 +280,17 @@ namespace XHD.CRM.Data
 
                 Caches.CRM_Customer = null;
             }
+            if (request["Action"] == "IsExistphone")
+            {
+                string tel = PageValidate.InputText(request["tel"], 50);
+                DataSet codeds = customer.GetList(" tel='" + tel + "' and id!=" + PageValidate.InputText(request["cid"], 50) + " ");
+                if (codeds.Tables[0].Rows.Count > 0)
+                {
+                    context.Response.Write("false:tel");
+
+                }
+            }
+
             if (request["Action"] == "grid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);

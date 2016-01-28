@@ -136,7 +136,7 @@
                         initValue: obj.Community_id,
                         url: "../../data/Param_City.ashx?Action=getBuilding&rnd=" + Math.random(),
                         onSelected: function (newvalue, newtext) {
-                            debugger
+                           // debugger
                             if (!newvalue) {
                                 newvalue = -1;
                                 $("#T_address").val("");//T_BNo T_RNo
@@ -341,7 +341,21 @@
                 dialog.close();
             }
         }
-
+        function getVal(id) {
+            $.ajax({
+                url: "../../data/CRM_Customer.ashx", type: "POST",
+                data: { Action: "IsExistphone", cid: getparastr("cid"), tel: document.getElementById(id).value, rnd: Math.random() },
+                success: function (responseText) {
+                    if (responseText == "false:tel") {
+                        top.$.ligerDialog.alert(document.getElementById(id).value+'号码已经存在！');
+                    }
+                    },
+                    error: function () {
+                        
+                       // top.$.ligerDialog.error('操作失败！');
+                    }
+                });
+        }
     </script>
 </head>
 <body>
@@ -367,7 +381,7 @@
                     <div style="width: 80px; text-align: right; float: right">客户电话：</div>
                 </td>
                 <td>
-                    <input id="T_company_tel" name="T_company_tel" type="text" ltype="text" ligerui="{width:196}" validate="{required:true}" /></td>
+                    <input id="T_company_tel" name="T_company_tel" type="text" ltype="text" ligerui="{width:196}" validate="{required:true}" onblur="getVal(this.id)" /></td>
             </tr>
             <tr>
 

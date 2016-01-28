@@ -128,9 +128,9 @@ namespace XHD.BLL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public DataSet GetPageList(int pi ,int ps)
+        public DataSet GetPageList(int pi, int ps)
         {
-            return dal.GetPageList(pi,ps);
+            return dal.GetPageList(pi, ps);
         }
 
         /// <summary>

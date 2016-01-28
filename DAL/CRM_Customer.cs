@@ -743,6 +743,19 @@ namespace XHD.DAL
             return DbHelperSQL.Query(strSql.ToString());
         }
 
+        public DataSet GetPageList(int pageIndex, int pageSize)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append(" SELECT * FROM ( SELECT");
+            strSql.Append(" id,");
+            strSql.Append(" ROW_NUMBER() over (order by id) AS number, Customer,address,tel,CustomerType");
+            strSql.Append(" FROM dbo.CRM_Customer)AA");
+            strSql.Append(" WHERE  number  between (" + pageIndex + "-1)*" + pageSize + " and" + pageIndex + "*" + pageSize + ")");
+
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+
         /// <summary>
         /// 获得前几行数据
         /// </summary>

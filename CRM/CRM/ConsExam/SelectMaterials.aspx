@@ -236,8 +236,14 @@
             }
         }
         function add() {
-            f_openWindow("crm/ConsExam/SelectMaterials_add.aspx", "新增客户", 720, 500);
-        }
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+            f_openWindow("crm/ConsExam/SelectMaterials_add.aspx?cid=" + row.id, "新增客户", 720, 500);
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
+            }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
