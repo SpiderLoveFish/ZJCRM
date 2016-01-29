@@ -52,7 +52,7 @@ namespace XHD.CRM.Data
               string id = PageValidate.InputText(request["id"], 50);
               if (!string.IsNullOrEmpty(id) && id != "null")
               {
-                  if(ccp.UpdateZT_SUM(0, AmountSum, emp_id, CustomerID,int.Parse(id)))
+                  if(ccp.UpdateSUM( AmountSum, emp_id, CustomerID,int.Parse(id)))
                       context.Response.Write("true");
                   else context.Response.Write("flase");
               }

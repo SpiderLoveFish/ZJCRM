@@ -191,12 +191,12 @@
        
         //新增打开页面
         function add() {
-            f_openWindow("../../CRM/ConsExam/getemp.aspx?style=ALL", "选择产品", 650, 400);
+            f_openWindow("../../CRM/ConsExam/getemp.aspx?style=ALL&cid=" + getparastr("cid"), "选择产品", 650, 400);
 
 
         }
         function edit() {
-            f_openWindow("../../CRM/ConsExam/getemp.aspx?style=ALL&customid=" + getparastr("cid"), "选择产品", 650, 400);
+            f_openWindow("../../CRM/ConsExam/getemp.aspx?style=ALL&cid=" + getparastr("cid"), "选择产品", 650, 400);
 
 
         }
@@ -251,6 +251,11 @@
             //    });
             //}, 200);
         }
+        function f_close(item, dialog)
+        {
+            f_load();
+            dialog.close();
+        }
         var activeDialog = null;
         function f_openWindow(url, title, width, height) {
             var dialogOptions = {
@@ -263,7 +268,7 @@
                         },
                         {
                             text: '关闭', onclick: function (item, dialog) {
-                                dialog.close();
+                                f_close(item, dialog);
                             }
                         }
                 ], isResize: true, timeParmName: 'a'

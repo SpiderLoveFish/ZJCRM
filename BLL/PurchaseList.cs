@@ -58,11 +58,14 @@ namespace XHD.BLL
 			return dal.Update(model);
 		}
 
-        public bool UpdateZT_SUM(int status, decimal sum, int empid, int cid, int id)
+        public bool UpdateZT(int status, int empid, int cid, int id)
         {
-            return dal.UpdateZT_SUM(status,sum,empid,cid,id);
+            return dal.UpdateZT(status,empid,cid,id);
         }
-
+        public bool UpdateSUM(decimal sum, int empid, int cid, int id)
+        {
+            return dal.UpdateSUM(sum, empid, cid, id);
+        }
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>

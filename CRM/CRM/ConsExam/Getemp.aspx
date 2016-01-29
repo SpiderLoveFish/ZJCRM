@@ -8,18 +8,20 @@
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/Toolbar.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
-
+    <link href="../../CSS/styles.css" rel="Stylesheet" type="text/css" />
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-     
+       <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+   <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+   
       <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
      <script src="../../lib/jquery.form.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
-    
+   
     <script type="text/javascript">
        
         $(function () {
@@ -52,11 +54,36 @@
                 width: '100%',
                 height: '100%',
                 //title: "员工列表",
-                heightDiff: 0
+                heightDiff: 0,
+                
+                onContextmenu: function (parm, e) {
+                actionCustomerID = parm.data.id;
+                menu.show({ top: e.pageY, left: e.pageX });
+                return false;
+            }
             });
 
             toolbar(style);
+            $("#lbtip").css("display", 'none');//提示先隐藏
         });
+
+
+    //监听键盘事件
+        document.onkeyup=function(event){
+            var e=event||window.event;
+            var keyCode=e.keyCode||e.which;
+            switch(keyCode){
+                   
+                case 113://F2快捷键
+                    add();
+                    break;      
+                case 13://回车
+                    doserch();
+                    break;
+            }
+
+        }
+
 
         function f_select() {
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -67,13 +94,32 @@
         }
         function f_sucess()
         {
-             alert("添加成功,请继续操作！");
+            $.ligerDialog.closeWaitting();
            
-           f_load();
+            $("#lbtip").css("display", 'inline');
+            $("#lbtip").addClass("green");
+            $("#lbtip").val('添加成功！！！');
+            setTimeout(function () {
+                $("#lbtip").css("display", 'none');
+                
+                // $.ligerDialog.error("添加失败,请检查后继续操作！");
+                f_load();
+            }, 1000);
+           
         }
         function f_error() {
-           alert("添加失败,请检查后继续操作！");
+            $.ligerDialog.closeWaitting();
+            $("#lbtip").css("display", 'inline');
+            $("#lbtip").addClass("red");
+            $("#lbtip").val('添加失败,请检查后继续操作！！！');
+            setTimeout(function () {
+                $("#lbtip").css("display", 'none');
+
+            // $.ligerDialog.error("添加失败,请检查后继续操作！");
             f_load();
+            }, 1000);
+           
+        
         }
         function initsearchfilder(style)
         {
@@ -91,7 +137,32 @@
                 } 
             });
         }
+        function add() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var rows = manager.getCheckedRows();
+            var prouductid = '';
+            for (var item = 0; item < rows.length; item++)
+                prouductid += ',' + rows[item].product_id;
+            if (prouductid == '')
+            {
+                $.ligerDialog.error("请至少选择一个有效材料数据！");
+                return;
+            }
+            
+                        $.ajax({
+                            type: 'post',
+                            url: "../../data/PurchaseList.ashx?Action=savelist&cid=" + getparastr("cid") + "&pid=" + prouductid + '&rdm=' + Math.random(),
+                            success: function (data) {
+                              
+                              f_sucess();
 
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                dialog.frame.f_error();
+                            }
+                        });
+                    
+        }
         function toolbar(style) {
             var items = [];
 
@@ -99,7 +170,7 @@
             if (style == "ALL")
             items.push({ type: 'textbox', id: 'stextlx', text: '类型：' });
             items.push({ type: 'button', text: '搜索', icon: '../images/search.gif', disable: true, click: function () { doserch() } });
-            items.push({ type: 'lable', id: 'lbtip', text: '' });
+            items.push({ type: 'textbox', id: 'lbtip', text: '' });
             $("#toolbar").ligerToolBar({
                 items: items
 
@@ -107,10 +178,15 @@
 
             $("#stext").ligerTextBox({ width: 200 });
             if (style == "ALL")
-             initsearchfilder(style);
-
+                initsearchfilder(style);
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=150&rnd=" + Math.random(), function (data, textStatus) {
+            menu = $.ligerMenu({
+                width: 120, items: getMenuItems(data)
+            });
+            });
+          
             $("#maingrid4").ligerGetGridManager().onResize();
-
+          
         }
         //查询
         function doserch() {

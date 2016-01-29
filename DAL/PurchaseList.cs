@@ -134,13 +134,42 @@ namespace XHD.DAL
         /// <param name="cid"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool UpdateZT_SUM(int status, decimal sum, int empid, int cid, int id)
+        public bool UpdateSUM( decimal sum, int empid, int cid, int id)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update PurchaseList set ");
-            strSql.Append("IsStatus="+status+",");
+         
             strSql.Append("AmountSum="+sum+"");
             strSql.Append(" where id="+id+"");
+            strSql.Append(" and CustomerID=" + cid + "");
+            strSql.Append(" and DoPerson=" + empid + "");
+            SqlParameter[] parameters = { };
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// 更新状态和数量
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="sum"></param>
+        /// <param name="empid"></param>
+        /// <param name="cid"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool UpdateZT(int status, int empid, int cid, int id)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update PurchaseList set ");
+            strSql.Append("IsStatus=" + status + " ");
+        
+            strSql.Append(" where id=" + id + "");
             strSql.Append(" and CustomerID=" + cid + "");
             strSql.Append(" and DoPerson=" + empid + "");
             SqlParameter[] parameters = { };
@@ -165,7 +194,7 @@ namespace XHD.DAL
         {
             string strsql = " INSERT INTO dbo.PurchaseList "+
                             " ( CustomerID ,  category_id ,  product_id ,DoTime , DoPerson , IsStatus , Price , AmountSum ) "+
-                            " SELECT " + cid + ",category_id,product_id,GETDATE(),'" + emp_id + "',0,0,0 " +
+                            " SELECT " + cid + ",category_id,product_id,GETDATE(),'" + emp_id + "',0,0,1 " +
                              " FROM CRM_product WHERE product_id IN("+pid+")";
             SqlParameter[] parameters = { };
             object obj = DbHelperSQL.GetSingle(strsql, parameters);
