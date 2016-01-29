@@ -95,7 +95,7 @@
         function f_sucess()
         {
             $.ligerDialog.closeWaitting();
-           
+            f_load();
             $("#lbtip").css("display", 'inline');
             $("#lbtip").addClass("green");
             $("#lbtip").val('添加成功！！！');
@@ -103,12 +103,14 @@
                 $("#lbtip").css("display", 'none');
                 
                 // $.ligerDialog.error("添加失败,请检查后继续操作！");
-                f_load();
+              
             }, 1000);
            
         }
         function f_error() {
+
             $.ligerDialog.closeWaitting();
+            f_load();
             $("#lbtip").css("display", 'inline');
             $("#lbtip").addClass("red");
             $("#lbtip").val('添加失败,请检查后继续操作！！！');
@@ -116,7 +118,7 @@
                 $("#lbtip").css("display", 'none');
 
             // $.ligerDialog.error("添加失败,请检查后继续操作！");
-            f_load();
+           
             }, 1000);
            
         
@@ -202,9 +204,8 @@
             var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
             //alert(serchtxt);           
             var manager = $("#maingrid4").ligerGetGridManager();
-
-            manager.setURL(strurl+"&" + serchtxt);
-            manager.loadData(true);
+            manager.GetDataByURL(strurl + "&" + serchtxt);
+            //manager.loadData(true);
         }
         function f_load() {
             var manager = $("#maingrid4").ligerGetGridManager();

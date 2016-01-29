@@ -262,7 +262,7 @@
                 zindex: 9002,
                 width: width, height: height, title: title, url: url, buttons: [
                         {
-                            text: '提交', onclick: function (item, dialog) {
+                            text: '提交(F2)', onclick: function (item, dialog) {
                                 f_getry(item, dialog);
                             }
                         },
