@@ -65,7 +65,16 @@
             
           
         }
-        
+        function f_sucess()
+        {
+             alert("添加成功,请继续操作！");
+           
+           f_load();
+        }
+        function f_error() {
+           alert("添加失败,请检查后继续操作！");
+            f_load();
+        }
         function initsearchfilder(style)
         {
             $('#stextlx').ligerComboBox({
@@ -90,7 +99,7 @@
             if (style == "ALL")
             items.push({ type: 'textbox', id: 'stextlx', text: '类型：' });
             items.push({ type: 'button', text: '搜索', icon: '../images/search.gif', disable: true, click: function () { doserch() } });
-
+            items.push({ type: 'lable', id: 'lbtip', text: '' });
             $("#toolbar").ligerToolBar({
                 items: items
 
@@ -121,7 +130,11 @@
             manager.setURL(strurl+"&" + serchtxt);
             manager.loadData(true);
         }
+        function f_load() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            manager.loadData(true);
 
+        }
     </script>
 
 </head>

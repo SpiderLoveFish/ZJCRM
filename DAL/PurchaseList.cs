@@ -126,6 +126,36 @@ namespace XHD.DAL
 		}
 
         /// <summary>
+        /// 更新状态和数量
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="sum"></param>
+        /// <param name="empid"></param>
+        /// <param name="cid"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool UpdateZT_SUM(int status, decimal sum, int empid, int cid, int id)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update PurchaseList set ");
+            strSql.Append("IsStatus="+status+",");
+            strSql.Append("AmountSum="+sum+"");
+            strSql.Append(" where id="+id+"");
+            strSql.Append(" and CustomerID=" + cid + "");
+            strSql.Append(" and DoPerson=" + empid + "");
+            SqlParameter[] parameters = { };
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 多个选择插入数据
         /// </summary>
         /// <param name="cid"></param>

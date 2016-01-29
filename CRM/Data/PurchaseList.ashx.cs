@@ -42,39 +42,20 @@ namespace XHD.CRM.Data
             }
             if (request["Action"] == "save")
             {
-             
-                model.AmountSum = decimal.Parse(request["T_product_category_val"]);
-                model.CustomerID = int.Parse(request["T_product_category_val"]);
-                model.DoPerson = empname;
+
+                decimal AmountSum = decimal.Parse(request["editsum"]);
+               int CustomerID = int.Parse(request["cid"]);
+               // model.DoPerson = emp_id;
                 model.DoTime = DateTime.Now;
                 model.IsStatus = 0;
-                model.category_id = int.Parse(request["T_product_category_val"]);
-              string pid = PageValidate.InputText(request["id"], 50);
-                if (!string.IsNullOrEmpty(pid) && pid != "null")
-                {
-                        ccp.Update(model);
-
-                    //日志
-                    C_Sys_log log = new C_Sys_log();
-
-                    int UserID = emp_id;
-                    string UserName = empname;
-                    string IPStreet = request.UserHostAddress;
-                    //string EventTitle = model.product_name;
-                    string EventType = "产品修改";
-                    //int EventID = model.product_id;
-                    //if (dr["category_name"].ToString() != request["T_product_category"])
-                    //{
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "产品类别", dr["category_name"].ToString(), request["T_product_category"]);
-                    //}
-                    
-                }
-                else
-                {
-                   
-                    //model.isDelete = 0;
-                    ccp.Add(model);
-                }
+                //model.category_id = int.Parse(request["T_product_category_val"]);
+              string id = PageValidate.InputText(request["id"], 50);
+              if (!string.IsNullOrEmpty(id) && id != "null")
+              {
+                  if(ccp.UpdateZT_SUM(0, AmountSum, emp_id, CustomerID,int.Parse(id)))
+                      context.Response.Write("true");
+                  else context.Response.Write("flase");
+              }
             }
 
             if (request["Action"] == "allgrid")
@@ -125,7 +106,10 @@ namespace XHD.CRM.Data
    
                 if (!string.IsNullOrEmpty(request["stext"]))
                     serchtxt += " and product_name like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
-
+               //if(uid!="admin")//非管理员
+                if (!string.IsNullOrEmpty(request["cid"]))
+                    serchtxt += " and customerid=" + PageValidate.InputText(request["cid"], 50) + "";
+                serchtxt += " and DoPerson='"+emp_id+"'";
                 //权限
                 DataSet ds = ccp.GetTempList(PageSize, PageIndex, serchtxt, sorttext, out Total);
              

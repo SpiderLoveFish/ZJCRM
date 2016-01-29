@@ -12,10 +12,11 @@
 
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
      <script src="../../lib/jquery.form.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/ligerui.min.js" type="text/javascript"></script>
    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
      <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
-   
+    <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
     <script src="../../lib/json2.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
@@ -41,21 +42,25 @@
                         { display: '单位', name: 'unit', width: 80, align: 'left' },
                         {
                             display: '数量', name: 'AmountSum', width: 80, align: 'left'
-                            , type: 'int', editor: { type: 'int' }
-                        },
-                        { display: '价格', name: 'Price', width: 80, align: 'left' }
+                            , type: 'int', editor: { type: 'int' } 
+                             
+                        }
+                        //, { display: '价格', name: 'Price', width: 80, align: 'left' }
               
 
                 ],
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/PurchaseList.ashx?Action=tempgrid",
+                url: "../../data/PurchaseList.ashx?Action=tempgrid&cid="+getparastr("cid"),
                 width: '100%',
                 height: '100%',
-                //tree: { columnName: 'StageDescription' },
+                enabledEdit: true,
+                onBeforeEdit: f_onBeforeEdit,
+                onBeforeSubmitEdit: f_onBeforeSubmitEdit,
+                onAfterEdit: f_onAfterEdit,
                 heightDiff: -1,
-                onRClickToSelect: true,
+               
                 onContextmenu: function (parm, e) {
                     actionCustomerID = parm.data.id;
                     menu.show({ top: e.pageY, left: e.pageX });
@@ -63,8 +68,6 @@
                 }
 
             });
-
-
 
             initLayout();
             $(window).resize(function () {
@@ -74,6 +77,51 @@
             toolbar();
         });
 
+
+        //只允许编辑前3行
+        function f_onBeforeEdit(e) {
+            //if (e.rowindex <= 2) return true;
+            //return false;
+            return true;
+        }
+        //限制
+        function f_onBeforeSubmitEdit(e) {
+            if (e.column.name == "AmountSum") {
+                if (e.value < 0) {
+                    alert("数量不能为负数！");
+                    return false;
+                }
+            }
+            return true;
+        }
+        //编辑后事件 
+        function f_onAfterEdit(e) {
+            if (e.column.name == "AmountSum") {
+                var manager = $("#maingrid4").ligerGetGridManager();
+                var row = manager.getSelectedRow();
+               
+                if (row) {
+                    $.ajax({
+                        url: "../../data/PurchaseList.ashx", type: "POST",
+                        data: { Action: "save", cid: getparastr("cid"), id: row.id, editsum: e.value, rnd: Math.random() },
+                        success: function (responseText) {
+                            if (responseText == "true") {
+                                top.$.ligerDialog.closeWaitting();
+                                f_load();
+                            }
+
+                        },
+                        error: function () {
+                            top.$.ligerDialog.closeWaitting();
+                            top.$.ligerDialog.error('修改失败！', "", null, 9003);
+                        }
+                    });
+                }
+                else {
+                    $.ligerDialog.warn("请选择一有效行！");
+                }
+            }
+        }
 
         function toolbar() {
             $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=149&rnd=" + Math.random(), function (data, textStatus) {
@@ -172,18 +220,19 @@
                     url: "../../data/PurchaseList.ashx?Action=savelist&cid=" + getparastr("cid") + "&pid=" + prouductid + '&rdm=' + Math.random(),
                     success: function (data) {
                         //alert(data);
-                        setTimeout(function () {
-                            f_success();
-                        }, 10);
+                        //setTimeout(function () {
+                        //    f_success();
+                        //}, 10);
+                        dialog.frame.f_sucess();
 
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        f_error("保存失败！");
+                        dialog.frame.f_error(); 
                     }
                 });
                // f_success();
                 f_load();
-                dialog.close();
+               // dialog.close();
                 
             }
 
@@ -194,13 +243,13 @@
   
         }
         function f_success() {
-            setTimeout(function () {
-                $.ligerDialog.confirm("是否继续编辑", "保存成功", function (ok) {
-                    if (!ok) {
-                        parent.$.ligerDialog.close();
-                    }
-                });
-            }, 200);
+            //setTimeout(function () {
+            //    $.ligerDialog.confirm("是否继续编辑", "保存成功", function (ok) {
+            //        if (!ok) {
+            //            parent.$.ligerDialog.close();
+            //        }
+            //    });
+            //}, 200);
         }
         var activeDialog = null;
         function f_openWindow(url, title, width, height) {
