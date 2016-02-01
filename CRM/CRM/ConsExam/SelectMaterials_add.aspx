@@ -51,11 +51,10 @@
                         display: '提交采购', width: 60, render: function (item) {
                             var html;
                             if (item.IsStatus == 0) {
-                                html = "<a href='#' target='_blank'>";
-                                html += "提交";
-                                html += "</a>";
+                                html = "<a href='javascript:void(0)' onclick=Submit(" + item.id + ")>提交</a>"
+ 
                             }
-                            else html = "<a href='#' target='_blank' ><font color='CC0000'>撤回</font></a>";
+                            else html = "<a href='javascript:void(0)' onclick=Revoke(" + item.id + ") ><font color='CC0000'>撤回</font></a>";
                            
 
                             return html;
@@ -65,11 +64,10 @@
                         display: '状态', width: 60, render: function (item) {
                             var html;
                             if (item.IsStatus == 0) {
-                                html = "<a href='#' target='_blank'>";
-                                html += "未提交\已提交";
-                                html += "</a>";
+                                html = "未提交\已提交";
+                             
                             }
-                            else html = "<a href='#' target='_blank' ><font color='CC0000'>已采购\已领用</font></a>";
+                            else html = "<font color='CC0000'>已采购\已领用</font>";
 
 
                             return html;
@@ -190,6 +188,44 @@
             });
         }
 
+        //提交
+        function Submit(id)
+        {
+          
+            $.ajax({
+                type: 'post',
+                url: "../../data/PurchaseList.ashx?Action=updatestatus&cid="+getparastr("cid")+"&id=" + id + "&isstatus=1&rdm=" + Math.random(),
+                success: function (data) {
+                    if (data == "false")
+                        f_error("保存失败！");
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    f_error("保存失败！");
+                }
+            });
+            // f_success();
+            f_load();
+        }
+        //撤回
+        function Revoke(id)
+        {
+            $.ajax({
+                type: 'post',
+                url: "../../data/PurchaseList.ashx?Action=updatestatus&cid=" + getparastr("cid") + "&id=" + id + "&isstatus=0&rdm=" + Math.random(),
+                success: function (data) {
+                    if (data == "false")
+                    f_error("保存失败！");
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    f_error("保存失败！");
+                }
+            });
+            // f_success();
+            f_load();
+        }
+
         function del()
         {
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -246,7 +282,7 @@
 
         }
         function addcl() {
-            f_openWindow("../../crm/product/product_add.aspx", "新增材料档案", 800, 500);
+            f_openWindow("../../crm/product/product_add.aspx?type=SelectMat", "新增材料档案", 800, 500);
 
 
         }
@@ -301,18 +337,27 @@
             //    });
             //}, 200);
         }
+        //关闭刷新
         function f_close(item, dialog)
         {
             f_load();
             dialog.close();
         }
+        //添加自定义材料
+        function f_save(item, dialog)
+        {
+           
+           dialog.frame.f_select();
+
+        }
+
         var activeDialog = null;
         function f_openWindow(url, title, width, height) {
             var dialogOptions = {
                 zindex: 9002,
                 width: width, height: height, title: title, url: url, buttons: [
                         {
-                            text: '添加', onclick: function (item, dialog) {
+                            text: '添加(F2)', onclick: function (item, dialog) {
                                 f_getry(item, dialog);
                             }
                         },
@@ -326,6 +371,27 @@
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
  
+        var activeDialogs = null;
+        function f_openWindow(url, title, width, height) {
+            var dialogOptions = {
+                zindex: 9002,
+                width: width, height: height, title: title, url: url, buttons: [
+                        {
+                            text: '保存', onclick: function (item, dialog) {
+                                f_save(item, dialog);
+                            }
+                        },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                f_close(item, dialog);
+                            }
+                        }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialogs = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+
+
         function view(id) {
             var dialogOptions = {
                 width: 770, height: 510, title: "材料档案图文介绍", url: '../view/product_view.aspx?pid=' + id + '&rnd=' + Math.random(), buttons: [

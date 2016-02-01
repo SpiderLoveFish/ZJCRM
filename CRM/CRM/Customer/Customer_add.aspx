@@ -30,6 +30,7 @@
     <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
+        var ci = false;//Âß¼­ÔËËã
         $(function () {
             
             $.metadata.setType("attr", "validate");
@@ -164,6 +165,11 @@
 
                                         $("#T_address").val(address);//T_BNo T_RNo
                                         $("#h_address").val(data);
+                                        if (obj.address != '' && ci) { ci = true; }
+                                        else {
+                                            $("#T_address").val(obj.address);
+                                            ci = true;
+                                        }
                                     });
 
 

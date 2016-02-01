@@ -240,7 +240,7 @@
 
     <form id="form1" onsubmit="return false">
         <div>
-            <div id="toolbar" >选中材料后点击<font color="#FF0000">F2</font>可快速添加</div>
+            <div id="toolbar" ></div>
             <div id="maingrid4" style="margin: -1px;"></div>
         </div>
     </form>

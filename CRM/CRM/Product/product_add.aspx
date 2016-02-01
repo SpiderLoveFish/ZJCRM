@@ -86,10 +86,47 @@
         {
             return $("#C_code").val();
         }
+        //材料选择自定义材料保存
+        function f_select() {
+          
+            if ($(form1).valid()) {
+                var arr = [];
+                arr.push(UE.getEditor('editor').getContent());
+                var sendtxt = "&Action=save&pid=" + getparastr("pid") + "&T_content=" + escape(arr);
+                var issave = $("form :input").fieldSerialize() + sendtxt + "&Type=SelectMaterials"
+                if (issave) {
+                    $.ligerDialog.waitting('数据保存中,请稍候...');
+                    $.ajax({
+                        url: "../../data/Crm_product.ashx", type: "POST",
+                        data: issave,
+                        success: function (responseText) {
+                            $.ligerDialog.closeWaitting();
+                            if (responseText == "false:code") {
+                                $.ligerDialog.error("物料代码重复，请重新填写！");
+                                return true;
+                            }
+                            else {
+                                //  dialog.close();
+                                top.$.ligerDialog.closeWaitting();
+                                $.ligerDialog.alert("保存成功，继续添加！");
+                                        $("#form1").each(function () {
+                                            this.reset();
+                                            $(".l-selected").removeClass("l-selected"); 
+                                });
+                            }
+                        },
+                        error: function () {
+                            top.$.ligerDialog.closeWaitting();
+                            top.$.ligerDialog.error('操作失败！');
+                            return true;
+                        }
+                    });
+                } else return true;
+            }
+        }
+
 
         function f_save() {
-            
-           
                         if ($(form1).valid()) {
                             var arr = [];
                             arr.push(UE.getEditor('editor').getContent());

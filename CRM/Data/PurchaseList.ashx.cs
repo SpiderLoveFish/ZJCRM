@@ -58,6 +58,25 @@ namespace XHD.CRM.Data
               }
             }
 
+            if (request["Action"] == "updatestatus")
+            {
+
+                int isstatus = int.Parse(request["isstatus"]);
+                int CustomerID = int.Parse(request["cid"]);
+                // model.DoPerson = emp_id;
+                model.DoTime = DateTime.Now;
+                model.IsStatus = 0;
+                //model.category_id = int.Parse(request["T_product_category_val"]);
+                string id = PageValidate.InputText(request["id"], 50);
+                if (!string.IsNullOrEmpty(id) && id != "null")
+                {
+                    if (ccp.UpdateZT(isstatus, emp_id, CustomerID, int.Parse(id)))
+                        context.Response.Write("true");
+                    else context.Response.Write("flase");
+                }
+            }
+
+
             if (request["Action"] == "allgrid")
             {
                 BLL.CRM_product cp = new BLL.CRM_product();
