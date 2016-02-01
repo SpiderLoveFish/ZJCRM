@@ -469,10 +469,12 @@ namespace XHD.DAL
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
             strSql.Append(" top " + PageSize + " * FROM (SELECT A.*,B.product_name,B.category_name ");
-             strSql.Append(" ,specifications,unit ");
+            strSql.Append(" ,specifications,unit,b.C_code,c.name,B.ProModel,B.Brand ");
               strSql.Append(" FROM dbo.PurchaseList A ");
              strSql.Append(" INNER JOIN dbo.CRM_product B ON  ");
-             strSql.Append(" A.product_id=B.product_id AND A.category_id=B.category_id ");
+             strSql.Append(" A.product_id=B.product_id AND A.category_id=B.category_id");
+             strSql.Append(" LEFT JOIN dbo.hr_employee c ON a.DoPerson=c.ID  ");
+              
              strSql.Append(" )PurchaseList ");
             strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM PurchaseList ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");

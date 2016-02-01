@@ -347,7 +347,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-            strSql.Append("select id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,address,sum_Score,TotalScorce,Scoring,Jh_date ");
+            strSql.Append("select id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,address,sum_Score,TotalScorce,Scoring,Jh_date,sl,cgsl ");
             strSql.Append(" FROM V_CRM_CEStage ");
 			if(strWhere.Trim()!="")
 			{
@@ -367,7 +367,7 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-            strSql.Append(" id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,address,sum_Score,TotalScorce,Scoring ");
+            strSql.Append(" id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,address,sum_Score,TotalScorce,Scoring,Jh_date,sl,cgsl ");
 			strSql.Append(" FROM V_CRM_CEStage ");
 			if(strWhere.Trim()!="")
 			{

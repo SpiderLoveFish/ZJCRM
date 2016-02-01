@@ -4,8 +4,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-      <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
     <title></title>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/Toolbar.css" rel="stylesheet" type="text/css" />
@@ -13,8 +13,8 @@
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
 
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-   <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/jquery.form.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
     <script src="../../lib/json2.js" type="text/javascript"></script>
@@ -33,20 +33,21 @@
                     // { display: '客户编号', name: 'CustomerID', width: 50, align: 'left' },
                       { display: '客户姓名', name: 'CustomerName', width: 80, align: 'left' },
                        { display: '客户电话', name: 'tel', width: 100, align: 'left' },
-                        { display: '客户地址', name: 'address', width: 250, align: 'left' },
+                        { display: '客户地址', name: 'address', width: 200, align: 'left' },
                       { display: '施工监理', name: 'sgjl', width: 80, align: 'left' },
                         { display: '业务员', name: 'ywy', width: 80, align: 'left' },
-                   // { display: '设计师', name: 'sjs', width: 120, align: 'left' },
-                    { display: '附加分', name: 'SpecialScore', width: 50, align: 'right' },
-                {
-                    display: '考核分', name: 'StageScore', width: 50, align: 'right', render: function (item) {
-                        return "<div style='color:#135294'>" + item.StageScore + "</div>";
-                    }
-                },
-                 { display: '总得分', name: 'sum_Score', width: 50, align: 'right' },
-                 { display: '满分', name: 'TotalScorce', width: 50, align: 'right' },
+                   { display: '设计师', name: 'sjs', width: 80, align: 'left' },
+                 //  { display: '附加分', name: 'SpecialScore', width: 50, align: 'right' },
+                //{
+                //  display: '考核分', name: 'StageScore', width: 50, align: 'right', render: function (item) {
+                //    return "<div style='color:#135294'>" + item.StageScore + "</div>";
+                //}
+                //},
+              //   { display: '总得分', name: 'sum_Score', width: 50, align: 'right' },
+                  { display: '材料总数', name: 'sl', width: 80, align: 'right' },
+                  { display: '提交采购', name: 'cgsl', width: 80, align: 'right' },
                  {
-                     display: '达成率', name: 'Scoring', width: 80, align: 'right', render: function (item) {
+                     display: '考核达成', name: 'Scoring', width: 80, align: 'right', render: function (item) {
 
                          var html;
                          if (item.sum_Score / item.TotalScorce > 0.9) {
@@ -67,14 +68,14 @@
                          return html;
                      }
                  },
-                        { display: '状态', name: 'Stage_icon', width: 80, align: 'left' },
+                     //   { display: '状态', name: 'Stage_icon', width: 80, align: 'left' },
                 { display: '备注', name: 'Remarks', width: 200, align: 'left' }
 
                 ],
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/Crm_CEStage.ashx?Action=grid",
+                url: "../../data/Crm_CEStage.ashx?Action=grid1",
                 width: '100%',
                 height: '100%',
                 //tree: { columnName: 'StageDescription' },
@@ -239,11 +240,11 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-            f_openWindow("crm/ConsExam/SelectMaterials_add.aspx?cid=" + row.id, "新增客户", 720, 500);
+                f_openWindow("crm/ConsExam/SelectMaterials_add.aspx?cid=" + row.id, "【" + row.CustomerName + "】" + row.address + " - 材料清单", 1100, 600);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
-            }
+        }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -254,7 +255,7 @@
                 $.ligerDialog.warn('请选择行！');
             }
         }
- 
+
         function f_save(item, dialog) {
 
             var issave = dialog.frame.f_save();
@@ -289,21 +290,24 @@
         };
     </script>
     <style type="text/css">
-        .l-leaving { background: #eee; color: #999; }
+        .l-leaving {
+            background: #eee;
+            color: #999;
+        }
     </style>
 
 </head>
-<body style="padding: 0px;overflow:hidden;">
+<body style="padding: 0px; overflow: hidden;">
 
     <form id="form1" onsubmit="return false">
         <div>
             <div id="toolbar"></div>
-              <div id="grid">
-            <div id="maingrid4" style="margin: -1px;"></div>
-                  </div>
+            <div id="grid">
+                <div id="maingrid4" style="margin: -1px;"></div>
+            </div>
         </div>
     </form>
-      <div class="az">
+    <div class="az">
         <form id='serchform'>
             <table style='width: 960px' class="bodytable1">
                 <tr>
@@ -312,64 +316,64 @@
                     </td>
                     <td>
 
-                        <input  ltype='text' ligerui='{width:120}' type='text' id='khstext' name='khstext'  /></td>
+                        <input ltype='text' ligerui='{width:120}' type='text' id='khstext' name='khstext' /></td>
 
                     <td>
                         <div style='width: 60px; text-align: right; float: right'>地址：</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
-                            <input type='text' id='dzstext' name='dzstext' ltype='text' ligerui='{width:120}'  />
+                            <input type='text' id='dzstext' name='dzstext' ltype='text' ligerui='{width:120}' />
                         </div>
-                    
+
                     </td>
                     <td>
                         <div style='width: 60px; text-align: right; float: right'>电话：</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
-                            <input type='text' id='dhstext' name='dhstext'   ltype='text' ligerui='{width:120}'  />
+                            <input type='text' id='dhstext' name='dhstext' ltype='text' ligerui='{width:120}' />
                         </div>
-                       
+
                     </td>
                     <td>
-                          <input id='Button1' type='button' value='搜索' style='width: 80px; height: 24px' onclick="doserch()" />
-                  
+                        <input id='Button1' type='button' value='搜索' style='width: 80px; height: 24px' onclick="doserch()" />
+
                         <input id='Button2' type='button' value='重置' style='width: 80px; height: 24px'
                             onclick="doclear()" />
-                        </td> 
+                    </td>
                 </tr>
                 <tr>
                     <td>
                         <div style='width: 60px; text-align: right; float: right'>施工监理：</div>
                     </td>
                     <td>
-                        <input id='sgjlstext' name="sgjlstext" type='text'  ltype='text' ligerui='{width:120}' /></td>
+                        <input id='sgjlstext' name="sgjlstext" type='text' ltype='text' ligerui='{width:120}' /></td>
 
                     <td>
-                        <div style='width: 60px; text-align: right; float: right' >状态：</div>
+                        <div style='width: 60px; text-align: right; float: right'>状态：</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
-                            <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui="{width:196,data:[{id:'正在施工',text:'正在施工'},{id:'施工完成',text:'施工完成'}]}" validate="{required:false}" />
+                            <input type='text' id='ztstext' name='ztstext' ltype='text' ligerui="{width:196,data:[{id:'正在施工',text:'正在施工'},{id:'施工完成',text:'施工完成'}]}" validate="{required:false}" />
                         </div>
-                         
+
                     </td>
                     <td>
                         <div style='width: 60px; text-align: right; float: right'>达成率：</div>
                     </td>
                     <td>
                         <div style='width: 300px; float: left'>
-                            <input type='text' id='dclbstext' name='dclbstext'    ltype='text'  ligerui="{width:50}" />
-                    
-                         -->
+                            <input type='text' id='dclbstext' name='dclbstext' ltype='text' ligerui="{width:50}" />
+
+                            -->
                    
-                            <input type='text' id='dclestext' name='dclestext'    ltype='text' ligerui="{width:50}"  />
+                            <input type='text' id='dclestext' name='dclestext' ltype='text' ligerui="{width:50}" />
                         </div>
                     </td>
 
                 </tr>
-            
+
             </table>
         </form>
     </div>

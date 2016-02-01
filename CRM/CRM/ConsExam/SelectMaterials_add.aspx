@@ -35,22 +35,66 @@
                        display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                        { return (page - 1) * pagesize + rowindex + 1; }
                    },
-                    // { display: '客户编号', name: 'CustomerID', width: 50, align: 'left' },
-                      { display: '产品名称', name: 'product_name', width: 80, align: 'left' },
-                    
-                        { display: '类型', name: 'specifications', width: 250, align: 'left' },
-                        { display: '单位', name: 'unit', width: 80, align: 'left' },
+                     { display: '材料编号', name: 'C_code', width: 80, align: 'left' },
+                      { display: '材料名称', name: 'product_name', width: 100, align: 'left' },
+                     { display: '材料型号', name: 'ProModel', width: 100, align: 'left' },
+                        { display: '材料规格', name: 'specifications', width: 100, align: 'left' },
+                         { display: '所属品牌', name: 'Brand', width: 100, align: 'left' },
+                 { display: '类别', name: 'category_name', width: 80, align: 'left' },
+                        { display: '单位', name: 'unit', width: 40, align: 'left' },
                         {
-                            display: '数量', name: 'AmountSum', width: 80, align: 'left'
+                            display: '数量', name: 'AmountSum', width: 60, align: 'left'
                             , type: 'int', editor: { type: 'int' } 
                              
+                        },
+                    {
+                        display: '提交采购', width: 60, render: function (item) {
+                            var html;
+                            if (item.IsStatus == 0) {
+                                html = "<a href='#' target='_blank'>";
+                                html += "提交";
+                                html += "</a>";
+                            }
+                            else html = "<a href='#' target='_blank' ><font color='CC0000'>撤回</font></a>";
+                           
+
+                            return html;
                         }
-                        //, { display: '价格', name: 'Price', width: 80, align: 'left' }
+
+                    }, {
+                        display: '状态', width: 60, render: function (item) {
+                            var html;
+                            if (item.IsStatus == 0) {
+                                html = "<a href='#' target='_blank'>";
+                                html += "未提交\已提交";
+                                html += "</a>";
+                            }
+                            else html = "<a href='#' target='_blank' ><font color='CC0000'>已采购\已领用</font></a>";
+
+
+                            return html;
+                        }
+
+                    },
+                        { display: '添加人', name: 'name', width: 60, align: 'left' },
+                        {
+                            display: '添加时间', name: 'DoTime', width: 90, render: function (item) {
+                                var DoTime = formatTimebytype(item.DoTime, 'yyyy-MM-dd');
+                                return DoTime;
+                            }
+                        },
+                         {
+                             display: '图文', width: 40, render: function (item) {
+                                 var html = "<a href='javascript:void(0)' onclick=view(" + item.product_id + ")>查看</a>"
+                                 return html;
+                             }
+                         }
               
 
                 ],
+               
                 dataAction: 'server',
-                pageSize: 30,
+                pageSize: 100,
                 pageSizeOptions: [20, 30, 50, 100],
                 url: "../../data/PurchaseList.ashx?Action=tempgrid&cid="+getparastr("cid"),
                 width: '100%',
@@ -132,7 +176,8 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-                 
+                items.push({ type: 'textbox', id: 'stext', text: '搜索内容：' });
+                items.push({ type: 'button', text: '搜索', icon: '../../images/search.gif', disable: true, click: function () { doserch() } });
                 $("#toolbar").ligerToolBar({
                     items: items
 
@@ -140,7 +185,7 @@
                 menu = $.ligerMenu({
                     width: 120, items: getMenuItems(data)
                 });
-
+                $("#stext").ligerTextBox({ width: 200 });
                 $("#maingrid4").ligerGetGridManager().onResize();
             });
         }
@@ -191,12 +236,17 @@
        
         //新增打开页面
         function add() {
-            f_openWindow("../../CRM/ConsExam/getemp.aspx?style=ALL&cid=" + getparastr("cid"), "选择产品", 650, 400);
+            f_openWindow("../../CRM/ConsExam/getemp.aspx?style=ALL&cid=" + getparastr("cid"), "所有材料中选取", 800, 400);
 
 
         }
         function edit() {
-            f_openWindow("../../CRM/ConsExam/getemp.aspx?style=ALL&cid=" + getparastr("cid"), "选择产品", 650, 400);
+            f_openWindow("../../CRM/ConsExam/getemp.aspx?style=ALL&cid=" + getparastr("cid"), "客户预算中选取",800, 400);
+
+
+        }
+        function addcl() {
+            f_openWindow("../../crm/product/product_add.aspx", "新增材料档案", 800, 500);
 
 
         }
@@ -262,7 +312,7 @@
                 zindex: 9002,
                 width: width, height: height, title: title, url: url, buttons: [
                         {
-                            text: '提交(F2)', onclick: function (item, dialog) {
+                            text: '添加', onclick: function (item, dialog) {
                                 f_getry(item, dialog);
                             }
                         },
@@ -276,7 +326,18 @@
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
  
-      
+        function view(id) {
+            var dialogOptions = {
+                width: 770, height: 510, title: "材料档案图文介绍", url: '../view/product_view.aspx?pid=' + id + '&rnd=' + Math.random(), buttons: [
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
 
     </script>
     

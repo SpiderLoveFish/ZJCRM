@@ -40,11 +40,20 @@
                 columns: [
                     //{ display: 'ID', name: 'ID', type: 'int', width: 50 },
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
-                     { display: '编号', name: 'product_id', width: 30  },
-                    { display: '名字', name: 'product_name' },
-                    { display: '类型', name: 'specifications', width: 50 },
-                    { display: '单位', name: 'unit' },
-                    { display: '价格', name: 'price' }
+                  { display: '材料编号', name: 'C_code', width: 80, align: 'left' },
+                  { display: '材料名称', name: 'product_name', width: 100, align: 'left' },
+                  { display: '材料型号', name: 'ProModel', width: 100, align: 'left' },
+                  { display: '材料规格', name: 'specifications', width: 100, align: 'left' },
+                  { display: '所属品牌', name: 'Brand', width: 100, align: 'left' },
+                  { display: '类别', name: 'category_name', width: 100, align: 'left' },
+                  { display: '单位', name: 'unit', width: 40, align: 'left' }
+                  //,
+                  //{
+                  //    display: '图文', width: 40, render: function (item) {
+                  //        var html = "<a href='javascript:void(0)' onclick=view(" + item.product_id + ")>查看</a>"
+                  //        return html;
+                  //    }
+                  //}
                 ],
                 checkbox: true,
                 dataAction: 'server',
@@ -212,6 +221,18 @@
             manager.loadData(true);
 
         }
+        function view(id) {
+            var dialogOptions = {
+                width: 770, height: 510, title: "材料档案图文介绍", url: '../view/product_view.aspx?pid=' + id + '&rnd=' + Math.random(), buttons: [
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
     </script>
 
 </head>
@@ -219,7 +240,7 @@
 
     <form id="form1" onsubmit="return false">
         <div>
-            <div id="toolbar"></div>
+            <div id="toolbar" >选中材料后点击<font color="#FF0000">F2</font>可快速添加</div>
             <div id="maingrid4" style="margin: -1px;"></div>
         </div>
     </form>
