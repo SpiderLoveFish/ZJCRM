@@ -27,7 +27,7 @@
     <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-
+    <script type="text/javascript" src="../../JS/ChineseCharactersToPinyin.js" charset="GBK"></script>  
     <script type="text/javascript" charset="utf-8" src="../../ueditor1_2_5_1-utf8-net/editor_config.js"></script>
     <script src="../../ueditor1_2_5_1-utf8-net/editor_all.js" type="text/javascript"></script>
     <script src="../../ueditor1_2_5_1-utf8-net/lang/zh-cn/zh-cn.js" type="text/javascript"></script>
@@ -74,6 +74,14 @@
                     usericon: 'd_icon',
                     checkbox: false,
                     itemopen: false
+                },
+                onSelected: function (newvalue, newtext) {
+                    if (!newvalue) {
+                        newvalue = -1;
+
+                    } else {
+                        $("#C_code").val((getpinyin(newtext)).substr(0, 2));
+                    }
                 }
             });
 
@@ -177,6 +185,19 @@
         function set_tomoney_nbj(value) {
           
             $("#T_nbj").val(toMoney(value));
+        }
+
+        ///多音字默认第一个
+        function getpinyin(str)
+        {
+            //var str = document.getElementById("txtChinese").value.trim();
+            if (str == "") return '';
+            var py='';
+            var arrRslt = makePy(str);
+            for (var j = 0; j < arrRslt.length; j++) {
+                py = py + arrRslt[j];
+            }
+            return py;
         }
 
 

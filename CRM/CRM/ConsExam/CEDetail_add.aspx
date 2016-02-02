@@ -66,7 +66,7 @@
 
             $("#T_projectid").val(getparastr("pid"));
             $("#T_Stage1").val(getparastr("sid") );
-            $("#T_Stage").val(getparastr("sid") + "-" + getparastr("sname"));
+            $("#T_Stage").val(getparastr("sid") + "-" +  decodeURI(getparastr("sname")));
             if (getparastr("style") == "add")
                 getmaxverid(getparastr("sid"), getparastr("pid"), getparastr("style"))
             else {

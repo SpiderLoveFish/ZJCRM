@@ -263,7 +263,7 @@
                 var row = manager.getSelectedRow();
                 if (row) {
 
-                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=edit&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + notes.data.text, "修改考核", 790, 550);
+                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=edit&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + encodeURI(notes.data.text), "修改考核", 790, 550);
                 }
                 else
                     $.ligerDialog.warn('请选择考核项目！');
@@ -283,7 +283,7 @@
                 var manager = $("#maingrid4").ligerGetGridManager();
                 var row = manager.getSelectedRow();
                 if (row) {
-                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=add&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + notes.data.text, "开始考核", 790, 550);
+                    f_openWindow('crm/ConsExam/CEDetail_add.aspx?style=add&sid=' + notes.data.id + '&pid=' + row.id + '&sname=' + encodeURI(notes.data.text), "开始考核", 790, 550);
                 }
                 else
                     $.ligerDialog.warn('请选择考核项目！');
