@@ -272,12 +272,12 @@
        
         //新增打开页面
         function add() {
-            f_openWindow("../../CRM/ConsExam/getemp.aspx?style=ALL&cid=" + getparastr("cid"), "所有材料中选取", 800, 400);
+            f_openWindow_f2("../../CRM/ConsExam/getemp.aspx?style=ALL&cid=" + getparastr("cid"), "所有材料中选取", 800, 400);
 
 
         }
         function edit() {
-            f_openWindow("../../CRM/ConsExam/getemp.aspx?style=ALL&cid=" + getparastr("cid"), "客户预算中选取",800, 400);
+            f_openWindow_f2("../../CRM/ConsExam/getemp.aspx?style=ALL&cid=" + getparastr("cid"), "客户预算中选取", 800, 400);
 
 
         }
@@ -300,7 +300,7 @@
                 for (var i = 0; i < rows.length; i++) {
                     prouductid += "," + rows[i].product_id;
                 }
-         
+               
                 $.ajax({
                     type: 'post',
                     url: "../../data/PurchaseList.ashx?Action=savelist&cid=" + getparastr("cid") + "&pid=" + prouductid + '&rdm=' + Math.random(),
@@ -352,7 +352,7 @@
         }
 
         var activeDialog = null;
-        function f_openWindow(url, title, width, height) {
+        function f_openWindow_f2(url, title, width, height) {
             var dialogOptions = {
                 zindex: 9002,
                 width: width, height: height, title: title, url: url, buttons: [

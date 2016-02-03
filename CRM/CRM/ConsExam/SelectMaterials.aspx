@@ -240,7 +240,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("crm/ConsExam/SelectMaterials_add.aspx?cid=" + row.id, "【" + row.CustomerName + "】" + row.address + " - 材料清单", 1100, 600);
+                f_openWindow("crm/ConsExam/SelectMaterials_add.aspx?cid=" + row.CustomerID, "【" + row.CustomerName + "】" + row.address + " - 材料清单", 1100, 600);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
@@ -250,7 +250,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("crm/ConsExam/SelectMaterials_add.aspx?cid=" + row.id, "修改客户", 720, 500);
+                f_openWindow("crm/ConsExam/SelectMaterials_add.aspx?cid=" + row.CustomerID, "修改客户", 720, 500);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
