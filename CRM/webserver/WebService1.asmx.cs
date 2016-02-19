@@ -55,7 +55,7 @@ namespace XHD.CRM.webserver
          
         }
         [WebMethod]
-        public void GetCustomer(string where)
+        public void GetCustomer_where(string where)
         {
             BLL.CRM_Customer cus = new BLL.CRM_Customer();
             DataSet ds = cus.GetList("id="+where);
@@ -72,7 +72,7 @@ namespace XHD.CRM.webserver
 
 
         [WebMethod]
-        public void GetCustomer(int pageIndex, int pageSize)
+        public void GetCustomer_page(int pageIndex, int pageSize)
         {
             BLL.CRM_Customer cus = new BLL.CRM_Customer();
             DataSet ds = cus.GetPageList(pageIndex, pageSize);

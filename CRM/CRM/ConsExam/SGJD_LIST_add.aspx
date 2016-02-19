@@ -213,7 +213,7 @@
             $.ajax({
                 type: "GET",
                 url: "../../data/CRM_Customer.ashx", /* 注意后面的名字对应CS的方法名称 */
-                data: { Action: 'form', cid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                data: { Action: 'formsgjd', cid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {

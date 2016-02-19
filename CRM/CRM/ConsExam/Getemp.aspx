@@ -142,7 +142,7 @@
                 textField: 'text',
                 treeLeafOnly: false,
                 tree: {
-                    url: '../../data/CRM_product_category.ashx?Action=tree&rnd=' + Math.random(),
+                    url: '../../data/CRM_product_category.ashx?Action=treeall&rnd=' + Math.random(),
                     idFieldName: 'id',
                     checkbox: false
                 } 

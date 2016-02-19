@@ -144,6 +144,18 @@ namespace XHD.CRM.Data
                 str.Append("]");
                 context.Response.Write(str);
             }
+
+            if (request["Action"] == "treeall")
+            {
+                DataSet ds = ccpc.GetAllList();
+                StringBuilder str = new StringBuilder();
+                str.Append("[");
+                str.Append(GetTreeStringAll(0, ds.Tables[0]));
+                str.Replace(",", "", str.Length - 1, 1);
+                str.Append("]");
+                context.Response.Write(str);
+            }
+
             if (request["Action"] == "combo")
             {
                 DataSet ds = ccpc.GetAllList();
@@ -250,6 +262,33 @@ namespace XHD.CRM.Data
             }
             return str[str.Length - 1] == ',' ? str.ToString(0, str.Length - 1) : str.ToString();
         }
+
+        private static string GetTreeStringAll(int Id, DataTable table)
+        {
+            DataRow[] rows = table.Select(string.Format("parentid={0}", Id));
+
+            if (rows.Length == 0) return string.Empty;
+            StringBuilder str = new StringBuilder();
+
+            str.Append("{id:9999,text:'全部',d_icon:''},");
+            foreach (DataRow row in rows)
+            {
+                str.Append("{id:" + (int)row["id"] + ",text:'" + (string)row["product_category"] + "',d_icon:'../../" + (string)row["product_icon"] + "'");
+
+                if (GetTreeStringAll((int)row["id"], table).Length > 0)
+                {
+                    str.Append(",children:[");
+                    str.Append(GetTreeStringAll((int)row["id"], table));
+                    str.Append("]},");
+                }
+                else
+                {
+                    str.Append("},");
+                }
+            }
+            return str[str.Length - 1] == ',' ? str.ToString(0, str.Length - 1) : str.ToString();
+        }
+      
         private static string GetTreeString(int Id, DataTable table)
         {
             DataRow[] rows = table.Select(string.Format("parentid={0}", Id));
@@ -257,7 +296,7 @@ namespace XHD.CRM.Data
             if (rows.Length == 0) return string.Empty;
             StringBuilder str = new StringBuilder();
 
-            foreach (DataRow row in rows)
+              foreach (DataRow row in rows)
             {
                 str.Append("{id:" + (int)row["id"] + ",text:'" + (string)row["product_category"] + "',d_icon:'../../" + (string)row["product_icon"] + "'");
 

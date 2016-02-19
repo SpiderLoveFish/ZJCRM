@@ -98,8 +98,11 @@ namespace XHD.CRM.Data
                 if (!string.IsNullOrEmpty(request["stext"]))
                     serchtxt += " and product_name like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["stextlx"]))
+                {
+                    if (request["stextlx"]!="全部")
                     serchtxt += " and category_name like N'%" + PageValidate.InputText(request["stextlx"], 255) + "%'";
 
+                }
                 //权限
                 DataSet ds = cp.GetList(PageSize, PageIndex, serchtxt, sorttext, out Total);
                  
