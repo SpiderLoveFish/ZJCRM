@@ -70,7 +70,10 @@ namespace XHD.Model
         private int? _emp_id_sj;
         private string _emp_sj;
         private string _xy;
-
+        private string _QQ;
+        private int? _WXZT_ID;
+        private string _WXZT_NAME;
+        private string _JKDZ;
 
         /// <summary>
         /// 
@@ -505,6 +508,26 @@ namespace XHD.Model
         {
             set { _xy = value; }
             get { return _xy; }
+        }
+        public int? WXZT_ID
+        {
+            set { _WXZT_ID = value; }
+            get { return _WXZT_ID; }
+        }
+        public string WXZT_NAME
+        {
+            set { _WXZT_NAME = value; }
+            get { return _WXZT_NAME; }
+        }
+        public string QQ
+        {
+            set { _QQ = value; }
+            get { return _QQ; }
+        }
+        public string JKDZ
+        {
+            set { _JKDZ = value; }
+            get { return _JKDZ; }
         }
 
         #endregion Model

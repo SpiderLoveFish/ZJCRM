@@ -17,6 +17,8 @@ namespace XHD.Model
 		private int? _isdelete;
 		private int? _delete_id;
 		private DateTime? _delete_time;
+        private string _code;
+        private string _style;
 		/// <summary>
 		/// 
 		/// </summary>
@@ -73,6 +75,24 @@ namespace XHD.Model
 			set{ _delete_time=value;}
 			get{return _delete_time;}
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string c_code
+        {
+            set { _code = value; }
+            get { return _code; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string c_style
+        {
+            set { _style = value; }
+            get { return _style; }
+        }
+
 		#endregion Model
 
 	}

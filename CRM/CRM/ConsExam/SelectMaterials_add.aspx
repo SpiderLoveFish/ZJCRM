@@ -282,7 +282,7 @@
 
         }
         function addcl() {
-            f_openWindow("../../crm/product/product_add.aspx?type=SelectMat", "新增材料档案", 800, 500);
+            f_openWindow("../../crm/product/product_add.aspx?type=SelectMat&cid=" + getparastr("cid"), "新增材料档案", 800, 500);
 
 
         }

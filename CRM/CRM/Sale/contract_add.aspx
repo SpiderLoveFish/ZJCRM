@@ -408,7 +408,7 @@
                 </td>
                 <td>
                     <div align="right" style="width: 61px">
-                        客户归属：
+                        业务员：
                     </div>
                 </td>
                 <td>

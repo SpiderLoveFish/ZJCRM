@@ -45,9 +45,9 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into CRM_product_category(");
-			strSql.Append("product_category,parentid,product_icon,isDelete,Delete_id,Delete_time)");
+            strSql.Append("product_category,parentid,product_icon,isDelete,Delete_id,Delete_time,c_code,c_style)");
 			strSql.Append(" values (");
-			strSql.Append("@product_category,@parentid,@product_icon,@isDelete,@Delete_id,@Delete_time)");
+            strSql.Append("@product_category,@parentid,@product_icon,@isDelete,@Delete_id,@Delete_time,@c_code,@c_style)");
 			strSql.Append(";select @@IDENTITY");
 			SqlParameter[] parameters = {
 					new SqlParameter("@product_category", SqlDbType.VarChar,250),
@@ -55,14 +55,18 @@ namespace XHD.DAL
 					new SqlParameter("@product_icon", SqlDbType.VarChar,250),
 					new SqlParameter("@isDelete", SqlDbType.Int,4),
 					new SqlParameter("@Delete_id", SqlDbType.Int,4),
-					new SqlParameter("@Delete_time", SqlDbType.DateTime)};
+					new SqlParameter("@Delete_time", SqlDbType.DateTime),
+                    new SqlParameter("@c_code", SqlDbType.VarChar,50),
+					new SqlParameter("@c_style", SqlDbType.VarChar,50)
+                                        };
 			parameters[0].Value = model.product_category;
 			parameters[1].Value = model.parentid;
 			parameters[2].Value = model.product_icon;
 			parameters[3].Value = model.isDelete;
 			parameters[4].Value = model.Delete_id;
 			parameters[5].Value = model.Delete_time;
-
+            parameters[6].Value = model.c_code;
+            parameters[7].Value = model.c_style;
 			object obj = DbHelperSQL.GetSingle(strSql.ToString(),parameters);
 			if (obj == null)
 			{
@@ -82,18 +86,24 @@ namespace XHD.DAL
 			strSql.Append("update CRM_product_category set ");
 			strSql.Append("product_category=@product_category,");
 			strSql.Append("parentid=@parentid,");
+            strSql.Append("c_code=@c_code,");
+            strSql.Append("c_style=@c_style,");
 			strSql.Append("product_icon=@product_icon"); 
 
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@product_category", SqlDbType.VarChar,250),
 					new SqlParameter("@parentid", SqlDbType.Int,4),
+                    new SqlParameter("@c_code", SqlDbType.VarChar,50),  
+					 new SqlParameter("@c_style", SqlDbType.VarChar,50),
 					new SqlParameter("@product_icon", SqlDbType.VarChar,250),  
 					new SqlParameter("@id", SqlDbType.Int,4)};
 			parameters[0].Value = model.product_category;
 			parameters[1].Value = model.parentid;
-			parameters[2].Value = model.product_icon;
-			parameters[3].Value = model.id;
+            parameters[2].Value = model.c_code;
+            parameters[3].Value = model.c_style;
+			parameters[4].Value = model.product_icon;
+			parameters[5].Value = model.id;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -177,7 +187,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 id,product_category,parentid,product_icon,isDelete,Delete_id,Delete_time from CRM_product_category ");
+            strSql.Append("select  top 1 id,product_category,parentid,product_icon,isDelete,Delete_id,Delete_time,c_code,c_style from CRM_product_category ");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)
@@ -215,7 +225,15 @@ namespace XHD.DAL
 				if(ds.Tables[0].Rows[0]["Delete_time"]!=null && ds.Tables[0].Rows[0]["Delete_time"].ToString()!="")
 				{
 					model.Delete_time=DateTime.Parse(ds.Tables[0].Rows[0]["Delete_time"].ToString());
-				}
+                }
+                if (ds.Tables[0].Rows[0]["c_code"] != null && ds.Tables[0].Rows[0]["c_code"].ToString() != "")
+                {
+                    model.c_code = ds.Tables[0].Rows[0]["c_code"].ToString();
+                }
+                if (ds.Tables[0].Rows[0]["c_style"] != null && ds.Tables[0].Rows[0]["c_style"].ToString() != "")
+                {
+                    model.c_style = ds.Tables[0].Rows[0]["c_style"].ToString();
+                }
 				return model;
 			}
 			else
@@ -230,7 +248,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select id,product_category,parentid,product_icon,isDelete,Delete_id,Delete_time ");
+            strSql.Append("select id,product_category,parentid,product_icon,isDelete,Delete_id,Delete_time,c_code,c_style ");
 			strSql.Append(" FROM CRM_product_category ");
 			if(strWhere.Trim()!="")
 			{
@@ -250,7 +268,7 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" id,product_category,parentid,product_icon,isDelete,Delete_id,Delete_time ");
+            strSql.Append(" id,product_category,parentid,product_icon,isDelete,Delete_id,Delete_time ,c_code,c_style");
 			strSql.Append(" FROM CRM_product_category ");
 			if(strWhere.Trim()!="")
 			{

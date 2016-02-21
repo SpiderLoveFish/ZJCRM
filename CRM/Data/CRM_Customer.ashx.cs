@@ -175,7 +175,13 @@ namespace XHD.CRM.Data
                 model.Emp_sj = PageValidate.InputText(request["T_employee1_sj"], 50);
                 model.xy = PageValidate.InputText(request["T_xy"], 50).Trim(' ');
 
-
+                string WXZT_ID = request["T_WXZT_NAME_val"];
+                if (string.IsNullOrEmpty(WXZT_ID))
+                    WXZT_ID = "0";
+                model.WXZT_ID = int.Parse(WXZT_ID);
+                model.WXZT_NAME = PageValidate.InputText(request["T_WXZT_NAME"], 50);
+                model.QQ = PageValidate.InputText(request["T_QQ"], 50).Trim(' ');
+                model.JKDZ = PageValidate.InputText(request["T_JKDZ"], 50).Trim(' ');
                 string id = PageValidate.InputText(request["id"], 50);
                 if (!string.IsNullOrEmpty(id) && id != "null")
                 {
@@ -337,7 +343,7 @@ namespace XHD.CRM.Data
                 string keyword = PageValidate.InputText(request["keyword"], 500);
                 if (!string.IsNullOrEmpty(keyword) && keyword != "输入关键词搜索地址、描述、备注")
                 {
-                    serchtxt += string.Format(" and ( address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
+                    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
                 }
 
                 if (!string.IsNullOrEmpty(request["customertype"]))
@@ -462,23 +468,6 @@ namespace XHD.CRM.Data
                 if (PageValidate.IsNumber(id))
                 {
                     DataSet ds = customer.GetList("id=" + id + DataAuth(emp_id.ToString()));
-                    dt = Common.DataToJson.DataToJSON(ds);
-                }
-                else
-                {
-                    dt = "{}";
-                }
-
-
-                context.Response.Write(dt);
-            }
-            if (request["Action"] == "formsgjd")
-            {
-                string id = PageValidate.InputText(request["cid"], 50);
-                string dt;
-                if (PageValidate.IsNumber(id))
-                {
-                    DataSet ds = customer.GetList("id=" + id );
                     dt = Common.DataToJson.DataToJSON(ds);
                 }
                 else

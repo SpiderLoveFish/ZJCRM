@@ -293,6 +293,22 @@ namespace XHD.BLL
                     {
                         model.Delete_time = DateTime.Parse(dt.Rows[n]["Delete_time"].ToString());
                     }
+                    if (dt.Rows[n]["WXZT_ID"] != null && dt.Rows[n]["WXZT_ID"].ToString() != "")
+                    {
+                        model.WXZT_ID = int.Parse(dt.Rows[n]["WXZT_ID"].ToString());
+                    }
+                    if (dt.Rows[n]["WXZT_NAME"] != null && dt.Rows[n]["WXZT_NAME"].ToString() != "")
+                    {
+                        model.WXZT_NAME = dt.Rows[n]["WXZT_NAME"].ToString();
+                    }
+                    if (dt.Rows[n]["QQ"] != null && dt.Rows[n]["QQ"].ToString() != "")
+                    {
+                        model.WXZT_NAME = dt.Rows[n]["QQ"].ToString();
+                    }
+                    if (dt.Rows[n]["JKDZ"] != null && dt.Rows[n]["JKDZ"].ToString() != "")
+                    {
+                        model.JKDZ = dt.Rows[n]["JKDZ"].ToString();
+                    }
                     modelList.Add(model);
                 }
             }

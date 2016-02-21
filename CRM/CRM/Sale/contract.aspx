@@ -45,7 +45,7 @@
                    { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                     { display: '合同编号', name: 'Serialnumber', width: 80 },
                     {
-                        display: '合同名称', name: 'Contract_name', width: 200, align: 'left', render: function (item) {
+                        display: '合同名称', name: 'Contract_name', width: 120, align: 'left', render: function (item) {
                             var html = "<a href='javascript:void(0)' onclick=view(5," + item.id + ")>";
                             if (item.Contract_name)
                                 html += item.Contract_name;
@@ -62,13 +62,16 @@
                             return html;
                         }
                     },
+                    { display: '地址', name: 'address', width: 150 },
                     {
                         display: '合同金额(￥)', name: 'Contract_amount', width: 120, align: 'right', render: function (item) {
                             return toMoney(item.Contract_amount);
                         }
                     },
-                    { display: '归属部门', name: 'C_depname', width: 100 },
-                    { display: '归属员工', name: 'C_empname', width: 80 },
+                  
+                    { display: '业务员', name: 'C_empname', width: 80 },
+                      { display: '设计师', name: 'Emp_sj', width: 100 },
+                         { display: '施工监理', name: 'Emp_sg', width: 100 },
                     {
                         display: '合同到期', name: 'End_date', width: 110, render: function (item) {
                             var diff = DateDiff(item.End_date);

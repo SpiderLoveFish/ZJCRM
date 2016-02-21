@@ -44,18 +44,7 @@
                         display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                         { return (page - 1) * pagesize + rowindex + 1; }
                     },
-                    {
-                        display: '效果图', width: 40, render: function (item) {
-                            var html;
-                            if (item.DesCripe != ""){
-                                html = "<a href='" + item.DesCripe + "' target='_blank'>";
-                            html += "查看";
-                            html += "</a>";
-                        }
-                        else    html="暂无";
-                            return html;
-                        }
-                    },
+                 
                     {
                         display: '客户姓名', name: 'Customer', width: 80, align: 'left', render: function (item) {
                             var html = "<a href='javascript:void(0)' onclick=view(1," + item.id + ")>";
@@ -67,19 +56,45 @@
                     },
                     { display: '性别', name: 'Gender', width: 40 },
                     { display: '电话', name: 'tel', width: 120 },
-                    { display: '客户类型', name: 'CustomerType', width: 80 },
+                    { display: '小区', name: 'Community', width: 80 },
+                    { display: '地址', name: 'address', width: 200 },
+                       {
+                           display: '效果图', width: 40, render: function (item) {
+                               var html;
+                               if (item.DesCripe != "") {
+                                   html = "<a href='" + item.DesCripe + "' target='_blank'>";
+                                   html += "查看";
+                                   html += "</a>";
+                               }
+                               else html = "暂无";
+                               return html;
+                           }
+                       },
+                         {
+                             display: '监控', width: 40, render: function (item) {
+                                 var html;
+                                 if (item.JKDZ !== "") {
+                                     html = "<a href='" + item.JKDZ + "' target='_blank'>";
+                                     html += "查看";
+                                     html += "</a>";
+                                 }
+                                 else html = "暂无";
+                                 return html;
+                             }
+                         },
+                     { display: '客户类型', name: 'CustomerType', width: 80 },
                     { display: '客户类别', name: 'CustomerLevel', width: 80 },
                     { display: '客户来源', name: 'CustomerSource', width: 80 },
-                    { display: '地址', name: 'address', width: 200 },
                     //{ display: '省份', name: 'Provinces', width: 80 },
                     //{ display: '城市', name: 'City', width: 80 },
                     //{ display: '区镇', name: 'Towns', width: 80 },
-                    { display: '小区', name: 'Community', width: 80 },
-                    { display: '楼号', name: 'BNo', width: 80 },
-                    { display: '房号', name: 'RNo', width: 80 },
+                    //{ display: '楼号', name: 'BNo', width: 80 },
+                    //{ display: '房号', name: 'RNo', width: 80 },
                     { display: '客户职业', name: 'industry', width: 80 },
-                    { display: '部门', name: 'Department', width: 80 },
-                    { display: '员工', name: 'Employee', width: 80 },
+                   // { display: '部门', name: 'Department', width: 80 },
+                    { display: '业务员', name: 'Employee', width: 80 },
+                    { display: '设计师', name: 'Emp_sj', width: 80 },
+                    { display: '施工监理', name: 'Emp_sg', width: 80 },
                     { display: '客源状态', name: 'privatecustomer', width: 60 },
                     {
                         display: '最后跟进', name: 'lastfollow', width: 90, render: function (item) {
@@ -209,6 +224,7 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
+
                 items.push({
                     type: 'serchbtn',
                     text: '高级搜索',
@@ -429,14 +445,14 @@
         }
 
         function add() {
-            f_openWindow("CRM/Customer/Customer_add.aspx", "新增客户", 770, 530);
+            f_openWindow("CRM/Customer/Customer_add.aspx", "新增客户", 660, 530);
         }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('CRM/Customer/Customer_add.aspx?cid=' + row.id, "修改客户", 770, 530);
+                f_openWindow('CRM/Customer/Customer_add.aspx?cid=' + row.id, "修改客户", 660, 530);
             }
             else {
                 $.ligerDialog.warn('请选择行！');
@@ -720,12 +736,12 @@
                         <div style='width: 100px; float: left'>
                             <input type='text' id='T_Towns' name='T_Towns' />
                         </div>
-              
-                    </td>           
-                    
+
+                    </td>
+
                     <td>
                         <div style='width: 60px; text-align: right; float: right'>业务员：</div>
-                    </td>         
+                    </td>
                     <td>
                         <div style='width: 100px; float: left'>
                             <input type='text' id='department' name='department' />
@@ -750,7 +766,7 @@
                     </td>
                     <td>
                         <div style='width: 60px; text-align: right; float: right'>施工监理：</div>
-                    </td>         
+                    </td>
                     <td>
                         <div style='width: 100px; float: left'>
                             <input type='text' id='department_sg' name='department_sg' />
@@ -762,7 +778,7 @@
 
                     <td>
                         <div style='width: 60px; text-align: right; float: right'>设计师：</div>
-                    </td>         
+                    </td>
                     <td>
                         <div style='width: 100px; float: left'>
                             <input type='text' id='department_sj' name='department_sj' />

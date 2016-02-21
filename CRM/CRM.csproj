@@ -109,6 +109,8 @@
     <Content Include="CRM\ConsExam\CERep_Schedule.aspx" />
     <Content Include="CRM\ConsExam\CEStage_ViewDetail.aspx" />
     <Content Include="CRM\ConsExam\Getemp.aspx" />
+    <Content Include="CRM\ConsExam\JD_LIST_DEL.aspx" />
+    <Content Include="CRM\ConsExam\JD_LIST_DEL_Add.aspx" />
     <Content Include="CRM\ConsExam\SelectMaterials_add.aspx" />
     <Content Include="CRM\ConsExam\SelectMaterials.aspx" />
     <Content Include="CRM\ConsExam\kjl.aspx" />
@@ -3879,6 +3881,20 @@
     </Compile>
     <Compile Include="CRM\Cggl\GysGl_Add.aspx.designer.cs">
       <DependentUpon>GysGl_Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\ConsExam\JD_LIST_DEL.aspx.cs">
+      <DependentUpon>JD_LIST_DEL.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CRM\ConsExam\JD_LIST_DEL.aspx.designer.cs">
+      <DependentUpon>JD_LIST_DEL.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\ConsExam\JD_LIST_DEL_Add.aspx.cs">
+      <DependentUpon>JD_LIST_DEL_Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CRM\ConsExam\JD_LIST_DEL_Add.aspx.designer.cs">
+      <DependentUpon>JD_LIST_DEL_Add.aspx</DependentUpon>
     </Compile>
     <Compile Include="CRM\DataShare\Favorites_View.aspx.cs">
       <DependentUpon>Favorites_View.aspx</DependentUpon>

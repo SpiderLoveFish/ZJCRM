@@ -35,14 +35,7 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "save")
             {
-                string code = PageValidate.InputText(request["C_code"], 255);
-                DataSet codeds = ccp.GetList(" C_code='" + code + "' and product_id!=" + PageValidate.InputText(request["pid"], 50));
-                if (codeds.Tables[0].Rows.Count > 0)
-                {
-                    context.Response.Write("false:code");
-                    return;
-                }
-                
+         
                 model.category_id = int.Parse(request["T_product_category_val"]);
                 model.category_name = PageValidate.InputText(request["T_product_category"], 255);
                 model.product_name = PageValidate.InputText(request["T_product_name"], 255);
@@ -58,7 +51,46 @@ namespace XHD.CRM.Data
                 model.gys = PageValidate.InputText(request["T_gys"], 255);
                 model.zt = PageValidate.InputText(request["T_zt"], 255);
                 model.pp = PageValidate.InputText(request["T_pp"], 255);
-                model.C_code = PageValidate.InputText(request["C_code"], 255);
+               // model.C_code = PageValidate.InputText(request["C_code"], 255);
+                //---
+                string c_code = "";
+                try
+                {
+                    DataSet dscode = ccp.Get_code(int.Parse(request["T_product_category_val"]));
+                    if (dscode.Tables[0].Rows.Count > 0)
+                    {
+                        if (dscode.Tables[0].Rows[0][1].ToString() == "")
+                        {
+                            if (dscode.Tables[0].Rows[0][0].ToString() != "")
+                            {
+                                c_code = dscode.Tables[0].Rows[0][0].ToString() + "0001";
+                            }
+                        }
+                        else
+                        {
+                            //已经有的就不再改了
+                            if (PageValidate.InputText(request["C_code"], 255) == "")
+                            {
+                                int lsh = int.Parse(dscode.Tables[0].Rows[0][1].ToString().Substring(4, 4)) + 1;
+                                c_code = dscode.Tables[0].Rows[0][0].ToString() + lsh.ToString("0000");
+                            }
+                        }
+                    }
+                }
+                catch { c_code = PageValidate.InputText(request["C_code"], 255); }
+                //已经有的就不再改了
+                if (PageValidate.InputText(request["C_code"], 255) == "")
+                {
+                    model.C_code = c_code;
+                }
+
+                //---
+                string style = PageValidate.InputText(request["style"], 50);
+                 if (!string.IsNullOrEmpty(style) && style != "null")
+                 {
+                     if (style == "0") model.C_style = "主材";
+                     else if (style == "1") model.C_style = "基建";
+                 }
                 string pid = PageValidate.InputText(request["pid"], 50);
                 if (!string.IsNullOrEmpty(pid) && pid != "null")
                 {
@@ -131,9 +163,23 @@ namespace XHD.CRM.Data
                 }
                 else
                 {
-                   
+                    
                     model.isDelete = 0;
                     ccp.Add(model);
+                    //基地选材的时候，自动增加
+                    string AddType = PageValidate.InputText(request["AddType"], 50);
+                    if (!string.IsNullOrEmpty(AddType) && AddType != "null")
+                    {
+                        if (AddType == "SelectMat")
+                        {
+                            BLL.PurchaseList pl = new BLL.PurchaseList();
+                            int customerid = int.Parse(request["cid"]);
+                            string pro_id = ccp.GetList(" c_code='" + c_code + "'").Tables[0].Rows[0]["product_id"].ToString(); 
+                            //  if (pid.Length > 1) pid = pid.Substring(1);
+                            pl.InsertList(customerid, pro_id, emp_id.ToString());
+
+                        }
+                    }
                 }
             }
 

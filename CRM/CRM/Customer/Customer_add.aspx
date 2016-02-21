@@ -30,9 +30,11 @@
     <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
-        var ci = false;//逻辑运算
+        var ci = false;
+      
         $(function () {
             
+
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
 
@@ -93,6 +95,8 @@
                     $("#T_fwyt").val(obj.Fwyt);
                     $("#T_fwmj").val(obj.Fwmj);
                     $("#T_xy").val(obj.xy);
+                    $("#T_QQ").val(obj.QQ);
+                    $("#T_JKDZ").val(obj.JKDZ);
 
                     if (obj.Department && obj.Employee)
                         fillemp(obj.Department, obj.Department_id, obj.Employee, obj.Employee_id);
@@ -121,6 +125,8 @@
                     $("#T_industry").ligerComboBox({ width: 196, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=8&rnd=" + Math.random(), emptyText: '（空）', initValue: obj.industry_id });
                     //房屋户型
                     $("#T_fwhx").ligerComboBox({ width: 196, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=9&rnd=" + Math.random(), emptyText: '（空）', initValue: obj.Fwhx_id });
+                    //微信状态
+                    $("#T_WXZT_NAME").ligerComboBox({ width: 196, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=15&rnd=" + Math.random(), emptyText: '（空）', initValue: obj.WXZT_ID });
 
                     //装修进度
                     $("#T_zxjd").ligerComboBox({ width: 196, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=11&rnd=" + Math.random(), emptyText: '（空）', initValue: obj.Zxjd_id });
@@ -152,7 +158,7 @@
 
                                 //$("#T_address").val(address);//T_BNo T_RNo
                                 //$("#h_address").val(newvalue);
-
+                             
                                 $.get("../../data/Param_City.ashx?Action=getAddressByID&pid=" + newvalue + "&rnd=" + Math.random(),
                                     function (data, textStatus) {
                                         
@@ -165,11 +171,14 @@
 
                                         $("#T_address").val(address);//T_BNo T_RNo
                                         $("#h_address").val(data);
-                                        if (obj.address != '' && ci) { ci = true; }
-                                        else {
-                                            $("#T_address").val(obj.address);
-                                            ci = true;
+                                       
+                                        if ((obj.address != '') && ci > 0) { ci=true; }
+                                        else
+                                        {
+                                            $("#T_address").val(obj.address);//T_BNo T_RNo
+                                            ci=true;
                                         }
+
                                     });
 
 
@@ -328,6 +337,8 @@
             $("#T_dep_sj").val(dep);
             $("#T_dep_val_sj").val(depid);
         }
+
+
         function f_selectContactCancel(item, dialog) {
             dialog.close();
         }
@@ -598,7 +609,7 @@
             </tr>
             <tr>
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">装修进度：</div>
+                    <div style="width: 80px; text-align: right; float: right">客户等级：</div>
                 </td>
                 <td>
                     <input id="T_zxjd" name="T_zxjd" type="text" />
@@ -610,12 +621,33 @@
                     <input id="T_zxfg" name="T_zxfg" type="text" />
                 </td>
             </tr>
+             <tr>
+                <td>
+                    <div style="width: 80px; text-align: right; float: right">QQ号码：</div>
+                </td>
+                <td>
+                     <input type="text" id="T_QQ" name="T_QQ" ltype="text" ligerui="{width:196}" /></td>
+                </td>
+                <td>
+                    <div style="width: 80px; text-align: right; float: right">微信状态：</div>
+                </td>
+                <td>
+                    <input id="T_WXZT_NAME" name="T_WXZT_NAME" type="text" />
+                </td>
+            </tr>
             <tr>
                 <td>
                     <div style="width: 80px; text-align: right; float: right">效果图网址：</div>
                 </td>
                 <td colspan="3">
                     <input id="T_descript" name="T_descript" type="text" ltype="text" ligerui="{width:490}" /></td>
+            </tr>
+             <tr>
+                <td>
+                    <div style="width: 80px; text-align: right; float: right">监控地址：</div>
+                </td>
+                <td colspan="3">
+                    <input id="T_JKDZ" name="T_JKDZ" type="text" ltype="text" ligerui="{width:490}" /></td>
             </tr>
             <tr>
                 <td>

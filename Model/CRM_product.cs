@@ -31,6 +31,7 @@ namespace XHD.Model
         private string _zt;
         private string _pp;
         private string _C_code;
+        private string _c_style;
 
 		/// <summary>
 		/// 
@@ -190,6 +191,12 @@ namespace XHD.Model
         {
             set { _C_code = value; }
             get { return _C_code; }
+        }
+
+        public string C_style
+        {
+            set { _c_style = value; }
+            get { return _c_style; }
         }
 		#endregion Model
 

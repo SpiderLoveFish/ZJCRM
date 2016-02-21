@@ -40,7 +40,8 @@ namespace XHD.CRM.Data
                 model.parentid = int.Parse(parentid);
                 model.product_category = Common.PageValidate.InputText(request["T_category_name"], 250);
                 model.product_icon = Common.PageValidate.InputText(request["T_category_icon"], 250);
-
+                model.c_code = Common.PageValidate.InputText(request["T_code"], 250);
+                model.c_style = Common.PageValidate.InputText(request["T_style"], 250);
                 string id = PageValidate.InputText( request["id"],50);
                 string pid = PageValidate.InputText( request["T_category_parent_val"],50);
                 if (!string.IsNullOrEmpty(id) && id != "null")
@@ -136,7 +137,19 @@ namespace XHD.CRM.Data
             }
             if (request["Action"] == "tree")
             {
-                DataSet ds = ccpc.GetAllList();
+                DataSet ds = null;
+                //还有地方crm_product.ashx  save
+              string style=  PageValidate.InputText(request["style"],50);
+              if (!string.IsNullOrEmpty(style) && style != "null")
+              {
+                  if (style == "0") ds = ccpc.GetList(" c_style='主材'");
+                  else if (style == "1") ds = ccpc.GetList(" c_style='基建'");
+                  else   ds = ccpc.GetAllList();
+              }
+              else
+              {
+                    ds = ccpc.GetAllList();
+              }
                 StringBuilder str = new StringBuilder();
                 str.Append("[");
                 str.Append(GetTreeString(0, ds.Tables[0]));
@@ -319,6 +332,15 @@ namespace XHD.CRM.Data
             {
                 return false;
             }
+        }
+        int stringtoint(string str)
+        {
+            int i = 0;
+            try {
+                i = int.Parse(str);
+            }
+            catch { }
+            return i;
         }
     }
 }

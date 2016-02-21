@@ -68,6 +68,8 @@
                     //alert(obj.constructor); //String 构造函数
                     $("#T_category_name").val(obj.product_category);
                     $("#T_category_icon").val(obj.product_icon);
+                    $("#T_code").val(obj.c_code);
+                    $("#T_style").val(obj.c_style);
                     $("#menuicon").attr("src", "../../" + obj.product_icon);
                     $("#T_category_parent").ligerComboBox({
                         width: 180,
@@ -202,7 +204,25 @@
                     <input type="text" id="T_category_icon" name="T_category_icon" ltype="text" ligerui="{width:180}" validate="{required:true}" />
                 </td>
             </tr>
+             <tr>
+                <td height="23" colspan="2">
 
+                    <div align="left" style="width: 62px">缩写简称：</div>
+                </td>
+                <td height="23">
+                    <input type="text" id="T_code" name="T_code" ltype="text" ligerui="{width:180}" validate="{required:true}" />
+                <label >4位，不足补0</label>
+                </td>
+            </tr>
+            <tr>
+                <td height="23" colspan="2">
+
+                    <div align="left" style="width: 62px">类别：</div>
+                </td>
+                <td height="23"> 
+                    <input id="T_style" name="T_style" type="text" ltype="select" ligerui="{width:196,data:[{id:'主材',text:'主材'},{id:'基建',text:'基建'}]}" validate="{required:true}" /></td>
+             
+            </tr>
         </table>
     </form>
 </body>

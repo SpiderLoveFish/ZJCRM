@@ -67,7 +67,7 @@
                 initValue: getparastr("categoryid"),
                 treeLeafOnly: false,
                 tree: {
-                    url: '../../data/crm_product_category.ashx?Action=tree&rnd=' + Math.random(),
+                    url: '../../data/crm_product_category.ashx?Action=tree&style='+getparastr("style")+'&rnd=' + Math.random(),
                     //onSelect: onSelect,
                     idFieldName: 'id',
                     valueField: 'text',
@@ -80,7 +80,7 @@
                         newvalue = -1;
 
                     } else {
-                        $("#C_code").val((getpinyin(newtext)).substr(0, 2));
+                      //  $("#C_code").val((getpinyin(newtext)).substr(0, 2));
                     }
                 }
             });
@@ -101,7 +101,7 @@
                 var arr = [];
                 arr.push(UE.getEditor('editor').getContent());
                 var sendtxt = "&Action=save&pid=" + getparastr("pid") + "&T_content=" + escape(arr);
-                var issave = $("form :input").fieldSerialize() + sendtxt + "&Type=SelectMaterials"
+                var issave = $("form :input").fieldSerialize() + sendtxt + "&AddType=SelectMat&style=" + getparastr("style") + "&cid=" + getparastr("cid");
                 if (issave) {
                     $.ligerDialog.waitting('数据保存中,请稍候...');
                     $.ajax({
@@ -139,7 +139,7 @@
                             var arr = [];
                             arr.push(UE.getEditor('editor').getContent());
                             var sendtxt = "&Action=save&pid=" + getparastr("pid") + "&T_content=" + escape(arr);
-                            return $("form :input").fieldSerialize() + sendtxt;
+                            return $("form :input").fieldSerialize() + sendtxt+"&style="+getparastr("style");
                         }
              
           
@@ -294,7 +294,7 @@
                     <div align="left" style="width:60px">物料代码：</div>
                 </td>
                 <td >
-                    <input type='text' id="C_code" name="C_code" ltype="text" ligerui="{width:280}"   /></td>
+                    <input type='text' id="C_code" name="C_code" ltype="text" ligerui="{width:280,disabled:true}"   /></td>
            <td>
                     <div align="left" style="width: 60px"></div>
                 </td>

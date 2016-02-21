@@ -267,7 +267,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 id,Contract_name,Serialnumber,Customer_id,Customer_name,C_depid,C_depname,C_empid,C_empname,Contract_amount,Pay_cycle,Start_date,End_date,Sign_date,Customer_Contractor,Our_Contractor_depid,Our_Contractor_depname,Our_Contractor_id,Our_Contractor_name,Creater_id,Creater_name,Create_time,Main_Content,Remarks,File_serialnumber,isDelete,Delete_time from CRM_contract ");
+            strSql.Append("select  top 1 id,Contract_name,Serialnumber,Customer_id,Customer_name,C_depid,C_depname,C_empid,C_empname,Contract_amount,Pay_cycle,Start_date,End_date,Sign_date,Customer_Contractor,Our_Contractor_depid,Our_Contractor_depname,Our_Contractor_id,Our_Contractor_name,Creater_id,Creater_name,Create_time,Main_Content,Remarks,File_serialnumber,isDelete,Delete_time from CRM_contract ");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)
@@ -400,8 +400,8 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select id,Contract_name,Serialnumber,Customer_id,Customer_name,C_depid,C_depname,C_empid,C_empname,Contract_amount,Pay_cycle,Start_date,End_date,Sign_date,Customer_Contractor,Our_Contractor_depid,Our_Contractor_depname,Our_Contractor_id,Our_Contractor_name,Creater_id,Creater_name,Create_time,Main_Content,Remarks,File_serialnumber,isDelete,Delete_time ");
-			strSql.Append(" FROM CRM_contract ");
+            strSql.Append("select id,Contract_name,Serialnumber,Customer_id,Customer_name,C_depid,C_depname,C_empid,C_empname,Contract_amount,Pay_cycle,Start_date,End_date,Sign_date,Customer_Contractor,Our_Contractor_depid,Our_Contractor_depname,Our_Contractor_id,Our_Contractor_name,Creater_id,Creater_name,Create_time,Main_Content,Remarks,File_serialnumber,isDelete,Delete_time,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Emp_id_sj,Emp_sj,Dpt_id_sj,Dpt_sj,address ");
+			strSql.Append(" FROM V_CRM_contract ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -420,8 +420,8 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" id,Contract_name,Serialnumber,Customer_id,Customer_name,C_depid,C_depname,C_empid,C_empname,Contract_amount,Pay_cycle,Start_date,End_date,Sign_date,Customer_Contractor,Our_Contractor_depid,Our_Contractor_depname,Our_Contractor_id,Our_Contractor_name,Creater_id,Creater_name,Create_time,Main_Content,Remarks,File_serialnumber,isDelete,Delete_time ");
-			strSql.Append(" FROM CRM_contract ");
+            strSql.Append(" id,Contract_name,Serialnumber,Customer_id,Customer_name,C_depid,C_depname,C_empid,C_empname,Contract_amount,Pay_cycle,Start_date,End_date,Sign_date,Customer_Contractor,Our_Contractor_depid,Our_Contractor_depname,Our_Contractor_id,Our_Contractor_name,Creater_id,Creater_name,Create_time,Main_Content,Remarks,File_serialnumber,isDelete,Delete_time,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Emp_id_sj,Emp_sj,Dpt_id_sj,Dpt_sj,address ");
+            strSql.Append(" FROM V_CRM_contract ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -438,10 +438,10 @@ namespace XHD.DAL
 			StringBuilder strSql = new StringBuilder();
 			StringBuilder strSql1 = new StringBuilder();
 			strSql.Append("select ");
-			strSql.Append(" top " + PageSize + " * FROM CRM_contract ");
-			strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_contract ");
+			strSql.Append(" top " + PageSize + " * FROM V_CRM_contract ");
+            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM V_CRM_contract ");
 			strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-			strSql1.Append(" select count(id) FROM CRM_contract ");
+            strSql1.Append(" select count(id) FROM V_CRM_contract ");
 			if (strWhere.Trim() != "")
 			{
 			    strSql.Append(" and " + strWhere);

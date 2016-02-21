@@ -348,20 +348,20 @@ namespace XHD.CRM.Data
                             returntxt = " and 1=2 ";
                             break;
                         case "my":
-                            returntxt = " and  (C_empid=" + arr[1] + " or Creater_id=" + arr[1] + ")";
+                            returntxt = " and  (C_empid=" + arr[1] + " or Creater_id=" + arr[1] + " or Emp_id_sj=" + arr[1] + " or Emp_id_sg=" + arr[1] + ")";
                             break;
                         case "dep":
                             if (string.IsNullOrEmpty(arr[1]))
-                                returntxt = " and  (C_empid=" + int.Parse(uid) + " or Creater_id=" + int.Parse(uid) + ")";
+                                returntxt = " and  (C_empid=" + int.Parse(uid) + " or Creater_id=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + ")";
                             else
-                                returntxt = " and  (C_depid=" + arr[1] + " or Creater_id=" + int.Parse(uid) + ")";
+                                returntxt = " and  (C_depid=" + arr[1] + " or Creater_id=" + int.Parse(uid) + " or Dpt_id_sj=" + arr[1] + " or Dpt_id_sg=" + arr[1] + ")";
                             break;
                         case "depall":
                             BLL.hr_department dep = new BLL.hr_department();
                             DataSet ds = dep.GetAllList();
                             string deptask = GetDepTask(int.Parse(arr[1]), ds.Tables[0]);
                             string intext = arr[1] + "," + deptask;
-                            returntxt = " and  (C_depid in (" + intext.TrimEnd(',') + ")" + " or Creater_id=" + int.Parse(uid) + ")";
+                            returntxt = " and  (C_depid in (" + intext.TrimEnd(',') + ")" + " or Dpt_id_sj in (" + intext.TrimEnd(',') + ")" + " or Dpt_id_sg in (" + intext.TrimEnd(',') + ")" + " or Creater_id=" + int.Parse(uid) + ")";
                             break;
                     }
                 }

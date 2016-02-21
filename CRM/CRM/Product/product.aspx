@@ -24,9 +24,10 @@
         var manager = "";
         var treemanager;
         $(function () {
+            //style=0 材料，1预算
             $("#layout1").ligerLayout({ leftWidth: 200, allowLeftResize: false, allowLeftCollapse: true, space: 2, heightDiff: -1 });
             $("#tree1").ligerTree({
-                url: '../../data/crm_product_category.ashx?Action=tree&rnd=' + Math.random(),
+                url: '../../data/crm_product_category.ashx?Action=tree&style=' + getparastr("style") + '&rnd=' + Math.random(),
                 onSelect: onSelect,
                 idFieldName: 'id',
                 //parentIDFieldName: 'pid',
@@ -215,7 +216,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var rows = manager.getCheckedRows();
             if (rows.length == 1)
-                f_openWindow('crm/product/product_add.aspx?pid=' + rows[0].product_id, "修改产品", 790, 600);
+                f_openWindow('crm/product/product_add.aspx?style=' + getparastr("style") + '&pid=' + rows[0].product_id, "修改产品", 790, 600);
             else
                 $.ligerDialog.warn('请选择产品！');
         }
@@ -224,7 +225,7 @@
             var notes = $("#tree1").ligerGetTreeManager().getSelected();
 
             if (notes != null && notes != undefined) {
-                f_openWindow('crm/product/product_add.aspx?categoryid=' + notes.data.id, "新增产品", 790, 600);
+                f_openWindow('crm/product/product_add.aspx?style=' + getparastr("style") + '&categoryid=' + notes.data.id, "新增产品", 790, 600);
             }
             else {
                 $.ligerDialog.warn('请选择产品类别！');

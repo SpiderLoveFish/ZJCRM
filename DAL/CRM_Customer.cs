@@ -45,9 +45,9 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into CRM_Customer(");
-            strSql.Append("Serialnumber,Customer,address,tel,fax,site,industry,Provinces_id,Provinces,City_id,City,Towns_id,Towns,Community_id,Community,BNo,RNo,Gender,CustomerType_id,CustomerType,CustomerLevel_id,CustomerLevel,CustomerSource_id,CustomerSource,DesCripe,Remarks,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_id,Create_name,Create_date,isDelete,Delete_time,industry_id,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy)");
+            strSql.Append("Serialnumber,Customer,address,tel,fax,site,industry,Provinces_id,Provinces,City_id,City,Towns_id,Towns,Community_id,Community,BNo,RNo,Gender,CustomerType_id,CustomerType,CustomerLevel_id,CustomerLevel,CustomerSource_id,CustomerSource,DesCripe,Remarks,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_id,Create_name,Create_date,isDelete,Delete_time,industry_id,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,QQ,WXZT_ID,WXZT_NAME,JKDZ)");
             strSql.Append(" values (");
-            strSql.Append("@Serialnumber,@Customer,@address,@tel,@fax,@site,@industry,@Provinces_id,@Provinces,@City_id,@City,@Towns_id,@Towns,@Community_id,@Community,@BNo,@RNo,@Gender,@CustomerType_id,@CustomerType,@CustomerLevel_id,@CustomerLevel,@CustomerSource_id,@CustomerSource,@DesCripe,@Remarks,@Department_id,@Department,@Employee_id,@Employee,@privatecustomer,@lastfollow,@Create_id,@Create_name,@Create_date,@isDelete,@Delete_time,@industry_id,@Jfrq,@Zxrq,@Jhrq1,@Jhrq2,@Fwyt,@Fwmj,@Fwhx_id,@Fwhx,@Zxjd_id,@Zxjd,@Zxfg_id,@Zxfg,@Dpt_id_sg,@Dpt_sg,@Emp_id_sg,@Emp_sg,@Dpt_id_sj,@Dpt_sj,@Emp_id_sj,@Emp_sj,@xy)");
+            strSql.Append("@Serialnumber,@Customer,@address,@tel,@fax,@site,@industry,@Provinces_id,@Provinces,@City_id,@City,@Towns_id,@Towns,@Community_id,@Community,@BNo,@RNo,@Gender,@CustomerType_id,@CustomerType,@CustomerLevel_id,@CustomerLevel,@CustomerSource_id,@CustomerSource,@DesCripe,@Remarks,@Department_id,@Department,@Employee_id,@Employee,@privatecustomer,@lastfollow,@Create_id,@Create_name,@Create_date,@isDelete,@Delete_time,@industry_id,@Jfrq,@Zxrq,@Jhrq1,@Jhrq2,@Fwyt,@Fwmj,@Fwhx_id,@Fwhx,@Zxjd_id,@Zxjd,@Zxfg_id,@Zxfg,@Dpt_id_sg,@Dpt_sg,@Emp_id_sg,@Emp_sg,@Dpt_id_sj,@Dpt_sj,@Emp_id_sj,@Emp_sj,@xy,@QQ,@WXZT_ID,@WXZT_NAME,@JKDZ)");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
 					new SqlParameter("@Serialnumber", SqlDbType.VarChar,250),
@@ -108,7 +108,11 @@ namespace XHD.DAL
                     new SqlParameter("@Dpt_sj",SqlDbType.VarChar,50),
                     new SqlParameter("@Emp_id_sj",SqlDbType.Int,4),
                     new SqlParameter("@Emp_sj",SqlDbType.VarChar,50),
-                       new SqlParameter("@xy",SqlDbType.VarChar,50)
+                       new SqlParameter("@xy",SqlDbType.VarChar,50),
+                        new SqlParameter("@WXZT_ID",SqlDbType.Int,4),
+                    new SqlParameter("@WXZT_NAME",SqlDbType.VarChar,50),
+                    new SqlParameter("@QQ",SqlDbType.VarChar,50),
+                      new SqlParameter("@JKDZ",SqlDbType.VarChar,250)
                                         };
             parameters[0].Value = model.Serialnumber;
             parameters[1].Value = model.Customer;
@@ -169,6 +173,10 @@ namespace XHD.DAL
             parameters[56].Value = model.Emp_id_sj;
             parameters[57].Value = model.Emp_sj;
             parameters[58].Value = model.xy;
+            parameters[59].Value = model.WXZT_ID;
+            parameters[60].Value = model.WXZT_NAME;
+            parameters[61].Value = model.QQ;
+            parameters[62].Value = model.JKDZ;
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {
@@ -239,6 +247,10 @@ namespace XHD.DAL
             strSql.Append("Emp_id_sj=@Emp_id_sj,");
             strSql.Append("Emp_sj=@Emp_sj");
             strSql.Append(" ,xy=@xy");
+            strSql.Append(" ,WXZT_ID=@WXZT_ID");
+            strSql.Append(" ,WXZT_NAME=@WXZT_NAME");
+            strSql.Append(" ,QQ=@QQ");
+            strSql.Append(" ,JKDZ=@JKDZ");
             strSql.Append(" where id=@id");
             SqlParameter[] parameters = {
 					new SqlParameter("@Serialnumber", SqlDbType.VarChar,250),
@@ -294,6 +306,10 @@ namespace XHD.DAL
                     new SqlParameter("@Emp_id_sj",SqlDbType.Int,4),
                     new SqlParameter("@Emp_sj",SqlDbType.VarChar,50),
                        new SqlParameter("@xy",SqlDbType.VarChar,50),
+                              new SqlParameter("@WXZT_ID",SqlDbType.Int,4),
+                         new SqlParameter("@WXZT_NAME",SqlDbType.VarChar,50),
+                           new SqlParameter("@QQ",SqlDbType.VarChar,50),
+                              new SqlParameter("@JKDZ",SqlDbType.VarChar,250),
                     new SqlParameter("@id", SqlDbType.Int,4)
                                         };
             parameters[0].Value = model.Serialnumber;
@@ -349,7 +365,11 @@ namespace XHD.DAL
             parameters[50].Value = model.Emp_id_sj;
             parameters[51].Value = model.Emp_sj;
             parameters[52].Value = model.xy;
-            parameters[53].Value = model.id;
+            parameters[53].Value = model.WXZT_ID;
+            parameters[54].Value = model.WXZT_NAME;
+            parameters[55].Value = model.QQ;
+            parameters[56].Value = model.JKDZ;
+            parameters[57].Value = model.id;
 
             int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -473,7 +493,7 @@ namespace XHD.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select  top 1 id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces_id,Provinces,City_id,City,Towns_id,Towns,Community_id,Community,BNo,RNo,Gender,CustomerType_id,CustomerType,CustomerLevel_id,CustomerLevel,CustomerSource_id,CustomerSource,DesCripe,Remarks,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_id,Create_name,Create_date,isDelete,Delete_time,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Emp_id_sg,Emp_sg,Emp_id_sj,Emp_sj,xy from CRM_Customer ");
+            strSql.Append("select  top 1 id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces_id,Provinces,City_id,City,Towns_id,Towns,Community_id,Community,BNo,RNo,Gender,CustomerType_id,CustomerType,CustomerLevel_id,CustomerLevel,CustomerSource_id,CustomerSource,DesCripe,Remarks,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_id,Create_name,Create_date,isDelete,Delete_time,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Emp_id_sg,Emp_sg,Emp_id_sj,Emp_sj,xy,WXZT_ID,WXZT_NAME,QQ,JKDZ from CRM_Customer ");
             strSql.Append(" where id=@id");
             SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)
@@ -720,6 +740,20 @@ namespace XHD.DAL
                 {
                     model.Emp_sj = ds.Tables[0].Rows[0]["xy"].ToString();
                 }
+
+                if (ds.Tables[0].Rows[0]["WXZT_ID"] != null && ds.Tables[0].Rows[0]["WXZT_ID"].ToString() != "")
+                {
+                    model.WXZT_ID = int.Parse(ds.Tables[0].Rows[0]["WXZT_ID"].ToString());
+                }
+                if (ds.Tables[0].Rows[0]["WXZT_NAME"] != null && ds.Tables[0].Rows[0]["WXZT_NAME"].ToString() != "")
+                {
+                    model.WXZT_NAME = ds.Tables[0].Rows[0]["WXZT_NAME"].ToString();
+                }
+
+                if (ds.Tables[0].Rows[0]["JKDZ"] != null && ds.Tables[0].Rows[0]["JKDZ"].ToString() != "")
+                {
+                    model.JKDZ = ds.Tables[0].Rows[0]["JKDZ"].ToString();
+                }
                 return model;
             }
             else
@@ -734,7 +768,7 @@ namespace XHD.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select id,Serialnumber,Customer,address,tel,fax,site,industry_id,industry,Provinces_id,Provinces,City_id,City,Towns_id,Towns,Community_id,Community,BNo,RNo,Gender,CustomerType_id,CustomerType,CustomerLevel_id,CustomerLevel,CustomerSource_id,CustomerSource,DesCripe,Remarks,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_id,Create_name,Create_date,isDelete,Delete_time,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj ");
+            strSql.Append("select id,Serialnumber,Customer,address,tel,fax,site,industry_id,industry,Provinces_id,Provinces,City_id,City,Towns_id,Towns,Community_id,Community,BNo,RNo,Gender,CustomerType_id,CustomerType,CustomerLevel_id,CustomerLevel,CustomerSource_id,CustomerSource,DesCripe,Remarks,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_id,Create_name,Create_date,isDelete,Delete_time,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,WXZT_ID,WXZT_NAME,QQ,JKDZ ");
             strSql.Append(" FROM CRM_Customer ");
             if (strWhere.Trim() != "")
             {
@@ -750,7 +784,7 @@ namespace XHD.DAL
             strSql.Append(" id,");
             strSql.Append(" ROW_NUMBER() over (order by id) AS number, Customer,address,tel,CustomerType");
             strSql.Append(" FROM dbo.CRM_Customer)AA");
-            strSql.Append(" WHERE  number  between (" + pageIndex + "-1)*" + pageSize + " and " + pageIndex + "*" + pageSize + " ");
+            strSql.Append(" WHERE  number  between (" + pageIndex + "-1)*" + pageSize + " and" + pageIndex + "*" + pageSize + ")");
 
             return DbHelperSQL.Query(strSql.ToString());
         }
@@ -767,7 +801,7 @@ namespace XHD.DAL
             {
                 strSql.Append(" top " + Top.ToString());
             }
-            strSql.Append(" id,Serialnumber,Customer,address,tel,fax,site,industry_id,industry,Provinces_id,Provinces,City_id,City,Towns_id,Towns,Community_id,Community,BNo,RNo,Gender,CustomerType_id,CustomerType,CustomerLevel_id,CustomerLevel,CustomerSource_id,CustomerSource,DesCripe,Remarks,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_id,Create_name,Create_date,isDelete,Delete_time,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy ");
+            strSql.Append(" id,Serialnumber,Customer,address,tel,fax,site,industry_id,industry,Provinces_id,Provinces,City_id,City,Towns_id,Towns,Community_id,Community,BNo,RNo,Gender,CustomerType_id,CustomerType,CustomerLevel_id,CustomerLevel,CustomerSource_id,CustomerSource,DesCripe,Remarks,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_id,Create_name,Create_date,isDelete,Delete_time,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,WXZT_ID,WXZT_NAME,QQ,JKDZ ");
             strSql.Append(" FROM CRM_Customer ");
             if (strWhere.Trim() != "")
             {
@@ -785,7 +819,7 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces,City,Towns,Community,BNo,RNo,Gender,CustomerType,CustomerLevel,CustomerSource,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_date,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,DesCripe FROM CRM_Customer ");
+            strSql.Append(" top " + PageSize + " id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces,City,Towns,Community,BNo,RNo,Gender,CustomerType,CustomerLevel,CustomerSource,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_date,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,DesCripe,WXZT_ID,WXZT_NAME,QQ,JKDZ FROM CRM_Customer ");
             strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_Customer ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(id) FROM CRM_Customer ");

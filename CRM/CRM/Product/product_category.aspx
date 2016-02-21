@@ -22,13 +22,17 @@
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
-                    { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowid + 1; } },
+                   { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                     { display: '类别名称', name: 'product_category', width: 250, align: 'left' },
                     {
                         display: '图标', name: 'product_icon', width: 50, render: function (item) {
                             return "<div style='margin-top:3px;'><img src='../../" + item.product_icon + "'/></div>";
                         }
-                    }
+                    },
+                     { display: '类别简称', name: 'c_code', width: 120, align: 'left' },
+
+                      { display: '类型', name: 'c_style', width: 120, align: 'left' }
+
                 ],
                 dataAction: 'local',
                 pageSize: 30,

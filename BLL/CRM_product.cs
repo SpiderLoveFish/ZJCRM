@@ -232,6 +232,15 @@ namespace XHD.BLL
         {
             return dal.GetList(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
+         /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet Get_code(int catid)
+        {
+            return dal.Get_code(catid);
+        }
+      
+        
 
         #endregion  Method
     }
