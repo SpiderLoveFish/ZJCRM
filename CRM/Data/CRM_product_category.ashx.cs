@@ -180,6 +180,25 @@ namespace XHD.CRM.Data
                 str.Append("]");
                 context.Response.Write(str);
             }
+            if (request["Action"] == "isfirstparent")
+            {
+                string cid = PageValidate.InputText(request["id"], 50);
+                string dt;
+                if (PageValidate.IsNumber(cid))
+                {
+                    DataSet ds = ccpc.GetList("id=" + cid);
+                    if (ds.Tables[0].Rows.Count > 0)
+                        dt = ds.Tables[0].Rows[0]["C_style"].ToString();
+                    else dt = "";
+                }
+                else
+                {
+                    dt = "";
+                }
+
+                context.Response.Write(dt);
+            }
+
             if (request["Action"] == "form")
             {
                 string cid = PageValidate.InputText(request["id"],50);

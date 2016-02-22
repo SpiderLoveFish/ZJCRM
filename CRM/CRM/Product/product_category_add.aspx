@@ -5,7 +5,7 @@
 <head>
     <title></title>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-
+ 
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
@@ -69,7 +69,10 @@
                     $("#T_category_name").val(obj.product_category);
                     $("#T_category_icon").val(obj.product_icon);
                     $("#T_code").val(obj.c_code);
-                    $("#T_style").val(obj.c_style);
+                    //$("#T_style").val(obj.c_style);
+ 
+                    var g = $("#T_style").ligerComboBox({ data: [{ id: '主材', text: '主材' }, { id: '基建', text: '基建' }] });
+
                     $("#menuicon").attr("src", "../../" + obj.product_icon);
                     $("#T_category_parent").ligerComboBox({
                         width: 180,
@@ -90,6 +93,26 @@
                             idFieldName: 'id',
                             //parentIDFieldName: 'pid',
                             checkbox: false
+                        },
+                        onSelected: function (newvalue, newtext) {
+                            if (!newvalue) {
+                                newvalue = -1;
+                                g.setUnReadOnly();
+                                    $("#T_style").removeClass("l-text-disabled");
+                            } else {
+                                $.ajax({
+                                    type: "GET",
+                                    url: "../../data/Crm_product_category.ashx", /* 注意后面的名字对应CS的方法名称 */
+                                    data: { Action: 'isfirstparent', id: newvalue, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                                    success: function (result) {
+                                        $("#T_style").val(result);
+
+                                    }
+                                });
+                                g.setReadOnly();
+                                $("#T_style").addClass("l-text-disabled");
+                                //  $("#C_code").val((getpinyin(newtext)).substr(0, 2));
+                            }
                         }
                     })
 
@@ -220,7 +243,8 @@
                     <div align="left" style="width: 62px">类别：</div>
                 </td>
                 <td height="23"> 
-                    <input id="T_style" name="T_style" type="text" ltype="select" ligerui="{width:196,data:[{id:'主材',text:'主材'},{id:'基建',text:'基建'}]}" validate="{required:true}" /></td>
+                    <%--,data:[{id:'主材',text:'主材'},{id:'基建',text:'基建'}]  ltype="select"--%>
+                    <input id="T_style" name="T_style" type="text"  ligerui="{width:176}" validate="{required:true}" /></td>
              
             </tr>
         </table>
