@@ -777,15 +777,16 @@ namespace XHD.DAL
             return DbHelperSQL.Query(strSql.ToString());
         }
 
-        public DataSet GetPageList(int pageIndex, int pageSize)
+        public DataSet GetPageList(int pageIndex, int pageSize,string where )
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append(" SELECT * FROM ( SELECT");
             strSql.Append(" id,");
             strSql.Append(" ROW_NUMBER() over (order by id) AS number, Customer,address,tel,CustomerType");
             strSql.Append(" FROM dbo.CRM_Customer)AA");
-            strSql.Append(" WHERE  number  between (" + pageIndex + "-1)*" + pageSize + " and" + pageIndex + "*" + pageSize + ")");
-
+            strSql.Append(" WHERE  number  between (" + pageIndex + "-1)*" + pageSize + " and " + pageIndex + "*" + pageSize + " ");
+            if (where != "")
+                strSql.Append(" and(  tel like '%" + where + "%'  or Customer like '%" + where + "%'  or address like '%" + where + "%')");
             return DbHelperSQL.Query(strSql.ToString());
         }
 

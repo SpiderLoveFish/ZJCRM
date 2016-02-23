@@ -72,10 +72,10 @@ namespace XHD.CRM.webserver
 
 
         [WebMethod]
-        public void GetCustomer_page(int pageIndex, int pageSize)
+        public void GetCustomer_page(int pageIndex, int pageSize,string where)
         {
             BLL.CRM_Customer cus = new BLL.CRM_Customer();
-            DataSet ds = cus.GetPageList(pageIndex, pageSize);
+            DataSet ds = cus.GetPageList(pageIndex, pageSize,where);
             string returnstr = "{}";
             if (ds.Tables[0].Rows.Count > 0)
             {

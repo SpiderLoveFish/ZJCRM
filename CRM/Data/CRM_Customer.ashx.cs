@@ -478,6 +478,24 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            //Form JSON
+            if (request["Action"] == "formsgjd")
+            {
+                string id = PageValidate.InputText(request["cid"], 50);
+                string dt;
+                if (PageValidate.IsNumber(id))
+                {
+                    DataSet ds = customer.GetList("id=" + id);
+                    dt = Common.DataToJson.DataToJSON(ds);
+                }
+                else
+                {
+                    dt = "{}";
+                }
+
+
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "count")
             {
                 string id = request["id"];
