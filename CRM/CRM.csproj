@@ -87,6 +87,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="copyright.html" />
+    <Content Include="CRM\Budge\BudgeMain.aspx" />
+    <Content Include="CRM\Budge\BudgeModelMain.aspx" />
+    <Content Include="CRM\Budge\BudgeMainAdd.aspx" />
+    <Content Include="CRM\Budge\BudgeModelMainAdd.aspx" />
     <Content Include="CRM\Building\Building.aspx" />
     <Content Include="CRM\Building\Building_Add.aspx" />
     <Content Include="CRM\Building\Building_map.aspx" />
@@ -750,6 +754,7 @@
     <Content Include="Data\SingleSignOn.ashx" />
     <Content Include="FakesAssemblies\XHD.BLL.Fakes.fakesconfig" />
     <Content Include="Data\PurchaseList.ashx" />
+    <Content Include="Data\Budge.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -4059,6 +4064,9 @@
     </Compile>
     <Compile Include="Data\CE_Para.ashx.cs">
       <DependentUpon>CE_Para.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Budge.ashx.cs">
+      <DependentUpon>Budge.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\PurchaseList.ashx.cs">
       <DependentUpon>PurchaseList.ashx</DependentUpon>

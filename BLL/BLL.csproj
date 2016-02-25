@@ -120,6 +120,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Budge_BasicDetail.cs" />
+    <Compile Include="Budge_BasicMain.cs" />
+    <Compile Include="Budge_Model.cs" />
+    <Compile Include="budge_modelMain.cs" />
     <Compile Include="CERep_Schedule.cs" />
     <Compile Include="CE_Para.cs" />
     <Compile Include="f_bbs.cs" />

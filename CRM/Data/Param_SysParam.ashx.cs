@@ -145,7 +145,7 @@ namespace XHD.CRM.Data
                     case 6: ds = order.GetList("Order_status_id=" + int.Parse(paramid)); break;
                     case 7: ds = invoice.GetList("invoice_type_id=" + int.Parse(paramid)); break;
                 }
-
+                if(ds!=null)//暂时不做处理
                 if (ds.Tables[0].Rows.Count > 0)
                 {
                     context.Response.Write("false:data");
