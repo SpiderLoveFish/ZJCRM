@@ -364,7 +364,64 @@ namespace XHD.CRM.Data
                 return 0;
             }
         }
+        private string DataAuth(string uid)
+        {
+            //权限
+            BLL.hr_employee emp = new BLL.hr_employee();
+            DataSet dsemp = emp.GetList("ID=" + int.Parse(uid));
 
+            string returntxt = " and 1=1";
+            if (dsemp.Tables[0].Rows.Count > 0)
+            {
+                if (dsemp.Tables[0].Rows[0]["uid"].ToString() != "admin")
+                {
+                    Data.GetDataAuth dataauth = new Data.GetDataAuth();
+                    string txt = dataauth.GetDataAuthByid("1", "Sys_view", uid);
+
+                    string[] arr = txt.Split(':');
+
+                    switch (arr[0])
+                    {
+                        case "none": returntxt = " and 1=2 ";
+                            break;
+                        case "my":
+                            returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(arr[1]) + ")";
+                            break;
+                        case "dep":
+                            if (string.IsNullOrEmpty(arr[1]))
+                                returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or Create_id=" + int.Parse(uid) + ")";
+                            else
+                                returntxt = " and ( privatecustomer='公客' or Department_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(uid) + ")";
+                            break;
+                        case "depall":
+                            BLL.hr_department dep = new BLL.hr_department();
+                            DataSet ds = dep.GetAllList();
+                            string deptask = GetDepTask(int.Parse(arr[1]), ds.Tables[0]);
+                            string intext = arr[1] + "," + deptask;
+
+                            returntxt = " and ( privatecustomer='公客' or Create_id=" + int.Parse(uid) + "  or Department_id in (" + intext.TrimEnd(',') + ") or Dpt_id_sg in (" + intext.TrimEnd(',') + ") or Dpt_id_sj in (" + intext.TrimEnd(',') + "))";
+                            //or Create_id=32 or Department_id in (" + intext.TrimEnd(',') + " or Dpt_id_sg in (" + intext.TrimEnd(',') + " or Dpt_id_sj in (" + intext.TrimEnd(',') + ")
+                            break;
+                    }
+                }
+            }
+            return returntxt;
+        }
+        private static string GetDepTask(int Id, DataTable table)
+        {
+            DataRow[] rows = table.Select("parentid=" + Id.ToString());
+
+            if (rows.Length == 0) return string.Empty; ;
+            StringBuilder str = new StringBuilder();
+
+            foreach (DataRow row in rows)
+            {
+                str.Append(row["id"] + ",");
+                if (GetDepTask((int)row["id"], table).Length > 0)
+                    str.Append(GetDepTask((int)row["id"], table));
+            }
+            return str.ToString();
+        }
 
         public bool IsReusable
         {

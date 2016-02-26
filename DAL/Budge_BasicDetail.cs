@@ -51,7 +51,7 @@ namespace XHD.DAL
 			strSql.Append("@budge_id,@xmid,@ComponentName,@Cname,@unit,@MmaterialPrice,@IsShowPrice,@SecmaterialPrice,@ArtificialPrice,@MechanicalLoss,@MaterialLoss,@TotalPrice,@IsDiscount,@TotalDiscountPrice,@MaterialCost,@MechanicalCost,@ArtificialCost,@SUM,@Remarks)");
 			strSql.Append(";select @@IDENTITY");
 			SqlParameter[] parameters = {
-					new SqlParameter("@budge_id", SqlDbType.Int,4),
+					new SqlParameter("@budge_id", SqlDbType.VarChar,15),
 					new SqlParameter("@xmid", SqlDbType.Int,4),
 					new SqlParameter("@ComponentName", SqlDbType.VarChar,100),
 					new SqlParameter("@Cname", SqlDbType.VarChar,100),
@@ -128,7 +128,7 @@ namespace XHD.DAL
 			strSql.Append("Remarks=@Remarks");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
-					new SqlParameter("@budge_id", SqlDbType.Int,4),
+					new SqlParameter("@budge_id", SqlDbType.VarChar,15),
 					new SqlParameter("@xmid", SqlDbType.Int,4),
 					new SqlParameter("@ComponentName", SqlDbType.VarChar,100),
 					new SqlParameter("@Cname", SqlDbType.VarChar,100),
@@ -263,9 +263,9 @@ namespace XHD.DAL
 				{
 					model.id=int.Parse(row["id"].ToString());
 				}
-				if(row["budge_id"]!=null && row["budge_id"].ToString()!="")
+				if(row["budge_id"]!=null)
 				{
-					model.budge_id=int.Parse(row["budge_id"].ToString());
+					model.budge_id=row["budge_id"].ToString();
 				}
 				if(row["xmid"]!=null && row["xmid"].ToString()!="")
 				{

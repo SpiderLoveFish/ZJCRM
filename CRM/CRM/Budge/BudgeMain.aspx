@@ -30,51 +30,20 @@
                          display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                          { return (page - 1) * pagesize + rowindex + 1; }
                      },
-                    // { display: '客户编号', name: 'CustomerID', width: 50, align: 'left' },
+                      { display: '预算编号', name: 'id', width: 50, align: 'left' },
+                          { display: '预算名称', name: 'BudgeName', width: 250, align: 'left' },
                       { display: '客户姓名', name: 'CustomerName', width: 80, align: 'left' },
                        { display: '客户电话', name: 'tel', width: 100, align: 'left' },
                         { display: '客户地址', name: 'address', width: 250, align: 'left' },
-                      { display: '施工监理', name: 'sgjl', width: 80, align: 'left' },
-                        { display: '业务员', name: 'ywy', width: 80, align: 'left' },
-                   // { display: '设计师', name: 'sjs', width: 120, align: 'left' },
-                    { display: '附加分', name: 'SpecialScore', width: 50, align: 'right' },
-                {
-                    display: '考核分', name: 'StageScore', width: 50, align: 'right', render: function (item) {
-                        return "<div style='color:#135294'>" + item.StageScore + "</div>";
-                    }
-                },
-                 { display: '总得分', name: 'sum_Score', width: 50, align: 'right' },
-                 { display: '满分', name: 'TotalScorce', width: 50, align: 'right' },
-                 {
-                     display: '达成率', name: 'Scoring', width: 80, align: 'right', render: function (item) {
-
-                         var html;
-                         if (item.sum_Score / item.TotalScorce > 0.9) {
-                             html = "<div style='color:#008040'>";
-                             if (item.Scoring)
-                                 html += item.Scoring;
-                             html += "</div>";
-                         }
-                         else
-                             if (item.sum_Score / item.TotalScorce > 0.5) {
-                                 html = "<div style='color:#800040'>";
-                                 if (item.Scoring)
-                                     html += item.Scoring;
-                                 html += "</div>";
-                             }
-                             else
-                                 html = "<div style='color:#F00'>" + item.Scoring + "</div>";
-                         return html;
-                     }
-                 },
-                        { display: '状态', name: 'Stage_icon', width: 80, align: 'left' },
+                 
+                        { display: '状态', name: 'IsStatus', width: 80, align: 'left' },
                 { display: '备注', name: 'Remarks', width: 200, align: 'left' }
 
                 ],
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/Crm_CEStage.ashx?Action=grid",
+                url: "../../data/Budge.ashx?Action=grid",
                 width: '100%',
                 height: '100%',
                 //tree: { columnName: 'StageDescription' },
@@ -97,7 +66,7 @@
             toolbar();
         });
         function toolbar() {
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=135&rnd=" + Math.random(), function (data, textStatus) {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=153&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
                 var items = [];
                 var arr = data.Items;
@@ -159,7 +128,7 @@
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
             //  alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL("../../data/Crm_CEStage.ashx?" + serchtxt);
+            manager.GetDataByURL("../../data/Budge.ashx?" + serchtxt);
         }
         function doclear() {
             //var serchtxt = $("#serchform :input").reset();
@@ -219,7 +188,7 @@
             }
         }
         //施工进度
-        function process() {
+        function apr() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
@@ -236,14 +205,14 @@
             }
         }
         function add() {
-            f_openWindow("crm/ConsExam/CEStage_add.aspx", "新增客户", 700, 330);
+            f_openWindow("crm/Budge/BudgeMainAdd.aspx", "新增客户", 1100, 660);
         }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("crm/ConsExam/CEStage_add.aspx?cid=" + row.id, "修改客户", 700, 330);
+                f_openWindow("crm/Budge/BudgeMainAdd.aspx?id=" + row.id, "修改客户", 1100, 660);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
@@ -256,7 +225,7 @@
                 $.ligerDialog.confirm("删除不能恢复，确定删除？", function (yes) {
                     if (yes) {
                         $.ajax({
-                            url: "../../data/Crm_CEStage.ashx", type: "POST",
+                            url: "../../data/Budge.ashx", type: "POST",
                             data: { Action: "del", id: row.id, rnd: Math.random() },
                             success: function (responseText) {
                                 if (responseText == "true") {
@@ -289,7 +258,7 @@
                 dialog.close();
                 top.$.ligerDialog.waitting('数据保存中,请稍候...');
                 $.ajax({
-                    url: "../../data/CRM_CEStage.ashx", type: "POST",
+                    url: "../../data/Budge.ashx", type: "POST",
                     data: issave,
                     success: function (responseText) {
                         top.$.ligerDialog.closeWaitting();

@@ -91,6 +91,7 @@
     <Content Include="CRM\Budge\BudgeModelMain.aspx" />
     <Content Include="CRM\Budge\BudgeMainAdd.aspx" />
     <Content Include="CRM\Budge\BudgeModelMainAdd.aspx" />
+    <Content Include="CRM\Budge\SelectBudgeCustomer.aspx" />
     <Content Include="CRM\Building\Building.aspx" />
     <Content Include="CRM\Building\Building_Add.aspx" />
     <Content Include="CRM\Building\Building_map.aspx" />

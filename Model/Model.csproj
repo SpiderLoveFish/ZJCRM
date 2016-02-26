@@ -124,8 +124,10 @@
   <ItemGroup>
     <Compile Include="Budge_BasicDetail.cs" />
     <Compile Include="Budge_BasicMain.cs" />
+    <Compile Include="Budge_BasicPart.cs" />
     <Compile Include="Budge_Model.cs" />
     <Compile Include="budge_modelMain.cs" />
+    <Compile Include="Budge_Rate.cs" />
     <Compile Include="Crm_CEDetail.cs" />
     <Compile Include="Crm_CEDetail_Version.cs" />
     <Compile Include="CRM_CEStage.cs" />

@@ -51,8 +51,8 @@ namespace XHD.DAL
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4),
 					new SqlParameter("@Moudel_id", SqlDbType.VarChar,15),
-					new SqlParameter("@budge_id", SqlDbType.Int,4),
-					new SqlParameter("@xmid", SqlDbType.Int,4),
+					new SqlParameter("@budge_id", SqlDbType.VarChar,15),
+					new SqlParameter("@xmid", SqlDbType.VarChar,15),
 					new SqlParameter("@ComponentName", SqlDbType.VarChar,100),
 					new SqlParameter("@Cname", SqlDbType.VarChar,100),
 					new SqlParameter("@unit", SqlDbType.VarChar,20),
@@ -132,8 +132,8 @@ namespace XHD.DAL
 			strSql.Append(" where id=@id ");
 			SqlParameter[] parameters = {
 					new SqlParameter("@Moudel_id", SqlDbType.VarChar,15),
-					new SqlParameter("@budge_id", SqlDbType.Int,4),
-					new SqlParameter("@xmid", SqlDbType.Int,4),
+					new SqlParameter("@budge_id", SqlDbType.VarChar,15),
+					new SqlParameter("@xmid", SqlDbType.VarChar,15),
 					new SqlParameter("@ComponentName", SqlDbType.VarChar,100),
 					new SqlParameter("@Cname", SqlDbType.VarChar,100),
 					new SqlParameter("@unit", SqlDbType.VarChar,20),
@@ -270,11 +270,11 @@ namespace XHD.DAL
 				{
 					model.Moudel_id=row["Moudel_id"].ToString();
 				}
-				if(row["budge_id"]!=null && row["budge_id"].ToString()!="")
+				if(row["budge_id"]!=null)
 				{
-					model.budge_id=int.Parse(row["budge_id"].ToString());
+					model.budge_id=row["budge_id"].ToString();
 				}
-				if(row["xmid"]!=null && row["xmid"].ToString()!="")
+				if(row["xmid"]!=null)
 				{
 					model.xmid=int.Parse(row["xmid"].ToString());
 				}

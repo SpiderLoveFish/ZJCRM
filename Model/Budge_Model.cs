@@ -12,8 +12,8 @@ namespace XHD.Model
 		#region Model
 		private int _id;
 		private string _moudel_id;
-		private int? _budge_id;
-		private int? _xmid;
+		private string _budge_id;
+        private int _xmid;
 		private string _componentname;
 		private string _cname;
 		private string _unit;
@@ -50,7 +50,7 @@ namespace XHD.Model
 		/// <summary>
 		/// 项目编号
 		/// </summary>
-		public int? budge_id
+		public string budge_id
 		{
 			set{ _budge_id=value;}
 			get{return _budge_id;}
@@ -58,11 +58,11 @@ namespace XHD.Model
 		/// <summary>
 		/// 
 		/// </summary>
-		public int? xmid
-		{
-			set{ _xmid=value;}
-			get{return _xmid;}
-		}
+        public int xmid
+        {
+            set { _xmid = value; }
+            get { return _xmid; }
+        }
 		/// <summary>
 		/// 部件名称
 		/// </summary>

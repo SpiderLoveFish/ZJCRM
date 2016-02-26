@@ -11,7 +11,7 @@ namespace XHD.Model
 		{}
 		#region Model
 		private int _id;
-		private int? _budge_id;
+		private string _budge_id;
 		private int? _xmid;
 		private string _componentname;
 		private string _cname;
@@ -41,7 +41,7 @@ namespace XHD.Model
 		/// <summary>
 		/// 
 		/// </summary>
-		public int? budge_id
+		public string budge_id
 		{
 			set{ _budge_id=value;}
 			get{return _budge_id;}

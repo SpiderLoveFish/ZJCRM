@@ -10,7 +10,7 @@ namespace XHD.Model
 		public Budge_BasicMain()
 		{}
 		#region Model
-		private int _id;
+		private string _id;
 		private int? _customer_id;
 		private string _budgetname;
 		private int? _doperson;
@@ -29,10 +29,11 @@ namespace XHD.Model
 		private decimal? _mmaterial;
 		private decimal? _mmaterialdiscount;
 		private decimal? _fbamount;
+		private int? _versions;
 		/// <summary>
 		/// 
 		/// </summary>
-		public int id
+		public string id
 		{
 			set{ _id=value;}
 			get{return _id;}
@@ -180,6 +181,14 @@ namespace XHD.Model
 		{
 			set{ _fbamount=value;}
 			get{return _fbamount;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public int? versions
+		{
+			set{ _versions=value;}
+			get{return _versions;}
 		}
 		#endregion Model
 

@@ -6,18 +6,27 @@ using XHD.Model;
 namespace XHD.BLL
 {
 	/// <summary>
-	/// Budge_BasicMain
+	/// Budge_Rate
 	/// </summary>
-	public partial class Budge_BasicMain
+	public partial class Budge_Rate
 	{
-		private readonly XHD.DAL.Budge_BasicMain dal=new XHD.DAL.Budge_BasicMain();
-		public Budge_BasicMain()
+		private readonly XHD.DAL.Budge_Rate dal=new XHD.DAL.Budge_Rate();
+		public Budge_Rate()
 		{}
 		#region  BasicMethod
+
+		/// <summary>
+		/// 得到最大ID
+		/// </summary>
+		public int GetMaxId()
+		{
+			return dal.GetMaxId();
+		}
+
 		/// <summary>
 		/// 是否存在该记录
 		/// </summary>
-		public bool Exists(string id)
+		public bool Exists(int id)
 		{
 			return dal.Exists(id);
 		}
@@ -25,7 +34,7 @@ namespace XHD.BLL
 		/// <summary>
 		/// 增加一条数据
 		/// </summary>
-		public bool Add(XHD.Model.Budge_BasicMain model)
+		public int  Add(XHD.Model.Budge_Rate model)
 		{
 			return dal.Add(model);
 		}
@@ -33,7 +42,7 @@ namespace XHD.BLL
 		/// <summary>
 		/// 更新一条数据
 		/// </summary>
-		public bool Update(XHD.Model.Budge_BasicMain model)
+		public bool Update(XHD.Model.Budge_Rate model)
 		{
 			return dal.Update(model);
 		}
@@ -41,7 +50,7 @@ namespace XHD.BLL
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>
-		public bool Delete(string id)
+		public bool Delete(int id)
 		{
 			
 			return dal.Delete(id);
@@ -51,13 +60,13 @@ namespace XHD.BLL
 		/// </summary>
 		public bool DeleteList(string idlist )
 		{
-			return dal.DeleteList(idlist);
+			return dal.DeleteList(idlist );
 		}
 
 		/// <summary>
 		/// 得到一个对象实体
 		/// </summary>
-		public XHD.Model.Budge_BasicMain GetModel(string id)
+		public XHD.Model.Budge_Rate GetModel(int id)
 		{
 			
 			return dal.GetModel(id);
@@ -66,10 +75,10 @@ namespace XHD.BLL
 		/// <summary>
 		/// 得到一个对象实体，从缓存中
 		/// </summary>
-		public XHD.Model.Budge_BasicMain GetModelByCache(string id)
+		public XHD.Model.Budge_Rate GetModelByCache(int id)
 		{
 			
-			string CacheKey = "Budge_BasicMainModel-" + id;
+			string CacheKey = "Budge_RateModel-" + id;
 			object objModel = XHD.Common.DataCache.GetCache(CacheKey);
 			if (objModel == null)
 			{
@@ -84,7 +93,7 @@ namespace XHD.BLL
 				}
 				catch{}
 			}
-			return (XHD.Model.Budge_BasicMain)objModel;
+			return (XHD.Model.Budge_Rate)objModel;
 		}
 
 		/// <summary>
@@ -104,7 +113,7 @@ namespace XHD.BLL
 		/// <summary>
 		/// 获得数据列表
 		/// </summary>
-		public List<XHD.Model.Budge_BasicMain> GetModelList(string strWhere)
+		public List<XHD.Model.Budge_Rate> GetModelList(string strWhere)
 		{
 			DataSet ds = dal.GetList(strWhere);
 			return DataTableToList(ds.Tables[0]);
@@ -112,13 +121,13 @@ namespace XHD.BLL
 		/// <summary>
 		/// 获得数据列表
 		/// </summary>
-		public List<XHD.Model.Budge_BasicMain> DataTableToList(DataTable dt)
+		public List<XHD.Model.Budge_Rate> DataTableToList(DataTable dt)
 		{
-			List<XHD.Model.Budge_BasicMain> modelList = new List<XHD.Model.Budge_BasicMain>();
+			List<XHD.Model.Budge_Rate> modelList = new List<XHD.Model.Budge_Rate>();
 			int rowsCount = dt.Rows.Count;
 			if (rowsCount > 0)
 			{
-				XHD.Model.Budge_BasicMain model;
+				XHD.Model.Budge_Rate model;
 				for (int n = 0; n < rowsCount; n++)
 				{
 					model = dal.DataRowToModel(dt.Rows[n]);
@@ -163,31 +172,6 @@ namespace XHD.BLL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
-        /// <summary>
-        /// 分页获取数据正式明细列表
-        /// </summary>
-        public DataSet GetBudge_BasicMain(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
-        {
-            return dal.GetBudge_BasicMain(PageSize, PageIndex, strWhere, filedOrder, out Total);
-        }
-
-
-        /// <summary>
-        /// 获得数据列表
-        /// </summary>
-        public DataSet GetListBasicPart(string strWhere)
-        {
-
-            return dal.GetListBasicPart(strWhere);
-        }
-        /// <summary>
-        /// 获得数据列表
-        /// </summary>
-        public DataSet GetListPara_Ver(string strWhere)
-        {
-
-            return dal.GetListPara_Ver(strWhere);
-        }
 
 		#endregion  ExtensionMethod
 	}
