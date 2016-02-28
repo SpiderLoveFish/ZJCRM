@@ -40,7 +40,7 @@
                      { display: '材料型号', name: 'ProModel', width: 100, align: 'left' },
                         { display: '材料规格', name: 'specifications', width: 100, align: 'left' },
                          { display: '所属品牌', name: 'Brand', width: 100, align: 'left' },
-                 { display: '类别', name: 'category_name', width: 80, align: 'left' },
+                          { display: '类别', name: 'category_name', width: 80, align: 'left' },
                         { display: '单位', name: 'unit', width: 40, align: 'left' },
                         {
                             display: '数量', name: 'AmountSum', width: 60, align: 'left'

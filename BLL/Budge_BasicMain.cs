@@ -22,6 +22,11 @@ namespace XHD.BLL
 			return dal.Exists(id);
 		}
 
+        public string GetMaxId()
+        {
+            return dal.GetMaxId();
+        }
+
 		/// <summary>
 		/// 增加一条数据
 		/// </summary>
@@ -188,7 +193,12 @@ namespace XHD.BLL
 
             return dal.GetListPara_Ver(strWhere);
         }
+        public DataSet GetList_form(string strWhere)
+        {
 
+            return dal.GetList_form(strWhere);
+        }
+        
 		#endregion  ExtensionMethod
 	}
 }

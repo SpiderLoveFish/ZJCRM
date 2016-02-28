@@ -24,7 +24,9 @@ namespace XHD.CRM.Data
 
             BLL.Budge_BasicMain bbb = new BLL.Budge_BasicMain();
             Model.Budge_BasicMain mbb = new Model.Budge_BasicMain();
-
+            BLL.Budge_BasicDetail bbdetail =new BLL.Budge_BasicDetail();
+            BLL.budge bd = new BLL.budge();
+            
             var cookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
             var ticket = FormsAuthentication.Decrypt(cookie.Value);
             string CoockiesID = ticket.UserData;
@@ -35,21 +37,175 @@ namespace XHD.CRM.Data
             string empname = dsemp.Tables[0].Rows[0]["name"].ToString();
             string uid = dsemp.Tables[0].Rows[0]["uid"].ToString();
 
-            if (request["Action"] == "save")
+            if (request["Action"] == "getmaxid")
+            {
+              string bid=  bbb.GetMaxId();
+              string josnstr = "{ 'bid':'" + bid + "'}";
+                //{"status": 1, "sum": 9}
+                context.Response.Write(josnstr);
+            }
+            //保存总金额
+            if (request["Action"] == "savetotal")
+            {
+                string bid = PageValidate.InputText(request["bid"], 250);
+                string sl = PageValidate.InputText(request["sl"], 250);
+                string josnstr = "";
+                if (bd.updatetotal(bid,StringToDecimal( sl)) > 0)
+                { 
+                  if(bd.GetTax(bid).Tables[0].Rows.Count>0)
+                      foreach (DataRow dw in bd.GetTax(bid).Tables[0].Rows)
+                      {
+                          josnstr = "{ 'sj':'" + dw["b_sj"].ToString() + "','zje':'" + dw["b_zje"].ToString() + "'}";
+                      }
+                }
+                if (josnstr.Length <= 0) josnstr = "{}";
+                 //{"status": 1, "sum": 9}
+                context.Response.Write(josnstr);
+            }
+            //是否存在这个预算的模板
+             if (request["Action"] == "isexistmodelid")
+            {
+                string bid = PageValidate.InputText(request["bid"], 250);
+                DataSet ds= bd.GetIsExistModelid(bid);
+                  string josnstr = "{}";
+                 string str="";
+                 foreach (DataRow dw in ds.Tables[0].Rows)
+                {
+                    str += ";" + dw["model_id"].ToString();
+                }
+              if(str.Length>0)
+                  josnstr = "{ 'bid':'" + str + "'}";  
+                //{"status": 1, "sum": 9}
+                context.Response.Write(josnstr);
+            }
+            
+
+            if (request["Action"] == "saveadd")
+            {
+                string bid = PageValidate.InputText(request["bid"], 250);
+                  //bbb.GetMaxId();
+              string remarks = PageValidate.InputText(request["remark"], 250);
+              string bname = PageValidate.InputText(request["bname"], 250);
+              int cid = StringToInt(request["cid"]);
+              mbb.customer_id = cid;
+              mbb.DoTime = DateTime.Now;
+              mbb.DoPerson = emp_id;
+              mbb.id = bid;
+              mbb.BudgetName = bname;
+              mbb.IsStatus = 0;
+                //防止多人操作，单据重复
+            DataSet IsExist=  bbb.GetList(" id='"+bid+"'");
+            if (IsExist.Tables[0].Rows.Count > 0)
+                context.Response.Write("false");
+            else
+            {
+               if(bbb.Add(mbb))
+                   context.Response.Write("true");
+               else context.Response.Write("false");
+            }
+                
+            }
+            if (request["Action"] == "savedetailadd")
+            {       
+                string bid = PageValidate.InputText(request["bid"], 50);
+                string xmlist = PageValidate.InputText(request["xmlist"], 255);
+                string compname = PageValidate.InputText(request["compname"], 255);
+                
+                if (xmlist.Length > 1) xmlist = xmlist.Substring(1);
+                bbdetail.insertlist(bid, xmlist,compname);
+            }
+            //折扣价格
+            if (request["Action"] == "saveupdatedisprice")
             {
 
+                string bid = PageValidate.InputText(request["bid"], 50);
+                string zk = PageValidate.InputText(request["zk"], 255);
+               
+                if(bbdetail.UpdateDisPrice( StringToDecimal(zk),bid))
+                    context.Response.Write("true");
+                else context.Response.Write("flase");
             }
+            //刷新价格
+            if (request["Action"] == "saveupdaterefprice")
+            {
+
+                string bid = PageValidate.InputText(request["bid"], 50);
+                if(bbdetail.UpdateRefreshPrice( bid))
+                    context.Response.Write("true");
+                else context.Response.Write("flase");
+            }
+            if (request["Action"] == "savemodel")
+            {
+                string bid = PageValidate.InputText(request["bid"], 50);
+                string remaks = PageValidate.InputText(request["T_remarks"], 250);
+                string modelname = PageValidate.InputText(request["T_compname"], 250);
+                string modelid = bd.GetMaxModelId();
+                if (bd.AddModel(bid,modelid, modelname,emp_id, remaks) > 0)
+                    context.Response.Write("true");
+                else context.Response.Write("flase");
+            }
+            if (request["Action"] == "savemodeltobudge")
+            {
+                string bid = PageValidate.InputText(request["bid"], 50);
+                string modelid = PageValidate.InputText(request["modelid"], 50);
+                if (bd.AddModelToBudge(bid, modelid) > 0)
+                    context.Response.Write("true");
+                else context.Response.Write("flase");
+            }
+            if (request["Action"] == "saveupdatesum")
+            {
+                decimal  sum = StringToDecimal(request["editsum"]);
+                string bid=PageValidate.InputText(request["bid"], 50);
+                string id = PageValidate.InputText(request["id"], 50);
+                if (!string.IsNullOrEmpty(id) && id != "null")
+                {
+                    if (bbdetail.UpdateSum(sum,StringToInt(id),bid))
+                        context.Response.Write("true");
+                    else context.Response.Write("flase");
+                }
+            }
+            if (request["Action"] == "deldetail")
+            {
+                   string  id =  PageValidate.InputText(request["id"], 50);
+                  if (!string.IsNullOrEmpty(id))
+                  {
+                      
+                       
+                          //暂：明细和部件
+                          BLL.Budge_BasicDetail bdetail = new BLL.Budge_BasicDetail();
+                         if(bdetail.Delete(StringToInt(id)))
+                          context.Response.Write("true");
+                           else  context.Response.Write("false");
+                }
+                else
+                {
+                    context.Response.Write("false");
+                }
+                  
+            }
+            //删除条件
             if (request["Action"] == "del")
             {
-
+                  string bid = PageValidate.InputText(request["bid"], 50);
+                    if(bbb.Delete(bid))
+                   {
+                        //暂：明细和部件
+                       BLL.Budge_BasicDetail bdetail = new BLL.Budge_BasicDetail();
+                       // Budge_Para_Ver
+                        context.Response.Write("true");
+                    }
+                    else
+                    {
+                        context.Response.Write("false");
+                    }
             }
             if (request["Action"] == "form")
             {
-                string cid = PageValidate.InputText(request["id"], 50);
+                string bid = PageValidate.InputText(request["bid"], 50);
                 string dt;
-                if (PageValidate.IsNumber(cid))
+                if (bid!="")
                 {
-                    DataSet ds = bbb.GetList("id=" + cid);
+                    DataSet ds = bbb.GetList_form(" A.id='" + bid+"'");
                     dt = Common.DataToJson.DataToJSON(ds);
                 }
                 else
@@ -82,6 +238,59 @@ namespace XHD.CRM.Data
                 string dt = "";
 
                 DataSet ds = bbb.GetBudge_BasicMain(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "gridselectmodel")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+
+
+
+                string dt = "";
+
+                DataSet ds = bd.Getbudge_modelMain(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "griddetail")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+                serchtxt += " and   ComponentName like '%" + PageValidate.InputText(request["compname"], 255) + "%'";
+                serchtxt += " and   budge_id ='" + PageValidate.InputText(request["bid"], 255) + "'";
+
+
+                string dt = "";
+
+                DataSet ds = bbdetail.GetBudge_BasicDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
                 dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
 
                 context.Response.Write(dt);
@@ -123,8 +332,9 @@ namespace XHD.CRM.Data
             if (request["Action"] == "tree")
             {
                  string serchtxt = " 1=1 ";
-
-                 DataSet ds = bbb.GetListPara_Ver(serchtxt);
+                 string bid = PageValidate.InputText(request["bid"], 50);
+                 serchtxt += " AND budge_id='"+bid+"'"; 
+                DataSet ds = bbb.GetListPara_Ver(serchtxt);
                 StringBuilder str = new StringBuilder();
                 str.Append("[");
                 str.Append(GetTreeString(0, ds.Tables[0]));
@@ -142,6 +352,15 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
            
+            }
+            if (request["Action"] == "savebjlist")
+            {
+              
+                int customerid = int.Parse(request["cid"]);
+                string bid = PageValidate.InputText(request["bid"], 255);
+                string bjlist = PageValidate.InputText(request["bjlist"], 255);
+                if (bjlist.Length > 1) bjlist = bjlist.Substring(1);
+                bd.AddBJlist(customerid, bid, bjlist);
             }
 
         }

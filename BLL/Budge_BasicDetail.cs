@@ -39,6 +39,11 @@ namespace XHD.BLL
 			return dal.Add(model);
 		}
 
+        public int insertlist(string bid, string xmlistid, string compname)
+        { 
+            return dal.insertlist(bid,xmlistid,compname);
+        }
+
 		/// <summary>
 		/// 更新一条数据
 		/// </summary>
@@ -46,8 +51,22 @@ namespace XHD.BLL
 		{
 			return dal.Update(model);
 		}
-
-		/// <summary>
+        public bool UpdateSum(decimal sum, int id, string bid)
+        {
+            return dal.UpdateSum(sum,id,bid);
+        }
+        //折扣价格
+        public bool UpdateDisPrice(decimal sum,   string bid)
+        {
+            return dal.UpdateDisPrice(sum,  bid);
+        }
+        //刷新价格
+        public bool UpdateRefreshPrice( string bid)
+        {
+            return dal.UpdateRefreshPrice(bid);
+        }
+        
+        /// <summary>
 		/// 删除一条数据
 		/// </summary>
 		public bool Delete(int id)
@@ -172,6 +191,13 @@ namespace XHD.BLL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
+        /// <summary>
+        /// 分页获取数据正式明细列表
+        /// </summary>
+        public DataSet GetBudge_BasicDetail(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetBudge_BasicDetail(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
 
 		#endregion  ExtensionMethod
 	}

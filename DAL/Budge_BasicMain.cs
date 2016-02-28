@@ -29,6 +29,28 @@ namespace XHD.DAL
 			return DbHelperSQL.Exists(strSql.ToString(),parameters);
 		}
 
+       
+        /// <summary>
+        /// 得到最大ID
+        /// </summary>
+        public string GetMaxId()
+        {
+            string per = "YS";
+            per = per + DateTime.Now.ToString("yyMMdd-");
+            string strsql = "select max(REPLACE(id,'" + per + "',''))+1 from Budge_BasicMain WHERE id LIKE '"+per+"%'";
+            object obj = DbHelperSQL.GetSingle(strsql);
+            if (obj == null)
+            {
+                return per+"000001";
+            }
+            else
+            {
+                return per+int.Parse(obj.ToString()).ToString("000000");
+            }
+
+           // return DbHelperSQL.GetMaxID("id", "CRM_CEStage");
+        }
+
 
 		/// <summary>
 		/// 增加一条数据
@@ -452,7 +474,7 @@ namespace XHD.DAL
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
             strSql.Append(" top " + PageSize + " A.*,B.tel,B.Customer AS CustomerName,B.Emp_sg AS sgjl,B.address FROM dbo.Budge_BasicMain A INNER JOIN dbo.CRM_Customer B ON A.customer_id=B.id ");
-            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_BasicMain ");
+            strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_BasicMain ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(id) FROM Budge_BasicMain ");
             if (strWhere.Trim() != "")
@@ -492,6 +514,24 @@ namespace XHD.DAL
             }
             return DbHelperSQL.Query(strSql.ToString());
         }
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetList_form(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append(" select    A.*,B.id AS CustomerID,  B.tel,B.Customer AS CustomerName,B.Emp_sg AS sgjl,B.address  ");
+              strSql.Append(" FROM dbo.Budge_BasicMain A ");
+              strSql.Append(" INNER JOIN dbo.CRM_Customer B ON A.customer_id=B.id   ");
+            
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
 		#endregion  ExtensionMethod
 	}
 }

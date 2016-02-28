@@ -38,6 +38,25 @@ namespace XHD.DAL
 			return DbHelperSQL.Exists(strSql.ToString(),parameters);
 		}
 
+        public int insertlist(string bid,string xmlistid,string compname)
+        { 
+            StringBuilder strSql=new StringBuilder();
+        strSql.Append("  INSERT INTO Budge_BasicDetail ");
+        strSql.Append(" (budge_id,xmid,unit,ComponentName,Cname,TotalPrice) ");
+        strSql.Append(" SELECT '" + bid + "',product_id,unit,'" + compname + "',category_name,price FROM dbo.CRM_product WHERE product_id IN(" + xmlistid + ") ");
+
+        SqlParameter[] parameters = { };
+            object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
+      
+            if (obj == null)
+        {
+            return 0;
+        }
+        else
+        {
+            return Convert.ToInt32(obj);
+        }  
+        }
 
 		/// <summary>
 		/// 增加一条数据
@@ -179,6 +198,62 @@ namespace XHD.DAL
 				return false;
 			}
 		}
+
+        public bool UpdateSum(decimal sum, int id, string bid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update Budge_BasicDetail set ");
+            strSql.Append("SUM="+sum+"");
+            strSql.Append(" where id="+id+" and budge_id='" + bid + "'");
+            SqlParameter[] parameters = { };
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateDisPrice(decimal zk, string bid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update Budge_BasicDetail set ");
+            strSql.Append("Discount=" + zk + ",TotalDiscountPrice=isnull(TotalPrice,0)*" + zk);
+            strSql.Append(" where   budge_id='" + bid + "'");
+            SqlParameter[] parameters = { };
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateRefreshPrice(string bid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append(" UPDATE A SET	TotalPrice=B.price,TotalDiscountPrice=B.price*Discount ");
+            strSql.Append(" FROM dbo.Budge_BasicDetail A ");
+             strSql.Append(" INNER JOIN dbo.CRM_product B ON	 A.xmid=B.product_id ");
+            strSql.Append(" where   budge_id='" + bid + "'");
+            SqlParameter[] parameters = { };
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
 		/// <summary>
 		/// 删除一条数据
@@ -467,7 +542,28 @@ namespace XHD.DAL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
-
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        public DataSet GetBudge_BasicDetail(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + " A.*,B.product_name FROM dbo.Budge_BasicDetail A INNER JOIN dbo.CRM_product B ON A.xmid=B.product_id ");
+            strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_BasicDetail ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(id) FROM Budge_BasicDetail ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+      
 		#endregion  ExtensionMethod
 	}
 }
