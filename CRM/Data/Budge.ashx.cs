@@ -114,6 +114,15 @@ namespace XHD.CRM.Data
                 if (xmlist.Length > 1) xmlist = xmlist.Substring(1);
                 bbdetail.insertlist(bid, xmlist,compname);
             }
+            //附加费用保存
+            if (request["Action"] == "saveratelist")
+            {
+                string bid = PageValidate.InputText(request["bid"], 50);
+                string ratelist = PageValidate.InputText(request["ratelist"], 255);
+
+                if (ratelist.Length > 1) ratelist = ratelist.Substring(1);
+                bd.insertRatelist(bid, ratelist);
+            }
             //折扣价格
             if (request["Action"] == "saveupdatedisprice")
             {
@@ -215,6 +224,24 @@ namespace XHD.CRM.Data
                 {
                     context.Response.Write("false");
                 }
+            }
+            if (request["Action"] == "delratever")
+            {
+                string id = PageValidate.InputText(request["id"], 50);
+                if (!string.IsNullOrEmpty(id))
+                {
+
+
+                    //暂：明细和部件
+                      if (bd.DeleteRateVer(StringToInt(id)))
+                        context.Response.Write("true");
+                    else context.Response.Write("false");
+                }
+                else
+                {
+                    context.Response.Write("false");
+                }
+
             }
             if (request["Action"] == "form")
             {
@@ -352,6 +379,58 @@ namespace XHD.CRM.Data
                 string dt = "";
                 BLL.Budge_Model bm = new BLL.Budge_Model();
                 DataSet ds = bm.GetBudge_Model(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "gridrate")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+                   string bid = PageValidate.InputText(request["bid"], 50);
+                string Total;
+                string serchtxt = "1=1";
+                serchtxt += " and budge_id='" + bid + "'";
+
+
+                string dt = "";
+
+                DataSet ds = bd.GetBudge_Rate_Ver(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "gridrateselect")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+              
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+                string bid = PageValidate.InputText(request["bid"], 50);
+              //  serchtxt += " and id not in(select rateid from Budge_Rate_Ver where budge_id='"+bid+"')";
+
+                string dt = "";
+
+                DataSet ds = bd.GetBudge_Rate(PageSize, PageIndex, serchtxt, sorttext, out Total);
                 dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
 
                 context.Response.Write(dt);

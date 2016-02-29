@@ -172,14 +172,14 @@
         }
      
       function add() {
-            f_openWindow("crm/Budge/BudgeMainAdd.aspx", "新增客户", 1100, 660);
+            f_openWindow("crm/Budge/BudgeMainAdd.aspx", "新增预算", 1100, 660);
         }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id, "修改客户", 1100, 660);
+                f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id, "修改预算", 1100, 660);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }

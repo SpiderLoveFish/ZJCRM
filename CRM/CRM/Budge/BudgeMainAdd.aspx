@@ -696,6 +696,20 @@
             });
                     
         }
+        //附加金额
+        function addfjje()
+        {
+            top.$.ligerDialog.open({
+                zindex: 9003,
+                title: '附加金额', width: 850, height: 550,
+                url: "CRM/Budge/SelectFjje.aspx?bid=" + $("#T_budgeid").val(),
+                buttons: [
+                  //{ text: '确定', onclick: f_selectmodel },
+                  { text: '关闭', onclick: f_selectContactCancel }
+                ]
+            });
+            return false;
+        }
         function fload()
         {
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -807,7 +821,17 @@
                           刷新价格 </a>
                      
                 </td><td   class="table_title1"> 
-                    
+                        <table><tr>
+                           <td>
+                        <input type="text"  id="T_fjje" name="T_fjje"  ltype="text" ligerui="{width:80,disabled:true}"   />
+              
+                     </td><td>
+                      <a id="A7" class="l-button"  position="right" style="width:80px;" onclick="addfjje()">
+                          附加金额
+
+                      </a>
+                    </td>
+                     </tr></table>
                 </td><td   class="table_title1"> 
                      
                 </td><td   class="table_title1"> 

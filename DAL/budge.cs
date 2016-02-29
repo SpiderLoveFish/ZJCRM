@@ -560,7 +560,93 @@ namespace XHD.DAL
             return DbHelperSQL.Query(strSql.ToString());
         }
 
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        public DataSet GetBudge_Rate(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + " * FROM dbo.Budge_Rate ");
+            strSql.Append(" WHERE  id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_Rate ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(id) FROM Budge_Rate ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+           /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        public DataSet GetBudge_Rate_Ver(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + " * FROM dbo.Budge_Rate_Ver ");
+            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_Rate_Ver ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(id) FROM Budge_Rate_Ver ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
 
+        public int insertRatelist(string bid, string xmlistid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("  INSERT INTO Budge_Rate_Ver ");
+            strSql.Append("   (rateid, budge_id , RateName , measure , rate ,Remarks) ");
+            strSql.Append(" SELECT id, '" + bid + "' , RateName , measure , rate ,Remarks FROM dbo.Budge_Rate WHERE id IN(" + xmlistid + ") ");
+
+            SqlParameter[] parameters = { };
+            object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
+
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public bool DeleteRateVer(int id)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from Budge_Rate_Ver ");
+            strSql.Append(" where id=@id");
+            SqlParameter[] parameters = {
+					new SqlParameter("@id", SqlDbType.Int,4)
+			};
+            parameters[0].Value = id;
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
 

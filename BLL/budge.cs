@@ -83,6 +83,32 @@ namespace XHD.BLL
 
 
         #endregion  Method
+
+        public DataSet GetBudge_Rate(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetBudge_Rate(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+
+
+        public DataSet GetBudge_Rate_Ver(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetBudge_Rate_Ver(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+
+        public int insertRatelist(string bid, string ratelistid)
+        {
+            return dal.insertRatelist(bid, ratelistid);
+        }
+
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public bool DeleteRateVer(int id)
+        {
+
+            return dal.DeleteRateVer(id);
+        }
+
     }
 }
 
