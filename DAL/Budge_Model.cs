@@ -208,6 +208,24 @@ namespace XHD.DAL
 				return false;
 			}
 		}
+        public bool Delete(string modelid)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from Budge_Model ");
+            strSql.Append(" where model_id='" + modelid + "' ");
+            SqlParameter[] parameters = { };
+            
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 		/// <summary>
 		/// 批量删除数据
 		/// </summary>
@@ -474,7 +492,28 @@ namespace XHD.DAL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
-
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        public DataSet GetBudge_Model(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "  A.*,B.product_name  FROM dbo.Budge_Model  A INNER JOIN dbo.CRM_product B ON A.xmid=B.product_id   ");
+            strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_Model ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(id) FROM Budge_Model ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+      
 		#endregion  ExtensionMethod
 	}
 }

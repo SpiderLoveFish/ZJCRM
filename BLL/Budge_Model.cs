@@ -55,6 +55,16 @@ namespace XHD.BLL
 			
 			return dal.Delete(id);
 		}
+
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public bool Delete(string id)
+        {
+
+            return dal.Delete(id);
+        }
+		
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>
@@ -172,7 +182,10 @@ namespace XHD.BLL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
-
+        public DataSet GetBudge_Model(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetBudge_Model(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
 		#endregion  ExtensionMethod
 	}
 }

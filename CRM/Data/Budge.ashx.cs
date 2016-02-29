@@ -189,15 +189,32 @@ namespace XHD.CRM.Data
                   string bid = PageValidate.InputText(request["bid"], 50);
                     if(bbb.Delete(bid))
                    {
-                        //暂：明细和部件
-                       BLL.Budge_BasicDetail bdetail = new BLL.Budge_BasicDetail();
-                       // Budge_Para_Ver
+                       if(bbdetail.Delete(bid))
                         context.Response.Write("true");
+                       else context.Response.Write("false");
                     }
                     else
                     {
                         context.Response.Write("false");
                     }
+            }
+            //删除条件
+            if (request["Action"] == "delmodel")
+            {
+                string mid = PageValidate.InputText(request["mid"], 50);
+                BLL.budge_modelMain bmm = new BLL.budge_modelMain();
+                BLL.Budge_Model bm = new BLL.Budge_Model();
+                if (bmm.Delete(mid))
+                {
+                    //暂：明细和部件
+                    if(bm.Delete(mid))
+                    context.Response.Write("true");
+                    else context.Response.Write("false");
+                }
+                else
+                {
+                    context.Response.Write("false");
+                }
             }
             if (request["Action"] == "form")
             {
@@ -215,7 +232,23 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "formmodel")
+            {
+                string mid = PageValidate.InputText(request["mid"], 50);
+                string dt;
+                if (mid != "")
+                {
+                    BLL.budge_modelMain bmm = new BLL.budge_modelMain();
+                    DataSet ds = bmm.GetList_form("  model_id='" + mid + "'");
+                    dt = Common.DataToJson.DataToJSON(ds);
+                }
+                else
+                {
+                    dt = "{}";
+                }
 
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "grid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
@@ -295,6 +328,34 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+
+            if (request["Action"] == "griddetailmodel")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+                serchtxt += " and   ComponentName like '%" + PageValidate.InputText(request["compname"], 255) + "%'";
+                serchtxt += " and   model_id ='" + PageValidate.InputText(request["mid"], 255) + "'";
+
+
+                string dt = "";
+                BLL.Budge_Model bm = new BLL.Budge_Model();
+                DataSet ds = bm.GetBudge_Model(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "getcustomer")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
@@ -335,6 +396,21 @@ namespace XHD.CRM.Data
                  string bid = PageValidate.InputText(request["bid"], 50);
                  serchtxt += " AND budge_id='"+bid+"'"; 
                 DataSet ds = bbb.GetListPara_Ver(serchtxt);
+                StringBuilder str = new StringBuilder();
+                str.Append("[");
+                str.Append(GetTreeString(0, ds.Tables[0]));
+                str.Replace(",", "", str.Length - 1, 1);
+                str.Append("]");
+                context.Response.Write(str);
+            }
+            //选择已筛选的版本部位
+            if (request["Action"] == "treemodel")
+            {
+                string serchtxt = " 1=1 ";
+                string mid = PageValidate.InputText(request["mid"], 50);
+                serchtxt += " AND model_id='" + mid + "'";
+                BLL.budge_modelMain bmm = new BLL.budge_modelMain();
+                DataSet ds = bmm.GetListPara_model(serchtxt);
                 StringBuilder str = new StringBuilder();
                 str.Append("[");
                 str.Append(GetTreeString(0, ds.Tables[0]));

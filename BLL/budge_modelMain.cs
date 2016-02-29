@@ -55,6 +55,16 @@ namespace XHD.BLL
 			
 			return dal.Delete(id);
 		}
+
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public bool Delete(string id)
+        {
+
+            return dal.Delete(id);
+        }
+		
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>
@@ -172,7 +182,15 @@ namespace XHD.BLL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
+        public DataSet GetList_form(string strWhere)
+        {
+            return dal.GetList_form(strWhere);
+        }
 
+        public DataSet GetListPara_model(string strWhere)
+        {
+            return dal.GetListPara_model(strWhere);
+        }
 		#endregion  ExtensionMethod
 	}
 }

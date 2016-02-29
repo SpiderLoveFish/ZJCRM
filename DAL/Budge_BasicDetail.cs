@@ -279,6 +279,33 @@ namespace XHD.DAL
 				return false;
 			}
 		}
+
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public bool Delete(string  bid)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from Budge_BasicDetail ");
+            strSql.Append(" where budge_id='"+bid+"'");
+            strSql.Append("delete from Budge_Para_Ver ");
+            strSql.Append(" where budge_id='" + bid + "'");
+            SqlParameter[] parameters = {
+					 
+			};
+            
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+		
 		/// <summary>
 		/// 批量删除数据
 		/// </summary>

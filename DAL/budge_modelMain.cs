@@ -139,6 +139,29 @@ namespace XHD.DAL
 				return false;
 			}
 		}
+
+        public bool Delete(string model_id)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from budge_modelMain ");
+            strSql.Append(" where model_id='" + model_id + "'");
+            strSql.Append("delete from Budge_Para_Model ");
+            strSql.Append(" where model_id='" + model_id + "'");
+            SqlParameter[] parameters = { 
+			};
+           
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+	
 		/// <summary>
 		/// 批量删除数据
 		/// </summary>
@@ -336,7 +359,37 @@ namespace XHD.DAL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetList_form(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append(" select     *   ");
+            strSql.Append(" FROM dbo.Budge_modelMain  ");
+            strSql.Append("    ");
 
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetListPara_model(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select * ");
+            strSql.Append(" FROM Budge_Para_Model ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
 		#endregion  ExtensionMethod
 	}
 }

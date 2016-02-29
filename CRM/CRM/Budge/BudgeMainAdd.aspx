@@ -76,7 +76,7 @@
                 onSelect: onSelect,
                 idFieldName: 'id',
                 //parentIDFieldName: 'pid',
-                usericon: 'd_icon',
+                //usericon: 'd_icon',
                 checkbox: false,
                 itemopen: false,
                 onSuccess: function () {

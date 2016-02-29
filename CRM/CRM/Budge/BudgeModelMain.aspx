@@ -24,80 +24,49 @@
     <script type="text/javascript">
         var manager = "";
         $(function () {
+            var strurl = "../../data/Budge.ashx?Action=gridselectmodel";
+
+
+
             $("#maingrid4").ligerGrid({
                 columns: [
-                     {
-                         display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
-                         { return (page - 1) * pagesize + rowindex + 1; }
-                     },
-                    // { display: '客户编号', name: 'CustomerID', width: 50, align: 'left' },
-                      { display: '客户姓名', name: 'CustomerName', width: 80, align: 'left' },
-                       { display: '客户电话', name: 'tel', width: 100, align: 'left' },
-                        { display: '客户地址', name: 'address', width: 250, align: 'left' },
-                      { display: '施工监理', name: 'sgjl', width: 80, align: 'left' },
-                        { display: '业务员', name: 'ywy', width: 80, align: 'left' },
-                   // { display: '设计师', name: 'sjs', width: 120, align: 'left' },
-                    { display: '附加分', name: 'SpecialScore', width: 50, align: 'right' },
-                {
-                    display: '考核分', name: 'StageScore', width: 50, align: 'right', render: function (item) {
-                        return "<div style='color:#135294'>" + item.StageScore + "</div>";
-                    }
-                },
-                 { display: '总得分', name: 'sum_Score', width: 50, align: 'right' },
-                 { display: '满分', name: 'TotalScorce', width: 50, align: 'right' },
-                 {
-                     display: '达成率', name: 'Scoring', width: 80, align: 'right', render: function (item) {
-
-                         var html;
-                         if (item.sum_Score / item.TotalScorce > 0.9) {
-                             html = "<div style='color:#008040'>";
-                             if (item.Scoring)
-                                 html += item.Scoring;
-                             html += "</div>";
-                         }
-                         else
-                             if (item.sum_Score / item.TotalScorce > 0.5) {
-                                 html = "<div style='color:#800040'>";
-                                 if (item.Scoring)
-                                     html += item.Scoring;
-                                 html += "</div>";
-                             }
-                             else
-                                 html = "<div style='color:#F00'>" + item.Scoring + "</div>";
-                         return html;
-                     }
-                 },
-                        { display: '状态', name: 'Stage_icon', width: 80, align: 'left' },
-                { display: '备注', name: 'Remarks', width: 200, align: 'left' }
+                    //{ display: 'ID', name: 'ID', type: 'int', width: 50 },
+                    { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
+                   { display: '模板编号', name: 'model_id', width: 120, align: 'left' },
+                   { display: '模板名称', name: 'model_name', width: 150, align: 'left' },
+                   { display: '创建人', name: 'name', width: 100, align: 'left' },
+                   {
+                       display: '创建日期', name: 'DoTime', width: 100, align: 'left', render: function (item) {
+                           return formatTimebytype(item.DoTime, 'yyyy-MM-dd');
+                       }
+                   },
+                     { display: '引用次数', name: 'citations', width: 100, align: 'left' },
+                       { display: '备注', name: 'Remarks', width: 100, align: 'left' },
+                   { display: '原预算', name: 'budge_id', width: 150, align: 'left' }
 
                 ],
+                checkbox: false,
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/Crm_CEStage.ashx?Action=grid",
+                url: strurl,
                 width: '100%',
                 height: '100%',
-                //tree: { columnName: 'StageDescription' },
-                heightDiff: -1,
-                onRClickToSelect: true,
+                //title: "员工列表",
+                heightDiff: 0,
+
                 onContextmenu: function (parm, e) {
                     actionCustomerID = parm.data.id;
                     menu.show({ top: e.pageY, left: e.pageX });
                     return false;
                 }
-
             });
 
-
-
-            initLayout();
-            $(window).resize(function () {
-                initLayout();
-            });
             toolbar();
+            $("#lbtip").css("display", 'none');//提示先隐藏
         });
         function toolbar() {
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=135&rnd=" + Math.random(), function (data, textStatus) {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=154&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
                 var items = [];
                 var arr = data.Items;
@@ -155,11 +124,11 @@
 
         //查询
         function doserch() {
-            var sendtxt = "&Action=grid&rnd=" + Math.random();
+            var sendtxt = "&Action=gridselectmodel&rnd=" + Math.random();
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
             //  alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL("../../data/Crm_CEStage.ashx?" + serchtxt);
+            manager.GetDataByURL("../../data/Budge.ashx?" + serchtxt);
         }
         function doclear() {
             //var serchtxt = $("#serchform :input").reset();
@@ -187,11 +156,7 @@
         function f_openWindow(url, title, width, height) {
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
-                        {
-                            text: '保存', onclick: function (item, dialog) {
-                                f_save(item, dialog);
-                            }
-                        },
+                       
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();
@@ -202,48 +167,15 @@
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
         //明细
-        function detail() {
-            var manager = $("#maingrid4").ligerGetGridManager();
-            var row = manager.getSelectedRow();
-            if (row) {
-                f_openWindowview("crm/ConsExam/CEStage_ViewDetail.aspx?pid=" + row.id
-                    + "&name=" + encodeURI(row.CustomerName)
-                    + "&address=" + encodeURI(row.address)
-                    + "&sgjl=" + encodeURI(row.sgjl)
-                     + "&zf=" + row.TotalScorce
-                    + "&dcl=" + row.Scoring
-                    + "&df=" + row.sum_Score,
-                    "明细查询", 700, 530);
-            } else {
-                $.ligerDialog.warn('请选择行！');
-            }
-        }
-        //施工进度
-        function process() {
-            var manager = $("#maingrid4").ligerGetGridManager();
-            var row = manager.getSelectedRow();
-            if (row) {
-                f_openWindowview("crm/ConsExam/SGJD_List_View.aspx?cid=" + row.CustomerID
-                    + "&khmc=" + encodeURI(row.CustomerName + "[" + row.address + "]")
-                    + "&tel=" + row.tel
-                + "&sjzt=" + encodeURI(row.Stage_icon)
-                + "&sgjl=" + encodeURI(row.sgjl)
-                + "&jhdate=" + row.Jh_date
-                   ,
-                    "时间轴查询", 800, 550);
-            } else {
-                $.ligerDialog.warn('请选择行！');
-            }
-        }
+   
         function add() {
-            f_openWindow("crm/ConsExam/CEStage_add.aspx", "新增客户", 700, 330);
-        }
+                    }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("crm/ConsExam/CEStage_add.aspx?cid=" + row.id, "修改客户", 700, 330);
+                f_openWindow("crm/Budge/BudgeModelMainAdd.aspx?mid=" + row.model_id, "查看模板", 1100, 660);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
@@ -256,8 +188,8 @@
                 $.ligerDialog.confirm("删除不能恢复，确定删除？", function (yes) {
                     if (yes) {
                         $.ajax({
-                            url: "../../data/Crm_CEStage.ashx", type: "POST",
-                            data: { Action: "del", id: row.id, rnd: Math.random() },
+                            url: "../../data/Budge.ashx", type: "POST",
+                            data: { Action: "delmodel", mid: row.model_id, rnd: Math.random() },
                             success: function (responseText) {
                                 if (responseText == "true") {
                                     top.$.ligerDialog.closeWaitting();
@@ -280,35 +212,7 @@
                 $.ligerDialog.warn("请选择类别！");
             }
         }
-
-        function f_save(item, dialog) {
-
-            var issave = dialog.frame.f_save();
-
-            if (issave) {
-                dialog.close();
-                top.$.ligerDialog.waitting('数据保存中,请稍候...');
-                $.ajax({
-                    url: "../../data/CRM_CEStage.ashx", type: "POST",
-                    data: issave,
-                    success: function (responseText) {
-                        top.$.ligerDialog.closeWaitting();
-                        if (responseText == "false:type") {
-                            top.$.ligerDialog.error('操作失败，施工监理不能为空，请先到客户档案维护！');
-                        }
-                        else {
-                            f_reload();
-                        }
-                    },
-                    error: function () {
-                        top.$.ligerDialog.closeWaitting();
-
-                    }
-                });
-
-            }
-        }
-        function f_reload() {
+    function f_reload() {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);
             top.flushiframegrid("tabid39");
