@@ -76,6 +76,13 @@ namespace XHD.BLL
         {
             return dal.updatetotal(bid,sl);
         }
+
+        public int updateAll(string bid,decimal zk, decimal sl)
+        {
+            return dal.updateAll(bid, zk, sl);
+        }
+
+        
         public DataSet GetTax(string strwhere)
         {
             return dal.GetTax(strwhere);

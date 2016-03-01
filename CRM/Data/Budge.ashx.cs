@@ -62,6 +62,17 @@ namespace XHD.CRM.Data
                  //{"status": 1, "sum": 9}
                 context.Response.Write(josnstr);
             }
+            //最后保存
+            if (request["Action"] == "saveall")
+            {
+                string bid = PageValidate.InputText(request["T_budgeid"], 50);
+                string sl = PageValidate.InputText(request["T_sl"], 50);
+                string zk = PageValidate.InputText(request["T_zk"], 50);
+               
+                if (bd.updateAll(bid,StringToDecimal(zk), StringToDecimal(sl)) > 0)
+                    context.Response.Write("true");
+                else context.Response.Write("false");
+            }
             //是否存在这个预算的模板
              if (request["Action"] == "isexistmodelid")
             {

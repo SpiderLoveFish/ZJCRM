@@ -549,6 +549,24 @@ namespace XHD.DAL
             return rowaffected;
         }
 
+
+        public int updateAll(string bid,decimal zk, decimal sl)
+        {
+            SqlParameter[] parameters = {
+					new SqlParameter("@bid", SqlDbType.VarChar,50),
+                   new SqlParameter("@zk", SqlDbType.Decimal,10) ,
+					new SqlParameter("@tax", SqlDbType.Decimal,10) 
+                                     };
+            parameters[0].Value = bid;
+            parameters[1].Value = zk;
+            parameters[2].Value = sl;
+
+            int rowaffected = 0;
+            DbHelperSQL.RunProcedure("Usp_Update_Budge_ALL", parameters, out rowaffected);
+            return rowaffected;
+        }
+
+
         /// <summary>
         /// 获得数据列表
         /// </summary>
@@ -647,6 +665,8 @@ namespace XHD.DAL
                 return false;
             }
         }
+
+
     }
 }
 

@@ -132,6 +132,7 @@
                 onBeforeEdit: f_onBeforeEdit,
                 onBeforeSubmitEdit: f_onBeforeSubmitEdit,
                 onAfterEdit: f_onAfterEdit,
+                onAfterShowData:ishidecol,
                 //checkbox: true, name: "ischecked", checkboxAll: false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
                 onContextmenu: function (parm, e) {
                     actionproduct_id = parm.data.id;
@@ -143,8 +144,7 @@
             $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
             //是否折扣
             $("#iszktable").addClass("l-window-mask");
-            ishidecol();
-            $("#iszk").change(function () {
+             $("#iszk").change(function () {
                 if (this.checked == true) {
                     $("#iszktable").removeClass("l-window-mask");
                     g.toggleCol('TotalDiscountPrice', true);
@@ -161,12 +161,14 @@
         })
         function ishidecol()
         {
-            if (this.checked == true) {
+          
+            if ($("#iszk").attr('checked')) {
+             
                 $("#iszktable").removeClass("l-window-mask");
                 g.toggleCol('TotalDiscountPrice', true);
                 g.toggleCol('Discount', true);
             }
-            else if (this.checked == false) {
+            else if (!$("#iszk").attr('checked')) {
                 g.toggleCol('TotalDiscountPrice', false);
                 $("#iszktable").addClass("l-window-mask");
                 g.toggleCol('Discount', true);
@@ -530,6 +532,12 @@
                
             }
         }
+        //最后一次全部计算
+        function f_save()
+        {
+            var sendtxt = "&Action=saveall";
+             return $("form :input").fieldSerialize() + sendtxt;
+        }
         //存储模板
         function savemodel()
         {
@@ -625,15 +633,19 @@
         //更新折扣
         function addzk()
         {
-             
+            if ($("#T_zk").val() <= 0) {
+                top.$.ligerDialog.error('折扣必须大于0！');
+                return;
+            }
             var url = '../../data/Budge.ashx?Action=saveupdatedisprice&bid=' + $("#T_budgeid").val() + "&zk=" + $("#T_zk").val() + '&rdm=' + Math.random();
             $.ajax({
                 type: 'post',
                 url: url,
 
                 success: function (data) {
-                    if(data=='true')
-                        fload();
+                    if (data == 'true') {
+                        fload(); 
+                    }
                     else $.ligerDialog.error("保存错误！！！");
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -714,7 +726,6 @@
         {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);
-            ishidecol();
         }
     </script>
   

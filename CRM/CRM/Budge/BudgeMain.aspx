@@ -220,7 +220,7 @@
         function f_save(item, dialog) {
 
             var issave = dialog.frame.f_save();
-
+         
             if (issave) {
                 dialog.close();
                 top.$.ligerDialog.waitting('数据保存中,请稍候...');
@@ -229,10 +229,11 @@
                     data: issave,
                     success: function (responseText) {
                         top.$.ligerDialog.closeWaitting();
-                        if (responseText == "false:type") {
-                            top.$.ligerDialog.error('操作失败，施工监理不能为空，请先到客户档案维护！');
+                        if (responseText == "false") {
+                            top.$.ligerDialog.error('操作失败！');
                         }
                         else {
+                          //  alert(issave); 
                             f_reload();
                         }
                     },
