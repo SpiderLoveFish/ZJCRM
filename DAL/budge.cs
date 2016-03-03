@@ -416,11 +416,11 @@ namespace XHD.DAL
             object obj = DbHelperSQL.GetSingle(strsql);
             if (obj == null)
             {
-                return per + "000001";
+                return per + "001";
             }
             else
             {
-                return per + int.Parse(obj.ToString()).ToString("000000");
+                return per + int.Parse(obj.ToString()).ToString("000");
             }
 
             // return DbHelperSQL.GetMaxID("id", "CRM_CEStage");

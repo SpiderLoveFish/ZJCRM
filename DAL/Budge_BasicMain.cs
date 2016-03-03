@@ -41,11 +41,11 @@ namespace XHD.DAL
             object obj = DbHelperSQL.GetSingle(strsql);
             if (obj == null)
             {
-                return per+"000001";
+                return per+"001";
             }
             else
             {
-                return per+int.Parse(obj.ToString()).ToString("000000");
+                return per+int.Parse(obj.ToString()).ToString("000");
             }
 
            // return DbHelperSQL.GetMaxID("id", "CRM_CEStage");
@@ -473,7 +473,8 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " A.*,B.tel,B.Customer AS CustomerName,B.Emp_sg AS sgjl,B.address FROM dbo.Budge_BasicMain A INNER JOIN dbo.CRM_Customer B ON A.customer_id=B.id ");
+            strSql.Append(" top " + PageSize + " A.*,B.tel,C.name,B.Customer AS CustomerName,B.Emp_sg AS sgjl,Emp_sj AS sjs,B.address FROM dbo.Budge_BasicMain A INNER JOIN dbo.CRM_Customer B ON A.customer_id=B.id ");
+            strSql.Append(" INNER JOIN  dbo.hr_employee C ON A.DoPerson=C.ID ");
             strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_BasicMain ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(id) FROM Budge_BasicMain ");
@@ -521,10 +522,12 @@ namespace XHD.DAL
         public DataSet GetList_form(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(" select    A.*,B.id AS CustomerID,  B.tel,B.Customer AS CustomerName,B.Emp_sg AS sgjl,B.address  ");
+            strSql.Append(" select    A.*,ISNULL(b_zje,0) as zje,C.b_sj,C.b_sl,A.DiscountAmount*ISNULL(rate,0) as fjfy,B.id AS CustomerID,  B.tel,B.Customer AS CustomerName,B.Emp_sg AS sgjl,B.address  ");
+            strSql.Append(" ,B.Emp_sj AS sjs,B.Employee AS ywy ");
               strSql.Append(" FROM dbo.Budge_BasicMain A ");
               strSql.Append(" INNER JOIN dbo.CRM_Customer B ON A.customer_id=B.id   ");
-            
+              strSql.Append(" LEFT JOIN dbo.Budge_tax C ON	 A.id =C.budge_id ");
+              strSql.Append(" LEFT JOIN (SELECT SUM(rate) AS rate,budge_id FROM  dbo.Budge_Rate_Ver GROUP BY budge_id) D ON  A.id =D.budge_id ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" where " + strWhere);

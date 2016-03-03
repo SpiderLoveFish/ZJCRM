@@ -31,12 +31,19 @@
                          { return (page - 1) * pagesize + rowindex + 1; }
                      },
                       { display: '预算编号', name: 'id', width: 150, align: 'left' },
-                          { display: '预算名称', name: 'BudgetName', width: 250, align: 'left' },
+                          { display: '预算名称', name: 'BudgetName', width: 150, align: 'left' },
                       { display: '客户姓名', name: 'CustomerName', width: 80, align: 'left' },
                        { display: '客户电话', name: 'tel', width: 100, align: 'left' },
-                        { display: '客户地址', name: 'address', width: 250, align: 'left' },
-                 
-                        { display: '状态', name: 'IsStatus', width: 80, align: 'left' },
+                        { display: '客户地址', name: 'address', width: 200, align: 'left' },
+                   { display: '预算金额', name: 'BudgetAmount', width: 80, align: 'left' },
+                        { display: '状态', name: 'IsStatus', width: 60, align: 'left' },
+                        { display: '创建人', name: 'name', width: 80, align: 'left' },
+                        {
+                            display: '创建日期', name: 'DoTime', width: 100, align: 'left', render: function (item) {
+                                return formatTimebytype(item.DoTime, 'yyyy-MM-dd');
+                            }
+                        },
+                        { display: '设计师', name: 'sjs', width: 80, align: 'left' },
                 { display: '备注', name: 'Remarks', width: 200, align: 'left' }
 
                 ],
@@ -179,7 +186,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id, "修改预算", 1100, 660);
+                f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id, "修改预算", 1100, 600);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }

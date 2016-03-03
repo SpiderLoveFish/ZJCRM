@@ -96,29 +96,44 @@
                 columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                   
-                    { display: '产品名称', name: 'product_name', width: 120 },
-                     { display: '部件名称', name: 'ComponentName', width: 120 },
+                    { display: '名称', name: 'product_name', width: 120 },
+                     { display: '部位', name: 'ComponentName', width: 80 },
 
-                    { display: '产品类别', name: 'Cname', width: 120 },
+                    { display: '类别', name: 'Cname', width: 120 },
                      {
-                         display: '价格（￥）', name: 'TotalPrice', type: 'float', width: 80, align: 'right'
+                         display: '单价', name: 'TotalPrice', type: 'float', width: 60, align: 'right'
                      },
+                     
+                        {
+                            display: '数量', name: 'SUM', width: 50, align: 'left'
+                            , type: 'float', editor: { type: 'float' }
+
+                        },
+                         {
+                             display: '金额', name: 'je', type: 'float', width: 60, align: 'right'
+                         },
+
                      {
                          display: '折扣', hide: true, name: 'Discount', width: 80, align: 'right',
                          type: 'float'
                      },
-                      {
-                          display: '折扣价格（￥）',hide:true, name: 'TotalDiscountPrice', width: 80, align: 'right',
-                           type: 'float' 
-                      },
-                     {
-                         display: '数量', name: 'SUM', width: 80, align: 'left'
-                            , type: 'float', editor: { type: 'float' }
-
-                     },
+                       {
+                           display: '折后金额', hide: true, name: 'zkje', width: 80, align: 'right',
+                           type: 'float'
+                       },
+                   
                     { display: '单位', name: 'unit', width: 40 },
-                    { display: '备注', name: 'Remarks', width: 120 }
-
+                     { display: '类型', name: 'C_style', width: 40 },
+                        {
+                            display: '备注', name: 'Remarks', align: 'left', width: 400, render: function (item) {
+                                var html = "<div class='abc'>";
+                                if (item.Remarks)
+                                    html += item.Remarks;
+                                html += "</div>";
+                                return html;
+                            }
+                        }
+                 
                 ],
                 dataAction: 'server',
                 url: "../../data/Budge.ashx?Action=griddetail&bid=" + $("#T_budgeid").val() + "&compname=0&rnd=" + Math.random(),
@@ -132,6 +147,13 @@
                 onBeforeEdit: f_onBeforeEdit,
                 onBeforeSubmitEdit: f_onBeforeSubmitEdit,
                 onAfterEdit: f_onAfterEdit,
+                //onAfterShowData: function (grid) {
+                //    $(".abc").hover(function (e) {
+                //        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                //    }, function (e) {
+                //        $(this).ligerHideTip(e);
+                //    });
+                //},
                 onAfterShowData:ishidecol,
                 //checkbox: true, name: "ischecked", checkboxAll: false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
                 onContextmenu: function (parm, e) {
@@ -145,33 +167,45 @@
             //是否折扣
             $("#iszktable").addClass("l-window-mask");
              $("#iszk").change(function () {
-                if (this.checked == true) {
+                 if (this.checked == true) {
+                     $("#iszk").attr('checked', true);
                     $("#iszktable").removeClass("l-window-mask");
                     g.toggleCol('TotalDiscountPrice', true);
                     g.toggleCol('Discount', true);
+                    g.toggleCol('zkje', true);
                 }
                 else if (this.checked == false) {
+                  
                     g.toggleCol('TotalDiscountPrice', false);
                     $("#iszktable").addClass("l-window-mask");
                     g.toggleCol('Discount', false);
-
+                    g.toggleCol('zkje', false);
+                    $("#T_zk").val(1);
+                    addzk();
+                    
 
                 }
             });
         })
         function ishidecol()
         {
-          
+            //    $(".abc").hover(function (e) {
+            //        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+            //    }, function (e) {
+            //        $(this).ligerHideTip(e);
+            //    });
             if ($("#iszk").attr('checked')) {
-             
+                $("#iszk").attr('checked', true);
                 $("#iszktable").removeClass("l-window-mask");
                 g.toggleCol('TotalDiscountPrice', true);
                 g.toggleCol('Discount', true);
+                g.toggleCol('zkje', true);
             }
             else if (!$("#iszk").attr('checked')) {
                 g.toggleCol('TotalDiscountPrice', false);
                 $("#iszktable").addClass("l-window-mask");
-                g.toggleCol('Discount', true);
+                g.toggleCol('Discount', false);
+                g.toggleCol('zkje', false);
 
 
             }
@@ -367,17 +401,25 @@
                     }
                    // alert(obj.CustomerID); //String 构造函数
                     $("#T_companyid").val(obj.CustomerID);
-                    $("#T_company").val(obj.CustomerName);     
+                    $("#T_company").val(obj.CustomerName + "("+obj.address+")");
                     $("#T_budge_name").val(obj.BudgetName);
-                   
-                
-
+                    $("#T_zje").val(obj.zje);
+                    $("#T_zje2").val(obj.JJAmount);
+                    $("#T_zje3").val(obj.ZCAmount);
+                    $("#T_fjje").val(obj.fjfy);
                     $("#T_remarks").val(obj.Remarks);
-                   
-
+                    $("#T_sj").val(obj.b_sj);
+                    $("#T_sl").val(obj.b_sl);
                     $("#T_budgeid").val(obj.id);
-
-                     
+                    $("#T_employee").val(obj.ywy);
+                    $("#T_employee2").val(obj.sjs);
+                  
+                    if (obj.DetailDiscount != 1)
+                    {
+                        // alert(obj.DetailDiscount);
+                        $("#iszk").attr("checked", true);
+                        $("#T_zk").val(obj.DetailDiscount);
+                    }
 
                 }
             });
@@ -675,16 +717,20 @@
             });
 
         }
+        //折扣，默认和手动
         function savetotal()
         {
-            if ($("#T_sl").val() > 1 || $("#T_sl").val()<=0) {
-                top.$.ligerDialog.error('折扣必须大于0小于1！');
-                return;
-            }
+          
+            if (sl == "")//
+                if ($("#T_sl").val() > 1 || $("#T_sl").val() <= 0) {
+                    top.$.ligerDialog.error('折扣必须大于0小于1！');
+                    return;
+                }
+            var t_sl = $("#T_sl").val();
             $.ajax({
                 type: "get",
                 url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
-                data: { Action: 'savetotal',bid:getparastr("bid"),sl:$("#T_sl").val(), rnd: Math.random() }, /* 注意参数的格式和名称 */
+                data: { Action: 'savetotal',bid:getparastr("bid"),sl:t_sl, rnd: Math.random() }, /* 注意参数的格式和名称 */
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
@@ -738,11 +784,11 @@
              <input type="hidden" id="h_address" value="" />
         <table style="width: 550px; margin: 5px;" class='bodytable1'>
             <tr>
-                <td colspan="7" class="table_title1">基本信息
+                <td colspan="11" class="table_title1">基本信息
                      
                 </td>
-                <td  class="table_title1"> 
-                      <a id="qdkh" class="l-button red"  position="right" style="width:150px;" onclick="addcustomer()">
+                <td colspan="3"  class="table_title1"> 
+                      <a id="qdkh" class="l-button red"  position="right" style="width:150px;" onClick="addcustomer()">
                           确定客户
 
                       </a>
@@ -751,10 +797,10 @@
                   </tr>
             <tr>
                 <td>
-                    <div style="width: 70px; text-align: right; float: right">客户姓名：</div>
+                    <div style="width: 70px; text-align: right; float: right">客户信息：</div>
                 </td>
-                <td>
-                         <input type="text" id="T_company" name="T_company"  ltype="text" ligerui="{width:180,disabled:true}" validate="{required:true}" />
+                <td colspan="3">
+                         <input type="text" id="T_company" name="T_company"  ltype="text" ligerui="{width:250,disabled:true}" validate="{required:true}" />
                      <input id="T_companyid" name="T_companyid" type="hidden" />
                      <input id="T_version" name="T_version" type="hidden" />
                   
@@ -764,107 +810,89 @@
                 <td>
                     <div style="width: 70px; text-align: right; float: right">预算编号：</div>
                 </td>
-                <td>
+                <td colspan="3">
                       <%--<input id="T_budgeid" name="T_budgeid" type="text" validate="{required:true}" style="width: 196px" />--%>
                     <input id="T_budgeid" name="T_budgeid" type="text" ltype="text" 
-                        ligerui="{width:180,disabled:true}" validate="{required:false}" />
+                        ligerui="{width:250,disabled:true}" validate="{required:false}" />
 
                 </td>
                 <td>
                     <div style="width: 70px; text-align: right; float: right">预算名称：</div>
                 </td>
-                <td>
-                    <input id="T_budge_name" name="T_budge_name" type="text" ltype="text" ligerui="{width:180}" validate="{required:false}" /></td>
-          
-             
-                <td>
-                    <div style="width: 70px; text-align: right; float: right">业务员：</div>
-                </td>
-                <td>
-                    <input id="T_employee" name="T_employee" validate="{required:false}"  ltype="text" ligerui="{width:180,disabled:true}"  />
-                    <input id="T_employee1" name="T_employee1" type="hidden" />
-                   
-                </td>
+                <td colspan="5">
+                    <input id="T_budge_name" name="T_budge_name" type="text" ltype="text" ligerui="{width:280}" validate="{required:false}" />                    <input id="T_employee1" name="T_employee1" type="hidden" />                </td>
              </tr>
              
             <tr    >
-                <td>
-                    <div style="width: 70px; text-align: right; float: right">备注：</div>
-                </td>
-                <td colspan="3">
-
-                    <input id="T_remarks" name="T_remarks" type="text" ltype="text"  ligerui="{width:490}" /></td>
+                <td>  <div style="width: 70px; text-align: right; float: right">总金额：</div></td>
+                <td><input type="text"  id="T_zje" name="T_zje"  ltype="text" ligerui="{width:80,disabled:true}"   /></td>
+              <td> <div style="width: 70px; text-align: right; float: right">基建金额：</div></td>
+              <td><input type="text"  id="T_zje2" name="T_zje2"  ltype="text" ligerui="{width:80,disabled:true}"   /></td>
+                <td><div style="width: 70px; text-align: right; float: right">主材金额：</div></td>
+                <td><input type="text"  id="T_zje3" name="T_zje3"  ltype="text" ligerui="{width:80,disabled:true}"   /></td>
+                <td><div style="width: 70px; text-align: right; float: right">附加金额：</div></td>
+                <td><input type="text"  id="T_fjje" name="T_fjje"  ltype="text" ligerui="{width:80,disabled:true}"   /></td>
           
-               <td colspan="4" id="tr_contact4">
+               <td colspan="6" id="tr_contact4">
                    <table class="table_title1"><tr>
-                        <td>税率</td>
-               <td>
-                            <input type="text"  id="T_sl" name="T_sl"  ltype="text" ligerui="{width:80,number: true}"   />
-                   </td><td>税金</td> <td>  <input type="text"  id="T_sj" name="T_sj"  ltype="text" ligerui="{width:80,disabled:true}"   />
+                        <td><div style="width: 60px; text-align: right; float: right">税金：</div></td>
+               <td><input type="text"  id="T_sj" name="T_sj"  ltype="text" ligerui="{width:60,disabled:true}"   /></td>
+               <td><div style="width: 60px; text-align: right; float: right">税率：</div></td> <td><input type="text"  id="T_sl" name="T_sl"  ltype="text" ligerui="{width:60,number: true}"   />
                </td>
-                       <td>预算总金额</td> <td>  <input type="text"  id="T_zje" name="T_zje"  ltype="text" ligerui="{width:80,disabled:true}"   />
-               </td>
-                       <td><a id="A5" class="l-button"  position="right" style="width:80px;" onclick="savetotal()">
-                          保存
+                       <td>&nbsp;</td> <td>&nbsp;</td>
+                       <td><a id="A5" class="l-button"  position="right" style="width:60px;" onClick="savetotal()">
+                          保存税率
 
                       </a></td>
                           </tr></table>
 
            </td> 
                  </tr>
+               <tr>
+                 <td   class="table_title1"><div style="width: 70px; text-align: right; float: right">备注：</div></td>
+                 <td colspan="7"   class="table_title1"><input id="T_remarks" name="T_remarks" type="text" ltype="text"  ligerui="{width:550}" /></td>
+                 <td   class="table_title1"><span style="width: 60px; text-align: right; float: right">业务员：</span></td>
+                 <td   class="table_title1"><input id="T_employee" name="T_employee" validate="{required:false}"  ltype="text" ligerui="{width:60,disabled:true}"  /></td>
+                 <td   class="table_title1"><span style="width: 60px; text-align: right; float: right">设计师：</span></td>
+                 <td colspan="3"  class="table_title1" ><input id="T_employee2" name="T_employee2" validate="{required:false}"  ltype="text" ligerui="{width:60,disabled:true}"  /></td>
+               </tr>
                <tr id="tr2">
                 <td   class="table_title1">维护信息
                      
                 </td>
-                   <td   class="table_title1">
+                   <td colspan="3"   class="table_title1">
                        <table><tr>
                            <td>
-                        <a id="A2" class="l-button"  position="right" style="width:80px;" onclick="savemodel()">
+                        <a id="A2" class="l-button"  position="right" style="width:80px;" onClick="savemodel()">
                           保存模板 </a>
                      </td><td>
-                      <a id="A3" class="l-button"  position="right" style="width:80px;" onclick="selectmodel()">
+                      <a id="A3" class="l-button"  position="right" style="width:80px;" onClick="selectmodel()">
                           引用模板
 
                       </a>
                     </td>
                      </tr></table>
-                </td><td   class="table_title1">  <a id="A4" class="l-button"  position="right" style="width:80px;" onclick="refreshprice()">
+                </td><td   class="table_title1">  <a id="A4" class="l-button"  position="right" style="width:80px;" onClick="refreshprice()">
                           刷新价格 </a>
                      
-                </td><td   class="table_title1"> 
+                </td><td colspan="3"   class="table_title1"> 
                         <table><tr>
-                           <td>
-                        <input type="text"  id="T_fjje" name="T_fjje"  ltype="text" ligerui="{width:80,disabled:true}"   />
-              
-                     </td><td>
-                      <a id="A7" class="l-button"  position="right" style="width:80px;" onclick="addfjje()">
-                          附加金额
+                           <td>&nbsp;</td><td>
+                      <a id="A7" class="l-button"  position="right" style="width:80px;" onClick="addfjje()">
+                          添加附加费用
 
                       </a>
                     </td>
                      </tr></table>
-                </td><td   class="table_title1"> 
-                     
-                </td><td   class="table_title1"> 
-                     
-                </td>
-                       <td  class="table_title1" > 
-                         <input  type="checkbox" id="iszk" name="iszk" ltype="checkbox"   ligerui="{width:80}" > 折扣 </input>
-                           </td>
-                <td  class="table_title1" > 
-                    <table id="iszktable"> <tr> 
-                        <td>
-                        <input type="text"  id="T_zk" name="T_zk"  ltype="text" ligerui="{width:80,number: true}"   />
-                   </td>
-                        <td>
-                      <a id="A1" class="l-button"  position="right" style="width:80px;" onclick="addzk()">
-                          确定折扣
-
-                      </a></td>
-                        </tr>
-                    </table>
-                </td>
+                </td><td colspan="2"   class="table_title1"> 
+                  <input  type="checkbox" id="iszk" name="iszk" ltype="checkbox"   ligerui="{width:80}" > 是否打折<span class="red">(0.9 = 九折）</span> </input>                 </td>
+                <td colspan="4"   class="table_title1"><table id="iszktable">
+                  <tr>
+                    <td><input type="text"  id="T_zk" name="T_zk"  ltype="text" ligerui="{width:60,number: true}"   /></td>
+                    <td><a id="A1" class="l-button"  position="right" style="width:62px;" onClick="addzk()"> 确定折扣 </a></td>
                   </tr>
+                </table></td>
+  </tr>
            
         </table>
         </div>
