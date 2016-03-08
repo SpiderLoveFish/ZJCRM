@@ -129,6 +129,7 @@
     <Compile Include="CERep_Schedule.cs" />
     <Compile Include="CE_Para.cs" />
     <Compile Include="budge.cs" />
+    <Compile Include="webservers1.cs" />
     <Compile Include="f_bbs.cs" />
     <Compile Include="Crm_CEDetail.cs" />
     <Compile Include="Crm_CEDetail_Version.cs" />

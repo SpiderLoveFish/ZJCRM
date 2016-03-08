@@ -8,83 +8,84 @@ using System.Data;
 
 namespace XHD.DAL
 {
-    public partial class f_bbs
+    public partial class webserver1
     {
-      
-        public f_bbs()
+
+        public webserver1()
         { }
 
-        public DataSet Getf_section()
-        {
-            var strSql = new StringBuilder();
-            strSql.Append("select   *  from dbo.f_section WHERE show_status=1 ORDER BY display_index  ");
-          
-            return DbHelperSQL.Query(strSql.ToString());
-        }
-        //获取未读消息的数量
-        public int getunreadcount(string taken)
-        {
-
-            var sb = new StringBuilder();
-            sb.Append(" select n.id as not_read_count from notification n where n.read = 0 and n.author_id ='" + taken+"'");
-            return DbHelperSQL.Query(sb.ToString()).Tables[0].Rows.Count;
-        }
-        //获取未读消息 
-        public DataSet getunread(string taken)
-        {
-
-            string sql = "";
-                  sql+= "select n.*, t.title, u.nickname from notification n " +
-                "left join topic t on n.tid = t.id " +
-                "left join user u on u.id = n.from_author_id " +
-                "where n.read = 0 and n.author_id = '"+taken+"' order by n.in_time desc";
-            return DbHelperSQL.Query(sql);
-        }
-         //获取已读消息 
-        public DataSet getread(string taken,int pageseze)
-        {
-
-            string sql = "";
-                  sql+= " select top "+pageseze+" n.*, t.title, u.nickname from notification n " +
-                "left join topic t on n.tid = t.id " +
-                "left join user u on u.id = n.from_author_id " +
-                "where n.read = 1 and n.author_id = '"+taken+"' order by n.in_time desc ";
- 
-            return DbHelperSQL.Query(sql);
-        }
-        //将未读消息设置成已读
-        public int UpdateRead(string taken)
-		{
-            var sb = new StringBuilder();
-            sb.Append(" update notification n set n.read = 1 where n.author_id ='" + taken + "'");
-            SqlParameter[] parameters = { };
-           return DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
-            
-        }
-        //获取注册用户信息
-        public DataSet gerPCuser(string uid, string pwd)
-        {
-            string sql = "SELECT * FROM dbo.hr_employee WHERE	 uid='" + uid + "' AND pwd='" + pwd + "'";
-            return DbHelperSQL.Query(sql);
-        }
-        //新增APP用户
-        public int Insertuser(int id,string token)
+     
+        //打卡
+        public int HR_SignIn(int id, string localstate, string MapPosition)
         {
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine(" Update hr_employee");
-            sb.AppendLine(" set token='"+token+"'");
-            sb.AppendLine(" where id=" + id + "");
-            sb.AppendLine(" INSERT INTO dbo.f_user");
-            sb.AppendLine("        ( id ,");
-            sb.AppendLine("          nickname ,score , token ,avatar , mission ,");
-            sb.AppendLine("		  in_time ,email , f_password , url");
+            sb.AppendLine("INSERT INTO dbo.HR_SignIn_Origin");
+            sb.AppendLine("        ( userid ,");
+            sb.AppendLine("          DoTime ,");
+            sb.AppendLine("          DoPosition ,");
+            sb.AppendLine("          MapPosition");
             sb.AppendLine("        )");
-            sb.AppendLine(" SELECT 'xczs'+uid , name ,");
-            sb.AppendLine("          0 , '"+token+"' , 'images/logo/'+title , GETDATE() , GETDATE() ,");
-            sb.AppendLine("          email ,'' ,'' FROM dbo.hr_employee WHERE	 ID="+id+"");
+            sb.AppendLine("VALUES  ( " + id + " ,"); // userid - int
+            sb.AppendLine("         getdate() ,"); // DoTime - datetime
+            sb.AppendLine("          '" + localstate + "' ,"); // DoPosition - varchar(200)
+            sb.AppendLine("          '" + MapPosition + "'"); // MapPosition - varchar(50)
+            sb.AppendLine("        )"); SqlParameter[] parameters = { };
+            return DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+        }
+
+           //获取打卡信息
+        public DataSet Get_SignInlist(string id, int topindex)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("select top "+topindex+" *  from dbo.HR_SignIn_Origin");
+            sb.AppendLine(" WHERE	DoTime>=CONVERT(VARCHAR(10),GETDATE(),120)");
+            sb.AppendLine(" and userid="+id+"");
+            sb.AppendLine(" ORDER BY DoTime DESC");
+            return DbHelperSQL.Query(sb.ToString());
+        }
+
+
+        public int HR_follow(string cid, string follow, string type,string id)
+        {
+ 
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("INSERT INTO dbo.CRM_Follow");
+            sb.AppendLine("        ( Customer_id ,");
+            sb.AppendLine("          Follow ,");
+            sb.AppendLine("          Follow_date ,");
+            sb.AppendLine("          Follow_Type_id ,");
+            sb.AppendLine("          employee_id");
+            sb.AppendLine("");
+            sb.AppendLine("        )");
+            sb.AppendLine(" VALUES( "+cid+",");
+            sb.AppendLine("   '"+follow+"',getdate(),"+type+","+id+"");
+            sb.AppendLine(" )");
+           
+            sb.AppendLine(" UPDATE A SET	Customer_name=B.Customer,");
+            sb.AppendLine(" Follow_Type=C.params_name,employee_name=D.name");
+            sb.AppendLine(" FROM dbo.CRM_Follow A");
+            sb.AppendLine(" INNER JOIN  dbo.CRM_Customer B ON A.Customer_id=B.id");
+            sb.AppendLine(" INNER JOIN (SELECT * FROM  dbo.Param_SysParam WHERE parentid=4)C");
+            sb.AppendLine(" ON A.Follow_Type_id=C.id");
+            sb.AppendLine(" INNER JOIN dbo.hr_employee D ON A.employee_id=D.ID");
+            sb.AppendLine(" WHERE ISNULL(Customer_name,'')='' OR ISNULL(Follow_Type,'')='' OR ISNULL(employee_name,'')=''");
             SqlParameter[] parameters = { };
             return DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
         }
+
+        public DataSet GetFollow(string cid)
+        {
+            string sql = " SELECT * FROM dbo.CRM_Follow WHERE Customer_id=" + cid + "";
+            
+            return DbHelperSQL.Query(sql);
+        }
+        public DataSet GetCRM_Customer(string cid)
+        {
+            string sql = " SELECT * FROM dbo.CRM_Customer WHERE id=" + cid + "";
+
+            return DbHelperSQL.Query(sql);
+        }
+
 
         //获取App用户主要信息
         public DataSet geruser(string token)
@@ -299,14 +300,14 @@ namespace XHD.DAL
             strSql.Append(" top " + PageSize + "  A.*,B.avatar  FROM dbo.f_topic  A INNER JOIN dbo.f_user B  ON A.author_id=B.token   ");
             strSql.Append(" ");
             strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM f_topic ");
-            strSql.Append(" where " + strWhere + " order by t_top DESC , in_time DESC   ) ");
+            strSql.Append(" where " + strWhere + " order by in_time ) ");
             strSql1.Append(" select count(id) FROM f_topic ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);
                 strSql1.Append(" where " + strWhere);
             }
-            strSql.Append(" order by t_top DESC , in_time DESC ");
+            strSql.Append(" order by in_time" );
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
             return DbHelperSQL.Query(strSql.ToString());
         }
@@ -319,7 +320,7 @@ namespace XHD.DAL
             sb.AppendLine("INNER JOIN dbo.f_user B ON A.author_id=B.token");
             sb.AppendLine("INNER JOIN dbo.f_section C ON A.s_id=C.id");
             sb.AppendLine(" where A.id="+tid+"");
-            string sql = "  SELECT count(*) FROM dbo.f_collect where author_id='" + token + "'";
+            string sql = "  SELECT * FROM dbo.f_collect where token='" + token + "'";
             collectCount = DbHelperSQL.Query(sql).Tables[0].Rows[0][0].ToString();
          
             return DbHelperSQL.Query(sb.ToString());
