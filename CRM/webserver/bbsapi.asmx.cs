@@ -86,10 +86,10 @@ namespace XHD.CRM.webserver
         /// <param name="tab"></param>
         /// <param name="pagsize"></param>
         [WebMethod]
-        public void Getf_Topic(int PageSize, int PageIndex, string strwhere)
+        public void Getf_Topic(int PageIndex, int PageSize, string strwhere)
         {
             string Total;
-            DataSet ds = fb.GetDsTopic(PageSize, PageIndex, strwhere, out Total);
+            DataSet ds = fb.GetDsTopic(PageIndex, PageSize, strwhere, out Total);
                
             string returnstr = "{\"code\":201,\"description\":\"没有数据！\"}";
             if (ds.Tables[0].Rows.Count > 0)
@@ -293,7 +293,7 @@ namespace XHD.CRM.webserver
         /// 
         /// </summary>
         [WebMethod]
-        public void Getf_user(string token)
+        public void Getf_section()
         {
             DataSet ds = fb.Getf_section();
             string returnstr = "{\"code\":0,\"description\":\"faile\"}";

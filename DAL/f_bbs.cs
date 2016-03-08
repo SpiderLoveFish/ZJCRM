@@ -296,7 +296,8 @@ namespace XHD.DAL
              StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + "  A.*,B.avatar  FROM dbo.f_topic  A INNER JOIN dbo.f_user B  ON A.author_id=B.token   ");
+            strSql.Append(" top " + PageSize + "  A.*,B.avatar,C.name as sectionName   FROM dbo.f_topic  A INNER JOIN dbo.f_user B  ON A.author_id=B.token   ");
+            strSql.Append(" inner join f_section C on A.s_id=C.id");
             strSql.Append(" ");
             strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM f_topic ");
             strSql.Append(" where " + strWhere + " order by t_top DESC , in_time DESC   ) ");
@@ -332,5 +333,7 @@ namespace XHD.DAL
            
             return DbHelperSQL.Query(sb.ToString());
         }
+    
+    
     }
 }

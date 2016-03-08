@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -181,6 +181,25 @@ namespace XHD.CRM.webserver
             Context.Response.End();
 
         }
+
+
+        [WebMethod]
+        public void GetCustomer_page(int pageIndex, int pageSize, string where)
+        {
+            BLL.CRM_Customer cus = new BLL.CRM_Customer();
+            DataSet ds = cus.GetPageList(pageIndex, pageSize, where);
+            string returnstr = "{\"code\":0,\"description\":\"faile\"}";
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":{\"totalrow\":" + ds.Tables[0].Rows.Count.ToString()+",\"list\":" + Common.DataToJson.GetJson(ds) + "}}";
+            }
+            else returnstr = "{\"code\":201,\"description\":\"success\",\"detail\":\"没有数据\"}";
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write(returnstr);
+            Context.Response.End();
+        }
+
        
     }
 }
