@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Data;
+using XHD.Common;
 
 namespace XHD.CRM.webserver
 {
@@ -113,11 +114,12 @@ namespace XHD.CRM.webserver
             string returnstr = "{\"code\":201,\"description\":\"没有数据！\"}";
             if (ds.Tables[0].Rows.Count > 0)
             {
-                returnstr = Common.DataToJson.DataToJSON_nomal(ds);
+                returnstr = Common.DataToJson.GetJson(ds).Replace("[", "").Replace("]", "");
                 DataSet dds = fb.GetDsTopicDetail_replay(token,tid);
               
                 if(dds.Tables[0].Rows.Count>0)
                     str = Common.DataToJson.GetJson(dds);
+                if (str == "") str = "[{}]";
                 returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":{\"collectCount\":" + Total + ",\"replies\":" + str + ",\"topic\":" + returnstr + "}}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
@@ -139,7 +141,7 @@ namespace XHD.CRM.webserver
             if (fb.inserttopic(token, int.Parse(sid), title, coutent) > 0)
             {
                 returnstr = "创建成功！";
-                returnstr="{\"code\":200,\"description\":\"success\",\"detail\":" + returnstr + "}";
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":\" " + returnstr + "\"}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
             Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
@@ -156,7 +158,7 @@ namespace XHD.CRM.webserver
             if (fb.UpdateTopic(token, id, title, coutent) > 0)
             {
                 returnstr = "修改成功！";
-                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + returnstr + "}";
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":\" " + returnstr + "\"}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
             Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
@@ -240,7 +242,7 @@ namespace XHD.CRM.webserver
             if (fb.Insertcollect(token, id) > 0)
             {
                 returnstr = "收藏成功！";
-                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + returnstr + "}";
+                returnstr = "{\"code\":200,\"description\":\"success\"}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
             Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
@@ -257,7 +259,7 @@ namespace XHD.CRM.webserver
             if (fb.Deletecollect(token, id) > 0)
             {
                 returnstr = "取消收藏成功！";
-                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + returnstr + "}";
+                returnstr = "{\"code\":200,\"description\":\"success\"}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
             Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
@@ -274,12 +276,13 @@ namespace XHD.CRM.webserver
         [WebMethod]
         public void Getf_reply_creat(string token, string tid,string title, string content)
         {
-          
+            string strcontent = PageValidate.InputText(content, int.MaxValue);
             string returnstr = "{\"code\":0,\"description\":\"faile\"}";
-            if (fb.insertreply(token,int.Parse(tid),title,content) > 0)
+            if (fb.insertreply(token,int.Parse(tid),title,strcontent) > 0)
             {
-                returnstr = "回复成功！！";
-                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + returnstr + "}";
+                DataSet ds = fb.GetDsTopicDetail_replay_last(token,tid);
+                returnstr = Common.DataToJson.GetJson(ds).Replace("[", "").Replace("]", "");
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\": " + returnstr + "}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
             Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");

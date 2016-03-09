@@ -282,9 +282,8 @@ namespace XHD.DAL
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine(" Delete dbo.f_collect");
-         
-            sb.AppendLine("where   ( tid='" + tid + "',"); // tid - varchar(32)
-            sb.AppendLine("          author_id='" + token + "',"); // author_id - varchar(32)
+            sb.AppendLine(" where    tid='" + tid + "' "); // tid - varchar(32)
+            sb.AppendLine("        AND  author_id='" + token + "' "); // author_id - varchar(32)
           
             SqlParameter[] parameters = { };
             return DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
@@ -329,8 +328,15 @@ namespace XHD.DAL
         public DataSet GetDsTopicDetail_replay(string token, string tid)
         {
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine("SELECT * FROM dbo.f_reply WHERE	 tid=" + tid + "");
+            sb.AppendLine("SELECT * FROM dbo.f_reply A INNER JOIN f_user B ON	A.author_id=B.token where A.tid=" + tid + "");
            
+            return DbHelperSQL.Query(sb.ToString());
+        }
+        public DataSet GetDsTopicDetail_replay_last(string token, string tid)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("SELECT top 1 * FROM dbo.f_reply A INNER JOIN f_user B ON	A.author_id=B.token where A.tid=" + tid + "");
+            sb.AppendLine(" ORDER BY	 A.in_time desc ");
             return DbHelperSQL.Query(sb.ToString());
         }
     

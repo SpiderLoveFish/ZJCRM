@@ -95,5 +95,9 @@ namespace XHD.BLL
           {
               return dal.GetDsTopicDetail_replay(token,tid);
           }
+          public DataSet GetDsTopicDetail_replay_last(string token, string tid)
+          {
+              return dal.GetDsTopicDetail_replay_last(token, tid);
+          }
     }
 }
