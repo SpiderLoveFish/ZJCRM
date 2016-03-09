@@ -42,7 +42,10 @@ namespace XHD.BLL
 		{
 			return dal.Update(model);
 		}
-
+        public bool updatestatus(int status, string bid)
+        {
+            return dal.updatestatus(status,bid);
+        }
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>

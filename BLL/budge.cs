@@ -116,6 +116,12 @@ namespace XHD.BLL
             return dal.DeleteRateVer(id);
         }
 
+
+        public int copybudge(string copyid, string maxid, string userid)
+        {
+            return dal.copybudge(copyid,maxid,userid);
+        }
+
     }
 }
 

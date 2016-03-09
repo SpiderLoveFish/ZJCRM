@@ -68,10 +68,50 @@ namespace XHD.CRM.Data
                 string bid = PageValidate.InputText(request["T_budgeid"], 50);
                 string sl = PageValidate.InputText(request["T_sl"], 50);
                 string zk = PageValidate.InputText(request["T_zk"], 50);
-               
-                if (bd.updateAll(bid,StringToDecimal(zk), StringToDecimal(sl)) > 0)
+                string submit = PageValidate.InputText(request["style"], 50);
+                if (bd.updateAll(bid, StringToDecimal(zk), StringToDecimal(sl)) > 0)
+                {
+                    
+                    if (submit == "submit")//提交要改下状态
+                    {
+                        if (bbb.updatestatus(1,bid))
+                            context.Response.Write("true");
+                        else
+                            context.Response.Write("false");
+                      
+                    }else
                     context.Response.Write("true");
+                }
                 else context.Response.Write("false");
+            }
+            //修改状态，退回，审核，失效
+            if (request["Action"] == "saveupdatestatus")
+            {
+               
+                string bid = PageValidate.InputText(request["bid"], 50);
+                string status = PageValidate.InputText(request["status"], 50);
+                if (status == "2")//审核
+                {
+                    string cid = PageValidate.InputText(request["cid"], 50);
+                    DataSet ds = bbb.GetList(" IsStatus=2 and customer_id='" + cid + "'");
+                    if (ds.Tables[0].Rows.Count > 0)
+                        context.Response.Write("false:exist");
+                    else
+                    {
+                        if (bbb.updatestatus(StringToInt(status), bid))
+                            context.Response.Write("true");
+                        else
+                            context.Response.Write("false");
+                    }
+                }
+                else
+                {
+                    if (bbb.updatestatus(StringToInt(status), bid))
+                        context.Response.Write("true");
+                    else
+                        context.Response.Write("false");
+                }
+                 
             }
             //是否存在这个预算的模板
              if (request["Action"] == "isexistmodelid")
@@ -143,7 +183,7 @@ namespace XHD.CRM.Data
                
                 if(bbdetail.UpdateDisPrice( StringToDecimal(zk),bid))
                     context.Response.Write("true");
-                else context.Response.Write("flase");
+                else context.Response.Write("false");
             }
             //刷新价格
             if (request["Action"] == "saveupdaterefprice")
@@ -152,7 +192,7 @@ namespace XHD.CRM.Data
                 string bid = PageValidate.InputText(request["bid"], 50);
                 if(bbdetail.UpdateRefreshPrice( bid))
                     context.Response.Write("true");
-                else context.Response.Write("flase");
+                else context.Response.Write("false");
             }
             if (request["Action"] == "savemodel")
             {
@@ -162,7 +202,7 @@ namespace XHD.CRM.Data
                 string modelid = bd.GetMaxModelId();
                 if (bd.AddModel(bid,modelid, modelname,emp_id, remaks) > 0)
                     context.Response.Write("true");
-                else context.Response.Write("flase");
+                else context.Response.Write("false");
             }
             if (request["Action"] == "savemodeltobudge")
             {
@@ -170,8 +210,18 @@ namespace XHD.CRM.Data
                 string modelid = PageValidate.InputText(request["modelid"], 50);
                 if (bd.AddModelToBudge(bid, modelid) > 0)
                     context.Response.Write("true");
-                else context.Response.Write("flase");
+                else context.Response.Write("false");
             }
+
+            if (request["Action"] == "copybudge")
+            {
+                string copyid = PageValidate.InputText(request["copyid"], 50);
+                string maxid =  bbb.GetMaxId();
+                if (bd.copybudge(copyid, maxid, emp_id.ToString()) > 0)
+                    context.Response.Write(maxid);
+                else context.Response.Write("false");
+            }
+
             if (request["Action"] == "saveupdatesum")
             {
                 decimal  sum = StringToDecimal(request["editsum"]);
@@ -181,7 +231,7 @@ namespace XHD.CRM.Data
                 {
                     if (bbdetail.UpdateSum(sum,StringToInt(id),bid))
                         context.Response.Write("true");
-                    else context.Response.Write("flase");
+                    else context.Response.Write("false");
                 }
             }
             if (request["Action"] == "deldetail")
@@ -291,6 +341,7 @@ namespace XHD.CRM.Data
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
                 int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string str_condition = PageValidate.InputText(request["str_condition"], 50);
                 string sortname = request["sortname"];
                 string sortorder = request["sortorder"];
 
@@ -303,8 +354,12 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
-
-
+                if (str_condition == "0")
+                    serchtxt += " and IsStatus in(0,1)";
+                else if (str_condition == "1")
+                {
+                    serchtxt += " and IsStatus not in(0)";
+                }
 
                 string dt = "";
 
@@ -319,7 +374,8 @@ namespace XHD.CRM.Data
                 int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
                 string sortname = request["sortname"];
                 string sortorder = request["sortorder"];
-
+                string txtsearch = PageValidate.InputText(request["stext"], 255);
+            
                 if (string.IsNullOrEmpty(sortname))
                     sortname = " id";
                 if (string.IsNullOrEmpty(sortorder))
@@ -329,7 +385,8 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
-
+                if (txtsearch!="")
+                    serchtxt += "  AND ( model_id LIKE '%" + txtsearch + "%' OR D.Customer LIKE '%" + txtsearch + "%' OR D.tel LIKE '%" + txtsearch + "%' OR D.address LIKE '%" + txtsearch + "%') ";
 
 
                 string dt = "";

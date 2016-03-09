@@ -131,7 +131,18 @@
             
             $("#maingrid4").ligerGetGridManager().onResize();
           
-        }
+           }
+           //≤È—Ø
+           function doserch() {
+               var strurl = "../../data/Budge.ashx?Action=gridselectmodel";
+               
+               var sendtxt = "&rnd=" + Math.random();
+               var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
+               //alert(serchtxt);           
+               var manager = $("#maingrid4").ligerGetGridManager();
+               manager.GetDataByURL(strurl + "&" + serchtxt);
+               //manager.loadData(true);
+           }
           function f_load() {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);

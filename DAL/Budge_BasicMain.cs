@@ -194,6 +194,24 @@ namespace XHD.DAL
 			}
 		}
 
+        public bool updatestatus(int status,string bid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update Budge_BasicMain set ");
+            strSql.Append("IsStatus="+status+"");
+            	strSql.Append(" where id='"+bid+"' ");
+                SqlParameter[] parameters = { };
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>
@@ -473,7 +491,9 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " A.*,B.tel,C.name,B.Customer AS CustomerName,B.Emp_sg AS sgjl,Emp_sj AS sjs,B.address FROM dbo.Budge_BasicMain A INNER JOIN dbo.CRM_Customer B ON A.customer_id=B.id ");
+            strSql.Append(" top " + PageSize + " A.*,B.tel,C.name,B.Customer AS CustomerName,B.Emp_sg AS sgjl,Emp_sj AS sjs,B.address ");
+            strSql.Append(" ,CASE IsStatus WHEN 0 THEN '待提交' WHEN 1 THEN '待审核' WHEN 2 THEN '已生效' WHEN 99 THEN '已作废' ELSE '未知状态'END	 AS txtstatus ");
+            strSql.Append(" FROM dbo.Budge_BasicMain A INNER JOIN dbo.CRM_Customer B ON A.customer_id=B.id ");
             strSql.Append(" INNER JOIN  dbo.hr_employee C ON A.DoPerson=C.ID ");
             strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_BasicMain ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");

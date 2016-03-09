@@ -513,7 +513,84 @@ namespace XHD.DAL
                 return Convert.ToInt32(obj);
             }
         }
-      
+
+        public int copybudge(string copyid ,string maxid,string userid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("INSERT INTO dbo.Budge_BasicMain");
+            strSql.Append("        ( id , customer_id , BudgetName , DoPerson ,DoTime , IsStatus ,");
+            strSql.Append(" ProjectDirectCost ,");
+            strSql.Append("          DirectCostDiscount ,");
+            strSql.Append("          AdditionalCost ,");
+            strSql.Append("          BudgetAmount ,");
+            strSql.Append("          DiscountAmount ,");
+            strSql.Append("          CostAmount ,");
+            strSql.Append("          SigningAmount ,");
+            strSql.Append("          SigningTime ,");
+            strSql.Append("          Profit ,");
+            strSql.Append("          Remarks ,");
+            strSql.Append("          Mmaterial ,");
+            strSql.Append("          MmaterialDiscount ,");
+            strSql.Append("          fbAmount ,");
+            strSql.Append("          JJAmount ,");
+            strSql.Append("          ZCAmount ,");
+            strSql.Append("          FJAmount ,");
+            strSql.Append("          DetailDiscount ,");
+            strSql.Append("          versions");
+            strSql.Append("        )");
+            strSql.Append("  SELECT '" + maxid + "' ,");
+            strSql.Append("          customer_id ,");
+            strSql.Append("          BudgetName ,");
+            strSql.Append("          '" + userid + "' ,");
+            strSql.Append("          GETDATE() ,");
+            strSql.Append("          0 ,");
+            strSql.Append("          ProjectDirectCost ,");
+            strSql.Append("          DirectCostDiscount ,");
+            strSql.Append("          AdditionalCost ,");
+            strSql.Append("          BudgetAmount ,");
+            strSql.Append("          DiscountAmount ,");
+            strSql.Append("          CostAmount ,");
+            strSql.Append("          SigningAmount ,");
+            strSql.Append("          SigningTime ,");
+            strSql.Append("          Profit ,");
+            strSql.Append("          Remarks ,");
+            strSql.Append("          Mmaterial ,");
+            strSql.Append("          MmaterialDiscount ,");
+            strSql.Append("          fbAmount ,");
+            strSql.Append("          JJAmount ,");
+            strSql.Append("          ZCAmount ,");
+            strSql.Append("          FJAmount ,");
+            strSql.Append("          DetailDiscount ,");
+            strSql.Append("          versions  FROM Budge_BasicMain where id='"+copyid+"' ");
+            strSql.Append(" INSERT INTO  dbo.Budge_BasicDetail ");
+            strSql.Append("     (    budge_id , xmid ,ComponentName ,Cname ,unit , MmaterialPrice , ");
+            strSql.Append("       IsShowPrice , SecmaterialPrice ,ArtificialPrice , MechanicalLoss , MaterialLoss , ");
+            strSql.Append("        TotalPrice ,IsDiscount ,Discount,TotalDiscountPrice , MaterialCost , MechanicalCost , ");
+            strSql.Append("       ArtificialCost , SUM , Remarks ");
+            strSql.Append("    ) ");
+            strSql.Append("  SELECT    '" + maxid + "' , xmid ,ComponentName ,Cname ,unit , MmaterialPrice , ");
+            strSql.Append("     IsShowPrice , SecmaterialPrice ,ArtificialPrice , MechanicalLoss , MaterialLoss , ");
+            strSql.Append("     TotalPrice ,IsDiscount ,Discount,TotalDiscountPrice , MaterialCost , MechanicalCost ,");
+            strSql.Append("    ArtificialCost , SUM , Remarks FROM Budge_BasicDetail  ");
+            strSql.Append("   WHERE budge_id='" + copyid + "' ");
+            strSql.Append("  INSERT INTO dbo.Budge_Para_Ver");
+            strSql.Append("    ( customer_id , budge_id  , versions , b_Part_id ,parentid , BP_Name) ");
+            strSql.Append("  SELECT  customer_id , '" + maxid + "' , versions , b_Part_id ,parentid , BP_Name ");
+            strSql.Append(" FROM Budge_Para_Ver  ");
+            strSql.Append("  WHERE budge_id='" + copyid + "'");
+            SqlParameter[] parameters = { };
+
+            object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+
         /// <summary>
         /// 分页获取数据列表
         /// </summary>
@@ -523,9 +600,15 @@ namespace XHD.DAL
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
             strSql.Append(" top " + PageSize + "  A.*,B.name FROM dbo.budge_modelMain A INNER JOIN dbo.hr_employee B ON	 A.DoPerson=B.id ");
-            strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM budge_modelMain ");
+            strSql.Append("  left join Budge_BasicMain C on A.budge_id=C.id");
+            strSql.Append("  left join CRM_Customer D on C.customer_id=D.id");
+            strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " A.id FROM budge_modelMain A");
+            strSql.Append("  left join Budge_BasicMain C on A.budge_id=C.id");
+            strSql.Append("  left join CRM_Customer D on C.customer_id=D.id");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-            strSql1.Append(" select count(id) FROM budge_modelMain ");
+            strSql1.Append(" select count(A.id) FROM budge_modelMain A ");
+            strSql1.Append("  left join Budge_BasicMain C on A.budge_id=C.id");
+            strSql1.Append("  left join CRM_Customer D on C.customer_id=D.id");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);

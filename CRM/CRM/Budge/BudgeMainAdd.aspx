@@ -54,7 +54,12 @@
                  
                 loadForm(getparastr("bid"));
                 urlstr = '../../data/Budge.ashx?Action=tree&bid=' + getparastr("bid") + '&rnd=' + Math.random();
-
+            //审核，失效或者编辑时，已经提交
+                if (getparastr("style") != null || getparastr("status") == "1")
+                    InitButton();
+                else {
+                    toolbar();
+                }
             }
             else {
                 $("#divcenter").addClass("l-window-mask");
@@ -65,9 +70,10 @@
                  var myDate = new Date();
 
                  gcomb = $('#T_company').ligerComboBox({ width: 180, onBeforeOpen: f_selectContact });
+                 toolbar();
             }
 
-            toolbar();
+          
           
             $("#layout1").ligerLayout({ leftWidth: 150, allowLeftResize: false, allowLeftCollapse: true, space: 2, heightDiff: -1 });
  
@@ -105,12 +111,20 @@
                      },
                      
                         {
-                            display: '数量', name: 'SUM', width: 50, align: 'left'
-                            , type: 'float', editor: { type: 'float' }
+                            display: '数量', name: 'SUM', width: 120, align: 'left'
+                            , type: 'float', editor: { type: 'float' },
+                            totalSummary:
+                            {
+                                type: 'sum'
+                            }
 
                         },
                          {
-                             display: '金额', name: 'je', type: 'float', width: 60, align: 'right'
+                             display: '金额', name: 'je', type: 'float', width: 100, align: 'right',
+                             totalSummary:
+                             {
+                                 type: 'sum'
+                             }
                          },
 
                      {
@@ -118,8 +132,12 @@
                          type: 'float'
                      },
                        {
-                           display: '折后金额', hide: true, name: 'zkje', width: 80, align: 'right',
-                           type: 'float'
+                           display: '折后金额', hide: true, name: 'zkje', width: 100, align: 'right',
+                           type: 'float',
+                           totalSummary:
+                           {
+                               type: 'sum'
+                           }
                        },
                    
                     { display: '单位', name: 'unit', width: 40 },
@@ -163,12 +181,13 @@
                 }
             });
           
-            $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
+         $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
+
             //是否折扣
             $("#iszktable").addClass("l-window-mask");
              $("#iszk").change(function () {
                  if (this.checked == true) {
-                     $("#iszk").attr('checked', true);
+                 
                     $("#iszktable").removeClass("l-window-mask");
                     g.toggleCol('TotalDiscountPrice', true);
                     g.toggleCol('Discount', true);
@@ -187,6 +206,20 @@
                 }
             });
         })
+
+        function InitButton()
+        {
+           
+            $(".l-button").each(function () {
+                $(this).css('background', 'none')
+                $(this).css('color', '#666')
+                $(this).removeAttr('onclick');
+            
+            });
+            $("#iszk").attr("disabled", "disabled");
+         
+        }
+
         function ishidecol()
         {
             //    $(".abc").hover(function (e) {
@@ -195,7 +228,7 @@
             //        $(this).ligerHideTip(e);
             //    });
             if ($("#iszk").attr('checked')) {
-                $("#iszk").attr('checked', true);
+          
                 $("#iszktable").removeClass("l-window-mask");
                 g.toggleCol('TotalDiscountPrice', true);
                 g.toggleCol('Discount', true);
@@ -419,8 +452,11 @@
                         // alert(obj.DetailDiscount);
                         $("#iszk").attr("checked", true);
                         $("#T_zk").val(obj.DetailDiscount);
+                        g.toggleCol('TotalDiscountPrice', true);
+                        g.toggleCol('Discount', true);
+                        g.toggleCol('zkje', true);
                     }
-
+                   
                 }
             });
         }
@@ -577,8 +613,27 @@
         //最后一次全部计算
         function f_save()
         {
+            if ($("#T_companyid").val() == "") {
+                $.ligerDialog.error("请选择保存一个有效的客户！！！");
+                return;
+            }
             var sendtxt = "&Action=saveall";
              return $("form :input").fieldSerialize() + sendtxt;
+        }
+        //审核 ，作废
+        function f_saveapr() {
+            if ($("#T_companyid").val() == "") {
+                $.ligerDialog.error("请选择保存一个有效的客户！！！");
+                return;
+            }
+            var sta=2;
+            if(getparastr("style")=="apr")//审核
+                sta=2;
+            if (getparastr("style") == "cancel")//作废
+                sta = 99;
+            if (getparastr("status") == "1") sta = 0;//撤回
+            var sendtxt = "&Action=saveupdatestatus&status=" + sta + "&bid=" + $("#T_budgeid").val() + "&cid=" + $("#T_companyid").val();
+            return sendtxt;
         }
         //存储模板
         function savemodel()
@@ -675,6 +730,7 @@
         //更新折扣
         function addzk()
         {
+ 
             if ($("#T_zk").val() <= 0) {
                 top.$.ligerDialog.error('折扣必须大于0！');
                 return;
@@ -697,31 +753,51 @@
             });
             
         }
-        //刷新价格
+        //刷新价格改为重新计算
         function refreshprice() {
-           
-            var url = '../../data/Budge.ashx?Action=saveupdaterefprice&bid=' + $("#T_budgeid").val() + '&rdm=' + Math.random();
+          
+            var issave = $("form :input").fieldSerialize() + "&Action=saveall";
             $.ajax({
-                type: 'post',
-                url: url,
-
-                success: function (data) {
-                    if (data == 'true')
-                        fload();
-                    else $.ligerDialog.error("保存错误！！！");
+                url: "../../data/Budge.ashx", type: "POST",
+                data: issave,
+                success: function (responseText) {
+                    top.$.ligerDialog.closeWaitting();
+                    if (responseText == "false") {
+                        top.$.ligerDialog.error('操作失败！');
+                    }
+                    else {
+                        //  alert(issave); 
+                        loadForm(getparastr("bid"));
+                        f_reload();
+                    }
                 },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    $.ligerDialog.error("保存错误！！！");
+                error: function () {
+                    top.$.ligerDialog.closeWaitting();
 
                 }
             });
+            //var url = '../../data/Budge.ashx?Action=saveupdaterefprice&bid=' + $("#T_budgeid").val() + '&rdm=' + Math.random();
+            //$.ajax({
+            //    type: 'post',
+            //    url: url,
+
+            //    success: function (data) {
+            //        if (data == 'true')
+            //            fload();
+            //        else $.ligerDialog.error("保存错误！！！");
+            //    },
+            //    error: function (XMLHttpRequest, textStatus, errorThrown) {
+            //        $.ligerDialog.error("保存错误！！！");
+
+            //    }
+            //});
 
         }
         //折扣，默认和手动
         function savetotal()
         {
           
-            if (sl == "")//
+          
                 if ($("#T_sl").val() > 1 || $("#T_sl").val() <= 0) {
                     top.$.ligerDialog.error('折扣必须大于0小于1！');
                     return;
@@ -873,7 +949,7 @@
                     </td>
                      </tr></table>
                 </td><td   class="table_title1">  <a id="A4" class="l-button"  position="right" style="width:80px;" onClick="refreshprice()">
-                          刷新价格 </a>
+                          重新计算 </a>
                      
                 </td><td colspan="3"   class="table_title1"> 
                         <table><tr>
@@ -885,7 +961,7 @@
                     </td>
                      </tr></table>
                 </td><td colspan="2"   class="table_title1"> 
-                  <input  type="checkbox" id="iszk" name="iszk" ltype="checkbox"   ligerui="{width:80}" > 是否打折<span class="red">(0.9 = 九折）</span> </input>                 </td>
+                  <input  type="checkbox" id="iszk" name="iszk" > 是否打折<span class="red">(0.9 = 九折）</span> </input>                 </td>
                 <td colspan="4"   class="table_title1"><table id="iszktable">
                   <tr>
                     <td><input type="text"  id="T_zk" name="T_zk"  ltype="text" ligerui="{width:60,number: true}"   /></td>

@@ -24,6 +24,9 @@
     <script type="text/javascript">
         var manager = "";
         $(function () {
+            var urlstr = "../../data/Budge.ashx?Action=grid&str_condition=1";
+            if (getparastr("isprint") == "Y")
+                urlstr = "../../data/Budge.ashx?Action=grid"
             $("#maingrid4").ligerGrid({
                 columns: [
                      {
@@ -50,7 +53,7 @@
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/Budge.ashx?Action=grid&str_condition=0",//增加选择条件 0 编辑 1 审核
+                url: urlstr,//增加选择条件 0 编辑 1 审核
                 width: '100%',
                 height: '100%',
                 //tree: { columnName: 'StageDescription' },
@@ -73,8 +76,11 @@
             toolbar();
         });
         function toolbar() {
-            var url = "../../data/toolbar.ashx?Action=GetSys&mid=153&rnd=" + Math.random();
-            $.getJSON(url, function (data, textStatus) {
+            var urlstr = "../../data/toolbar.ashx?Action=GetSys&mid=157&rnd=" + Math.random();
+            if (getparastr("isprint") == "Y")
+                urlstr = "../../data/toolbar.ashx?Action=GetSys&mid=158&rnd=" + Math.random()
+ 
+            $.getJSON(urlstr, function (data, textStatus) {
                 //alert(data);
                 var items = [];
                 var arr = data.Items;
@@ -132,11 +138,14 @@
 
         //查询
         function doserch() {
+            var urlstr = "../../data/Budge.ashx?str_condition=1";
+            if (getparastr("isprint") == "Y")
+                urlstr = "../../data/Budge.ashx?Action=grid"
             var sendtxt = "&Action=grid&rnd=" + Math.random();
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
             //  alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL("../../data/Budge.ashx?str_condition=0&" + serchtxt);
+            manager.GetDataByURL(urlstr+"&" + serchtxt);
         }
         function doclear() {
             //var serchtxt = $("#serchform :input").reset();
@@ -160,39 +169,15 @@
             };
             activeDialogs = parent.jQuery.ligerDialog.open(dialogOptions);
         }
-        //撤回
-        var activeDialogsch = null;
-        function f_openWindow_ch(url, title, width, height) {
-            var dialogOptions = {
-                width: width, height: height, title: title, url: url, buttons: [
-                    {
-                        text: '撤回', onclick: function (item, dialog) {
-                            f_saveret(item, dialog);
-                        }
-                    },
-                        {
-                            text: '关闭', onclick: function (item, dialog) {
-                                dialog.close();
-                            }
-                        }
-                ], isResize: true, showToggle: true, timeParmName: 'a'
-            };
-            activeDialogsch = parent.jQuery.ligerDialog.open(dialogOptions);
-        }
         var activeDialog = null;
-        function f_openWindow(url, title, width, height) {
+        function f_openWindow(url, title, width, height, buttontxt) {
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
                         {
-                            text: '保存', onclick: function (item, dialog) {
+                            text: buttontxt, onclick: function (item, dialog) {
                                 f_save(item, dialog);
                             }
                         },
-                         {
-                             text: '保存&提交', onclick: function (item, dialog) {
-                                 f_submit(item, dialog);
-                             }
-                         },
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();
@@ -202,121 +187,62 @@
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
-     
-      function add() {
-            f_openWindow("crm/Budge/BudgeMainAdd.aspx", "新增预算", 1100, 660);
+     //审核
+      function apr() {
+          var manager = $("#maingrid4").ligerGetGridManager();
+          var row = manager.getSelectedRow();
+          if (row) {
+              f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id+"&style=apr", "审核预算", 1100, 600,"审核");
+          } else {
+              $.ligerDialog.warn('请选择行！');
+          }
         }
-
-        function edit() {
+        //作废
+      function cancel() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                if (row.IsStatus==0)
-                f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus, "修改预算", 1100, 600);
-                else  if (row.IsStatus==1)//已经提交
-                    f_openWindow_ch("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus, "修改预算", 1100, 600);
-
+                f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&style=cancel", "作废预算", 1100, 600,"作废");
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
         }
-        function f_saveret(item, dialog)
-        {
+        //打印
 
-            var issave = dialog.frame.f_saveapr();
+        //复制预算
+      function copy() {
+          var manager = $("#maingrid4").ligerGetGridManager();
+          var row = manager.getSelectedRow();
+          if (row) {
+              $.ligerDialog.confirm("确定引用单据：" + row.id, function (yes) {
+                  if (yes) {
+                      $.ajax({
+                          url: "../../data/Budge.ashx", type: "POST",
+                          data: { Action: 'copybudge', copyid: row.id, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                          success: function (responseText) {
 
-            if (issave) {
-                dialog.close();
-                top.$.ligerDialog.waitting('数据保存中,请稍候...');
-                $.ajax({
-                    url: "../../data/Budge.ashx", type: "POST",
-                    data: issave,
-                    success: function (responseText) {
-                        top.$.ligerDialog.closeWaitting();
-                        if (responseText == "false") {
-                            top.$.ligerDialog.error('操作失败！');
-                        }
-                        else {
-                            //  alert(issave); 
-                            f_reload();
-                        }
-                    },
-                    error: function () {
-                        top.$.ligerDialog.closeWaitting();
+                              top.$.ligerDialog.closeWaitting();
+                              if (responseText == "false") {
+                                  top.$.ligerDialog.error('操作失败！');
+                              }
+                              else {
+                                  top.$.ligerDialog.alert("新单据：" + responseText);
 
-                    }
-                });
+                                  f_reload();
+                              }
+                          },
+                          error: function () {
+                              top.$.ligerDialog.closeWaitting();
 
-            }
-        }
-        function ret() {
-            var manager = $("#maingrid4").ligerGetGridManager();
-            var row = manager.getSelectedRow();
-            if (row) {
-                $.ligerDialog.confirm("确定退回吗？", function (yes) {
-                    if (yes) {
-                        $.ajax({
-                            url: "../../data/Budge.ashx", type: "POST",
-                            data: { Action: "saveupdatestatus",status:0, bid: row.id, rnd: Math.random() },
-                            success: function (responseText) {
-                                if (responseText == "true") {
-                                    top.$.ligerDialog.closeWaitting();
-                                    f_reload();
-                                }
+                          }
+                      });
+                  }
 
-                                else {
-                                    top.$.ligerDialog.closeWaitting();
-                                    top.$.ligerDialog.error('退回失败！');
-                                }
-                            },
-                            error: function () {
-                                top.$.ligerDialog.closeWaitting();
-                                top.$.ligerDialog.error('退回失败！', "", null, 9003);
-                            }
-                        });
-                    }
-                })
-            } else {
-                $.ligerDialog.warn("请选择类别！");
-            }
-        }
-        
-        function del() {
-            var manager = $("#maingrid4").ligerGetGridManager();
-            var row = manager.getSelectedRow();
-            if (row) {
-                $.ligerDialog.confirm("删除不能恢复，确定删除？", function (yes) {
-                    if (yes) {
-                        $.ajax({
-                            url: "../../data/Budge.ashx", type: "POST",
-                            data: { Action: "del", bid: row.id, rnd: Math.random() },
-                            success: function (responseText) {
-                                if (responseText == "true") {
-                                    top.$.ligerDialog.closeWaitting();
-                                    f_reload();
-                                }
-
-                                else {
-                                    top.$.ligerDialog.closeWaitting();
-                                    top.$.ligerDialog.error('删除失败！');
-                                }
-                            },
-                            error: function () {
-                                top.$.ligerDialog.closeWaitting();
-                                top.$.ligerDialog.error('删除失败！', "", null, 9003);
-                            }
-                        });
-                    }
-                })
-            } else {
-                $.ligerDialog.warn("请选择类别！");
-            }
-        }
-
+              })
+          }
+      }
         function f_save(item, dialog) {
-
-            var issave = dialog.frame.f_save();
-         
+            var issave = dialog.frame.f_saveapr();
             if (issave) {
                 dialog.close();
                 top.$.ligerDialog.waitting('数据保存中,请稍候...');
@@ -327,6 +253,9 @@
                         top.$.ligerDialog.closeWaitting();
                         if (responseText == "false") {
                             top.$.ligerDialog.error('操作失败！');
+                        }
+                        else    if (responseText == "false:exist") {
+                            top.$.ligerDialog.error('此客户已经有生效预算，此单不能生效！！');
                         }
                         else {
                           //  alert(issave); 
@@ -341,35 +270,6 @@
 
             }
         }
-        function f_submit(item, dialog) {
-
-            var issave = dialog.frame.f_save();
-
-            if (issave) {
-                dialog.close();
-                top.$.ligerDialog.waitting('数据保存中,请稍候...');
-                $.ajax({
-                    url: "../../data/Budge.ashx", type: "POST",
-                    data: issave + "&style=submit",
-                    success: function (responseText) {
-                        top.$.ligerDialog.closeWaitting();
-                        if (responseText == "false") {
-                            top.$.ligerDialog.error('操作失败！');
-                        }
-                        else {
-                            //  alert(issave); 
-                            f_reload();
-                        }
-                    },
-                    error: function () {
-                        top.$.ligerDialog.closeWaitting();
-
-                    }
-                });
-
-            }
-        } 
-
         function f_reload() {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);
