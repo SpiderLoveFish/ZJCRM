@@ -19,9 +19,9 @@ namespace XHD.BLL
           {
               return dal.Getf_section();
           }
-          public DataSet geruser(string token)
+          public DataSet geruser(string token,string userid)
           {
-              return dal.geruser(token);
+              return dal.geruser(token, userid);
           }
           public int Insertuser(int id, string token)
           {

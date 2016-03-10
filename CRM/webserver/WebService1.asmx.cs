@@ -51,14 +51,14 @@ namespace XHD.CRM.webserver
                             GetTimeStamp() + ds.Tables[0].Rows[0]["uid"].ToString()
                             , "MD5");
                         fb.Insertuser(int.Parse(ds.Tables[0].Rows[0]["ID"].ToString()), token);
-                        DataSet dds = fb.geruser(token);
+                        DataSet dds = fb.geruser(token, ds.Tables[0].Rows[0]["ID"].ToString());
                         string str = Common.DataToJson.GetJson(dds);
                         returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + str + "}";
 
                     }
                     else
                     {
-                        DataSet dds = fb.geruser(ds.Tables[0].Rows[0]["token"].ToString());
+                        DataSet dds = fb.geruser(ds.Tables[0].Rows[0]["token"].ToString(), ds.Tables[0].Rows[0]["ID"].ToString());
                         string str = Common.DataToJson.GetJson(dds);
                         returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + str + "}";
 
@@ -147,7 +147,12 @@ namespace XHD.CRM.webserver
             string returnstr = "{\"code\":0,\"description\":\"faile\"}";
             if (ws.HR_follow(cid, follow, type, id) > 0)
             {
-                returnstr = returnstr = "{\"code\":200,\"description\":\"成功！\"}";
+                DataSet dds = ws.GetFollow(cid);
+
+                if (dds.Tables[0].Rows.Count > 0)
+                    returnstr = Common.DataToJson.GetJson(dds);
+                if (returnstr == "") returnstr = "[]";
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\": " + returnstr + "}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
             Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
@@ -167,12 +172,13 @@ namespace XHD.CRM.webserver
             string returnstr = "{\"code\":201,\"description\":\"没有数据！\"}";
             if (ds.Tables[0].Rows.Count > 0)
             {
-                returnstr = Common.DataToJson.DataToJSON_nomal(ds);
+                returnstr = Common.DataToJson.GetJson(ds).Replace("[", "").Replace("]", "");
                 DataSet dds = ws.GetFollow(cid);
 
                 if (dds.Tables[0].Rows.Count > 0)
                     str = Common.DataToJson.GetJson(dds);
                 Total = dds.Tables[0].Rows.Count.ToString();
+                if (str == "") str = "[]";
               returnstr=  "{\"code\":200,\"description\":\"success\",\"detail\":{\"FollowCount\":" + Total + ",\"follow\":" + str + ",\"customer\":" + returnstr + "}}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
@@ -199,6 +205,55 @@ namespace XHD.CRM.webserver
             Context.Response.Write(returnstr);
             Context.Response.End();
         }
+                /// <summary>
+        /// 人员信息
+        /// 
+        /// </summary>
+        [WebMethod]
+        public void Get_FllowType()
+        {
+            BLL.Param_SysParam ps = new BLL.Param_SysParam();
+            DataSet ds = ps.GetList(" parentid=4");
+            string returnstr = "{\"code\":0,\"description\":\"faile\"}";
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                returnstr = Common.DataToJson.GetJson(ds);
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + returnstr + "}";
+            }
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write(returnstr);
+            Context.Response.End();
+
+        }
+        [WebMethod]
+        public void Get_FllowDetail(string cid)
+        {
+            BLL.CRM_Customer cc = new BLL.CRM_Customer();
+            string Total;
+            DataSet ds = cc.GetList(" id="+cid);
+            string str = "";
+            string returnstr = "{\"code\":201,\"description\":\"没有数据！\"}";
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                returnstr = Common.DataToJson.GetJson(ds).Replace("[", "").Replace("]", "");
+                DataSet dds = ws.GetFollow(cid);
+                string total = "0";
+                if (dds.Tables[0].Rows.Count > 0)
+                {
+                    str = Common.DataToJson.GetJson(dds);
+                    total = dds.Tables[0].Rows.Count.ToString();
+                }
+                if (str == "") str = "[]";
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":{\"collectCount\":" + total + ",\"replies\":" + str + ",\"topic\":" + returnstr + "}}";
+            }
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write(returnstr);
+            Context.Response.End();
+
+        }
+       
 
        
     }

@@ -87,9 +87,9 @@ namespace XHD.DAL
         }
 
         //获取App用户主要信息
-        public DataSet geruser(string token)
+        public DataSet geruser(string token,string userid)
         {
-            string sql = "  SELECT * FROM dbo.f_user  where token='" + token + "'";
+            string sql = "  SELECT "+userid+" as userid,* FROM dbo.f_user  where token='" + token + "'";
             return DbHelperSQL.Query(sql);
         }
 
@@ -298,9 +298,9 @@ namespace XHD.DAL
             strSql.Append(" top " + PageSize + "  A.*,B.avatar,C.name as sectionName   FROM dbo.f_topic  A INNER JOIN dbo.f_user B  ON A.author_id=B.token   ");
             strSql.Append(" inner join f_section C on A.s_id=C.id");
             strSql.Append(" ");
-            strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM f_topic ");
+            strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " A.id FROM f_topic A inner join f_section C on A.s_id=C.id ");
             strSql.Append(" where " + strWhere + " order by t_top DESC , in_time DESC   ) ");
-            strSql1.Append(" select count(id) FROM f_topic ");
+            strSql1.Append(" select count(A.id) FROM f_topic A inner join f_section C on A.s_id=C.id ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);

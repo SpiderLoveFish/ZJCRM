@@ -75,7 +75,7 @@ namespace XHD.DAL
 
         public DataSet GetFollow(string cid)
         {
-            string sql = " SELECT * FROM dbo.CRM_Follow WHERE Customer_id=" + cid + "";
+            string sql = " SELECT * FROM dbo.CRM_Follow WHERE Customer_id=" + cid + " AND ISNULL(isdelete,0)=0  ORDER BY follow_date DESC	 ";
             
             return DbHelperSQL.Query(sql);
         }

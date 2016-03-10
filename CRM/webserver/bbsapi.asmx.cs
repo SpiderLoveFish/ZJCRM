@@ -47,14 +47,14 @@ namespace XHD.CRM.webserver
                                             GetTimeStamp() + ds.Tables[0].Rows[0]["uid"].ToString()
                                             , "MD5");
                                         fb.Insertuser(int.Parse(ds.Tables[0].Rows[0]["ID"].ToString()), token);
-                                        DataSet dds = fb.geruser(token);
+                                        DataSet dds = fb.geruser(token, ds.Tables[0].Rows[0]["ID"].ToString());
                                         string str = Common.DataToJson.GetJson(dds);
                                         returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + str + "}";
 
                                     }
                                     else
                                     {
-                                        DataSet dds = fb.geruser(ds.Tables[0].Rows[0]["token"].ToString());
+                                        DataSet dds = fb.geruser(ds.Tables[0].Rows[0]["token"].ToString(), ds.Tables[0].Rows[0]["ID"].ToString());
                                         string str = Common.DataToJson.GetJson(dds);
                                         returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + str + "}";
 
@@ -119,7 +119,7 @@ namespace XHD.CRM.webserver
               
                 if(dds.Tables[0].Rows.Count>0)
                     str = Common.DataToJson.GetJson(dds);
-                if (str == "") str = "[{}]";
+                 if (str == "") str = "[]";
                 returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":{\"collectCount\":" + Total + ",\"replies\":" + str + ",\"topic\":" + returnstr + "}}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
@@ -280,8 +280,11 @@ namespace XHD.CRM.webserver
             string returnstr = "{\"code\":0,\"description\":\"faile\"}";
             if (fb.insertreply(token,int.Parse(tid),title,strcontent) > 0)
             {
-                DataSet ds = fb.GetDsTopicDetail_replay_last(token,tid);
-                returnstr = Common.DataToJson.GetJson(ds).Replace("[", "").Replace("]", "");
+                DataSet dds = fb.GetDsTopicDetail_replay(token, tid);
+
+                if (dds.Tables[0].Rows.Count > 0)
+                 returnstr    = Common.DataToJson.GetJson(dds);
+                if (returnstr == "") returnstr = "[]";
                 returnstr = "{\"code\":200,\"description\":\"success\",\"detail\": " + returnstr + "}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
