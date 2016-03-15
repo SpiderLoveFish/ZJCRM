@@ -763,6 +763,7 @@
     <Content Include="FakesAssemblies\XHD.BLL.Fakes.fakesconfig" />
     <Content Include="Data\PurchaseList.ashx" />
     <Content Include="Data\Budge.ashx" />
+    <Content Include="Data\uploadbbs.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -4075,6 +4076,9 @@
     </Compile>
     <Compile Include="Data\Budge.ashx.cs">
       <DependentUpon>Budge.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\uploadbbs.ashx.cs">
+      <DependentUpon>uploadbbs.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\PurchaseList.ashx.cs">
       <DependentUpon>PurchaseList.ashx</DependentUpon>

@@ -36,7 +36,7 @@ namespace XHD.CRM.webserver
         /// <param name="password"></param>
         /// <param name="ip"></param>
         [WebMethod]
-        public void GetLogin(string username, string password, string ip)
+        public void GetLogin(string username, string password, string ip,string url)
         {
             password = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(password, "MD5");
             string returnstr = "{\"code\":0,\"description\":\"faile\"}";
@@ -50,15 +50,15 @@ namespace XHD.CRM.webserver
                         string token = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(
                             GetTimeStamp() + ds.Tables[0].Rows[0]["uid"].ToString()
                             , "MD5");
-                        fb.Insertuser(int.Parse(ds.Tables[0].Rows[0]["ID"].ToString()), token);
-                        DataSet dds = fb.geruser(token, ds.Tables[0].Rows[0]["ID"].ToString());
+                        fb.Insertuser(int.Parse(ds.Tables[0].Rows[0]["ID"].ToString()), token, url);
+                        DataSet dds = fb.getuserdetail(token, ds.Tables[0].Rows[0]["ID"].ToString());
                         string str = Common.DataToJson.GetJson(dds);
                         returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + str + "}";
 
                     }
                     else
                     {
-                        DataSet dds = fb.geruser(ds.Tables[0].Rows[0]["token"].ToString(), ds.Tables[0].Rows[0]["ID"].ToString());
+                        DataSet dds = fb.getuserdetail(ds.Tables[0].Rows[0]["token"].ToString(), ds.Tables[0].Rows[0]["ID"].ToString());
                         string str = Common.DataToJson.GetJson(dds);
                         returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + str + "}";
 
@@ -253,7 +253,23 @@ namespace XHD.CRM.webserver
             Context.Response.End();
 
         }
-       
+
+        [WebMethod]
+        public void DeleteFollow(string id)
+        {
+
+            string returnstr = "{\"code\":0,\"description\":\"faile\"}";
+            if (ws.DeleteFollow(id) > 0)
+            {
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":\"删除成功！\"}";
+            }
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write(returnstr);
+            Context.Response.End();
+
+
+        }
 
        
     }

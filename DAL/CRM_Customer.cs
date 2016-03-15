@@ -780,13 +780,23 @@ namespace XHD.DAL
         public DataSet GetPageList(int pageIndex, int pageSize,string where )
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(" SELECT * FROM ( SELECT");
-            strSql.Append(" id,");
-            strSql.Append(" ROW_NUMBER() over (order by id) AS number, Customer,address,tel,CustomerType");
-            strSql.Append(" FROM dbo.CRM_Customer)AA");
-            strSql.Append(" WHERE  number  between (" + pageIndex + "-1)*" + pageSize + " and " + pageIndex + "*" + pageSize + " ");
+            strSql.Append("select ");
+            strSql.Append(" top " + pageSize + " id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces,City,Towns,Community,BNo,RNo,Gender,CustomerType,CustomerLevel,CustomerSource,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_date,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,DesCripe,WXZT_ID,WXZT_NAME,QQ,JKDZ FROM CRM_Customer ");
+            strSql.Append(" WHERE id not in ( SELECT top " + (pageIndex - 1) * pageSize + " id FROM CRM_Customer ");
+            strSql.Append("  where 1=1");
+            strSql.Append(" and(  tel like '%" + where + "%'  or Customer like '%" + where + "%'  or address like '%" + where + "%') )");
+           // strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+          
             if (where != "")
                 strSql.Append(" and(  tel like '%" + where + "%'  or Customer like '%" + where + "%'  or address like '%" + where + "%')");
+          
+            //strSql.Append(" SELECT * FROM ( SELECT");
+            //strSql.Append(" id,");
+            //strSql.Append(" ROW_NUMBER() over (order by id) AS number, Customer,address,tel,CustomerType");
+            //strSql.Append(" FROM dbo.CRM_Customer)AA");
+            //strSql.Append(" WHERE  number  between (" + pageIndex + "-1)*" + pageSize + " and " + pageIndex + "*" + pageSize + " ");
+            //if (where != "")
+            //    strSql.Append(" and(  tel like '%" + where + "%'  or Customer like '%" + where + "%'  or address like '%" + where + "%')");
             return DbHelperSQL.Query(strSql.ToString());
         }
 

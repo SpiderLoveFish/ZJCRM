@@ -68,20 +68,32 @@ namespace XHD.DAL
             return DbHelperSQL.Query(sql);
         }
         //新增APP用户
-        public int Insertuser(int id,string token)
+        public int Insertuser(int id,string token,string url)
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine(" Update hr_employee");
             sb.AppendLine(" set token='"+token+"'");
             sb.AppendLine(" where id=" + id + "");
-            sb.AppendLine(" INSERT INTO dbo.f_user");
+            if (url != "http://mb.xczs.co/")
+            {
+                sb.AppendLine(" INSERT INTO MB.dbo.f_user");
+                sb.AppendLine("        ( id ,");
+                sb.AppendLine("          nickname ,score , token ,avatar , mission ,");
+                sb.AppendLine("		  in_time ,email , f_password , url");
+                sb.AppendLine("        )");
+                sb.AppendLine(" SELECT 'xczs'+uid , name ,");
+                sb.AppendLine("          0 , '" + token + "' , '" + url + "images/upload/portrait/'+title , GETDATE() , GETDATE() ,");
+                sb.AppendLine("          email ,'' ,'' FROM dbo.hr_employee WHERE	 ID=" + id + "");
+            }
+                sb.AppendLine(" INSERT INTO dbo.f_user");
             sb.AppendLine("        ( id ,");
             sb.AppendLine("          nickname ,score , token ,avatar , mission ,");
             sb.AppendLine("		  in_time ,email , f_password , url");
             sb.AppendLine("        )");
             sb.AppendLine(" SELECT 'xczs'+uid , name ,");
-            sb.AppendLine("          0 , '"+token+"' , 'images/logo/'+title , GETDATE() , GETDATE() ,");
-            sb.AppendLine("          email ,'' ,'' FROM dbo.hr_employee WHERE	 ID="+id+"");
+            sb.AppendLine("          0 , '" + token + "' , '" + url + "images/upload/portrait/'+title , GETDATE() , GETDATE() ,");
+            sb.AppendLine("          email ,'' ,'' FROM dbo.hr_employee WHERE	 ID=" + id + "");
+         
             SqlParameter[] parameters = { };
             return DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
         }
@@ -90,6 +102,14 @@ namespace XHD.DAL
         public DataSet geruser(string token,string userid)
         {
             string sql = "  SELECT "+userid+" as userid,* FROM dbo.f_user  where token='" + token + "'";
+            return DbHelperSQL.Query(sql);
+        }
+
+        public DataSet getuserdetail(string token,string userid)
+        {
+            string sql = "SELECT A.ID as userid,* FROM  dbo.hr_employee A " +
+                                " LEFT JOIN dbo.f_user B ON	 A.token=B.token" +
+                                " where A.token='"+token+"' or A.ID="+userid+"";
             return DbHelperSQL.Query(sql);
         }
 
@@ -156,7 +176,7 @@ namespace XHD.DAL
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("UPDATE  dbo.f_topic");
 
-            sb.AppendLine("          t_top=" + status + "");
+            sb.AppendLine("      SET    t_top=" + status + "");
             //sb.AppendLine("          good ,");
             //sb.AppendLine("          show_status");
             sb.AppendLine("");
@@ -170,7 +190,7 @@ namespace XHD.DAL
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("UPDATE  dbo.f_topic");
 
-            sb.AppendLine("          good=" + status + "");
+            sb.AppendLine("      SET    good=" + status + "");
         
             //sb.AppendLine("          show_status");
             sb.AppendLine("");
@@ -185,7 +205,7 @@ namespace XHD.DAL
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("UPDATE  dbo.f_topic");
 
-            sb.AppendLine("          show_status=" + status + "");
+            sb.AppendLine("     SET     show_status=" + status + "");
 
             //sb.AppendLine("          show_status");
             sb.AppendLine("");
@@ -242,7 +262,7 @@ namespace XHD.DAL
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("UPDATE  dbo.f_reply");
 
-            sb.AppendLine("          isdelete=" + status + "");
+            sb.AppendLine("     set     isdelete=" + status + "");
 
             //sb.AppendLine("          show_status");
             sb.AppendLine("");
@@ -299,12 +319,13 @@ namespace XHD.DAL
             strSql.Append(" inner join f_section C on A.s_id=C.id");
             strSql.Append(" ");
             strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " A.id FROM f_topic A inner join f_section C on A.s_id=C.id ");
-            strSql.Append(" where " + strWhere + " order by t_top DESC , in_time DESC   ) ");
-            strSql1.Append(" select count(A.id) FROM f_topic A inner join f_section C on A.s_id=C.id ");
+            strSql.Append("  where  a.show_status=0  and " + strWhere + " order by t_top DESC , in_time DESC   ) ");
+            strSql.Append("  and a.show_status=0 ");
+            strSql1.Append(" select count(A.id) FROM f_topic A inner join f_section C on A.s_id=C.id  where a.show_status=0  ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);
-                strSql1.Append(" where " + strWhere);
+                strSql1.Append(" AND " + strWhere);
             }
             strSql.Append(" order by t_top DESC , in_time DESC ");
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
@@ -315,9 +336,12 @@ namespace XHD.DAL
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine(" UPDATE f_topic SET t_view=t_view+1 WHERE ID="+tid+"");
-            sb.AppendLine("SELECT A.*,C.name AS sectionName,B.avatar,B.nickname FROM  dbo.f_topic A");
+            sb.AppendLine(" SELECT case when D.tid is null then 0 else 1 end as collect ,A.*,C.name AS sectionName,B.avatar,B.nickname ");
+            sb.AppendLine(" ");
+            sb.AppendLine(" FROM  dbo.f_topic A");
             sb.AppendLine("INNER JOIN dbo.f_user B ON A.author_id=B.token");
             sb.AppendLine("INNER JOIN dbo.f_section C ON A.s_id=C.id");
+            sb.AppendLine(" LEFT JOIN dbo.f_collect D ON A.id=D.tid");
             sb.AppendLine(" where A.id="+tid+"");
             string sql = "  SELECT count(*) FROM dbo.f_collect where author_id='" + token + "'";
             collectCount = DbHelperSQL.Query(sql).Tables[0].Rows[0][0].ToString();
@@ -325,10 +349,13 @@ namespace XHD.DAL
             return DbHelperSQL.Query(sb.ToString());
         }
 
+
+
         public DataSet GetDsTopicDetail_replay(string token, string tid)
         {
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine("SELECT * FROM dbo.f_reply A INNER JOIN f_user B ON	A.author_id=B.token where A.tid=" + tid + "");
+            sb.AppendLine("SELECT CASE WHEN A.isdelete=1 THEN	'此楼已被删除！' ELSE A.t_content END AS content ,* ");
+            sb.AppendLine(" FROM dbo.f_reply A INNER JOIN f_user B ON	A.author_id=B.token where A.tid=" + tid + "");
            
             return DbHelperSQL.Query(sb.ToString());
         }

@@ -32,6 +32,10 @@ namespace XHD.BLL
         {
             return dal.GetFollow(cid);
         }
+        public int DeleteFollow(string id)
+        {
+            return dal.DeleteFollow(id);
+        }
         public DataSet GetCRM_Customer(string cid)
         {
             return dal.GetCRM_Customer(cid);

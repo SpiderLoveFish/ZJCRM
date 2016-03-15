@@ -32,7 +32,7 @@ namespace XHD.CRM.webserver
         /// <param name="password"></param>
         /// <param name="ip"></param>
         [WebMethod]
-        public void GetLogin(string username, string password, string ip)
+        public void GetLogin(string username, string password, string ip,string url)
         {
             password = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(password, "MD5");
             string returnstr = "{\"code\":0,\"description\":\"faile\"}";
@@ -46,7 +46,7 @@ namespace XHD.CRM.webserver
                                         string token = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(
                                             GetTimeStamp() + ds.Tables[0].Rows[0]["uid"].ToString()
                                             , "MD5");
-                                        fb.Insertuser(int.Parse(ds.Tables[0].Rows[0]["ID"].ToString()), token);
+                                        fb.Insertuser(int.Parse(ds.Tables[0].Rows[0]["ID"].ToString()), token,url);
                                         DataSet dds = fb.geruser(token, ds.Tables[0].Rows[0]["ID"].ToString());
                                         string str = Common.DataToJson.GetJson(dds);
                                         returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + str + "}";
@@ -122,8 +122,8 @@ namespace XHD.CRM.webserver
                  if (str == "") str = "[]";
                 returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":{\"collectCount\":" + Total + ",\"replies\":" + str + ",\"topic\":" + returnstr + "}}";
             }
-            Context.Response.Charset = "utf-8"; //设置字符集类型  
-            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Charset = "UTF-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("UTF-8");
             Context.Response.Write(returnstr);
             Context.Response.End();
 
@@ -157,8 +157,7 @@ namespace XHD.CRM.webserver
             string returnstr = "{\"code\":0,\"description\":\"faile\"}";
             if (fb.UpdateTopic(token, id, title, coutent) > 0)
             {
-                returnstr = "修改成功！";
-                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":\" " + returnstr + "\"}";
+                               returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":\"修改成功！\"}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
             Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
@@ -174,8 +173,7 @@ namespace XHD.CRM.webserver
             string returnstr = "{\"code\":0,\"description\":\"faile\"}";
             if (fb.UpdateTopicTop(token, id,status) > 0)
             {
-                returnstr = "修改成功！";
-                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + returnstr + "}";
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":\"修改成功！\"}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
             Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
@@ -191,8 +189,7 @@ namespace XHD.CRM.webserver
             string returnstr = "{\"code\":0,\"description\":\"faile\"}";
             if (fb.UpdateTopicGood(token, id, status) > 0)
             {
-                returnstr = "修改成功！";
-                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + returnstr + "}";
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":\"修改成功！\"}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
             Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
@@ -208,8 +205,7 @@ namespace XHD.CRM.webserver
             string returnstr = "{\"code\":0,\"description\":\"faile\"}";
             if (fb.UpdateTopicShow_status(token, id, status) > 0)
             {
-                returnstr = "修改成功！";
-                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + returnstr + "}";
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":\"修改成功！\"}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
             Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
@@ -314,7 +310,23 @@ namespace XHD.CRM.webserver
             Context.Response.End();
 
         }
+        // 话题回复删除或恢复
+        [WebMethod]
+        public void Updatef_reply_delete(string token, string id, string status)
+        {
 
+            string returnstr = "{\"code\":0,\"description\":\"faile\"}";
+            if (fb.Updatef_reply_delete(token, id, status) > 0)
+            {
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":\"删除成功！\"}";
+            }
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write(returnstr);
+            Context.Response.End();
+
+        }
+      
  
        
     }

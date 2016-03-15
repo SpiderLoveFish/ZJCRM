@@ -23,9 +23,16 @@ namespace XHD.BLL
           {
               return dal.geruser(token, userid);
           }
-          public int Insertuser(int id, string token)
+
+
+          public DataSet getuserdetail(string token, string userid)
           {
-              return dal.Insertuser(id,token);
+              return dal.getuserdetail(token,userid);
+          }
+
+          public int Insertuser(int id, string token,string url)
+          {
+              return dal.Insertuser(id,token,url);
           }
           public DataSet gerPCuser(string uid, string pwd)
           {

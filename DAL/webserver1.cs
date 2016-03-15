@@ -79,6 +79,15 @@ namespace XHD.DAL
             
             return DbHelperSQL.Query(sql);
         }
+
+     
+        public int DeleteFollow(string id)
+        {
+            string sql = " UPDATE 	dbo.CRM_Follow SET isDelete=1 ,Delete_time=GETDATE() WHERE id	="+id+" ";
+            SqlParameter[] parameters = { };
+            return DbHelperSQL.ExecuteSql(sql, parameters);
+        }
+       
         public DataSet GetCRM_Customer(string cid)
         {
             string sql = " SELECT * FROM dbo.CRM_Customer WHERE id=" + cid + "";
