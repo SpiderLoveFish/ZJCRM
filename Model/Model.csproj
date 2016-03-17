@@ -161,6 +161,8 @@
     <Compile Include="public_news.cs" />
     <Compile Include="public_notice.cs" />
     <Compile Include="PurchaseList.cs" />
+    <Compile Include="Purchase_Detail.cs" />
+    <Compile Include="Purchase_Main.cs" />
     <Compile Include="Sys_App.cs" />
     <Compile Include="Sys_authority.cs" />
     <Compile Include="Sys_Button.cs" />

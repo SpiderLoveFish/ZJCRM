@@ -183,6 +183,9 @@ namespace XHD.CRM.Data
                 model.QQ = PageValidate.InputText(request["T_QQ"], 50).Trim(' ');
                 model.JKDZ = PageValidate.InputText(request["T_JKDZ"], 50).Trim(' ');
                 string id = PageValidate.InputText(request["id"], 50);
+
+                DataSet dstel = customer.GetList(" tel=");
+
                 if (!string.IsNullOrEmpty(id) && id != "null")
                 {
                     DataSet ds = customer.GetList("id=" + int.Parse(id));
@@ -289,7 +292,8 @@ namespace XHD.CRM.Data
             if (request["Action"] == "IsExistphone")
             {
                 string tel = PageValidate.InputText(request["tel"], 50);
-                DataSet codeds = customer.GetList(" tel='" + tel + "' and id!=" + PageValidate.InputText(request["cid"], 50) + " ");
+                DataSet codeds = customer.GetList(" tel='" + tel + "' ");
+                //and id!=" + PageValidate.InputText(request["cid"], 50) + " ");
                 if (codeds.Tables[0].Rows.Count > 0)
                 {
                     context.Response.Write("false:tel");

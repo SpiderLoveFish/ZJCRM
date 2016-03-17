@@ -1,0 +1,432 @@
+﻿using System;
+using System.Data;
+using System.Text;
+using System.Data.SqlClient;
+using XHD.DBUtility;//Please add references
+namespace XHD.DAL
+{
+	/// <summary>
+	/// 数据访问类:Purchase_Main
+	/// </summary>
+	public partial class Purchase_Main
+	{
+		public Purchase_Main()
+		{}
+		#region  BasicMethod
+
+		/// <summary>
+		/// 是否存在该记录
+		/// </summary>
+		public bool Exists(string Purid)
+		{
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("select count(1) from Purchase_Main");
+			strSql.Append(" where Purid=SQL2012Purid ");
+			SqlParameter[] parameters = {
+					new SqlParameter("SQL2012Purid", SqlDbType.VarChar,8)			};
+			parameters[0].Value = Purid;
+
+			return DbHelperSQL.Exists(strSql.ToString(),parameters);
+		}
+
+        public string GetMaxPurId()
+        {
+            string per = "P";
+            per = per + DateTime.Now.ToString("yyMMdd-");
+            string strsql = "select max(REPLACE(Purid,'" + per + "',''))+1 from Purchase_Main where Purid like '" + per + "%'";
+            object obj = DbHelperSQL.GetSingle(strsql);
+            if (obj == null)
+            {
+                return per + "001";
+            }
+            else
+            {
+                return per + int.Parse(obj.ToString()).ToString("000");
+            }
+
+            // return DbHelperSQL.GetMaxID("id", "CRM_CEStage");
+        }
+		/// <summary>
+		/// 增加一条数据
+		/// </summary>
+		public bool Add(XHD.Model.Purchase_Main model)
+		{
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("insert into Purchase_Main(");
+			strSql.Append("Purid,supplier_id,supplier_name,purdate,paid_amount,payable_amount,arrears,isNode,remarks,correlation_id,materialman,customid,txm)");
+			strSql.Append(" values (");
+			strSql.Append("SQL2012Purid,SQL2012supplier_id,SQL2012supplier_name,SQL2012purdate,SQL2012paid_amount,SQL2012payable_amount,SQL2012arrears,SQL2012isNode,SQL2012remarks,SQL2012correlation_id,SQL2012materialman,SQL2012customid,SQL2012txm)");
+			SqlParameter[] parameters = {
+					new SqlParameter("SQL2012Purid", SqlDbType.VarChar,8),
+					new SqlParameter("SQL2012supplier_id", SqlDbType.VarChar,8),
+					new SqlParameter("SQL2012supplier_name", SqlDbType.NVarChar,100),
+					new SqlParameter("SQL2012purdate", SqlDbType.DateTime),
+					new SqlParameter("SQL2012paid_amount", SqlDbType.Decimal,9),
+					new SqlParameter("SQL2012payable_amount", SqlDbType.Decimal,9),
+					new SqlParameter("SQL2012arrears", SqlDbType.Decimal,9),
+					new SqlParameter("SQL2012isNode", SqlDbType.Bit,1),
+					new SqlParameter("SQL2012remarks", SqlDbType.VarChar,250),
+					new SqlParameter("SQL2012correlation_id", SqlDbType.VarChar,30),
+					new SqlParameter("SQL2012materialman", SqlDbType.VarChar,20),
+					new SqlParameter("SQL2012customid", SqlDbType.Int,4),
+					new SqlParameter("SQL2012txm", SqlDbType.VarChar,50)};
+			parameters[0].Value = model.Purid;
+			parameters[1].Value = model.supplier_id;
+			parameters[2].Value = model.supplier_name;
+			parameters[3].Value = model.purdate;
+			parameters[4].Value = model.paid_amount;
+			parameters[5].Value = model.payable_amount;
+			parameters[6].Value = model.arrears;
+			parameters[7].Value = model.isNode;
+			parameters[8].Value = model.remarks;
+			parameters[9].Value = model.correlation_id;
+			parameters[10].Value = model.materialman;
+			parameters[11].Value = model.customid;
+			parameters[12].Value = model.txm;
+
+			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+			if (rows > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// 更新一条数据
+		/// </summary>
+		public bool Update(XHD.Model.Purchase_Main model)
+		{
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("update Purchase_Main set ");
+			strSql.Append("supplier_id=SQL2012supplier_id,");
+			strSql.Append("supplier_name=SQL2012supplier_name,");
+			strSql.Append("purdate=SQL2012purdate,");
+			strSql.Append("paid_amount=SQL2012paid_amount,");
+			strSql.Append("payable_amount=SQL2012payable_amount,");
+			strSql.Append("arrears=SQL2012arrears,");
+			strSql.Append("isNode=SQL2012isNode,");
+			strSql.Append("remarks=SQL2012remarks,");
+			strSql.Append("correlation_id=SQL2012correlation_id,");
+			strSql.Append("materialman=SQL2012materialman,");
+			strSql.Append("customid=SQL2012customid,");
+			strSql.Append("txm=SQL2012txm");
+			strSql.Append(" where Purid=SQL2012Purid ");
+			SqlParameter[] parameters = {
+					new SqlParameter("SQL2012supplier_id", SqlDbType.VarChar,8),
+					new SqlParameter("SQL2012supplier_name", SqlDbType.NVarChar,100),
+					new SqlParameter("SQL2012purdate", SqlDbType.DateTime),
+					new SqlParameter("SQL2012paid_amount", SqlDbType.Decimal,9),
+					new SqlParameter("SQL2012payable_amount", SqlDbType.Decimal,9),
+					new SqlParameter("SQL2012arrears", SqlDbType.Decimal,9),
+					new SqlParameter("SQL2012isNode", SqlDbType.Bit,1),
+					new SqlParameter("SQL2012remarks", SqlDbType.VarChar,250),
+					new SqlParameter("SQL2012correlation_id", SqlDbType.VarChar,30),
+					new SqlParameter("SQL2012materialman", SqlDbType.VarChar,20),
+					new SqlParameter("SQL2012customid", SqlDbType.Int,4),
+					new SqlParameter("SQL2012txm", SqlDbType.VarChar,50),
+					new SqlParameter("SQL2012Purid", SqlDbType.VarChar,8)};
+			parameters[0].Value = model.supplier_id;
+			parameters[1].Value = model.supplier_name;
+			parameters[2].Value = model.purdate;
+			parameters[3].Value = model.paid_amount;
+			parameters[4].Value = model.payable_amount;
+			parameters[5].Value = model.arrears;
+			parameters[6].Value = model.isNode;
+			parameters[7].Value = model.remarks;
+			parameters[8].Value = model.correlation_id;
+			parameters[9].Value = model.materialman;
+			parameters[10].Value = model.customid;
+			parameters[11].Value = model.txm;
+			parameters[12].Value = model.Purid;
+
+			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+			if (rows > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// 删除一条数据
+		/// </summary>
+		public bool Delete(string Purid)
+		{
+			
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("delete from Purchase_Main ");
+			strSql.Append(" where Purid=SQL2012Purid ");
+			SqlParameter[] parameters = {
+					new SqlParameter("SQL2012Purid", SqlDbType.VarChar,8)			};
+			parameters[0].Value = Purid;
+
+			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+			if (rows > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// 批量删除数据
+		/// </summary>
+		public bool DeleteList(string Puridlist )
+		{
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("delete from Purchase_Main ");
+			strSql.Append(" where Purid in ("+Puridlist + ")  ");
+			int rows=DbHelperSQL.ExecuteSql(strSql.ToString());
+			if (rows > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+
+		/// <summary>
+		/// 得到一个对象实体
+		/// </summary>
+		public XHD.Model.Purchase_Main GetModel(string Purid)
+		{
+			
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("select  top 1 Purid,supplier_id,supplier_name,purdate,paid_amount,payable_amount,arrears,isNode,remarks,correlation_id,materialman,customid,txm from Purchase_Main ");
+			strSql.Append(" where Purid=SQL2012Purid ");
+			SqlParameter[] parameters = {
+					new SqlParameter("SQL2012Purid", SqlDbType.VarChar,8)			};
+			parameters[0].Value = Purid;
+
+			XHD.Model.Purchase_Main model=new XHD.Model.Purchase_Main();
+			DataSet ds=DbHelperSQL.Query(strSql.ToString(),parameters);
+			if(ds.Tables[0].Rows.Count>0)
+			{
+				return DataRowToModel(ds.Tables[0].Rows[0]);
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+
+		/// <summary>
+		/// 得到一个对象实体
+		/// </summary>
+		public XHD.Model.Purchase_Main DataRowToModel(DataRow row)
+		{
+			XHD.Model.Purchase_Main model=new XHD.Model.Purchase_Main();
+			if (row != null)
+			{
+				if(row["Purid"]!=null)
+				{
+					model.Purid=row["Purid"].ToString();
+				}
+				if(row["supplier_id"]!=null)
+				{
+					model.supplier_id=row["supplier_id"].ToString();
+				}
+				if(row["supplier_name"]!=null)
+				{
+					model.supplier_name=row["supplier_name"].ToString();
+				}
+				if(row["purdate"]!=null && row["purdate"].ToString()!="")
+				{
+					model.purdate=DateTime.Parse(row["purdate"].ToString());
+				}
+				if(row["paid_amount"]!=null && row["paid_amount"].ToString()!="")
+				{
+					model.paid_amount=decimal.Parse(row["paid_amount"].ToString());
+				}
+				if(row["payable_amount"]!=null && row["payable_amount"].ToString()!="")
+				{
+					model.payable_amount=decimal.Parse(row["payable_amount"].ToString());
+				}
+				if(row["arrears"]!=null && row["arrears"].ToString()!="")
+				{
+					model.arrears=decimal.Parse(row["arrears"].ToString());
+				}
+				if(row["isNode"]!=null && row["isNode"].ToString()!="")
+				{
+					if((row["isNode"].ToString()=="1")||(row["isNode"].ToString().ToLower()=="true"))
+					{
+						model.isNode=true;
+					}
+					else
+					{
+						model.isNode=false;
+					}
+				}
+				if(row["remarks"]!=null)
+				{
+					model.remarks=row["remarks"].ToString();
+				}
+				if(row["correlation_id"]!=null)
+				{
+					model.correlation_id=row["correlation_id"].ToString();
+				}
+				if(row["materialman"]!=null)
+				{
+					model.materialman=row["materialman"].ToString();
+				}
+				if(row["customid"]!=null && row["customid"].ToString()!="")
+				{
+					model.customid=int.Parse(row["customid"].ToString());
+				}
+				if(row["txm"]!=null)
+				{
+					model.txm=row["txm"].ToString();
+				}
+			}
+			return model;
+		}
+
+		/// <summary>
+		/// 获得数据列表
+		/// </summary>
+		public DataSet GetList(string strWhere)
+		{
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("select Purid,supplier_id,supplier_name,purdate,paid_amount,payable_amount,arrears,isNode,remarks,correlation_id,materialman,customid,txm ");
+			strSql.Append(" FROM Purchase_Main ");
+			if(strWhere.Trim()!="")
+			{
+				strSql.Append(" where "+strWhere);
+			}
+			return DbHelperSQL.Query(strSql.ToString());
+		}
+
+		/// <summary>
+		/// 获得前几行数据
+		/// </summary>
+		public DataSet GetList(int Top,string strWhere,string filedOrder)
+		{
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("select ");
+			if(Top>0)
+			{
+				strSql.Append(" top "+Top.ToString());
+			}
+			strSql.Append(" Purid,supplier_id,supplier_name,purdate,paid_amount,payable_amount,arrears,isNode,remarks,correlation_id,materialman,customid,txm ");
+			strSql.Append(" FROM Purchase_Main ");
+			if(strWhere.Trim()!="")
+			{
+				strSql.Append(" where "+strWhere);
+			}
+			strSql.Append(" order by " + filedOrder);
+			return DbHelperSQL.Query(strSql.ToString());
+		}
+
+		/// <summary>
+		/// 获取记录总数
+		/// </summary>
+		public int GetRecordCount(string strWhere)
+		{
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("select count(1) FROM Purchase_Main ");
+			if(strWhere.Trim()!="")
+			{
+				strSql.Append(" where "+strWhere);
+			}
+			object obj = DbHelperSQL.GetSingle(strSql.ToString());
+			if (obj == null)
+			{
+				return 0;
+			}
+			else
+			{
+				return Convert.ToInt32(obj);
+			}
+		}
+		/// <summary>
+		/// 分页获取数据列表
+		/// </summary>
+		public DataSet GetListByPage(string strWhere, string orderby, int startIndex, int endIndex)
+		{
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("SELECT * FROM ( ");
+			strSql.Append(" SELECT ROW_NUMBER() OVER (");
+			if (!string.IsNullOrEmpty(orderby.Trim()))
+			{
+				strSql.Append("order by T." + orderby );
+			}
+			else
+			{
+				strSql.Append("order by T.Purid desc");
+			}
+			strSql.Append(")AS Row, T.*  from Purchase_Main T ");
+			if (!string.IsNullOrEmpty(strWhere.Trim()))
+			{
+				strSql.Append(" WHERE " + strWhere);
+			}
+			strSql.Append(" ) TT");
+			strSql.AppendFormat(" WHERE TT.Row between {0} and {1}", startIndex, endIndex);
+			return DbHelperSQL.Query(strSql.ToString());
+		}
+
+		/*
+		/// <summary>
+		/// 分页获取数据列表
+		/// </summary>
+		public DataSet GetList(int PageSize,int PageIndex,string strWhere)
+		{
+			SqlParameter[] parameters = {
+					new SqlParameter("SQL2012tblName", SqlDbType.VarChar, 255),
+					new SqlParameter("SQL2012fldName", SqlDbType.VarChar, 255),
+					new SqlParameter("SQL2012PageSize", SqlDbType.Int),
+					new SqlParameter("SQL2012PageIndex", SqlDbType.Int),
+					new SqlParameter("SQL2012IsReCount", SqlDbType.Bit),
+					new SqlParameter("SQL2012OrderType", SqlDbType.Bit),
+					new SqlParameter("SQL2012strWhere", SqlDbType.VarChar,1000),
+					};
+			parameters[0].Value = "Purchase_Main";
+			parameters[1].Value = "Purid";
+			parameters[2].Value = PageSize;
+			parameters[3].Value = PageIndex;
+			parameters[4].Value = 0;
+			parameters[5].Value = 0;
+			parameters[6].Value = strWhere;	
+			return DbHelperSQL.RunProcedure("UP_GetRecordByPage",parameters,"ds");
+		}*/
+
+		#endregion  BasicMethod
+		#region  ExtensionMethod
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        public DataSet GetPurchase_Main(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "  * FROM  dbo.Purchase_Main ");
+            strSql.Append(" WHERE  Purid not in ( SELECT top " + (PageIndex - 1) * PageSize + " Purid FROM Purchase_Main  ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(Purid) FROM Purchase_Main   ");
+
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+		#endregion  ExtensionMethod
+	}
+}
+

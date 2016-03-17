@@ -410,7 +410,7 @@
                         <input id="T_Towns" name="T_Towns" type="text" style="width: 96px;" />
                     </div>--%>
                     <div style="width: 196px; float: left">
-                        <input id="T_Community" name="T_Community" type="text" />
+                        <input id="T_Community" name="T_Community" type="text" validate="{required:true}" />
                     </div>
                 </td>
                 <td>

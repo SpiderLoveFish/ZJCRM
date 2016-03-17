@@ -11,13 +11,14 @@ using System.Security.Cryptography;
 using System.Configuration;
 using System.IO;
 using System.Web.SessionState;
+using XHD.DBUtility;
 
 namespace XHD.CRM.Data
 {
     /// <summary>
     /// upload 的摘要说明
     /// </summary>
-    public class uploadbbs : IHttpHandler
+    public class upload : IHttpHandler
     {
 
         public void ProcessRequest(HttpContext context)
@@ -65,7 +66,9 @@ namespace XHD.CRM.Data
 
                     //获取图片url地址
                     string imgUrl = "http://mb.xczs.co/uploadedFiles/" + currentFileName;
-
+                    string sql = "INSERT INTO testupload(filename_upload,FILENAME_save,Dotime) VALUES " +
+                       "( '" + originalFileName + "','" + currentFileName + "',getdate())";
+                    DbHelperSQL.Query(sql);
                     //返回图片url地址
                     context.Response.Write(imgUrl);
                     return;

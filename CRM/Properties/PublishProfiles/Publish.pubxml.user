@@ -18,7 +18,7 @@
       <publishTime>08/20/2011 22:18:48</publishTime>
     </File>
     <File Include="bin/CRM.dll">
-      <publishTime>03/10/2016 23:20:54</publishTime>
+      <publishTime>03/17/2016 20:50:57</publishTime>
     </File>
     <File Include="bin/Excel.dll">
       <publishTime>08/20/2011 22:18:48</publishTime>
@@ -57,25 +57,25 @@
       <publishTime>08/20/2011 22:18:52</publishTime>
     </File>
     <File Include="bin/XHD.BLL.dll">
-      <publishTime>03/10/2016 21:50:00</publishTime>
+      <publishTime>03/17/2016 20:47:05</publishTime>
     </File>
     <File Include="bin/XHD.Comm.dll">
-      <publishTime>03/09/2016 23:06:35</publishTime>
+      <publishTime>03/17/2016 20:47:02</publishTime>
     </File>
     <File Include="bin/XHD.Common.dll">
       <publishTime>05/18/2015 16:28:59</publishTime>
     </File>
     <File Include="bin/XHD.DAL.dll">
-      <publishTime>03/10/2016 23:13:23</publishTime>
+      <publishTime>03/17/2016 20:46:21</publishTime>
     </File>
     <File Include="bin/XHD.DBUtility.dll">
       <publishTime>01/13/2016 21:47:37</publishTime>
     </File>
     <File Include="bin/XHD.Model.dll">
-      <publishTime>03/10/2016 23:13:22</publishTime>
+      <publishTime>03/17/2016 20:47:02</publishTime>
     </File>
     <File Include="conn.config">
-      <publishTime>03/10/2016 20:48:35</publishTime>
+      <publishTime>03/17/2016 19:25:45</publishTime>
     </File>
     <File Include="copyright.html">
       <publishTime>01/13/2016 21:42:12</publishTime>
@@ -222,10 +222,10 @@
       <publishTime>01/13/2016 21:42:12</publishTime>
     </File>
     <File Include="CRM/Customer/Customer.aspx">
-      <publishTime>02/03/2016 12:06:53</publishTime>
+      <publishTime>03/16/2016 23:28:08</publishTime>
     </File>
     <File Include="CRM/Customer/Customer_add.aspx">
-      <publishTime>02/03/2016 10:52:14</publishTime>
+      <publishTime>03/17/2016 19:24:25</publishTime>
     </File>
     <File Include="CRM/Customer/Customer_Contact.aspx">
       <publishTime>01/13/2016 21:42:12</publishTime>
@@ -385,6 +385,12 @@
     </File>
     <File Include="CRM/Product/Product_QrCode_Print_Style2.aspx">
       <publishTime>01/13/2016 21:42:12</publishTime>
+    </File>
+    <File Include="CRM/purchase/BudgeMainAdd.aspx">
+      <publishTime>03/17/2016 19:54:15</publishTime>
+    </File>
+    <File Include="CRM/purchase/PurchaseMain.aspx">
+      <publishTime>03/17/2016 20:37:28</publishTime>
     </File>
     <File Include="CRM/Repair/Repair.aspx">
       <publishTime>01/13/2016 21:42:12</publishTime>
@@ -611,6 +617,9 @@
     <File Include="Data/public_notice.ashx">
       <publishTime>01/13/2016 21:42:12</publishTime>
     </File>
+    <File Include="Data/Purchase.ashx">
+      <publishTime>03/17/2016 20:19:12</publishTime>
+    </File>
     <File Include="Data/PurchaseList.ashx">
       <publishTime>01/28/2016 20:05:30</publishTime>
     </File>
@@ -662,6 +671,9 @@
     <File Include="Data/upload.ashx">
       <publishTime>01/13/2016 21:42:12</publishTime>
     </File>
+    <File Include="Data/uploadbbs.ashx">
+      <publishTime>03/16/2016 20:33:01</publishTime>
+    </File>
     <File Include="Data/XM_LIST.ashx">
       <publishTime>01/13/2016 21:42:12</publishTime>
     </File>
@@ -705,7 +717,7 @@
       <publishTime>01/13/2016 21:42:12</publishTime>
     </File>
     <File Include="HR/headimage.aspx">
-      <publishTime>01/13/2016 21:42:12</publishTime>
+      <publishTime>03/16/2016 22:55:59</publishTime>
     </File>
     <File Include="HR/hr_contract.aspx">
       <publishTime>01/13/2016 21:42:12</publishTime>
@@ -11520,7 +11532,7 @@
       <publishTime>01/13/2016 21:42:12</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>03/10/2016 20:48:35</publishTime>
+      <publishTime>03/17/2016 19:25:45</publishTime>
     </File>
     <File Include="webserver/bbsapi.asmx">
       <publishTime>01/22/2016 18:22:20</publishTime>

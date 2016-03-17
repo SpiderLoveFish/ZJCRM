@@ -2,65 +2,55 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using System.Data;
-using System.Text;
-using System.Security.Cryptography;
-using System.Configuration;
-using System.IO;
-using System.Web.SessionState;
+using XHD.DBUtility;
 
 namespace XHD.CRM.Data
 {
     /// <summary>
-    /// upload 的摘要说明
+    /// Summary description for uploadbbs
     /// </summary>
-    public class upload : IHttpHandler
+    public class uploadbbs : IHttpHandler
     {
 
         public void ProcessRequest(HttpContext context)
         {
-                HttpRequest request = context.Request;
-                context.Response.ContentType = "text/plain";
-                context.Response.Charset = "utf-8";
-        
-                //var files = request["wangEditorMobileFile"];
-                var files = context.Request.Files;
-              
-                if (files.Count <= 0)
-                {
-                    return;
-                }
+            context.Response.ContentType = "text/plain";
+            context.Response.Charset = "utf-8";
 
-                HttpPostedFile file = files["wangEditorMobileFile"];
+            var files = context.Request.Files;
+            if (files.Count <= 0)
+            {
+                return;
+            }
 
-                if (file == null)
-                {
-                    context.Response.Write("error|file is null");
-                    return;
-                }
-                else
-                {
-                    string path = context.Server.MapPath("~/uploadedFiles/");  //存储图片的文件夹
-                    string originalFileName = file.FileName;
-                    string fileExtension = originalFileName.Substring(originalFileName.LastIndexOf('.'), originalFileName.Length - originalFileName.LastIndexOf('.'));
-                    string currentFileName = (new Random()).Next() + fileExtension;  //文件名中不要带中文，否则会出错
-                    //生成文件路径
-                    string imagePath = path + currentFileName;
-                    //保存文件
-                    file.SaveAs(imagePath);
+            HttpPostedFile file = files[0];
 
-                    //获取图片url地址
-                    string imgUrl = "http://mb.xczs.co/uploadedFiles/" + currentFileName;
+            if (file == null)
+            {
+                context.Response.Write("error|file is null");
+                return;
+            }
+            else
+            {
+                string path = context.Server.MapPath("~/uploadedFiles/");  //存储图片的文件夹
+                string originalFileName = file.FileName;
+                string fileExtension = originalFileName.Substring(originalFileName.LastIndexOf('.'), originalFileName.Length - originalFileName.LastIndexOf('.'));
+                string currentFileName = (new Random()).Next() + fileExtension;  //文件名中不要带中文，否则会出错
+                //生成文件路径
+                string imagePath = path + currentFileName;
+                //保存文件
+                file.SaveAs(imagePath);
 
-                    //返回图片url地址
-                    context.Response.Write(imgUrl);
-                    return;
-                }
+                //获取图片url地址
+                string imgUrl = "http://mb.xczs.co/uploadedFiles/" + currentFileName;
+
+                //返回图片url地址
+                context.Response.Write(imgUrl);
+                return;
+            }
         }
-         public bool IsReusable
+
+        public bool IsReusable
         {
             get
             {

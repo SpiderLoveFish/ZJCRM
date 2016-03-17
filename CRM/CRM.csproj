@@ -183,6 +183,8 @@
     <Content Include="CRM\Product\Product_QrCode_Print_Model.aspx" />
     <Content Include="CRM\Product\GetProduct.aspx" />
     <Content Include="CRM\Product\Product_QrCode_Print.aspx" />
+    <Content Include="CRM\purchase\BudgeMainAdd.aspx" />
+    <Content Include="CRM\purchase\PurchaseMain.aspx" />
     <Content Include="CRM\Repair\Repairphone.aspx" />
     <Content Include="CRM\Repair\UploadImg.aspx" />
     <Content Include="CSS\base.css" />
@@ -764,6 +766,7 @@
     <Content Include="Data\PurchaseList.ashx" />
     <Content Include="Data\Budge.ashx" />
     <Content Include="Data\uploadbbs.ashx" />
+    <Content Include="Data\Purchase.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -4077,8 +4080,8 @@
     <Compile Include="Data\Budge.ashx.cs">
       <DependentUpon>Budge.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Data\uploadbbs.ashx.cs">
-      <DependentUpon>uploadbbs.ashx</DependentUpon>
+    <Compile Include="Data\Purchase.ashx.cs">
+      <DependentUpon>Purchase.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\PurchaseList.ashx.cs">
       <DependentUpon>PurchaseList.ashx</DependentUpon>
@@ -4088,6 +4091,9 @@
     </Compile>
     <Compile Include="Data\SGJD_LIST.ashx.cs">
       <DependentUpon>SGJD_LIST.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\uploadbbs.ashx.cs">
+      <DependentUpon>uploadbbs.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\XM_LIST.ashx.cs">
       <DependentUpon>XM_LIST.ashx</DependentUpon>
