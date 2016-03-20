@@ -64,7 +64,7 @@ namespace XHD.DAL
 					new SqlParameter("SQL2012paid_amount", SqlDbType.Decimal,9),
 					new SqlParameter("SQL2012payable_amount", SqlDbType.Decimal,9),
 					new SqlParameter("SQL2012arrears", SqlDbType.Decimal,9),
-					new SqlParameter("SQL2012isNode", SqlDbType.Bit,1),
+					new SqlParameter("SQL2012isNode", SqlDbType.Int,4),
 					new SqlParameter("SQL2012remarks", SqlDbType.VarChar,250),
 					new SqlParameter("SQL2012correlation_id", SqlDbType.VarChar,30),
 					new SqlParameter("SQL2012materialman", SqlDbType.VarChar,20),
@@ -121,7 +121,7 @@ namespace XHD.DAL
 					new SqlParameter("SQL2012paid_amount", SqlDbType.Decimal,9),
 					new SqlParameter("SQL2012payable_amount", SqlDbType.Decimal,9),
 					new SqlParameter("SQL2012arrears", SqlDbType.Decimal,9),
-					new SqlParameter("SQL2012isNode", SqlDbType.Bit,1),
+					new SqlParameter("SQL2012isNode", SqlDbType.Int,4),
 					new SqlParameter("SQL2012remarks", SqlDbType.VarChar,250),
 					new SqlParameter("SQL2012correlation_id", SqlDbType.VarChar,30),
 					new SqlParameter("SQL2012materialman", SqlDbType.VarChar,20),
@@ -260,14 +260,9 @@ namespace XHD.DAL
 				}
 				if(row["isNode"]!=null && row["isNode"].ToString()!="")
 				{
-					if((row["isNode"].ToString()=="1")||(row["isNode"].ToString().ToLower()=="true"))
-					{
-						model.isNode=true;
-					}
-					else
-					{
-						model.isNode=false;
-					}
+		 
+                        model.customid = int.Parse(row["isNode"].ToString());
+					 
 				}
 				if(row["remarks"]!=null)
 				{
@@ -415,6 +410,25 @@ namespace XHD.DAL
             strSql.Append(" WHERE  Purid not in ( SELECT top " + (PageIndex - 1) * PageSize + " Purid FROM Purchase_Main  ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(Purid) FROM Purchase_Main   ");
+
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+        public DataSet GetCgGl_Gys_Main(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "  * FROM  dbo.CgGl_Gys_Main ");
+            strSql.Append(" WHERE  id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CgGl_Gys_Main  ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(id) FROM CgGl_Gys_Main   ");
 
             if (strWhere.Trim() != "")
             {

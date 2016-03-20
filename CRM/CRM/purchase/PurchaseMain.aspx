@@ -204,7 +204,7 @@
         }
      
       function add() {
-          f_openWindow("crm/purchase/BudgeMainAdd.aspx", "新增采购", 1100, 660);
+          f_openWindow("crm/purchase/PurchaseMainAdd.aspx", "新增采购", 1100, 660);
         }
 
         function edit() {
@@ -212,9 +212,9 @@
             var row = manager.getSelectedRow();
             if (row) {
                 if (row.IsStatus==0)
-                    f_openWindow("crm/purchase/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus, "修改采购", 1100, 600);
+                    f_openWindow("crm/purchase/PurchaseMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus, "修改采购", 1100, 600);
                 else  if (row.IsStatus==1)//已经提交
-                    f_openWindow_ch("crm/purchase/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus, "修改采购", 1100, 600);
+                    f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus, "修改采购", 1100, 600);
 
             } else {
                 $.ligerDialog.warn('请选择行！');

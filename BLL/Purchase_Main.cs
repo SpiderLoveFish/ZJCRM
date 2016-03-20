@@ -22,6 +22,11 @@ namespace XHD.BLL
 			return dal.Exists(Purid);
 		}
 
+        public string GetMaxPurId()
+        {
+            return dal.GetMaxPurId();
+        }
+
 		/// <summary>
 		/// 增加一条数据
 		/// </summary>
@@ -167,7 +172,11 @@ namespace XHD.BLL
         {
             return dal.GetPurchase_Main(PageSize,PageIndex,strWhere,filedOrder,out Total);
         }
-		#endregion  ExtensionMethod
+        public DataSet GetCgGl_Gys_Main(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetCgGl_Gys_Main(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+        #endregion  ExtensionMethod
 	}
 }
 

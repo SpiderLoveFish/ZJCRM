@@ -17,7 +17,7 @@ namespace XHD.Model
 		private decimal? _paid_amount;
 		private decimal? _payable_amount;
 		private decimal? _arrears;
-		private bool _isnode;
+		private int?_isnode;
 		private string _remarks;
 		private string _correlation_id;
 		private string _materialman;
@@ -82,7 +82,7 @@ namespace XHD.Model
 		/// <summary>
 		/// 
 		/// </summary>
-		public bool isNode
+		public int? isNode
 		{
 			set{ _isnode=value;}
 			get{return _isnode;}

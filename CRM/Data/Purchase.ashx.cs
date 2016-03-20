@@ -38,6 +38,14 @@ namespace XHD.CRM.Data
             string empname = dsemp.Tables[0].Rows[0]["name"].ToString();
             string uid = dsemp.Tables[0].Rows[0]["uid"].ToString();
 
+
+            if (request["Action"] == "getmaxid")
+            {
+                string bid = bpm.GetMaxPurId();
+                string josnstr = "{ 'pid':'" + bid + "','cly':'" + empname + "'}";
+                //{"status": 1, "sum": 9}
+                context.Response.Write(josnstr);
+            }
             if (request["Action"] == "form")
             {
                 string bid = PageValidate.InputText(request["bid"], 50);
@@ -54,6 +62,33 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "gridselectgys")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+                serchtxt += " and IsDel='N'";
+
+
+                string dt = "";
+
+                DataSet ds = bpm.GetCgGl_Gys_Main(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "grid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
@@ -63,7 +98,7 @@ namespace XHD.CRM.Data
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " id";
+                    sortname = " Purid";
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
 
@@ -90,7 +125,7 @@ namespace XHD.CRM.Data
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " id";
+                    sortname = " Purid";
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
 
@@ -98,12 +133,12 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
-                if (str_condition == "0")
-                    serchtxt += " and IsStatus in(0,1)";
-                else if (str_condition == "1")
-                {
-                    serchtxt += " and IsStatus not in(0)";
-                }
+                //if (str_condition == "0")
+                //    serchtxt += " and IsStatus in(0,1)";
+                //else if (str_condition == "1")
+                //{
+                //    serchtxt += " and IsStatus not in(0)";
+                //}
 
                 string dt = "";
 

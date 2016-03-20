@@ -53,6 +53,14 @@
 })(jQuery);
 
 
+function formateNow()
+{
+    var cur = new Date();
+    var y = cur.getFullYear();
+    var m = cur.getMonth() + 1;
+    var d = cur.getDate();
+    return y + '-' + m + '-' + d;
+}
 //货币格式
 function toMoney(num) {
     if (num == null || num == "" || num == undefined) {
