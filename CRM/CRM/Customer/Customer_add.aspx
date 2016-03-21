@@ -365,6 +365,8 @@
                 success: function (responseText) {
                     if (responseText == "false:tel") {
                         top.$.ligerDialog.alert(document.getElementById(id).value+'∫≈¬Î“—æ≠¥Ê‘⁄£°');
+                        
+                        $("#T_company_tel").val("");
                     }
                     },
                     error: function () {

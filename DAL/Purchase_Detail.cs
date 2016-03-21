@@ -125,15 +125,16 @@ namespace XHD.DAL
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>
-		public bool Delete(string Purid)
+		public bool Delete(string Purid,string MID)
 		{
 			
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("delete from Purchase_Detail ");
-			strSql.Append(" where Purid=SQL2012Purid ");
-			SqlParameter[] parameters = {
-					new SqlParameter("SQL2012Purid", SqlDbType.VarChar,8)			};
-			parameters[0].Value = Purid;
+            strSql.Append(" where Purid='" + Purid + "' ");
+            if(MID!="")
+            strSql.Append(" AND material_id=" + MID + " ");
+			SqlParameter[] parameters = { 	};
+ 
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)

@@ -106,7 +106,11 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
-              
+                string apr=PageValidate.InputText(request["Apr"], 50);
+                if (apr == "Y")
+                    serchtxt += " AND isNode=1";
+                if(apr=="E")
+                    serchtxt += " AND isNode in(0,1)";
                    
 
                 string dt = "";
@@ -133,14 +137,9 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
-                if (string.IsNullOrEmpty(pid))
+                //if (string.IsNullOrEmpty(pid))
                     serchtxt += " and Purid='"+pid+"'";
-                //if (str_condition == "0")
-                //    serchtxt += " and IsStatus in(0,1)";
-                //else if (str_condition == "1")
-                //{
-                //    serchtxt += " and IsStatus not in(0)";
-                //}
+ 
 
                 string dt = "";
 
@@ -152,13 +151,37 @@ namespace XHD.CRM.Data
             if (request["Action"] == "save")
             {
 
+                string pid = PageValidate.InputText(request["T_Pid"], 50);
+                 decimal  status = StringToDecimal(PageValidate.InputText(request["status"], 50));
+                if(bpm.updatetotal(pid,status)>0)
+                   context.Response.Write("true");
+               else
+                {
+                    context.Response.Write("false");
+                }
+            }
+            if (request["Action"] == "savetemp")
+            {
+
                 string customerid = PageValidate.InputText(request["cid"], 50);
                 string pid = PageValidate.InputText(request["pid"], 50);
                 string supid = PageValidate.InputText(request["supid"], 50);
                 string remark = PageValidate.InputText(request["remark"], 255);
-               if( bpm.Add(pid,supid,empname,customerid,remark))
-                   context.Response.Write("true");
-               else
+                if (bpm.Add(pid, supid, empname, customerid, remark))
+                    context.Response.Write("true");
+                else
+                {
+                    context.Response.Write("false");
+                }
+            }
+            if (request["Action"] == "saveupdatestatus")
+            {
+
+                string pid = PageValidate.InputText(request["pid"], 50);
+                  string status =  PageValidate.InputText(request["status"], 50) ;
+                if (bpm.Updatestatus(pid, status))
+                    context.Response.Write("true");
+                else
                 {
                     context.Response.Write("false");
                 }
@@ -193,14 +216,14 @@ namespace XHD.CRM.Data
             //删除条件
             if (request["Action"] == "del")
             {
-                string bid = PageValidate.InputText(request["bid"], 50);
-                //if (bbb.Delete(bid))
-                //{
-                //    if (bbdetail.Delete(bid))
-                //        context.Response.Write("true");
-                //    else context.Response.Write("false");
-                //}
-                //else
+                string bid = PageValidate.InputText(request["pid"], 50);
+                if (bpm.Delete(bid))
+                {
+                    if (bpd.Delete(bid,""))
+                        context.Response.Write("true");
+                    else context.Response.Write("false");
+                }
+                else
                 {
                     context.Response.Write("false");
                 }
@@ -208,14 +231,15 @@ namespace XHD.CRM.Data
             //删除条件
             if (request["Action"] == "deltail")
             {
-                string bid = PageValidate.InputText(request["bid"], 50);
-                //if (bbb.Delete(bid))
-                //{
-                //    if (bbdetail.Delete(bid))
-                //        context.Response.Write("true");
-                //    else context.Response.Write("false");
-                //}
-                //else
+                string bid = PageValidate.InputText(request["pid"], 50);
+                string mid = PageValidate.InputText(request["mid"], 50);
+                if (bpd.Delete(bid,mid))
+                {
+                     
+                        context.Response.Write("true");
+                    
+                }
+                else
                 {
                     context.Response.Write("false");
                 }

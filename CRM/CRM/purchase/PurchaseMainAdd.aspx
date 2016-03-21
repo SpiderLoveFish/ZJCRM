@@ -105,7 +105,7 @@
                          },
                   
                         {
-                            display: '备注', name: 'Remarks', align: 'left', width: 400,  editor: { type: 'text' }
+                            display: '备注', name: 'Remarks', align: 'left', width: 400, editor: { type: 'text' }
                         }
                  
                 ],
@@ -227,8 +227,8 @@
         function selall() {
             top.$.ligerDialog.open({
                 zindex: 9003,
-                title: '选择项目', width: 850, height: 400,
-                  url: "CRM/Purchase/SelectProduct.aspx", buttons: [
+                title: '选择全部材料', width: 850, height: 400,
+                url: "CRM/Purchase/SelectProduct.aspx?style=all", buttons: [
                     { text: '确定', onclick: f_selectProductOK },
                     { text: '取消', onclick: f_selectContactCancel }
                 ]
@@ -239,8 +239,8 @@
         function selgc() {
             top.$.ligerDialog.open({
                 zindex: 9003,
-                title: '选择项目', width: 850, height: 400,
-                url: "CRM/Purchase/SelectProduct.aspx", buttons: [
+                title: '选择工程材料', width: 850, height: 400,
+                url: "CRM/Purchase/SelectProduct.aspx?style=cl&cid=" + $("#T_companyid").val(), buttons: [
                   { text: '确定', onclick: f_selectProductOK },
                   { text: '取消', onclick: f_selectContactCancel }
                 ]
@@ -272,8 +272,10 @@
             }
         }
 
-        function edit() {
-           // f_openWindow("crm/Budge/BudgeMainAdd.aspx", "新增客户", 1100, 660);
+        function f_save() {
+            
+            var sendtxt = "&Action=save";
+            return $("form :input").fieldSerialize() + sendtxt;
         }
         function dosave(saveurl, dialog)
         {
@@ -300,7 +302,7 @@
                     if (yes) {
                         $.ajax({
                             url: "../../data/Purchase.ashx", type: "POST",
-                            data: { Action: "deldetail", bid: row.budge_id, id: row.id, rnd: Math.random() },
+                            data: { Action: "deldetail", pid: row.Purid, mid: row.material_id, rnd: Math.random() },
                             success: function (responseText) {
                                 if (responseText == "true") {
                                     top.$.ligerDialog.closeWaitting();
@@ -461,7 +463,7 @@
             }
             $.ajax({
                 type: 'post',
-                url: "../../data/Purchase.ashx?Action=save&pid=" + $("#T_Pid").val() + "&cid=" + $("#T_companyid").val() + "&remark=" + $("#T_remarks").val() + '&supid=' + $("#T_gysid").val() + '&rdm=' + Math.random(),
+                url: "../../data/Purchase.ashx?Action=savetemp&pid=" + $("#T_Pid").val() + "&cid=" + $("#T_companyid").val() + "&remark=" + $("#T_remarks").val() + '&supid=' + $("#T_gysid").val() + '&rdm=' + Math.random(),
                 success: function (data) {
                     if (data == 'false') {
                         getmaxid();

@@ -191,6 +191,16 @@ namespace XHD.BLL
             return dal.GetListdetail(strWhere);
         }
 
+        public int updatetotal(string pid, decimal status)
+        {
+            return dal.updatetotal(pid,status);
+        }
+
+        public bool Updatestatus(string pid, string status)
+        {
+            return dal.Updatestatus(pid,status);
+        }
+
         #endregion  ExtensionMethod
 	}
 }

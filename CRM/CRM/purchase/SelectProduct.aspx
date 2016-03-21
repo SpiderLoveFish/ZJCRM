@@ -26,9 +26,11 @@
        
         $(function () {
             var style = getparastr("style");
-            var strurl = "../../data/PurchaseList.ashx?Action=allgrid";
-            
-
+            var strurl = "";
+            if (style=="all")
+              strurl = "../../data/PurchaseList.ashx?Action=allgrid";
+            else if (style == "cl")
+            strurl: "../../data/PurchaseList.ashx?Action=tempgrid&cid=" + getparastr("cid");
             $("#maingrid4").ligerGrid({
                 columns: [
                     //{ display: 'ID', name: 'ID', type: 'int', width: 50 },
@@ -169,13 +171,12 @@
         //查询
         function doserch() {
             var style = getparastr("style");
-            var strurl = "../../data/PurchaseList.ashx?Action=allgrid";
-            if (style == "ALL")//全部产品
+            var strurl = "";
+            if (style == "all")
                 strurl = "../../data/PurchaseList.ashx?Action=allgrid";
-            else if (style == "ysA")//预算A
-                strurl = "../../data/PurchaseList.ashx?Action=getlist";
-            else if (style == "ysB")//预算A
-                strurl = "../../data/PurchaseList.ashx?Action=getlist";
+            else if (style == "cl")
+                    strurl: "../../data/PurchaseList.ashx?Action=tempgrid&cid=" + getparastr("cid");
+
             var sendtxt = "&rnd=" + Math.random();
             var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
             //alert(serchtxt);           

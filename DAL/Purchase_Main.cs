@@ -161,11 +161,9 @@ namespace XHD.DAL
 			
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("delete from Purchase_Main ");
-			strSql.Append(" where Purid=SQL2012Purid ");
-			SqlParameter[] parameters = {
-					new SqlParameter("SQL2012Purid", SqlDbType.VarChar,8)			};
-			parameters[0].Value = Purid;
-
+            strSql.Append(" where Purid='" + Purid + "'  and isNode=0");
+			SqlParameter[] parameters = { 	};
+		 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
 			{
@@ -508,6 +506,41 @@ namespace XHD.DAL
                 strSql.Append(" where " + strWhere);
             }
             return DbHelperSQL.Query(strSql.ToString());
+        }
+
+        public int updatetotal(string pid, decimal status)
+        {
+            SqlParameter[] parameters = {
+					new SqlParameter("@pid", SqlDbType.VarChar,50),
+					new SqlParameter("@status", SqlDbType.Decimal,10) 
+                                     };
+            parameters[0].Value = pid;
+            parameters[1].Value = status;
+            int rowaffected = 0;
+            DbHelperSQL.RunProcedure("USP_ComputerPurScore", parameters, out rowaffected);
+            return rowaffected;
+        }
+
+        public bool Updatestatus(string pid,string status)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update Purchase_Main set ");
+
+            strSql.Append("isNode=" + status + "");
+            
+            strSql.Append(" where Purid='"+pid+"' ");
+            SqlParameter[] parameters = {
+					 };
+  
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
 

@@ -41,10 +41,10 @@ namespace XHD.BLL
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>
-		public bool Delete(string Purid)
+		public bool Delete(string Purid,string mid)
 		{
 			
-			return dal.Delete(Purid);
+			return dal.Delete(Purid,mid);
 		}
 		/// <summary>
 		/// 删除一条数据

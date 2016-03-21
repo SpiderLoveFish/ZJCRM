@@ -468,8 +468,8 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " * FROM (SELECT A.*,B.product_name,B.category_name ");
-            strSql.Append(" ,specifications,unit,b.C_code,c.name,B.ProModel,B.Brand ");
+            strSql.Append(" top " + PageSize + " * FROM (SELECT A.*, ");
+            strSql.Append(" product_name,category_id,category_name,specifications,status,unit,remarks,price,isDelete,Delete_time,t_content,url,InternalPrice	 ,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand,C_code,C_style ");
               strSql.Append(" FROM dbo.PurchaseList A ");
              strSql.Append(" INNER JOIN dbo.CRM_product B ON  ");
              strSql.Append(" A.product_id=B.product_id AND A.category_id=B.category_id");

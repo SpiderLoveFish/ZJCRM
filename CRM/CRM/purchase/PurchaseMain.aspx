@@ -22,7 +22,8 @@
     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
-        var manager = "";
+        var manager = ""; var Apr = "E";
+        if (getparastr("Apr") == "Y") Apr = "Y";
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
@@ -50,7 +51,7 @@
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/Purchase.ashx?Action=grid", 
+                url: "../../data/Purchase.ashx?Action=grid&Apr="+Apr,
                 width: '100%',
                 height: '100%',
                 //tree: { columnName: 'StageDescription' },
@@ -204,7 +205,7 @@
         }
      
       function add() {
-          f_openWindow("crm/purchase/PurchaseMainAdd.aspx", "新增采购", 1100, 660);
+          f_openWindow("crm/purchase/PurchaseMainAdd.aspx", "新增采购", 1100, 600);
         }
 
         function edit() {
@@ -230,7 +231,7 @@
                 top.$.ligerDialog.waitting('数据保存中,请稍候...');
                 $.ajax({
                     url: "../../data/Purchase.ashx", type: "POST",
-                    data: issave,
+                    data: issave + "&status=0",
                     success: function (responseText) {
                         top.$.ligerDialog.closeWaitting();
                         if (responseText == "false") {
@@ -257,7 +258,7 @@
                     if (yes) {
                         $.ajax({
                             url: "../../data/Purchase.ashx", type: "POST",
-                            data: { Action: "saveupdatestatus",status:0, bid: row.id, rnd: Math.random() },
+                            data: { Action: "saveupdatestatus", status: 0, pid: row.Purid, rnd: Math.random() },
                             success: function (responseText) {
                                 if (responseText == "true") {
                                     top.$.ligerDialog.closeWaitting();
@@ -289,7 +290,7 @@
                     if (yes) {
                         $.ajax({
                             url: "../../data/Purchase.ashx", type: "POST",
-                            data: { Action: "del", bid: row.id, rnd: Math.random() },
+                            data: { Action: "del", pid: row.Purid, rnd: Math.random() },
                             success: function (responseText) {
                                 if (responseText == "true") {
                                     top.$.ligerDialog.closeWaitting();
@@ -322,7 +323,7 @@
                 top.$.ligerDialog.waitting('数据保存中,请稍候...');
                 $.ajax({
                     url: "../../data/Purchase.ashx", type: "POST",
-                    data: issave,
+                    data: issave + "&status=0",
                     success: function (responseText) {
                         top.$.ligerDialog.closeWaitting();
                         if (responseText == "false") {
@@ -350,7 +351,7 @@
                 top.$.ligerDialog.waitting('数据保存中,请稍候...');
                 $.ajax({
                     url: "../../data/Purchase.ashx", type: "POST",
-                    data: issave + "&style=submit",
+                    data: issave + "&status=1",
                     success: function (responseText) {
                         top.$.ligerDialog.closeWaitting();
                         if (responseText == "false") {
