@@ -185,6 +185,7 @@
     <Content Include="CRM\Product\Product_QrCode_Print.aspx" />
     <Content Include="CRM\purchase\PurchaseMainAdd.aspx" />
     <Content Include="CRM\purchase\PurchaseMain.aspx" />
+    <Content Include="CRM\purchase\SelectProduct.aspx" />
     <Content Include="CRM\purchase\SelectSupplier.aspx" />
     <Content Include="CRM\Repair\Repairphone.aspx" />
     <Content Include="CRM\Repair\UploadImg.aspx" />

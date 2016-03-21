@@ -42,22 +42,22 @@
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
         var manager = ""; var g;
-        var treemanager,gcomb;
+        var treemanager,gcombkh,gcombgys;
         $(function () {
             var urlstr = "";
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
 
             $("form").ligerForm();
-            if (getparastr("bid") != null) {
-             
-                loadForm(getparastr("bid"));
-                
+            if (getparastr("pid") != null) {
+                $("#qdkh").attr("style", "display:none");
+                loadForm(getparastr("pid"));
+                toolbar();
             }
             else {
 
-                $('#T_companyname').ligerComboBox({ width: 250, onBeforeOpen: f_selectContact });
-                $('#T_gysidname').ligerComboBox({ width: 250, onBeforeOpen: f_selectContactgys });
+                gcombkh= $('#T_companyname').ligerComboBox({ width: 250, onBeforeOpen: f_selectContact });
+                gcombgys= $('#T_gysname').ligerComboBox({ width: 250, onBeforeOpen: f_selectContactgys });
                 var cur = new Date();
                 var y = cur.getFullYear();
                 var m = cur.getMonth() + 1;
@@ -66,7 +66,7 @@
                 $('#T_cgrq').val(y + '-' + m + '-' + d);
             }
 
-            toolbar();
+         
         
             initLayout();
             $(window).resize(function () {
@@ -110,7 +110,7 @@
                  
                 ],
                 dataAction: 'server',
-                url: "../../data/Purchase.ashx?Action=griddetail&bid=" + $("#T_budgeid").val() + "&compname=0&rnd=" + Math.random(),
+                url: "../../data/Purchase.ashx?Action=griddetail&pid=" + getparastr("pid") + "&rnd=" + Math.random(),
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
                 width: '100%',
@@ -151,7 +151,7 @@
         }
         //限制
         function f_onBeforeSubmitEdit(e) {
-            if (e.column.name == "SUM") {
+            if (e.column.name == "purprice"||e.column.name=="pursum") {
                 if (e.value < 0) {
                     alert("数量不能为负数！");
                     return false;
@@ -161,15 +161,25 @@
         }
         //编辑后事件 
         function f_onAfterEdit(e) {
-            if (e.column.name == "SUM") {
-               
+            var price=0,editsum=0,Remarks='';
+            if (e.column.name == "purprice") {
+                price=e.value;
+            }
+            if (e.column.name == "pursum") {
+                editsum=e.value;
+            } 
+            if (e.column.name == "Remarks") {
+                Remarks=e.value;
+            }
+            if(price>0||editsum>0||Remarks.length>0)
+            {
                 var manager = $("#maingrid4").ligerGetGridManager();
                 var row = manager.getSelectedRow();
 
                 if (row) {
                     $.ajax({
                         url: "../../data/Purchase.ashx", type: "POST",
-                        data: { Action: "saveupdatesum", bid: $("#T_budgeid").val() , id: row.id, editsum: e.value, rnd: Math.random() },
+                        data: { Action: "saveupdatedetail", pid: $("#T_Pid").val(), mid: row.material_id, editsum: editsum,price:price,remaks:Remarks, rnd: Math.random() },
                         success: function (responseText) {
                     
                             if (responseText == "true") {
@@ -218,7 +228,7 @@
             top.$.ligerDialog.open({
                 zindex: 9003,
                 title: '选择项目', width: 850, height: 400,
-                  url: "CRM/Budge/SelectProduct.aspx", buttons: [
+                  url: "CRM/Purchase/SelectProduct.aspx", buttons: [
                     { text: '确定', onclick: f_selectProductOK },
                     { text: '取消', onclick: f_selectContactCancel }
                 ]
@@ -230,7 +240,7 @@
             top.$.ligerDialog.open({
                 zindex: 9003,
                 title: '选择项目', width: 850, height: 400,
-                url: "CRM/Budge/SelectProduct.aspx", buttons: [
+                url: "CRM/Purchase/SelectProduct.aspx", buttons: [
                   { text: '确定', onclick: f_selectProductOK },
                   { text: '取消', onclick: f_selectContactCancel }
                 ]
@@ -240,7 +250,7 @@
         function f_selectProductOK(item, dialog)
         {
             if ($("#T_companyid").val() == "") {
-                $.ligerDialog.error("请选择一个有效的客户！！！");
+                $.ligerDialog.error("请选择一个有效的数据！！！");
                 return;
             }
              
@@ -252,12 +262,12 @@
             }
             else {
                 rows = dialog.frame.f_select();
-                var pid = '';
+                var pidlist = '';
                 for (var i = 0; i < rows.length; i++) {
-                    pid = pid + ',' + rows[i].product_id;
+                    pidlist = pidlist + ',' + rows[i].product_id;
 
                 }
-                var url = '../../data/Purchase.ashx?Action=savedetailadd&bid=' + $("#T_budgeid").val() + "&xmlist=" + pid + '&compname=' + escape(compname) + '&rdm=' + Math.random();
+                var url = '../../data/Purchase.ashx?Action=savedetail&pid=' + $("#T_Pid").val() + "&bjlist=" + pidlist + '&rdm=' + Math.random();
                 dosave(url,dialog);
             }
         }
@@ -318,7 +328,7 @@
              $.ajax({
                 type: "GET",
                 url: "../../data/Purchase.ashx", /* 注意后面的名字对应CS的方法名称 */
-                data: { Action: 'form', bid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                data: { Action: 'form', pid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
@@ -328,29 +338,19 @@
                             obj[n] = "";
                     }
                    // alert(obj.CustomerID); //String 构造函数
-                    $("#T_companyid").val(obj.CustomerID);
-                    $("#T_company").val(obj.CustomerName + "("+obj.address+")");
-                    $("#T_budge_name").val(obj.BudgetName);
-                    $("#T_zje").val(obj.zje);
-                    $("#T_zje2").val(obj.JJAmount);
-                    $("#T_zje3").val(obj.ZCAmount);
-                    $("#T_fjje").val(obj.fjfy);
+                    $("#T_companyid").val(obj.customid);
+                    $("#T_companyname").val(obj.Customer + "(" + obj.address + ")");
+                    $("#T_gysid").val(obj.supplier_id);
+                    $("#T_gysname").val(obj.supplier_name);
+                    $("#T_Pid").val(obj.Purid);
+                 
                     $("#T_remarks").val(obj.Remarks);
-                    $("#T_sj").val(obj.b_sj);
-                    $("#T_sl").val(obj.b_sl);
-                    $("#T_budgeid").val(obj.id);
-                    $("#T_employee").val(obj.ywy);
-                    $("#T_employee2").val(obj.sjs);
-                  
-                    if (obj.DetailDiscount != 1)
-                    {
-                        // alert(obj.DetailDiscount);
-                        $("#iszk").attr("checked", true);
-                        $("#T_zk").val(obj.DetailDiscount);
-                        g.toggleCol('TotalDiscountPrice', true);
-                        g.toggleCol('Discount', true);
-                        g.toggleCol('zkje', true);
-                    }
+                    $("#T_employee2").val(obj.materialman);
+                    $("#T_cgrq").val(formatTime( obj.purdate));
+                    $("#T_yfje").val(obj.paid_amount);
+                    $("#T_yfje2").val(obj.payable_amount);
+                    $("#T_qk").val(obj.arrears);
+                    $("#T_employee").val(obj.Emp_sg);//施工监理
                    
                 }
             });
@@ -393,9 +393,8 @@
                 alert('请选择一个有效客户!');
                 return;
             }
-            fillemp(data.CustomerID, data.CustomerName, data.tel,
-                data.sgjl, data.sjs
-                , data.ywy, data.sjsid, data.sgjlid, data.ywyid, data.jhdate);
+            fillemp(data.CustomerID, data.CustomerName,  
+                data.sgjl,data.address );
           
             dialog.close();
         }
@@ -443,9 +442,9 @@
         function f_selectContactCancel(item, dialog) {
             dialog.close();
         }
-        function fillemp(id,  emp, sgjl) {
+        function fillemp(id,  emp, sgjl,address) {
             $("#T_companyid").val(id);
-            $("#T_companyname").val(emp);
+            $("#T_companyname").val(emp + '(' + address+')');
             $("#T_employee").val(sgjl);
         }
         function fillempgys(id, emp) {
@@ -454,54 +453,34 @@
             getmaxid();
         }
          
-        function addcustomer() {
+        function addpur()
+        {
             if ($("#T_companyid").val() == "") {
                 $.ligerDialog.error("请选择一个有效的客户！！！");
                 return;
             }
             $.ajax({
                 type: 'post',
-                url: "../../data/Purchase.ashx?Action=saveadd&bid=" + $("#T_budgeid").val() + "&cid=" + $("#T_companyid").val() + "&remark=" + $("#T_remarks").val() + '&bname=' + $("#T_budge_name").val() + '&rdm=' + Math.random(),
+                url: "../../data/Purchase.ashx?Action=save&pid=" + $("#T_Pid").val() + "&cid=" + $("#T_companyid").val() + "&remark=" + $("#T_remarks").val() + '&supid=' + $("#T_gysid").val() + '&rdm=' + Math.random(),
                 success: function (data) {
-                    if (data == 'false')
-                    {
+                    if (data == 'false') {
                         getmaxid();
                         $.ligerDialog.error("保存错误！！！重新保存！");
                     }
                     else {
                         $("#qdkh").attr("style", "display:none");
-                        gcomb.setReadOnly()
-                        $("#divcenter").removeClass("l-window-mask");
-                        $("#selecbj").removeClass("l-window-mask");
-                        $("#tr2").show();
-                        $("#tr_contact4").show();
-                        }
+                        gcombgys.setReadOnly;
+                        gcombkh.setReadOnly;
+                        toolbar();
+                    }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     $.ligerDialog.error("保存错误！！！");
                 }
             });
+          
         }
-        //添加部位
-        function addbj()
-        {
-            if ($("#T_companyid").val() == "") {
-                $.ligerDialog.error("请选择一个有效的客户！！！");
-                return;
-            }
-            top.$.ligerDialog.open({
-                zindex: 9003,
-                title: '选择部件', width: 850, height: 400,
-                url: "CRM/Budge/SelectBJ.aspx", buttons: [
-                  { text: '确定', onclick: f_getbj },
-                  { text: '取消', onclick: f_selectContactCancel }
-                ]
-            });
-            return false;
-          // f_openWindow_bj("CRM/Budge/SelectBJ.aspx", "选择部位", 650, 400);
-        }
-      
-     
+   
        
         function fload()
         {
@@ -519,10 +498,16 @@
              <input type="hidden" id="h_address" value="" />
         <table style="width: 550px; margin: 5px;" class='bodytable1'>
             <tr>
-                <td colspan="9" class="table_title1">基本信息
+                <td colspan="6" class="table_title1">基本信息
                      
                 </td>
-               
+                <td colspan="3"  class="table_title1"> 
+                      <a id="qdkh" class="l-button red"  position="right" style="width:150px;" onClick="addpur()">
+                          确定采购
+
+                      </a>
+          
+                </td>
                   </tr>
             <tr>
                 <td>

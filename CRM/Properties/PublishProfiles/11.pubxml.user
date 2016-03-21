@@ -8,6 +8,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
     <LastUsedPlatform>Any CPU</LastUsedPlatform>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>E:\fb</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_Browsers/IE10.browser">
@@ -17,7 +18,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/20/2011 22:18:48</publishTime>
     </File>
     <File Include="bin/CRM.dll">
-      <publishTime>02/23/2016 13:27:45</publishTime>
+      <publishTime>03/21/2016 14:58:45</publishTime>
     </File>
     <File Include="bin/Excel.dll">
       <publishTime>08/20/2011 22:18:48</publishTime>
@@ -35,7 +36,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/12/2011 06:54:12</publishTime>
     </File>
     <File Include="bin/Microsoft.QualityTools.Testing.Fakes.dll">
-      <publishTime>07/26/2012 19:41:24</publishTime>
+      <publishTime>03/15/2013 00:05:56</publishTime>
     </File>
     <File Include="bin/Microsoft.Vbe.Interop.dll">
       <publishTime>12/12/2011 06:54:12</publishTime>
@@ -56,25 +57,61 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/20/2011 22:18:52</publishTime>
     </File>
     <File Include="bin/XHD.BLL.dll">
-      <publishTime>02/23/2016 13:24:21</publishTime>
+      <publishTime>03/21/2016 14:20:59</publishTime>
     </File>
     <File Include="bin/XHD.Comm.dll">
-      <publishTime>02/22/2016 09:10:32</publishTime>
+      <publishTime>03/21/2016 14:20:58</publishTime>
     </File>
     <File Include="bin/XHD.DAL.dll">
-      <publishTime>02/23/2016 13:24:03</publishTime>
+      <publishTime>03/21/2016 14:20:51</publishTime>
     </File>
     <File Include="bin/XHD.DBUtility.dll">
       <publishTime>02/01/2016 13:30:14</publishTime>
     </File>
     <File Include="bin/XHD.Model.dll">
-      <publishTime>02/22/2016 09:10:32</publishTime>
+      <publishTime>03/21/2016 14:20:59</publishTime>
     </File>
     <File Include="conn.config">
-      <publishTime>02/23/2016 13:07:32</publishTime>
+      <publishTime>03/21/2016 14:56:53</publishTime>
     </File>
     <File Include="copyright.html">
       <publishTime>02/01/2016 08:44:44</publishTime>
+    </File>
+    <File Include="CRM/Budge/BudgeMain.aspx">
+      <publishTime>03/09/2016 14:33:23</publishTime>
+    </File>
+    <File Include="CRM/Budge/BudgeMainAdd.aspx">
+      <publishTime>03/09/2016 14:35:09</publishTime>
+    </File>
+    <File Include="CRM/Budge/BudgeMainApr.aspx">
+      <publishTime>03/09/2016 16:42:57</publishTime>
+    </File>
+    <File Include="CRM/Budge/BudgeModelMain.aspx">
+      <publishTime>02/29/2016 12:50:26</publishTime>
+    </File>
+    <File Include="CRM/Budge/BudgeModelMainAdd.aspx">
+      <publishTime>02/29/2016 13:32:42</publishTime>
+    </File>
+    <File Include="CRM/Budge/SaveModel.aspx">
+      <publishTime>02/29/2016 10:01:14</publishTime>
+    </File>
+    <File Include="CRM/Budge/SelectBJ.aspx">
+      <publishTime>02/29/2016 10:01:14</publishTime>
+    </File>
+    <File Include="CRM/Budge/SelectBudgeCustomer.aspx">
+      <publishTime>02/26/2016 14:41:35</publishTime>
+    </File>
+    <File Include="CRM/Budge/SelectFjje.aspx">
+      <publishTime>02/29/2016 16:58:50</publishTime>
+    </File>
+    <File Include="CRM/Budge/SelectFjjeDetail.aspx">
+      <publishTime>02/29/2016 16:38:45</publishTime>
+    </File>
+    <File Include="CRM/Budge/SelectModel.aspx">
+      <publishTime>03/09/2016 09:13:59</publishTime>
+    </File>
+    <File Include="CRM/Budge/SelectProduct.aspx">
+      <publishTime>02/29/2016 10:01:14</publishTime>
     </File>
     <File Include="CRM/Building/Building.aspx">
       <publishTime>02/01/2016 08:44:39</publishTime>
@@ -164,7 +201,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/03/2016 09:37:02</publishTime>
     </File>
     <File Include="CRM/ConsExam/SelectMaterials_add.aspx">
-      <publishTime>02/22/2016 08:50:03</publishTime>
+      <publishTime>02/29/2016 10:01:14</publishTime>
     </File>
     <File Include="CRM/ConsExam/SGJD_LIST.aspx">
       <publishTime>02/01/2016 08:44:39</publishTime>
@@ -182,10 +219,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/01/2016 08:44:39</publishTime>
     </File>
     <File Include="CRM/Customer/Customer.aspx">
-      <publishTime>02/22/2016 08:50:03</publishTime>
+      <publishTime>03/21/2016 13:50:05</publishTime>
     </File>
     <File Include="CRM/Customer/Customer_add.aspx">
-      <publishTime>02/22/2016 08:50:03</publishTime>
+      <publishTime>03/18/2016 09:13:47</publishTime>
     </File>
     <File Include="CRM/Customer/Customer_Contact.aspx">
       <publishTime>02/01/2016 08:44:39</publishTime>
@@ -340,6 +377,18 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="CRM/Product/Product_QrCode_Print_Style2.aspx">
       <publishTime>02/01/2016 08:44:39</publishTime>
     </File>
+    <File Include="CRM/purchase/PurchaseMain.aspx">
+      <publishTime>03/21/2016 12:54:56</publishTime>
+    </File>
+    <File Include="CRM/purchase/PurchaseMainAdd.aspx">
+      <publishTime>03/21/2016 14:43:43</publishTime>
+    </File>
+    <File Include="CRM/purchase/SelectProduct.aspx">
+      <publishTime>03/21/2016 14:24:39</publishTime>
+    </File>
+    <File Include="CRM/purchase/SelectSupplier.aspx">
+      <publishTime>03/21/2016 12:54:56</publishTime>
+    </File>
     <File Include="CRM/Repair/Repair.aspx">
       <publishTime>02/01/2016 08:44:39</publishTime>
     </File>
@@ -457,6 +506,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Data/base.ashx">
       <publishTime>02/01/2016 08:44:40</publishTime>
     </File>
+    <File Include="Data/Budge.ashx">
+      <publishTime>02/25/2016 14:53:37</publishTime>
+    </File>
     <File Include="Data/CERep_Schedule.ashx">
       <publishTime>02/01/2016 08:44:40</publishTime>
     </File>
@@ -488,7 +540,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/01/2016 08:44:40</publishTime>
     </File>
     <File Include="Data/CRM_Customer.ashx">
-      <publishTime>02/01/2016 08:44:40</publishTime>
+      <publishTime>03/21/2016 14:51:38</publishTime>
     </File>
     <File Include="Data/CRM_Follow.ashx">
       <publishTime>02/01/2016 08:44:40</publishTime>
@@ -559,6 +611,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Data/public_notice.ashx">
       <publishTime>02/01/2016 08:44:40</publishTime>
     </File>
+    <File Include="Data/Purchase.ashx">
+      <publishTime>03/18/2016 09:13:48</publishTime>
+    </File>
     <File Include="Data/PurchaseList.ashx">
       <publishTime>02/01/2016 08:44:40</publishTime>
     </File>
@@ -609,6 +664,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Data/upload.ashx">
       <publishTime>02/01/2016 08:44:40</publishTime>
+    </File>
+    <File Include="Data/uploadbbs.ashx">
+      <publishTime>03/18/2016 09:13:48</publishTime>
     </File>
     <File Include="Data/XM_LIST.ashx">
       <publishTime>02/01/2016 08:44:40</publishTime>
@@ -7307,7 +7365,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/01/2016 08:44:44</publishTime>
     </File>
     <File Include="JS/XHD.js">
-      <publishTime>02/01/2016 08:44:44</publishTime>
+      <publishTime>03/21/2016 12:54:57</publishTime>
     </File>
     <File Include="lib/inject.js">
       <publishTime>02/01/2016 08:44:47</publishTime>
@@ -11441,10 +11499,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/01/2016 08:44:44</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>02/23/2016 13:28:09</publishTime>
+      <publishTime>03/21/2016 14:59:26</publishTime>
     </File>
     <File Include="webserver/bbsapi.asmx">
-      <publishTime>02/01/2016 08:44:49</publishTime>
+      <publishTime>03/21/2016 14:02:30</publishTime>
     </File>
     <File Include="webserver/WebService1.asmx">
       <publishTime>02/01/2016 08:44:49</publishTime>

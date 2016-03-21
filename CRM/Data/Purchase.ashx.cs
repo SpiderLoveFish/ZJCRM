@@ -48,11 +48,11 @@ namespace XHD.CRM.Data
             }
             if (request["Action"] == "form")
             {
-                string bid = PageValidate.InputText(request["bid"], 50);
+                string pid = PageValidate.InputText(request["pid"], 50);
                 string dt;
-                if (bid != "")
+                if (pid != "")
                 {
-                    DataSet ds = bpm.GetList(" Purid='" + bid + "'");
+                    DataSet ds = bpm.GetListdetail(" Purid='" + pid + "'");
                     dt = Common.DataToJson.DataToJSON(ds);
                 }
                 else
@@ -120,7 +120,7 @@ namespace XHD.CRM.Data
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
                 int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
-                string str_condition = PageValidate.InputText(request["str_condition"], 50);
+                string pid = PageValidate.InputText(request["pid"], 50);
                 string sortname = request["sortname"];
                 string sortorder = request["sortorder"];
 
@@ -133,6 +133,8 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
+                if (string.IsNullOrEmpty(pid))
+                    serchtxt += " and Purid='"+pid+"'";
                 //if (str_condition == "0")
                 //    serchtxt += " and IsStatus in(0,1)";
                 //else if (str_condition == "1")
@@ -142,28 +144,51 @@ namespace XHD.CRM.Data
 
                 string dt = "";
 
-                //DataSet ds = bbb.GetBudge_BasicMain(PageSize, PageIndex, serchtxt, sorttext, out Total);
-                //dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                DataSet ds = bpd.GetPurchase_Detail(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                 dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
 
                 context.Response.Write(dt);
             }
             if (request["Action"] == "save")
             {
-              
-                int customerid = int.Parse(request["cid"]);
-                string bid = PageValidate.InputText(request["bid"], 255);
-                string bjlist = PageValidate.InputText(request["bjlist"], 255);
-                //if (bjlist.Length > 1) bjlist = bjlist.Substring(1);
-                //bd.AddBJlist(customerid, bid, bjlist);
+
+                string customerid = PageValidate.InputText(request["cid"], 50);
+                string pid = PageValidate.InputText(request["pid"], 50);
+                string supid = PageValidate.InputText(request["supid"], 50);
+                string remark = PageValidate.InputText(request["remark"], 255);
+               if( bpm.Add(pid,supid,empname,customerid,remark))
+                   context.Response.Write("true");
+               else
+                {
+                    context.Response.Write("false");
+                }
             }
             if (request["Action"] == "savedetail")
             {
 
-                int customerid = int.Parse(request["cid"]);
-                string bid = PageValidate.InputText(request["bid"], 255);
+              
+                string pid = PageValidate.InputText(request["pid"], 50);
                 string bjlist = PageValidate.InputText(request["bjlist"], 255);
-                //if (bjlist.Length > 1) bjlist = bjlist.Substring(1);
-                //bd.AddBJlist(customerid, bid, bjlist);
+                 if (bjlist.Length > 1) bjlist = bjlist.Substring(1);
+                 bpd.Addlist( pid, bjlist);
+            }
+
+            if (request["Action"] == "saveupdatedetail")
+            {
+
+              
+                string pid = PageValidate.InputText(request["pid"], 50);
+                string mid = PageValidate.InputText(request["mid"], 50);
+                decimal price = StringToDecimal(PageValidate.InputText(request["price"], 50) );
+                decimal editsum = StringToDecimal(PageValidate.InputText(request["editsum"], 50));
+                string remarks = PageValidate.InputText(request["remaks"], 255);
+                if (bpd.Updatedetail(pid, mid, price, editsum, remarks))
+                    context.Response.Write("true");
+                else
+                {
+                    context.Response.Write("false");
+                }
+
             }
             //删除条件
             if (request["Action"] == "del")

@@ -353,7 +353,85 @@ namespace XHD.DAL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
+        public bool Addlist(string pid, string list)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("INSERT INTO dbo.Purchase_Detail");
+            sb.AppendLine("        ( Purid ,");
+            sb.AppendLine("          material_id ,");
+            sb.AppendLine("          material_name ,");
+            sb.AppendLine("          specifications ,");
+            sb.AppendLine("          model ,");
+            sb.AppendLine("          unit ,");
+            sb.AppendLine("          purprice ,");
+            sb.AppendLine("          pursum ,");
+            sb.AppendLine("          subtotal ,");
+            sb.AppendLine("          remarks");
+            sb.AppendLine("        )");
+            sb.AppendLine("SELECT '"+pid+"',product_id,product_name,specifications,ProModel,unit,price,0,0,''");
+            sb.AppendLine(" FROM dbo.CRM_product WHERE product_id IN("+list+")");
+        SqlParameter[] parameters = {};
+        int rows=DbHelperSQL.ExecuteSql(sb.ToString(),parameters);
+			if (rows > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
 
+
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        public DataSet GetPurchase_Detail(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "  * FROM  dbo.Purchase_Detail ");
+            strSql.Append(" WHERE  Purid not in ( SELECT top " + (PageIndex - 1) * PageSize + " Purid FROM Purchase_Detail  ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(Purid) FROM Purchase_Detail   ");
+
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+
+        public bool Updatedetail(string pid, string mid, decimal price, decimal sum, string remarks)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("UPDATE	 dbo.Purchase_Detail");
+            sb.AppendLine(" SET");
+            if(price>0)
+            sb.AppendLine("          purprice=" + price + " ");
+            if(sum>0)
+            sb.AppendLine("          pursum=" + sum + " ");
+            if(remarks.Length>0)
+            sb.AppendLine("          remarks='"+remarks+"'");
+            sb.AppendLine(" WHERE		Purid='"+pid+"'");
+            sb.AppendLine(" AND ");
+            sb.AppendLine("          material_id='" + mid + "'");
+            SqlParameter[] parameters = { };
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 		#endregion  ExtensionMethod
 	}
 }

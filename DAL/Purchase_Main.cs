@@ -420,6 +420,7 @@ namespace XHD.DAL
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
             return DbHelperSQL.Query(strSql.ToString());
         }
+      
         public DataSet GetCgGl_Gys_Main(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
         {
             StringBuilder strSql = new StringBuilder();
@@ -439,6 +440,76 @@ namespace XHD.DAL
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
             return DbHelperSQL.Query(strSql.ToString());
         }
+
+
+        public bool Add(string pid,string supid,string user,string cid,string remarks)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("INSERT INTO dbo.Purchase_Main");
+            sb.AppendLine("        ( Purid ,");
+            sb.AppendLine("          supplier_id ,");
+            sb.AppendLine("          supplier_name ,");
+            sb.AppendLine("          purdate ,");
+            sb.AppendLine("          paid_amount ,");
+            sb.AppendLine("          payable_amount ,");
+            sb.AppendLine("          arrears ,");
+            sb.AppendLine("          isNode ,");
+            sb.AppendLine("          remarks ,");
+            sb.AppendLine("          correlation_id ,");
+            sb.AppendLine("          materialman ,");
+            sb.AppendLine("          customid ,");
+            sb.AppendLine("          txm");
+            sb.AppendLine("        )");
+            sb.AppendLine("SELECT '"+pid+"',ID,Name,GETDATE(),0,0,0,0,'"+remarks+"','','"+user+"','"+cid+"',''");
+            sb.AppendLine(" FROM dbo.CgGl_Gys_Main");
+            sb.AppendLine("  WHERE ID="+supid+"");
+            SqlParameter[] parameters = { };
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool updateremarks(string pid, string remarks)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine(" update Purchase_Main");
+            sb.AppendLine("  set ");
+            sb.AppendLine("          remarks='"+remarks+"'");
+            sb.AppendLine(" where Purid='"+pid+"'");
+            SqlParameter[] parameters = { };
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetListdetail(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select A.* ");
+            strSql.Append(" ,B.Customer,B.address,B.Emp_sg");
+            strSql.Append(" FROM Purchase_Main A");
+            strSql.Append(" INNER JOIN  dbo.CRM_Customer B ON A.customid=B.id");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
 
 		#endregion  ExtensionMethod
 	}

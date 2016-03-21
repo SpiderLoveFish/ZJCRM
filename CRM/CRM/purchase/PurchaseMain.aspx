@@ -30,7 +30,7 @@
                          display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                          { return (page - 1) * pagesize + rowindex + 1; }
                      },
-                      { display: '采购编号', name: 'Purid', width: 80, align: 'left' },
+                      { display: '采购编号', name: 'Purid', width: 100, align: 'left' },
                           { display: '供应商', name: 'supplier_name', width: 150, align: 'left' },
                       { display: '已付金额', name: 'paid_amount', width: 80, align: 'left' },
                        { display: '应付金额', name: 'payable_amount', width: 100, align: 'left' },
@@ -211,10 +211,10 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                if (row.IsStatus==0)
-                    f_openWindow("crm/purchase/PurchaseMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus, "修改采购", 1100, 600);
-                else  if (row.IsStatus==1)//已经提交
-                    f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus, "修改采购", 1100, 600);
+                if (row.isNode == 0)
+                    f_openWindow("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "修改采购", 1100, 600);
+                else if (row.isNode == 1)//已经提交
+                    f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "修改采购", 1100, 600);
 
             } else {
                 $.ligerDialog.warn('请选择行！');

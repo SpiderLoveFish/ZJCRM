@@ -176,6 +176,21 @@ namespace XHD.BLL
         {
             return dal.GetCgGl_Gys_Main(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
+
+        public bool Add(string pid, string supid, string user, string cid, string remarks)
+        {
+            return dal.Add( pid,  supid,  user,  cid,  remarks);
+        }
+        public bool updateremarks(string pid, string remarks)
+        {
+            return dal.updateremarks(pid,remarks);
+        }
+
+        public DataSet GetListdetail(string strWhere)
+        {
+            return dal.GetListdetail(strWhere);
+        }
+
         #endregion  ExtensionMethod
 	}
 }

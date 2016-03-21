@@ -315,7 +315,9 @@ namespace XHD.DAL
              StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + "  A.*,B.avatar,C.name as sectionName   FROM dbo.f_topic  A INNER JOIN dbo.f_user B  ON A.author_id=B.token   ");
+            strSql.Append(" top " + PageSize + "  A.ID,A.s_id,A.title,A.in_time,A.modify_time,A.last_reply_time,A.last_reply_author_id ");
+              strSql.Append("  ,A.t_view,A.author_id,A.t_top,A.good,A.show_status,A.reply_count  ");
+              strSql.Append( "  ,B.avatar,C.name as sectionName   FROM dbo.f_topic  A INNER JOIN dbo.f_user B  ON A.author_id=B.token   ");
             strSql.Append(" inner join f_section C on A.s_id=C.id");
             strSql.Append(" ");
             strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " A.id FROM f_topic A inner join f_section C on A.s_id=C.id ");

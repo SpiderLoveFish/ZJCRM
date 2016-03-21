@@ -184,7 +184,7 @@ namespace XHD.CRM.Data
                 model.JKDZ = PageValidate.InputText(request["T_JKDZ"], 50).Trim(' ');
                 string id = PageValidate.InputText(request["id"], 50);
 
-                DataSet dstel = customer.GetList(" tel=");
+                //DataSet dstel = customer.GetList(" tel=");
 
                 if (!string.IsNullOrEmpty(id) && id != "null")
                 {
