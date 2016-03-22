@@ -52,6 +52,7 @@
             if (getparastr("pid") != null) {
                 $("#qdkh").attr("style", "display:none");
                 loadForm(getparastr("pid"));
+                if (getparastr("status") == "0")
                 toolbar();
             }
             else {
@@ -105,7 +106,8 @@
                          },
                   
                         {
-                            display: '备注', name: 'Remarks', align: 'left', width: 400, editor: { type: 'text' }
+                            display: '备注', name: 'Remarks', align: 'left', width: 400,type:'text'
+                            , editor: { type: 'text' }
                         }
                  
                 ],
@@ -139,14 +141,17 @@
           
          $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
 
-           
+         //if (status != "0") {
+         //    g.toggleCol('purprice', true);
+         //    g.toggleCol('pursum', true);
+         //}
         })
  
         
         //只允许编辑前3行
         function f_onBeforeEdit(e) {
-            //if (e.rowindex <= 2) return true;
-            //return false;
+            if (getparastr("status") != "0")  //非编辑状态，不能修改！
+            return false;
             return true;
         }
         //限制
@@ -277,6 +282,21 @@
             var sendtxt = "&Action=save";
             return $("form :input").fieldSerialize() + sendtxt;
         }
+        //审核 ，作废
+        function f_saveapr() {
+            if ($("#T_companyid").val() == "") {
+                $.ligerDialog.error("请选择保存一个有效的客户！！！");
+                return;
+            }
+            var sta = 2;
+            if (getparastr("style") == "apr")//审核
+                sta = 2;
+            if (getparastr("style") == "cancel")//作废
+                sta = 99;
+            if (getparastr("status") == "1") sta = 0;//撤回
+            var sendtxt = "&Action=saveupdatestatus&status=" + sta + "&pid=" + $("#T_Pid").val();
+            return sendtxt;
+        }
         function dosave(saveurl, dialog)
         {
             $.ajax({
@@ -345,7 +365,7 @@
                     $("#T_gysid").val(obj.supplier_id);
                     $("#T_gysname").val(obj.supplier_name);
                     $("#T_Pid").val(obj.Purid);
-                 
+                    $("#ckisgd").val(obj.IsGD);
                     $("#T_remarks").val(obj.Remarks);
                     $("#T_employee2").val(obj.materialman);
                     $("#T_cgrq").val(formatTime( obj.purdate));
@@ -553,7 +573,8 @@
                <tr>
                  
                  <td    ><div style="width: 70px; text-align: right; float: right">备注：</div></td>
-                 <td colspan="4"  ><input id="T_remarks" name="T_remarks" type="text" ltype="text"  ligerui="{width:550}" /></td>
+                 <td colspan="3"  ><input id="T_remarks" name="T_remarks" type="text" ltype="text"  ligerui="{width:550}" /></td>
+                   <td> <input id="ckisgc" name="ckisgd" type="checkbox"  />确认现场</td>
                 <td>  <div style="width: 70px; text-align: right; float: right">采购单号：</div></td>
                 <td  colspan="2"><input type="text"  id="T_Pid" name="T_Pid"  ltype="text" ligerui="{width:150,disabled:true}"   /></td>
              

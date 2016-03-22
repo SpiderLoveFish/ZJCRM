@@ -440,7 +440,7 @@ namespace XHD.DAL
         }
 
 
-        public bool Add(string pid,string supid,string user,string cid,string remarks)
+        public bool Add(string pid,string supid,string user,string cid,string remarks,string isgdd)
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("INSERT INTO dbo.Purchase_Main");
@@ -456,9 +456,9 @@ namespace XHD.DAL
             sb.AppendLine("          correlation_id ,");
             sb.AppendLine("          materialman ,");
             sb.AppendLine("          customid ,");
-            sb.AppendLine("          txm");
+            sb.AppendLine("          txm,IsGD");
             sb.AppendLine("        )");
-            sb.AppendLine("SELECT '"+pid+"',ID,Name,GETDATE(),0,0,0,0,'"+remarks+"','','"+user+"','"+cid+"',''");
+            sb.AppendLine("SELECT '" + pid + "',ID,Name,GETDATE(),0,0,0,0,'" + remarks + "','','" + user + "','" + cid + "',''," + isgdd + "");
             sb.AppendLine(" FROM dbo.CgGl_Gys_Main");
             sb.AppendLine("  WHERE ID="+supid+"");
             SqlParameter[] parameters = { };
@@ -472,11 +472,13 @@ namespace XHD.DAL
                 return false;
             }
         }
-        public bool updateremarks(string pid, string remarks)
+        public bool updateremarks(string pid, string remarks,string date,string isgd)
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine(" update Purchase_Main");
             sb.AppendLine("  set ");
+            sb.AppendLine("          IsGD=" + isgd + ",");
+            sb.AppendLine("          purdate='" + date + "',");
             sb.AppendLine("          remarks='"+remarks+"'");
             sb.AppendLine(" where Purid='"+pid+"'");
             SqlParameter[] parameters = { };

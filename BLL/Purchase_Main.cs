@@ -177,13 +177,13 @@ namespace XHD.BLL
             return dal.GetCgGl_Gys_Main(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
 
-        public bool Add(string pid, string supid, string user, string cid, string remarks)
+        public bool Add(string pid, string supid, string user, string cid, string remarks, string isgd)
         {
-            return dal.Add( pid,  supid,  user,  cid,  remarks);
+            return dal.Add( pid,  supid,  user,  cid,  remarks,isgd);
         }
-        public bool updateremarks(string pid, string remarks)
+        public bool updateremarks(string pid, string remarks, string date, string isgd)
         {
-            return dal.updateremarks(pid,remarks);
+            return dal.updateremarks(pid,remarks,date,isgd);
         }
 
         public DataSet GetListdetail(string strWhere)

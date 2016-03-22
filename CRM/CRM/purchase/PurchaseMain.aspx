@@ -24,6 +24,7 @@
     <script type="text/javascript">
         var manager = ""; var Apr = "E";
         if (getparastr("Apr") == "Y") Apr = "Y";
+        else if (getparastr("Apr") == "YY") Apr = "YY";
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
@@ -36,7 +37,17 @@
                       { display: '已付金额', name: 'paid_amount', width: 80, align: 'left' },
                        { display: '应付金额', name: 'payable_amount', width: 100, align: 'left' },
                         { display: '欠款', name: 'arrears', width: 80, align: 'left' },
-                     { display: '是否结讫', name: 'isNode', width: 60, align: 'left' },
+                     {
+                         display: '单据状态', name: 'isNode', width: 60, align: 'left', render: function (item) {
+                             var st;
+                             if (item.isNode = "0") st = "待提交";
+                             else if (item.isNode = "1") st = "待审核";
+                             else if (item.isNode = "2") st = "待确认";
+                             else if (item.isNode = "3") st = "已确认";
+                             else if (item.isNode = "99") st = "已废除";
+                             return st;
+                         }
+                     },
                      
                         { display: '材料员', name: 'materialman', width: 80, align: 'left' },
                         {
@@ -231,7 +242,7 @@
                 top.$.ligerDialog.waitting('数据保存中,请稍候...');
                 $.ajax({
                     url: "../../data/Purchase.ashx", type: "POST",
-                    data: issave + "&status=0",
+                    data: issave,
                     success: function (responseText) {
                         top.$.ligerDialog.closeWaitting();
                         if (responseText == "false") {

@@ -109,9 +109,10 @@ namespace XHD.CRM.Data
                 string apr=PageValidate.InputText(request["Apr"], 50);
                 if (apr == "Y")
                     serchtxt += " AND isNode=1";
-                if(apr=="E")
+                else if(apr=="E")
                     serchtxt += " AND isNode in(0,1)";
-                   
+                else if (apr == "YY")
+                    serchtxt += " AND isNode=2";
 
                 string dt = "";
 
@@ -153,6 +154,13 @@ namespace XHD.CRM.Data
 
                 string pid = PageValidate.InputText(request["T_Pid"], 50);
                  decimal  status = StringToDecimal(PageValidate.InputText(request["status"], 50));
+                    string  isgd = PageValidate.InputText(request["ckisgd"], 50);
+                    string  date = PageValidate.InputText(request["T_cgrq"], 50);
+                    string remark = PageValidate.InputText(request["remark"], 255);
+                    if (isgd == "on" || isgd == "true")
+                        isgd = "1";
+                    else isgd = "0";
+                    if (bpm.updateremarks(pid, remark, date, isgd))
                 if(bpm.updatetotal(pid,status)>0)
                    context.Response.Write("true");
                else
@@ -167,7 +175,8 @@ namespace XHD.CRM.Data
                 string pid = PageValidate.InputText(request["pid"], 50);
                 string supid = PageValidate.InputText(request["supid"], 50);
                 string remark = PageValidate.InputText(request["remark"], 255);
-                if (bpm.Add(pid, supid, empname, customerid, remark))
+                string  isgd = PageValidate.InputText(request["ckisgd"], 50);
+                if (bpm.Add(pid, supid, empname, customerid, remark,isgd))
                     context.Response.Write("true");
                 else
                 {
@@ -229,7 +238,7 @@ namespace XHD.CRM.Data
                 }
             }
             //删除条件
-            if (request["Action"] == "deltail")
+            if (request["Action"] == "deldetail")
             {
                 string bid = PageValidate.InputText(request["pid"], 50);
                 string mid = PageValidate.InputText(request["mid"], 50);
