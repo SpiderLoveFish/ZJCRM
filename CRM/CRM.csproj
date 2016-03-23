@@ -687,6 +687,7 @@
     <Content Include="NoVerified\NVRepairTelphone.aspx" />
     <Content Include="QQ_Login.aspx" />
     <Content Include="qq_rebind.aspx" />
+    <Content Include="System\sms.aspx" />
     <Content Include="System\SingleSignOn.aspx" />
     <Content Include="testcookie.html" />
     <Content Include="View\product_view.aspx" />
@@ -769,6 +770,7 @@
     <Content Include="Data\Budge.ashx" />
     <Content Include="Data\uploadbbs.ashx" />
     <Content Include="Data\Purchase.ashx" />
+    <Content Include="Data\sys_sms.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -2762,6 +2764,7 @@
     <Content Include="ueditor1_2_5_1-utf8-net\_src\ui\uiutils.js" />
     <Content Include="View\QrCode_Generate.aspx" />
     <Content Include="webserver\bbsapi.asmx" />
+    <Content Include="webserver\sms.asmx" />
     <Content Include="webserver\WebService1.asmx" />
     <Content Include="welcome.htm" />
     <Content Include="Data\install.ashx" />
@@ -4036,7 +4039,6 @@
     </Compile>
     <Compile Include="CRM\Repair\Repairphone.aspx.cs">
       <DependentUpon>Repairphone.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CRM\Repair\Repairphone.aspx.designer.cs">
       <DependentUpon>Repairphone.aspx</DependentUpon>
@@ -4082,6 +4084,10 @@
     <Compile Include="Data\Budge.ashx.cs">
       <DependentUpon>Budge.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Data\sys_sms.ashx.cs">
+      <DependentUpon>sys_sms.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\sms.cs" />
     <Compile Include="Data\Purchase.ashx.cs">
       <DependentUpon>Purchase.ashx</DependentUpon>
     </Compile>
@@ -4275,6 +4281,13 @@
     <Compile Include="qq_rebind.aspx.designer.cs">
       <DependentUpon>qq_rebind.aspx</DependentUpon>
     </Compile>
+    <Compile Include="System\sms.aspx.cs">
+      <DependentUpon>sms.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="System\sms.aspx.designer.cs">
+      <DependentUpon>sms.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View\product_handler.ashx.cs">
       <DependentUpon>product_handler.ashx</DependentUpon>
     </Compile>
@@ -4283,6 +4296,10 @@
     </Compile>
     <Compile Include="webserver\bbsapi.asmx.cs">
       <DependentUpon>bbsapi.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="webserver\sms.asmx.cs">
+      <DependentUpon>sms.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="webserver\WebService1.asmx.cs">

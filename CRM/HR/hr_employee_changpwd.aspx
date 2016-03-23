@@ -38,6 +38,7 @@
         });
 
         function f_save() {
+            if ($("#T_yzm".val()==""))
             if ($(form1).valid()) {
                 var sendtxt = "&Action=allchangepwd&empid=" + getparastr("empid") + "&rnd=" + Math.random();
                 var postdata = $("form :input").fieldSerialize() + sendtxt;
@@ -94,8 +95,8 @@
                 </tr>
 
                 <tr>
-                    <td height="23" width="70px"></td>
-                    <td height="23">&nbsp;</td>
+                    <td height="23" width="70px">验证码</td>
+                    <td height="23"> <input type="text" id="T_yzm" name="T_yzm" ligerui="{width:180}" /></td>
                 </tr>
 
             </table>

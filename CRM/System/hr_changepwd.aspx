@@ -26,6 +26,7 @@
     <script src="../JS/XHD.js" type="text/javascript"></script>
     <script src="../lib/jquery.form.js" type="text/javascript"></script>
     <script type="text/javascript">
+        var varCODE = "";
         $(function () {
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
@@ -35,26 +36,111 @@
         });
 
         function f_save() {
-            if ($(form1).valid()) {
-                var sendtxt = "&Action=changepwd";
-                var issave = $("form :input").fieldSerialize() + sendtxt;
-                $.ajax({
-                    url: "../data/hr_employee.ashx", type: "POST",
-                    data: issave,
-                    success: function (responseText) {
-                        if (responseText == "true") {
-                            setTimeout(function () { parent.$.ligerDialog.close(); }, 100);
-                        }
-                        else {
-                            $.ligerDialog.error('操作失败！请输入正确的原密码。');
-                        }
-                    },
-                    error: function () {
+            if ($("#T_yzm").val() == varCODE) {
+                if ($(form1).valid()) {
+                    var sendtxt = "&Action=changepwd";
+                    var issave = $("form :input").fieldSerialize() + sendtxt;
+                    $.ajax({
+                        url: "../data/hr_employee.ashx", type: "POST",
+                        data: issave,
+                        success: function (responseText) {
+                            if (responseText == "true") {
+                                setTimeout(function () { parent.$.ligerDialog.close(); }, 100);
+                            }
+                            else {
+                                $.ligerDialog.error('操作失败！请输入正确的原密码。');
+                            }
+                        },
+                        error: function () {
 
-                    }
-                });
+                        }
+                    });
+                }
+            } else {
+                $.ligerDialog.error('验证码错误！。');
             }
         }
+
+        var wait = 60;
+        function time(o) {
+            if (wait == 0) {
+                o.removeAttribute("disabled");
+                o.value = "免费获取验证码";
+                wait = 60;
+            } else {  
+                o.setAttribute("disabled", true);
+                o.value = "重新发送(" + wait + ")";
+                wait--;
+                setTimeout(function () {
+                    time(o)
+                },
+                1000)
+            }
+        }
+        function send(e)
+        {
+            time(e);
+            createCode();
+            if (varCODE == "")
+            {
+                $.ligerDialog.error('验证码生成失败，关闭页面重新生成。');
+                return;
+            }
+            $.ajax({
+                type: "get",
+                url: "../../data/sys_sms.ashx", /* 注意后面的名字对应CS的方法名称 */
+                data: { Action: 'GetMessage', yzm: varCODE, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+
+                    var obj = eval(result);
+                   
+                    for (var n in obj) {
+                        if (obj.returnsms[n] == "null" || obj.returnsms[n] == null)
+                            obj.returnsms[n] = "";
+                      
+                    }
+                    if (obj.returnsms.returnstatus == "Success") {
+                        alert('发送成功。' + obj.returnsms.message);
+                    } else {
+                        alert(obj.returnsms.message);
+                    }
+                   
+
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("发送失败！");
+                }
+            });
+        }
+
+        var code; //在全局 定义验证码  
+        function createCode() {
+            code = "";
+            var codeLength = 6;//验证码的长度  
+            var checkCode = document.getElementById("checkCode");
+            var selectChar = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');//所有候选组成验证码的字符，当然也可以用中文的  
+
+            for (var i = 0; i < codeLength; i++) {
+
+
+                var charIndex = Math.floor(Math.random() * 36);
+                code += selectChar[charIndex];
+
+
+            }
+            varCODE = code;
+                    alert(code);  
+            //if (checkCode) //这里不是很懂,有高手可以解释下  
+            //{
+            //    checkCode.className = "code";
+            //    checkCode.value = code;
+            //}
+
+        }
+
     </script>
 </head>
 <body style="margin:5px 5px 5px 5px">
@@ -101,10 +187,16 @@
             </tr>
 
              <tr>
-                <td height="23" width="70px" >
-                    </td>
-                <td height="23" >
-                    &nbsp;</td>
+            
+                    <td height="23" width="70px">验证码</td>
+                    <td height="23"> <input type="text" id="T_yzm" name="T_yzm" ligerui="{width:180}"  ltype="text"/></td>
+                   <td>
+                       <input type="button" class="l-button" id="btn" style="width:150px;" value="免费获取验证码" onClick="send(this)"/>
+                        <%--<a id="btnsend" class="l-button"  position="right" style="width:150px;" onClick="send(this)">
+                          发送短信
+                      </a>--%>
+                       
+                   </td>
             </tr>
 
              </table>
