@@ -38,6 +38,7 @@ namespace XHD.CRM.Data
             string empname = dsemp.Tables[0].Rows[0]["name"].ToString();
             string uid = dsemp.Tables[0].Rows[0]["uid"].ToString();
 
+            BLL.Sys_log log = new BLL.Sys_log();
 
             if (request["Action"] == "getmaxid")
             {
@@ -149,6 +150,36 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "tempgrid")
+            {
+                BLL.PurchaseList ccp = new BLL.PurchaseList();
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = "desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+
+                if (!string.IsNullOrEmpty(request["stext"]))
+                    serchtxt += " and product_name like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
+                //if(uid!="admin")//非管理员
+                if (!string.IsNullOrEmpty(request["cid"]))
+                    serchtxt += " and customerid=" + PageValidate.InputText(request["cid"], 50) + "";
+                
+                //权限
+                DataSet ds = ccp.GetTempList(PageSize, PageIndex, serchtxt, sorttext, out Total);
+
+                string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "save")
             {
 
@@ -176,8 +207,11 @@ namespace XHD.CRM.Data
                 string supid = PageValidate.InputText(request["supid"], 50);
                 string remark = PageValidate.InputText(request["remark"], 255);
                 string  isgd = PageValidate.InputText(request["ckisgd"], 50);
-                if (bpm.Add(pid, supid, empname, customerid, remark,isgd))
+                if (bpm.Add(pid, supid, empname, customerid, remark, isgd))
+                {
+                    log.add_trace(pid,"0","保存",empname);
                     context.Response.Write("true");
+                }
                 else
                 {
                     context.Response.Write("false");
@@ -188,12 +222,15 @@ namespace XHD.CRM.Data
 
                 string pid = PageValidate.InputText(request["pid"], 50);
                   string status =  PageValidate.InputText(request["status"], 50) ;
-                if (bpm.Updatestatus(pid, status))
-                    context.Response.Write("true");
-                else
-                {
-                    context.Response.Write("false");
-                }
+                  if (bpm.Updatestatus(pid, status))
+                  {
+                      log.add_trace(pid, status, "", empname);
+                      context.Response.Write("true");
+                  }
+                  else
+                  {
+                      context.Response.Write("false");
+                  }
             }
             if (request["Action"] == "savedetail")
             {
@@ -228,8 +265,11 @@ namespace XHD.CRM.Data
                 string bid = PageValidate.InputText(request["pid"], 50);
                 if (bpm.Delete(bid))
                 {
-                    if (bpd.Delete(bid,""))
+                    if (bpd.Delete(bid, ""))
+                    {
+                        log.add_trace(bid, "99", "删除", empname);
                         context.Response.Write("true");
+                    }
                     else context.Response.Write("false");
                 }
                 else

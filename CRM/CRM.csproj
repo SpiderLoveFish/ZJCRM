@@ -4039,6 +4039,7 @@
     </Compile>
     <Compile Include="CRM\Repair\Repairphone.aspx.cs">
       <DependentUpon>Repairphone.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CRM\Repair\Repairphone.aspx.designer.cs">
       <DependentUpon>Repairphone.aspx</DependentUpon>

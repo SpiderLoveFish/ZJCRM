@@ -30,7 +30,7 @@
             if (style=="all")
               strurl = "../../data/PurchaseList.ashx?Action=allgrid";
             else if (style == "cl")
-            strurl: "../../data/PurchaseList.ashx?Action=tempgrid&cid=" + getparastr("cid");
+            strurl="../../data/Purchase.ashx?Action=tempgrid&cid=" + getparastr("cid");
             $("#maingrid4").ligerGrid({
                 columns: [
                     //{ display: 'ID', name: 'ID', type: 'int', width: 50 },

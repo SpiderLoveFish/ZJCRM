@@ -83,6 +83,15 @@ namespace XHD.BLL
 		}
 
 		#endregion  Method
+
+        public DataSet GetListtrace(string strWhere)
+        {
+            return dal.GetListtrace(strWhere);
+        }
+        public int add_trace(string ID, string sta, string Name, string per)
+        {
+            return dal.add_trace(ID,sta,Name,per);
+        }
 	}
 }
 

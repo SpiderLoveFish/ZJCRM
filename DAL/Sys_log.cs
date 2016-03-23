@@ -150,6 +150,39 @@ namespace XHD.DAL
 		}
 
 		#endregion  Method
+
+        public int add_trace(string ID,string sta,  string Name,string per)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into trace_log");
+            strSql.Append(" (docket_ID,tra_status,tra_sta_name,DoTime,DoPerson) ");
+                strSql.Append(" VALUES ");
+                strSql.Append(" ('" + ID + "','" + sta + "','" + Name + ",getdate(),'" + per + "'' )");
+            strSql.Append(";select @@IDENTITY");
+            SqlParameter[] parameters = { };
+            object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+        public DataSet GetListtrace(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select docket_ID,tra_status,tra_sta_name,DoTime,DoPerson ");
+            strSql.Append(" FROM trace_log ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+
 	}
 }
 

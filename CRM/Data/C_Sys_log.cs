@@ -10,10 +10,10 @@ namespace XHD.CRM.Data
     public class C_Sys_log
     {
         public C_Sys_log() { }
-
+        BLL.Sys_log log = new BLL.Sys_log();
         public void Add_log(int uid, string uname, string ip, string EventTitle, string EventType, int EventID, string Remind_name,string Original_txt, string Current_txt)
         {
-            BLL.Sys_log log = new BLL.Sys_log();
+         
             Model.Sys_log modellog = new Model.Sys_log();
 
             modellog.EventDate = DateTime.Now;
@@ -29,6 +29,12 @@ namespace XHD.CRM.Data
             modellog.Current_txt = "¡¾" + PageValidate.InputText(Remind_name, 255) + "¡¿" + PageValidate.InputText(Current_txt, int.MaxValue);
 
             log.Add(modellog);
+        }
+
+        public void Add_Trace(string ID,string status,string Name,string per)
+        {
+          
+            log.add_trace(ID, status, Name, per);
         }
     }
 }

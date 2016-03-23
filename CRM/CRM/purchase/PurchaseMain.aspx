@@ -85,7 +85,11 @@
             toolbar();
         });
         function toolbar() {
+
             var url = "../../data/toolbar.ashx?Action=GetSys&mid=159&rnd=" + Math.random();
+            if (getparastr("Apr") == "Y") url = "../../data/toolbar.ashx?Action=GetSys&mid=160&rnd=" + Math.random();
+            if (getparastr("Apr") == "YY") url = "../../data/toolbar.ashx?Action=GetSys&mid=161&rnd=" + Math.random();
+
             $.getJSON(url, function (data, textStatus) {
                 //alert(data);
                 var items = [];
@@ -174,11 +178,11 @@
         }
         //撤回
         var activeDialogsch = null;
-        function f_openWindow_ch(url, title, width, height) {
+        function f_openWindow_ch(url, title, width, height,code) {
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
                     {
-                        text: '撤回', onclick: function (item, dialog) {
+                        text: code, onclick: function (item, dialog) {
                             f_saveret(item, dialog);
                         }
                     },
@@ -226,7 +230,11 @@
                 if (row.isNode == 0)
                     f_openWindow("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "修改采购", 1100, 600);
                 else if (row.isNode == 1)//已经提交
-                    f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "修改采购", 1100, 600);
+                    f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "修改采购", 1100, 600,'撤回');
+                else if (row.isNode == 2)//已经提交
+                    f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "修改采购", 1100, 600, '审核');
+                else if (row.isNode == 3)//已经提交
+                    f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "修改采购", 1100, 600, '确认');
 
             } else {
                 $.ligerDialog.warn('请选择行！');
