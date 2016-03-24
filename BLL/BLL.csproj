@@ -129,6 +129,11 @@
     <Compile Include="CERep_Schedule.cs" />
     <Compile Include="CE_Para.cs" />
     <Compile Include="budge.cs" />
+    <Compile Include="InStock_Detail.cs" />
+    <Compile Include="INStock_Main.cs" />
+    <Compile Include="MasterStock.cs" />
+    <Compile Include="OutStock_Detail.cs" />
+    <Compile Include="OutStock_Main.cs" />
     <Compile Include="Purchase_Detail.cs" />
     <Compile Include="Purchase_Main.cs" />
     <Compile Include="webservers1.cs" />

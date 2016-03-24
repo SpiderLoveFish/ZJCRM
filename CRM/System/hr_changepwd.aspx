@@ -36,7 +36,7 @@
         });
 
         function f_save() {
-            if ($("#T_yzm").val() == varCODE) {
+            if ($("#T_yzm").val().toUpperCase() == varCODE) {
                 if ($(form1).valid()) {
                     var sendtxt = "&Action=changepwd";
                     var issave = $("form :input").fieldSerialize() + sendtxt;
@@ -132,7 +132,7 @@
 
             }
             varCODE = code;
-                    alert(code);  
+                  //  alert(code);  
             //if (checkCode) //这里不是很懂,有高手可以解释下  
             //{
             //    checkCode.className = "code";

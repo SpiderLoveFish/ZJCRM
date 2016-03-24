@@ -291,9 +291,11 @@
             var sta = 2;
             if (getparastr("style") == "apr")//审核
                 sta = 2;
+            if (getparastr("style") == "apry")//确认
+                sta = 3;
             if (getparastr("style") == "cancel")//作废
                 sta = 99;
-            if (getparastr("status") == "1") sta = 0;//撤回
+            if (getparastr("style") == "ret") sta = 0;//撤回
             var sendtxt = "&Action=saveupdatestatus&status=" + sta + "&pid=" + $("#T_Pid").val();
             return sendtxt;
         }

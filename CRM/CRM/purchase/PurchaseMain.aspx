@@ -38,15 +38,16 @@
                        { display: '应付金额', name: 'payable_amount', width: 100, align: 'left' },
                         { display: '欠款', name: 'arrears', width: 80, align: 'left' },
                      {
-                         display: '单据状态', name: 'isNode', width: 60, align: 'left', render: function (item) {
-                             var st;
-                             if (item.isNode = "0") st = "待提交";
-                             else if (item.isNode = "1") st = "待审核";
-                             else if (item.isNode = "2") st = "待确认";
-                             else if (item.isNode = "3") st = "已确认";
-                             else if (item.isNode = "99") st = "已废除";
-                             return st;
-                         }
+                         display: '单据状态', name: 'isNode', width: 60, align: 'left'
+                         //, render: function (item) {
+                         //    var st;
+                         //    if (item.isNode = "0") st = "待提交";
+                         //    else if (item.isNode = "1") st = "待审核";
+                         //    else if (item.isNode = "2") st = "待确认";
+                         //    else if (item.isNode = "3") st = "已确认";
+                         //    else if (item.isNode = "99") st = "已废除";
+                         //    return st;
+                         //}
                      },
                      
                         { display: '材料员', name: 'materialman', width: 80, align: 'left' },
@@ -87,8 +88,8 @@
         function toolbar() {
 
             var url = "../../data/toolbar.ashx?Action=GetSys&mid=159&rnd=" + Math.random();
-            if (getparastr("Apr") == "Y") url = "../../data/toolbar.ashx?Action=GetSys&mid=160&rnd=" + Math.random();
-            if (getparastr("Apr") == "YY") url = "../../data/toolbar.ashx?Action=GetSys&mid=161&rnd=" + Math.random();
+            if (getparastr("Apr") == "Y") url = "../../data/toolbar.ashx?Action=GetSys&mid=161&rnd=" + Math.random();
+            if (getparastr("Apr") == "YY") url = "../../data/toolbar.ashx?Action=GetSys&mid=162&rnd=" + Math.random();
 
             $.getJSON(url, function (data, textStatus) {
                 //alert(data);
@@ -227,14 +228,29 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
+               // alert(row.isNode);
                 if (row.isNode == 0)
                     f_openWindow("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "修改采购", 1100, 600);
                 else if (row.isNode == 1)//已经提交
-                    f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "修改采购", 1100, 600,'撤回');
+                {
+                    if (getparastr("Apr") == 'Y')
+                        f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apr", "修改采购", 1100, 600, '审核');
+                  else 
+                        f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=ret", "修改采购", 1100, 600, '撤回');
+                
+                }
                 else if (row.isNode == 2)//已经提交
-                    f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "修改采购", 1100, 600, '审核');
-                else if (row.isNode == 3)//已经提交
-                    f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "修改采购", 1100, 600, '确认');
+                {
+
+                    if (getparastr("Apr") == 'YY')
+                        f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apry", "修改采购", 1100, 600, '确认');
+                    else
+                        f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=ret", "修改采购", 1100, 600, '撤回');
+
+                  
+
+                } else if (row.isNode == 3)//已经提交
+                    f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apry", "修改采购", 1100, 600, '确认');
 
             } else {
                 $.ligerDialog.warn('请选择行！');
@@ -393,7 +409,7 @@
         function f_reload() {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);
-            top.flushiframegrid("tabid39");
+          
         };
     </script>
     <style type="text/css">
