@@ -149,7 +149,23 @@ namespace XHD.BLL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
+        public DataSet GetOutStock_Detail(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetOutStock_Detail(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+        public bool Addlist(string pid, string list)
+        {
+            return dal.Addlist(pid,list);
+        }
+        public bool Updatedetail(string pid, string mid, decimal price, decimal sum, string remarks)
+        {
+            return dal.Updatedetail(pid,mid,price,sum,remarks);
+        }
 
+        public bool Delete(string Purid, string MID)
+        {
+            return dal.Delete(Purid,MID);
+        }
 		#endregion  ExtensionMethod
 	}
 }

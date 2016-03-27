@@ -20,6 +20,7 @@ namespace XHD.Model
 		private string _remarks;
 		private decimal? _costamount;
 		private string _usestyle;
+        private int? _isNode;
 		/// <summary>
 		/// 
 		/// </summary>
@@ -100,6 +101,11 @@ namespace XHD.Model
 			set{ _usestyle=value;}
 			get{return _usestyle;}
 		}
+        public int? isNode
+        {
+            set { _isNode = value; }
+            get { return _isNode; }
+        }
 		#endregion Model
 
 	}

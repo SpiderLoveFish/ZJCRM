@@ -156,7 +156,31 @@ namespace XHD.BLL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
+        public string GetMaxCKId()
+        {
+            return dal.GetMaxCKId();
+        }
+        public DataSet GetOutStock_Main(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetOutStock_Main(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+        public bool Updatestatus(string pid, string status)
+        {
+            return dal.Updatestatus(pid,status);
+        }
+        public bool Delete(string Purid)
+        {
+            return dal.Delete(Purid);
+        }
+        public DataSet GetListdetail(string strWhere)
+        {
+            return dal.GetListdetail(strWhere);
+        }
 
+        public bool updateremarks(string ckid, string remarks, string usestyle)
+        {
+            return dal.updateremarks(ckid,remarks,usestyle);
+        }
 		#endregion  ExtensionMethod
 	}
 }

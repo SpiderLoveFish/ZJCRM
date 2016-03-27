@@ -39,9 +39,9 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into OutStock_Main(");
-			strSql.Append("CKID,CKDate,CustomerID,FYM,TotalAmount,PayAmount,InPerson,remarks,CostAmount,UseStyle)");
+            strSql.Append("CKID,CKDate,CustomerID,FYM,TotalAmount,PayAmount,InPerson,remarks,CostAmount,UseStyle,isNode)");
 			strSql.Append(" values (");
-			strSql.Append("@CKID,@CKDate,@CustomerID,@FYM,@TotalAmount,@PayAmount,@InPerson,@remarks,@CostAmount,@UseStyle)");
+            strSql.Append("@CKID,@CKDate,@CustomerID,@FYM,@TotalAmount,@PayAmount,@InPerson,@remarks,@CostAmount,@UseStyle,@isNode)");
 			SqlParameter[] parameters = {
 					new SqlParameter("@CKID", SqlDbType.VarChar,15),
 					new SqlParameter("@CKDate", SqlDbType.DateTime),
@@ -52,7 +52,8 @@ namespace XHD.DAL
 					new SqlParameter("@InPerson", SqlDbType.VarChar,20),
 					new SqlParameter("@remarks", SqlDbType.VarChar,50),
 					new SqlParameter("@CostAmount", SqlDbType.Decimal,9),
-					new SqlParameter("@UseStyle", SqlDbType.VarChar,20)};
+					new SqlParameter("@UseStyle", SqlDbType.VarChar,20),
+                     new SqlParameter("@isNode", SqlDbType.Int,4)                   };
 			parameters[0].Value = model.CKID;
 			parameters[1].Value = model.CKDate;
 			parameters[2].Value = model.CustomerID;
@@ -63,6 +64,7 @@ namespace XHD.DAL
 			parameters[7].Value = model.remarks;
 			parameters[8].Value = model.CostAmount;
 			parameters[9].Value = model.UseStyle;
+            parameters[10].Value = model.isNode;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -157,7 +159,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 CKID,CKDate,CustomerID,FYM,TotalAmount,PayAmount,InPerson,remarks,CostAmount,UseStyle from OutStock_Main ");
+            strSql.Append("select  top 1 CKID,CKDate,CustomerID,FYM,TotalAmount,PayAmount,InPerson,remarks,CostAmount,UseStyle,isNode from OutStock_Main ");
 			strSql.Append(" where CKID=@CKID and CKDate=@CKDate ");
 			SqlParameter[] parameters = {
 					new SqlParameter("@CKID", SqlDbType.VarChar,15),
@@ -226,6 +228,12 @@ namespace XHD.DAL
 				{
 					model.UseStyle=row["UseStyle"].ToString();
 				}
+
+                if (row["isNode"] != null && row["isNode"].ToString() != "")
+				{
+                    model.isNode = int.Parse(row["isNode"].ToString());
+				}
+                
 			}
 			return model;
 		}
@@ -341,6 +349,118 @@ namespace XHD.DAL
 		#endregion  BasicMethod
 		#region  ExtensionMethod
 
+        public string GetMaxCKId()
+        {
+            string per = "CK";
+            string strsql = "select max(REPLACE(CKID,'" + per + "',''))+1 from OutStock_Main where CKID like '" + per + "%'";
+            object obj = DbHelperSQL.GetSingle(strsql);
+            if (obj == null)
+            {
+                return per + "0001";
+            }
+            else
+            {
+                return per + int.Parse(obj.ToString()).ToString("000");
+            }
+
+            // return DbHelperSQL.GetMaxID("id", "CRM_CEStage");
+        }
+
+        public DataSet GetOutStock_Main(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "  * FROM  dbo.OutStock_Main A");
+            strSql.Append(" INNER JOIN  dbo.CRM_Customer B ON A.CustomerID=B.id");
+            strSql.Append(" WHERE  CKID not in ( SELECT top " + (PageIndex - 1) * PageSize + " CKID FROM OutStock_Main  ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(CKID) FROM OutStock_Main   ");
+
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+        public bool Updatestatus(string pid, string status)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update OutStock_Main set ");
+
+            strSql.Append("isNode=" + status + "");
+
+            strSql.Append(" where CKID='" + pid + "' ");
+            SqlParameter[] parameters = {
+					 };
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool Delete(string Purid)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from OutStock_Main ");
+            strSql.Append(" where CKID='" + Purid + "'  and isNode=0");
+            SqlParameter[] parameters = { };
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public DataSet GetListdetail(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select A.* ");
+            strSql.Append(" ,B.Customer,B.address,B.Emp_sg");
+            strSql.Append(" FROM OutStock_Main A");
+            strSql.Append(" INNER JOIN  dbo.CRM_Customer B ON A.CustomerID=B.id");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+        public bool updateremarks(string ckid, string remarks, string usestyle)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("  UPDATE	dbo.OutStock_Main");
+
+            sb.AppendLine(" SET remarks='" + remarks + "',usestyle='" + usestyle + "' ");
+
+            sb.AppendLine(" WHERE	 CKID='" + ckid + "' ");
+
+            SqlParameter[] parameters = { };
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 		#endregion  ExtensionMethod
 	}
 }

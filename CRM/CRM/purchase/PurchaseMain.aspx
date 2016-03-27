@@ -25,6 +25,7 @@
         var manager = ""; var Apr = "E";
         if (getparastr("Apr") == "Y") Apr = "Y";
         else if (getparastr("Apr") == "YY") Apr = "YY";
+        else if (getparastr("Apr") == "Print") Apr = "";
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
@@ -90,7 +91,7 @@
             var url = "../../data/toolbar.ashx?Action=GetSys&mid=159&rnd=" + Math.random();
             if (getparastr("Apr") == "Y") url = "../../data/toolbar.ashx?Action=GetSys&mid=161&rnd=" + Math.random();
             if (getparastr("Apr") == "YY") url = "../../data/toolbar.ashx?Action=GetSys&mid=162&rnd=" + Math.random();
-
+            if (getparastr("Apr") == "Print") url = "../../data/toolbar.ashx?Action=GetSys&mid=167&rnd=" + Math.random();
             $.getJSON(url, function (data, textStatus) {
                 //alert(data);
                 var items = [];

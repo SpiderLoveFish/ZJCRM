@@ -52,7 +52,15 @@
     javascript: window.history.forward(1);
 })(jQuery);
 
-
+/* 质朴长存法  by lifesinger 补0 如：pad(100, 4);  // 输出：0100  */
+function pad(num, n) {
+    var len = num.toString().length;
+    while (len < n) {
+        num = "0" + num;
+        len++;
+    }
+    return num;
+}
 function formateNow()
 {
     var cur = new Date();
