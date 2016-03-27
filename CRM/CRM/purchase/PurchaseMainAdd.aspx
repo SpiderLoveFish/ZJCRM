@@ -41,13 +41,14 @@
     <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
-        var manager = ""; var g;
+        var manager = ""; var g,ck;
         var treemanager,gcombkh,gcombgys;
         $(function () {
             var urlstr = "";
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
-
+            ck = $("#ckisgd").ligerCheckBox();
+           // $('input:checkbox').ligerCheckBox();
             $("form").ligerForm();
             if (getparastr("pid") != null) {
                 $("#qdkh").attr("style", "display:none");
@@ -278,8 +279,10 @@
         }
 
         function f_save() {
-            
-            var sendtxt = "&Action=save";
+            var isAccept = ck.getValue();
+            var isgd = 0;
+            if (isAccept) isgd = 1;
+            var sendtxt = "&Action=save&isgd=" + isgd;
             return $("form :input").fieldSerialize() + sendtxt;
         }
         //审核 ，作废
@@ -367,7 +370,8 @@
                     $("#T_gysid").val(obj.supplier_id);
                     $("#T_gysname").val(obj.supplier_name);
                     $("#T_Pid").val(obj.Purid);
-                    $("#ckisgd").val(obj.IsGD);
+                    if (obj.IsGD=="1")
+                        ck.setValue(true);;
                     $("#T_remarks").val(obj.Remarks);
                     $("#T_employee2").val(obj.materialman);
                     $("#T_cgrq").val(formatTime( obj.purdate));
@@ -479,13 +483,17 @@
          
         function addpur()
         {
+           
+            var isAccept = ck.getValue();
             if ($("#T_companyid").val() == "") {
                 $.ligerDialog.error("请选择一个有效的客户！！！");
                 return;
             }
+            var isgd = 0;
+            if (isAccept) isgd = 1;
             $.ajax({
                 type: 'post',
-                url: "../../data/Purchase.ashx?Action=savetemp&pid=" + $("#T_Pid").val() + "&cid=" + $("#T_companyid").val() + "&remark=" + $("#T_remarks").val() + '&supid=' + $("#T_gysid").val() + '&rdm=' + Math.random(),
+                url: "../../data/Purchase.ashx?Action=savetemp&pid=" + $("#T_Pid").val() + "&cid=" + $("#T_companyid").val() + "&remark=" + $("#T_remarks").val() + '&supid=' + $("#T_gysid").val() + '&isgd=' + isgd + '&rdm=' + Math.random(),
                 success: function (data) {
                     if (data == 'false') {
                         getmaxid();
@@ -576,7 +584,15 @@
                  
                  <td    ><div style="width: 70px; text-align: right; float: right">备注：</div></td>
                  <td colspan="3"  ><input id="T_remarks" name="T_remarks" type="text" ltype="text"  ligerui="{width:550}" /></td>
-                   <td> <input id="ckisgc" name="ckisgd" type="checkbox"  />确认现场</td>
+                   <td> 
+                  
+                    <div class="l-checkbox-wrapper">
+                        <%--<a class="l-checkbox"></a>--%>
+                        <input type="checkbox" name="ckisgd" id="ckisgd" 
+                            class="l-hidden" 
+                        ligeruiid="ckisgd"/></div> 是否现场 
+  
+                   </td>
                 <td>  <div style="width: 70px; text-align: right; float: right">采购单号：</div></td>
                 <td  colspan="2"><input type="text"  id="T_Pid" name="T_Pid"  ltype="text" ligerui="{width:150,disabled:true}"   /></td>
              

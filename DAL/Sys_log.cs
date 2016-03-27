@@ -157,7 +157,7 @@ namespace XHD.DAL
             strSql.Append("insert into trace_log");
             strSql.Append(" (docket_ID,tra_status,tra_sta_name,DoTime,DoPerson) ");
                 strSql.Append(" VALUES ");
-                strSql.Append(" ('" + ID + "','" + sta + "','" + Name + ",getdate(),'" + per + "'' )");
+                strSql.Append(" ('" + ID + "','" + sta + "','" + Name + "',getdate(),'" + per + "' )");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = { };
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);

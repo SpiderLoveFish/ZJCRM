@@ -185,12 +185,12 @@ namespace XHD.CRM.Data
 
                 string pid = PageValidate.InputText(request["T_Pid"], 50);
                  decimal  status = StringToDecimal(PageValidate.InputText(request["status"], 50));
-                    string  isgd = PageValidate.InputText(request["ckisgd"], 50);
+                 string isgd = PageValidate.InputText(request["isgd"], 50);
                     string  date = PageValidate.InputText(request["T_cgrq"], 50);
                     string remark = PageValidate.InputText(request["remark"], 255);
-                    if (isgd == "on" || isgd == "true")
-                        isgd = "1";
-                    else isgd = "0";
+                    //if (isgd == "on" || isgd == "true")
+                    //    isgd = "1";
+                    //else isgd = "0";
                     if (bpm.updateremarks(pid, remark, date, isgd))
                 if(bpm.updatetotal(pid,status)>0)
                    context.Response.Write("true");
@@ -206,7 +206,7 @@ namespace XHD.CRM.Data
                 string pid = PageValidate.InputText(request["pid"], 50);
                 string supid = PageValidate.InputText(request["supid"], 50);
                 string remark = PageValidate.InputText(request["remark"], 255);
-                string  isgd = PageValidate.InputText(request["ckisgd"], 50);
+                string isgd = PageValidate.InputText(request["isgd"], 50);
                 if (bpm.Add(pid, supid, empname, customerid, remark, isgd))
                 {
                     log.add_trace(pid,"0","保存",empname);

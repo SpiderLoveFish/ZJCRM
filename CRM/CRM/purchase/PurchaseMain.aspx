@@ -149,11 +149,11 @@
 
         //查询
         function doserch() {
-            var sendtxt = "&Action=grid&rnd=" + Math.random();
+            var sendtxt = "&Action=grid&Apr="+Apr+"&rnd=" + Math.random();
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
             //  alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL("../../data/Purchase.ashx" + serchtxt);
+            manager.GetDataByURL("../../data/Purchase.ashx?" + serchtxt);
         }
         function doclear() {
             //var serchtxt = $("#serchform :input").reset();
@@ -407,9 +407,9 @@
         } 
 
         function f_reload() {
+            doserch();
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);
-          
         };
     </script>
     <style type="text/css">
@@ -486,8 +486,7 @@
                         <div style='width: 300px; float: left'>
                             <input type='text' id='dclbstext' name='dclbstext'    ltype='text'  ligerui="{width:50}" />
                     
-                         -->
-                   
+                  
                             <input type='text' id='dclestext' name='dclestext'    ltype='text' ligerui="{width:50}"  />
                         </div>
                     </td>
