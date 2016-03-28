@@ -545,6 +545,36 @@ namespace XHD.DAL
             }
         }
 
+        public DataSet GetKcGl_Jcb_Cklb(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "  * FROM  dbo.KcGl_Jcb_Cklb ");
+            strSql.Append(" WHERE  ID not in ( SELECT top " + (PageIndex - 1) * PageSize + " Purid FROM KcGl_Jcb_Cklb  ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(ID) FROM KcGl_Jcb_Cklb   ");
+
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+        public DataSet GetListCklb(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select  * ");
+            strSql.Append(" from dbo.KcGl_Jcb_Cklb WHERE isdel='Y'");
+             if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
 
 		#endregion  ExtensionMethod
 	}

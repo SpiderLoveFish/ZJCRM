@@ -200,7 +200,14 @@ namespace XHD.BLL
         {
             return dal.Updatestatus(pid,status);
         }
-
+        public DataSet GetKcGl_Jcb_Cklb(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetKcGl_Jcb_Cklb(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+        public DataSet GetListCklb(string strWhere)
+        {
+            return dal.GetListCklb(strWhere);
+        }
         #endregion  ExtensionMethod
 	}
 }

@@ -75,7 +75,8 @@
                 initLayout();
             });
 
-
+          
+            
          g= $("#maingrid4").ligerGrid({
                 columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
@@ -107,9 +108,31 @@
                          },
                   
                         {
-                            display: '备注', name: 'Remarks', align: 'left', width: 400,type:'text'
+                            display: '备注', name: 'Remarks', align: 'left', width: 200,type:'text'
                             , editor: { type: 'text' }
+                        },
+                           {
+                               name: 'StockID', display: '客户(弹出框选择)', width: 400, align: 'left', textField: 'StockID'
+                    , editor:
+                        {
+                            type: 'popup', valueField: 'StockID', textField: 'StockID', grid:
+                            {
+                                data: CustomersData, columns: [
+                                { name: 'ID', width: 200, display: 'ID' }, { name: 'Name', width: 200, display: 'Name' }
+                                ]
+                            },
+                            condition: {
+                                prefixID: 'condtion_',
+                                fields: [
+                                    { name: 'Name', type: 'text', label: '客户', width: 200 }
+                                ]
+                            }, onSelected: f_onSelected,
+                            searchClick: function (e) {
+                                alert("这里可以根据搜索规则来搜索（下面的代码已经本地搜索),搜索规则:" + liger.toJSON(e.rules));
+                                e.grid.loadData($.ligerFilter.getFilterFunction(e.rules));
+                            }
                         }
+                           }
                  
                 ],
                 dataAction: 'server',
@@ -518,6 +541,7 @@
         {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);
+           
         }
     </script>
   

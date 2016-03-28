@@ -150,6 +150,16 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "gridstock")
+            {
+                string dt = "{}";
+                
+                    DataSet ds = bpm.GetListCklb(" ");
+                    dt = Common.DataToJson.DataToJSON(ds);
+                
+
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "tempgrid")
             {
                 BLL.PurchaseList ccp = new BLL.PurchaseList();
