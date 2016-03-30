@@ -69,9 +69,9 @@ namespace XHD.CRM.Data
                         }
                         else { continue; }
                     toolbarscript += "{";
-                    toolbarscript += "\"type\": 'button',";
-                    toolbarscript += "\"text\": '" + ds.Tables[0].Rows[i]["Btn_name"].ToString() + "',";
-                    toolbarscript += "\"icon\": '" + ds.Tables[0].Rows[i]["Btn_icon"].ToString() + "',";
+                    toolbarscript += "\"type\": \"button\",";
+                    toolbarscript += "\"text\": \"" + ds.Tables[0].Rows[i]["Btn_name"].ToString() + "\",";
+                    toolbarscript += "\"icon\": \"" + ds.Tables[0].Rows[i]["Btn_icon"].ToString() + "\",";
                     if (BtnAble)
                     {
                         toolbarscript += "\"disable\": true,";

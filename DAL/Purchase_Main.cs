@@ -544,7 +544,7 @@ namespace XHD.DAL
                 return false;
             }
         }
-
+       
         public DataSet GetKcGl_Jcb_Cklb(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
         {
             StringBuilder strSql = new StringBuilder();
@@ -567,7 +567,7 @@ namespace XHD.DAL
         public DataSet GetListCklb(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select  * ");
+            strSql.Append("select  ID,Name ");
             strSql.Append(" from dbo.KcGl_Jcb_Cklb WHERE isdel='Y'");
              if (strWhere.Trim() != "")
             {

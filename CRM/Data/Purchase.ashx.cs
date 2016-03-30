@@ -154,9 +154,9 @@ namespace XHD.CRM.Data
             {
                 string dt = "{}";
                 
-                    DataSet ds = bpm.GetListCklb(" ");
-                    dt = Common.DataToJson.DataToJSON(ds);
-                
+                    DataSet ds = bpm.GetListCklb("");
+                    //dt ="{Rows:"+ Common.DataToJson.GetJson(ds)+",Total:"+ds.Tables[0].Rows.Count+"}";
+                    dt = Common.DataToJson.GetJson(ds);
 
                 context.Response.Write(dt);
             }
@@ -241,6 +241,22 @@ namespace XHD.CRM.Data
                   {
                       context.Response.Write("false");
                   }
+            }
+            if (request["Action"] == "savestock")
+            {
+
+                string pid = PageValidate.InputText(request["pid"], 50);
+                string stockid = PageValidate.InputText(request["stockid"], 50);
+                string mid = PageValidate.InputText(request["mid"], 50);
+                if (bpd.Updatestock(pid, mid, stockid))
+                {
+                    //log.add_trace(pid, status, "", empname);
+                    context.Response.Write("true");
+                }
+                else
+                {
+                    context.Response.Write("false");
+                }
             }
             if (request["Action"] == "savedetail")
             {

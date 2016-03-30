@@ -35,14 +35,24 @@
                       { display: '客户', name: 'Customer', width: 150, align: 'left' },
                      { display: '财务年月', name: 'FYM', width: 80, align: 'left' },
                      { display: '使用类型', name: 'UseStyle', width: 120, align: 'left' },
-                     { display: '状态', name: 'isNode', width: 80, align: 'left' },
+                     {
+                         display: '状态', name: 'isNode', width: 80, align: 'left', render: function (item) {
+                             var st;
+                             if (item.isNode == "0") st = "待提交";
+                             else if (item.isNode == "1") st = "待审核";
+                             else if (item.isNode == "2") st = "已确认"; 
+                             else if (item.isNode == "99") st = "已废除";
+                             else st = item.isNode;
+                             return st;
+                         }
+                     },
                       { display: '备注', name: 'remarks', width: 80, align: 'left' },
                 { display: '操作人', name: 'InPerson', width: 80, align: 'left' }
                 ],
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/PickingList.ashx?Action=grid",
+                url: "../../data/PickingList.ashx?Action=grid&Apr=" + Apr,
                 width: '100%',
                 height: '100%',
                 //tree: { columnName: 'StageDescription' },

@@ -433,6 +433,30 @@ namespace XHD.DAL
                 return false;
             }
         }
+
+        public bool Updatestock(string pid,string mid, string stockid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update Purchase_Detail set ");
+
+            strSql.Append("StockID=" + stockid + "");
+
+            strSql.Append(" where Purid='" + pid + "' ");
+            if(mid!="")
+            strSql.Append(" AND    material_id='" + mid + "'");
+            SqlParameter[] parameters = {
+					 };
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 		#endregion  ExtensionMethod
 	}
 }

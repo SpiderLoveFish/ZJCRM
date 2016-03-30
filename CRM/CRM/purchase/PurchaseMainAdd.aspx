@@ -77,93 +77,9 @@
 
           
             
-         g= $("#maingrid4").ligerGrid({
-                columns: [
-                    { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
-                  
-                    { display: '材料名称', name: 'material_name', width: 120 },
-                     { display: '规格', name: 'specifications', width: 80 },
-
-                    { display: '型号', name: 'model', width: 120 },
-                     {
-                         display: '单价', name: 'purprice', type: 'float', width: 60, align: 'right'
-                         , editor: { type: 'float' }
-                     },
-                     
-                        {
-                            display: '数量', name: 'pursum', width: 120, align: 'left'
-                            , type: 'float', editor: { type: 'float' },
-                            totalSummary:
-                            {
-                                type: 'sum'
-                            }
-
-                        },
-                         {
-                             display: '小计', name: 'subtotal', type: 'float', width: 100, align: 'right',
-                             totalSummary:
-                             {
-                                 type: 'subtotal'
-                             }
-                         },
-                  
-                        {
-                            display: '备注', name: 'Remarks', align: 'left', width: 200,type:'text'
-                            , editor: { type: 'text' }
-                        },
-                           {
-                               name: 'StockID', display: '客户(弹出框选择)', width: 400, align: 'left', textField: 'StockID'
-                    , editor:
-                        {
-                            type: 'popup', valueField: 'StockID', textField: 'StockID', grid:
-                            {
-                                data: CustomersData, columns: [
-                                { name: 'ID', width: 200, display: 'ID' }, { name: 'Name', width: 200, display: 'Name' }
-                                ]
-                            },
-                            condition: {
-                                prefixID: 'condtion_',
-                                fields: [
-                                    { name: 'Name', type: 'text', label: '客户', width: 200 }
-                                ]
-                            }, onSelected: f_onSelected,
-                            searchClick: function (e) {
-                                alert("这里可以根据搜索规则来搜索（下面的代码已经本地搜索),搜索规则:" + liger.toJSON(e.rules));
-                                e.grid.loadData($.ligerFilter.getFilterFunction(e.rules));
-                            }
-                        }
-                           }
-                 
-                ],
-                dataAction: 'server',
-                url: "../../data/Purchase.ashx?Action=griddetail&pid=" + getparastr("pid") + "&rnd=" + Math.random(),
-                pageSize: 30,
-                pageSizeOptions: [20, 30, 50, 100],
-                width: '100%',
-                height: '100%',
-                heightDiff: -1,
-                enabledEdit: true,
-                allowHideColumn:true,
-                onBeforeEdit: f_onBeforeEdit,
-                onBeforeSubmitEdit: f_onBeforeSubmitEdit,
-                onAfterEdit: f_onAfterEdit,
-                //onAfterShowData: function (grid) {
-                //    $(".abc").hover(function (e) {
-                //        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
-                //    }, function (e) {
-                //        $(this).ligerHideTip(e);
-                //    });
-                //},
-               // onAfterShowData:ishidecol,
-                //checkbox: true, name: "ischecked", checkboxAll: false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
-                onContextmenu: function (parm, e) {
-                    actionproduct_id = parm.data.id;
-                    menu.show({ top: e.pageY, left: e.pageX });
-                    return false;
-                }
-            });
+            loadGrid();
           
-         $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
+        // $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
 
          //if (status != "0") {
          //    g.toggleCol('purprice', true);
@@ -174,6 +90,7 @@
         
         //只允许编辑前3行
         function f_onBeforeEdit(e) {
+       
             if (getparastr("status") != "0")  //非编辑状态，不能修改！
             return false;
             return true;
@@ -204,7 +121,7 @@
             {
                 var manager = $("#maingrid4").ligerGetGridManager();
                 var row = manager.getSelectedRow();
-
+                alert(Remarks);
                 if (row) {
                     $.ajax({
                         url: "../../data/Purchase.ashx", type: "POST",
@@ -330,7 +247,6 @@
             $.ajax({
                 type: 'post',
                 url: saveurl,
-
                 success: function (data) {
                     dialog.close();
                     fload();
@@ -374,6 +290,77 @@
             }
         }
       
+        function loadGrid()
+        {
+            
+                    g = $("#maingrid4").ligerGrid({
+                        columns: [
+                            { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
+
+                            { display: '材料名称', name: 'material_name', width: 120 },
+                             { display: '规格', name: 'specifications', width: 80 },
+
+                            { display: '型号', name: 'model', width: 120 },
+                             {
+                                 display: '单价', name: 'purprice', type: 'float', width: 60, align: 'right'
+                                 , editor: { type: 'float' }
+                             },
+
+                                {
+                                    display: '数量', name: 'pursum', width: 120, align: 'left'
+                                    , type: 'float', editor: { type: 'float' },
+                                    totalSummary:
+                                    {
+                                        type: 'sum'
+                                    }
+
+                                },
+                                 {
+                                     display: '小计', name: 'subtotal', type: 'float', width: 100, align: 'right',
+                                     totalSummary:
+                                     {
+                                         type: 'sum'
+                                     }
+                                 },
+
+                                {
+                                    display: '备注', name: 'Remarks', align: 'left', width: 200, type: 'text'
+                                    , editor: { type: 'text' }
+                                } 
+                              
+                               
+
+                        ],
+                        dataAction: 'server',
+                        url: "../../data/Purchase.ashx?Action=griddetail&pid=" + getparastr("pid") + "&rnd=" + Math.random(),
+                        pageSize: 30,
+                        pageSizeOptions: [20, 30, 50, 100],
+                        width: '100%',
+                        height: '100%',
+                        heightDiff: -1,
+                        enabledEdit: true,
+                        allowHideColumn: true,
+                        onBeforeEdit: f_onBeforeEdit,
+                        onBeforeSubmitEdit: f_onBeforeSubmitEdit,
+                        onAfterEdit: f_onAfterEdit,
+                        //onAfterShowData: function (grid) {
+                        //    $(".abc").hover(function (e) {
+                        //        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                        //    }, function (e) {
+                        //        $(this).ligerHideTip(e);
+                        //    });
+                        //},
+                        // onAfterShowData:ishidecol,
+                        //checkbox: true, name: "ischecked", checkboxAll: false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
+                        onContextmenu: function (parm, e) {
+                            actionproduct_id = parm.data.id;
+                            menu.show({ top: e.pageY, left: e.pageX });
+                            return false;
+                        }
+                    });
+                 
+        }
+
         function loadForm(oaid) {
              $.ajax({
                 type: "GET",
@@ -536,12 +523,18 @@
           
         }
    
-       
+        function doserch() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            manager.GetDataByURL("../../data/Purchase.ashx?Action=griddetail&pid=" + $("#T_Pid").val());
+        }
         function fload()
         {
-            var manager = $("#maingrid4").ligerGetGridManager();
-            manager.loadData(true);
-           
+            
+                doserch();
+            
+                var manager = $("#maingrid4").ligerGetGridManager();
+                manager.loadData(true);
+            
         }
     </script>
   

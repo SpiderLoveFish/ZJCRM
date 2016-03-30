@@ -176,7 +176,10 @@ namespace XHD.BLL
         {
             return  dal.Updatedetail(pid, mid, price, sum, remarks);
         }
-
+        public bool Updatestock(string pid,string mid, string stockid)
+        {
+            return dal.Updatestock(pid, mid,stockid);
+        }
 		#endregion  ExtensionMethod
 	}
 }
