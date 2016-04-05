@@ -170,13 +170,43 @@ namespace XHD.CRM.Data
                     string AddType = PageValidate.InputText(request["AddType"], 50);
                     if (!string.IsNullOrEmpty(AddType) && AddType != "null")
                     {
-                        if (AddType == "SelectMat")
+                        if (AddType == "SelectMat")//工地选材
                         {
                             BLL.PurchaseList pl = new BLL.PurchaseList();
                             int customerid = int.Parse(request["cid"]);
                             string pro_id = ccp.GetList(" c_code='" + c_code + "'").Tables[0].Rows[0]["product_id"].ToString(); 
                             //  if (pid.Length > 1) pid = pid.Substring(1);
                             pl.InsertList(customerid, pro_id, emp_id.ToString());
+
+                        }
+                        else if (AddType == "Selectpur")//采购
+                            {
+                                BLL.Purchase_Detail pl = new BLL.Purchase_Detail();
+                                string bpid = PageValidate.InputText(request["bid"], 50);
+                                string pro_id = ccp.GetList(" c_code='" + c_code + "'").Tables[0].Rows[0]["product_id"].ToString();
+                                //  if (pid.Length > 1) pid = pid.Substring(1);
+                                pl.Addlist(bpid, pro_id);
+                            }
+                        else if (AddType == "Selectbudge")//预算
+                        {
+
+                            BLL.Budge_BasicDetail bbd = new BLL.Budge_BasicDetail();
+                            string bbid = PageValidate.InputText(request["bid"], 50);
+                            string comp = PageValidate.InputText(request["compname"], 250);  //部件
+                            string pro_id = ccp.GetList(" c_code='" + c_code + "'").Tables[0].Rows[0]["product_id"].ToString();
+                            //  if (pid.Length > 1) pid = pid.Substring(1);
+                            bbd.insertlist(bbid, pro_id, comp);
+
+                           
+
+                        }
+                        else if (AddType == "Selectpick")//领料
+                        {
+                            BLL.OutStock_Detail OSD = new BLL.OutStock_Detail();
+                            string CKID = PageValidate.InputText(request["pid"], 50); 
+                            string pro_id = ccp.GetList(" c_code='" + c_code + "'").Tables[0].Rows[0]["product_id"].ToString();
+                            //  if (pid.Length > 1) pid = pid.Substring(1);
+                            OSD.Addlist(CKID,pro_id);
 
                         }
                     }

@@ -323,15 +323,31 @@
         }
 
         function add() {
+            var notes = $("#tree1").ligerGetTreeManager().getSelected();
+            var compname = "";
+            if (notes != null && notes != undefined) {
+                // notes.data.id
+
+                compname = notes.data.text;
+            }
+            else {
+                $.ligerDialog.warn('请选择部件！');
+                return;
+            }
             top.$.ligerDialog.open({
                 zindex: 9003,
                 title: '选择项目', width: 850, height: 400,
-                  url: "CRM/Budge/SelectProduct.aspx", buttons: [
-                    { text: '确定', onclick: f_selectProductOK },
+                url: "CRM/Budge/SelectProduct.aspx?bid=" + getparastr("bid")+'&compname=' + escape(compname), buttons: [
+                    { text: '确定(F2)', onclick: f_selectProductOK },
                     { text: '取消', onclick: f_selectContactCancel }
                 ]
             });
             return false;
+        }
+        function addcl() {
+            f_openWindow("../../crm/product/product_add.aspx?type=Selectbudge&cid=" + getparastr("bid"), "新增材料档案", 800, 500);
+
+
         }
         function f_selectProductOK(item, dialog)
         {
@@ -516,6 +532,7 @@
 
         function f_selectContactCancel(item, dialog) {
             dialog.close();
+            fload();
         }
         function fillemp(id, tel, emp, sgjl, sjs, ywy, sjsid, sgjlid, ywyid,jhdate) {
             $("#T_companyid").val(id);

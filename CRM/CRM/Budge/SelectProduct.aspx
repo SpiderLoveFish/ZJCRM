@@ -200,6 +200,34 @@
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
+
+        function add() {
+           
+                var manager = $("#maingrid4").ligerGetGridManager();
+            var rows = manager.getCheckedRows();
+            var prouductid = '';
+            for (var item = 0; item < rows.length; item++)
+                prouductid += ',' + rows[item].product_id;
+            if (prouductid == '') {
+                $.ligerDialog.error("请至少选择一个有效材料数据！");
+                return;
+            }
+            //  alert(getparastr("pid"));
+            $.ajax({
+                type: 'post',
+                url:  "../../data/Budge.ashx?Action=savedetailadd&bid=" + getparastr("bid") + "&compname=" + getparastr("compname") + "&xmlist=" + prouductid + '&rdm=' + Math.random(),
+                success: function (data) {
+
+                    f_sucess();
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    dialog.frame.f_error();
+                }
+            });
+
+        }
+
     </script>
 
 </head>

@@ -404,7 +404,8 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + "  * FROM  dbo.Purchase_Main ");
+            strSql.Append(" top " + PageSize + "   A.*,B.Customer,B.tel,B.address FROM  dbo.Purchase_Main  A");
+            strSql.Append(" INNER JOIN  dbo.CRM_Customer B ON A.customid=B.id ");
             strSql.Append(" WHERE  Purid not in ( SELECT top " + (PageIndex - 1) * PageSize + " Purid FROM Purchase_Main  ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(Purid) FROM Purchase_Main   ");
@@ -412,7 +413,7 @@ namespace XHD.DAL
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);
-                strSql1.Append(" where " + strWhere);
+                //strSql1.Append(" where " + strWhere);
             }
             strSql.Append(" order by " + filedOrder);
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();

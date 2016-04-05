@@ -343,6 +343,29 @@ namespace XHD.DAL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
+        public DataSet GetMasterStock(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "  A.*,B.Name,C.product_name FROM  dbo.MasterStock  A");
+            strSql.Append(" INNER JOIN dbo.KcGl_Jcb_Cklb B ON A.StockID=B.ID ");
+            strSql.Append(" INNER JOIN dbo.CRM_product C ON A.ProductID=C.product_id ");
+            strSql.Append(" WHERE  A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM MasterStock  ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(id) FROM MasterStock   A");
+            strSql1.Append(" INNER JOIN dbo.KcGl_Jcb_Cklb B ON A.StockID=B.ID ");
+            strSql1.Append(" INNER JOIN dbo.CRM_product C ON A.ProductID=C.product_id ");
+
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
 
 		#endregion  ExtensionMethod
 	}

@@ -73,14 +73,20 @@ namespace XHD.CRM.Data
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " CKID";
+                    sortname = " isNode";
                 if (string.IsNullOrEmpty(sortorder))
-                    sortorder = " desc";
+                    sortorder = " asc";
 
                 string sorttext = " " + sortname + " " + sortorder;
 
                 string Total;
                 string serchtxt = "1=1";
+                if (!string.IsNullOrEmpty(request["stext"]))
+                {
+                    serchtxt += " And (Customer like N'%" + PageValidate.InputText(request["stext"], 255) + "%' ";
+                    serchtxt += " or address like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
+                    serchtxt += " or tel like N'%" + PageValidate.InputText(request["stext"], 255) + "%' )";
+                }
                 string apr=PageValidate.InputText(request["Apr"], 50);
                 if (apr == "Y")
                     serchtxt += " AND isNode=1";

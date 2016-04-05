@@ -380,7 +380,7 @@ namespace XHD.DAL
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);
-                strSql1.Append(" where " + strWhere);
+                //strSql1.Append(" where " + strWhere);
             }
             strSql.Append(" order by " + filedOrder);
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();

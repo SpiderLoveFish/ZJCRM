@@ -11,14 +11,17 @@
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
 
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-   <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+       <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="../../lib/json2.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../../JS/XHD.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
-    <script src="../../JS/XHD.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/jquery.form.js" type="text/javascript"></script>
+
     <script type="text/javascript">
         var manager = "";
         var Apr = "E";
@@ -35,6 +38,8 @@
                       { display: '客户', name: 'Customer', width: 150, align: 'left' },
                      { display: '财务年月', name: 'FYM', width: 80, align: 'left' },
                      { display: '使用类型', name: 'UseStyle', width: 120, align: 'left' },
+                       { display: '总金额', name: 'TotalAmount', width: 120, align: 'left' },
+                          { display: '已付金额', name: 'PayAmount', width: 120, align: 'left' },
                      {
                          display: '状态', name: 'isNode', width: 80, align: 'left', render: function (item) {
                              var st;
@@ -67,16 +72,16 @@
             });
 
             
-
+            toolbar();
             initLayout();
             $(window).resize(function () {
                 initLayout();
             });
-            toolbar();
+          
         });
         function toolbar() {
             var url = "../../data/toolbar.ashx?Action=GetSys&mid=164&rnd=" + Math.random();
-            if (getparastr("Apr") == "Y") url = "../../data/toolbar.ashx?Action=GetSys&mid=166&rnd=" + Math.random();
+            if (getparastr("Apr") == "Y") url = "../../data/toolbar.ashx?Action=GetSys&mid=166&rnd=" + Math.randomdoser();
             if (getparastr("Apr") == "Print") url = "../../data/toolbar.ashx?Action=GetSys&mid=168&rnd=" + Math.random();
             $.getJSON(url, function (data, textStatus) {
                 //alert(data);
@@ -86,7 +91,8 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-                 
+                items.push({ type: 'textbox', id: 'stext', text: '客户姓名，电话，地址：' });
+                items.push({ type: 'button', text: '搜索', icon: '../../images/search.gif', disable: true, click: function () { doserch() } });
                 $("#toolbar").ligerToolBar({
                     items: items
 
@@ -94,7 +100,7 @@
                 menu = $.ligerMenu({
                     width: 120, items: getMenuItems(data)
                 });
-                
+                $("#stext").ligerTextBox({ width: 200 });
                 $("#maingrid4").ligerGetGridManager().onResize();
             });
         }
@@ -333,6 +339,27 @@
 
             }
         }
+        //作废
+        function cancel() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow_ch("crm/purchase/PickingList_add.aspx?pid=" + row.CKID + "&status=" + row.isNode + "&style=cancel", "作废申请", 1100, 600, '作废');
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+
+        //查询
+        function doserch() {
+            var sendtxt = "&Action=grid&rnd=" + Math.random();
+            var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
+
+            var manager = $("#maingrid4").ligerGetGridManager();
+            manager.GetDataByURL("../../data/PickingList.ashx?&Apr=" + Apr+"&" + serchtxt);
+        }
+
+
         function f_reload() {
             
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -346,7 +373,9 @@
 
     <form id="form1" onsubmit="return false">
         <div>
-            <div id="toolbar"></div>
+            <div id="toolbar">
+
+            </div>
               <div id="grid">
             <div id="maingrid4" style="margin: -1px;"></div>
                   </div>

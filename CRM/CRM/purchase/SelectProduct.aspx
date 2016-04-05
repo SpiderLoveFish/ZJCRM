@@ -88,7 +88,38 @@
 
         }
 
+        function add() {
+          
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var rows = manager.getCheckedRows();
+            var prouductid = '';
+            for (var item = 0; item < rows.length; item++)
+                prouductid += ',' + rows[item].product_id;
+            if (prouductid == '') {
+                $.ligerDialog.error("请至少选择一个有效材料数据！");
+                return;
+            }
+            var strurl = "";
+            if (getparastr("ostyle") == "pick")//领料申请
+                strurl = "../../data/PurchaseList.ashx?Action=savedetail&pid=" + getparastr("pid") + "&bjlist=" + prouductid + '&rdm=' + Math.random();
+            else if (getparastr("ostyle") == "purchase")//预算
+                strurl = "../../data/Purchase.ashx?Action=savedetail&pid=" + getparastr("pid") + "&bjlist=" + prouductid + '&rdm=' + Math.random();
 
+          //  alert(getparastr("pid"));
+            $.ajax({
+                type: 'post',
+                url: strurl,
+                success: function (data) {
+
+                    f_sucess();
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    dialog.frame.f_error();
+                }
+            });
+
+        }
         function f_select() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var rows = manager.getCheckedRows();

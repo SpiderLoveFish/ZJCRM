@@ -172,7 +172,10 @@ namespace XHD.BLL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
-
+        public DataSet GetMasterStock(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetMasterStock(PageSize,PageIndex,strWhere,filedOrder,out Total);
+        }
 		#endregion  ExtensionMethod
 	}
 }

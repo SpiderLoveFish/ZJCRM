@@ -92,6 +92,8 @@
     <Content Include="CRM\Budge\BudgeMainAdd.aspx" />
     <Content Include="CRM\Budge\BudgeModelMainAdd.aspx" />
     <Content Include="CRM\Budge\BudgeMainApr.aspx" />
+    <Content Include="CRM\Budge\Budge_BasicPart.aspx" />
+    <Content Include="CRM\Budge\Budge_BasicPart_add.aspx" />
     <Content Include="CRM\Budge\SelectFjjeDetail.aspx" />
     <Content Include="CRM\Budge\SelectFjje.aspx" />
     <Content Include="CRM\Budge\SelectModel.aspx" />
@@ -183,6 +185,7 @@
     <Content Include="CRM\Product\Product_QrCode_Print_Model.aspx" />
     <Content Include="CRM\Product\GetProduct.aspx" />
     <Content Include="CRM\Product\Product_QrCode_Print.aspx" />
+    <Content Include="CRM\purchase\StockView.aspx" />
     <Content Include="CRM\purchase\PurchaseMainAdd_CK.aspx" />
     <Content Include="CRM\purchase\PickingList_add.aspx" />
     <Content Include="CRM\purchase\PurchaseMainAdd.aspx" />
@@ -775,6 +778,8 @@
     <Content Include="Data\Purchase.ashx" />
     <Content Include="Data\sys_sms.ashx" />
     <Content Include="Data\PickingList.ashx" />
+    <Content Include="Data\Budge_BasicPart.ashx" />
+    <Content Include="Data\StockView.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -4088,6 +4093,12 @@
     </Compile>
     <Compile Include="Data\Budge.ashx.cs">
       <DependentUpon>Budge.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Budge_BasicPart.ashx.cs">
+      <DependentUpon>Budge_BasicPart.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\StockView.ashx.cs">
+      <DependentUpon>StockView.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\PickingList.ashx.cs">
       <DependentUpon>PickingList.ashx</DependentUpon>

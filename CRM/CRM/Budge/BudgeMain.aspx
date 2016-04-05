@@ -36,7 +36,22 @@
                        { display: '客户电话', name: 'tel', width: 100, align: 'left' },
                         { display: '客户地址', name: 'address', width: 200, align: 'left' },
                    { display: '预算金额', name: 'BudgetAmount', width: 80, align: 'left' },
-                        { display: '状态', name: 'txtstatus', width: 60, align: 'left' },
+
+                      {
+                          display: '状态', name: 'txtstatus', width: 60, align: 'left', render: function (item) {
+
+                              var html;
+                              if (item.txtstatus=="待审核") {
+                                  html = "<div style='color:#FF0000'>";
+                                      html += item.txtstatus;
+                                  html += "</div>";
+                              }
+                              else {
+                                  html = item.txtstatus;
+                              }
+                              return html;
+                        }
+                      },
                         { display: '创建人', name: 'name', width: 80, align: 'left' },
                         {
                             display: '创建日期', name: 'DoTime', width: 100, align: 'left', render: function (item) {
@@ -122,11 +137,10 @@
             $("#dzstext").addClass("l-text");
             $("#dhstext").addClass("l-text");
             $("#sgjlstext").addClass("l-text");
-            $("#ztstext").ligerComboBox({ width: 100 })
-            //$("#dclbstext").ligerTextBox({ width: 100 });
-
-            $("#dclbstext").addClass("l-text");
-            $("#dclestext").addClass("l-text");
+           
+            $("#T_sjs").addClass("l-text");
+            $("#T_ysbh").addClass("l-text");
+           
 
         }
 
@@ -434,27 +448,19 @@
                     <td>
                         <input id='sgjlstext' name="sgjlstext" type='text'  ltype='text' ligerui='{width:120}' /></td>
 
-                    <td>
-                        <div style='width: 60px; text-align: right; float: right' >状态：</div>
+                     <td>
+                        <div style='width: 60px; text-align: right; float: right'>设计师：</div>
                     </td>
                     <td>
-                        <div style='width: 100px; float: left'>
-                            <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui="{width:196,data:[{id:'正在施工',text:'正在施工'},{id:'施工完成',text:'施工完成'}]}" validate="{required:false}" />
-                        </div>
-                         
+                        <input id='T_sjs' name="T_sjs" type='text'  ltype='text' ligerui='{width:120}' /></td>
+                     <td>
+                        <div style='width: 60px; text-align: right; float: right'>预算编号：</div>
                     </td>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>达成率：</div>
-                    </td>
-                    <td>
-                        <div style='width: 300px; float: left'>
-                            <input type='text' id='dclbstext' name='dclbstext'    ltype='text'  ligerui="{width:50}" />
-                    
-                         -->
+                        <input id='T_ysbh' name="T_ysbh" type='text'  ltype='text' ligerui='{width:120}' /></td>
+
                    
-                            <input type='text' id='dclestext' name='dclestext'    ltype='text' ligerui="{width:50}"  />
-                        </div>
-                    </td>
+                   
 
                 </tr>
             

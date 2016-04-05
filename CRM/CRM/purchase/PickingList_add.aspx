@@ -215,7 +215,11 @@
         }
 
     
+        function addcl() {
+            f_openWindow("../../crm/product/product_add.aspx?type=Selectpick&cid=" + $("#T_Pid").val(), "新增材料档案", 800, 500);
 
+
+        }
         function toolbar() {
             $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=165&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
@@ -242,8 +246,8 @@
             top.$.ligerDialog.open({
                 zindex: 9003,
                 title: '选择全部材料', width: 850, height: 400,
-                url: "CRM/purchase/SelectProduct.aspx?style=all", buttons: [
-                    { text: '确定', onclick: f_selectProductOK },
+                url: "CRM/purchase/SelectProduct.aspx?ostyle=pick&style=all&pid=" + $("#T_Pid").val(), buttons: [
+                    { text: '确定(F2)', onclick: f_selectProductOK },
                     { text: '取消', onclick: f_selectContactCancel }
                 ]
             });
@@ -430,6 +434,7 @@
 
         function f_selectContactCancel(item, dialog) {
             dialog.close();
+            fload();
         }
         function fillemp(id,  emp, sgjl,address) {
             $("#T_companyid").val(id);

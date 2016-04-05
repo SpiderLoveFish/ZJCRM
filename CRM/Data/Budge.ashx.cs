@@ -346,14 +346,30 @@ namespace XHD.CRM.Data
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " id";
+                    sortname = "  IsStatus";
                 if (string.IsNullOrEmpty(sortorder))
-                    sortorder = " desc";
+                    sortorder = " ASC";
+
+
 
                 string sorttext = " " + sortname + " " + sortorder;
 
                 string Total;
                 string serchtxt = "1=1";
+                if (!string.IsNullOrEmpty(request["khstext"]))
+                    serchtxt += " and Customer like N'%" + PageValidate.InputText(request["khstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["dzstext"]))
+                    serchtxt += " and address like N'%" + PageValidate.InputText(request["dzstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["dhstext"]))
+                    serchtxt += " and tel like N'%" + PageValidate.InputText(request["dhstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["sgjlstext"]))
+                    serchtxt += " and sgjl like N'%" + PageValidate.InputText(request["sgjlstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["T_sjs"]))
+                    serchtxt += " and sjs like N'%" + PageValidate.InputText(request["T_sjs"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["T_ysbh"]))
+                    serchtxt += " and id like N'%" + PageValidate.InputText(request["T_ysbh"], 255) + "%'";
+
+
                 if (str_condition == "0")
                     serchtxt += " and IsStatus in(0,1)";
                 else if (str_condition == "1")

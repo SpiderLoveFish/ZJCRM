@@ -497,11 +497,12 @@ namespace XHD.DAL
             strSql.Append(" INNER JOIN  dbo.hr_employee C ON A.DoPerson=C.ID ");
             strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_BasicMain ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-            strSql1.Append(" select count(id) FROM Budge_BasicMain ");
+            strSql1.Append(" select count(id) FROM Budge_BasicMain A");
+         
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);
-                strSql1.Append(" where " + strWhere);
+                //strSql1.Append(" where " + strWhere);
             }
             strSql.Append(" order by " + filedOrder);
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
