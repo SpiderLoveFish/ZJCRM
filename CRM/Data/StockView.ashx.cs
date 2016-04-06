@@ -59,7 +59,12 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
-             
+                if (!string.IsNullOrEmpty(request["stext"]))
+                {
+                    serchtxt += " and Financial_Y_M='"+PageValidate.InputText(request["stext"], 255)+"'";
+                }
+                else
+                serchtxt += " and Financial_Y_M=CONVERT(VARCHAR(6),GETDATE(),112)";
 
 
                 string dt = "";
@@ -69,7 +74,61 @@ namespace XHD.CRM.Data
                  
                 context.Response.Write(dt);
             }
-          
+            if (request["Action"] == "gridin")
+            {
+
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " RKDate";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+                serchtxt += " and FYM=CONVERT(VARCHAR(6),GETDATE(),112) AND isNode=3";
+                //当前月
+
+                string dt = "";
+               
+                DataSet ds = ccpc.GetInStock(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "gridout")
+            {
+
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+                serchtxt += " and FYM=CONVERT(VARCHAR(6),GETDATE(),112) AND isNode=2";
+              
+
+
+                string dt = "";
+
+                DataSet ds = ccpc.GetOutStock(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "form")
             {
                 string cid = PageValidate.InputText(request["bpid"], 50);
@@ -86,7 +145,38 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "doexec")
+            {
+                
+                int s = ccpc.DoMonthClose();
 
+                
+                if (s>0)
+                {
+                    //日志
+                    string EventType = "月结成功!";
+
+                    int UserID = emp_id;
+                    string UserName = empname;
+                    string IPStreet = request.UserHostAddress;
+                    int EventID = s;
+                    string EventTitle = "月结成功";
+                    string Original_txt = null;
+                    string Current_txt = null;
+
+                    C_Sys_log log = new C_Sys_log();
+
+                    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, null, Original_txt, Current_txt);
+
+                    context.Response.Write("true");
+                }
+                else
+                {
+                    context.Response.Write("false");
+                }
+
+
+            }
             //del
             if (request["Action"] == "del")
             {

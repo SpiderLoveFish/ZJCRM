@@ -176,6 +176,19 @@ namespace XHD.BLL
         {
             return dal.GetMasterStock(PageSize,PageIndex,strWhere,filedOrder,out Total);
         }
+
+        public DataSet GetInStock(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetInStock(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+        public DataSet GetOutStock(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetOutStock(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+        public int DoMonthClose()
+        {
+            return dal.DoMonthClose();
+        }
 		#endregion  ExtensionMethod
 	}
 }

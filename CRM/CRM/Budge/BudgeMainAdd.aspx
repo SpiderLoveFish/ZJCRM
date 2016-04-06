@@ -128,11 +128,11 @@
                          },
 
                      {
-                         display: '折扣', hide: true, name: 'Discount', width: 80, align: 'right',
+                         display: '折扣',   name: 'Discount', width: 80, align: 'right',
                          type: 'float'
                      },
                        {
-                           display: '折后金额', hide: true, name: 'zkje', width: 100, align: 'right',
+                           display: '折后金额',  name: 'zkje', width: 100, align: 'right',
                            type: 'float',
                            totalSummary:
                            {
@@ -184,21 +184,15 @@
          $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
 
             //是否折扣
-            $("#iszktable").addClass("l-window-mask");
+          
              $("#iszk").change(function () {
                  if (this.checked == true) {
                  
-                    $("#iszktable").removeClass("l-window-mask");
-                    g.toggleCol('TotalDiscountPrice', true);
-                    g.toggleCol('Discount', true);
-                    g.toggleCol('zkje', true);
+                  
                 }
                 else if (this.checked == false) {
                   
-                    g.toggleCol('TotalDiscountPrice', false);
-                    $("#iszktable").addClass("l-window-mask");
-                    g.toggleCol('Discount', false);
-                    g.toggleCol('zkje', false);
+                  
                     $("#T_zk").val(1);
                     addzk();
                     
@@ -222,26 +216,7 @@
 
         function ishidecol()
         {
-            //    $(".abc").hover(function (e) {
-            //        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
-            //    }, function (e) {
-            //        $(this).ligerHideTip(e);
-            //    });
-            if ($("#iszk").attr('checked')) {
-          
-                $("#iszktable").removeClass("l-window-mask");
-                g.toggleCol('TotalDiscountPrice', true);
-                g.toggleCol('Discount', true);
-                g.toggleCol('zkje', true);
-            }
-            else if (!$("#iszk").attr('checked')) {
-                g.toggleCol('TotalDiscountPrice', false);
-                $("#iszktable").addClass("l-window-mask");
-                g.toggleCol('Discount', false);
-                g.toggleCol('zkje', false);
-
-
-            }
+   
         }
 
         //只允许编辑前3行
@@ -468,9 +443,7 @@
                         // alert(obj.DetailDiscount);
                         $("#iszk").attr("checked", true);
                         $("#T_zk").val(obj.DetailDiscount);
-                        g.toggleCol('TotalDiscountPrice', true);
-                        g.toggleCol('Discount', true);
-                        g.toggleCol('zkje', true);
+                      
                     }
                    
                 }

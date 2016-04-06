@@ -121,13 +121,13 @@
             {
                 var manager = $("#maingrid4").ligerGetGridManager();
                 var row = manager.getSelectedRow();
-                alert(Remarks);
+         
                 if (row) {
                     $.ajax({
                         url: "../../data/Purchase.ashx", type: "POST",
                         data: { Action: "saveupdatedetail", pid: $("#T_Pid").val(), mid: row.material_id, editsum: editsum,price:price,remaks:Remarks, rnd: Math.random() },
                         success: function (responseText) {
-                    
+                         
                             if (responseText == "true") {
                                 top.$.ligerDialog.closeWaitting();
                                 fload();

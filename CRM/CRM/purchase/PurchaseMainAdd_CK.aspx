@@ -139,12 +139,12 @@
                             { display: '型号', name: 'model', width: 120 },
                              {
                                  display: '单价', name: 'purprice', type: 'float', width: 60, align: 'right'
-                                 , editor: { type: 'float' }
+                               
                              },
 
                                 {
                                     display: '数量', name: 'pursum', width: 120, align: 'left'
-                                    , type: 'float', editor: { type: 'float' },
+                                    , type: 'float',  
                                     totalSummary:
                                     {
                                         type: 'sum'
@@ -161,7 +161,7 @@
 
                                 {
                                     display: '备注', name: 'Remarks', align: 'left', width: 200, type: 'text'
-                                    , editor: { type: 'text' }
+                                   
                                 },
                          {
                                display: '仓库', name: 'StockID', width: 120, isSort: false,

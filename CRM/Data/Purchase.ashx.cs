@@ -99,9 +99,9 @@ namespace XHD.CRM.Data
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " isNode";
+                    sortname = " isNode asc";
                 if (string.IsNullOrEmpty(sortorder))
-                    sortorder = " asc";
+                    sortorder = " ,purdate DESC ";
 
                 string sorttext = " " + sortname + " " + sortorder;
 

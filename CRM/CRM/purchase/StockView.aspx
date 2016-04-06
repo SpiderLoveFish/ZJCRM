@@ -11,14 +11,17 @@
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
 
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+         <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="../../lib/json2.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../../JS/XHD.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
-    <script src="../../JS/XHD.js" type="text/javascript"></script>
-    <script type="text/javascript">
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/jquery.form.js" type="text/javascript"></script>
+  <script type="text/javascript">
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
@@ -68,13 +71,56 @@
             $(window).resize(function () {
                 initLayout();
             });
-           // toolbar();
+            toolbar();
         });
-      
+        function toolbar() {
+            var items = [];
+            items.push({ type: 'textbox', id: 'stext', text: '财务年月：' });
+            items.push({ type: 'button', text: '搜索', icon: '../../images/search.gif', disable: true, click: function () { doserch() } });
+
+            items.push({ type: 'button', text: '月结', icon: '../../images/edit.gif', disable: true, click: function () { doexec() } });
+            $("#toolbar").ligerToolBar({
+                items: items
+
+            });
+            $("#stext").ligerTextBox({ width: 200 });
+            $("#maingrid4").ligerGetGridManager().onResize();
+        }
+        //查询
+        function doserch() {
+            var sendtxt = "&Action=grid&rnd=" + Math.random();
+            var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
+
+            var manager = $("#maingrid4").ligerGetGridManager();
+            manager.GetDataByURL("../../data/StockView.ashx?" + serchtxt);
+        }
+
+        function doexec()
+        {
+            $.ajax({
+                url: "../../data/StockView.ashx", type: "POST",
+                data: { Action: "doexec",  rnd: Math.random() },
+                success: function (responseText) {
+                    if (responseText == "true") {
+                        top.$.ligerDialog.closeWaitting();
+                        f_reload();
+                    }
+
+                    else {
+                        top.$.ligerDialog.closeWaitting();
+                        top.$.ligerDialog.error('没有数据，操作失败！');
+                    }
+                },
+                error: function () {
+                    top.$.ligerDialog.closeWaitting();
+                    top.$.ligerDialog.error('上个财务年月还有未审核的领料单！', "", null, 9003);
+                }
+            });
+        }
         //查看选样
         function viewIn() {
             var dialogOptions = {
-                width: 770, height: 510, title: "入库预览", url: 'crm/purchase/PickingList.aspx?Apr=Print&rnd=' + Math.random(), buttons: [
+                width: 770, height: 510, title: "入库预览", url: 'crm/purchase/StockView_In.aspx?rnd=' + Math.random(), buttons: [
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();
@@ -86,7 +132,7 @@
         }
         function viewOut() {
             var dialogOptions = {
-                width: 770, height: 510, title: "出库预览", url: 'crm/purchase/PickingList.aspx?Apr=Print&rnd=' + Math.random(), buttons: [
+                width: 770, height: 510, title: "出库预览", url: 'crm/purchase/StockView_out.aspx?rnd=' + Math.random(), buttons: [
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();

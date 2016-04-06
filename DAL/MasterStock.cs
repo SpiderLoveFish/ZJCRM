@@ -353,7 +353,7 @@ namespace XHD.DAL
             strSql.Append(" INNER JOIN dbo.CRM_product C ON A.ProductID=C.product_id ");
             strSql.Append(" WHERE  A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM MasterStock  ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-            strSql1.Append(" select count(id) FROM MasterStock   A");
+            strSql1.Append(" select count(A.id) FROM MasterStock   A");
             strSql1.Append(" INNER JOIN dbo.KcGl_Jcb_Cklb B ON A.StockID=B.ID ");
             strSql1.Append(" INNER JOIN dbo.CRM_product C ON A.ProductID=C.product_id ");
 
@@ -367,6 +367,64 @@ namespace XHD.DAL
             return DbHelperSQL.Query(strSql.ToString());
         }
 
+
+        public DataSet GetInStock(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "  B.*,C.Customer,C.tel,C.address FROM  dbo.INStock_Main  A");
+            strSql.Append(" INNER JOIN  dbo.Purchase_Main B ON A.purid=B.Purid  ");
+            strSql.Append(" INNER JOIN dbo.CRM_Customer C ON B.customid=C.id ");
+            strSql.Append(" WHERE  A.RKID not in ( SELECT top " + (PageIndex - 1) * PageSize + " RKID FROM INStock_Main  ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(A.RKID) FROM INStock_Main   A");
+            strSql1.Append(" INNER JOIN  dbo.Purchase_Main B ON A.purid=B.Purid  ");
+            strSql1.Append(" INNER JOIN dbo.CRM_Customer C ON B.customid=C.id ");
+
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+        public DataSet GetOutStock(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "  A.*,C.Customer,C.tel,C.address FROM  dbo.OutStock_Main  A");
+
+            strSql.Append(" INNER JOIN dbo.CRM_Customer C ON A.CustomerID=C.id ");
+            strSql.Append(" WHERE  A.CKID not in ( SELECT top " + (PageIndex - 1) * PageSize + " CKID FROM OutStock_Main  ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(A.CKID) FROM OutStock_Main   A");
+
+            strSql1.Append(" INNER JOIN dbo.CRM_Customer C ON A.CustomerID=C.id ");
+
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+        //月结
+        public int DoMonthClose()
+        {
+            SqlParameter[] parameters = {
+				 
+                                     };
+          
+            int rowaffected = 0;
+            DbHelperSQL.RunProcedure("USP_MonthClose", parameters, out rowaffected);
+            return rowaffected;
+        }
 		#endregion  ExtensionMethod
 	}
 }
