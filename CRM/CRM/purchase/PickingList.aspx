@@ -80,8 +80,9 @@
           
         });
         function toolbar() {
+           
             var url = "../../data/toolbar.ashx?Action=GetSys&mid=164&rnd=" + Math.random();
-            if (getparastr("Apr") == "Y") url = "../../data/toolbar.ashx?Action=GetSys&mid=166&rnd=" + Math.randomdoser();
+            if (getparastr("Apr") == "Y") url = "../../data/toolbar.ashx?Action=GetSys&mid=166&rnd=" + Math.random();
             if (getparastr("Apr") == "Print") url = "../../data/toolbar.ashx?Action=GetSys&mid=168&rnd=" + Math.random();
             $.getJSON(url, function (data, textStatus) {
                 //alert(data);
