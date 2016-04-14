@@ -180,6 +180,9 @@
     <Content Include="CRM\Jifen\Jifen_yg_add.aspx" />
     <Content Include="CRM\KcGl\Jcb_Ckgl.aspx" />
     <Content Include="CRM\KcGl\Jcb_Ckgl_Add.aspx" />
+    <Content Include="CRM\Print\BudgePrint.aspx" />
+    <Content Include="CRM\Print\PurchasePrint.aspx" />
+    <Content Include="CRM\Print\LodopFuncs.js" />
     <Content Include="CRM\Product\ProductPrintStyle.aspx" />
     <Content Include="CRM\Product\Product_QrCode_Print_Style2.aspx" />
     <Content Include="CRM\Product\Product_QrCode_Print_Model.aspx" />

@@ -256,6 +256,17 @@
                 $.ligerDialog.warn('请选择行！');
             }
         }
+        //打印
+        function print() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindowview("crm/Print/PurchasePrint.aspx?pid=" + row.Purid, "打印", 1100, 600);
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+
         function f_saveret(item, dialog)
         {
 

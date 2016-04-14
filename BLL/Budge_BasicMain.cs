@@ -201,7 +201,12 @@ namespace XHD.BLL
 
             return dal.GetList_form(strWhere);
         }
-        
+
+
+        public DataSet GetPrintCount(string bid)
+        {
+            return dal.GetPrintCount(bid);
+        }
 		#endregion  ExtensionMethod
 	}
 }

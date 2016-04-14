@@ -320,6 +320,25 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+
+            if (request["Action"] == "formprint")
+            {
+                string bid = PageValidate.InputText(request["bid"], 50);
+                string dt;
+                if (bid != "")
+                {
+                    DataSet ds = bbb.GetPrintCount(bid);
+                    dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], "1");
+
+                }
+                else
+                {
+                    dt = "{}";
+                }
+
+                context.Response.Write(dt);
+            }
+
             if (request["Action"] == "formmodel")
             {
                 string mid = PageValidate.InputText(request["mid"], 50);

@@ -199,6 +199,8 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update Budge_BasicMain set ");
             strSql.Append("IsStatus="+status+"");
+            if(status==2)//确定日期
+                strSql.Append(" ,ConfirmDate=getdate()");
             	strSql.Append(" where id='"+bid+"' ");
                 SqlParameter[] parameters = { };
             int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
@@ -555,6 +557,31 @@ namespace XHD.DAL
             }
             return DbHelperSQL.Query(strSql.ToString());
         }
+
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetPrintCount(string bid)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("SELECT c.c_style,SUM(SubTotal) AS je,ComponentName INTO #temp FROM dbo.Budge_BasicDetail a");
+            sb.AppendLine(" INNER JOIN dbo.CRM_product B ON A.xmid=B.product_id");
+            sb.AppendLine(" INNER JOIN  dbo.CRM_product_category C ON B.category_id=C.id");
+            sb.AppendLine("  WHERE budge_id='" + bid + "'");
+            sb.AppendLine("  GROUP BY c.c_style,ComponentName");
+            sb.AppendLine("SELECT ComponentName, COUNT(xmid)AS	zl");
+            sb.AppendLine(", SUM([SUM])AS zsl,SUM(DiscountSubTotal) AS zje");
+            sb.AppendLine(",(SELECT je FROM #temp WHERE C_style='主材' AND ComponentName=A.ComponentName	 ) AS zcje, (SELECT je FROM #temp WHERE C_style='基建' AND ComponentName=A.ComponentName) jcje");
+            sb.AppendLine(" FROM  dbo.Budge_BasicDetail A");
+            sb.AppendLine(" INNER JOIN dbo.CRM_product B ON A.xmid=B.product_id");
+            sb.AppendLine(" INNER JOIN  dbo.CRM_product_category C ON B.category_id=C.id");
+            sb.AppendLine("  WHERE budge_id='" + bid + "'");
+            sb.AppendLine(" GROUP BY ComponentName");
+            sb.AppendLine("");
+            return DbHelperSQL.Query(sb.ToString());
+        }
+
 
 		#endregion  ExtensionMethod
 	}
