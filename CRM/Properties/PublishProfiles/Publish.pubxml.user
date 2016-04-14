@@ -18,7 +18,7 @@
       <publishTime>08/20/2011 22:18:48</publishTime>
     </File>
     <File Include="bin/CRM.dll">
-      <publishTime>03/28/2016 22:30:04</publishTime>
+      <publishTime>04/14/2016 21:15:53</publishTime>
     </File>
     <File Include="bin/Excel.dll">
       <publishTime>08/20/2011 22:18:48</publishTime>
@@ -57,22 +57,22 @@
       <publishTime>08/20/2011 22:18:52</publishTime>
     </File>
     <File Include="bin/XHD.BLL.dll">
-      <publishTime>03/28/2016 19:19:12</publishTime>
+      <publishTime>04/14/2016 21:14:27</publishTime>
     </File>
     <File Include="bin/XHD.Comm.dll">
-      <publishTime>03/27/2016 17:45:28</publishTime>
+      <publishTime>04/14/2016 21:14:26</publishTime>
     </File>
     <File Include="bin/XHD.Common.dll">
       <publishTime>05/18/2015 16:28:59</publishTime>
     </File>
     <File Include="bin/XHD.DAL.dll">
-      <publishTime>03/28/2016 19:59:19</publishTime>
+      <publishTime>04/14/2016 21:14:22</publishTime>
     </File>
     <File Include="bin/XHD.DBUtility.dll">
       <publishTime>01/13/2016 21:47:37</publishTime>
     </File>
     <File Include="bin/XHD.Model.dll">
-      <publishTime>03/28/2016 19:59:17</publishTime>
+      <publishTime>04/14/2016 21:14:26</publishTime>
     </File>
     <File Include="conn.config">
       <publishTime>03/28/2016 19:59:47</publishTime>
@@ -81,19 +81,25 @@
       <publishTime>01/13/2016 21:42:12</publishTime>
     </File>
     <File Include="CRM/Budge/BudgeMain.aspx">
-      <publishTime>03/09/2016 17:30:11</publishTime>
+      <publishTime>04/05/2016 18:53:40</publishTime>
     </File>
     <File Include="CRM/Budge/BudgeMainAdd.aspx">
-      <publishTime>03/09/2016 17:30:11</publishTime>
+      <publishTime>04/06/2016 17:26:46</publishTime>
     </File>
     <File Include="CRM/Budge/BudgeMainApr.aspx">
-      <publishTime>03/09/2016 17:30:11</publishTime>
+      <publishTime>04/14/2016 18:50:31</publishTime>
     </File>
     <File Include="CRM/Budge/BudgeModelMain.aspx">
       <publishTime>02/29/2016 19:05:53</publishTime>
     </File>
     <File Include="CRM/Budge/BudgeModelMainAdd.aspx">
       <publishTime>02/29/2016 19:05:53</publishTime>
+    </File>
+    <File Include="CRM/Budge/Budge_BasicPart.aspx">
+      <publishTime>04/05/2016 18:53:40</publishTime>
+    </File>
+    <File Include="CRM/Budge/Budge_BasicPart_add.aspx">
+      <publishTime>04/05/2016 18:53:40</publishTime>
     </File>
     <File Include="CRM/Budge/SaveModel.aspx">
       <publishTime>02/28/2016 11:30:43</publishTime>
@@ -114,7 +120,7 @@
       <publishTime>03/09/2016 17:30:11</publishTime>
     </File>
     <File Include="CRM/Budge/SelectProduct.aspx">
-      <publishTime>02/27/2016 11:55:28</publishTime>
+      <publishTime>04/05/2016 18:53:40</publishTime>
     </File>
     <File Include="CRM/Building/Building.aspx">
       <publishTime>01/13/2016 21:42:12</publishTime>
@@ -359,6 +365,15 @@
     <File Include="CRM/KcGl/Jcb_Ckgl_Add.aspx">
       <publishTime>01/26/2016 20:26:45</publishTime>
     </File>
+    <File Include="CRM/Print/BudgePrint.aspx">
+      <publishTime>04/14/2016 18:50:31</publishTime>
+    </File>
+    <File Include="CRM/Print/LodopFuncs.js">
+      <publishTime>04/14/2016 18:50:31</publishTime>
+    </File>
+    <File Include="CRM/Print/PurchasePrint.aspx">
+      <publishTime>04/14/2016 18:50:31</publishTime>
+    </File>
     <File Include="CRM/Product/GetProduct.aspx">
       <publishTime>01/13/2016 21:42:12</publishTime>
     </File>
@@ -390,25 +405,37 @@
       <publishTime>03/17/2016 19:54:15</publishTime>
     </File>
     <File Include="CRM/purchase/PickingList.aspx">
-      <publishTime>03/27/2016 18:13:17</publishTime>
+      <publishTime>04/13/2016 19:27:14</publishTime>
     </File>
     <File Include="CRM/purchase/PickingList_add.aspx">
-      <publishTime>03/27/2016 17:53:57</publishTime>
+      <publishTime>04/05/2016 18:53:40</publishTime>
     </File>
     <File Include="CRM/purchase/PurchaseMain.aspx">
-      <publishTime>03/27/2016 18:10:17</publishTime>
+      <publishTime>04/14/2016 18:50:31</publishTime>
     </File>
     <File Include="CRM/purchase/PurchaseMainAdd.aspx">
-      <publishTime>03/28/2016 20:28:46</publishTime>
+      <publishTime>04/06/2016 17:26:46</publishTime>
     </File>
     <File Include="CRM/purchase/PurchaseMainAdd2.aspx">
       <publishTime>03/28/2016 20:33:04</publishTime>
     </File>
+    <File Include="CRM/purchase/PurchaseMainAdd_CK.aspx">
+      <publishTime>04/06/2016 17:26:46</publishTime>
+    </File>
     <File Include="CRM/purchase/SelectProduct.aspx">
-      <publishTime>03/23/2016 20:35:23</publishTime>
+      <publishTime>04/05/2016 18:53:40</publishTime>
     </File>
     <File Include="CRM/purchase/SelectSupplier.aspx">
       <publishTime>03/18/2016 20:56:14</publishTime>
+    </File>
+    <File Include="CRM/purchase/StockView.aspx">
+      <publishTime>04/06/2016 17:26:46</publishTime>
+    </File>
+    <File Include="CRM/purchase/StockView_In.aspx">
+      <publishTime>04/06/2016 17:26:46</publishTime>
+    </File>
+    <File Include="CRM/purchase/StockView_out.aspx">
+      <publishTime>04/06/2016 17:26:46</publishTime>
     </File>
     <File Include="CRM/Repair/Repair.aspx">
       <publishTime>01/13/2016 21:42:12</publishTime>
@@ -533,6 +560,9 @@
     <File Include="Data/Budge.ashx">
       <publishTime>02/25/2016 18:20:42</publishTime>
     </File>
+    <File Include="Data/Budge_BasicPart.ashx">
+      <publishTime>04/05/2016 18:53:40</publishTime>
+    </File>
     <File Include="Data/CERep_Schedule.ashx">
       <publishTime>01/13/2016 21:42:12</publishTime>
     </File>
@@ -655,6 +685,9 @@
     </File>
     <File Include="Data/SingleSignOn.ashx">
       <publishTime>01/13/2016 21:42:12</publishTime>
+    </File>
+    <File Include="Data/StockView.ashx">
+      <publishTime>04/05/2016 18:53:40</publishTime>
     </File>
     <File Include="Data/sys_app.ashx">
       <publishTime>01/13/2016 21:42:12</publishTime>

@@ -114,22 +114,10 @@
            LODOP.ADD_PRINT_HTM(26, "5%", "90%", 109, document.getElementById("div1").innerHTML);
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
            LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 1);
-           //LODOP.ADD_PRINT_TABLE(544, "5%", "90%", 54, document.getElementById("div4").innerHTML);
-           //LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
-           //LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 1);
-           //LODOP.NewPageA();
-           //	LODOP.ADD_PRINT_TABLE(128,"5%","90%",328,strStyle+document.getElementById("div2").innerHTML);
-           //LODOP.SET_PRINT_STYLEA(0,"Vorient",3);	
-           ////LODOP.ADD_PRINT_HTM(26,"5%","90%",80,document.getElementById("div4").innerHTML);
-           //LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
-           //LODOP.SET_PRINT_STYLEA(0,"LinkedItem",4);	
-           ////LODOP.ADD_PRINT_TEXT(460,96,"76.25%",20," ×£ÄúºÃÔ¶£¡");
-           //LODOP.SET_PRINT_STYLEA(0,"LinkedItem",4);
-           //LODOP.SET_PRINT_STYLEA(0,"FontSize",12);
-           //LODOP.SET_PRINT_STYLEA(0,"FontColor","#FF0000");
-           //LODOP.SET_PRINT_STYLEA(0,"Alignment",2);
-           //LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
-           //LODOP.SET_PRINT_STYLEA(0,"Horient",3);	
+           LODOP.ADD_PRINT_TABLE(544, "5%", "90%", 54, document.getElementById("div4").innerHTML);
+           LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
+           LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 1);
+            
            LODOP.ADD_PRINT_HTM(1, 600, 300, 100, "<font color='#0000ff' format='ChineseNum'><span tdata='pageNO'>µÚ##Ò³</span>/<span tdata='pageCount'>¹²##Ò³</span></font>");
 
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
@@ -227,6 +215,7 @@
 </div>
    <p>----------------------div4:------------------------------------------------------------------------------------</p>
   <div id="div4">
+
   <TABLE  border=0 cellSpacing=0 cellPadding=0 width="100%">
   <TBODY>
       <tr>
@@ -237,6 +226,7 @@
       </tr>
       </TBODY>
   </TABLE>
+      </div>
     </form>
 </body>
 </html>
