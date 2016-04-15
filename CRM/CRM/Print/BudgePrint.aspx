@@ -60,14 +60,22 @@
                dataType: "json",
                success: function (result) {
                    var obj = result.Rows;
-                   var item;
+                   var item=""; var cn="";
                    $.each(obj, function (i, data) {
-
-                       item = "<tr><td>" + data['Cname'] + "</td><td>" + data['Cname'] + "</td><td>" + data['TotalPrice'] + "</td><td>" + data['SUM'] + "</td> "
-                           + " <td>" + data['je'] + "</td><td>" + data['unit'] + "</td> <td>" + data['C_style'] + "</td>"
-                           + " </tr>";
+                     
+                       if (data['ComponentName'] != cn) {
+                           item = "<tr><td align=center colspan='7'><b>" + data['ComponentName'] + "</b></td></tr>";
+                           +"<tr><td>" + data['Cname'] + "</td><td>" + data['Cname'] + "</td><td>" + data['TotalPrice'] + "</td><td>" + data['SUM'] + "</td> "
+                               + " <td>" + data['je'] + "</td><td>" + data['unit'] + "</td> <td>" + data['C_style'] + "</td>"
+                               + " </tr>";
+                       }
+                       else {
+                           item = "<tr><td>" + data['Cname'] + "</td><td>" + data['Cname'] + "</td><td>" + data['TotalPrice'] + "</td><td>" + data['SUM'] + "</td> "
+                               + " <td>" + data['je'] + "</td><td>" + data['unit'] + "</td> <td>" + data['C_style'] + "</td>"
+                               + " </tr>";
+                       }
                        $('.table1').append(item);
-
+                       cn = data['ComponentName'];
                    });
                },
                error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -107,16 +115,22 @@
            LODOP.PRINT_INIT("分页打印综合表格");
            LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4");
            var strStyle = "<style> table,td,th {border-width: 1px;border-style: solid;border-collapse: collapse}</style>"
-           LODOP.ADD_PRINT_TABLE(128, "5%", "90%", 314,  document.getElementById("div2").innerHTML);
+           LODOP.ADD_PRINT_TABLE(128, "5%", "90%", 314, strStyle + document.getElementById("div2").innerHTML);
            LODOP.SET_PRINT_STYLEA(0, "Vorient", 3);
-           LODOP.ADD_PRINT_TABLE(228, "5%", "90%", 314, strStyle + document.getElementById("div3").innerHTML);
-           LODOP.SET_PRINT_STYLEA(0, "Vorient", 3);
+           LODOP.ADD_PRINT_TABLE(26, 0, "90%", 314,  document.getElementById("div3").innerHTML);
+           LODOP.SET_PRINT_STYLEA(0, "ItemType", 0);
+           LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 1);
+           //这样只有最后一页有
+           LODOP.ADD_PRINT_HTM(26, 0, "90%", 54, document.getElementById("div4").innerHTML);
+           LODOP.SET_PRINT_STYLEA(0, "ItemType", 0);
+           LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 2);
            LODOP.ADD_PRINT_HTM(26, "5%", "90%", 109, document.getElementById("div1").innerHTML);
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
-           LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 1);
-           LODOP.ADD_PRINT_TABLE(544, "5%", "90%", 54, document.getElementById("div4").innerHTML);
-           LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
-           LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 1);
+           //LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 1);//去掉就每页都有
+           //这样每页都有
+           //LODOP.ADD_PRINT_HTM(344, "5%", "90%", 54, document.getElementById("div4").innerHTML);
+           //LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
+           //LODOP.SET_PRINT_STYLEA(0, "LinkedItem",2);
             
            LODOP.ADD_PRINT_HTM(1, 600, 300, 100, "<font color='#0000ff' format='ChineseNum'><span tdata='pageNO'>第##页</span>/<span tdata='pageCount'>共##页</span></font>");
 
@@ -219,7 +233,7 @@
   <TABLE  border=0 cellSpacing=0 cellPadding=0 width="100%">
   <TBODY>
       <tr>
-          <td>编制人：	</td> <td><SPAN id="T_bzr" ></SPAN>	</td>
+          <td >编制人：	</td> <td><SPAN id="T_bzr" ></SPAN>	</td>
            <td>审核人：	</td> <td><SPAN id="T_shr" ></SPAN>	</td>
            <td colspan="2">生效日期：<SPAN id="T_sxrq" ></SPAN>	</td>
 <td></td>
