@@ -565,14 +565,14 @@ namespace XHD.DAL
         public DataSet GetPrintCount(string bid)
         {
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine("SELECT c.c_style,SUM(SubTotal) AS je,ComponentName INTO #temp FROM dbo.Budge_BasicDetail a");
+            sb.AppendLine("SELECT c.c_style,isnull(SUM(SubTotal),0) AS je,ComponentName INTO #temp FROM dbo.Budge_BasicDetail a");
             sb.AppendLine(" INNER JOIN dbo.CRM_product B ON A.xmid=B.product_id");
             sb.AppendLine(" INNER JOIN  dbo.CRM_product_category C ON B.category_id=C.id");
             sb.AppendLine("  WHERE budge_id='" + bid + "'");
             sb.AppendLine("  GROUP BY c.c_style,ComponentName");
             sb.AppendLine("SELECT ComponentName, COUNT(xmid)AS	zl");
-            sb.AppendLine(", SUM([SUM])AS zsl,SUM(DiscountSubTotal) AS zje");
-            sb.AppendLine(",(SELECT je FROM #temp WHERE C_style='主材' AND ComponentName=A.ComponentName	 ) AS zcje, (SELECT je FROM #temp WHERE C_style='基建' AND ComponentName=A.ComponentName) jcje");
+            sb.AppendLine(", isnull(SUM([SUM]),0) AS zsl,isnull(SUM(DiscountSubTotal),0) AS zje");
+            sb.AppendLine(",(SELECT isnull(je,0) as je FROM #temp WHERE C_style='主材' AND ComponentName=A.ComponentName	 ) AS zcje, (SELECT isnull(je,0) as je FROM #temp WHERE C_style='基建' AND ComponentName=A.ComponentName) jcje");
             sb.AppendLine(" FROM  dbo.Budge_BasicDetail A");
             sb.AppendLine(" INNER JOIN dbo.CRM_product B ON A.xmid=B.product_id");
             sb.AppendLine(" INNER JOIN  dbo.CRM_product_category C ON B.category_id=C.id");

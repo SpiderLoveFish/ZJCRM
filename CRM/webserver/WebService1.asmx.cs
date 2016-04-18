@@ -29,6 +29,10 @@ namespace XHD.CRM.webserver
         {
             return "Hello World";
         }
+
+        #region 登陆及其打卡管理
+        
+       
         /// <summary>
         /// 登录
         /// </summary>
@@ -123,6 +127,9 @@ namespace XHD.CRM.webserver
 
         }
 
+        #endregion
+
+        #region 客户管理
         [WebMethod]
         public void GetCustomer_where(string where)
         {
@@ -165,10 +172,10 @@ namespace XHD.CRM.webserver
         [WebMethod]
         public void Getf_CustomerFollow(string cid)
         {
-            string Total="0";
+            string Total = "0";
             DataSet ds = ws.GetCRM_Customer(cid);
             string str = "";
-            
+
             string returnstr = "{\"code\":201,\"description\":\"没有数据！\"}";
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -179,7 +186,7 @@ namespace XHD.CRM.webserver
                     str = Common.DataToJson.GetJson(dds);
                 Total = dds.Tables[0].Rows.Count.ToString();
                 if (str == "") str = "[]";
-              returnstr=  "{\"code\":200,\"description\":\"success\",\"detail\":{\"FollowCount\":" + Total + ",\"follow\":" + str + ",\"customer\":" + returnstr + "}}";
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":{\"FollowCount\":" + Total + ",\"follow\":" + str + ",\"customer\":" + returnstr + "}}";
             }
             Context.Response.Charset = "utf-8"; //设置字符集类型  
             Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
@@ -187,7 +194,6 @@ namespace XHD.CRM.webserver
             Context.Response.End();
 
         }
-
 
         [WebMethod]
         public void GetCustomer_page(int pageIndex, int pageSize, string where)
@@ -197,7 +203,7 @@ namespace XHD.CRM.webserver
             string returnstr = "{\"code\":0,\"description\":\"faile\"}";
             if (ds.Tables[0].Rows.Count > 0)
             {
-                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":{\"totalrow\":" + ds.Tables[0].Rows.Count.ToString()+",\"list\":" + Common.DataToJson.GetJson(ds) + "}}";
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":{\"totalrow\":" + ds.Tables[0].Rows.Count.ToString() + ",\"list\":" + Common.DataToJson.GetJson(ds) + "}}";
             }
             else returnstr = "{\"code\":201,\"description\":\"success\",\"detail\":\"没有数据\"}";
             Context.Response.Charset = "utf-8"; //设置字符集类型  
@@ -205,7 +211,7 @@ namespace XHD.CRM.webserver
             Context.Response.Write(returnstr);
             Context.Response.End();
         }
-                /// <summary>
+        /// <summary>
         /// 人员信息
         /// 
         /// </summary>
@@ -231,7 +237,7 @@ namespace XHD.CRM.webserver
         {
             BLL.CRM_Customer cc = new BLL.CRM_Customer();
             string Total;
-            DataSet ds = cc.GetList(" id="+cid);
+            DataSet ds = cc.GetList(" id=" + cid);
             string str = "";
             string returnstr = "{\"code\":201,\"description\":\"没有数据！\"}";
             if (ds.Tables[0].Rows.Count > 0)
@@ -271,6 +277,211 @@ namespace XHD.CRM.webserver
 
         }
 
-       
+        #endregion
+      
+        #region 预算管理
+        /// <summary>
+        /// 预算主表列表
+        /// </summary>
+        /// <param name="where"></param>
+        [WebMethod]
+        public void Get_MainBudge(string where)
+        {
+
+            BLL.Budge_BasicMain bbm = new BLL.Budge_BasicMain();
+
+            DataSet ds = bbm.GetList(where);
+
+            string returnstr = "{\"code\":0,\"description\":\"faile\"}";
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + Common.DataToJson.GetJson(ds) + "}";
+            }
+            else returnstr = "{\"code\":201,\"description\":\"success\",\"detail\":\"没有数据\"}";
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write(returnstr);
+            Context.Response.End();
+
+        }
+
+        /// <summary>
+        /// 预算主表明细
+        /// </summary>
+        /// <param name="where"></param>
+        [WebMethod]
+        public void Get_MainBudgeDetail(string where)
+        {
+
+            BLL.Budge_BasicMain bbm = new BLL.Budge_BasicMain();
+
+            DataSet ds = bbm.GetList_form(where);
+
+            string returnstr = "{\"code\":0,\"description\":\"faile\"}";
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + Common.DataToJson.GetJson(ds) + "}";
+            }
+            else returnstr = "{\"code\":201,\"description\":\"success\",\"detail\":\"没有数据\"}";
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write(returnstr);
+            Context.Response.End();
+
+        }
+
+        /// <summary>
+        /// 预算明细表
+        /// </summary>
+        /// <param name="where"></param>
+        [WebMethod]
+        public void Get_DetailBudge(string where)
+        {
+
+            BLL.Budge_BasicDetail bbd = new BLL.Budge_BasicDetail();
+
+            DataSet ds = bbd.GetList(where);
+
+            string returnstr = "{\"code\":0,\"description\":\"faile\"}";
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + Common.DataToJson.GetJson(ds) + "}";
+            }
+            else returnstr = "{\"code\":201,\"description\":\"success\",\"detail\":\"没有数据\"}";
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write(returnstr);
+            Context.Response.End();
+
+        }
+
+
+        /// <summary>
+        /// 修改预算状态
+        /// </summary>
+        /// <param name="id"></param>
+        [WebMethod]
+        public void UpdateBudgeStatus(string id, string status)
+        {
+            BLL.Budge_BasicMain bbm = new BLL.Budge_BasicMain();
+
+            string returnstr = "{\"code\":0,\"description\":\"faile\"}";
+            if (bbm.updatestatus(int.Parse(status), id))
+            {
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":\"删除成功！\"}";
+            }
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write(returnstr);
+            Context.Response.End();
+
+
+        }
+
+
+        #endregion
+
+        #region 采购管理
+          /// <summary>
+        /// 预算主表列表
+        /// </summary>
+        /// <param name="where"></param>
+        [WebMethod]
+        public void Get_MainPur(string where)
+        {
+
+            BLL.Purchase_Main bbm = new BLL.Purchase_Main();
+
+            DataSet ds = bbm.GetList(where);
+
+            string returnstr = "{\"code\":0,\"description\":\"faile\"}";
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + Common.DataToJson.GetJson(ds) + "}";
+            }
+            else returnstr = "{\"code\":201,\"description\":\"success\",\"detail\":\"没有数据\"}";
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write(returnstr);
+            Context.Response.End();
+
+        }
+
+        /// <summary>
+        /// 预算主表明细
+        /// </summary>
+        /// <param name="where"></param>
+        [WebMethod]
+        public void Get_MainPurDetail(string where)
+        {
+
+            BLL.Purchase_Main bbm = new BLL.Purchase_Main();
+
+            DataSet ds = bbm.GetListdetail(where);
+
+            string returnstr = "{\"code\":0,\"description\":\"faile\"}";
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + Common.DataToJson.GetJson(ds) + "}";
+            }
+            else returnstr = "{\"code\":201,\"description\":\"success\",\"detail\":\"没有数据\"}";
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write(returnstr);
+            Context.Response.End();
+
+        }
+
+        /// <summary>
+        /// 预算明细表
+        /// </summary>
+        /// <param name="where"></param>
+        [WebMethod]
+        public void Get_DetailPur(string where)
+        {
+
+            BLL.Purchase_Detail bbd = new BLL.Purchase_Detail();
+
+            DataSet ds = bbd.GetList(where);
+
+            string returnstr = "{\"code\":0,\"description\":\"faile\"}";
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":" + Common.DataToJson.GetJson(ds) + "}";
+            }
+            else returnstr = "{\"code\":201,\"description\":\"success\",\"detail\":\"没有数据\"}";
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write(returnstr);
+            Context.Response.End();
+
+        }
+
+
+        /// <summary>
+        /// 修改预算状态
+        /// </summary>
+        /// <param name="id"></param>
+        [WebMethod]
+        public void UpdatePurStatus(string id, string status)
+        {
+            BLL.Purchase_Main bbm = new BLL.Purchase_Main();
+
+            string returnstr = "{\"code\":0,\"description\":\"faile\"}";
+            if (bbm.Updatestatus( id,status))
+            {
+                if(decimal.Parse(status)>0&&bbm.updatetotal(id,decimal.Parse(status))>0)
+                returnstr = "{\"code\":200,\"description\":\"success\",\"detail\":\"提交成功成功！\"}";
+            }
+            Context.Response.Charset = "utf-8"; //设置字符集类型  
+            Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+            Context.Response.Write(returnstr);
+            Context.Response.End();
+
+
+        }
+
+        #endregion
+
     }
 }

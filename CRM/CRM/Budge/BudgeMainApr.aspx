@@ -152,7 +152,7 @@
         function doserch() {
             var urlstr = "../../data/Budge.ashx?str_condition=1";
             if (getparastr("isprint") == "Y")
-                urlstr = "../../data/Budge.ashx?Action=grid"
+                urlstr = "../../data/Budge.ashx?str_condition=99"
             var sendtxt = "&Action=grid&rnd=" + Math.random();
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
             //  alert(serchtxt);
@@ -229,6 +229,38 @@
               $.ligerDialog.warn('请选择行！');
           }
       }
+      function ret() {
+          var manager = $("#maingrid4").ligerGetGridManager();
+          var row = manager.getSelectedRow();
+          if (row) {
+              $.ligerDialog.confirm("确定退回吗？", function (yes) {
+                  if (yes) {
+                      $.ajax({
+                          url: "../../data/Budge.ashx", type: "POST",
+                          data: { Action: "saveupdatestatus", status: 0, bid: row.id, rnd: Math.random() },
+                          success: function (responseText) {
+                              if (responseText == "true") {
+                                  top.$.ligerDialog.closeWaitting();
+                                  f_reload();
+                              }
+
+                              else {
+                                  top.$.ligerDialog.closeWaitting();
+                                  top.$.ligerDialog.error('退回失败！');
+                              }
+                          },
+                          error: function () {
+                              top.$.ligerDialog.closeWaitting();
+                              top.$.ligerDialog.error('退回失败！', "", null, 9003);
+                          }
+                      });
+                  }
+              })
+          } else {
+              $.ligerDialog.warn("请选择类别！");
+          }
+      }
+
         //复制预算
       function copy() {
           var manager = $("#maingrid4").ligerGetGridManager();
@@ -351,6 +383,8 @@
                     <td>
                         <div style='width: 60px; text-align: right; float: right'>施工监理：</div>
                     </td>
+                   <td>
+                        <input id='sgjlstext' name="sgjlstext" type='text'  ltype='text' ligerui='{width:120}' /></td>
                   
                      <td>
                         <div style='width: 60px; text-align: right; float: right'>设计师：</div>

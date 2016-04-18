@@ -393,9 +393,12 @@ namespace XHD.CRM.Data
                     serchtxt += " and IsStatus in(0,1)";
                 else if (str_condition == "1")
                 {
+                    serchtxt += " and IsStatus  in(1)";
+                }
+                else  
+                {
                     serchtxt += " and IsStatus not in(0)";
                 }
-
                 string dt = "";
 
                 DataSet ds = bbb.GetBudge_BasicMain(PageSize, PageIndex, serchtxt, sorttext, out Total);

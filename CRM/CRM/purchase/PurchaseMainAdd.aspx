@@ -208,6 +208,10 @@
             }
             else {
                 rows = dialog.frame.f_select();
+                if (rows == "") {
+                    alert('«Î—°‘Ò––!');
+                    return;
+                }
                 var pidlist = '';
                 for (var i = 0; i < rows.length; i++) {
                     pidlist = pidlist + ',' + rows[i].product_id;

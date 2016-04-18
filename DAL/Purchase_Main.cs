@@ -501,7 +501,7 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select A.* ");
-            strSql.Append(" ,B.Customer,B.address,B.Emp_sg,C.Address as gysdz");
+            strSql.Append(" ,B.Customer,B.address,B.tel,B.Emp_sg,C.Address as gysdz");
             strSql.Append(" FROM Purchase_Main A");
             strSql.Append(" INNER JOIN  dbo.CRM_Customer B ON A.customid=B.id");
             strSql.Append(" INNER JOIN  dbo.CgGl_Gys_Main C ON A.supplier_id=C.id");
@@ -578,6 +578,11 @@ namespace XHD.DAL
             }
             return DbHelperSQL.Query(strSql.ToString());
         }
+
+
+
+
+
 
 		#endregion  ExtensionMethod
 	}

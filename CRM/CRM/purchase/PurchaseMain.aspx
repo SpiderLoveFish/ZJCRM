@@ -35,7 +35,11 @@
                      },
                       { display: '采购编号', name: 'Purid', width: 100, align: 'left' },
                           { display: '供应商', name: 'supplier_name', width: 150, align: 'left' },
-                      { display: '已付金额', name: 'paid_amount', width: 80, align: 'left' },
+                      { display: '客户', name: 'Customer', width: 80, align: 'left' },
+                       { display: '客户地址', name: 'address', width: 120, align: 'left' },
+                        { display: '客户电话', name: 'tel', width: 80, align: 'left' },
+
+                     { display: '已付金额', name: 'paid_amount', width: 80, align: 'left' },
                        { display: '应付金额', name: 'payable_amount', width: 100, align: 'left' },
                         { display: '欠款', name: 'arrears', width: 80, align: 'left' },
                      {

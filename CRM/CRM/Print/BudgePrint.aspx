@@ -32,7 +32,7 @@
                            obj[n] = "";
                    }
 
-                   $("#T_kh").html(obj.CustomerName);
+                   $("#T_kh").html(obj.CustomerName + '(' + obj.address + ')');
                     $("#T_tel").html(obj.tel);
                     $("#T_sjs").html(obj.sjs);
                     $("#T_zje").html(obj.BudgetAmount);
@@ -60,17 +60,19 @@
                dataType: "json",
                success: function (result) {
                    var obj = result.Rows;
-                   var item=""; var cn="";
+                   var item = ""; var cn = ""; var sum = 0;
                    $.each(obj, function (i, data) {
-                     
+                   
+                       if (data['SUM'] == null) sum = 0;
+                         else  sum = data['SUM'];
                        if (data['ComponentName'] != cn) {
                            item = "<tr><td align=center colspan='7'><b>" + data['ComponentName'] + "</b></td></tr>";
-                           +"<tr><td>" + data['Cname'] + "</td><td>" + data['Cname'] + "</td><td>" + data['TotalPrice'] + "</td><td>" + data['SUM'] + "</td> "
+                           +"<tr><td>" + data['Cname'] + "</td><td>" + data['Cname'] + "</td><td>" + data['TotalPrice'] + "</td><td>" + sum + "</td> "
                                + " <td>" + data['je'] + "</td><td>" + data['unit'] + "</td> <td>" + data['C_style'] + "</td>"
                                + " </tr>";
                        }
                        else {
-                           item = "<tr><td>" + data['Cname'] + "</td><td>" + data['Cname'] + "</td><td>" + data['TotalPrice'] + "</td><td>" + data['SUM'] + "</td> "
+                           item = "<tr><td>" + data['Cname'] + "</td><td>" + data['Cname'] + "</td><td>" + data['TotalPrice'] + "</td><td>" + sum + "</td> "
                                + " <td>" + data['je'] + "</td><td>" + data['unit'] + "</td> <td>" + data['C_style'] + "</td>"
                                + " </tr>";
                        }
@@ -93,11 +95,12 @@
                dataType: "json",
                success: function (result) {
                    var obj = result.Rows;
-                   var item;
+                   var item; var zcje = 0;
                    $.each(obj, function (i, data) {
-
+                       if (data['zcje'] == null) zcje = 0;
+                       else zcje = data['zcje'];
                        item = "<tr><td>" + data['ComponentName'] + "</td><td>" + data['zl'] + "</td><td>" + data['zsl'] + "</td> "
-                           + " <td>" + data['zje'] + "</td><td>" + data['zcje'] + "</td> <td>" + data['jcje'] + "</td>"
+                           + " <td>" + data['zje'] + "</td><td>" + zcje + "</td> <td>" + data['jcje'] + "</td>"
                            + " </tr>";
                        $('.table').append(item);
 
@@ -168,7 +171,7 @@
       </TR>
       </TBODY></TABLE>
 </div>
-<p>----------------------div2:------------------------------------------------------------------------------------</p>
+<%--<p>----------------------div2:------------------------------------------------------------------------------------</p>--%>
 <div id="div2">
 
 <TABLE   class="table table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse" bordercolor="#333333">
@@ -196,7 +199,7 @@
   </tfoot>
 </TABLE>
 </div>
-<p>----------------------div3:------------------------------------------------------------------------------------</p>
+<%--<p>----------------------div3:------------------------------------------------------------------------------------</p>--%>
 <div id="div3">
   <TABLE   class="table1 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse" bordercolor="#333333">
 <thead>
@@ -227,7 +230,7 @@
   </tfoot>
 </TABLE>
 </div>
-   <p>----------------------div4:------------------------------------------------------------------------------------</p>
+   <%--<p>----------------------div4:------------------------------------------------------------------------------------</p>--%>
   <div id="div4">
 
   <TABLE  border=0 cellSpacing=0 cellPadding=0 width="100%">

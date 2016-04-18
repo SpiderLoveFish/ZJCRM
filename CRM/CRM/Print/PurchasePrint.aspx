@@ -30,13 +30,13 @@
                        if (obj[n] == "null" || obj[n] == null)
                            obj[n] = "";
                    }
-                
+                 
                    $("#T_gys").html(obj.supplier_name);
                    //$("#T_tel").html(obj.tel);
                    $("#T_lxr").html(obj.materialman);
              
                    $("#T_gysdz").html(obj.gysdz);
-                   $("#T_kh").html(obj.Customer);
+                   $("#T_kh").html(obj.Customer + '(' + obj.tel + ')');
                    $("#T_khdz").html(obj.address);
                    $("#T_rq").html(formatTimebytype(obj.purdate, 'yyyy-MM-dd'));
                    $("#T_qdrq").html(formatTimebytype(obj.ConfirmDate, 'yyyy-MM-dd'));
@@ -140,7 +140,7 @@
       </TR>
       </TBODY></TABLE>
 </div>
-<p>----------------------div2:------------------------------------------------------------------------------------</p>
+<%--<p>----------------------div2:------------------------------------------------------------------------------------</p>--%>
 <div id="div2">
 
 <TABLE   class="table table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse" bordercolor="#333333">
@@ -162,7 +162,7 @@
       <DIV align=center><b>金额</b></DIV></TD></TR>
 </thead>      
   <TBODY>      
- 
+ </TBODY>
   <tfoot>
   <tr>
     <TD ><b> </b></TD>
@@ -179,20 +179,22 @@
       <tr><td >备注：</td>
           <td colspan="7">
 
-          </td></tr>
+          </td>
+
+      </tr>
       <tr><td >交货日期：</td>
           <td><SPAN id="T_qdrq"></SPAN></td> 
           <td>送货方式：</td> 
           <td><SPAN id="T_shfs"></SPAN></td>   
           <td>合计金额:</td>  
-          <td colspan="2"tdata="AllSum" format="#,##0.00" align="right"><font >￥###</font></TD>    
+          <td colspan="2" tdata="AllSum" format="#,##0.00" align="right"><font >￥###</font></TD>    
 
       </tr>
       
   </tfoot>
 </TABLE>
 </div>
-<p>----------------------div3:------------------------------------------------------------------------------------</p>
+<%--<p>----------------------div3:------------------------------------------------------------------------------------</p>--%>
 <div id="div3">
   <DIV style="LINE-HEIGHT: 30px" 
 align=center><font >感谢您对我们的支持.</font></DIV>
