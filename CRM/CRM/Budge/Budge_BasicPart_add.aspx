@@ -49,7 +49,7 @@
 
         function f_save() {
             if ($(form1).valid()) {
-                var sendtxt = "&Action=save&bpid=" + getparastr("cid");
+                var sendtxt = "&Action=save&bpid=" + getparastr("cid") + "&bpname" + $("#T_bp_name").val();
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }

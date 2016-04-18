@@ -42,7 +42,7 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "save")
             {
-               model.BP_Name = PageValidate.InputText(request["bpname"], 300);
+                model.BP_Name = PageValidate.InputText(request["T_bp_name"], 300);
              //  model.id = StringToInt(PageValidate.InputText(request["bpid"], 50));
 
 
