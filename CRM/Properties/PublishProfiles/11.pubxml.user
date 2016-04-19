@@ -18,7 +18,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/20/2011 22:18:48</publishTime>
     </File>
     <File Include="bin/CRM.dll">
-      <publishTime>04/06/2016 11:04:15</publishTime>
+      <publishTime>04/19/2016 16:13:57</publishTime>
     </File>
     <File Include="bin/Excel.dll">
       <publishTime>08/20/2011 22:18:48</publishTime>
@@ -57,22 +57,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/20/2011 22:18:52</publishTime>
     </File>
     <File Include="bin/XHD.BLL.dll">
-      <publishTime>04/06/2016 10:49:44</publishTime>
+      <publishTime>04/15/2016 08:51:52</publishTime>
     </File>
     <File Include="bin/XHD.Comm.dll">
-      <publishTime>04/06/2016 10:49:42</publishTime>
+      <publishTime>04/15/2016 08:51:51</publishTime>
     </File>
     <File Include="bin/XHD.DAL.dll">
-      <publishTime>04/06/2016 10:49:20</publishTime>
+      <publishTime>04/18/2016 11:05:01</publishTime>
     </File>
     <File Include="bin/XHD.DBUtility.dll">
       <publishTime>02/01/2016 13:30:14</publishTime>
     </File>
     <File Include="bin/XHD.Model.dll">
-      <publishTime>04/06/2016 10:49:42</publishTime>
+      <publishTime>04/18/2016 11:05:00</publishTime>
     </File>
     <File Include="conn.config">
-      <publishTime>04/06/2016 10:21:37</publishTime>
+      <publishTime>04/19/2016 08:27:40</publishTime>
     </File>
     <File Include="copyright.html">
       <publishTime>02/01/2016 08:44:44</publishTime>
@@ -84,7 +84,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/06/2016 09:36:14</publishTime>
     </File>
     <File Include="CRM/Budge/BudgeMainApr.aspx">
-      <publishTime>04/05/2016 16:50:07</publishTime>
+      <publishTime>04/18/2016 10:36:40</publishTime>
     </File>
     <File Include="CRM/Budge/BudgeModelMain.aspx">
       <publishTime>02/29/2016 12:50:26</publishTime>
@@ -96,7 +96,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/05/2016 15:01:04</publishTime>
     </File>
     <File Include="CRM/Budge/Budge_BasicPart_add.aspx">
-      <publishTime>04/05/2016 15:08:19</publishTime>
+      <publishTime>04/19/2016 08:11:52</publishTime>
     </File>
     <File Include="CRM/Budge/SaveModel.aspx">
       <publishTime>02/29/2016 10:01:14</publishTime>
@@ -356,6 +356,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="CRM/KcGl/Jcb_Ckgl_Add.aspx">
       <publishTime>02/01/2016 08:44:39</publishTime>
     </File>
+    <File Include="CRM/Print/BudgePrint.aspx">
+      <publishTime>04/18/2016 14:02:28</publishTime>
+    </File>
+    <File Include="CRM/Print/LodopFuncs.js">
+      <publishTime>04/14/2016 14:27:46</publishTime>
+    </File>
+    <File Include="CRM/Print/PurchasePrint.aspx">
+      <publishTime>04/18/2016 10:50:09</publishTime>
+    </File>
     <File Include="CRM/Product/GetProduct.aspx">
       <publishTime>02/01/2016 08:44:39</publishTime>
     </File>
@@ -384,22 +393,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/01/2016 08:44:39</publishTime>
     </File>
     <File Include="CRM/purchase/PickingList.aspx">
-      <publishTime>04/05/2016 17:12:40</publishTime>
+      <publishTime>04/13/2016 08:40:01</publishTime>
     </File>
     <File Include="CRM/purchase/PickingList_add.aspx">
       <publishTime>04/05/2016 17:46:10</publishTime>
     </File>
     <File Include="CRM/purchase/PurchaseMain.aspx">
-      <publishTime>04/05/2016 16:49:52</publishTime>
+      <publishTime>04/18/2016 10:40:08</publishTime>
     </File>
     <File Include="CRM/purchase/PurchaseMainAdd.aspx">
-      <publishTime>04/06/2016 09:41:33</publishTime>
+      <publishTime>04/18/2016 11:09:50</publishTime>
     </File>
     <File Include="CRM/purchase/PurchaseMainAdd_CK.aspx">
       <publishTime>04/06/2016 09:38:13</publishTime>
     </File>
     <File Include="CRM/purchase/SelectProduct.aspx">
-      <publishTime>04/05/2016 17:42:39</publishTime>
+      <publishTime>04/18/2016 11:09:23</publishTime>
     </File>
     <File Include="CRM/purchase/SelectSupplier.aspx">
       <publishTime>03/21/2016 12:54:56</publishTime>
@@ -11538,7 +11547,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/01/2016 08:44:44</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>04/06/2016 11:04:42</publishTime>
+      <publishTime>04/19/2016 16:14:22</publishTime>
     </File>
     <File Include="webserver/bbsapi.asmx">
       <publishTime>03/21/2016 14:02:30</publishTime>
