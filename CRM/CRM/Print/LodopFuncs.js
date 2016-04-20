@@ -19,8 +19,8 @@ head.insertBefore( oscript,head.firstChild );
 
 //====获取LODOP对象的主过程：====
 function getLodop(oOBJECT,oEMBED){
-    var strCLodopInstall = "<br><font color='#FF00FF'>CLodop云打印服务(localhost本地)未安装启动!点击这里<a href='http://www.lodop.net/download.html' target='_self'>执行安装</a>,安装后请刷新页面。</font>";
-    var strCLodopUpdate = "<br><font color='#FF00FF'>CLodop云打印服务需升级!点击这里<a href='http://www.lodop.net/download.html' target='_self'>执行升级</a>,升级后请刷新页面。</font>";
+    var strCLodopInstall = "<br><font color='#FF00FF'>CLodop云打印服务(localhost本地)未安装启动!点击这里<a href='http://mb.xczs.co/file/Lodop6.203_CLodop.zip ' target='_self'>执行安装</a>,安装后请刷新页面。</font>";
+    var strCLodopUpdate = "<br><font color='#FF00FF'>CLodop云打印服务需升级!点击这里<a href='http://mb.xczs.co/file/Lodop6.203_CLodop.zip ' target='_self'>执行升级</a>,升级后请刷新页面。</font>";
     var LODOP;
     try{
         var isIE = (navigator.userAgent.indexOf('MSIE')>=0) || (navigator.userAgent.indexOf('Trident')>=0);
