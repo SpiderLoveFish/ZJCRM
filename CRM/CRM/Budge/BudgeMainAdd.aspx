@@ -183,22 +183,8 @@
           
          $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
 
-            // «∑Ò’€ø€
-          
-             $("#iszk").change(function () {
-                 if (this.checked == true) {
-                 
-                  
-                }
-                else if (this.checked == false) {
-                  
-                  
-                    $("#T_zk").val(1);
-                    addzk();
-                    
-
-                }
-            });
+      
+            
         })
 
         function InitButton()
@@ -210,8 +196,8 @@
                 $(this).removeAttr('onclick');
             
             });
-            $("#iszk").attr("disabled", "disabled");
-         
+          
+
         }
 
         function ishidecol()
@@ -441,7 +427,8 @@
                     if (obj.DetailDiscount != 1)
                     {
                         // alert(obj.DetailDiscount);
-                        $("#iszk").attr("checked", true);
+                      
+
                         $("#T_zk").val(obj.DetailDiscount);
                       
                     }
@@ -951,10 +938,14 @@
                     </td>
                      </tr></table>
                 </td><td colspan="2"   class="table_title1"> 
-                  <input  type="checkbox" id="iszk" name="iszk" >  «∑Ò¥Ú’€<span class="red">(0.9 = æ≈’€£©</span> </input>                 </td>
+           
+
+                       <span class="red">(0.9 = æ≈’€£©</span> 
+
+                     </td>
                 <td colspan="4"   class="table_title1"><table id="iszktable">
                   <tr>
-                    <td><input type="text"  id="T_zk" name="T_zk"  ltype="text" ligerui="{width:60,number: true}"   /></td>
+                    <td><input type="text"  value="1" id="T_zk" name="T_zk"  ltype="text" ligerui="{width:60,number: true}"   /></td>
                     <td><a id="A1" class="l-button"  position="right" style="width:62px;" onClick="addzk()"> »∑∂®’€ø€ </a></td>
                   </tr>
                 </table></td>
