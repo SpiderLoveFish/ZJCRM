@@ -29,8 +29,8 @@
             var strurl = "../../data/PurchaseList.ashx?Action=allgrid";
             if (style == "ALL")//全部产品
                 strurl = "../../data/PurchaseList.ashx?Action=allgrid";
-            else if (style == "ysA")//预算A
-                strurl = "../../data/PurchaseList.ashx?Action=getlist";
+            else if (style == "YS")//预算A
+                strurl = "../../data/PurchaseList.ashx?Action=ysgrid";
             else if (style == "ysB")//预算A
                 strurl = "../../data/PurchaseList.ashx?Action=getlist";
 
@@ -46,7 +46,8 @@
                   { display: '材料规格', name: 'specifications', width: 100, align: 'left' },
                   { display: '所属品牌', name: 'Brand', width: 100, align: 'left' },
                   { display: '类别', name: 'category_name', width: 100, align: 'left' },
-                  { display: '单位', name: 'unit', width: 40, align: 'left' }
+                  { display: '单位', name: 'unit', width: 40, align: 'left' },
+                     { display: '数量', name: 'SUM', width: 40, align: 'left' }
                   //,
                   //{
                   //    display: '图文', width: 40, render: function (item) {
@@ -162,7 +163,7 @@
             
                         $.ajax({
                             type: 'post',
-                            url: "../../data/PurchaseList.ashx?Action=savelist&cid=" + getparastr("cid") + "&pid=" + prouductid + '&rdm=' + Math.random(),
+                            url: "../../data/PurchaseList.ashx?Action=savelist&style=" + getparastr("style") + "&cid=" + getparastr("cid") + "&pid=" + prouductid + '&rdm=' + Math.random(),
                             success: function (data) {
                               
                               f_sucess();

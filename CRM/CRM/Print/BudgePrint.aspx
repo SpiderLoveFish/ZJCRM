@@ -67,12 +67,12 @@
                          else  sum = data['SUM'];
                        if (data['ComponentName'] != cn) {
                            item = "<tr><td align=center colspan='7'><b>" + data['ComponentName'] + "</b></td></tr>";
-                           +"<tr><td>" + data['Cname'] + "</td><td>" + data['Cname'] + "</td><td>" + data['TotalPrice'] + "</td><td>" + sum + "</td> "
+                           +"<tr><td>" + data['Cname'] + "</td><td>" + data['brand'] + "</td><td>" + data['TotalPrice'] + "</td><td>" + sum + "</td> "
                                + " <td>" + data['je'] + "</td><td>" + data['unit'] + "</td> <td>" + data['C_style'] + "</td>"
                                + " </tr>";
                        }
                        else {
-                           item = "<tr><td>" + data['Cname'] + "</td><td>" + data['Cname'] + "</td><td>" + data['TotalPrice'] + "</td><td>" + sum + "</td> "
+                           item = "<tr><td>" + data['Cname'] + "</td><td>" + data['brand'] + "</td><td>" + data['TotalPrice'] + "</td><td>" + sum + "</td> "
                                + " <td>" + data['je'] + "</td><td>" + data['unit'] + "</td> <td>" + data['C_style'] + "</td>"
                                + " </tr>";
                        }

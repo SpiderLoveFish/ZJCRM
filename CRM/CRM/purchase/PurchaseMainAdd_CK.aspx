@@ -135,6 +135,8 @@
                             { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                              { display: '材料名称', name: 'material_name', width: 120 },
                              { display: '规格', name: 'specifications', width: 80 },
+                                 { display: '料号', name: 'ProModel', width: 80 },
+                                     { display: '品牌', name: 'Brand', width: 80 },
 
                             { display: '型号', name: 'model', width: 120 },
                              {
@@ -305,6 +307,15 @@
              if (isAccept) isgd = 1;
              var sendtxt = "&Action=save&isgd=" + isgd;
              return $("form :input").fieldSerialize() + sendtxt;
+         }
+         //绝对退回
+         function f_saveretrn() {
+             if ($("#T_companyid").val() == "") {
+                 $.ligerDialog.error("请选择保存一个有效的客户！！！");
+                 return;
+             }
+             var sendtxt = "&Action=saveupdatestatus&status=0&pid=" + $("#T_Pid").val();
+             return sendtxt;
          }
          //审核 ，作废
          function f_saveapr() {
@@ -582,7 +593,7 @@
              <tr>
                     <td><div style="width: 70px; text-align: right; float: right">欠款：</div></td>
                 <td><input type="text"  id="T_qk" name="T_qk"  ltype="text" ligerui="{width:80,disabled:true}"   /></td>
-               <td><div style="width: 70px; text-align: right;   float: right">采购日期：</div></td>
+               <td><div style="width: 70px; text-align: right;   float: right">交货日期：</div></td>
                 <td><input type="text"  id="T_cgrq" name="T_cgrq"  ltype="date" ligerui="{width:120}"   /></td>
              <td   ><span style="width: 60px; text-align: right; float: right">施工监理：</span></td>
                  <td   ><input id="T_employee" name="T_employee" validate="{required:false}"  ltype="text" ligerui="{width:80,disabled:true}"  /></td>

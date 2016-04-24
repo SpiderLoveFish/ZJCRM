@@ -82,6 +82,8 @@
                   
                     { display: '材料名称', name: 'material_name', width: 120 },
                      { display: '规格', name: 'specifications', width: 80 },
+                       { display: '料号', name: 'ProModel', width: 80 },
+                                     { display: '品牌', name: 'Brand', width: 80 },
 
                     { display: '型号', name: 'model', width: 120 },
                      {

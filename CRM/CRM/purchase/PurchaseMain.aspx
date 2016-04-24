@@ -52,6 +52,11 @@
                              else if (item.isNode == "3") st = "已确认";
                              else if (item.isNode == "99") st = "已废除";
                              else st = item.isNode;
+                             if (item.isNode == "1") {
+                                 st = "<div style='color:#FF0000'>";
+                                 st += "待审核";
+                                 st += "</div>";
+                             }
                              return st;
                          }
                      },
@@ -224,6 +229,30 @@
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
      
+        var activeDialogssh = null;
+        function f_openWindow_sh(url, title, width, height, code) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+                    {
+                        text: code, onclick: function (item, dialog) {
+                            f_saveret(item, dialog);
+                        }
+                    },
+                    {
+                        text: '撤回', onclick: function (item, dialog) {
+                            f_saveretrn(item, dialog);
+                        }
+                    },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialogssh = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+
       function add() {
           f_openWindow("crm/purchase/PurchaseMainAdd.aspx?status=0", "新增采购", 1100, 600);
         }
@@ -234,27 +263,27 @@
             if (row) {
                // alert(row.isNode);
                 if (row.isNode == 0)
-                    f_openWindow("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "修改采购", 1100, 600);
+                    f_openWindow("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "审核采购单", 1100, 600);
                 else if (row.isNode == 1)//已经提交
                 {
                     if (getparastr("Apr") == 'Y')
-                        f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apr", "修改采购", 1100, 600, '审核');
+                        f_openWindow_sh("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apr", "审核采购单", 1100, 600, '审核');
                   else 
-                        f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=ret", "修改采购", 1100, 600, '撤回');
+                        f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=ret", "审核采购单", 1100, 600, '撤回');
                 
                 }
                 else if (row.isNode == 2)//已经提交
                 {
 
                     if (getparastr("Apr") == 'YY')
-                        f_openWindow_ch("crm/purchase/PurchaseMainAdd_CK.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apry", "修改采购", 1100, 600, '确认');
+                        f_openWindow_sh("crm/purchase/PurchaseMainAdd_CK.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apry", "审核采购单", 1100, 600, '确认');
                     else
-                        f_openWindow_ch("crm/purchase/PurchaseMainAdd_CK.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=ret", "修改采购", 1100, 600, '撤回');
+                        f_openWindow_ch("crm/purchase/PurchaseMainAdd_CK.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=ret", "审核采购单", 1100, 600, '撤回');
 
                   
 
                 } else if (row.isNode == 3)//已经提交
-                    f_openWindow_ch("crm/purchase/PurchaseMainAdd_CK.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apry", "修改采购", 1100, 600, '确认');
+                    f_openWindow_ch("crm/purchase/PurchaseMainAdd_CK.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apry", "审核采购单", 1100, 600, '确认');
 
             } else {
                 $.ligerDialog.warn('请选择行！');
@@ -268,6 +297,36 @@
                 f_openWindowview("crm/Print/PurchasePrint.aspx?pid=" + row.Purid, "打印", 1100, 600);
             } else {
                 $.ligerDialog.warn('请选择行！');
+            }
+        }
+
+        //绝对退回
+        function f_saveretrn(item, dialog) {
+
+            var issave = dialog.frame.f_saveretrn();
+
+            if (issave) {
+                dialog.close();
+                top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                $.ajax({
+                    url: "../../data/Purchase.ashx", type: "POST",
+                    data: issave,
+                    success: function (responseText) {
+                        top.$.ligerDialog.closeWaitting();
+                        if (responseText == "false") {
+                            top.$.ligerDialog.error('操作失败！');
+                        }
+                        else {
+                            //  alert(issave); 
+                            f_reload();
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+
+                    }
+                });
+
             }
         }
 

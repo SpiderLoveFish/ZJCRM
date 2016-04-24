@@ -42,8 +42,8 @@ namespace XHD.DAL
         { 
             StringBuilder strSql=new StringBuilder();
         strSql.Append("  INSERT INTO Budge_BasicDetail ");
-        strSql.Append(" (budge_id,xmid,unit,ComponentName,Cname,TotalPrice) ");
-        strSql.Append(" SELECT '" + bid + "',product_id,unit,'" + compname + "',category_name,price FROM dbo.CRM_product WHERE product_id IN(" + xmlistid + ") ");
+        strSql.Append(" (budge_id,xmid,unit,ComponentName,Cname,TotalPrice,discount,totaldiscountprice) ");
+        strSql.Append(" SELECT '" + bid + "',product_id,unit,'" + compname + "',category_name,price,1,price FROM dbo.CRM_product WHERE product_id IN(" + xmlistid + ") ");
 
         SqlParameter[] parameters = { };
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
@@ -581,7 +581,9 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " A.*,C.C_style ,TotalPrice*ISNULL(SUM,0)AS je,TotalDiscountPrice*ISNULL(SUM,0)AS zkje,B.product_name FROM dbo.Budge_BasicDetail A INNER JOIN dbo.CRM_product B ON A.xmid=B.product_id ");
+            strSql.Append(" top " + PageSize + " A.*,C.C_style ,TotalPrice*ISNULL(SUM,0)AS je,TotalDiscountPrice*ISNULL(SUM,0)AS zkje,B.product_name");
+            strSql.Append(" ,specifications+'/'+promodel+'/'+brand AS brand ");
+            strSql.Append(" FROM dbo.Budge_BasicDetail A INNER JOIN dbo.CRM_product B ON A.xmid=B.product_id ");
             strSql.Append(" INNER JOIN dbo.CRM_product_category C ON  B.category_id=C.id");
             strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_BasicDetail ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");

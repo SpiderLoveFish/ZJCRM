@@ -61,7 +61,7 @@
                         }
 
                     }, {
-                        display: '状态', width: 60, render: function (item) {
+                        display: '状态', width: 80, render: function (item) {
                             var html;
                             if (item.IsStatus == 0) {
                                 html = "未提交\已提交";
@@ -269,15 +269,17 @@
         }
     
 
-       
+        var tempDoStyle = "";
         //新增打开页面
         function add() {
+            tempDoStyle = "ALL";
             f_openWindow_f2("../../CRM/ConsExam/getemp.aspx?style=ALL&cid=" + getparastr("cid"), "所有材料中选取", 800, 400);
 
 
         }
         function edit() {
-            f_openWindow_f2("../../CRM/ConsExam/getemp.aspx?style=ALL&cid=" + getparastr("cid"), "客户预算中选取", 800, 400);
+            tempDoStyle = "YS";
+            f_openWindow_f2("../../CRM/ConsExam/getemp.aspx?style=YS&cid=" + getparastr("cid"), "客户预算中选取", 800, 400);
 
 
         }
@@ -303,7 +305,7 @@
                
                 $.ajax({
                     type: 'post',
-                    url: "../../data/PurchaseList.ashx?Action=savelist&cid=" + getparastr("cid") + "&pid=" + prouductid + '&rdm=' + Math.random(),
+                    url: "../../data/PurchaseList.ashx?Action=savelist&style=" + tempDoStyle + "&cid=" + getparastr("cid") + "&pid=" + prouductid + '&rdm=' + Math.random(),
                     success: function (data) {
                         //alert(data);
                         //setTimeout(function () {

@@ -413,10 +413,16 @@ namespace XHD.DAL
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("UPDATE	 dbo.Purchase_Detail");
             sb.AppendLine(" SET");
-            if(price>0)
-            sb.AppendLine("          purprice=" + price + " ");
-            if(sum>0)
-            sb.AppendLine("          pursum=" + sum + " ");
+            if (price > 0)
+            {
+                sb.AppendLine("          purprice=" + price + " ");
+                sb.AppendLine("         ,subtotal=" + price + "*pursum  ");
+            }
+            if (sum > 0)
+            {
+                sb.AppendLine("          pursum=" + sum + " ");
+                sb.AppendLine("         ,subtotal=" + sum + "*purprice  ");
+            }
             if(remarks.Length>0)
             sb.AppendLine("          remarks='"+remarks+"'");
             sb.AppendLine(" WHERE		Purid='"+pid+"'");

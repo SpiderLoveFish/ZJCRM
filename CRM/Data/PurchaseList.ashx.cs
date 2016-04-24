@@ -37,8 +37,9 @@ namespace XHD.CRM.Data
             {
                 int customerid = int.Parse(request["cid"]);
                 string pid = PageValidate.InputText(request["pid"], 255);
+                string style = PageValidate.InputText(request["style"], 255);
                 if (pid.Length > 1) pid = pid.Substring(1);
-                ccp.InsertList(customerid, pid, emp_id.ToString());
+                ccp.InsertList(customerid, pid, emp_id.ToString(),style);
             }
             if (request["Action"] == "save")
             {
@@ -109,6 +110,43 @@ namespace XHD.CRM.Data
                 string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
                 context.Response.Write(dt);
             }
+
+            if (request["Action"] == "ysgrid")
+            {
+                BLL.CRM_product cp = new BLL.CRM_product();
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " category_id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = "desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = " IsStatus=3 ";//必须生效
+                if (!string.IsNullOrEmpty(request["cid"]))
+                    serchtxt += " and customer_id='" + PageValidate.InputText(request["cid"], 50) + "'";
+            
+
+                if (!string.IsNullOrEmpty(request["stext"]))
+                    serchtxt += " and product_name like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["stextlx"]))
+                {
+                    if (request["stextlx"] != "全部")
+                        serchtxt += " and category_name like N'%" + PageValidate.InputText(request["stextlx"], 255) + "%'";
+
+                }
+                //权限
+                DataSet ds = ccp.GetysList(PageSize, PageIndex, serchtxt, sorttext, out Total);
+
+                string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                context.Response.Write(dt);
+            }
+
             if (request["Action"] == "tempgrid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);

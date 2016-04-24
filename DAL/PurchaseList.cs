@@ -190,12 +190,22 @@ namespace XHD.DAL
         /// <param name="cid"></param>
         /// <param name="pid"></param>
         /// <returns></returns>
-        public int InsertList(int cid, string pid, string emp_id)
+        public int InsertList(int cid, string pid, string emp_id,string style)
         {
             string strsql = " INSERT INTO dbo.PurchaseList "+
-                            " ( CustomerID ,  category_id ,  product_id ,DoTime , DoPerson , IsStatus , Price , AmountSum ) "+
-                            " SELECT " + cid + ",category_id,product_id,GETDATE(),'" + emp_id + "',0,0,1 " +
-                             " FROM CRM_product WHERE product_id IN("+pid+")";
+                            " ( CustomerID ,  category_id ,  product_id ,DoTime , DoPerson , IsStatus , Price , AmountSum ) ";
+                         if(style=="ALL")
+                         {
+                             strsql += " SELECT " + cid + ",category_id,product_id,GETDATE(),'" + emp_id + "',0,0,1 " +
+                               " FROM CRM_product WHERE product_id IN(" + pid + ")";
+                             }
+                         else if (style == "YS")
+                         {
+                             strsql += " SELECT " + cid + ",B.category_id,B.product_id,GETDATE(),'" + emp_id + "',0,A.totaldiscountprice,ISNULL(A.[SUM],1) AS [SUM] " +
+                                  " FROM budge_basicdetail A  INNER JOIN budge_basicmain c ON A.budge_id=c.ID inner join CRM_product B on A.xmid=B.product_id    WHERE product_id IN(" + pid + ") and C.customer_id=" + cid + "";
+                           
+                         }
+                            
             SqlParameter[] parameters = { };
             object obj = DbHelperSQL.GetSingle(strsql, parameters);
             if (obj == null)
@@ -458,6 +468,31 @@ namespace XHD.DAL
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
             return DbHelperSQL.Query(strSql.ToString());
         }
+        /// <summary>
+        /// 分页获取预算数据列表
+        /// </summary>
+        public DataSet GetysList(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + " * FROM budge_basicdetail A ");
+            strSql.AppendLine("INNER JOIN budge_basicmain B ON A.budge_id=B.ID ");
+            strSql.AppendLine("INNER JOIN [dbo].[CRM_product] C ON A.xmid=C.product_id ");
+            strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM budge_basicdetail ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(*) FROM budge_basicdetail A ");
+            strSql1.AppendLine("INNER JOIN budge_basicmain B ON A.budge_id=B.ID ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
 
 
         /// <summary>

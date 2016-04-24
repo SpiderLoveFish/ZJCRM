@@ -597,6 +597,15 @@
             var sendtxt = "&Action=saveall";
              return $("form :input").fieldSerialize() + sendtxt;
         }
+        //绝对退回
+        function f_saveretrn() {
+            if ($("#T_companyid").val() == "") {
+                $.ligerDialog.error("请选择保存一个有效的客户！！！");
+                return;
+            }
+            var sendtxt = "&Action=saveupdatestatus&status=0&bid=" + $("#T_budgeid").val() + "&cid=" + $("#T_companyid").val();
+            return sendtxt;
+        }
         //审核 ，作废
         function f_saveapr() {
             if ($("#T_companyid").val() == "") {
@@ -775,8 +784,8 @@
         {
           
           
-                if ($("#T_sl").val() > 1 || $("#T_sl").val() <= 0) {
-                    top.$.ligerDialog.error('折扣必须大于0小于1！');
+                if ($("#T_sl").val() > 1 || $("#T_sl").val() < 0) {
+                    top.$.ligerDialog.error('税率必须大于等于0小于1！');
                     return;
                 }
             var t_sl = $("#T_sl").val();

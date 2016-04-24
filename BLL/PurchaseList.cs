@@ -44,9 +44,9 @@ namespace XHD.BLL
         /// <param name="cid"></param>
         /// <param name="pid"></param>
         /// <returns></returns>
-        public int InsertList(int cid, string pid, string emp_id)
+        public int InsertList(int cid, string pid, string emp_id,string style)
         {
-            return dal.InsertList(cid, pid, emp_id);
+            return dal.InsertList(cid, pid, emp_id,style);
              
         }
 
@@ -200,6 +200,12 @@ namespace XHD.BLL
         public DataSet GetTempList(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
         {
             return dal.GetTempList(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+
+        public DataSet GetysList(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetysList(PageSize, PageIndex, strWhere, filedOrder, out Total);
+      
         }
         #endregion  ExtensionMethod
 	}

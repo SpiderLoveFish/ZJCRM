@@ -199,12 +199,37 @@
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
+
+        var activeDialogssh = null;
+        function f_openWindow_sh(url, title, width, height, code) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+                    {
+                        text: code, onclick: function (item, dialog) {
+                            f_save(item, dialog);
+                        }
+                    },
+                    {
+                        text: '撤回', onclick: function (item, dialog) {
+                            f_saveretrn(item, dialog);
+                        }
+                    },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialogssh = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+
      //审核
       function apr() {
           var manager = $("#maingrid4").ligerGetGridManager();
           var row = manager.getSelectedRow();
           if (row) {
-              f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id+"&style=apr", "审核预算", 1100, 600,"审核");
+              f_openWindow_sh("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&style=apr", "审核预算", 1100, 600, "审核");
           } else {
               $.ligerDialog.warn('请选择行！');
           }
@@ -258,6 +283,37 @@
               })
           } else {
               $.ligerDialog.warn("请选择类别！");
+          }
+      }
+
+      //绝对退回
+      function f_saveretrn(item, dialog) {
+          var issave = dialog.frame.f_saveretrn();
+          if (issave) {
+              dialog.close();
+              top.$.ligerDialog.waitting('数据保存中,请稍候...');
+              $.ajax({
+                  url: "../../data/Budge.ashx", type: "POST",
+                  data: issave,
+                  success: function (responseText) {
+                      top.$.ligerDialog.closeWaitting();
+                      if (responseText == "false") {
+                          top.$.ligerDialog.error('操作失败！');
+                      }
+                      else if (responseText == "false:exist") {
+                          top.$.ligerDialog.error('此客户已经有生效预算，此单不能生效！！');
+                      }
+                      else {
+                          //  alert(issave); 
+                          f_reload();
+                      }
+                  },
+                  error: function () {
+                      top.$.ligerDialog.closeWaitting();
+
+                  }
+              });
+
           }
       }
 

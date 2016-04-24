@@ -176,7 +176,7 @@ namespace XHD.CRM.Data
                             int customerid = int.Parse(request["cid"]);
                             string pro_id = ccp.GetList(" c_code='" + c_code + "'").Tables[0].Rows[0]["product_id"].ToString(); 
                             //  if (pid.Length > 1) pid = pid.Substring(1);
-                            pl.InsertList(customerid, pro_id, emp_id.ToString());
+                            pl.InsertList(customerid, pro_id, emp_id.ToString(),"ALL");
 
                         }
                         else if (AddType == "Selectpur")//采购
