@@ -36,7 +36,7 @@
         });
 
         function f_save() {
-            if ($("#T_yzm").val().toUpperCase() == varCODE) {
+            //if ($("#T_yzm").val().toUpperCase() == varCODE) {
                 if ($(form1).valid()) {
                     var sendtxt = "&Action=changepwd";
                     var issave = $("form :input").fieldSerialize() + sendtxt;
@@ -56,9 +56,9 @@
                         }
                     });
                 }
-            } else {
-                $.ligerDialog.error('验证码错误！。');
-            }
+            //} else {
+            //    $.ligerDialog.error('验证码错误！。');
+            //}
         }
 
         var wait = 60;

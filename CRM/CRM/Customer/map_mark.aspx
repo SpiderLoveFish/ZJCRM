@@ -12,7 +12,7 @@
         #allmap { width: 100%; height: 100%; }
         p { margin-left: 5px; font-size: 14px; }
     </style>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=qBF1ENAhEgKANMrT9gikGXa9"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=scRTGd7FxTc8S5I8p7OgZxyp"></script>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/input.css" rel="stylesheet" />
 
@@ -25,7 +25,10 @@
     <title>地图单击事件</title>
 </head>
 <body>
-    <div id="toolbar"></div>
+    <div id="toolbar"> </div>
+
+   
+    <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
     <div id="allmap"></div>
     <input type="hidden" id="T_xy" name="T_xy" />
 </body>
@@ -48,7 +51,7 @@
     var point = new BMap.Point(x, y)
     map.centerAndZoom(point, 8);
 
-    
+
     // 添加带有定位的导航控件
     var navigationControl = new BMap.NavigationControl({
         // 靠左上角位置
@@ -59,7 +62,9 @@
         //enableGeolocation: true
     });
     map.addControl(navigationControl);
-
+    function G(id) {
+        return document.getElementById(id);
+    }
     var mapType1 = new BMap.MapTypeControl({ mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP] });
 
     var overView = new BMap.OverviewMapControl();
@@ -75,7 +80,7 @@
         if (arr != "undefined") {
             //alert();
             x = arr[0], y = arr[1];
-            $("#T_xy").val(xy); 
+            $("#T_xy").val(xy);
 
             point = new BMap.Point(x, y)
             setTimeout(function () {
@@ -104,6 +109,55 @@
 
     function search(value) {
         map.centerAndZoom(value, 12);
+        var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+		{
+		    "input": "suggestId"
+		, "location": map
+		});
+
+        ac.addEventListener("onhighlight", function (e) {  //鼠标放在下拉列表上的事件
+            var str = "";
+            var _value = e.fromitem.value;
+            var value = "";
+            if (e.fromitem.index > -1) {
+                value = _value.province + _value.city + _value.district + _value.street + _value.business;
+            }
+            str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+            value = "";
+            if (e.toitem.index > -1) {
+                _value = e.toitem.value;
+                value = _value.province + _value.city + _value.district + _value.street + _value.business;
+            }
+            str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+            G("searchResultPanel").innerHTML = str;
+        });
+
+        var myValue;
+        ac.addEventListener("onconfirm", function (e) {    //鼠标点击下拉列表后的事件
+            var _value = e.item.value;
+            myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
+            G("searchResultPanel").innerHTML = "onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+
+            setPlace();
+        });
+
+        function setPlace() {
+            map.clearOverlays();    //清除地图上所有覆盖物
+            function myFun() {
+                var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+                map.centerAndZoom(pp, 18);
+                map.addOverlay(new BMap.Marker(pp));    //添加标注
+            }
+            var local = new BMap.LocalSearch(map, { //智能搜索
+                onSearchComplete: myFun
+            });
+            local.search(myValue);
+        }
+        // var local = new BMap.LocalSearch(map, {
+        //    renderOptions: { map: map }
+        // });
+        // local.search("夏桥家园");
     }
 
     //工具条实例化
@@ -122,7 +176,12 @@
             id: 'T_City'
         });
         items.push({
-            type: 'text',text:'注意：请自行标注，然后点击保存，再点击客户信息的保存按钮。'
+            type: 'textbox',
+            id: 'suggestId'
+        });
+        items.push({
+            type: 'text',
+            text: '注意：请自行标注，然后点击保存，再点击客户信息的保存按钮。'
         });
         $("#toolbar").ligerToolBar({
             items: items

@@ -174,8 +174,8 @@
                     map.addOverlay(marker[i]);
                     //marker[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
                     //显示marker的title，marker多的话可以注释掉
-                    //var label = new window.BMap.Label(rows[i].Customer, { offset: new window.BMap.Size(20, -10) });
-                    //marker[i].setLabel(label);
+                    var label = new window.BMap.Label(rows[i].name, { offset: new window.BMap.Size(20, -10) });
+                   marker[i].setLabel(label);
                     // 创建信息窗口对象
                     info[i] = "<div style='margin:0;line-height:20px;padding:2px;'>" + "【客户数量】：" + rows[i].sl +  "</div>";
                     //创建百度样式检索信息窗口对象                       

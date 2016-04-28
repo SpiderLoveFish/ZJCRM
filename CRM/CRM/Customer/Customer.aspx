@@ -224,7 +224,23 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-
+                
+               
+                items.push({
+                    type: 'textbox',
+                    id: 'keyword1',
+                    text: ''
+                });
+                items.push({
+                    type: 'button',
+                    text: 'ËÑË÷',
+                    icon: '../../images/search.gif',
+                    disable: true,
+                    click: function () {
+                        doserch()
+                    }
+                });
+               
                 items.push({
                     type: 'serchbtn',
                     text: '¸ß¼¶ËÑË÷',
@@ -257,8 +273,10 @@
                     width: 120, items: getMenuItems(data)
                 });
 
+                $("#keyword1").ligerTextBox({ width: 200, nullText: "ÊäÈë¹Ø¼ü´ÊËÑË÷" })
                 $("#maingrid4").ligerGetGridManager().onResize();
                 $("#maingrid5").ligerGetGridManager().onResize();
+
             });
         }
         function initSerchForm() {
@@ -311,6 +329,7 @@
                 }, emptyText: '£¨¿Õ£©'
             });
             $('#customertype').ligerComboBox({ width: 97, emptyText: '£¨¿Õ£©', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=1&rnd=" + Math.random() });
+            $('#WXZHT').ligerComboBox({ width: 97, emptyText: '£¨¿Õ£©', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=15&rnd=" + Math.random() });
             $('#customerlevel').ligerComboBox({ width: 96, emptyText: '£¨¿Õ£©', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=2&rnd=" + Math.random() });
             $('#cus_sourse').ligerComboBox({ width: 120, emptyText: '£¨¿Õ£©', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=3&rnd=" + Math.random() });
             $('#T_Community').ligerComboBox({ width: 120, emptyText: '£¨¿Õ£©', url: "../../data/Param_City.ashx?Action=getBuilding&rnd=" + Math.random() });
@@ -398,7 +417,7 @@
         });
         function doserch() {
             var sendtxt = "&Action=grid&rnd=" + Math.random();
-            var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
+            var serchtxt = $("#serchform :input").fieldSerialize() + "&keyword1=" + $("#keyword1").val() + sendtxt;
             //alert(serchtxt);           
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.GetDataByURL("../../data/crm_customer.ashx?" + serchtxt);
@@ -785,6 +804,35 @@
                         </div>
                         <div style='width: 98px; float: left'>
                             <input type='text' id='employee_sj' name='employee_sj' />
+                        </div>
+                    </td>
+                </tr>
+                                <tr>
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>Î¢ÐÅ×´Ì¬£º</div>
+                    </td>
+                    <td>
+                        <input type='text' id='WXZHT' name='WXZHT' /> 
+                    </td>
+                                    <td>
+                        <div style='width: 60px; text-align: right; float: right'>µØÍ¼×´Ì¬£º</div>
+                    </td>
+                    <td>
+                             <input id="t_mapstasus" name="t_mapstasus" type="text" ltype="select" ligerui="{width:196,data:[{id:'0',text:'È«²¿'},{id:'1',text:'ÒÑ±êµØÍ¼'},{id:'2',text:'Î´±êµØÍ¼'}]}"  /></td>
+           
+                     
+                 
+                    
+
+                    <td>
+                        <div style='width: 60px; text-align: right; float: right'></div>
+                    </td>
+                    <td>
+                        <div style='width: 100px; float: left'>
+                           
+                        </div>
+                        <div style='width: 98px; float: left'>
+                            
                         </div>
                     </td>
                 </tr>

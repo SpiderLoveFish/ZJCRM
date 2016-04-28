@@ -343,13 +343,29 @@ namespace XHD.CRM.Data
 
                 if (!string.IsNullOrEmpty(request["qq"]))
                     serchtxt += " and QQ like N'%" + PageValidate.InputText(request["qq"], 255) + "%'";
-
+                if (!string.IsNullOrEmpty(request["cus_sourse"]))
+                    serchtxt += " and CustomerSource like N'%" + PageValidate.InputText(request["cus_sourse"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["WXZHT"]))
+                    serchtxt += " and WXZT_NAME like N'%" + PageValidate.InputText(request["WXZHT"], 255) + "%'";
+               
                 string keyword = PageValidate.InputText(request["keyword"], 500);
                 if (!string.IsNullOrEmpty(keyword) && keyword != "输入关键词搜索地址、描述、备注")
                 {
                     serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
                 }
-
+                string t_mapstasus = PageValidate.InputText(request["t_mapstasus"], 50);
+                if (!string.IsNullOrEmpty(t_mapstasus))
+                {
+                    if (t_mapstasus == "已标地图")
+                    serchtxt += " and isnull(xy,'')!='' ";
+                    else if (t_mapstasus == "未标地图")
+                        serchtxt += " and isnull(xy,'')='' ";
+                }
+                string keyword1 = PageValidate.InputText(request["keyword1"], 500);
+                if (!string.IsNullOrEmpty(keyword1) && keyword1 != "输入关键词搜索")
+                {
+                    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword1);
+                }
                 if (!string.IsNullOrEmpty(request["customertype"]))
                     serchtxt += " and CustomerType_id = " + int.Parse(request["customertype_val"]);
 
@@ -361,7 +377,7 @@ namespace XHD.CRM.Data
 
                 if (!string.IsNullOrEmpty(request["T_Community"]))
                     serchtxt += " and Community_id = " + int.Parse(request["T_Community_val"]);
-
+               
                 if (!string.IsNullOrEmpty(request["T_Towns"]))
                     serchtxt += " and Towns_id = " + int.Parse(request["T_Towns_val"]);
 
