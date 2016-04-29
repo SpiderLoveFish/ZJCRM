@@ -102,7 +102,11 @@ namespace XHD.CRM.Data
                     ccpc.Add(model);
                 }
             }
-
+            //最後計算
+            if (request["Action"] == "savetotal")
+            { 
+               
+            }
             if (request["Action"] == "getcustomer")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);

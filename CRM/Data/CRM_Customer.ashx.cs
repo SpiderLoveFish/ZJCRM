@@ -300,7 +300,17 @@ namespace XHD.CRM.Data
 
                 }
             }
+            if (request["Action"] == "IsExistaddress")
+            {
+                string address = PageValidate.InputText(request["address"], 500);
+                DataSet codeds = customer.GetList(" address='" + address + "' ");
+                //and id!=" + PageValidate.InputText(request["cid"], 50) + " ");
+                if (codeds.Tables[0].Rows.Count > 0)
+                {
+                    context.Response.Write("false:address");
 
+                }
+            }
             if (request["Action"] == "grid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);

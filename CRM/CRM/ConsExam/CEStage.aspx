@@ -23,6 +23,7 @@
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
         var manager = "";
+        var szDevIP = "";
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
@@ -68,6 +69,24 @@
                      }
                  },
                         { display: '状态', name: 'Stage_icon', width: 80, align: 'left' },
+                           {
+                               display: '摄像头', name: 'CompName', width: 80, align: 'left', render: function (item) {
+
+                                   var html;
+                                    if (item.CompName == "无") {
+
+                                       html = item.CompName;
+                                    }
+                                    else  {
+                                        html = "<div style='color:#FF0000 '>";
+                                        if (item.Scoring)
+                                            html += '有-'+item.CompName;
+                                        html += "</div>";
+                                    }
+                               
+                                   return html;
+                               }
+                           },
                 { display: '备注', name: 'Remarks', width: 200, align: 'left' }
 
                 ],
@@ -238,7 +257,16 @@
         function add() {
             f_openWindow("crm/ConsExam/CEStage_add.aspx", "新增客户", 700, 330);
         }
-
+        //千里眼
+        function ipcam() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindowview("crm/IPCam/view.aspx?cid=" + row.CustomerID + "&IPstyle=1", "千里眼", 800, 550);
+            } else {
+                $.ligerDialog.warn('请选择客户！');
+            }
+        }
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();

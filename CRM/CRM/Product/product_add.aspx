@@ -133,6 +133,16 @@
             }
         }
 
+        function f_saveSelect() {
+            if ($(form1).valid()) {
+                var arr = [];//getparastr("id") 代表不同的ID，比如bid,pid,cid
+                arr.push(UE.getEditor('editor').getContent());
+                var sendtxt = "&Action=save&id=" + getparastr("id") + "&T_content=" + escape(arr); //compname预算用到的部件
+                return $("form :input").fieldSerialize() + sendtxt + "&style=" + getparastr("style") + "&AddType=" + getparastr("type") + "&compname=" + getparastr("compname");
+            }
+
+
+        }
 
         function f_save() {
                         if ($(form1).valid()) {

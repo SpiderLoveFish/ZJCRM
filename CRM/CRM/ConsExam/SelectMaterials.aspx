@@ -188,11 +188,11 @@
         function f_openWindow(url, title, width, height) {
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
-                        {
-                            text: '保存', onclick: function (item, dialog) {
-                                f_save(item, dialog);
-                            }
-                        },
+                        //{
+                        //    text: '保存', onclick: function (item, dialog) {
+                        //        f_save(item, dialog);
+                        //    }
+                        //},
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();

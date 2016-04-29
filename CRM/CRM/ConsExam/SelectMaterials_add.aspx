@@ -187,7 +187,13 @@
                 $("#maingrid4").ligerGetGridManager().onResize();
             });
         }
-
+        doserch()
+        {
+            function doserch() {
+                var manager = $("#maingrid4").ligerGetGridManager();
+                manager.GetDataByURL("../../data/PurchaseList.ashx?Action=tempgrid&cid=" + getparastr("cid") + "&stext=" + $("#stext").val());
+            }
+        }
         //提交
         function Submit(id)
         {
@@ -284,7 +290,7 @@
 
         }
         function addcl() {
-            f_openWindow("../../crm/product/product_add.aspx?type=SelectMat&cid=" + getparastr("cid"), "新增材料档案", 800, 500);
+            f_openWindow("../../crm/product/product_add.aspx?type=SelectMat&id=" + getparastr("cid"), "新增材料档案", 800, 500);
 
 
         }
@@ -345,11 +351,42 @@
             f_load();
             dialog.close();
         }
+        //
+        function f_save()
+        {
+            //var sendtxt = "&Action=savetotal";
+            //return $("form :input").fieldSerialize() + sendtxt;
+        }
+
         //添加自定义材料
-        function f_save(item, dialog)
+        function f_saveselect(item, dialog)
         {
            
-           dialog.frame.f_select();
+            var issave = dialog.frame.f_saveSelect();
+            if (issave) {
+
+                top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                $.ajax({
+                    url: "../../data/Crm_product.ashx", type: "POST",
+                    data: issave,
+                    success: function (responseText) {
+                        if (responseText == "false:code") {
+                            top.$.ligerDialog.error("物料代码重复，请重新填写！");
+                            top.$.ligerDialog.closeWaitting();
+                        }
+                        else {
+                            dialog.close();
+                            top.$.ligerDialog.closeWaitting();
+                            f_load();
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+                        top.$.ligerDialog.error('操作失败！');
+                    }
+                });
+
+            }
 
         }
 
@@ -380,7 +417,7 @@
                 width: width, height: height, title: title, url: url, buttons: [
                         {
                             text: '保存', onclick: function (item, dialog) {
-                                f_save(item, dialog);
+                                f_saveselect(item, dialog);
                             }
                         },
                         {

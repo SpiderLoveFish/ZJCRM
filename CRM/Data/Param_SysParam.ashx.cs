@@ -98,6 +98,31 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+
+            if (request["Action"] == "formIPCam")
+            {
+                string comp = PageValidate.InputText(request["comp"], 50);
+                string strwhere = "";
+                string IPstyle = PageValidate.InputText(request["IPstyle"], 50);
+                if (IPstyle == "1")
+                {
+                    if (!string.IsNullOrEmpty(comp) && comp != "null")
+                    {
+                        strwhere = " CustomerID=" + int.Parse(request["CustomerID"]) + " AND CompName='" + comp + "'";
+                    }
+                    else
+                    { strwhere = " CustomerID=" + int.Parse(request["CustomerID"]) + ""; }
+
+                }
+                else if (IPstyle == "0")
+                { strwhere = " 1=1"; }
+                DataSet ds = psp.GetIPCamList(strwhere, IPstyle);
+
+                string dt = Common.DataToJson.DataToJSON(ds);
+
+                context.Response.Write(dt);
+            }
+
             //save
             if (request["Action"] == "save")
             {

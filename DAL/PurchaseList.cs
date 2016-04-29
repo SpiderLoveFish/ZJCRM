@@ -515,7 +515,8 @@ namespace XHD.DAL
              strSql.Append(" )PurchaseList ");
             strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM PurchaseList ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-            strSql1.Append(" select count(ID) FROM PurchaseList ");
+            strSql1.Append(" select count(1) FROM PurchaseList A");
+            strSql1.Append("  INNER JOIN dbo.CRM_product B ON A.product_id=B.product_id AND A.category_id=B.category_id ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);

@@ -16,7 +16,9 @@
     <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
-
+       <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
+   <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+   
     <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
@@ -45,8 +47,36 @@
                 $("#T_jhrq").val(formatTimebytype(myDate.getDate(), "yyyy-MM-dd"));
                 $('#T_company').ligerComboBox({ width: 180, onBeforeOpen: f_selectContact });
             }
-            
+            toolbar();
         })
+
+        function toolbar() {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=170&rnd=" + Math.random(), function (data, textStatus) {
+                //alert(data);
+                var items = [];
+                var arr = data.Items;
+                for (var i = 0; i < arr.length; i++) {
+                    arr[i].icon = "../../" + arr[i].icon;
+                    items.push(arr[i]);
+                }
+          
+                $("#toolbar").ligerToolBar({
+                    items: items
+
+                });
+                menu = $.ligerMenu({
+                    width: 120, items: getMenuItems(data)
+                });
+
+               
+            });
+        }
+
+        function edit()
+        {
+            $("#T_SpecialScore").ligerGetTextBoxManager().setEnabled();
+        }
+
         function f_save() {
             //if ($('#T_employee_sg').val == "" || $('#T_employee_sg').val == null)
             //{
@@ -158,6 +188,11 @@
 </head>
 <body>
     <form id="form1" onsubmit="return false">
+         <div>
+            <div id="toolbar"></div>
+              
+      
+  
         <input type="hidden" id="h_address" value="" />
         <table style="width: 550px; margin: 5px;" class='bodytable1'>
             <tr>
@@ -227,7 +262,7 @@
                     <div style="width: 80px; text-align: right; float: right">∏Ωº”∑÷÷µ£∫</div>
                 </td>
                 <td>
-                      <input id="T_SpecialScore" name="T_SpecialScore" type="text"  ltype="text" validate="{required:false}" style="width: 180px" />
+                      <input id="T_SpecialScore" name="T_SpecialScore" type="text"  ltype="text" validate="{required:false}" ligerui="{width:180,disabled:true}" />
              </td>
             </tr>
                   <tr>
@@ -254,7 +289,7 @@
             </tr>
         </table>
 
-
+          </div>
     </form>
 </body>
 </html>

@@ -265,6 +265,29 @@ namespace XHD.DAL
 			}
 			return DbHelperSQL.Query(strSql.ToString());
 		}
+        /// <summary>
+        /// IPstyle 1客户 0 公司内部
+		/// </summary>
+        public DataSet GetIPCamList(string strWhere, string IPstyle)
+        {
+            var sb = new System.Text.StringBuilder();
+            if (IPstyle == "1")
+            {
+                sb.AppendLine("        SELECT A.CustomerID,A.szDevIP,A.szAuthAcc,A.szAuthPwd,A.CompName,A.IPstyle,A.g_DevStr");
+                sb.AppendLine(",B.* FROM dbo.IPCam A");
+                sb.AppendLine("INNER JOIN  dbo.CRM_Customer B ON A.CustomerID=B.id");
+            }
+            else if (IPstyle == "0")
+            {
+                sb.AppendLine("SELECT * FROM dbo.IPCam");
+            }
+			if(strWhere.Trim()!="")
+			{
+                sb.Append(" where " + strWhere);
+			}
+            return DbHelperSQL.Query(sb.ToString());
+		}
+
 
 		/// <summary>
 		/// 获得前几行数据

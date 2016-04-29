@@ -114,6 +114,12 @@ namespace XHD.BLL
 		{
 			return dal.GetList(strWhere);
 		}
+
+        public DataSet GetIPCamList(string strWhere, string IPstyle)
+        {
+            return dal.GetIPCamList(strWhere,IPstyle);
+        }
+
 		/// <summary>
 		/// 获得前几行数据
 		/// </summary>

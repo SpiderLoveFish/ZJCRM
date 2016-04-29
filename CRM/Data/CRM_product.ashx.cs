@@ -173,7 +173,7 @@ namespace XHD.CRM.Data
                         if (AddType == "SelectMat")//工地选材
                         {
                             BLL.PurchaseList pl = new BLL.PurchaseList();
-                            int customerid = int.Parse(request["cid"]);
+                            int customerid = int.Parse(request["id"]);
                             string pro_id = ccp.GetList(" c_code='" + c_code + "'").Tables[0].Rows[0]["product_id"].ToString(); 
                             //  if (pid.Length > 1) pid = pid.Substring(1);
                             pl.InsertList(customerid, pro_id, emp_id.ToString(),"ALL");
@@ -182,7 +182,7 @@ namespace XHD.CRM.Data
                         else if (AddType == "Selectpur")//采购
                             {
                                 BLL.Purchase_Detail pl = new BLL.Purchase_Detail();
-                                string bpid = PageValidate.InputText(request["bid"], 50);
+                                string bpid = PageValidate.InputText(request["id"], 50);
                                 string pro_id = ccp.GetList(" c_code='" + c_code + "'").Tables[0].Rows[0]["product_id"].ToString();
                                 //  if (pid.Length > 1) pid = pid.Substring(1);
                                 pl.Addlist(bpid, pro_id);
@@ -191,7 +191,7 @@ namespace XHD.CRM.Data
                         {
 
                             BLL.Budge_BasicDetail bbd = new BLL.Budge_BasicDetail();
-                            string bbid = PageValidate.InputText(request["bid"], 50);
+                            string bbid = PageValidate.InputText(request["id"], 50);
                             string comp = PageValidate.InputText(request["compname"], 250);  //部件
                             string pro_id = ccp.GetList(" c_code='" + c_code + "'").Tables[0].Rows[0]["product_id"].ToString();
                             //  if (pid.Length > 1) pid = pid.Substring(1);
@@ -203,7 +203,7 @@ namespace XHD.CRM.Data
                         else if (AddType == "Selectpick")//领料
                         {
                             BLL.OutStock_Detail OSD = new BLL.OutStock_Detail();
-                            string CKID = PageValidate.InputText(request["pid"], 50); 
+                            string CKID = PageValidate.InputText(request["id"], 50); 
                             string pro_id = ccp.GetList(" c_code='" + c_code + "'").Tables[0].Rows[0]["product_id"].ToString();
                             //  if (pid.Length > 1) pid = pid.Substring(1);
                             OSD.Addlist(CKID,pro_id);

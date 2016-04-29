@@ -216,11 +216,60 @@
             }
         }
 
-    
+        var activeDialogs = null;
+        function f_openWindowselect(url, title, width, height) {
+            var dialogOptions = {
+                zindex: 9002,
+                width: width, height: height, title: title, url: url, buttons: [
+                        {
+                            text: '保存', onclick: function (item, dialog) {
+                                f_saveselect(item, dialog);
+                            }
+                        },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                f_close(item, dialog);
+                            }
+                        }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialogs = parent.jQuery.ligerDialog.open(dialogOptions);
+        } //关闭刷新
+        function f_close(item, dialog) {
+            fload();
+            dialog.close();
+        }
         function addcl() {
-            f_openWindow("../../crm/product/product_add.aspx?type=Selectpick&cid=" + $("#T_Pid").val(), "新增材料档案", 800, 500);
+            f_openWindowselect("../../crm/product/product_add.aspx?type=Selectpick&id=" + $("#T_Pid").val(), "新增材料档案", 800, 500);
 
 
+        }
+        function f_saveselect(item, dialog) {
+            var issave = dialog.frame.f_saveSelect();
+            if (issave) {
+
+                top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                $.ajax({
+                    url: "../../data/Crm_product.ashx", type: "POST",
+                    data: issave,
+                    success: function (responseText) {
+                        if (responseText == "false:code") {
+                            top.$.ligerDialog.error("物料代码重复，请重新填写！");
+                            top.$.ligerDialog.closeWaitting();
+                        }
+                        else {
+                            dialog.close();
+                            top.$.ligerDialog.closeWaitting();
+                            fload();
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+                        top.$.ligerDialog.error('操作失败！');
+                    }
+                });
+
+            }
         }
         function toolbar() {
             $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=165&rnd=" + Math.random(), function (data, textStatus) {

@@ -358,6 +358,22 @@
                 dialog.close();
             }
         }
+
+        function checkVal(id) {
+            $.ajax({
+                url: "../../data/CRM_Customer.ashx", type: "POST",
+                data: { Action: "IsExistaddress", cid: getparastr("cid"), address: document.getElementById(id).value, rnd: Math.random() },
+                success: function (responseText) {
+                    if (responseText == "false:address") {
+                        top.$.ligerDialog.alert(document.getElementById(id).value + '---地址已经存在！');
+                    }
+                },
+                error: function () {
+
+                    // top.$.ligerDialog.error('操作失败！');
+                }
+            });
+        }
         function getVal(id) {
             $.ajax({
                 url: "../../data/CRM_Customer.ashx", type: "POST",
@@ -412,7 +428,7 @@
                         <input id="T_Towns" name="T_Towns" type="text" style="width: 96px;" />
                     </div>--%>
                     <div style="width: 196px; float: left">
-                        <input id="T_Community" name="T_Community" type="text" validate="{required:true}" />
+                        <input id="T_Community" name="T_Community" type="text" validate="{required:true}"  />
                     </div>
                 </td>
                 <td>
@@ -464,7 +480,7 @@
                 </td>
                 <td colspan="3">
                        <div style="float: left; width: 435px;">
-                    <input type="text" id="T_address" name="T_address" ltype="text" ligerui="{width:430}" />
+                    <input type="text" id="T_address" name="T_address" ltype="text" ligerui="{width:430}" onblur="checkVal(this.id)"/>
                      </div> 
                 <div style="float: left; width: 40px;">
                         <input type="button" value="地图标注" style='width: 55px; height: 24px'  onclick="map()"/>
