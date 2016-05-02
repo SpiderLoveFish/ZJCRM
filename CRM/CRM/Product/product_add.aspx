@@ -170,7 +170,7 @@
                     }
                     //alert(obj.constructor); //String ¹¹Ôìº¯Êý
                     $("#T_product_name").val(obj.product_name);
-                    $("#T_product_unit").val(obj.unit);
+                   // $("#T_product_unit").val(obj.unit);
                     $("#T_specifications").val(obj.specifications);
                     $("#T_remarks").val(obj.remarks);
                     $("#T_url").val(obj.url);
@@ -179,11 +179,14 @@
                     $("#T_product_category").ligerGetComboBoxManager().selectValue(obj.category_id);
                     $("#T_nbj").val(toMoney(obj.InternalPrice));
                     $("#T_xh").val(obj.ProModel);
-                    $("#T_gys").val(obj.Suppliers);
+                   // $("#T_gys").val(obj.Suppliers);
                     $("#T_xl").val(obj.ProSeries);
                     $("#T_zt").val(obj.Themes);
                     $("#T_pp").val(obj.Brand);
                     $("#C_code").val(obj.C_code);
+                    $("#T_product_unit").ligerComboBox({ width: 280, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random(), emptyText: '£¨¿Õ£©', initValue: obj.unit });
+                    $("#T_gys").ligerComboBox({ width: 280, url: "../../data/Crm_product.ashx?Action=combogys&rnd=" + Math.random(), emptyText: '£¨¿Õ£©', initValue: obj.Suppliers });
+                    
                 }
             });
         }

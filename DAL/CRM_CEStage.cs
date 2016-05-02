@@ -348,6 +348,7 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
             strSql.Append("select id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,address,sum_Score,TotalScorce,Scoring,Jh_date,sl,cgsl ");
+            strSql.Append(" ,comp,szDevIP ");
             strSql.Append(" FROM V_CRM_CEStage ");
 			if(strWhere.Trim()!="")
 			{
@@ -525,6 +526,70 @@ namespace XHD.DAL
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
            
             return DbHelperSQL.Query(strSql.ToString());
+        }
+
+
+        /// <summary>
+        /// 增加一条数据
+        /// </summary>
+        public int AddIPCam(string cid, string szDevIP, string acc, string pwd, string str, string ipstyle, string comp)
+        {
+           var sb = new System.Text.StringBuilder();
+            sb.AppendLine("INSERT INTO dbo.IPCam ");
+            sb.AppendLine("        ( CustomerID , ");
+            sb.AppendLine("          szDevIP , ");
+            sb.AppendLine("          szAuthAcc , ");
+            sb.AppendLine("          szAuthPwd , ");
+            sb.AppendLine("          g_DevStr , ");
+            sb.AppendLine("          IPstyle , ");
+            sb.AppendLine("          CompName ");
+            sb.AppendLine("        ) ");
+            sb.AppendLine("VALUES  ( "+cid+" , -- CustomerID - int ");
+            sb.AppendLine("          '" + szDevIP + "' , -- szDevIP - varchar(50) ");
+            sb.AppendLine("          '"+acc+"' , -- szAuthAcc - varchar(10) ");
+            sb.AppendLine("          '"+pwd+"' , -- szAuthPwd - varchar(50) ");
+            sb.AppendLine("          '"+str+"' , -- g_DevStr - varchar(100) ");
+            sb.AppendLine("          "+ipstyle+" , -- IPstyle - smallint ");
+            sb.AppendLine("          '"+comp+"'  -- CompName - varchar(50) ");
+            sb.AppendLine("        ) ");
+            sb.AppendLine(" ");
+            SqlParameter[] parameters = {
+                                        }; 
+            object obj = DbHelperSQL.GetSingle(sb.ToString(), parameters);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+
+        public bool UpdateIPCam(string cid, string szDevIP, string acc, string pwd, string str, string ipstyle, string comp)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine(" UPDATE   dbo.IPCam ");
+            sb.AppendLine("    SET ");
+            sb.AppendLine("          szDevIP='"+szDevIP+"' , ");
+            //sb.AppendLine("          szAuthAcc , ");
+            //sb.AppendLine("          szAuthPwd , ");
+            //sb.AppendLine("          g_DevStr , ");
+            //sb.AppendLine("          IPstyle , ");
+            sb.AppendLine("          CompName='"+comp+"' ");
+            sb.AppendLine("          ");
+            sb.AppendLine(" where   CustomerID = " + cid + "    ");
+            SqlParameter[] parameters = {
+                                        }; 
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
 		#endregion  ExtensionMethod

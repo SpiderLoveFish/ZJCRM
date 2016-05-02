@@ -120,8 +120,9 @@
                     $("#T_jhrq").val(formatTimebytype(obj.Jh_date, "yyyy-MM-dd"));
                     //状态 
                     $("#T_private").ligerGetComboBoxManager().selectValue(obj.Stage_icon);
-
-                     
+                    
+                    $("#T_devip").val(obj.szDevIP);
+                    $("#T_comp").val(obj.comp);
 
                 }
             });
@@ -267,7 +268,7 @@
             </tr>
                   <tr>
                     
-                        <td>
+                       <td>
                     <div style="width: 80px; text-align: right; float: right">总分数：</div>
                 </td>
                 <td>
@@ -279,13 +280,32 @@
                  <td>
                    
                 </td>
-            </tr><tr id="tr_contact4">
+            </tr> <tr id="tr_contact4">
                 <td>
                     <div style="width: 80px; text-align: right; float: right">备注：</div>
                 </td>
                 <td colspan="3">
 
                     <input id="T_remarks" name="T_remarks" type="text" ltype="text" ligerui="{width:490}" /></td>
+            </tr>
+             <tr>
+                <td colspan="4" class="table_title1">监控设置</td>
+            </tr>
+              <tr>
+                    
+                       <td>
+                    <div style="width: 80px; text-align: right; float: right">参数ID：</div>
+                </td>
+                <td>
+                    <input id="T_devip" name="T_devip" ltype="text" validate="{required:false}" ligerui="{width:180}"  />
+                  </td>
+                          <td>
+                    <div style="width: 80px; text-align: right; float: right"> 部位 </div>
+                </td> 
+                 <td>
+                       <input id="T_comp" name="T_comp" ltype="text" validate="{required:false}" ligerui="{width:180}"  />
+                
+                </td>
             </tr>
         </table>
 

@@ -198,6 +198,15 @@ namespace XHD.BLL
         {
             return dal.GetListCountScorce(wherestr,out  Total);
          }
+
+        public int AddIPCam(string cid, string szDevIP, string acc, string pwd, string str, string ipstyle, string comp)
+        {
+            return dal.AddIPCam(cid,szDevIP,acc,pwd,str,ipstyle,comp);
+        }
+        public bool UpdateIPCam(string cid, string szDevIP, string acc, string pwd, string str, string ipstyle, string comp)
+        {
+            return dal.UpdateIPCam(cid, szDevIP, acc, pwd, str, ipstyle, comp);
+        }
         #endregion  ExtensionMethod
     }
 }

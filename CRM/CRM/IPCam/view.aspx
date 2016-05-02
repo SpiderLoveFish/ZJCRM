@@ -14,7 +14,13 @@
         <%--<script src="../../lib/jquery.form.js" type="text/javascript"></script>--%>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
       <script src="../lib/jquery.form.js" type="text/javascript"></script>
-
+    
+<style type="text/css">
+.btn1 {    font-size: 9pt;    color: #003399;    border: 1px #003399 solid;    color: #006699;    border-bottom: #93bee2 1px solid;    border-left: #93bee2 1px solid;    border-right: #93bee2 1px solid;    border-top: #93bee2 1px solid;    background-image: url(../images/bluebuttonbg.gif);    background-color: #e8f4ff;    cursor: hand;    font-style: normal;    width: 60px;    height: 22px;}.btn_mouseout {    BORDER-RIGHT: #7EBF4F 1px solid;     PADDING-RIGHT: 2px;     BORDER-TOP: #7EBF4F 1px solid;     PADDING-LEFT: 2px;     FONT-SIZE: 12px;     FILTER: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#B3D997);     BORDER-LEFT: #7EBF4F 1px solid;     CURSOR: hand;     COLOR: black;     PADDING-TOP: 2px;     BORDER-BOTTOM: #7EBF4F 1px solid;}.btn_mouseover {    BORDER-RIGHT: #7EBF4F 1px solid;     PADDING-RIGHT: 2px;     BORDER-TOP: #7EBF4F 1px solid;     PADDING-LEFT: 2px;     FONT-SIZE: 12px;     FILTER: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#CAE4B6);     BORDER-LEFT: #7EBF4F 1px solid;     CURSOR: hand;     COLOR: black;     PADDING-TOP: 2px;     BORDER-BOTTOM: #7EBF4F 1px solid;} .btn_mouseup {    BORDER-RIGHT: #2C59AA 1px solid;     PADDING-RIGHT: 2px;     BORDER-TOP: #2C59AA 1px solid;     PADDING-LEFT: 2px;     FONT-SIZE: 12px;     FILTER: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#C3DAF5);     BORDER-LEFT: #2C59AA 1px solid;     CURSOR: hand;     COLOR: black;     PADDING-TOP: 2px;     BORDER-BOTTOM: #2C59AA 1px solid;}HTML：
+    .auto-style1 {
+        width: 794px;
+    }
+</style>
     <script type="text/javascript">
         var VER_AX_LOCALE = "1.1.15.174";//the version of the ActiveX
         var szDevIP = "VSTB065527EJTVD"; //serial ID or ip of ip camera
@@ -65,7 +71,7 @@
             remote.Width = nImgW;  //width of the window
             remote.Height = nImgH; //height of the window
             //AddDev4(IP Camera mode (903:M; 902:F; 901:E; 904:V; 905:A),LAN,serial ID or IP, HTTP port, display name, account,password,channel)   	
-            remote.ShowToolBar = 1;//whether to show toolbar
+            remote.ShowToolBar = 0;//whether to show toolbar
             remote.AddDev4(nDevType, bInLan, szDevIP, nPort, szDevName, szAuthAcc, szAuthPwd, 1);
             remote.Listen = 1;//whether to play soound
             remote.TurnImg = 0;   //whether reverse video
@@ -129,64 +135,40 @@
        
     </script>
 </head>
-<body  ">
-    <form id="form1" onsubmit="return false">
-         <table width="100%"  border="0" align="center">
-        <tr>
-          <td align="center"></td>
-        </tr>
+<body style="margin:0px;padding:0px;margin-top:0px;"> 
+         <table width="100%"  border="0" align="center" cellpadding="0" cellspacing="0" >
         <tr>
           <td>
-            <table width="800" border="0" Align="left">
+            <table width="100%" border="0" Align="left">
               <tr>
-                <td  align="center">
-                  <OBJECT id="remote" name="remote" classid="clsid:1E125331-B4E3-4EE3-B3C1-24AD1A3E5DEB" WIDTH="320" HEIGHT="311">
+                <td  align="center" class="auto-style1">
+                  <OBJECT id="remote" name="remote" classid="clsid:1E125331-B4E3-4EE3-B3C1-24AD1A3E5DEB" WIDTH="853" HEIGHT="480">
                     <FONT COLOR=red SIZE=5>监控插件未安装，请点击<a href='http://cn-download.eyecloud.so/download/application/ipcamax.exe'>这里</a>进行下载，并安装.</FONT>
                   </OBJECT>
                 </td>
               </tr>
               <tr>
-                <td>
-                  <table width="285" border="0" align="center" id="tbPTZ" name="tbPTZ">
+                <td class="auto-style1">
+                 <table width="285" border="0" align="center" id="tbPTZ" name="tbPTZ">
                     <tr>
-                      <td width="101"><table width="55" border="0" align="center">
+                      <td width="134"><table width="55" border="0" align="center">
                           <tr>
-                            <td width="31%">&nbsp;</td>
-                            <td width="18%"><input type="button" name="Up" value="UP"  onMouseDown="setAction(0,31)" onMouseUp="setAction(-1,0)" onMouseOut="setAction(-1,0)""></td>
-                            <td width="51%">&nbsp;</td>
+                            <td width="31%"><input type="button" name="Left" value="左" onMouseDown="setAction(1,31)" onMouseUp="setAction(-1,0)" onMouseOut="setAction(-1,0)" class="btn1" ></td>
+                            <td width="18%"><input type="button" name="Up" value="上"  onMouseDown="setAction(0,31)" onMouseUp="setAction(-1,0)" onMouseOut="setAction(-1,0)" class="btn1"></td>
+                            <td width="51%"><input type="button" name="Down" value="下" onMouseDown="setAction(3,31)" onMouseUp="setAction(-1,0)" onMouseOut="setAction(-1,0)"  class="btn1"></td>
+                            <td width="51%"><input type="button" name="Right" value="右" onMouseDown="setAction(2,31)" onMouseUp="setAction(-1,0)" onMouseOut="setAction(-1,0)" class="btn1" ></td>
                           </tr>
-                          <tr>
-                            <td><input type="button" name="Left" value="Left" onMouseDown="setAction(1,31)" onMouseUp="setAction(-1,0)" onMouseOut="setAction(-1,0)" ></td>
-                            <td align="center" valign="middle">&nbsp;</td>
-                            <td><input type="button" name="Right" value="Right" onMouseDown="setAction(2,31)" onMouseUp="setAction(-1,0)" onMouseOut="setAction(-1,0)" ></td>
-                          </tr>
-                          <tr>
-                            <td>&nbsp;</td>
-                            <td><input type="button" name="Down" value="Down" onMouseDown="setAction(3,31)" onMouseUp="setAction(-1,0)" onMouseOut="setAction(-1,0)" ></td>
-                            <td>&nbsp;</td>
-                          </tr>
-                      </table></td>
-                      <td width="167"><table width="60" border="0" align="center">
-                          <tr>
-                            <td><input type="button" name="Zoom-" value="Zoom+" onMouseDown="setAction(6, 31)" onMouseUp="setAction(-1, 0)" onMouseOut="setAction(-1,0)"></td>
-                            <td><input type="button" name="Zoom+" value="Zoom-" onMouseDown="setAction(7, 31)" onMouseUp="setAction(-1, 0)" onMouseOut="setAction(-1,0)" ></td>
-                          </tr>
-                          <tr>
-                            <td><input type="button" name="Focus-" onMouseDown="setAction(4, 31)" onMouseUp="setAction(-1, 0)" onMouseOut="setAction(-1,0)" value="Focus+"></td>
-                            <td><input type="button" name="Focus+" onMouseDown="setAction(5, 31)" onMouseUp="setAction(-1, 0)" onMouseOut="setAction(-1,0)" value="Focus-"></td>
-                          </tr>
-                      </table></td>
-                      <td width="10">&nbsp;</td>
+                          </table></td>
+                      <td width="60"><input type="button" name="Capture"  value="拍照" onClick="remote.Capture('')"  class="btn1"></td>
+                     
+                           <td width="60"><input type="button" name="Sx"  value="重新连接" onclick="location.reload();"  class="btn1"></td>
+                        
+                          <%--<img src="images/capture.gif" width="34" onClick="remote.Capture('')"></td>--%>
+                      <td width="77">&nbsp;</td>
                     </tr>
                 </table></td>
-              </tr>
-            
-          </table></td>
         </tr>
-        <tr>
-          <td align="center"></td>
-        </tr>
-    </table> 
+        </table> 
     	
 
     </form>

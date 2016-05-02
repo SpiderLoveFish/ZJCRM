@@ -427,6 +427,21 @@ namespace XHD.DAL
         }
 
 
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetList_gys(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("SELECT * FROM dbo.CgGl_Gys_Main WHERE IsDel='N' ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" AND " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+
         #endregion  Method
     }
 }

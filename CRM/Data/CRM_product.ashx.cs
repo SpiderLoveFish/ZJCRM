@@ -224,6 +224,25 @@ namespace XHD.CRM.Data
                 }
             }
 
+            if (request["Action"] == "combogys")
+            {
+            
+                DataSet ds = ccp.GetList_gys(""); ;
+
+                StringBuilder str = new StringBuilder();
+
+                str.Append("[");
+                //str.Append("{id:0,text:'无'},");
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    str.Append("{id:" + ds.Tables[0].Rows[i]["id"].ToString() + ",text:'" + ds.Tables[0].Rows[i]["Name"] + "'},");
+                }
+                str.Replace(",", "", str.Length - 1, 1);
+                str.Append("]");
+
+                context.Response.Write(str);
+            }
+
             if (request["Action"] == "grid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
@@ -244,7 +263,10 @@ namespace XHD.CRM.Data
                     serchtxt += string.Format(" and category_id={0}", int.Parse(request["categoryid"]));
 
                 if (!string.IsNullOrEmpty(request["stext"]))
-                    serchtxt += " and product_name like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
+                {
+                    serchtxt += " and ( product_name like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
+                    serchtxt += " or  C_code like N'%" + PageValidate.InputText(request["stext"], 255) + "%' )";
+                }
 
                 //权限
                 DataSet ds = ccp.GetList(PageSize, PageIndex, serchtxt, sorttext, out Total);

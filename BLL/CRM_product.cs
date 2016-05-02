@@ -239,8 +239,11 @@ namespace XHD.BLL
         {
             return dal.Get_code(catid);
         }
-      
-        
+
+        public DataSet GetList_gys(string strWhere)
+        {
+            return dal.GetList_gys(strWhere);
+        }
 
         #endregion  Method
     }

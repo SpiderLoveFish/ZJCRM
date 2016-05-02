@@ -39,7 +39,8 @@ namespace XHD.CRM.Data
                 //model.parentid = int.Parse(parentid);
                 //model.product_category = Common.PageValidate.InputText(request["T_category_name"], 250);
                 //model.product_icon = Common.PageValidate.InputText(request["T_category_icon"], 250);
-                model.CustomerID = int.Parse(Common.PageValidate.InputText(request["T_companyid"], 50));
+                int cid = int.Parse(Common.PageValidate.InputText(request["T_companyid"], 50));
+                model.CustomerID = cid;
                 model.CustomerName = Common.PageValidate.InputText(request["T_company"], 250);
                 model.sgjl = Common.PageValidate.InputText(request["T_employee_sg"], 250);
                 model.sgjlid = StringToInt(Common.PageValidate.InputText(request["T_employee1_sg"], 50));
@@ -51,6 +52,8 @@ namespace XHD.CRM.Data
                 model.ywyid = StringToInt(Common.PageValidate.InputText(request["T_employee1"], 50));
                 model.Stage_icon = Common.PageValidate.InputText(request["T_private"], 250);
                 model.Jh_date = DateTime.Parse(Common.PageValidate.InputText(request["T_jhrq"], 50));
+                string comp = Common.PageValidate.InputText(request["T_comp"], 250);
+                string devip = Common.PageValidate.InputText(request["T_devip"], 250);
                 string id = PageValidate.InputText(request["id"], 50);
                 //string pid = PageValidate.InputText(request["T_category_parent_val"], 50);
                 model.Remarks = Common.PageValidate.InputText(request["T_remarks"], 250);
@@ -68,7 +71,8 @@ namespace XHD.CRM.Data
                        bool aa= ccpc.Update(model,StringToInt(id));
                     }
 
-
+                    ccpc.UpdateIPCam(cid.ToString(), devip, "admin", "888888", "", "1", comp);
+               
                 //        //日志
                 //        C_Sys_log log = new C_Sys_log();
 
@@ -100,6 +104,8 @@ namespace XHD.CRM.Data
                    // model.isDelete = 0;
                     else
                     ccpc.Add(model);
+
+                    ccpc.AddIPCam(cid.ToString(), devip, "admin", "888888","","1",comp);
                 }
             }
             //最後計算
