@@ -97,6 +97,9 @@
                     $("#T_xy").val(obj.xy);
                     $("#T_QQ").val(obj.QQ);
                     $("#T_JKDZ").val(obj.JKDZ);
+                    $("#T_hxt").val(obj.hxt);
+                    $("#T_ybqjt").val(obj.ybqjt);
+                    $("#T_jgqjt").val(obj.jgqjt);
 
                     if (obj.Department && obj.Employee)
                         fillemp(obj.Department, obj.Department_id, obj.Employee, obj.Employee_id);
@@ -416,7 +419,7 @@
                     <div style="width: 80px; text-align: right; float: right">客户电话：</div>
                 </td>
                 <td>
-                    <input id="T_company_tel" name="T_company_tel" type="text" ltype="text" ligerui="{width:196}" validate="{required:true}" onblur="getVal(this.id)" /></td>
+                    <input id="T_company_tel" name="T_company_tel" type="text" ltype="text" ligerui="{width:196}" validate="{required:true}" onBlur="getVal(this.id)" /></td>
             </tr>
             <tr>
 
@@ -480,7 +483,7 @@
                 </td>
                 <td colspan="3">
                        <div style="float: left; width: 435px;">
-                    <input type="text" id="T_address" name="T_address" ltype="text" ligerui="{width:430}" onblur="checkVal(this.id)"/>
+                    <input type="text" id="T_address" name="T_address" ltype="text" ligerui="{width:430}" onBlur="checkVal(this.id)"/>
                      </div> 
                 <div style="float: left; width: 40px;">
                         <input type="button" value="地图标注" style='width: 55px; height: 24px'  onclick="map()"/>
@@ -644,28 +647,30 @@
                     <div style="width: 80px; text-align: right; float: right">QQ号码：</div>
                 </td>
                 <td>
-                     <input type="text" id="T_QQ" name="T_QQ" ltype="text" ligerui="{width:196}" /></td>
-                </td>
-                <td>
-                    <div style="width: 80px; text-align: right; float: right">微信状态：</div>
-                </td>
-                <td>
-                    <input id="T_WXZT_NAME" name="T_WXZT_NAME" type="text" />
-                </td>
+                     <input type="text" id="Text1" name="T_QQ" ltype="text" ligerui="{width:196}" /></td>
+                <td><div style="width: 80px; text-align: right; float: right">微信状态：</div></td>
+                <td><input id="T_WXZT_NAME" name="T_WXZT_NAME" type="text" /></td>
+            </tr>
+             <tr>
+                <td colspan="4" class="table_title1">效果图网址</td>
             </tr>
             <tr>
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">效果图网址：</div>
+                    <div style="width: 80px; text-align: right; float: right">效果图：</div>
                 </td>
-                <td colspan="3">
-                    <input id="T_descript" name="T_descript" type="text" ltype="text" ligerui="{width:490}" /></td>
+                <td>
+                    <input id="T_descript" name="T_descript" type="text" ltype="text" ligerui="{width:196}" /></td>
+                <td><div style="width: 80px; text-align: right; float: right">户型图：</div></td>
+                <td><input id="T_hxt" name="T_hxt" type="text" ltype="text" ligerui="{width:196}" /></td>
             </tr>
              <tr>
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">监控地址：</div>
+                    <div style="width: 80px; text-align: right; float: right">隐蔽全景：</div>
                 </td>
-                <td colspan="3">
-                    <input id="T_JKDZ" name="T_JKDZ" type="text" ltype="text" ligerui="{width:490}" /></td>
+                <td>
+                    <input id="T_JKDZ" name="T_JKDZ" type="text" ltype="text" ligerui="{width:196}" /></td>
+                <td><div style="width: 80px; text-align: right; float: right">竣工全景：</div></td>
+                <td><input id="T_jgqjt" name="T_jgqjt" type="text" ltype="text" ligerui="{width:196}" /></td>
             </tr>
             <tr>
                 <td>

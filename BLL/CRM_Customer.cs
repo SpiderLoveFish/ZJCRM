@@ -309,6 +309,14 @@ namespace XHD.BLL
                     {
                         model.JKDZ = dt.Rows[n]["JKDZ"].ToString();
                     }
+                    if (dt.Rows[n]["hxt"] != null && dt.Rows[n]["hxt"].ToString() != "")
+                    {
+                        model.hxt = dt.Rows[n]["hxt"].ToString();
+                    }
+                    if (dt.Rows[n]["jgqjt"] != null && dt.Rows[n]["jgqjt"].ToString() != "")
+                    {
+                        model.jgqjt = dt.Rows[n]["jgqjt"].ToString();
+                    }
                     modelList.Add(model);
                 }
             }

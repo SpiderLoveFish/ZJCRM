@@ -182,6 +182,8 @@ namespace XHD.CRM.Data
                 model.WXZT_NAME = PageValidate.InputText(request["T_WXZT_NAME"], 50);
                 model.QQ = PageValidate.InputText(request["T_QQ"], 50).Trim(' ');
                 model.JKDZ = PageValidate.InputText(request["T_JKDZ"], 50).Trim(' ');
+                model.hxt = PageValidate.InputText(request["T_hxt"], 50).Trim(' ');
+                model.jgqjt = PageValidate.InputText(request["T_jgqjt"], 50).Trim(' ');
                 string id = PageValidate.InputText(request["id"], 50);
 
                 //DataSet dstel = customer.GetList(" tel=");

@@ -74,6 +74,8 @@ namespace XHD.Model
         private int? _WXZT_ID;
         private string _WXZT_NAME;
         private string _JKDZ;
+        private string _hxt;
+        private string _jgqjt;
 
         /// <summary>
         /// 
@@ -528,6 +530,16 @@ namespace XHD.Model
         {
             set { _JKDZ = value; }
             get { return _JKDZ; }
+        }
+        public string hxt
+        {
+            set { _hxt = value; }
+            get { return _hxt; }
+        }
+        public string jgqjt
+        {
+            set { _jgqjt = value; }
+            get { return _jgqjt; }
         }
 
         #endregion Model

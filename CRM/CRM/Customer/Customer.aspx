@@ -70,11 +70,35 @@
                                return html;
                            }
                        },
+                       {
+                           display: '户型图', width: 40, render: function (item) {
+                               var html;
+                               if (item.hxt !== "") {
+                                   html = "<a href='" + item.hxt + "' target='_blank'>";
+                                   html += "查看";
+                                   html += "</a>";
+                               }
+                               else html = "暂无";
+                               return html;
+                           }
+                       },
+                       {
+                           display: '隐蔽全景', width: 50, render: function (item) {
+                               var html;
+                               if (item.JKDZ !== "") {
+                                   html = "<a href='" + item.JKDZ + "' target='_blank'>";
+                                   html += "查看";
+                                   html += "</a>";
+                               }
+                               else html = "暂无";
+                               return html;
+                           }
+                       },
                          {
-                             display: '监控', width: 40, render: function (item) {
+                             display: '竣工全景', width: 50, render: function (item) {
                                  var html;
-                                 if (item.JKDZ !== "") {
-                                     html = "<a href='" + item.JKDZ + "' target='_blank'>";
+                                 if (item.jgqjt !== "") {
+                                     html = "<a href='" + item.jgqjt + "' target='_blank'>";
                                      html += "查看";
                                      html += "</a>";
                                  }
@@ -464,14 +488,14 @@
         }
 
         function add() {
-            f_openWindow("CRM/Customer/Customer_add.aspx", "新增客户", 660, 530);
+            f_openWindow("CRM/Customer/Customer_add.aspx", "新增客户", 660, 550);
         }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('CRM/Customer/Customer_add.aspx?cid=' + row.id, "修改客户", 660, 530);
+                f_openWindow('CRM/Customer/Customer_add.aspx?cid=' + row.id, "修改客户", 660, 550);
             }
             else {
                 $.ligerDialog.warn('请选择行！');
