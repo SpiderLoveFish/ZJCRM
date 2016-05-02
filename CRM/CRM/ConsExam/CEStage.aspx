@@ -31,6 +31,12 @@
                          display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                          { return (page - 1) * pagesize + rowindex + 1; }
                      },
+                     {
+                         display: '', width: 40, render: function (item) {
+                             var html = "<a href='javascript:void(0)' onclick=view(" + item.id + ")>详情</a>"
+                             return html;
+                         }
+                     },
                     // { display: '客户编号', name: 'CustomerID', width: 50, align: 'left' },
                       { display: '客户姓名', name: 'CustomerName', width: 80, align: 'left' },
                        { display: '客户电话', name: 'tel', width: 100, align: 'left' },
@@ -255,7 +261,19 @@
             }
         }
         function add() {
-            f_openWindow("crm/ConsExam/CEStage_add.aspx", "新增客户", 700, 330);
+            f_openWindow("crm/ConsExam/CEStage_add.aspx", "新增客户", 700, 350);
+        }
+        function view(id) {
+            var dialogOptions = {
+                width: 700, height: 350, title: "详情", url: "crm/ConsExam/CEStage_add.aspx?cid=" + id + "&style=view&rnd=" + Math.random(), buttons: [
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
         //千里眼
         function ipcam() {
@@ -271,7 +289,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("crm/ConsExam/CEStage_add.aspx?cid=" + row.id, "修改客户", 700, 330);
+                f_openWindow("crm/ConsExam/CEStage_add.aspx?cid=" + row.id, "修改客户", 700, 350);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }

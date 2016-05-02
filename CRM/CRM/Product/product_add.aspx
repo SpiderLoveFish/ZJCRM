@@ -184,8 +184,9 @@
                     $("#T_zt").val(obj.Themes);
                     $("#T_pp").val(obj.Brand);
                     $("#C_code").val(obj.C_code);
-                    $("#T_product_unit").ligerComboBox({ width: 280, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random(), emptyText: '£¨¿Õ£©', initValue: obj.unit });
-                    $("#T_gys").ligerComboBox({ width: 280, url: "../../data/Crm_product.ashx?Action=combogys&rnd=" + Math.random(), emptyText: '£¨¿Õ£©', initValue: obj.Suppliers });
+                    //emptyText: '£¨¿Õ£©',
+                    $("#T_product_unit").ligerComboBox({ width: 280, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random(),  initValue: obj.unit });
+                    $("#T_gys").ligerComboBox({ width: 280, url: "../../data/Crm_product.ashx?Action=combogys&rnd=" + Math.random(), initValue: obj.Suppliers });
                     
                 }
             });

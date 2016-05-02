@@ -51,6 +51,12 @@
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                     {
                         display: '', width: 40, render: function (item) {
+                            var html = "<a href='javascript:void(0)' onclick=viewdetail(" + item.product_id + ")>详情</a>"
+                            return html;
+                        }
+                    },
+                    {
+                        display: '', width: 40, render: function (item) {
                             var html = "<a href='javascript:void(0)' onclick=view(" + item.product_id + ")>预览</a>"
                             return html;
                         }
@@ -173,6 +179,18 @@
         function view(id) {
             var dialogOptions = {
                 width: 770, height: 510, title: "选样预览", url: '../view/product_view.aspx?pid=' + id + '&rnd=' + Math.random(), buttons: [
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+        function viewdetail(id) {
+            var dialogOptions = {
+                width: 770, height: 510, title: "查看详情", url: 'crm/product/product_add.aspx?style=' + getparastr("style") + '&pid=' + id + '&rnd=' + Math.random(), buttons: [
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();

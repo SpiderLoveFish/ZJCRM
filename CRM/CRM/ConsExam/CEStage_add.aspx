@@ -47,6 +47,8 @@
                 $("#T_jhrq").val(formatTimebytype(myDate.getDate(), "yyyy-MM-dd"));
                 $('#T_company').ligerComboBox({ width: 180, onBeforeOpen: f_selectContact });
             }
+            if (getparastr("style") == "view") { }
+            else
             toolbar();
         })
 
