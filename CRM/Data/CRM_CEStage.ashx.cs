@@ -127,7 +127,7 @@ namespace XHD.CRM.Data
 
                 string sorttext = " " + sortname + " " + sortorder;
                 string Total;
-                string serchtxt = "1=1";
+                string serchtxt = " isDelete=0";
                serchtxt +=" and id not in(SELECT CustomerID FROM dbo.CRM_CEStage) ";
                if (!string.IsNullOrEmpty(request["company"]))
                {

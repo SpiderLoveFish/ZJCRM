@@ -569,16 +569,39 @@ namespace XHD.DAL
         public bool UpdateIPCam(string cid, string szDevIP, string acc, string pwd, string str, string ipstyle, string comp)
         {
             var sb = new System.Text.StringBuilder();
+
+            sb.AppendLine(" IF EXISTS(SELECT 1 FROM IPCAM WHERE	    CustomerID = " + cid + "  )");
+            sb.AppendLine(" begin");
             sb.AppendLine(" UPDATE   dbo.IPCam ");
             sb.AppendLine("    SET ");
-            sb.AppendLine("          szDevIP='"+szDevIP+"' , ");
+            sb.AppendLine("          szDevIP='" + szDevIP + "' , ");
             //sb.AppendLine("          szAuthAcc , ");
             //sb.AppendLine("          szAuthPwd , ");
             //sb.AppendLine("          g_DevStr , ");
             //sb.AppendLine("          IPstyle , ");
-            sb.AppendLine("          CompName='"+comp+"' ");
+            sb.AppendLine("          CompName='" + comp + "' ");
             sb.AppendLine("          ");
             sb.AppendLine(" where   CustomerID = " + cid + "    ");
+            sb.AppendLine(" end  else begin");
+            sb.AppendLine("INSERT INTO dbo.IPCam ");
+            sb.AppendLine("        ( CustomerID , ");
+            sb.AppendLine("          szDevIP , ");
+            sb.AppendLine("          szAuthAcc , ");
+            sb.AppendLine("          szAuthPwd , ");
+            sb.AppendLine("          g_DevStr , ");
+            sb.AppendLine("          IPstyle , ");
+            sb.AppendLine("          CompName ");
+            sb.AppendLine("        ) ");
+            sb.AppendLine("VALUES  ( " + cid + " , -- CustomerID - int ");
+            sb.AppendLine("          '" + szDevIP + "' , -- szDevIP - varchar(50) ");
+            sb.AppendLine("          '" + acc + "' , -- szAuthAcc - varchar(10) ");
+            sb.AppendLine("          '" + pwd + "' , -- szAuthPwd - varchar(50) ");
+            sb.AppendLine("          '" + str + "' , -- g_DevStr - varchar(100) ");
+            sb.AppendLine("          " + ipstyle + " , -- IPstyle - smallint ");
+            sb.AppendLine("          '" + comp + "'  -- CompName - varchar(50) ");
+            sb.AppendLine("        ) ");
+            sb.AppendLine(" end ");
+          
             SqlParameter[] parameters = {
                                         }; 
             int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
