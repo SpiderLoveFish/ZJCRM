@@ -190,6 +190,7 @@
     <Content Include="CRM\Product\Product_QrCode_Print_Model.aspx" />
     <Content Include="CRM\Product\GetProduct.aspx" />
     <Content Include="CRM\Product\Product_QrCode_Print.aspx" />
+    <Content Include="CRM\Product\SelectGYS.aspx" />
     <Content Include="CRM\purchase\StockView_out.aspx" />
     <Content Include="CRM\purchase\StockView_In.aspx" />
     <Content Include="CRM\purchase\StockView.aspx" />

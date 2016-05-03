@@ -275,6 +275,35 @@ namespace XHD.CRM.Data
                 string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "gridgys")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = "desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1 and IsDel='N' ";
+               
+                if (!string.IsNullOrEmpty(request["stext"]))
+                {
+                    serchtxt += " and ( NAME like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
+                    serchtxt += " or  address like N'%" + PageValidate.InputText(request["stext"], 255) + "%' )";
+                }
+
+
+                DataSet ds = ccp.GetListgys(PageSize, PageIndex, serchtxt, sorttext, out Total);
+           
+                string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "form")
             {
                 int pid = int.Parse(request["pid"]);

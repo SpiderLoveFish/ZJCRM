@@ -232,6 +232,11 @@ namespace XHD.BLL
         {
             return dal.GetList(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
+        public DataSet GetListgys(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetListgys(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+
          /// <summary>
         /// 获得数据列表
         /// </summary>

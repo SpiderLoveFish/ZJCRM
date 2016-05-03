@@ -88,8 +88,40 @@
             if (getparastr("pid")) {
                 loadForm(getparastr("pid"));
             }
-        });
+            $('#T_gys').ligerComboBox({ width: 280, onBeforeOpen: f_selectContact });
 
+        });
+        function f_selectContact() {
+            top.$.ligerDialog.open({
+                zindex: 9003,
+                title: '选择客户', width: 850, height: 400,
+               //../../data/Crm_product.ashx?Action=combogys&rnd=" + Math.random(), initValue: obj.Suppliers });
+                //url: " hr/Getemp_Auth.aspx?auth=1", buttons: [
+                url: "CRM/Product/Selectgys.aspx", buttons: [
+                    { text: '确定', onclick: f_selectContactOK },
+                    { text: '取消', onclick: f_selectContactCancel }
+                ]
+            });
+            return false;
+        }
+        
+        function f_selectContactOK(item, dialog) {
+            //var data = dialog.frame.f_select();
+            var fn =  dialog.frame.f_select;           
+            var data = fn();
+            if (!data) {
+                alert('请选择一个有效供应商!');
+                return;
+            }
+            fillemp(data.Name);
+            dialog.close();
+        }
+        function f_selectContactCancel(item, dialog) {
+            dialog.close();
+        }
+        function fillemp(Name) {
+            $("#T_gys").val(Name);
+        }
         function f_getcode()
         {
             return $("#C_code").val();
@@ -179,14 +211,14 @@
                     $("#T_product_category").ligerGetComboBoxManager().selectValue(obj.category_id);
                     $("#T_nbj").val(toMoney(obj.InternalPrice));
                     $("#T_xh").val(obj.ProModel);
-                   // $("#T_gys").val(obj.Suppliers);
+                    $("#T_gys").val(obj.Suppliers);
                     $("#T_xl").val(obj.ProSeries);
                     $("#T_zt").val(obj.Themes);
                     $("#T_pp").val(obj.Brand);
                     $("#C_code").val(obj.C_code);
                     //emptyText: '（空）',
                     $("#T_product_unit").ligerComboBox({ width: 280, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random(),  initValue: obj.unit });
-                    $("#T_gys").ligerComboBox({ width: 280, url: "../../data/Crm_product.ashx?Action=combogys&rnd=" + Math.random(), initValue: obj.Suppliers });
+                   // $("#T_gys").ligerComboBox({ width: 280, url: "../../data/Crm_product.ashx?Action=combogys&rnd=" + Math.random(), initValue: obj.Suppliers });
                     
                 }
             });
