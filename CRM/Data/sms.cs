@@ -7,17 +7,37 @@ using XHD.Common;
 using System.Net;
 using System.Text;
 using System.IO;
-using System.Xml; 
+using System.Xml;
+using System.Data;
+using XHD.BLL;
 
 namespace XHD.CRM.Data
 {
     public class sms
     {
+        BLL.Param_SysParam ps = new BLL.Param_SysParam();
+        
         public sms() { }
 
         public string SendSMS(bool isck, string date, string content,string mobile)
         {
-            string param = "action=send&userid=4905&account=xincheng&password=a123123&content=" + content + "&mobile=" + mobile + "&sendtime=";
+            string json = "";
+            DataSet ds = ps.GetList_SMSConfig(0, "", "");
+            if (ds == null)
+            {
+                json = "请先配置相关参数！";  
+            }
+            if (ds.Tables[0].Rows.Count <= 0)
+            {
+                json = "请先配置相关参数！";  
+            }
+             try
+      {
+          foreach (DataRow dr in ds.Tables[0].Rows)
+          {
+              string param = "action=send&" + dr["userid"].ToString() + "&account=" + dr["account"].ToString() + "&password=" + dr["password"].ToString() + "&content=" + content + "&mobile=" + mobile + "&sendtime=";
+            
+           // string param = "action=send&userid=4905&account=xincheng&password=a123123&content=" + content + "&mobile=" + mobile + "&sendtime=";
             string message = "";
             if (isck)//是否定时发送
             {
@@ -29,7 +49,7 @@ namespace XHD.CRM.Data
             }
             byte[] bs = Encoding.UTF8.GetBytes(param);
 
-            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create("http://118.145.18.170:8080/sms.aspx");
+            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create("http://" + dr["ip"].ToString() + "/sms.aspx");
             req.Method = "POST";
             req.ContentType = "application/x-www-form-urlencoded";
             req.ContentLength = bs.Length;
@@ -40,12 +60,21 @@ namespace XHD.CRM.Data
             }
             using (WebResponse wr = req.GetResponse())
             {
-                StreamReader sr = new StreamReader(wr.GetResponseStream(), System.Text.Encoding.Default);
-                message = sr.ReadToEnd().Trim();
+               // StreamReader sr = new StreamReader(wr.GetResponseStream(), System.Text.Encoding.Default);
+               // message = sr.ReadToEnd().Trim();
+                Stream stream = wr.GetResponseStream();
+                message += new StreamReader(stream, System.Text.Encoding.UTF8).ReadToEnd();//解决乱码：utf-8 + streamreader.readtoend
+
             }
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(message);
-            string json = Newtonsoft.Json.JsonConvert.SerializeXmlNode(doc);
+            json = Newtonsoft.Json.JsonConvert.SerializeXmlNode(doc);
+            ps.InsertSMSLog(json, "");
+               }
+          }
+             catch (Exception ex) { json = ex.Message; }
+ 
+              
 
             return json;
         }

@@ -7,10 +7,14 @@ using System.Web.UI.WebControls;
 using System.Net;
 using System.Text;
 using System.IO;
-
+using XHD.BLL;
+using XHD.Common;
+using System.Data;
 
 public partial class sms : System.Web.UI.Page
 {
+    Param_SysParam ps = new Param_SysParam();
+
     protected void Page_Load(object sender, EventArgs e)
     {
 
@@ -26,53 +30,90 @@ public partial class sms : System.Web.UI.Page
     protected void Button2_Click(object sender, EventArgs e)
     {
         //查询余额
-        string param = "userid=4905&account=xincheng&password=a123123&action=overage";
-        byte[] bs = Encoding.UTF8.GetBytes(param);
+      DataSet ds=  ps.GetList_SMSConfig(0,"","");
+      if (ds == null) {
+          TextBox3.Text = "请先配置相关参数！"; return;
+      }
+      if (ds.Tables[0].Rows.Count <= 0)
+      {
+          TextBox3.Text = "请先配置相关参数！"; return;
+      }
+      try
+      {
+          foreach (DataRow dr in ds.Tables[0].Rows)
+          {
+              string param = "userid=" + dr["userid"].ToString() + "&account=" + dr["account"].ToString() + "&password=" + dr["password"].ToString() + "&action=overage";
+              byte[] bs = Encoding.UTF8.GetBytes(param);
+              string strReturn = string.Empty;
+              HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create("http://" + dr["ip"].ToString() + "/sms.aspx");
+              req.Method = "POST";
+              req.ContentType = "application/x-www-form-urlencoded";
+              req.ContentLength = bs.Length;
 
-        HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create("http://118.145.18.170:8080/sms.aspx");
-        req.Method = "POST";
-        req.ContentType = "application/x-www-form-urlencoded";
-        req.ContentLength = bs.Length;
+              using (Stream reqStream = req.GetRequestStream())
+              {
+                  reqStream.Write(bs, 0, bs.Length);
+              }
+              using (WebResponse wr = req.GetResponse())
+              {
+                  StreamReader sr = new StreamReader(wr.GetResponseStream(), System.Text.Encoding.Default);
+                  Stream stream = wr.GetResponseStream();
+                  strReturn += new StreamReader(stream, System.Text.Encoding.UTF8).ReadToEnd();//解决乱码：utf-8 + streamreader.readtoend
 
-        using (Stream reqStream = req.GetRequestStream())
-        {
-            reqStream.Write(bs, 0, bs.Length);
-        }
-        using (WebResponse wr = req.GetResponse())
-        {
-            StreamReader sr = new StreamReader(wr.GetResponseStream(), System.Text.Encoding.Default);
-            TextBox3.Text = sr.ReadToEnd().Trim();
-        }
+                  TextBox3.Text = strReturn;
+              }
+          }
+      }
+      catch (Exception ex) { TextBox3.Text = ex.Message; }
     }
 
     protected void Button3_Click(object sender, EventArgs e)
     {
+        DataSet ds = ps.GetList_SMSConfig(0, "", "");
+        if (ds == null)
+        {
+            TextBox3.Text = "请先配置相关参数！"; return;
+        } if (ds.Tables[0].Rows.Count <= 0)
+        {
+            TextBox3.Text = "请先配置相关参数！"; return;
+        }
         //发送短信
-        string param = "action=send&userid=4905&account=xincheng&password=a123123&content=" + TextBox2.Text + "&mobile=" + TextBox1.Text + "&sendtime=";
-            if (CheckBox1.Checked)//是否定时发送
-            {
-                param = param + TextBox4.Text; //格式 yyyymmddhhnnss
-            }
-            else
-            {
-               // param = param + "0";//不需要定时发送，也需要带上0
-            }
-            byte[] bs = Encoding.UTF8.GetBytes(param);
+ try
+      {
+          foreach (DataRow dr in ds.Tables[0].Rows)
+          {
+              string param = "action=send&" + dr["userid"].ToString() + "&account=" + dr["account"].ToString() + "&password=" + dr["password"].ToString() + "&content=" + TextBox2.Text + "&mobile=" + TextBox1.Text + "&sendtime=";
+              if (CheckBox1.Checked)//是否定时发送
+              {
+                  param = param + TextBox4.Text; //格式 yyyymmddhhnnss
+              }
+              else
+              {
+                  // param = param + "0";//不需要定时发送，也需要带上0
+              }
+              byte[] bs = Encoding.UTF8.GetBytes(param);
 
-            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create("http://118.145.18.170:8080/sms.aspx");
-            req.Method = "POST";
-            req.ContentType = "application/x-www-form-urlencoded";
-            req.ContentLength = bs.Length;
+              HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create("http://" + dr["ip"].ToString() + "/sms.aspx");
+              req.Method = "POST";
+              req.ContentType = "application/x-www-form-urlencoded";
+              req.ContentLength = bs.Length;
+              string strReturn = string.Empty;
+              using (Stream reqStream = req.GetRequestStream())
+              {
+                  reqStream.Write(bs, 0, bs.Length);
+              }
+              using (WebResponse wr = req.GetResponse())
+              {
+                  StreamReader sr = new StreamReader(wr.GetResponseStream(), System.Text.Encoding.Default);
+                  Stream stream = wr.GetResponseStream();
+                  strReturn += new StreamReader(stream, System.Text.Encoding.UTF8).ReadToEnd();//解决乱码：utf-8 + streamreader.readtoend
 
-            using (Stream reqStream = req.GetRequestStream())
-            {
-                reqStream.Write(bs, 0, bs.Length);
-            }
-            using (WebResponse wr = req.GetResponse())
-            {
-                StreamReader sr = new StreamReader(wr.GetResponseStream(), System.Text.Encoding.Default);
-                TextBox3.Text = sr.ReadToEnd().Trim();
-            }
-        
+                  TextBox3.Text = strReturn;
+                  ps.InsertSMSLog(strReturn,"");
+              }
+          }
+         }
+      catch (Exception ex) { TextBox3.Text = ex.Message; }
+    
     }
 }

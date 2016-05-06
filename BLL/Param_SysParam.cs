@@ -191,7 +191,7 @@ namespace XHD.BLL
 		/// </summary>
 		public DataSet GetAllList()
 		{
-			return GetList("");
+			return dal.GetList("");
 		}
 
 		/// <summary>
@@ -201,6 +201,16 @@ namespace XHD.BLL
 		{
 			return dal.GetList(PageSize, PageIndex, strWhere, filedOrder, out Total);
 		}
+        public DataSet GetList_SMSConfig(int Top, string strWhere, string filedOrder)
+        {
+            return dal.GetList_SMSConfig(Top,strWhere,filedOrder);
+        }
+
+        public bool InsertSMSLog(string sc, string person)
+        {
+            return dal.InsertSMSLog(sc,person);
+        }
+
 
 		#endregion  Method
 	}

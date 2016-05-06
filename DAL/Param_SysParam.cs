@@ -332,6 +332,52 @@ namespace XHD.DAL
 			return DbHelperSQL.Query(strSql.ToString());
 		}
 
+        /// <summary>
+        /// 获得前几行数据
+        /// </summary>
+        public DataSet GetList_SMSConfig(int Top, string strWhere, string filedOrder)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select ");
+            if (Top > 0)
+            {
+                strSql.Append(" top " + Top.ToString());
+            }
+            strSql.Append(" * ");
+            strSql.Append(" FROM SMS_Config ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by  ip "  );
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+        /// <summary>
+        /// 更新一条数据
+        /// </summary>
+        public bool InsertSMSLog(string sc,string person)
+        {
+          var sb = new System.Text.StringBuilder();
+            sb.AppendLine("INSERT INTO dbo.SMS_log");
+            sb.AppendLine("        ( sendcontent, DoTime, DoPerson )");
+            sb.AppendLine("VALUES  ( '"+sc+"',"); // sendcontent - varchar(200)
+            sb.AppendLine("          getdate(),"); // DoTime - datetime
+            sb.AppendLine("          '"+person+"'"); // DoPerson - varchar(20)
+            sb.AppendLine("          )");
+            sb.AppendLine("");
+            SqlParameter[] parameters = { };
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 		#endregion  Method
 	}
 }
