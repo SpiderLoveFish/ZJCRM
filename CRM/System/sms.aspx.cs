@@ -82,7 +82,7 @@ public partial class sms : System.Web.UI.Page
       {
           foreach (DataRow dr in ds.Tables[0].Rows)
           {
-              string param = "action=send&" + dr["userid"].ToString() + "&account=" + dr["account"].ToString() + "&password=" + dr["password"].ToString() + "&content=" + TextBox2.Text + "&mobile=" + TextBox1.Text + "&sendtime=";
+              string param = "action=send&userid=" + dr["userid"].ToString() + "&account=" + dr["account"].ToString() + "&password=" + dr["password"].ToString() + "&content=" + TextBox2.Text + "&mobile=" + TextBox1.Text + "&sendtime=";
               if (CheckBox1.Checked)//是否定时发送
               {
                   param = param + TextBox4.Text; //格式 yyyymmddhhnnss

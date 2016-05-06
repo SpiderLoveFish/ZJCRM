@@ -35,7 +35,7 @@ namespace XHD.CRM.Data
       {
           foreach (DataRow dr in ds.Tables[0].Rows)
           {
-              string param = "action=send&" + dr["userid"].ToString() + "&account=" + dr["account"].ToString() + "&password=" + dr["password"].ToString() + "&content=" + content + "&mobile=" + mobile + "&sendtime=";
+              string param = "action=send&userid=" + dr["userid"].ToString() + "&account=" + dr["account"].ToString() + "&password=" + dr["password"].ToString() + "&content=" + content + "&mobile=" + mobile + "&sendtime=";
             
            // string param = "action=send&userid=4905&account=xincheng&password=a123123&content=" + content + "&mobile=" + mobile + "&sendtime=";
             string message = "";

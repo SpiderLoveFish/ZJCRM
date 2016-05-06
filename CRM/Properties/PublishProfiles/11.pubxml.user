@@ -18,7 +18,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/20/2011 22:18:48</publishTime>
     </File>
     <File Include="bin/CRM.dll">
-      <publishTime>05/03/2016 10:12:08</publishTime>
+      <publishTime>05/06/2016 15:20:26</publishTime>
     </File>
     <File Include="bin/Excel.dll">
       <publishTime>08/20/2011 22:18:48</publishTime>
@@ -57,22 +57,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/20/2011 22:18:52</publishTime>
     </File>
     <File Include="bin/XHD.BLL.dll">
-      <publishTime>05/03/2016 08:42:38</publishTime>
+      <publishTime>05/06/2016 14:22:36</publishTime>
     </File>
     <File Include="bin/XHD.Comm.dll">
-      <publishTime>05/03/2016 08:42:37</publishTime>
+      <publishTime>05/06/2016 14:22:33</publishTime>
     </File>
     <File Include="bin/XHD.DAL.dll">
-      <publishTime>05/03/2016 08:42:33</publishTime>
+      <publishTime>05/06/2016 14:22:07</publishTime>
     </File>
     <File Include="bin/XHD.DBUtility.dll">
       <publishTime>02/01/2016 13:30:14</publishTime>
     </File>
     <File Include="bin/XHD.Model.dll">
-      <publishTime>05/03/2016 08:42:37</publishTime>
+      <publishTime>05/06/2016 14:22:34</publishTime>
     </File>
     <File Include="conn.config">
-      <publishTime>05/03/2016 08:44:54</publishTime>
+      <publishTime>05/06/2016 15:12:43</publishTime>
     </File>
     <File Include="copyright.html">
       <publishTime>02/01/2016 08:44:44</publishTime>
@@ -381,7 +381,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/01/2016 08:44:39</publishTime>
     </File>
     <File Include="CRM/Product/product_add.aspx">
-      <publishTime>05/03/2016 08:40:20</publishTime>
+      <publishTime>05/04/2016 08:14:22</publishTime>
     </File>
     <File Include="CRM/Product/product_category.aspx">
       <publishTime>02/22/2016 08:50:03</publishTime>
@@ -397,6 +397,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="CRM/Product/Product_QrCode_Print_Style2.aspx">
       <publishTime>02/01/2016 08:44:39</publishTime>
+    </File>
+    <File Include="CRM/Product/SelectGYS.aspx">
+      <publishTime>05/04/2016 08:14:22</publishTime>
     </File>
     <File Include="CRM/purchase/PickingList.aspx">
       <publishTime>04/13/2016 08:40:01</publishTime>
@@ -11553,7 +11556,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/01/2016 08:44:44</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/03/2016 10:12:29</publishTime>
+      <publishTime>05/06/2016 15:20:56</publishTime>
     </File>
     <File Include="webserver/bbsapi.asmx">
       <publishTime>03/21/2016 14:02:30</publishTime>
