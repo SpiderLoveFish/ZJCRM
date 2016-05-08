@@ -168,6 +168,7 @@
                     }
                     //alert(UrlDecode("2013%2F4%2F14%200%3A00%3A00"));
                     //alert(obj.constructor); //String 构造函数
+                    $("#customerid").val(obj.customer_id);
                     $("#T_Customer").val(obj.Customer_name);
                     $("#T_Customer_val").val(obj.Customer_id);
 
@@ -210,6 +211,9 @@
 
         function add() {
             f_openWindow("crm/product/GetProduct.aspx", "选择产品", 580, 400);
+        }
+        function addys() {
+            f_openWindow("crm/sale/SelectBudge.aspx?cid=" + $("#customerid").val(), "选择预算", 700, 400);
         }
         function pro_remove() {
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -301,11 +305,12 @@
                     </td>
                     <td colspan="3">
                         <input type="text" id="T_Customer" name="T_Customer" validate="{required:true}" /></td>
-                </tr>
+                <input type="hidden" id="customerid" name="customerid" />
+                      </tr>
                 <tr>
                     <td width="62px">
                         <div align="right" style="width: 61px">
-                            客户所属：
+                            业务员：
                         </div>
                     </td>
                     <td>
@@ -328,7 +333,7 @@
                 <tr>
                     <td width="62px">
                         <div align="right" style="width: 61px">
-                            促成人员：
+                            设计师：
                         </div>
                     </td>
                     <td>
@@ -363,10 +368,23 @@
                         <input type="text" id="T_paytype" name="T_paytype" validate="{required:true}" />
                     </td>
                     <td>
-                        <div align="right" style="width: 62px">金额：</div>
+                        <div align="right" style="width: 62px">总金额：</div>
                     </td>
                     <td>
                         <input type="text" id="T_amount" name="T_amount" ltype="text" style="text-align: right" value="0" validate="{required:true}" ligerui="{width:182,disabled:true}" /></td>
+                </tr>
+                 <tr>
+                    <td>
+                        <div align="right" style="width: 62px">预算金额：</div>
+                    </td>
+                    <td>
+                            <input type="text" id="T_ysje" name="T_ysje" ltype="text" style="text-align: right" value="0" validate="{required:true}" ligerui="{width:182,disabled:true}" /></td>
+               
+                    <td>
+                        <div align="right" style="width: 62px">补差金额：</div>
+                    </td>
+                    <td>
+                        <input type="text" id="T_bcje" name="T_bcje" ltype="text" style="text-align: right" value="0" validate="{required:true}" ligerui="{width:182,disabled:true}" /></td>
                 </tr>
                 <tr>
                     <td colspan="4" class="table_title1">订单产品</td>
@@ -377,7 +395,8 @@
                     </td>
                     <td colspan="3">
                         <input id="Button3" type="button" value="新增" style="height: 21px" onclick="add()" />
-                        <input id="Button4" type="button" value="删除" style="height: 21px" onclick="pro_remove()" /></td>
+                        <input id="Button4" type="button" value="删除" style="height: 21px" onclick="pro_remove()" />
+                     <input id="Button5" type="button" value="选择预算" style="height: 21px" onclick="addys()" /></td>
 
 
                 </tr>

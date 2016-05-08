@@ -387,13 +387,23 @@ namespace XHD.CRM.Data
                     serchtxt += " and sjs like N'%" + PageValidate.InputText(request["T_sjs"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["T_ysbh"]))
                     serchtxt += " and id like N'%" + PageValidate.InputText(request["T_ysbh"], 255) + "%'";
-
+               //订单选择
+                if (!string.IsNullOrEmpty(request["cid"]))
+                    serchtxt += " and customer_id =" + PageValidate.InputText(request["cid"], 255);
+                if (!string.IsNullOrEmpty(request["s_khstext"]))
+                {
+                    serchtxt += " and (Customer like N'%" + PageValidate.InputText(request["s_khstext"], 255) + "%' OR address like N'%" + PageValidate.InputText(request["s_khstext"], 255) + "%')";
+                }
 
                 if (str_condition == "0")
                     serchtxt += " and IsStatus in(0,1)";
                 else if (str_condition == "1")
                 {
                     serchtxt += " and IsStatus  in(1)";
+                }
+                else if (str_condition == "3")
+                {
+                    serchtxt += " and IsStatus=3";
                 }
                 else  
                 {
