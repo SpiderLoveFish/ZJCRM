@@ -168,14 +168,16 @@
                     }
                     //alert(UrlDecode("2013%2F4%2F14%200%3A00%3A00"));
                     //alert(obj.constructor); //String 构造函数
-                    $("#customerid").val(obj.customer_id);
+                   // alert(obj.Customer_id);
+                    $("#customerid").val(obj.Customer_id);
                     $("#T_Customer").val(obj.Customer_name);
                     $("#T_Customer_val").val(obj.Customer_id);
 
                     $("#T_date").val(formatTimebytype(obj.Order_date, "yyyy-MM-dd"));
                     $("#T_details").val(obj.Order_details);
                     $("#T_amount").val(toMoney(obj.Order_amount));
-
+                    $("#T_ysje").val(toMoney(obj.budget_money));
+                    $("#T_zje").val(toMoney(Total_Money));
                     if (obj.C_emp_id)
                         fill_c_emp(obj.C_dep_name, obj.C_dep_id, obj.C_emp_name, obj.C_emp_id);
 
@@ -194,7 +196,7 @@
                 zindex: 9002,
                 width: width, height: height, title: title, url: url, buttons: [
                         {
-                            text: '保存', onclick: function (item, dialog) {
+                            text: '选择', onclick: function (item, dialog) {
                                 f_getpost(item, dialog);
                             }
                         },
@@ -212,14 +214,90 @@
         function add() {
             f_openWindow("crm/product/GetProduct.aspx", "选择产品", 580, 400);
         }
+        var activeDialog = null;
+        function f_openWindowys(url, title, width, height) {
+            var dialogOptions = {
+                zindex: 9002,
+                width: width, height: height, title: title, url: url, buttons: [
+                        {
+                            text: '选择', onclick: function (item, dialog) {
+                                f_getys(item, dialog);
+                            }
+                        },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+
         function addys() {
-            f_openWindow("crm/sale/SelectBudge.aspx?cid=" + $("#customerid").val(), "选择预算", 700, 400);
+            //alert($("#customerid").val());
+            f_openWindowys("crm/sale/SelectBudge.aspx?cid=1" , "选择预算", 700, 400);
         }
         function pro_remove() {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.deleteSelectedRow();
             $("#T_amount").val(toMoney(manager.getColumnDateByType('amount', 'sum') * 1.0));
         }
+
+      
+        function f_getys(item, dialog) {
+            var rows = null;
+            if (!dialog.frame.f_select()) {
+                alert('请选择有效预算!');
+                return;
+            }
+            else {
+                rows = dialog.frame.f_select();
+                $("#T_ysje").val(toMoney(rows.DiscountAmount));
+
+                if (rows.id) {
+                    $.ajax({
+                        url: "../../data/Budge.ashx", type: "POST",
+                        data: { Action: "griddetail", bid: rows.id, rnd: Math.random() },
+                        dataType: "json",
+                        success: function (responseText) {
+                           
+                            var rows = responseText.Rows
+                            //过滤重复
+                            var manager = $("#maingrid4").ligerGetGridManager();
+                            var data = manager.getCurrentData();
+
+                            for (var i = 0; i < rows.length; i++) {
+
+                                var add = 1;
+                                for (var j = 0; j < data.length; j++) {
+                                    if (rows[i].product_id == data[j].product_id) {
+                                        add = 0;
+                                    }
+                                }
+                                if (add == 1) {
+                                    //price
+                                    rows[i].quantity = 1;
+                                    rows[i]["amount"] = rows[i].price * rows[i].quantity;
+                                    manager.addRow(rows[i]);
+                                }
+                            }
+                            dialog.close();
+                            $("#T_amount").val(toMoney(manager.getColumnDateByType('amount', 'sum') * 1.0));
+
+                            f_checkquantity();
+                        },
+                        error: function () {
+                            top.$.ligerDialog.closeWaitting();
+                            top.$.ligerDialog.error('修改失败！', "", null, 9003);
+                        }
+                    });
+                }
+                
+            }
+           
+        }
+
         function f_getpost(item, dialog) {
             var rows = null;
             if (!dialog.frame.f_select()) {
@@ -365,13 +443,13 @@
                         <div align="right" style="width: 62px">支付方式：</div>
                     </td>
                     <td>
-                        <input type="text" id="T_paytype" name="T_paytype" validate="{required:true}" />
+                        <input type="text" id="T_paytype" name="T_paytype"  ltype="text" validate="{required:true}" />
                     </td>
                     <td>
                         <div align="right" style="width: 62px">总金额：</div>
                     </td>
                     <td>
-                        <input type="text" id="T_amount" name="T_amount" ltype="text" style="text-align: right" value="0" validate="{required:true}" ligerui="{width:182,disabled:true}" /></td>
+                        <input type="text" id="T_zje" name="T_zje" ltype="text" style="text-align: right" value="0" validate="{required:true}" ligerui="{width:182,disabled:true}" /></td>
                 </tr>
                  <tr>
                     <td>
@@ -384,7 +462,7 @@
                         <div align="right" style="width: 62px">补差金额：</div>
                     </td>
                     <td>
-                        <input type="text" id="T_bcje" name="T_bcje" ltype="text" style="text-align: right" value="0" validate="{required:true}" ligerui="{width:182,disabled:true}" /></td>
+                        <input type="text" id="T_amount" name="T_amount" ltype="text" style="text-align: right" value="0" validate="{required:true}" ligerui="{width:182,disabled:true}" /></td>
                 </tr>
                 <tr>
                     <td colspan="4" class="table_title1">订单产品</td>

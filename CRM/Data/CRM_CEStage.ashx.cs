@@ -71,6 +71,7 @@ namespace XHD.CRM.Data
                        bool aa= ccpc.Update(model,StringToInt(id));
                     }
 
+                    if(devip.Trim()!="")
                     ccpc.UpdateIPCam(cid.ToString(), devip, "admin", "888888", "", "1", comp);
                
                 //        //日志

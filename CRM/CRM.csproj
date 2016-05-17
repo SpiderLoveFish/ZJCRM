@@ -203,6 +203,7 @@
     <Content Include="CRM\purchase\PickingList.aspx" />
     <Content Include="CRM\Repair\Repairphone.aspx" />
     <Content Include="CRM\Repair\UploadImg.aspx" />
+    <Content Include="CRM\Sale\SelectBudge.aspx" />
     <Content Include="CSS\base.css" />
     <Content Include="CSS\DragFlow\history.css" />
     <Content Include="CSS\DragFlow\main.css" />
