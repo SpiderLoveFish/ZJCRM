@@ -36,6 +36,9 @@ namespace XHD.Model
 		private decimal? _invoice_money;
 		private decimal? _arrears_invoice;
 		private int? _isdelete;
+        private decimal? _budget_money;
+       private decimal? _Total_Money; 
+
 		private DateTime? _delete_time;
 		/// <summary>
 		/// 
@@ -253,6 +256,24 @@ namespace XHD.Model
 			set{ _delete_time=value;}
 			get{return _delete_time;}
 		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public decimal? budget_money
+        {
+            set { _budget_money = value; }
+            get { return _budget_money; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public decimal? Total_Money
+        {
+            set { _Total_Money = value; }
+            get { return _Total_Money; }
+        }
+
 		#endregion Model
 
 	}

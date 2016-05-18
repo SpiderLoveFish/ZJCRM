@@ -50,6 +50,10 @@ namespace XHD.CRM.Data
                 model.Order_status = PageValidate.InputText(request["T_status"], 255);
                 model.Order_amount = decimal.Parse(request["T_amount"]);
 
+                model.budget_money = decimal.Parse(request["T_ysje"]);
+                model.Total_Money = decimal.Parse(request["T_amount"]) + decimal.Parse(request["T_ysje"]);
+
+
                 model.create_id = emp_id;
                 model.create_date = DateTime.Now;
 

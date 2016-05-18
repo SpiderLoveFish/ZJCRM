@@ -293,22 +293,26 @@
             setTimeout(function (item, dialog) { f_save(item, dialog) }, 100);
         }
         function f_save(item, dialog) {
+            
             dialog.frame.f_check();
             var issave = dialog.frame.f_save();
             var postdata = dialog.frame.f_postdata();
             var cansave = dialog.frame.f_checkquantity();
             var postnum = dialog.frame.f_postnum();
-            //alert(postdata);
+            //alert(issave);
 
             if (cansave) {
                 if (issave) {
+                    //alert(1);
                     if (postnum > 0) {
+                       // alert(1);
                         dialog.close();
                         $.ligerDialog.waitting('数据保存中,请稍候...');
                         $.ajax({
                             url: "../../data/CRM_order.ashx", type: "POST",
                             data: issave + "&Postdata=" + postdata,
                             success: function (responseText) {
+                               // alert(responseText);
                                 if (responseText == "{success:success}") {
                                     $.ligerDialog.closeWaitting();
                                     f_reload();

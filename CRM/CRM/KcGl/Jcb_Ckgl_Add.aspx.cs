@@ -59,7 +59,7 @@ namespace Jcb_Ckgl
                         sb.AppendLine("VALUES  ('" + Request["Name"] + "', ");
                         sb.AppendLine("         '" + Request["Address"] + "', ");
                         sb.AppendLine("         '" + Request["lxr"] + "', ");
-                        sb.AppendLine("         '" + Request["lxrid"] + "', ");
+                     //   sb.AppendLine("         '" + Request["lxrid"] + "', ");
                         sb.AppendLine("         '" + Request["lxrdh"] + "', ");
                         sb.AppendLine("         '" + Request["Remark"] + "', ");
                         sb.AppendLine("         'N', ");
@@ -73,7 +73,7 @@ namespace Jcb_Ckgl
                         sb.AppendLine("         Name='" + Request["Name"] + "', ");
                         sb.AppendLine("         Address='" + Request["Address"] + "', ");
                         sb.AppendLine("         lxr='" + Request["lxr"] + "', ");
-                        sb.AppendLine("         lxr='" + Request["lxrid"] + "', ");
+                       // sb.AppendLine("         lxr='" + Request["lxrid"] + "', ");
                         sb.AppendLine("         lxrdh='" + Request["lxrdh"] + "', ");
                         sb.AppendLine("         Remark='" + Request["Remark"] + "', ");
                         sb.AppendLine("         EditEmpID='" + ticket.UserData + "',");

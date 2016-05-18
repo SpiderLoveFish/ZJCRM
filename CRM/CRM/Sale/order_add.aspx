@@ -168,7 +168,7 @@
                     }
                     //alert(UrlDecode("2013%2F4%2F14%200%3A00%3A00"));
                     //alert(obj.constructor); //String 构造函数
-                   // alert(obj.Customer_id);
+                   // alert(obj.budget_money);
                     $("#customerid").val(obj.Customer_id);
                     $("#T_Customer").val(obj.Customer_name);
                     $("#T_Customer_val").val(obj.Customer_id);
@@ -177,7 +177,8 @@
                     $("#T_details").val(obj.Order_details);
                     $("#T_amount").val(toMoney(obj.Order_amount));
                     $("#T_ysje").val(toMoney(obj.budget_money));
-                    $("#T_zje").val(toMoney(Total_Money));
+                    $("#T_zje").val(toMoney(obj.Total_Money));
+
                     if (obj.C_emp_id)
                         fill_c_emp(obj.C_dep_name, obj.C_dep_id, obj.C_emp_name, obj.C_emp_id);
 
@@ -443,7 +444,7 @@
                         <div align="right" style="width: 62px">支付方式：</div>
                     </td>
                     <td>
-                        <input type="text" id="T_paytype" name="T_paytype"  ltype="text" validate="{required:true}" />
+                        <input type="text" id="T_paytype" name="T_paytype"   validate="{required:true}" />
                     </td>
                     <td>
                         <div align="right" style="width: 62px">总金额：</div>

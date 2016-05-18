@@ -45,9 +45,9 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into CRM_order(");
-			strSql.Append("Serialnumber,Customer_id,Customer_name,Order_date,pay_type_id,pay_type,Order_details,Order_status_id,Order_status,Order_amount,create_id,create_date,C_dep_id,C_dep_name,C_emp_id,C_emp_name,F_dep_id,F_dep_name,F_emp_id,F_emp_name,receive_money,arrears_money,invoice_money,arrears_invoice,isDelete,Delete_time)");
+            strSql.Append("Serialnumber,Customer_id,Customer_name,Order_date,pay_type_id,pay_type,Order_details,Order_status_id,Order_status,Order_amount,create_id,create_date,C_dep_id,C_dep_name,C_emp_id,C_emp_name,F_dep_id,F_dep_name,F_emp_id,F_emp_name,receive_money,arrears_money,invoice_money,arrears_invoice,isDelete,Delete_time,budget_money,Total_Money)");
 			strSql.Append(" values (");
-			strSql.Append("@Serialnumber,@Customer_id,@Customer_name,@Order_date,@pay_type_id,@pay_type,@Order_details,@Order_status_id,@Order_status,@Order_amount,@create_id,@create_date,@C_dep_id,@C_dep_name,@C_emp_id,@C_emp_name,@F_dep_id,@F_dep_name,@F_emp_id,@F_emp_name,@receive_money,@arrears_money,@invoice_money,@arrears_invoice,@isDelete,@Delete_time)");
+            strSql.Append("@Serialnumber,@Customer_id,@Customer_name,@Order_date,@pay_type_id,@pay_type,@Order_details,@Order_status_id,@Order_status,@Order_amount,@create_id,@create_date,@C_dep_id,@C_dep_name,@C_emp_id,@C_emp_name,@F_dep_id,@F_dep_name,@F_emp_id,@F_emp_name,@receive_money,@arrears_money,@invoice_money,@arrears_invoice,@isDelete,@Delete_time,@budget_money,@Total_Money)");
 			strSql.Append(";select @@IDENTITY");
 			SqlParameter[] parameters = {
 					new SqlParameter("@Serialnumber", SqlDbType.VarChar,250),
@@ -75,7 +75,10 @@ namespace XHD.DAL
 					new SqlParameter("@invoice_money", SqlDbType.Float,8),
 					new SqlParameter("@arrears_invoice", SqlDbType.Float,8),
 					new SqlParameter("@isDelete", SqlDbType.Int,4),
-					new SqlParameter("@Delete_time", SqlDbType.DateTime)};
+					new SqlParameter("@Delete_time", SqlDbType.DateTime),
+                      new SqlParameter("@budget_money", SqlDbType.Float,8),
+					new SqlParameter("@Total_Money", SqlDbType.Float,8)                 
+                                        };
 			parameters[0].Value = model.Serialnumber;
 			parameters[1].Value = model.Customer_id;
 			parameters[2].Value = model.Customer_name;
@@ -102,7 +105,8 @@ namespace XHD.DAL
 			parameters[23].Value = model.arrears_invoice;
 			parameters[24].Value = model.isDelete;
 			parameters[25].Value = model.Delete_time;
-
+            parameters[26].Value = model.budget_money;
+            parameters[27].Value = model.Total_Money;
 			object obj = DbHelperSQL.GetSingle(strSql.ToString(),parameters);
 			if (obj == null)
 			{
@@ -140,6 +144,8 @@ namespace XHD.DAL
 			strSql.Append("receive_money=@receive_money,");
 			strSql.Append("arrears_money=@arrears_money,");
 			strSql.Append("invoice_money=@invoice_money,");
+            strSql.Append("budget_money=@budget_money,");
+            strSql.Append("Total_Money=@Total_Money,");
 			strSql.Append("arrears_invoice=@arrears_invoice");
 
 			strSql.Append(" where id=@id");
@@ -164,7 +170,9 @@ namespace XHD.DAL
 					new SqlParameter("@receive_money", SqlDbType.Float,8),
 					new SqlParameter("@arrears_money", SqlDbType.Float,8),
 					new SqlParameter("@invoice_money", SqlDbType.Float,8),
-					new SqlParameter("@arrears_invoice", SqlDbType.Float,8),
+                    new SqlParameter("@arrears_invoice", SqlDbType.Float,8),
+					new SqlParameter("@budget_money", SqlDbType.Float,8),
+					new SqlParameter("@Total_Money", SqlDbType.Float,8),
 					new SqlParameter("@id", SqlDbType.Int,4)};
 			parameters[0].Value = model.Customer_id;
 			parameters[1].Value = model.Customer_name;
@@ -186,8 +194,11 @@ namespace XHD.DAL
 			parameters[17].Value = model.receive_money;
 			parameters[18].Value = model.arrears_money;
 			parameters[19].Value = model.invoice_money;
+      
 			parameters[20].Value = model.arrears_invoice;
-			parameters[21].Value = model.id;
+            parameters[21].Value = model.budget_money;
+            parameters[22].Value = model.Total_Money;
+			parameters[23].Value = model.id;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -307,7 +318,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 id,Serialnumber,Customer_id,Customer_name,Order_date,pay_type_id,pay_type,Order_details,Order_status_id,Order_status,Order_amount,create_id,create_date,C_dep_id,C_dep_name,C_emp_id,C_emp_name,F_dep_id,F_dep_name,F_emp_id,F_emp_name,receive_money,arrears_money,invoice_money,arrears_invoice,isDelete,Delete_time from CRM_order ");
+            strSql.Append("select  top 1 id,Serialnumber,Customer_id,Customer_name,Order_date,pay_type_id,pay_type,Order_details,Order_status_id,Order_status,Order_amount,create_id,create_date,C_dep_id,C_dep_name,C_emp_id,C_emp_name,F_dep_id,F_dep_name,F_emp_id,F_emp_name,receive_money,arrears_money,invoice_money,arrears_invoice,isDelete,Delete_time,budget_money,Total_Money from CRM_order ");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)
@@ -426,6 +437,14 @@ namespace XHD.DAL
 				{
 					model.Delete_time=DateTime.Parse(ds.Tables[0].Rows[0]["Delete_time"].ToString());
 				}
+                if (ds.Tables[0].Rows[0]["budget_money"] != null && ds.Tables[0].Rows[0]["budget_money"].ToString() != "")
+                {
+                    model.budget_money = decimal.Parse(ds.Tables[0].Rows[0]["budget_money"].ToString());
+                }
+                if (ds.Tables[0].Rows[0]["Total_Money"] != null && ds.Tables[0].Rows[0]["Total_Money"].ToString() != "")
+                {
+                    model.budget_money = decimal.Parse(ds.Tables[0].Rows[0]["Total_Money"].ToString());
+                }
 				return model;
 			}
 			else
@@ -440,7 +459,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select id,Serialnumber,Customer_id,Customer_name,Order_date,pay_type_id,pay_type,Order_details,Order_status_id,Order_status,Order_amount,create_id,create_date,C_dep_id,C_dep_name,C_emp_id,C_emp_name,F_dep_id,F_dep_name,F_emp_id,F_emp_name,receive_money,arrears_money,invoice_money,arrears_invoice,isDelete,Delete_time ");
+            strSql.Append("select id,Serialnumber,Customer_id,Customer_name,Order_date,pay_type_id,pay_type,Order_details,Order_status_id,Order_status,Order_amount,create_id,create_date,C_dep_id,C_dep_name,C_emp_id,C_emp_name,F_dep_id,F_dep_name,F_emp_id,F_emp_name,receive_money,arrears_money,invoice_money,arrears_invoice,isDelete,Delete_time,budget_money,Total_Money ");
 			strSql.Append(" FROM CRM_order ");
 			if(strWhere.Trim()!="")
 			{
@@ -460,7 +479,7 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" id,Serialnumber,Customer_id,Customer_name,Order_date,pay_type_id,pay_type,Order_details,Order_status_id,Order_status,Order_amount,create_id,create_date,C_dep_id,C_dep_name,C_emp_id,C_emp_name,F_dep_id,F_dep_name,F_emp_id,F_emp_name,receive_money,arrears_money,invoice_money,arrears_invoice,isDelete,Delete_time ");
+            strSql.Append(" id,Serialnumber,Customer_id,Customer_name,Order_date,pay_type_id,pay_type,Order_details,Order_status_id,Order_status,Order_amount,create_id,create_date,C_dep_id,C_dep_name,C_emp_id,C_emp_name,F_dep_id,F_dep_name,F_emp_id,F_emp_name,receive_money,arrears_money,invoice_money,arrears_invoice,isDelete,Delete_time,budget_money,Total_Money ");
 			strSql.Append(" FROM CRM_order ");
 			if(strWhere.Trim()!="")
 			{
