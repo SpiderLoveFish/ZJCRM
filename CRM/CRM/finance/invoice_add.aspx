@@ -135,6 +135,7 @@
                     alert('您的开票金额已经超过未开票金额！');
                 }
                 var sendtxt = "&Action=save&invoiceid=" + getparastr("invoiceid") + "&orderid=" + getparastr("orderid");
+              
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }
