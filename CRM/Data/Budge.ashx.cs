@@ -237,13 +237,14 @@ namespace XHD.CRM.Data
             if (request["Action"] == "deldetail")
             {
                    string  id =  PageValidate.InputText(request["id"], 50);
+                   string bid = PageValidate.InputText(request["bid"], 50);
                   if (!string.IsNullOrEmpty(id))
                   {
                       
                        
                           //暂：明细和部件
                           BLL.Budge_BasicDetail bdetail = new BLL.Budge_BasicDetail();
-                         if(bdetail.Delete(StringToInt(id)))
+                          if (bdetail.Delete_id(StringToInt(id), bid))
                           context.Response.Write("true");
                            else  context.Response.Write("false");
                 }
@@ -252,6 +253,26 @@ namespace XHD.CRM.Data
                     context.Response.Write("false");
                 }
                   
+            }
+            if (request["Action"] == "delcomp")
+            {
+                string comp = PageValidate.InputText(request["comp"], 50);
+                string bid = PageValidate.InputText(request["bid"], 50);
+                if (!string.IsNullOrEmpty(comp))
+                {
+
+
+                    //暂：明细和部件
+                    BLL.Budge_BasicDetail bdetail = new BLL.Budge_BasicDetail();
+                    if (bdetail.Delete_comp(comp, bid))
+                        context.Response.Write("true");
+                    else context.Response.Write("false");
+                }
+                else
+                {
+                    context.Response.Write("false");
+                }
+
             }
             //删除条件
             if (request["Action"] == "del")

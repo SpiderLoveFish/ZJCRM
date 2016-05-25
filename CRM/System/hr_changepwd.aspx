@@ -186,7 +186,7 @@
                 </td>
             </tr>
 
-             <tr>
+             <tr style="display:none">
             
                     <td height="23" width="70px">бщжЄТы</td>
                     <td height="23"> <input type="text" id="T_yzm" name="T_yzm" ligerui="{width:180}"  ltype="text"/></td>

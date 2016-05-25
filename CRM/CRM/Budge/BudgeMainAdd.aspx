@@ -87,9 +87,34 @@
                 itemopen: false,
                 onSuccess: function () {
                     $(".l-first div:first").click();
+                },
+                onContextmenu: function (node, e) {
+
+                    menuNodeID = node.data.id;
+
+                    menuNodeParentID = node.data.parentid;
+
+                    menuNodeText = node.data.text;
+
+                    menutree.show({ top: e.pageY, left: e.pageX });
+
+                    return false;
+
                 }
             });
          
+          var  menutree = $.ligerMenu({
+
+                top: 100, left: 100, width: 120, items:
+
+                [
+ 
+                { text: 'É¾³ý²¿¼þ', click: removeTreeItem }
+
+                ]
+
+            });
+
             treemanager = $("#tree1").ligerGetTreeManager();
 
             initLayout();
@@ -186,6 +211,37 @@
       
             
         })
+
+
+        function removeTreeItem() {
+            var node = treemanager.getSelected();
+            if (node) {
+                $.ajax({
+                    url: "../../data/Budge.ashx", type: "POST",
+                    data: { Action: "delcomp", bid: $("#T_budgeid").val(), comp: node.data.text, rnd: Math.random() },
+                    success: function (responseText) {
+                        if (responseText == "true") {
+                            top.$.ligerDialog.closeWaitting();
+                            treemanager.remove(node.target);
+                            fload();
+                        }
+
+                        else {
+                            top.$.ligerDialog.closeWaitting();
+                            top.$.ligerDialog.error('É¾³ýÊ§°Ü£¡');
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+                        top.$.ligerDialog.error('É¾³ýÊ§°Ü£¡', "", null, 9003);
+                    }
+                });
+               
+            }
+            else
+                alert('ÇëÏÈÑ¡Ôñ½Úµã');
+        }
+
 
         function InitButton()
         {

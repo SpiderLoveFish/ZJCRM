@@ -18,7 +18,7 @@
       <publishTime>08/20/2011 22:18:48</publishTime>
     </File>
     <File Include="bin/CRM.dll">
-      <publishTime>05/03/2016 21:31:30</publishTime>
+      <publishTime>05/23/2016 19:42:12</publishTime>
     </File>
     <File Include="bin/Excel.dll">
       <publishTime>08/20/2011 22:18:48</publishTime>
@@ -57,25 +57,25 @@
       <publishTime>08/20/2011 22:18:52</publishTime>
     </File>
     <File Include="bin/XHD.BLL.dll">
-      <publishTime>05/03/2016 21:28:02</publishTime>
+      <publishTime>05/21/2016 10:59:57</publishTime>
     </File>
     <File Include="bin/XHD.Comm.dll">
-      <publishTime>05/03/2016 21:28:01</publishTime>
+      <publishTime>05/21/2016 10:59:56</publishTime>
     </File>
     <File Include="bin/XHD.Common.dll">
       <publishTime>05/18/2015 16:28:59</publishTime>
     </File>
     <File Include="bin/XHD.DAL.dll">
-      <publishTime>05/03/2016 21:27:53</publishTime>
+      <publishTime>05/21/2016 10:59:51</publishTime>
     </File>
     <File Include="bin/XHD.DBUtility.dll">
       <publishTime>01/13/2016 21:47:37</publishTime>
     </File>
     <File Include="bin/XHD.Model.dll">
-      <publishTime>05/03/2016 21:28:01</publishTime>
+      <publishTime>05/21/2016 10:59:56</publishTime>
     </File>
     <File Include="conn.config">
-      <publishTime>05/03/2016 21:23:53</publishTime>
+      <publishTime>05/23/2016 19:38:00</publishTime>
     </File>
     <File Include="copyright.html">
       <publishTime>01/13/2016 21:42:12</publishTime>
@@ -138,7 +138,7 @@
       <publishTime>01/22/2016 23:30:27</publishTime>
     </File>
     <File Include="CRM/Cggl/GysGl.aspx">
-      <publishTime>01/22/2016 12:20:06</publishTime>
+      <publishTime>05/03/2016 22:10:04</publishTime>
     </File>
     <File Include="CRM/Cggl/GysGl_Add.aspx">
       <publishTime>01/22/2016 12:21:26</publishTime>
@@ -309,7 +309,7 @@
       <publishTime>01/30/2016 10:32:46</publishTime>
     </File>
     <File Include="CRM/finance/invoice_add.aspx">
-      <publishTime>01/13/2016 21:42:12</publishTime>
+      <publishTime>05/18/2016 23:57:34</publishTime>
     </File>
     <File Include="CRM/finance/invoice_list.aspx">
       <publishTime>01/13/2016 21:42:12</publishTime>
@@ -390,7 +390,7 @@
       <publishTime>01/13/2016 21:42:12</publishTime>
     </File>
     <File Include="CRM/Product/product_add.aspx">
-      <publishTime>05/02/2016 19:42:45</publishTime>
+      <publishTime>05/03/2016 22:11:58</publishTime>
     </File>
     <File Include="CRM/Product/product_category.aspx">
       <publishTime>02/20/2016 10:31:40</publishTime>
@@ -406,6 +406,9 @@
     </File>
     <File Include="CRM/Product/Product_QrCode_Print_Style2.aspx">
       <publishTime>01/13/2016 21:42:12</publishTime>
+    </File>
+    <File Include="CRM/Product/SelectGYS.aspx">
+      <publishTime>05/03/2016 22:14:57</publishTime>
     </File>
     <File Include="CRM/purchase/BudgeMainAdd.aspx">
       <publishTime>03/17/2016 19:54:15</publishTime>
@@ -480,10 +483,13 @@
       <publishTime>01/13/2016 21:42:12</publishTime>
     </File>
     <File Include="CRM/Sale/order.aspx">
-      <publishTime>01/13/2016 21:42:12</publishTime>
+      <publishTime>05/18/2016 23:57:34</publishTime>
     </File>
     <File Include="CRM/Sale/order_add.aspx">
-      <publishTime>01/13/2016 21:42:12</publishTime>
+      <publishTime>05/18/2016 23:57:34</publishTime>
+    </File>
+    <File Include="CRM/Sale/SelectBudge.aspx">
+      <publishTime>05/08/2016 12:09:06</publishTime>
     </File>
     <File Include="CSS/base.css">
       <publishTime>01/13/2016 21:42:12</publishTime>
@@ -801,7 +807,7 @@
       <publishTime>01/13/2016 21:42:12</publishTime>
     </File>
     <File Include="HR/hr_employee_changpwd.aspx">
-      <publishTime>03/23/2016 19:41:36</publishTime>
+      <publishTime>05/13/2016 18:05:39</publishTime>
     </File>
     <File Include="HR/hr_getpost.aspx">
       <publishTime>01/13/2016 21:42:12</publishTime>
@@ -10572,7 +10578,7 @@
       <publishTime>04/16/2015 00:10:35</publishTime>
     </File>
     <File Include="System/hr_changepwd.aspx">
-      <publishTime>04/28/2016 17:25:36</publishTime>
+      <publishTime>05/23/2016 19:39:49</publishTime>
     </File>
     <File Include="System/Param_City.aspx">
       <publishTime>01/13/2016 21:42:12</publishTime>
@@ -11598,7 +11604,7 @@
       <publishTime>01/13/2016 21:42:12</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/03/2016 21:23:53</publishTime>
+      <publishTime>05/23/2016 19:38:00</publishTime>
     </File>
     <File Include="webserver/bbsapi.asmx">
       <publishTime>01/22/2016 18:22:20</publishTime>

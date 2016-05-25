@@ -75,6 +75,15 @@ namespace XHD.BLL
 			return dal.Delete(id);
 		}
 
+        public bool Delete_comp(string comp, string bid)
+        {
+            return dal.Delete_comp(comp, bid);
+        }
+        public bool Delete_id(int id, string bid)
+        {
+            return dal.Delete_id(id, bid);
+     
+        }
             /// </summary>
         public bool Delete(string bid)
         {

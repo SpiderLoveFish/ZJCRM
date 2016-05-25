@@ -21,6 +21,14 @@
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
+    <style type="text/css">
+       .gj
+       {font-size: 14px;color:red;margin: 10px 5px 0 0;text-align: right;
+       }
+       .blue
+       {font-size: 14px;color:blue;margin: 10px 5px 0 0;text-align: right;
+       }
+       </style>
     <script type="text/javascript">
         var manager = "";
         var szDevIP = "";
@@ -68,6 +76,28 @@
                          return html;
                      }
                  },
+                                         {
+                                             display: '要求日期', name: 'Jh_date', width: 80, align: 'left', render: function (item) {
+                                                 return formatTimebytype(item.Jh_date, 'yyyy/MM/dd');
+                                             }
+                                         },
+                           {
+                               display: '现状', name: 'Jh_date', width: 180, align: 'left', render: function (item) {
+                                   var html;
+                                   var myDate = new Date();
+                                   var days = getdays(formatTimebytype(item.Jh_date, 'yyyy/MM/dd'), myDate);
+                                   days = -days;
+                                   if (days < 0)
+                                       html ="<span  class='gj'>已拖期" + days * 1 + "天</span>";
+                                   else
+                                       html ="<span  class='blue'>剩余工期" + days + "天</span>";
+
+                                   
+                                  
+
+                                   return html;
+                               }
+                           },
                         { display: '状态', name: 'Stage_icon', width: 80, align: 'left' },
                            {
                                display: '摄像头', name: 'CompName', width: 80, align: 'left', render: function (item) {
@@ -115,6 +145,13 @@
             });
             toolbar();
         });
+
+        function getdays(dtbegin, dtend) {
+            var ts = parseInt(new Date(dtend).getTime() - new Date(dtbegin).getTime());
+            var days = Math.floor(ts / (24 * 3600 * 1000))
+            return days;
+        }
+
         function toolbar() {
             $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=135&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);

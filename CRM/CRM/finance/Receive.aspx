@@ -302,7 +302,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("CRM/finance/receive_add.aspx?orderid=" + row.id, "添加收款", 770, 490);
+                f_openWindow("CRM/finance/receive_add.aspx?orderid=" + row.id, "添加收款", 870, 490);
             }
             else {
                 $.ligerDialog.warn('请选择订单！');

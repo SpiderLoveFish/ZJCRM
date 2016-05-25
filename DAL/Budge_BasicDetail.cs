@@ -259,6 +259,51 @@ namespace XHD.DAL
         }
 
 
+        public bool Delete_id(int id,string bid)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from Budge_BasicDetail ");
+            strSql.Append(" where id="+id+"");
+            strSql.Append(" AND budge_id='" + bid + "'");
+            SqlParameter[] parameters = {
+				 
+			};
+          
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool Delete_comp(string comp, string bid)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append(" delete from Budge_BasicDetail ");
+            strSql.Append(" where ComponentName='" + comp + "'");
+            strSql.Append(" AND budge_id='" + bid + "'");
+            strSql.Append(" delete from Budge_Para_Ver ");
+            strSql.Append(" where BP_Name='" + comp + "'");
+            strSql.Append(" AND budge_id='" + bid + "'");
+            SqlParameter[] parameters = {
+				 
+			};
+          
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 		/// <summary>
 		/// 删除一条数据
 		/// </summary>

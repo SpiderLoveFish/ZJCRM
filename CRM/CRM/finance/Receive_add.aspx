@@ -33,6 +33,14 @@
     <script src="../../lib/json2.js" type="text/javascript"></script>
 
     <script src="../../JS/XHD.js" type="text/javascript"></script>
+
+     <script type="text/javascript" charset="utf-8" src="../../ueditor1_2_5_1-utf8-net/editor_config.js"></script>
+    <script src="../../ueditor1_2_5_1-utf8-net/editor_all.js" type="text/javascript"></script>
+    <script src="../../ueditor1_2_5_1-utf8-net/lang/zh-cn/zh-cn.js" type="text/javascript"></script>
+    <link href="../../ueditor1_2_5_1-utf8-net/themes/default/css/ueditor.css" rel="stylesheet" />
+
+
+
     <script type="text/javascript">
         $(function () {
             if (getparastr("orderid")) {
@@ -48,6 +56,23 @@
             //$("#T_Contract_name").focus();
             $("form").ligerForm();
             $('#T_employee').ligerComboBox({ width: 182, onBeforeOpen: f_selectContact });
+
+            UE.getEditor('editor', {
+                initialFrameWidth: 448, toolbars: [
+               ['source', '|', 'undo', 'redo', '|',
+                'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+                //'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+                //'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+                //'directionalityltr', 'directionalityrtl', 'indent', '|',
+                //'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+                //'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+                //'insertimage', 'emotion', 'template', 'background', '|',
+                //'horizontal', 'date', 'time', 'spechars', '|',
+                //'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', '|',
+                'preview', 'insertimage']
+                ],
+                autoHeightEnabled: false
+            });
 
             loadForm(getparastr("receiveid"));
         });
@@ -99,8 +124,8 @@
                     $("#T_invoice_num").val(obj.Receive_num);
 
                     $("#T_invoice_date").val(formatTimebytype(obj.Receive_date, "yyyy-MM-dd"));
-                    $("#T_content").val(obj.remarks);
-
+                    //$("#T_content").val(obj.remarks);
+                    UE.getEditor('editor').setContent(myHTMLDeCode(obj.remarks));
                     $("#T_receive_direction").ligerGetComboBoxManager().selectValue(obj.receive_direction_id);
 
                     if (obj.C_depid && obj.C_empid) {
@@ -131,7 +156,10 @@
                 if (parseFloat($("#T_invoice_amount").val().replace(/\$|\,/g, '')) > parseFloat($("#T_arrears_amount").val().replace(/\$|\,/g, '')) && $("#T_receive_direction").val() == "收款") {
                     alert('您的收款金额已经大于未收金额！');
                 }
-                var sendtxt = "&Action=save&receiveid=" + getparastr("receiveid") + "&orderid=" + getparastr("orderid");
+
+                var arr = [];
+                arr.push(UE.getEditor('editor').getContent());
+                var sendtxt = "&Action=save&receiveid=" + getparastr("receiveid") + "&orderid=" + getparastr("orderid") + "&T_content=" + escape(arr);
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }
@@ -321,8 +349,9 @@
                         </div>
                     </td>
                     <td colspan="3">
-
-                        <textarea cols="100" id="T_content" name="T_content" rows="3" class="l-textarea" style="width: 448px" validate="{required:true}"></textarea></td>
+                            <textarea id="editor" style="width: 448px;"></textarea>
+                        <%--<textarea cols="100" id="editor" name="T_content" rows="3" class="l-textarea" style="width: 448px" validate="{required:true}"></textarea></td>--%>
+                        </td>
                 </tr>
 
                 <tr>
