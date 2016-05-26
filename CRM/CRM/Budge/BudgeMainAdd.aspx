@@ -214,32 +214,45 @@
 
 
         function removeTreeItem() {
+            if (getparastr("style") != null || getparastr("status") == "1") {
+                top.$.ligerDialog.error('·Ç±à¼­×´Ì¬ÎÞ·¨É¾³ý£¡');
+                return;
+            }
             var node = treemanager.getSelected();
             if (node) {
-                $.ajax({
-                    url: "../../data/Budge.ashx", type: "POST",
-                    data: { Action: "delcomp", bid: $("#T_budgeid").val(), comp: node.data.text, rnd: Math.random() },
-                    success: function (responseText) {
-                        if (responseText == "true") {
-                            top.$.ligerDialog.closeWaitting();
-                            treemanager.remove(node.target);
-                            fload();
-                        }
+                $.ligerDialog.confirm("É¾³ý²»ÄÜ»Ö¸´£¬È·¶¨É¾³ý£¿", function (yes) {
+                    if (yes) {
+                        $.ajax({
+                            url: "../../data/Budge.ashx", type: "POST",
+                            data: { Action: "delcomp", bid: $("#T_budgeid").val(), comp: node.data.text, rnd: Math.random() },
+                            success: function (responseText) {
+                                if (responseText == "true") {
+                                    top.$.ligerDialog.closeWaitting();
+                                    treemanager.remove(node.target);
+                                    
+                                    fload();
+                                }
 
-                        else {
-                            top.$.ligerDialog.closeWaitting();
-                            top.$.ligerDialog.error('É¾³ýÊ§°Ü£¡');
-                        }
-                    },
-                    error: function () {
-                        top.$.ligerDialog.closeWaitting();
-                        top.$.ligerDialog.error('É¾³ýÊ§°Ü£¡', "", null, 9003);
+                                else {
+                                    top.$.ligerDialog.closeWaitting();
+                                    top.$.ligerDialog.error('É¾³ýÊ§°Ü£¡');
+                                }
+                            },
+                            error: function () {
+                                top.$.ligerDialog.closeWaitting();
+                                top.$.ligerDialog.error('É¾³ýÊ§°Ü£¡', "", null, 9003);
+                            }
+                        });
                     }
-                });
+                })
                
-            }
-            else
-                alert('ÇëÏÈÑ¡Ôñ½Úµã');
+                    }
+                    else
+                    {
+                        alert('ÇëÏÈÑ¡Ôñ½Úµã');
+                    }
+
+                    
         }
 
 
