@@ -34,7 +34,88 @@ namespace XHD.CRM.Data
             DataSet dsemp = emp.GetList("id=" + emp_id);
             string empname = dsemp.Tables[0].Rows[0]["name"].ToString();
             string uid = dsemp.Tables[0].Rows[0]["uid"].ToString();
-           
+
+            #region 动态图
+            if (request["Action"] == "savedy")
+            {
+                string cid = PageValidate.InputText(request["cid"], 50);
+                string dyname = PageValidate.InputText(request["T_name"], 255);
+                string dyurl = PageValidate.InputText(request["T_url"], 255);
+                string remarks = PageValidate.InputText(request["T_remarks"], 255);
+                string id = PageValidate.InputText(request["id"], 50);
+                if (!string.IsNullOrEmpty(id) && id != "null")
+                {
+               if (customer.Updatedy(int.Parse(id), int.Parse(cid), dyname, dyurl, remarks))
+                        context.Response.Write("true");
+                    else context.Response.Write("false");
+                }
+                else
+                {
+                    if (customer.Adddy(int.Parse(cid), dyname, dyurl, remarks) > 0)
+                        context.Response.Write("true");
+                    else context.Response.Write("false");
+                }
+                // context.Response.Write(ct);
+            }
+            if (request.Params["Action"] == "deldy")
+            {
+                string id = PageValidate.InputText(request["id"], 50);
+                string cid = PageValidate.InputText(request["cid"], 50);
+                if(customer.Deletedy(int.Parse(id), int.Parse(cid)))
+                    context.Response.Write("true");
+                else context.Response.Write("false");
+            }
+            if (request["Action"] == "griddy")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = null;
+
+                string cid = PageValidate.InputText(request["cid"], 50);
+                if (!string.IsNullOrEmpty(cid) && cid != "null")
+                {
+                    serchtxt += " Customer_id=" + cid + " ";
+                }
+
+
+                DataSet ds = customer.GetListdy(PageSize, PageIndex, serchtxt, sorttext, out Total);
+
+                string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                context.Response.Write(dt);
+            }
+
+            if (request["Action"] == "formdy")
+            {
+                string id = PageValidate.InputText(request["id"], 50);
+                string cid = PageValidate.InputText(request["cid"], 50);
+                string dt;
+                if (PageValidate.IsNumber(id))
+                {
+                    DataSet ds = customer.GetListdy("id=" + id + " and Customer_id="+cid);
+                    dt = Common.DataToJson.DataToJSON(ds);
+                }
+                else
+                {
+                    dt = "{}";
+                }
+
+
+                context.Response.Write(dt);
+            }
+
+            #endregion
+
             //save
             if (request["Action"] == "save")
             {

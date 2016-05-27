@@ -436,7 +436,7 @@
                 </td>
                 <td>
 
-                    <div style="width: 80px; text-align: right; float: right">客户职业：</div>
+                    <div style="width: 80px; text-align: right; float: right">客户状态：</div>
 
                 </td>
                 <td>
@@ -651,10 +651,10 @@
                 <td><div style="width: 80px; text-align: right; float: right">微信状态：</div></td>
                 <td><input id="T_WXZT_NAME" name="T_WXZT_NAME" type="text" /></td>
             </tr>
-             <tr>
-                <td colspan="4" class="table_title1">效果图网址</td>
+             <tr style="display:none">
+                <td colspan="4"  class="table_title1">效果图网址</td>
             </tr>
-            <tr>
+            <tr style="display:none">
                 <td>
                     <div style="width: 80px; text-align: right; float: right">效果图：</div>
                 </td>
@@ -663,7 +663,7 @@
                 <td><div style="width: 80px; text-align: right; float: right">户型图：</div></td>
                 <td><input id="T_hxt" name="T_hxt" type="text" ltype="text" ligerui="{width:196}" /></td>
             </tr>
-             <tr>
+             <tr style="display:none">
                 <td>
                     <div style="width: 80px; text-align: right; float: right">隐蔽全景：</div>
                 </td>
@@ -684,7 +684,7 @@
             </tr>
             <tr>
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">状态：</div>
+                    <div style="width: 80px; text-align: right; float: right">客户性质：</div>
                 </td>
                 <td>
                     <input id="T_private" name="T_private" type="text" ltype="select" ligerui="{width:196,data:[{id:'私客',text:'私客'},{id:'公客',text:'公客'}]}" validate="{required:true}" /></td>

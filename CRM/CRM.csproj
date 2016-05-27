@@ -136,6 +136,8 @@
     <Content Include="CRM\ConsExam\XM_LIST.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST.aspx" />
     <Content Include="CRM\ConsExam\SelectCEStageCustomer.aspx" />
+    <Content Include="CRM\Customer\Customer_DynamicGraphics_add.aspx" />
+    <Content Include="CRM\Customer\Customer_DynamicGraphics.aspx" />
     <Content Include="CRM\Customer\Customer.aspx" />
     <Content Include="CRM\Customer\Customer_add.aspx" />
     <Content Include="CRM\Customer\Customer_Contact.aspx" />

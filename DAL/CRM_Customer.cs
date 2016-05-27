@@ -787,7 +787,7 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select id,Serialnumber,Customer,address,tel,fax,site,industry_id,industry,Provinces_id,Provinces,City_id,City,Towns_id,Towns,Community_id,Community,BNo,RNo,Gender,CustomerType_id,CustomerType,CustomerLevel_id,CustomerLevel,CustomerSource_id,CustomerSource,DesCripe,Remarks,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_id,Create_name,Create_date,isDelete,Delete_time,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,WXZT_ID,WXZT_NAME,QQ,JKDZ,hxt,jgqjt ");
-            strSql.Append(" FROM CRM_Customer ");
+            strSql.Append(" FROM CRM_Customer  ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" where " + strWhere);
@@ -848,8 +848,8 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces,City,Towns,Community,BNo,RNo,Gender,CustomerType,CustomerLevel,CustomerSource,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_date,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,DesCripe,WXZT_ID,WXZT_NAME,QQ,JKDZ,hxt,jgqjt FROM CRM_Customer ");
-            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_Customer ");
+            strSql.Append(" top " + PageSize + " a.id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces,City,Towns,Community,BNo,RNo,Gender,CustomerType,CustomerLevel,CustomerSource,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,a.Create_date,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,DesCripe,WXZT_ID,WXZT_NAME,QQ,JKDZ,hxt,jgqjt,b.setcolor,c.setcolor as indcolor FROM CRM_Customer a LEFT JOIN dbo.Param_SysParam b ON a.CustomerType_id=b.id LEFT JOIN dbo.Param_SysParam c ON a.industry_id=c.id ");
+            strSql.Append(" WHERE a.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_Customer ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(id) FROM CRM_Customer ");
             if (strWhere.Trim() != "")
@@ -1184,6 +1184,131 @@ namespace XHD.DAL
             }
             return DbHelperSQL.Query(strSql.ToString());
         }
+
+
+        /// <summary>
+        /// 分页获取数据列表动态图
+        /// </summary>
+        public DataSet GetListdy(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + " A.*,B.Customer FROM dbo.Crm_Customer_DynamicGraphics A ");
+            strSql.Append("  INNER JOIN CRM_Customer B ON A.Customer_id=B.id ");
+            strSql.Append(" WHERE a.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Crm_Customer_DynamicGraphics ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(id) FROM Crm_Customer_DynamicGraphics ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+        public DataSet GetListdy(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("SELECT  *  FROM dbo.Crm_Customer_DynamicGraphics   ");
+            //strSql.Append(" INNER JOIN CRM_Customer B ON A.Customer_id=B.id ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public bool Deletedy(int id,int cid)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from Crm_Customer_DynamicGraphics ");
+            strSql.Append(" where id="+id+" and Customer_id="+cid+"");
+            SqlParameter[] parameters = {
+				 
+                    };
+           
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// 增加一条数据
+        /// </summary>
+        public int Adddy(int cid,string dyname,string dyurl,string remarks)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("INSERT INTO dbo.Crm_Customer_DynamicGraphics");
+            sb.AppendLine("        ( Customer_id ,");
+            sb.AppendLine("          DyGraphicsName ,");
+            sb.AppendLine("          DyUrl ,");
+            sb.AppendLine("          DoTime ,");
+            sb.AppendLine("          Remarks");
+            sb.AppendLine("        )");
+            sb.AppendLine("VALUES  ( "+cid+" ,"); // Customer_id - int
+            sb.AppendLine("          N'"+dyname+"' ,"); // DyGraphicsName - nvarchar(50)
+            sb.AppendLine("          '"+dyurl+"' ,"); // DyUrl - varchar(500)
+            sb.AppendLine("          getdate() ,"); // DoTime - datetime
+            sb.AppendLine("          '"+remarks+"'"); // Remarks - varchar(50)
+            sb.AppendLine("        )");
+            SqlParameter[] parameters = {
+			              };
+           
+            object obj = DbHelperSQL.GetSingle(sb.ToString(), parameters);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+        /// <summary>
+        /// 更新一条数据
+        /// </summary>
+        public bool Updatedy(int id,int cid, string dyname, string dyurl, string remarks)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update Crm_Customer_DynamicGraphics set ");
+            strSql.Append("Customer_id="+cid+",");
+            strSql.Append("DyGraphicsName='"+dyname+"',");
+            strSql.Append("DyUrl='"+dyurl+"',");
+            strSql.Append("DoTime=getdate(),");
+            strSql.Append("Remarks='"+remarks+"'");
+          
+            strSql.Append(" where id="+id+"");
+            SqlParameter[] parameters = {
+				 
+                                        };
+           
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
         #endregion  Method
     }
 }

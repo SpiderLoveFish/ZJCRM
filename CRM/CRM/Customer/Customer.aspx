@@ -58,68 +58,45 @@
                     { display: '电话', name: 'tel', width: 120 },
                     { display: '小区', name: 'Community', width: 80 },
                     { display: '地址', name: 'address', width: 200 },
-                       {
-                           display: '效果图', width: 40, render: function (item) {
-                               var html;
-                               if (item.DesCripe != "") {
-                                   html = "<a href='" + item.DesCripe + "' target='_blank'>";
-                                   html += "查看";
-                                   html += "</a>";
-                               }
-                               else html = "暂无";
-                               return html;
-                           }
-                       },
-                       {
-                           display: '户型图', width: 40, render: function (item) {
-                               var html;
-                               if (item.hxt !== "") {
-                                   html = "<a href='" + item.hxt + "' target='_blank'>";
-                                   html += "查看";
-                                   html += "</a>";
-                               }
-                               else html = "暂无";
-                               return html;
-                           }
-                       },
-                       {
-                           display: '隐蔽全景', width: 50, render: function (item) {
-                               var html;
-                               if (item.JKDZ !== "") {
-                                   html = "<a href='" + item.JKDZ + "' target='_blank'>";
-                                   html += "查看";
-                                   html += "</a>";
-                               }
-                               else html = "暂无";
-                               return html;
-                           }
-                       },
-                         {
-                             display: '竣工全景', width: 50, render: function (item) {
-                                 var html;
-                                 if (item.jgqjt !== "") {
-                                     html = "<a href='" + item.jgqjt + "' target='_blank'>";
-                                     html += "查看";
-                                     html += "</a>";
+                       //{
+                       //    display: '效果图', width: 40, render: function (item) {
+                       //        var html;
+                       //        if (item.DesCripe != "") {
+                       //            html = "<a href='" + item.DesCripe + "' target='_blank'>";
+                       //            html += "查看";
+                       //            html += "</a>";
+                       //        }
+                       //        else html = "暂无";
+                       //        return html;
+                       //    }
+                       //},
+                   
+                   //  { display: '客户类型', name: 'CustomerType', width: 80 },
+                             {
+                                 display: '客户类型', name: 'setcolor', width: 80, align: 'right', render: function (item) {
+                                     return "<div class='tips' style='background:#" + item.setcolor + "'>" + item.CustomerType + "</div>";
                                  }
-                                 else html = "暂无";
-                                 return html;
-                             }
-                         },
-                     { display: '客户类型', name: 'CustomerType', width: 80 },
-                    { display: '客户类别', name: 'CustomerLevel', width: 80 },
+                             },
+                                          {
+                                              display: '客户状态', name: 'industry', width: 80, align: 'right', render: function (item) {
+                                                  return "<div style='color:#" + item.indcolor + "'>" + item.industry + "</div>";
+                                              }
+                                          },
+                             // { display: '客户状态', name: 'industry', width: 80 },
+                    { display: '预算价位', name: 'CustomerLevel', width: 80 },
                     { display: '客户来源', name: 'CustomerSource', width: 80 },
                     //{ display: '省份', name: 'Provinces', width: 80 },
                     //{ display: '城市', name: 'City', width: 80 },
                     //{ display: '区镇', name: 'Towns', width: 80 },
                     //{ display: '楼号', name: 'BNo', width: 80 },
                     //{ display: '房号', name: 'RNo', width: 80 },
-                    { display: '客户职业', name: 'industry', width: 80 },
+                   
                    // { display: '部门', name: 'Department', width: 80 },
                     { display: '业务员', name: 'Employee', width: 80 },
                     { display: '设计师', name: 'Emp_sj', width: 80 },
                     { display: '施工监理', name: 'Emp_sg', width: 80 },
-                    { display: '客源状态', name: 'privatecustomer', width: 60 },
+                    { display: '客户性质', name: 'privatecustomer', width: 60 },
+     
                     {
                         display: '最后跟进', name: 'lastfollow', width: 90, render: function (item) {
                             var lastfollow = formatTimebytype(item.lastfollow, 'yyyy-MM-dd');
@@ -501,7 +478,37 @@
                 $.ligerDialog.warn('请选择行！');
             }
         }
-
+        var activeDialog = null;
+        function f_openWindow_view(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+                
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+        function viewdy() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+              
+                f_openWindow('CRM/Customer/Customer_DynamicGraphics.aspx?cid=' + row.id + '&name=' + encodeURI(row.Customer)
+                        + '&tel=' + row.tel
+                        + '&sjs=' + encodeURI(row.Emp_sj), "动态效果图", 660, 550);
+            }
+            else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+        function f_selectContactCancel(item, dialog) {
+            dialog.close();
+            //fload();
+        }
         function del() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();

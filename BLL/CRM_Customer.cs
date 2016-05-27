@@ -431,6 +431,28 @@ namespace XHD.BLL
             return dal.GetGYSMapList(strWhere);
         }
 
+
+        public DataSet GetListdy(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetListdy(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+        public DataSet GetListdy(string strWhere)
+        {
+            return dal.GetListdy(strWhere);
+        }
+
+        public bool Deletedy(int id, int cid)
+        {
+            return dal.Deletedy(id,cid);
+        }
+        public bool Updatedy(int id, int cid, string dyname, string dyurl, string remarks)
+        {
+            return dal.Updatedy(id, cid, dyname, dyurl, remarks);
+        }
+        public int Adddy(int cid, string dyname, string dyurl, string remarks)
+        {
+            return dal.Adddy(cid, dyname, dyurl, remarks);
+        }
         #endregion  Method
     }
 }
