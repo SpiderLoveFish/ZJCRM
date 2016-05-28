@@ -56,8 +56,18 @@
                     { display: '成交部门', name: 'F_dep_name', width: 80 },
                     { display: '成交人员', name: 'F_emp_name', width: 80 },
                     { display: '订单状态', name: 'Order_status', width: 70 },
+                     {
+                         display: '总金额（￥）', name: 'Total_Money', width: 100, align: 'right', render: function (item) {
+                             return "<div style='color:#135294'>" + toMoney(item.Total_Money) + "</div>";
+                         }
+                     },
+                      {
+                          display: '预算金额（￥）', name: 'budget_money', width: 100, align: 'right', render: function (item) {
+                              return "<div style='color:#135294'>" + toMoney(item.budget_money) + "</div>";
+                          }
+                      },
                     {
-                        display: '订单金额（￥）', name: 'Order_amount', width: 100, align: 'right', render: function (item) {
+                        display: '补差金额（￥）', name: 'Order_amount', width: 100, align: 'right', render: function (item) {
                             return "<div style='color:#135294'>" + toMoney(item.Order_amount) + "</div>";
                         }
                     },

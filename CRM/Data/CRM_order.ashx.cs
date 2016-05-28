@@ -52,8 +52,10 @@ namespace XHD.CRM.Data
 
                 model.budget_money = decimal.Parse(request["T_ysje"]);
                 model.Total_Money = decimal.Parse(request["T_amount"]) + decimal.Parse(request["T_ysje"]);
+                model.budget_money = decimal.Parse(request["T_ysje"]);
 
-
+                model.budge_id = PageValidate.InputText(request["ysid"], 50);
+               
                 model.create_id = emp_id;
                 model.create_date = DateTime.Now;
 

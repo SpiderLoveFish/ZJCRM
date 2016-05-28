@@ -33,6 +33,7 @@
     <script src="../../lib/json2.js" type="text/javascript"></script>
 
     <script src="../../JS/XHD.js" type="text/javascript"></script>
+    
     <script type="text/javascript">
         $(function () {
             $.metadata.setType("attr", "validate");
@@ -62,7 +63,7 @@
                                 return toMoney(item.price);
                             }
                         },
-                        { display: '数量', name: 'quantity', width: 100, type: 'int', editor: { type: 'int', isNegative: false, onChange: onChange } },
+                        { display: '数量', name: 'quantity', width: 100, type: 'int', editor: { type: 'int', onChange: onChange } },//isNegative: false,
                         { display: '单位', name: 'unit', width: 40, editor: { type: 'text' } },
                         {
                             display: '总价', name: 'amount', width: 100, type: 'float', align: 'right', render: function (item) {
@@ -178,6 +179,8 @@
                     $("#T_amount").val(toMoney(obj.Order_amount));
                     $("#T_ysje").val(toMoney(obj.budget_money));
                     $("#T_zje").val(toMoney(obj.Total_Money));
+                    $("#ysid").html(obj.budge_id);
+                    //alert(obj.budge_id)
 
                     if (obj.C_emp_id)
                         fill_c_emp(obj.C_dep_name, obj.C_dep_id, obj.C_emp_name, obj.C_emp_id);
@@ -237,7 +240,9 @@
 
         function addys() {
             //alert($("#customerid").val());
-            f_openWindowys("crm/sale/SelectBudge.aspx?cid=1" , "选择预算", 700, 400);
+            f_openWindowys("crm/sale/SelectBudge.aspx?cid=1"
+                //+ $("#customerid").val()
+                , "选择预算", 700, 400);
         }
         function pro_remove() {
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -255,45 +260,45 @@
             else {
                 rows = dialog.frame.f_select();
                 $("#T_ysje").val(toMoney(rows.DiscountAmount));
-
-                if (rows.id) {
-                    $.ajax({
-                        url: "../../data/Budge.ashx", type: "POST",
-                        data: { Action: "griddetail", bid: rows.id, rnd: Math.random() },
-                        dataType: "json",
-                        success: function (responseText) {
+                $("#ysid").html(rows.id); 
+                //if (rows.id) {
+                //    $.ajax({
+                //        url: "../../data/Budge.ashx", type: "POST",
+                //        data: { Action: "griddetail", bid: rows.id, rnd: Math.random() },
+                //        dataType: "json",
+                //        success: function (responseText) {
                            
-                            var rows = responseText.Rows
-                            //过滤重复
-                            var manager = $("#maingrid4").ligerGetGridManager();
-                            var data = manager.getCurrentData();
+                //            var rows = responseText.Rows
+                //            //过滤重复
+                        var manager = $("#maingrid4").ligerGetGridManager();
+                        var data = manager.getCurrentData();
 
-                            for (var i = 0; i < rows.length; i++) {
+                //            for (var i = 0; i < rows.length; i++) {
 
-                                var add = 1;
-                                for (var j = 0; j < data.length; j++) {
-                                    if (rows[i].product_id == data[j].product_id) {
-                                        add = 0;
-                                    }
-                                }
-                                if (add == 1) {
-                                    //price
-                                    rows[i].quantity = 1;
-                                    rows[i]["amount"] = rows[i].price * rows[i].quantity;
-                                    manager.addRow(rows[i]);
-                                }
-                            }
+                //                var add = 1;
+                //                for (var j = 0; j < data.length; j++) {
+                //                    if (rows[i].product_id == data[j].product_id) {
+                //                        add = 0;
+                //                    }
+                //                }
+                //                if (add == 1) {
+                //                    //price
+                //                    rows[i].quantity = 1;
+                //                    rows[i]["amount"] = rows[i].price * rows[i].quantity;
+                //                    manager.addRow(rows[i]);
+                //                }
+                //            }
                             dialog.close();
                             $("#T_amount").val(toMoney(manager.getColumnDateByType('amount', 'sum') * 1.0));
 
                             f_checkquantity();
-                        },
-                        error: function () {
-                            top.$.ligerDialog.closeWaitting();
-                            top.$.ligerDialog.error('修改失败！', "", null, 9003);
-                        }
-                    });
-                }
+                //        },
+                //        error: function () {
+                //            top.$.ligerDialog.closeWaitting();
+                //            top.$.ligerDialog.error('修改失败！', "", null, 9003);
+                //        }
+                //    });
+                //}
                 
             }
            
@@ -339,7 +344,7 @@
         }
         function f_save() {
             if ($(form1).valid()) {
-                var sendtxt = "&Action=save&orderid=" + getparastr("orderid");
+                var sendtxt = "&Action=save&orderid=" + getparastr("orderid") + "&ysid=" + $("#ysid").text();
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }
@@ -364,6 +369,27 @@
         }
         function f_check() {
             var g = $("#maingrid4").ligerGetGridManager().endEdit(true);
+        }
+
+        var activeDialogsch = null;
+        function f_openWindow_ch(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+                 
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialogsch = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+        function viewys()
+        {
+          
+            f_openWindow_ch("crm/Budge/BudgeMainAdd.aspx?bid=" + $("#ysid").text() + "&style=view", "查看预算", 1100, 600);
+
         }
     </script>
 
@@ -466,7 +492,13 @@
                         <input type="text" id="T_amount" name="T_amount" ltype="text" style="text-align: right" value="0" validate="{required:true}" ligerui="{width:182,disabled:true}" /></td>
                 </tr>
                 <tr>
-                    <td colspan="4" class="table_title1">订单产品</td>
+                    <td colspan="3" class="table_title1">订单产品</td>
+                    <td class="table_title1">
+                        <a  position="right" style="width:150px;" onClick="viewys()">
+                            <span  style="cursor:hand; cursor:pointer;" id="ysid" ></span>
+                        </a>
+
+                    </td>
                 </tr>
                 <tr>
                     <td>

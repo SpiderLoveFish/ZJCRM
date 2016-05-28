@@ -97,8 +97,8 @@
 
                     $("#T_department0").val(obj.C_dep_name);
                     $("#T_employee0").val(obj.C_emp_name);
-
-                    $("#T_order_amount").val(toMoney(obj.Order_amount));
+                    // Order_amount
+                    $("#T_order_amount").val(toMoney(obj.Total_Money));
                     $("#T_receive_amount").val(toMoney(obj.receive_money));
                     $("#T_arrears_amount").val(toMoney(obj.arrears_money));
                     $("#T_invoice_money").val(toMoney(obj.invoice_money));

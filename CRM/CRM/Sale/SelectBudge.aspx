@@ -20,7 +20,7 @@
     
     <script type="text/javascript">
         var customer_id = getparastr("cid");
-
+       // alert(customer_id);
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
