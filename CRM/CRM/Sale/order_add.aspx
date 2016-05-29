@@ -35,6 +35,7 @@
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     
     <script type="text/javascript">
+        var gcus;
         $(function () {
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
@@ -42,7 +43,7 @@
             //$("#T_Contract_name").focus();
             $("form").ligerForm();
 
-            $("#T_Customer").ligerComboBox({
+            gcus=   $("#T_Customer").ligerComboBox({
                 width: 489,
                 onBeforeOpen: f_selectCustomer
             })
@@ -113,8 +114,15 @@
                 alert('请选择行!');
                 return;
             }
-            $("#T_Customer").val(data.Customer);
+            $("#T_Customer").val(data.Customer + '【' + data.address + '】');
             $("#T_Customer_val").val(data.id);
+            $("#customerid").val(data.id)
+           // Emp_id_sj, Emp_sj
+            $("#f_emp_view").val("【" + data.Dpt_sj + "】" + data.Emp_sj);
+            $("#f_emp").val(data.Emp_sj);
+            $("#f_emp_val").val(data.Emp_id_sj);
+            $("#f_dep").val(data.Dpt_sj);
+            $("#f_dep_val").val(data.Dpt_id_sj);
             fill_c_emp(data.Department, data.Department_id, data.Employee, data.Employee_id);
             dialog.close();
         }
@@ -180,7 +188,10 @@
                     $("#T_ysje").val(toMoney(obj.budget_money));
                     $("#T_zje").val(toMoney(obj.Total_Money));
                     $("#ysid").html(obj.budge_id);
-                    //alert(obj.budge_id)
+                   // alert(obj.budge_id)
+                    if (obj.budge_id == '' || obj.budge_id == null) { }
+                    else
+                        gcus.setReadOnly();
 
                     if (obj.C_emp_id)
                         fill_c_emp(obj.C_dep_name, obj.C_dep_id, obj.C_emp_name, obj.C_emp_id);
@@ -240,9 +251,13 @@
 
         function addys() {
             //alert($("#customerid").val());
-            f_openWindowys("crm/sale/SelectBudge.aspx?cid=1"
-                //+ $("#customerid").val()
-                , "选择预算", 700, 400);
+            if ($("#customerid").val() == "") {
+                alert('请选择客户！!');
+            }else{
+                f_openWindowys("crm/sale/SelectBudge.aspx?cid="
+                   + $("#customerid").val()
+                    , "选择预算", 700, 400);
+            }
         }
         function pro_remove() {
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -260,7 +275,7 @@
             else {
                 rows = dialog.frame.f_select();
                 $("#T_ysje").val(toMoney(rows.DiscountAmount));
-                $("#ysid").html(rows.id); 
+                $("#ysid").html(rows.id); gcus.setReadOnly();
                 //if (rows.id) {
                 //    $.ajax({
                 //        url: "../../data/Budge.ashx", type: "POST",

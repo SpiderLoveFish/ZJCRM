@@ -314,7 +314,7 @@
             if (cansave) {
                 if (issave) {
                     //alert(1);
-                    if (postnum > 0) {
+                   // if (postnum > 0) {
                        // alert(1);
                         dialog.close();
                         $.ligerDialog.waitting('数据保存中,请稍候...');
@@ -337,11 +337,11 @@
                                 $.ligerDialog.error('操作失败！');
                             }
                         });
-                    }
-                    else {
-                        top.$.ligerDialog.warn('产品不能为空！');
-                        return;
-                    }
+                   // }
+                   // else {
+                    //    top.$.ligerDialog.warn('产品不能为空！');
+                    //    return;
+                   // }
 
                 }
             }

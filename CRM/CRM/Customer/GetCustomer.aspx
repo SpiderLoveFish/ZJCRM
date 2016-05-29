@@ -25,6 +25,7 @@
                 columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                     { display: '客户姓名', name: 'Customer', width: 80, align: 'left' },
+                     { display: '地址', name: 'address', width: 80, align: 'left' },
 
                     {
                         display: '客户所属', name: '', width: 120, render: function (item) {
