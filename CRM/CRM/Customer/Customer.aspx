@@ -497,9 +497,9 @@
             var row = manager.getSelectedRow();
             if (row) {
               
-                f_openWindow('CRM/Customer/Customer_DynamicGraphics.aspx?cid=' + row.id + '&name=' + encodeURI(row.Customer)
+                f_openWindow_view('CRM/Customer/Customer_DynamicGraphics.aspx?cid=' + row.id + '&name=' + encodeURI(row.Customer)
                         + '&tel=' + row.tel
-                        + '&sjs=' + encodeURI(row.Emp_sj), "动态效果图", 660, 550);
+                        + '&sjs=' + encodeURI(row.Emp_sj), "【"+row.address+"】效果图库", 660, 550);
             }
             else {
                 $.ligerDialog.warn('请选择行！');

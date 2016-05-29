@@ -78,19 +78,19 @@
     <form id="form1" onsubmit="return false">
         <table class="bodytable1" style="width: 500px; margin: 2px;">
             <tr>
-                <td class="table_title1" colspan="2">基础资料</td>
+                <td class="table_title1" colspan="2">请填写效果图信息</td>
             </tr>
             <tr>
 
                 <td style="width: 85px">
-                    <div style="width: 80px; text-align: right; float: right">动图名词：</div>
+                    <div style="width: 80px; text-align: right; float: right">名称：</div>
                 </td>
                 <td>
                     <input type="text" id="T_name" name="T_name"  ltype="text"  ligerui="{width:350}" validate="{required:true}" /></td>
             </tr>
             <tr>
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">动图地址：</div>
+                    <div style="width: 80px; text-align: right; float: right">网址(URL)：</div>
                 </td>
                 <td>
                     <textarea id="T_url" cols="3" name="T_url" class="l-textarea" style="width: 350px;" rows="3" validate="{required:true}"></textarea></td>

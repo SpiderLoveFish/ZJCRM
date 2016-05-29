@@ -121,12 +121,12 @@
                 columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
 
-                    { display: '客户', name: 'Customer', width: 120 },
+                 //   { display: '客户', name: 'Customer', width: 120 },
  
-                   { display: '动态图名词', name: 'DyGraphicsName', width: 80 },
+                   { display: '名称', name: 'DyGraphicsName', width: 160 },
 
                       {
-                          display: '动态图', width: 50, render: function (item) {
+                          display: '效果图', width: 50, render: function (item) {
                               var html;
                               if (item.jgqjt !== "") {
                                   html = "<a href='" + item.DyUrl + "' target='_blank'>";
@@ -138,7 +138,7 @@
                           }
                       },
                         {
-                            display: '备注', name: 'Remarks', align: 'left', width: 200, type: 'text'
+                            display: '备注', name: 'Remarks', align: 'left', width: 350, type: 'text'
                             , editor: { type: 'text' }
                         }
 
@@ -172,7 +172,7 @@
 
 
         function add() {
-            f_openWindow("CRM/Customer/Customer_DynamicGraphics_add.aspx?cid=" + getparastr("cid"), "新增动图", 660, 300);
+            f_openWindow("CRM/Customer/Customer_DynamicGraphics_add.aspx?cid=" + getparastr("cid"), "新增效果图", 500, 200);
 
         }
 
@@ -180,7 +180,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('CRM/Customer/Customer_DynamicGraphics_add.aspx?id=' + row.id+'&cid='+getparastr("cid"), "修改动图", 660, 300);
+                f_openWindow('CRM/Customer/Customer_DynamicGraphics_add.aspx?id=' + row.id + '&cid=' + getparastr("cid"), "修改效果图", 500, 200);
             }
             else {
                 $.ligerDialog.warn('请选择行！');
@@ -267,7 +267,7 @@
              <input type="hidden" id="h_address" value="" />
         <table style="width: 550px; margin: 5px;" class='bodytable1'>
             <tr>
-                <td colspan="8" class="table_title1">基本信息
+                <td colspan="8" class="table_title1">客户信息
                      
                 </td>
               
