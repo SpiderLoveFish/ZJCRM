@@ -26,10 +26,11 @@
             $.ajax({
                 url: "../../data/SingleSignOn.ashx", type: "POST",
                 data: { Action: "GetMD5", rnd: Math.random() },
+               // dataType: 'content', //这里修改为content   
                 success: function (responseText) {
                     // $.ligerDialog.warn(responseText);
                     //location.href = "http://www.baidu.com";
-                   
+                     //alert(responseText);
                     //$.ligerDialog.warn(responseText);
                     //$.ligerDialog.warn(obj.errorMsg);
                    // $("#maingrid4").append("<lable >错误代码：" + obj.errorMsg + "</lable>");

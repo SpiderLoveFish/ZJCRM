@@ -38,39 +38,31 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "GetMD5")
             {
-                BLL.CE_Para cp = new BLL.CE_Para();
-                DataSet ds = cp.GetSingleSignOnList("  id=1");
-                if(ds.Tables[0].Rows.Count>0)
-                // 分配给每个商家的唯一的appkey和appsecret
-                    foreach (DataRow dr in ds.Tables[0].Rows)
-                    {
-                        string appKey = dr["appKey"].ToString();
-                        string appSecret = dr["appSecret"].ToString();
-                        // 设定API文档中提到的参数
-                        string userId = dr["appuid"].ToString();
-                        string userName = dr["appuname"].ToString();
-                        string email = dr["appuemail"].ToString();
-                        string phone = dr["appuphone"].ToString();
-                        string ssn = dr["appussn"].ToString();
-                        string address = dr["appuAddr"].ToString();
-                        string avatar = dr["appuavatar"].ToString();
+
+                    string[] arr = para("1");
+                    string appKey =arr[(int)paraenum.appKey];
+                    string appSecret =arr[(int)paraenum.appSecret];
+                    string userId = arr[(int)paraenum.userId];
+                    if (appKey==null) context.Response.Write("请先配置参数！");
+                     else
+                        {      
                         object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                         string timestamp = currenttimemillis.ToString(); ;//2分钟
                         // 签名加密
                         string aa = "sdfaadsasdasd";
-                        string md5aa = MD5(aa);
-                        string sign = MD5(appSecret + appKey + userId + timestamp);
+                        string md5aa = MD5(aa).ToLower();
+                        string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
                         IDictionary<string, string> postdata = new Dictionary<string, string>();
                         postdata.Add("appkey", appKey);
                         postdata.Add("timestamp", timestamp);
                         postdata.Add("appuid", userId);
                         postdata.Add("sign", sign);
-                        postdata.Add("appuname", userName);
-                        postdata.Add("appuemail", email);
-                        postdata.Add("appuphone", phone);
-                        postdata.Add("appussn", ssn);
-                        postdata.Add("appuAddr", address);
-                        postdata.Add("appuavatar", avatar);
+                        postdata.Add("appuname", arr[(int)paraenum.userName]);
+                        postdata.Add("appuemail", arr[(int)paraenum.email]);
+                        postdata.Add("appuphone", arr[(int)paraenum.phone]);
+                        postdata.Add("appussn", arr[(int)paraenum.ssn]);
+                        postdata.Add("appuaddr", arr[(int)paraenum.address]);
+                        postdata.Add("appuavatar", arr[(int)paraenum.avatar]);
 
                         //发送POST数据  
                         StringBuilder buffer = new StringBuilder();
@@ -94,7 +86,7 @@ namespace XHD.CRM.Data
 
                         // 设置HTTP请求的参数，等同于以query string的方式附在URL后面
                         //// API地址，生产环境域名对应为www.kujiale.com
-                        string api = dr["api"].ToString();
+                        string api = arr[(int)paraenum.api];
                         //// 构造HTTP请求
                         string test = "http://wwww.baidu.com";
 
@@ -105,12 +97,65 @@ namespace XHD.CRM.Data
 
                         // result = PostWebRequest(api, postdata);
                         // result = HttpPost(api, buffer.ToString());
-                        result = HttpHelper_GetStr(api, buffer.ToString());
+                        result = HttpHelper_GetStr(api,"POST", buffer.ToString());
                         context.Response.Write(result);
                     }
-                else context.Response.Write("请先配置参数！");
+              
             }
+
+            if (request["Action"] == "Design3D")
+            {
+                
+                    string[] arr = para("1");
+                    string appKey =arr[(int)paraenum.appKey];
+                    string appSecret =arr[(int)paraenum.appSecret];
+                    string userId = arr[(int)paraenum.userId];
+                    if (appKey == null) context.Response.Write("请先配置参数！");
+                    else
+                    {
+                        string appuid = "3FO4KEAG7F9L";
+                        object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                        string timestamp = currenttimemillis.ToString(); ;//2分钟
+                        // 签名加密
+                        string aa = "sdfaadsasdasd";
+                        string md5aa = MD5(aa).ToLower();
+                        string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                        IDictionary<string, string> postdata = new Dictionary<string, string>();
+                        postdata.Add("appkey", appKey);
+                        postdata.Add("timestamp", timestamp);
+                        postdata.Add("sign", sign);
+                        postdata.Add("planid", arr[(int)paraenum.userName]);
+                        postdata.Add("appuid", appuid);
+                        StringBuilder buffer = new StringBuilder();
+                        if (!(postdata == null || postdata.Count == 0))
+                        {
+
+                            int i = 0;
+                            foreach (string key in postdata.Keys)
+                            {
+                                if (i > 0)
+                                {
+                                    buffer.AppendFormat("&{0}={1}", key, postdata[key]);
+                                }
+                                else
+                                {
+                                    buffer.AppendFormat("{0}={1}", key, postdata[key]);
+                                    i++;
+                                }
+                            }
+                        }
+
+                        string api = arr[(int)paraenum.api];
+                        string result = "";
+                        result = HttpHelper_GetStr(api, "GET", buffer.ToString());
+                        context.Response.Write(result);
+                    }
+               
+            }
+
+
         }
+
          private static string MD5(string input) {
 
            string b  =FormsAuthentication.HashPasswordForStoringInConfigFile(input, "MD5");
@@ -118,7 +163,50 @@ namespace XHD.CRM.Data
          return b;
      }
 
-         
+         private string[] para(string id)
+         {
+             string[] arr= new string[10];
+             BLL.CE_Para cp = new BLL.CE_Para();
+             DataSet ds = cp.GetSingleSignOnList("  id=" + id + "");
+             if (ds.Tables[0].Rows.Count > 0)
+             {
+                 // 分配给每个商家的唯一的appkey和appsecret
+                 foreach (DataRow dr in ds.Tables[0].Rows)
+                 {
+                    
+                     arr[0] = dr["appKey"].ToString();
+                     arr[1] = dr["appSecret"].ToString();
+                     // 设定API文档中提到的参数
+                     arr[2] = dr["appuid"].ToString();
+                     arr[3] = dr["appuname"].ToString();
+                     arr[4] = dr["appuemail"].ToString();
+                     arr[5] = dr["appuphone"].ToString();
+                     arr[6] = dr["appussn"].ToString();
+                     arr[7] = dr["appuAddr"].ToString();
+                     arr[8] = dr["appuavatar"].ToString();
+                     arr[9] = dr["api"].ToString();
+                 }
+                 
+                   // DataRow[] rows = ds.Tables[0].Select("1=1");
+                      //arr = rows.Select(x => x[0].ToString()).ToArray();
+             }
+
+             return arr;
+         }
+
+         protected enum paraenum
+         {
+                appKey ,
+                appSecret,
+                userId  ,
+                userName ,
+                email , 
+                phone ,
+                ssn,
+                address,
+                avatar,
+                api
+         }
          private string HttpPost(string Url, string postDataStr)
          {
              string str = string.Empty;
@@ -155,14 +243,21 @@ namespace XHD.CRM.Data
              return str;
          }
 
-         private string HttpHelper_GetStr(string url, string postdatastr)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+         /// <param name="method">"POST"/"GET"/"PUT "</param>
+        /// <param name="postdatastr"></param>
+        /// <returns></returns>
+         private string HttpHelper_GetStr(string url,string method, string postdatastr)
          {
              HttpHelper http = new HttpHelper();
              HttpItem item = new HttpItem()
              {
                   URL =url,
                   //"http://partnertest.kujiale.com/p/openapi/login",//URL     必需项
-                 Method = "POST",//URL     可选项 默认为Get
+                 Method = method,//URL     可选项 默认为Get
                  Timeout = 100000,//连接超时时间     可选项默认为100000
                  ReadWriteTimeout = 30000,//写入Post数据超时时间     可选项默认为30000
                  IsToLower = false,//得到的HTML代码是否转成小写     可选项默认转小写
