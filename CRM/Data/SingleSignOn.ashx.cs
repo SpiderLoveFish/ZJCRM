@@ -35,7 +35,15 @@ namespace XHD.CRM.Data
             DataSet dsemp = emp.GetList("id=" + emp_id);
             string empname = dsemp.Tables[0].Rows[0]["name"].ToString();
             string uid = dsemp.Tables[0].Rows[0]["uid"].ToString();
-
+            /*单点登录 
+             * dest
+            0	单点登录之后会跳转到户型的创建页面，可以体验整个酷家乐的工具流程
+            1	必须和参数designid一起使用，单点登录成功之后会跳转到该指定3D方案的编辑页面（designid必须为该appuid下的）
+            2	必须和参数planid一起使用，单点登录成功之后会跳转到该指定户型图的编辑页面（plainid必须为该appuid下的）
+            3	到虚拟体验馆的前端展示馆
+            4	直接进入画户型flash工具中
+            5	对于具有虚拟体验馆后台管理权限的商家B类用户有意义，进入到酷家乐虚拟体验馆后台管理页面（只有当apputype=0时才可到该页面）
+                        */
             if (request["Action"] == "GetMD5")
             {
 
@@ -43,6 +51,8 @@ namespace XHD.CRM.Data
                     string appKey =arr[(int)paraenum.appKey];
                     string appSecret =arr[(int)paraenum.appSecret];
                     string userId = arr[(int)paraenum.userId];
+                    string dest = Common.PageValidate.InputText(request["dest"], 50);
+                    //int.Parse(Common.PageValidate.InputText(request["T_companyid"], 50));
                     if (appKey==null) context.Response.Write("请先配置参数！");
                      else
                         {      
@@ -63,7 +73,8 @@ namespace XHD.CRM.Data
                         postdata.Add("appussn", arr[(int)paraenum.ssn]);
                         postdata.Add("appuaddr", arr[(int)paraenum.address]);
                         postdata.Add("appuavatar", arr[(int)paraenum.avatar]);
-
+                        postdata.Add("apputype", "0");
+                        postdata.Add("dest", dest);
                         //发送POST数据  
                         StringBuilder buffer = new StringBuilder();
                         if (!(postdata == null || postdata.Count == 0))
@@ -103,56 +114,810 @@ namespace XHD.CRM.Data
               
             }
 
-            if (request["Action"] == "Design3D")
+            //取消收藏模型的接口DELETE
+
+
+            //收藏模型的接口
+            if (request["Action"] == "Getmodelcollent")
+            {
+
+                string[] arr = para("21");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                string modelId = "3FO4K4VXK10P";
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); ;//2分钟
+                    // 签名加密
+                    string aa = "sdfaadsasdasd";
+                    string md5aa = MD5(aa).ToLower();
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    IDictionary<string, string> postdata = new Dictionary<string, string>();
+                    postdata.Add("appkey", appKey);
+                    postdata.Add("timestamp", timestamp);
+                    postdata.Add("appuid", userId);
+                    postdata.Add("sign", sign);
+                    postdata.Add("bid", modelId);
+                
+
+                    //发送POST数据  
+                    StringBuilder buffer = new StringBuilder();
+                    if (!(postdata == null || postdata.Count == 0))
+                    {
+
+                        int i = 0;
+                        foreach (string key in postdata.Keys)
+                        {
+                            if (i > 0)
+                            {
+                                buffer.AppendFormat("&{0}={1}", key, postdata[key]);
+                            }
+                            else
+                            {
+                                buffer.AppendFormat("{0}={1}", key, postdata[key]);
+                                i++;
+                            }
+                        }
+                    }
+
+                    // 设置HTTP请求的参数，等同于以query string的方式附在URL后面
+                    //// API地址，生产环境域名对应为www.kujiale.com
+                    string api = arr[(int)paraenum.api];
+                    //// 构造HTTP请求
+                    string test = "http://wwww.baidu.com";
+
+                    string result = "";
+                 result = HttpHelper_GetStr(api, "POST", buffer.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //根据模型分类获取模型列表
+            if (request["Action"] == "getmodellist")
+            {
+
+                string[] arr = para("20");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                 String catId = "5518c22f0cf26b08f58f70b7";
+                 long start = 0L; int num = 5;
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+
+                    // Common.PageValidate.InputText(request["designId"], 50)
+
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("?catid=").Append(catId)
+                    .Append("&appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign)
+                      .Append("&start=").Append(start)
+                     .Append("&num=").Append(num);
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+
+            //获取模型分类
+            if (request["Action"] == "getmodelstyle")
+            {
+
+                string[] arr = para("19");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                string planid = "1";
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+
+                    // Common.PageValidate.InputText(request["designId"], 50)
+
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("/cats")
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign)
+
+                                    ;
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+
+            //获取户型评测结果
+            if (request["Action"] == "getresult")
+            {
+
+                string[] arr = para("18");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                string planid = "1";
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+
+                    // Common.PageValidate.InputText(request["designId"], 50)
+
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("/" + planid + "/evaluation")
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign)
+
+                                    ;
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+
+            //搜索户型图接口
+            if (request["Action"] == "gethxtapi")
+            {
+
+                string[] arr = para("17");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                string query = "金色"; long start = 0; int num = 5; long cityId = 175;
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+
+                    // Common.PageValidate.InputText(request["designId"], 50)
+
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign)
+                    .Append("&q=").Append(query)
+                    .Append("&start=").Append(start)
+                    .Append("&num=").Append(num)
+                    .Append("&cityid=").Append(cityId)
+                                    ;
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //获取酷家乐城市列表
+            if (request["Action"] == "getcitylist")
+            {
+
+                string[] arr = para("16");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+
+                     // Common.PageValidate.InputText(request["designId"], 50)
+
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign) ;
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+
+            //获取指定户型图的副本
+            if (request["Action"] == "getuserhxdatafb")
+            {
+
+                string[] arr = para("14");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+ 
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+
+                    string planid = "3FO4K5M8YDHR";
+                    // Common.PageValidate.InputText(request["designId"], 50)
+
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                       .Append("/" + planid)
+                         .Append("/copy")
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign)
+                     .Append("&appuid=").Append(userId);
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+
+            //获取用户下的户型图数据
+            if (request["Action"] == "getuserhxdata")
+            {
+
+                string[] arr = para("13");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                long start = 0; int num = 2;
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+
+                    string planid = "3FO4K5M8YDHR";
+                    // Common.PageValidate.InputText(request["designId"], 50)
+
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                          .Append("?start=").Append(start)
+                         .Append("&num=").Append(num)
+                    .Append("&appkey=").Append(appKey)
+                      .Append("&appuid=").Append(userId)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign);
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //删除户型图
+            if (request["Action"] == "delethxt")
+            {
+
+                string[] arr = para("28");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+
+                    string planid = "3FO4K5M8YDHR";
+                    // Common.PageValidate.InputText(request["designId"], 50)
+
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("/" + planid + "/roominfo")
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign);
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //获取指定户型图的房间数据
+            if (request["Action"] == "getroomdata")
+            {
+
+                string[] arr = para("12");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+
+                    string planid = "3FO4K5M8YDHR";
+                    // Common.PageValidate.InputText(request["designId"], 50)
+
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("/" + planid + "/roominfo")
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign);
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //获取指定户型的基本数据
+            if (request["Action"] == "getthebasicdata")
+            {
+
+                string[] arr = para("11");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+   
+                    string planid = "3FO4K5M8YDHR";
+                    // Common.PageValidate.InputText(request["designId"], 50)
+
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("/" + planid)
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign);
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+           // 全屋漫游图生成接口(未完成)
+            if (request["Action"] == "GETAPI")
+            {
+
+                string[] arr = para("10");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); ;//2分钟
+                    // 签名加密
+                    string aa = "sdfaadsasdasd";
+                    string md5aa = MD5(aa).ToLower();
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    IDictionary<string, string> postdata = new Dictionary<string, string>();
+                    postdata.Add("appkey", appKey);
+                    postdata.Add("timestamp", timestamp);
+                    postdata.Add("appuid", userId);
+                    postdata.Add("sign", sign);
+                    postdata.Add("appuname", arr[(int)paraenum.userName]);
+                    postdata.Add("appuemail", arr[(int)paraenum.email]);
+                    postdata.Add("appuphone", arr[(int)paraenum.phone]);
+                    postdata.Add("appussn", arr[(int)paraenum.ssn]);
+                    postdata.Add("appuaddr", arr[(int)paraenum.address]);
+                    postdata.Add("appuavatar", arr[(int)paraenum.avatar]);
+
+                    //发送POST数据  
+                    StringBuilder buffer = new StringBuilder();
+                    if (!(postdata == null || postdata.Count == 0))
+                    {
+
+                        int i = 0;
+                        foreach (string key in postdata.Keys)
+                        {
+                            if (i > 0)
+                            {
+                                buffer.AppendFormat("&{0}={1}", key, postdata[key]);
+                            }
+                            else
+                            {
+                                buffer.AppendFormat("{0}={1}", key, postdata[key]);
+                                i++;
+                            }
+                        }
+                    }
+
+                    // 设置HTTP请求的参数，等同于以query string的方式附在URL后面
+                    //// API地址，生产环境域名对应为www.kujiale.com
+                    string api = arr[(int)paraenum.api];
+                    //// 构造HTTP请求
+                    string test = "http://wwww.baidu.com";
+
+                    string result = "";
+      
+                    result = HttpHelper_GetStr(api, "POST", buffer.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //更新3D渲染方案的名字put
+            if (request["Action"] == "update3dname")
+            {
+
+                string[] arr = para("9");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    string newName = "方案新名字";
+
+                    string designId = "3FO4K5M8YDHR";
+                    // Common.PageValidate.InputText(request["designId"], 50)
+
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("/" + designId)
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign)
+                    .Append("&name=").Append(newName); ;
+                    string result = "";
+                    //result = HttpPut(apiBuilder.ToString());
+                    result = HttpHelper_GetStr(apiBuilder.ToString(),"PUT",""); 
+                    context.Response.Write(result);
+                }
+
+            }
+            //更新户型图名字put
+            if (request["Action"] == "updatehxtname")
+            {
+
+                string[] arr = para("15");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    string newName = "户型图新名字";
+
+                    string planid = "3FO4K5M8YDHR";
+                    // Common.PageValidate.InputText(request["designId"], 50)
+
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("/" + planid)
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign)
+                    .Append("&name=").Append(newName); ;
+                    string result = "";
+                    //result = HttpPut(apiBuilder.ToString());
+                    result = HttpHelper_GetStr(apiBuilder.ToString(), "PUT", "");
+                    context.Response.Write(result);
+                }
+
+            }
+            //获取指定3D渲染方案的基本数据
+            if (request["Action"] == "get3dfabasicdata")
+            {
+
+                string[] arr = para("8");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    string appuid = "1";
+                    string designId = "3FO4K5M8YDHR";
+                    // Common.PageValidate.InputText(request["designId"], 50)
+
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("/"+designId)
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign) ;
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //获取指定3D渲染方案的副本
+            if (request["Action"] == "get3dfafb")
+            {
+
+                string[] arr = para("7");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    string appuid = "1";
+                    string designId = "3FO4K5M8YDHR";
+                    // Common.PageValidate.InputText(request["designId"], 50)
+                    
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("/copy")
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign)
+                    .Append("&appuid=").Append(appuid);
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //获取指定用户的3D方案列表
+            if (request["Action"] == "get3dfalist")
+            {
+
+                string[] arr = para("6");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                     // Common.PageValidate.InputText(request["designId"], 50)
+                    long start = 0; int num = 2;
+                    
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    // 签名加密
+                    string aa = "sdfaadsasdasd";
+                    string appUid = "1";
+                    string md5aa = MD5(aa).ToLower();
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("?start=").Append(start)
+                    .Append("&num=").Append(num)
+                    .Append("&appkey=").Append(appKey)
+                    .Append("&appuid=").Append(appUid)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign);
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //删除方案
+            if (request["Action"] == "delete")
+            {
+
+                string[] arr = para("5");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    string designId = "FO4K7MS4H8M";
+                    // Common.PageValidate.InputText(request["designId"], 50)
+                  object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    // 签名加密
+                    string aa = "sdfaadsasdasd";
+                    string md5aa = MD5(aa).ToLower();
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                         .Append(designId)
+                        .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign);
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //获取指定方案的装修清单
+            if (request["Action"] == "Getzxlist")
+            {
+
+                string[] arr = para("4");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    string designId = "FO4K7MS4H8M";
+                    // Common.PageValidate.InputText(request["designId"], 50)
+                    int start = 0; int num = 5;
+                    //int.Parse(Common.PageValidate.InputText(request["start"], 50));
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    // 签名加密
+                    string aa = "sdfaadsasdasd";
+                    string md5aa = MD5(aa).ToLower();
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                         .Append("/"+designId)
+                        .Append("/itemlist")//?starttime=
+                        // .Append((int.Parse(timestamp) - (300 * 24 * 3600 * 1000)).ToString())
+                         .Append("?start=").Append(start)
+                        .Append("&num=").Append(num)
+                        .Append("&appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign);
+
+
+
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //获取指定方案的户型图
+            if (request["Action"] == "Gethxt")
+            {
+
+                string[] arr = para("3");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    string designId = "FO4K7MS4H8M";
+                    // Common.PageValidate.InputText(request["designId"], 50)
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    // 签名加密
+                    string aa = "sdfaadsasdasd";
+                    string md5aa = MD5(aa).ToLower();
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                         .Append("/"+designId)
+                        .Append("/planpic")//?starttime=
+                        // .Append((int.Parse(timestamp) - (300 * 24 * 3600 * 1000)).ToString())
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign);
+
+
+
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //获取指定方案的渲染图列表
+            if (request["Action"] == "Getlist")
             {
                 
-                    string[] arr = para("1");
+                    string[] arr = para("27");
                     string appKey =arr[(int)paraenum.appKey];
                     string appSecret =arr[(int)paraenum.appSecret];
                     string userId = arr[(int)paraenum.userId];
                     if (appKey == null) context.Response.Write("请先配置参数！");
                     else
                     {
-                        string appuid = "3FO4KEAG7F9L";
+                        string designId = "FO4K7MS4H8M";
+                        // Common.PageValidate.InputText(request["designId"], 50)
                         object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                        string timestamp = currenttimemillis.ToString(); ;//2分钟
+                        string timestamp = currenttimemillis.ToString(); //2分钟
                         // 签名加密
                         string aa = "sdfaadsasdasd";
                         string md5aa = MD5(aa).ToLower();
                         string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
-                        IDictionary<string, string> postdata = new Dictionary<string, string>();
-                        postdata.Add("appkey", appKey);
-                        postdata.Add("timestamp", timestamp);
-                        postdata.Add("sign", sign);
-                        postdata.Add("planid", arr[(int)paraenum.userName]);
-                        postdata.Add("appuid", appuid);
-                        StringBuilder buffer = new StringBuilder();
-                        if (!(postdata == null || postdata.Count == 0))
-                        {
-
-                            int i = 0;
-                            foreach (string key in postdata.Keys)
-                            {
-                                if (i > 0)
-                                {
-                                    buffer.AppendFormat("&{0}={1}", key, postdata[key]);
-                                }
-                                else
-                                {
-                                    buffer.AppendFormat("{0}={1}", key, postdata[key]);
-                                    i++;
-                                }
-                            }
-                        }
-
                         string api = arr[(int)paraenum.api];
+                        StringBuilder apiBuilder = new StringBuilder();
+                        apiBuilder.Append(api)
+                             .Append("/"+designId)
+                            .Append("/renderpics")//?starttime=
+                           // .Append((int.Parse(timestamp) - (300 * 24 * 3600 * 1000)).ToString())
+                        .Append("?appkey=").Append(appKey)
+                        .Append("&timestamp=").Append(timestamp)
+                        .Append("&sign=").Append(sign);
+                    
+
+                      
                         string result = "";
-                        result = HttpHelper_GetStr(api, "GET", buffer.ToString());
+                        result = HttpGet(apiBuilder.ToString());
                         context.Response.Write(result);
                     }
                
             }
+            //由户型图生成一个3D方案
+            if (request["Action"] == "Design3D")
+            {
 
+                string[] arr = para("2");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    string planId = "3FO4KE2R8QD8";
+                    // Common.PageValidate.InputText(request["planId"], 50)
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); ;//2分钟
+                    // 签名加密
+                    string aa = "sdfaadsasdasd";
+                    string md5aa = MD5(aa).ToLower();
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign)
+                    .Append("&planid=").Append(planId)
+                    .Append("&appuid=").Append(userId);
+
+
+
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
 
         }
 
@@ -207,41 +972,40 @@ namespace XHD.CRM.Data
                 avatar,
                 api
          }
-         private string HttpPost(string Url, string postDataStr)
-         {
-             string str = string.Empty;
-             try
-             {
-                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
-                 request.Method = "POST";
-                 request.ContentType = "application/x-www-form-urlencoded";
-                // request.ContentType = "application/json";
-                // request.ContentLength = Encoding.UTF8.GetByteCount(postDataStr);
-                 //request.CookieContainer = cookie;
-                 Stream myRequestStream = request.GetRequestStream();
-                 StreamWriter myStreamWriter = new StreamWriter(myRequestStream, Encoding.GetEncoding("utf-8"));
-                 myStreamWriter.Write(postDataStr);
-                 myStreamWriter.Close();
-                  
-                 
-                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-                 // response.Cookies = cookie.GetCookies(response.ResponseUri);
-                 Stream myResponseStream = response.GetResponseStream();
-                 StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8"));
-                 str = myStreamReader.ReadToEnd();
-                 myStreamReader.Close();
-                 myResponseStream.Close();
-                 response.Close();
-                 request.Abort();
-                 request = null;
-             }
-             catch (Exception ex)
+         private string HttpPut(string Url)
+         {
+             HttpHelper http = new HttpHelper();
+             HttpItem item = new HttpItem()
              {
-                 str = ex.Message;
-             }
-             return str;
+                 URL = Url,//URL这里都是测试     必需项
+                 Encoding = null,//编码格式（utf-8,gb2312,gbk）     可选项 默认类会自动识别
+                 //Encoding = Encoding.Default,
+                 Method = "PUT",//URL     可选项 默认为Get
+             };
+             //得到HTML代码
+             HttpResult result = http.GetHtml(item);
+             string html = result.Html;
+             return html;
          }
+
+         private string HttpGet(string Url)
+         {
+             HttpHelper http = new HttpHelper();
+             HttpItem item = new HttpItem()
+             {
+                 URL = Url,//URL这里都是测试     必需项
+                 Encoding = null,//编码格式（utf-8,gb2312,gbk）     可选项 默认类会自动识别
+                 //Encoding = Encoding.Default,
+                 Method = "GET",//URL     可选项 默认为Get
+             };
+             //得到HTML代码
+             HttpResult result = http.GetHtml(item);
+             string html = result.Html;
+             return html;
+         }
+
+   
 
         /// <summary>
         /// 

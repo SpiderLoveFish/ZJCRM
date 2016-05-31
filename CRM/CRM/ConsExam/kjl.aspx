@@ -25,7 +25,7 @@
           
             $.ajax({
                 url: "../../data/SingleSignOn.ashx", type: "POST",
-                data: { Action: "GetMD5", rnd: Math.random() },
+                data: { Action: "GetMD5",dest:5, rnd: Math.random() },
                // dataType: 'content', //这里修改为content   
                 success: function (responseText) {
                     // $.ligerDialog.warn(responseText);
