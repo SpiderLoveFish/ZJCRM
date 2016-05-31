@@ -35,6 +35,44 @@ namespace XHD.CRM.Data
             DataSet dsemp = emp.GetList("id=" + emp_id);
             string empname = dsemp.Tables[0].Rows[0]["name"].ToString();
             string uid = dsemp.Tables[0].Rows[0]["uid"].ToString();
+
+            if (request["Action"] == "save")
+            {
+                BLL.CE_Para cp = new BLL.CE_Para();
+                int Customer_id = int.Parse(request["cid"]);
+               string type = PageValidate.InputText(request["type"], 50);
+               string id=PageValidate.InputText(request["id"], 50);
+                string desid ="";
+                //PageValidate.InputText(request["desid"], 255);
+                string fpId ="";
+                //PageValidate.InputText(request["fpId"], 255);
+                 if(type=="fp")
+                     fpId = id;
+                else if(type=="des")
+                     desid = id;
+                string imgtype = PageValidate.InputText(request["imgtype"], 255);
+                string simg = PageValidate.InputText(request["simg"], 255);
+                string img = PageValidate.InputText(request["img"], 255);
+                string style = PageValidate.InputText(request["style"], 255);
+                string pano = PageValidate.InputText(request["pano"], 255);
+                if (style == "Edit")
+                {
+                    if(cp.Updatekjl_api(desid, Customer_id, fpId, imgtype, simg, img, pano))
+                        context.Response.Write("true");
+                    else context.Response.Write("true");
+
+                }
+                else if (style == "insert")
+                {
+                    if(cp.Addkjl_api(desid, Customer_id, fpId, imgtype, simg, img, pano)>0)
+                        context.Response.Write("true");
+                    else context.Response.Write("true");
+
+
+                }
+            }
+
+
             /*单点登录 
              * dest
             0	单点登录之后会跳转到户型的创建页面，可以体验整个酷家乐的工具流程

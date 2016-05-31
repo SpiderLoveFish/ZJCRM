@@ -114,7 +114,20 @@
             fload();
             dialog.close();
         }
-       
+        var activeDialog = null;
+        function f_openWindow_view(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
         function loadGrid() {
 
             g = $("#maingrid4").ligerGrid({
@@ -175,7 +188,10 @@
             f_openWindow("CRM/Customer/Customer_DynamicGraphics_add.aspx?cid=" + getparastr("cid"), "新增效果图", 500, 200);
 
         }
+        function kjl() {
+            f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert", "效果图", 1200, 650);
 
+        }
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();

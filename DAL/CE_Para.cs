@@ -487,6 +487,74 @@ namespace XHD.DAL
         }
 
 
+        public int Addkjl_api(string des, int cid, string fpid, string imgtype, string simg, string img, string pano)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("INSERT INTO dbo.kjl_api ");
+            sb.AppendLine("        ( curstomerid , ");
+            sb.AppendLine("          desid , ");
+            sb.AppendLine("          fpId , ");
+            sb.AppendLine("          imgtype , ");
+            sb.AppendLine("          simg , ");
+            sb.AppendLine("          img , ");
+            sb.AppendLine("          pano ");
+            sb.AppendLine("        ) ");
+            sb.AppendLine("VALUES  ( "+cid+" , -- curstomerid - int ");
+            sb.AppendLine("          '"+des+"' , -- desid - varchar(20) ");
+            sb.AppendLine("          '"+fpid+"' , -- fpId - varchar(20) ");
+            sb.AppendLine("          '" + imgtype + "' , -- imgtype - varchar(20) ");
+            sb.AppendLine("          '" + simg + "' , -- simg - varchar(200) ");
+            sb.AppendLine("          '" + img + "' , -- img - varchar(200) ");
+            sb.AppendLine("          '" + pano + "'  -- pano - varchar(200) ");
+            sb.AppendLine("        ) ");
+            sb.AppendLine(" ");
+            object obj = DbHelperSQL.GetSingle(sb.ToString(), null);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+
+
+        public bool Updatekjl_api(string des, int cid, string fpid, string imgtype, string simg, string img, string pano)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine(" UPDATE dbo.kjl_api ");
+            sb.AppendLine("   SET  ");
+            if(des!="")
+            sb.AppendLine("          desid='" + des + "' , ");
+            if (fpid != "")
+            sb.AppendLine("          fpId= '" + fpid + "' , ");
+            if (imgtype != "")
+            sb.AppendLine("          imgtype= '" + imgtype + "' , ");
+            if (simg != "")
+            sb.AppendLine("          simg='" + simg + "'  , ");
+            if (img != "")
+            sb.AppendLine("          img ='" + img + "', ");
+            if (pano != "")
+            sb.AppendLine("          pano= '" + pano + "', ");
+            sb.AppendLine("          dotime=getdate() ");
+            sb.AppendLine("          ");
+            sb.AppendLine(" WHERE  curstomerid = " + cid + "  ");          
+            sb.AppendLine("        ");
+
+            SqlParameter[] parameters = {
+                                       };
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 		#endregion  ExtensionMethod
 	}
 }
