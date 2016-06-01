@@ -487,9 +487,43 @@ namespace XHD.DAL
         }
 
 
-        public int Addkjl_api(string des, int cid, string fpid, string imgtype, string simg, string img, string pano)
+        public bool Addkjl_api(string des, int cid, string fpid,string DyGraphicsName, string imgtype, string simg, string img, string pano)
         {
             var sb = new System.Text.StringBuilder();
+            //先有户型图
+            sb.AppendLine("IF EXISTS( SELECT 1 FROM dbo.kjl_api WHERE	curstomerid=" + cid + " AND fpId='" + fpid + "')");
+            sb.AppendLine("BEGIN");
+            sb.AppendLine("");
+            if (des != "")
+            {
+                sb.AppendLine(" UPDATE dbo.kjl_api ");
+                sb.AppendLine("   SET  ");
+                sb.AppendLine("           desid='" + des + "' ");
+                sb.AppendLine(" WHERE  curstomerid = " + cid + "  ");
+                    sb.AppendLine("        AND  fpId= '" + fpid + "'  ");
+                
+            }
+            sb.AppendLine(" UPDATE dbo.kjl_api ");
+            sb.AppendLine("   SET  ");
+            sb.AppendLine("          DyGraphicsName= '" + DyGraphicsName + "' , "); 
+            if (imgtype != "")
+                sb.AppendLine("          imgtype= '" + imgtype + "' , ");
+            if (simg != "")
+                sb.AppendLine("          simg='" + simg + "'  , ");
+            if (img != "")
+                sb.AppendLine("          img ='" + img + "', ");
+            if (pano != "")
+                sb.AppendLine("          pano= '" + pano + "', ");
+            sb.AppendLine("          dotime=getdate() ");
+            sb.AppendLine("          ");
+            sb.AppendLine(" WHERE  curstomerid = " + cid + "  ");
+            if (fpid != "")
+                sb.AppendLine("        AND  fpId= '" + fpid + "'  ");
+            if (des != "")
+                sb.AppendLine("       and     desid='" + des + "'  ");
+            sb.AppendLine("END");
+            sb.AppendLine("ELSE	");
+            sb.AppendLine("BEGIN");
             sb.AppendLine("INSERT INTO dbo.kjl_api ");
             sb.AppendLine("        ( curstomerid , ");
             sb.AppendLine("          desid , ");
@@ -497,7 +531,7 @@ namespace XHD.DAL
             sb.AppendLine("          imgtype , ");
             sb.AppendLine("          simg , ");
             sb.AppendLine("          img , ");
-            sb.AppendLine("          pano ");
+            sb.AppendLine("          pano,DyGraphicsName ");
             sb.AppendLine("        ) ");
             sb.AppendLine("VALUES  ( "+cid+" , -- curstomerid - int ");
             sb.AppendLine("          '"+des+"' , -- desid - varchar(20) ");
@@ -505,30 +539,38 @@ namespace XHD.DAL
             sb.AppendLine("          '" + imgtype + "' , -- imgtype - varchar(20) ");
             sb.AppendLine("          '" + simg + "' , -- simg - varchar(200) ");
             sb.AppendLine("          '" + img + "' , -- img - varchar(200) ");
-            sb.AppendLine("          '" + pano + "'  -- pano - varchar(200) ");
+            sb.AppendLine("          '" + pano + "','" + DyGraphicsName + "'  -- pano - varchar(200) ");
             sb.AppendLine("        ) ");
-            sb.AppendLine(" ");
-            object obj = DbHelperSQL.GetSingle(sb.ToString(), null);
-            if (obj == null)
+            sb.AppendLine(" END ");
+            SqlParameter[] parameters = {
+                                       };
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
             {
-                return 0;
+                return true;
             }
             else
             {
-                return Convert.ToInt32(obj);
+                return false;
             }
         }
 
 
-        public bool Updatekjl_api(string des, int cid, string fpid, string imgtype, string simg, string img, string pano)
+        public bool Updatekjl_api(string des, int cid, string fpid,string DyGraphicsName, string imgtype, string simg, string img, string pano)
         {
             var sb = new System.Text.StringBuilder();
+            if (des != "")
+            {
+                sb.AppendLine(" UPDATE dbo.kjl_api ");
+                sb.AppendLine("   SET  ");
+                sb.AppendLine("           desid='" + des + "' ");
+                sb.AppendLine(" WHERE  curstomerid = " + cid + "  ");
+                sb.AppendLine("        AND  fpId= '" + fpid + "'  ");
+            }
             sb.AppendLine(" UPDATE dbo.kjl_api ");
             sb.AppendLine("   SET  ");
-            if(des!="")
-            sb.AppendLine("          desid='" + des + "' , ");
-            if (fpid != "")
-            sb.AppendLine("          fpId= '" + fpid + "' , ");
+            sb.AppendLine("          DyGraphicsName= '" + DyGraphicsName + "' , "); 
+           
             if (imgtype != "")
             sb.AppendLine("          imgtype= '" + imgtype + "' , ");
             if (simg != "")
@@ -539,12 +581,40 @@ namespace XHD.DAL
             sb.AppendLine("          pano= '" + pano + "', ");
             sb.AppendLine("          dotime=getdate() ");
             sb.AppendLine("          ");
-            sb.AppendLine(" WHERE  curstomerid = " + cid + "  ");          
+            sb.AppendLine(" WHERE  curstomerid = " + cid + "  ");
+            sb.AppendLine("       AND   desid='" + des + "' ");
+            sb.AppendLine("        AND  fpId= '" + fpid + "'  ");
             sb.AppendLine("        ");
 
             SqlParameter[] parameters = {
                                        };
             int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        public bool deletekjl_api(string des, int cid, string fpid)
+        {
+
+            string sql = "  DELETE	dbo.kjl_api WHERE curstomerid=" + cid + " " +
+            "";
+            if (des != "")
+                sql = sql + " and desid='"+des+"'";
+            if (fpid != "")
+                sql = sql + " and fpId='" + fpid + "'";
+            //不能2个都为空啊
+            if (des == "" && fpid == "")
+                sql = "";
+                    SqlParameter[] parameters = {
+                                       };
+            int rows = DbHelperSQL.ExecuteSql(sql, parameters);
             if (rows > 0)
             {
                 return true;

@@ -121,7 +121,7 @@
 
                         {
                             text: '关闭', onclick: function (item, dialog) {
-                                dialog.close();
+                                f_close(item, dialog);
                             }
                         }
                 ], isResize: true, showToggle: true, timeParmName: 'a'
@@ -141,7 +141,7 @@
                       {
                           display: '效果图', width: 50, render: function (item) {
                               var html;
-                              if (item.jgqjt !== "") {
+                              if (item.DyUrl !== "") {
                                   html = "<a href='" + item.DyUrl + "' target='_blank'>";
                                   html += "查看";
                                   html += "</a>";
@@ -150,6 +150,46 @@
                               return html;
                           }
                       },
+                         {
+                             display: '户型图', name: 'fpId', width: 80, render: function (item) {
+                                 var html;
+                                 if (item.fpId != "") html = "有";
+                                 else html = "无";
+                                 return html;
+                             }
+                         },
+                           {
+                               display: '3D图', name: 'desid', width: 80, render: function (item) {
+                                   var html;
+                                   if (item.desid != "") html = "有";
+                                   else html = "无";
+                                   return html;
+                               }
+                           },
+                           {
+                               display: '预览图', name: 'simg', width: 80, render: function (item) {
+                                   var html;
+                                   if (item.simg !== "") {
+                                       html = "<a href='" + item.simg + "' target='_blank'>";
+                                       html += "查看";
+                                       html += "</a>";
+                                   }
+                                   else html = "暂无";
+                                   return html;
+                               }
+                           },
+                           {
+                               display: '全景图', name: 'pano', width: 80, render: function (item) {
+                                   var html;
+                                   if (item.pano !== "") {
+                                       html = "<a href='" + item.pano + "' target='_blank'>";
+                                       html += "查看";
+                                       html += "</a>";
+                                   }
+                                   else html = "暂无";
+                                   return html;
+                               }
+                           },
                         {
                             display: '备注', name: 'Remarks', align: 'left', width: 350, type: 'text'
                             , editor: { type: 'text' }
@@ -189,8 +229,45 @@
 
         }
         function kjl() {
-            f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert", "效果图", 1200, 650);
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                     f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert" + "&dest=0", "新增效果图", 1200, 710);
+             }
+            else {
+                f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert" + "&dest=0", "新增效果图", 1200, 710);
 
+            }
+        }
+        //修改3D图
+        function kjl3d() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+              
+                if (row.desid == null || row.desid == "")
+                    $.ligerDialog.warn('没有对应的3D图，请先在对应户型图里新增！');
+                else
+                    f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=Edit" + "&dest=1" + "&desid=" + row.desid, "修改3D图", 1200, 710);
+            }
+            else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+        //修改户型图
+        function kjlhx() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                //alert(row.fpId);
+                if( row.fpId==null||row.fpId=="")
+                    $.ligerDialog.warn('没有对应的户型图，请先新增！');
+                else  
+                    f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=Edit" + "&dest=2" + "&fid=" + row.fpId, "修改户型图", 1200, 650);
+            }
+            else {
+                $.ligerDialog.warn('请选择行！');
+            }
         }
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -209,25 +286,103 @@
             if (row) {
                 $.ligerDialog.confirm("确定删除？", function (yes) {
                     if (yes) {
-                        $.ajax({
-                            url: "../../data/CRM_Customer.ashx", type: "POST",
-                            data: { Action: "deldy", id: row.id,cid:getparastr("cid"), rnd: Math.random() },
-                            success: function (responseText) {
-                                if (responseText == "true") {
-                                    fload();
-                                 
-                                }
-                                
-                                else {
+                        if (row.fpId != "") {
+                            if (row.desid != "") {
+                                $.ajax({
+                                    url: "../../data/SingleSignOn.ashx", type: "POST",
+                                    data: { Action: "delete", fid: row.fpId, desid: row.desid, cid: getparastr("cid"), rnd: Math.random() },
+                                    success: function (responseText) {
+                                        if (responseText == "success") {
+                                            $.ajax({
+                                                url: "../../data/SingleSignOn.ashx", type: "POST",
+                                                data: { Action: "deleteAPI", fid: row.fpId, desid: row.desid, cid: getparastr("cid"), rnd: Math.random() },
+                                                success: function (responseText) {
+                                                    if (responseText == "true") {
+                                                        fload();
+
+                                                    }
+
+                                                    else {
+                                                        top.$.ligerDialog.error('删除失败！');
+                                                    }
+
+                                                },
+                                                error: function () {
+                                                    top.$.ligerDialog.error('删除失败！');
+                                                }
+                                            });
+
+                                        }
+
+                                        else {
+                                            top.$.ligerDialog.error('删除失败！');
+                                        }
+
+                                    },
+                                    error: function () {
+                                        top.$.ligerDialog.error('删除失败！');
+                                    }
+                                });
+                            }//end row.desid != ""
+                            else {
+                                $.ajax({
+                                    url: "../../data/SingleSignOn.ashx", type: "POST",
+                                    data: { Action: "deleteHXT", fid: row.fpId, desid: row.desid, cid: getparastr("cid"), rnd: Math.random() },
+                                    success: function (responseText) {
+                                        if (responseText == "success") {
+                                            $.ajax({
+                                                url: "../../data/SingleSignOn.ashx", type: "POST",
+                                                data: { Action: "deleteAPI", fid: row.fpId, desid: row.desid, cid: getparastr("cid"), rnd: Math.random() },
+                                                success: function (responseText) {
+                                                    if (responseText == "true") {
+                                                        fload();
+
+                                                    }
+
+                                                    else {
+                                                        top.$.ligerDialog.error('删除失败！' + responseText);
+                                                    }
+
+                                                },
+                                                error: function () {
+                                                    top.$.ligerDialog.error('删除失败！');
+                                                }
+                                            });
+
+                                        }
+
+                                        else {
+                                            top.$.ligerDialog.error('删除失败！');
+                                        }
+
+                                    },
+                                    error: function () {
+                                        top.$.ligerDialog.error('删除失败！');
+                                    }
+                                });
+                            }//END ELSE
+                        }//END if (row.fpId != "")
+                        else {//ccid特意为这个
+                            $.ajax({
+                                url: "../../data/CRM_Customer.ashx", type: "POST",
+                                data: { Action: "deldy", id: row.ccid, cid: getparastr("cid"), rnd: Math.random() },
+                                success: function (responseText) {
+                                    if (responseText == "true") {
+                                        fload();
+
+                                    }
+
+                                    else {
+                                        top.$.ligerDialog.error('删除失败！');
+                                    }
+
+                                },
+                                error: function () {
                                     top.$.ligerDialog.error('删除失败！');
                                 }
-
-                            },
-                            error: function () {
-                                top.$.ligerDialog.error('删除失败！');
-                            }
-                        });
-                    }
+                            });
+                        }//end else
+                    }//end yes
                 });
             }
             else {

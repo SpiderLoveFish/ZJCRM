@@ -29,7 +29,7 @@ namespace XHD.CRM.Data
             var cookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
             var ticket = FormsAuthentication.Decrypt(cookie.Value);
             string CoockiesID = ticket.UserData;
-
+              BLL.CE_Para cp = new BLL.CE_Para();
             BLL.hr_employee emp = new BLL.hr_employee();
             int emp_id = int.Parse(CoockiesID);
             DataSet dsemp = emp.GetList("id=" + emp_id);
@@ -38,41 +38,44 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "save")
             {
-                BLL.CE_Para cp = new BLL.CE_Para();
+              //唯一可能，2个FID全部为空，只有3D
                 int Customer_id = int.Parse(request["cid"]);
-               string type = PageValidate.InputText(request["type"], 50);
-               string id=PageValidate.InputText(request["id"], 50);
-                string desid ="";
-                //PageValidate.InputText(request["desid"], 255);
-                string fpId ="";
-                //PageValidate.InputText(request["fpId"], 255);
-                 if(type=="fp")
-                     fpId = id;
-                else if(type=="des")
-                     desid = id;
+                string fpId = PageValidate.InputText(request["fid"], 50);
+                string desid = PageValidate.InputText(request["desid"], 50);
                 string imgtype = PageValidate.InputText(request["imgtype"], 255);
                 string simg = PageValidate.InputText(request["simg"], 255);
                 string img = PageValidate.InputText(request["img"], 255);
                 string style = PageValidate.InputText(request["style"], 255);
                 string pano = PageValidate.InputText(request["pano"], 255);
+                string DyGraphicsName = PageValidate.InputText(request["name"], 255);
+                if (fpId == "null" || fpId == null) fpId = "";
+                if (desid == "null" || desid == null) desid = "";
                 if (style == "Edit")
                 {
-                    if(cp.Updatekjl_api(desid, Customer_id, fpId, imgtype, simg, img, pano))
+                    if(cp.Updatekjl_api(desid, Customer_id, fpId,DyGraphicsName, imgtype, simg, img, pano))
                         context.Response.Write("true");
-                    else context.Response.Write("true");
+                    else context.Response.Write("false");
 
                 }
                 else if (style == "insert")
                 {
-                    if(cp.Addkjl_api(desid, Customer_id, fpId, imgtype, simg, img, pano)>0)
+                    if(cp.Addkjl_api(desid, Customer_id, fpId,DyGraphicsName, imgtype, simg, img, pano))
                         context.Response.Write("true");
-                    else context.Response.Write("true");
+                    else context.Response.Write("false");
 
 
                 }
             }
 
-
+            if (request["Action"] == "deleteAPI")
+            {
+                int Customer_id = int.Parse(request["cid"]);
+                string fpId = PageValidate.InputText(request["fid"], 50);
+                string desid = PageValidate.InputText(request["desid"], 50);
+                if (cp.deletekjl_api(desid, Customer_id, fpId))
+                       context.Response.Write("true");
+                    else context.Response.Write("false");
+            }
             /*单点登录 
              * dest
             0	单点登录之后会跳转到户型的创建页面，可以体验整个酷家乐的工具流程
@@ -90,7 +93,9 @@ namespace XHD.CRM.Data
                     string appSecret =arr[(int)paraenum.appSecret];
                     string userId = arr[(int)paraenum.userId];
                     string dest = Common.PageValidate.InputText(request["dest"], 50);
-                    //int.Parse(Common.PageValidate.InputText(request["T_companyid"], 50));
+                    string planid = Common.PageValidate.InputText(request["fid"], 50);
+                    string designid = Common.PageValidate.InputText(request["desid"], 50);
+                //int.Parse(Common.PageValidate.InputText(request["T_companyid"], 50));
                     if (appKey==null) context.Response.Write("请先配置参数！");
                      else
                         {      
@@ -113,6 +118,8 @@ namespace XHD.CRM.Data
                         postdata.Add("appuavatar", arr[(int)paraenum.avatar]);
                         postdata.Add("apputype", "0");
                         postdata.Add("dest", dest);
+                        postdata.Add("designid", designid);
+                        postdata.Add("planid", planid);
                         //发送POST数据  
                         StringBuilder buffer = new StringBuilder();
                         if (!(postdata == null || postdata.Count == 0))
@@ -430,9 +437,8 @@ namespace XHD.CRM.Data
                 else
                 {
 
-                    string planid = "3FO4K5M8YDHR";
-                    // Common.PageValidate.InputText(request["designId"], 50)
-
+                    string planid =  Common.PageValidate.InputText(request["fid"], 50);
+                    num = int.Parse(Common.PageValidate.InputText(request["num"], 50));
                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     string timestamp = currenttimemillis.ToString(); //2分钟
                     string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
@@ -784,23 +790,53 @@ namespace XHD.CRM.Data
                 if (appKey == null) context.Response.Write("请先配置参数！");
                 else
                 {
-                    string designId = "FO4K7MS4H8M";
-                    // Common.PageValidate.InputText(request["designId"], 50)
+                    string designId = Common.PageValidate.InputText(request["desid"], 50);
                   object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     string timestamp = currenttimemillis.ToString(); //2分钟
                     // 签名加密
                     string aa = "sdfaadsasdasd";
                     string md5aa = MD5(aa).ToLower();
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
                     string api = arr[(int)paraenum.api];
                     StringBuilder apiBuilder = new StringBuilder();
                     apiBuilder.Append(api)
-                         .Append(designId)
+                         .Append("/"+designId)
                         .Append("?appkey=").Append(appKey)
                     .Append("&timestamp=").Append(timestamp)
                     .Append("&sign=").Append(sign);
                     string result = "";
-                    result = HttpGet(apiBuilder.ToString());
+                    result = HttpDELETE(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //删除方案
+            if (request["Action"] == "deleteHXT")
+            {
+
+                string[] arr = para("28");
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    string planid = Common.PageValidate.InputText(request["fid"], 50);
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    // 签名加密
+                    string aa = "sdfaadsasdasd";
+                    string md5aa = MD5(aa).ToLower();
+                    string sign = MD5(appSecret + appKey + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                         .Append("/" + planid)
+                        .Append("?appkey=").Append(appKey)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign);
+                    string result = "";
+                    result = HttpDELETE(apiBuilder.ToString());
                     context.Response.Write(result);
                 }
 
@@ -1009,6 +1045,35 @@ namespace XHD.CRM.Data
                 address,
                 avatar,
                 api
+         }
+
+         private string HttpDELETE(string Url)
+         {
+             string str="";
+             HttpWebRequest request;
+             string urlPath = Url;
+             int millisecond = 30000;
+             WebResponse response = null;
+             StreamReader reader = null;
+             try
+             {
+                 request = (HttpWebRequest)WebRequest.Create(urlPath);
+                 //request.Proxy = null;//关闭代理（重要）
+                 request.Timeout = millisecond;
+                 request.Method = "DELETE";
+                 //request.Accept = "application/json";
+                 //request.ContentType = "application/json";
+                 request.ServicePoint.Expect100Continue = false;
+                 response = (WebResponse)request.GetResponse();
+                 reader = new StreamReader(response.GetResponseStream());
+                 str = reader.ReadToEnd();
+             }
+             catch (Exception ex)
+             {
+                 
+                 str = "";
+             }
+             return str;
          }
 
          private string HttpPut(string Url)

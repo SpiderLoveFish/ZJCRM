@@ -1194,11 +1194,11 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " A.*,B.Customer FROM dbo.Crm_Customer_DynamicGraphics A ");
+            strSql.Append(" top " + PageSize + " A.*,B.Customer FROM dbo.V_Crm_Customer_DynamicGraphics A ");
             strSql.Append("  INNER JOIN CRM_Customer B ON A.Customer_id=B.id ");
-            strSql.Append(" WHERE a.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Crm_Customer_DynamicGraphics ");
+            strSql.Append(" WHERE a.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM V_Crm_Customer_DynamicGraphics ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-            strSql1.Append(" select count(id) FROM Crm_Customer_DynamicGraphics ");
+            strSql1.Append(" select count(id) FROM V_Crm_Customer_DynamicGraphics ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);
@@ -1212,7 +1212,7 @@ namespace XHD.DAL
         public DataSet GetListdy(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("SELECT  *  FROM dbo.Crm_Customer_DynamicGraphics   ");
+            strSql.Append("SELECT  *  FROM dbo.V_Crm_Customer_DynamicGraphics   ");
             //strSql.Append(" INNER JOIN CRM_Customer B ON A.Customer_id=B.id ");
             if (strWhere.Trim() != "")
             {

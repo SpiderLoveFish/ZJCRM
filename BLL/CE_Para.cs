@@ -221,17 +221,20 @@ namespace XHD.BLL
             return dal.GetSingleSignOnList(where);
         }
 
-        public bool Updatekjl_api(string des, int cid, string fpid, string imgtype, string simg, string img, string pano)
+        public bool Updatekjl_api(string des, int cid, string fpid,string DyGraphicsName, string imgtype, string simg, string img, string pano)
         {
-            return dal.Updatekjl_api(des, cid, fpid, imgtype, simg, img, pano);
+            return dal.Updatekjl_api(des, cid, fpid,DyGraphicsName, imgtype, simg, img, pano);
 
         }
-        public int Addkjl_api(string des, int cid, string fpid, string imgtype, string simg, string img, string pano)
+        public bool Addkjl_api(string des, int cid, string fpid,string DyGraphicsName, string imgtype, string simg, string img, string pano)
         {
-            return dal.Addkjl_api(des, cid, fpid, imgtype, simg, img, pano);
+            return dal.Addkjl_api(des, cid, fpid,DyGraphicsName, imgtype, simg, img, pano);
 
         }
-
+        public bool deletekjl_api(string des, int cid, string fpid)
+        {
+            return dal.deletekjl_api(des,cid,fpid);
+        }
         #endregion  ExtensionMethod
 	}
 }
