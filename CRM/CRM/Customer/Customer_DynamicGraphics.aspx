@@ -126,7 +126,7 @@
                         }
                 ], isResize: true, showToggle: true, timeParmName: 'a'
             };
-            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+            activeDialog = top.jQuery.ligerDialog.open(dialogOptions);
         }
         function loadGrid() {
 
@@ -140,10 +140,11 @@
 
                       {
                           display: '效果图', width: 50, render: function (item) {
-                              var html;
+
+                                   
+                               var html;
                               if (item.DyUrl !== "") {
-                                  html = "<a href='" + item.DyUrl + "' target='_blank'>";
-                                  html += "查看";
+                                  var html = "<a href='javascript:void(0)' onclick=view(" + item.DyUrl + ")>查看</a>";
                                   html += "</a>";
                               }
                               else html = "暂无";
@@ -167,12 +168,11 @@
                                }
                            },
                            {
-                               display: '预览图', name: 'simg', width: 80, render: function (item) {
+                               display: '预览图', name: 'img', width: 80, render: function (item) {
                                    var html;
                                    if (item.simg !== "") {
-                                       html = "<a href='" + item.simg + "' target='_blank'>";
-                                       html += "查看";
-                                       html += "</a>";
+                                       var html = "<a href='javascript:void(0)' onclick=view('" + item.img + "')>查看</a>";
+                                       html += "</a>"
                                    }
                                    else html = "暂无";
                                    return html;
@@ -182,9 +182,8 @@
                                display: '全景图', name: 'pano', width: 80, render: function (item) {
                                    var html;
                                    if (item.pano !== "") {
-                                       html = "<a href='" + item.pano + "' target='_blank'>";
-                                       html += "查看";
-                                       html += "</a>";
+                                       var html = "<a href='javascript:void(0)' onclick=view('" + item.pano + "')>查看</a>";
+                                       html += "</a>"
                                    }
                                    else html = "暂无";
                                    return html;
@@ -278,6 +277,11 @@
             else {
                 $.ligerDialog.warn('请选择行！');
             }
+        }
+
+        function view(url) {
+            f_openWindow_view('CRM/ConsExam/kjl_view.aspx?strurl=' +url, "查看图", 1120, 620);
+
         }
 
         function del() {

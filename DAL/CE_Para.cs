@@ -500,11 +500,12 @@ namespace XHD.DAL
                 sb.AppendLine("   SET  ");
                 sb.AppendLine("           desid='" + des + "' ");
                 sb.AppendLine(" WHERE  curstomerid = " + cid + "  ");
-                    sb.AppendLine("        AND  fpId= '" + fpid + "'  ");
+                sb.AppendLine("        AND  fpId= '" + fpid + "'  ");
                 
             }
             sb.AppendLine(" UPDATE dbo.kjl_api ");
             sb.AppendLine("   SET  ");
+            if (DyGraphicsName != "")
             sb.AppendLine("          DyGraphicsName= '" + DyGraphicsName + "' , "); 
             if (imgtype != "")
                 sb.AppendLine("          imgtype= '" + imgtype + "' , ");
@@ -569,8 +570,8 @@ namespace XHD.DAL
             }
             sb.AppendLine(" UPDATE dbo.kjl_api ");
             sb.AppendLine("   SET  ");
-            sb.AppendLine("          DyGraphicsName= '" + DyGraphicsName + "' , "); 
-           
+            if (DyGraphicsName != "")
+            sb.AppendLine("          DyGraphicsName= '" + DyGraphicsName + "' , ");            
             if (imgtype != "")
             sb.AppendLine("          imgtype= '" + imgtype + "' , ");
             if (simg != "")
@@ -582,7 +583,10 @@ namespace XHD.DAL
             sb.AppendLine("          dotime=getdate() ");
             sb.AppendLine("          ");
             sb.AppendLine(" WHERE  curstomerid = " + cid + "  ");
-            sb.AppendLine("       AND   desid='" + des + "' ");
+            if (des != "")
+            {
+                sb.AppendLine("       AND   desid='" + des + "' ");
+            }
             sb.AppendLine("        AND  fpId= '" + fpid + "'  ");
             sb.AppendLine("        ");
 

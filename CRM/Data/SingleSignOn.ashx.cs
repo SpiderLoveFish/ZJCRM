@@ -530,23 +530,23 @@ namespace XHD.CRM.Data
                 if (appKey == null) context.Response.Write("请先配置参数！");
                 else
                 {
-   
-                    string planid = "3FO4K5M8YDHR";
-                    // Common.PageValidate.InputText(request["designId"], 50)
+
+                    string planid = Common.PageValidate.InputText(request["fid"], 50);
 
                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     string timestamp = currenttimemillis.ToString(); //2分钟
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
                     string api = arr[(int)paraenum.api];
                     StringBuilder apiBuilder = new StringBuilder();
                     apiBuilder.Append(api)
                     .Append("/" + planid)
+                     .Append("/info")
                     .Append("?appkey=").Append(appKey)
                     .Append("&timestamp=").Append(timestamp)
                     .Append("&sign=").Append(sign);
                     string result = "";
                     result = HttpGet(apiBuilder.ToString());
-                    context.Response.Write(result);
+                    context.Response.Write("["+result+"]");
                 }
 
             }
@@ -692,12 +692,11 @@ namespace XHD.CRM.Data
                 else
                 {
                     string appuid = "1";
-                    string designId = "3FO4K5M8YDHR";
-                    // Common.PageValidate.InputText(request["designId"], 50)
+                    string designId = Common.PageValidate.InputText(request["desid"], 50);
 
                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     string timestamp = currenttimemillis.ToString(); //2分钟
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
                     string api = arr[(int)paraenum.api];
                     StringBuilder apiBuilder = new StringBuilder();
                     apiBuilder.Append(api)
@@ -707,7 +706,7 @@ namespace XHD.CRM.Data
                     .Append("&sign=").Append(sign) ;
                     string result = "";
                     result = HttpGet(apiBuilder.ToString());
-                    context.Response.Write(result);
+                    context.Response.Write("["+result+"]");
                 }
 
             }
