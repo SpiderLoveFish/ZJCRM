@@ -71,17 +71,17 @@
                        //    }
                        //},
                    
-                   //  { display: '客户类型', name: 'CustomerType', width: 80 },
-                             {
-                                 display: '客户类型', name: 'setcolor', width: 80, align: 'right', render: function (item) {
-                                     return "<div class='tips' style='background:#" + item.setcolor + "'>" + item.CustomerType + "</div>";
-                                 }
-                             },
-                                          {
-                                              display: '客户状态', name: 'industry', width: 80, align: 'right', render: function (item) {
-                                                  return "<div style='color:#" + item.indcolor + "'>" + item.industry + "</div>";
-                                              }
-                                          },
+                   //  { display: '客户类型', name: 'setcolor', width: 80 },
+                    {
+                        display: '客户类型', name: 'CustomerType', width: 80, align: 'right', render: function (item) {
+                            return "<span><div  style='background:#" + item.setcolor + "'>" + item.CustomerType + "</div></span>";
+                        }
+                    },
+                        {
+                            display: '客户状态', name: 'industry', width: 80, align: 'right', render: function (item) {
+                                return "<span><div style='color:#" + item.indcolor + "'>" + item.industry + "</div></span>";
+                            }
+                        },
                              // { display: '客户状态', name: 'industry', width: 80 },
                     { display: '预算价位', name: 'CustomerLevel', width: 80 },
                     { display: '客户来源', name: 'CustomerSource', width: 80 },

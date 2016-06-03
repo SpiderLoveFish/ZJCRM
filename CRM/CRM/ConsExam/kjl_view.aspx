@@ -6,29 +6,44 @@
 <head>
     <title></title>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-  
-   
-    <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-   <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="../../lib/json2.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+ 
+      <link href="../../jlui3.2/lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+     <link href="../../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css"> 
+     <script src="../../jlui3.2/lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script>
+    <script src="../../jlui3.2/lib/json2.js" type="text/javascript"></script>
+    <script src="../../jlui3.2/lib/ligerUI/js/core/base.js" type="text/javascript"></script>
+    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+       <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+     <script src="../../jlui3.2/lib/jquery-validation/jquery.validate.min.js" type="text/javascript"></script> 
+    <script src="../../jlui3.2/lib/jquery-validation/jquery.metadata.js" type="text/javascript"></script>
+    <script src="../../jlui3.2/lib/jquery-validation/messages_cn.js" type="text/javascript"></script>
+     <script src="../../lib/ligerUI/js/common.js" type="text/javascript"></script>
+     <script src="../../jlui3.2/lib/ligerUI/js/ligerui.all.js"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
+         <script src="../../lib/jquery.form.js" type="text/javascript"></script>
+         <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script type="text/javascript">
         var manager = "";
         $(function () {
             var strurl = getparastr("strurl");
           $('#iframe').attr("src", strurl);
-            initLayout();
-            $(window).resize(function () {
-                initLayout();
-            });
-           
+            //initLayout();
+            //$(window).resize(function () {
+            //    initLayout();
+            //});
+          //manager=  top.$.ligerDialog.open({ height: 200, url: strurl, width: null, showMax: true, showToggle: true, showMin: true, isResize: true, slide: false });
+          //manager.show();
+            // f_open(strurl)
         });
        
+  
+    
     </script>
     
 </head>

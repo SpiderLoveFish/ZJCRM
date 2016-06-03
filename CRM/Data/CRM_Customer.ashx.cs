@@ -43,11 +43,15 @@ namespace XHD.CRM.Data
                 string dyurl = PageValidate.InputText(request["T_url"], 255);
                 string remarks = PageValidate.InputText(request["T_remarks"], 255);
                 string id = PageValidate.InputText(request["id"], 50);
+               
+
                 if (!string.IsNullOrEmpty(id) && id != "null")
                 {
-               if (customer.Updatedy(int.Parse(id), int.Parse(cid), dyname, dyurl, remarks))
-                        context.Response.Write("true");
-                    else context.Response.Write("false");
+                  
+                        if (customer.Updatedy(int.Parse(id), int.Parse(cid), dyname, dyurl, remarks))
+                            context.Response.Write("true");
+                        else context.Response.Write("false");
+                    
                 }
                 else
                 {
@@ -102,7 +106,7 @@ namespace XHD.CRM.Data
                 string dt;
                 if (PageValidate.IsNumber(id))
                 {
-                    DataSet ds = customer.GetListdy("id=" + id + " and Customer_id="+cid);
+                    DataSet ds = customer.GetListdy("ccid=" + id + " and Customer_id="+cid);
                     dt = Common.DataToJson.DataToJSON(ds);
                 }
                 else
@@ -1391,13 +1395,13 @@ namespace XHD.CRM.Data
                         case "none": returntxt = " and 1=2 ";
                             break;
                         case "my":
-                            returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(arr[1]) + ")";
+                            returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or a.Create_id=" + int.Parse(arr[1]) + ")";
                             break;
                         case "dep":
                             if (string.IsNullOrEmpty(arr[1]))
-                                returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or Create_id=" + int.Parse(uid) + ")";
+                                returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or a.Create_id=" + int.Parse(uid) + ")";
                             else
-                                returntxt = " and ( privatecustomer='公客' or Department_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(uid) + ")";
+                                returntxt = " and ( privatecustomer='公客' or Department_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or a.Create_id=" + int.Parse(uid) + ")";
                             break;
                         case "depall":
                             BLL.hr_department dep = new BLL.hr_department();
@@ -1405,7 +1409,7 @@ namespace XHD.CRM.Data
                             string deptask = GetDepTask(int.Parse(arr[1]), ds.Tables[0]);
                             string intext = arr[1] + "," + deptask;
 
-                            returntxt = " and ( privatecustomer='公客' or Create_id=" + int.Parse(uid) + "  or Department_id in (" + intext.TrimEnd(',') + ") or Dpt_id_sg in (" + intext.TrimEnd(',') + ") or Dpt_id_sj in (" + intext.TrimEnd(',') + "))";
+                            returntxt = " and ( privatecustomer='公客' or a.Create_id=" + int.Parse(uid) + "  or Department_id in (" + intext.TrimEnd(',') + ") or Dpt_id_sg in (" + intext.TrimEnd(',') + ") or Dpt_id_sj in (" + intext.TrimEnd(',') + "))";
                              //or Create_id=32 or Department_id in (" + intext.TrimEnd(',') + " or Dpt_id_sg in (" + intext.TrimEnd(',') + " or Dpt_id_sj in (" + intext.TrimEnd(',') + ")
                             break;
                     }

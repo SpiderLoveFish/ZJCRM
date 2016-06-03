@@ -235,6 +235,11 @@ namespace XHD.BLL
         {
             return dal.deletekjl_api(des,cid,fpid);
         }
+
+        public bool Updatekjl_api_name(string fpid, string DyGraphicsName)
+        {
+            return dal.Updatekjl_api_name(fpid,DyGraphicsName);
+        }
         #endregion  ExtensionMethod
 	}
 }

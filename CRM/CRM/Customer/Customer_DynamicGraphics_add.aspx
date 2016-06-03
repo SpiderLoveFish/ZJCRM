@@ -34,8 +34,15 @@
             $("form").ligerForm();
             
             loadForm(getparastr("cid"), getparastr("id"));
-
- 
+           
+            if(getparastr("id")=="0")//ø·º“¿÷
+            {
+                //alert(getparastr("id"));
+                $("#T_url").attr("disabled", "disabled");
+                $("#T_remarks").attr("disabled", "disabled");
+              
+            }
+           
         })
     
         function f_save() {
@@ -44,9 +51,15 @@
            
                 var sendtxt = "&Action=savedy&id=" + getparastr("id") + "&cid=" + getparastr("cid");
        
-                return $("form :input").fieldSerialize() + sendtxt;
+                return $("form :input").fieldSerialize() + sendtxt ;
                 
             }
+        }
+        function f_fid() {
+            return  getparastr("fid") 
+        }
+        function f_fid_name() {
+            return $("#T_name").val();
         }
 
         function loadForm(cid,id) {

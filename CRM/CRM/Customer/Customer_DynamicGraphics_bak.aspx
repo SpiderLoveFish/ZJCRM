@@ -270,7 +270,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('CRM/Customer/Customer_DynamicGraphics_add.aspx?id=' + row.ccid + '&cid=' + getparastr("cid") + '&fid=' + row.fpId + '&desid=' + row.desid, "修改效果图", 500, 200);
+                f_openWindow('CRM/Customer/Customer_DynamicGraphics_add.aspx?id=' + row.id + '&cid=' + getparastr("cid"), "修改效果图", 500, 200);
             }
             else {
                 $.ligerDialog.warn('请选择行！');
@@ -393,39 +393,7 @@
         }
         function f_save(item, dialog) {
             var issave = dialog.frame.f_save();
-            var fid = dialog.frame.f_fid();
-            if (fid != "" && fid != null)
-            {
-                var name = dialog.frame.f_fid_name();
-                dialog.close();
-                $.ajax({
-                    url: "../../data/SingleSignOn.ashx", type: "POST",
-                    data: { Action: "updatehxtname", fid: fid, T_name: name, rnd: Math.random() },
-                    beforesend: function () {
-                        top.$.ligerDialog.waitting('数据保存中,请稍候...');
-                    },
-                    success: function (responseText) {
-                        if (responseText == "success") {
-                            fload();
-                        }
-
-                        else {
-                            top.$.ligerDialog.error('保存失败！');
-                        }
-
-                    },
-                    error: function () {
-                        top.$.ligerDialog.error('保存失败！');
-                    },
-                    complete: function () {
-                        top.$.ligerDialog.closeWaitting();
-                    }
-                });
-
-            }
-
-
-            else if (issave) {
+            if (issave) {
                 dialog.close();
 
                 $.ajax({

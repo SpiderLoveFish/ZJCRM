@@ -280,7 +280,7 @@
             <div id="maingrid4" style="margin: -1px;"></div>
                   </div>
         </div>
-        <div id="content">      
+        <div id="content" style=" height:600px">      
 
         <div class="ifr-steps">
            <%-- <h3>iframe用户行为记录</h3>--%>
@@ -289,7 +289,7 @@
             </ol>
         </div>
 
-        <iframe id="iframe" name="demo-iframe" width="1100" height="640">
+        <iframe id="iframe" name="demo-iframe" width="1100" height="550">
             <h2>这是酷家乐装修设计或户型修改页面，当前未登录</h2>
         </iframe>
     </div>

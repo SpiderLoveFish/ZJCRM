@@ -630,7 +630,7 @@ namespace XHD.CRM.Data
 
                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     string timestamp = currenttimemillis.ToString(); //2分钟
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
                     string api = arr[(int)paraenum.api];
                     StringBuilder apiBuilder = new StringBuilder();
                     apiBuilder.Append(api)
@@ -657,14 +657,13 @@ namespace XHD.CRM.Data
                 if (appKey == null) context.Response.Write("请先配置参数！");
                 else
                 {
-                    string newName = "户型图新名字";
+                    string newName =  PageValidate.InputText(request["T_name"], 255);
 
-                    string planid = "3FO4K5M8YDHR";
-                    // Common.PageValidate.InputText(request["designId"], 50)
+                    string planid = Common.PageValidate.InputText(request["fid"], 50);
 
                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     string timestamp = currenttimemillis.ToString(); //2分钟
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
                     string api = arr[(int)paraenum.api];
                     StringBuilder apiBuilder = new StringBuilder();
                     apiBuilder.Append(api)
@@ -675,7 +674,9 @@ namespace XHD.CRM.Data
                     .Append("&name=").Append(newName); ;
                     string result = "";
                     //result = HttpPut(apiBuilder.ToString());
-                    result = HttpHelper_GetStr(apiBuilder.ToString(), "PUT", "");
+                    result = HttpHelper_GetStr(apiBuilder.ToString(),"PUT","");
+                    if(result=="success")
+                    cp.Updatekjl_api_name(planid,newName);
                     context.Response.Write(result);
                 }
 
@@ -909,12 +910,9 @@ namespace XHD.CRM.Data
                     .Append("?appkey=").Append(appKey)
                     .Append("&timestamp=").Append(timestamp)
                     .Append("&sign=").Append(sign);
-
-
-
                     string result = "";
                     result = HttpGet(apiBuilder.ToString());
-                    context.Response.Write(result);
+                     context.Response.Write(result);
                 }
 
             }
@@ -1077,18 +1075,19 @@ namespace XHD.CRM.Data
 
          private string HttpPut(string Url)
          {
-             HttpHelper http = new HttpHelper();
-             HttpItem item = new HttpItem()
+             string result = "";
+             System.Net.WebClient myClient = new System.Net.WebClient();
+            // myClient.Headers.Add("U-ApiKey", key);
+             myClient.Encoding = Encoding.UTF8;
+             try
              {
-                 URL = Url,//URL这里都是测试     必需项
-                 Encoding = null,//编码格式（utf-8,gb2312,gbk）     可选项 默认类会自动识别
-                 //Encoding = Encoding.Default,
-                 Method = "PUT",//URL     可选项 默认为Get
-             };
-             //得到HTML代码
-             HttpResult result = http.GetHtml(item);
-             string html = result.Html;
-             return html;
+                 result = myClient.UploadString(Url, "PUT", "");
+             }
+             catch (Exception ex)
+             {
+                 result = ex.Message;
+             }
+             return result;
          }
 
          private string HttpGet(string Url)

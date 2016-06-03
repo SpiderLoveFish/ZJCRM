@@ -602,6 +602,33 @@ namespace XHD.DAL
                 return false;
             }
         }
+        public bool Updatekjl_api_name( string fpid, string DyGraphicsName)
+        {
+            var sb = new System.Text.StringBuilder();
+           
+        
+            sb.AppendLine(" UPDATE dbo.kjl_api ");
+            sb.AppendLine("   SET  ");
+           
+                sb.AppendLine("          DyGraphicsName= '" + DyGraphicsName + "' , ");
+            
+            sb.AppendLine("          dotime=getdate() ");
+           
+            sb.AppendLine("        where  fpId= '" + fpid + "'  ");
+            sb.AppendLine("        ");
+
+            SqlParameter[] parameters = {
+                                       };
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 
         public bool deletekjl_api(string des, int cid, string fpid)
