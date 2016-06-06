@@ -40,13 +40,14 @@ namespace XHD.DAL
         public int AddBJlist(int cid,string bid, string plist)
         { 
                 StringBuilder strSql = new StringBuilder();
-                strSql.Append("  DELETE dbo.Budge_Para_Ver ");
-                strSql.Append(" WHERE budge_id='" + bid + "' and  ");
-                strSql.Append("   bp_name NOT IN(SELECT ComponentName FROM Budge_BasicDetail WHERE budge_id='"+bid+"')");
+                //strSql.Append("  DELETE dbo.Budge_Para_Ver ");
+                //strSql.Append(" WHERE budge_id='" + bid + "' and  ");
+                //strSql.Append("   bp_name NOT IN(SELECT ComponentName FROM Budge_BasicDetail WHERE budge_id='"+bid+"')");
            strSql.Append("  INSERT INTO dbo.Budge_Para_Ver ");
            strSql.Append("  ( customer_id ,  budge_id ,versions , b_Part_id , parentid , BP_Name ) ");
         strSql.Append(" SELECT "+cid+",'"+bid+"',0,id,0,BP_Name FROM dbo.Budge_BasicPart ");
         strSql.Append(" WHERE id IN(" + plist + ") ");
+        strSql.Append(" and id not in(select b_Part_id from Budge_Para_Ver where budge_id='" + bid + "' )");
         SqlParameter[] parameters = { };
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
         if (obj == null)

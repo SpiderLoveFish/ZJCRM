@@ -7,14 +7,9 @@
     <title></title>
   <%--/  <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />--%>
   <style type="text/css">
-        body {padding-top:50px;}
-        #content {padding:0 20px;}
-        .intro {margin-top:10px; font-size:14px;}
-        .ifr-steps {position:fixed; top:10px; min-width:400px;}
-        .ifr-steps li {list-style-type:decimal; list-style-position:inside;}
-        .sep {border-right:1px solid #999; margin:0 15px;}
-        iframe {border:2px solid #666; margin-top:10px;}
-        em {color:red}
+      body { margin: 0px;  }  
+    iframe {border: 0px; margin-top:-10px} 
+        .box {height:100%;  position:absolute; width:100%;} 
     </style>
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
      <script src="../../lib/jquery.form.js" type="text/javascript"></script>
@@ -138,7 +133,9 @@
                         // alert(JSON.stringify(data));
                         if (data.action === 'kjl_completed') {
                             // alert(JSON.stringify(data));
-                            top.$.ligerDialog.close();
+                            window.opener = null;
+                            window.open('', '_self');
+                            window.close();
                         }
                     }
 
@@ -146,7 +143,9 @@
                         top.$.ligerDialog.closeWaitting();
                         if (data.action === 'kjl_completed') {
                             // alert(JSON.stringify(data));
-                            top.$.ligerDialog.close();
+                            window.opener = null;
+                            window.open('', '_self');
+                            window.close();
                         }
                         top.$.ligerDialog.error('保存失败1！');
 
@@ -274,23 +273,22 @@
 <body style="padding: 0px;overflow:hidden;">
 
     <form id="form1" onsubmit="return false">
-        <div>
-            <div id="toolbar"></div>
-              <div id="grid">
-            <div id="maingrid4" style="margin: -1px;"></div>
-                  </div>
-        </div>
-        <div id="content" style=" height:600px">      
+      
+ 
+  <div id="maingrid4" style="margin: -1px;"></div>
+     
+          
+        <div id="content"class="box"  >      
 
-        <div class="ifr-steps">
+        <div  >
            <%-- <h3>iframe用户行为记录</h3>--%>
             <ol class="action-log">
                 <input  type="hidden" id="name" />
             </ol>
         </div>
 
-        <iframe id="iframe" name="demo-iframe" width="1100" height="550">
-            <h2>这是酷家乐装修设计或户型修改页面，当前未登录</h2>
+        <iframe id="iframe" name="iframe"  class="box">
+            <h2> </h2>
         </iframe>
     </div>
       

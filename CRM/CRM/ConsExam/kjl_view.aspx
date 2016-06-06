@@ -6,7 +6,13 @@
 <head>
     <title></title>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+ <style type="text/css">
+body { margin: 0px;  }  
+iframe {border: 0px;} 
+.box {height:100%;  position:absolute; width:100%;} 
+</style>
  
+     
       <link href="../../jlui3.2/lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
      <link href="../../../lib/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css"> 
      <script src="../../jlui3.2/lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script>
@@ -40,9 +46,32 @@
           //manager=  top.$.ligerDialog.open({ height: 200, url: strurl, width: null, showMax: true, showToggle: true, showMin: true, isResize: true, slide: false });
           //manager.show();
             // f_open(strurl)
+      
+          requestFullScreen();
         });
-       
-  
+     
+        //进入全屏
+        function requestFullScreen() {
+            var de = document.documentElement;
+            if (de.requestFullscreen) {
+                de.requestFullscreen();
+            } else if (de.mozRequestFullScreen) {
+                de.mozRequestFullScreen();
+            } else if (de.webkitRequestFullScreen) {
+                de.webkitRequestFullScreen();
+            }
+        }
+        //退出全屏
+        function exitFullscreen() {
+            var de = document;
+            if (de.exitFullscreen) {
+                de.exitFullscreen();
+            } else if (de.mozCancelFullScreen) {
+                de.mozCancelFullScreen();
+            } else if (de.webkitCancelFullScreen) {
+                de.webkitCancelFullScreen();
+            }
+        }
     
     </script>
     
@@ -52,15 +81,15 @@
     <form id="form1" onsubmit="return false">
      <div id="content">      
 
-        <div class="ifr-steps">
+        <div class="box"   >
            <%-- <h3>iframe用户行为记录</h3>--%>
             <ol class="action-log">
                 <input  type="hidden" id="name" />
             </ol>
         </div>
 
-        <iframe id="iframe" name="demo-iframe" width="1100" height="600">
-            <h2>这是酷家乐装修设计或户型修改页面，当前未登录</h2>
+        <iframe id="iframe" name="iframe" class="box"  >
+            <h2></h2>
         </iframe>
     </div>
     </form>

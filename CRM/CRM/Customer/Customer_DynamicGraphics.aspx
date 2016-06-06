@@ -225,15 +225,26 @@
             f_openWindow("CRM/Customer/Customer_DynamicGraphics_add.aspx?cid=" + getparastr("cid"), "新增效果图", 500, 200);
 
         }
+
+        function viewkjl(url,newname)
+        {
+            window.open(url + "&width=" + screen.width +
+                                "&height=" + (screen.height - 70), newname,
+                                "top=0,left=0,toolbar=no, menubar=no, scrollbars=yes,resizable=no,location=no,status=no,width=" +
+                                screen.width + ",height=" +
+                                (screen.height - 70));
+        }
+
         function kjl() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                     f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert" + "&dest=0", "新增效果图", 1200, 710);
-             }
+                    // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert" + "&dest=0", "新增效果图", 1200, 710);
+                viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=0', "新增效果图");
+            }
             else {
-                f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert" + "&dest=0", "新增效果图", 1200, 710);
-
+               // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert" + "&dest=0", "新增效果图", 1200, 710);
+                viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=0', "新增效果图");
             }
         }
         //修改3D图
@@ -245,7 +256,9 @@
                 if (row.desid == null || row.desid == "")
                     $.ligerDialog.warn('没有对应的3D图，请先在对应户型图里新增！');
                 else
-                    f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=Edit" + "&dest=1" + "&desid=" + row.desid, "修改3D图", 1200, 710);
+                   // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=Edit" + "&dest=1" + "&desid=" + row.desid, "修改3D图", 1200, 710);
+                    viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=Edit' + '&dest=1' + '&desid=' + row.desid, "修改3D图");
+
             }
             else {
                 $.ligerDialog.warn('请选择行！');
@@ -260,7 +273,9 @@
                 if( row.fpId==null||row.fpId=="")
                     $.ligerDialog.warn('没有对应的户型图，请先新增！');
                 else  
-                    f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=Edit" + "&dest=2" + "&fid=" + row.fpId, "修改户型图", 1200, 650);
+                   // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=Edit" + "&dest=2" + "&fid=" + row.fpId, "修改户型图", 1200, 650);
+                    viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=Edit' + '&dest=2' + "&fid=" + row.fpId, "修改户型图");
+
             }
             else {
                 $.ligerDialog.warn('请选择行！');
@@ -278,8 +293,8 @@
         }
 
         function view(url) {
-            f_openWindow_view('CRM/ConsExam/kjl_view.aspx?strurl=' +url, "查看图", 1120, 620);
-
+           // f_openWindow_view('CRM/ConsExam/kjl_view.aspx?strurl=' + url, "查看图", screen.width, screen.height);
+            viewkjl('../../CRM/ConsExam/kjl_view.aspx?strurl=' + url, "查看图");
         }
 
         function del() {
