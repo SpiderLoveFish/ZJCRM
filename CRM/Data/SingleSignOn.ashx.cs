@@ -1127,6 +1127,7 @@ namespace XHD.CRM.Data
                  ReadWriteTimeout = 30000,//写入Post数据超时时间     可选项默认为30000
                  IsToLower = false,//得到的HTML代码是否转成小写     可选项默认转小写
                  Cookie = "",//字符串Cookie     可选项
+                  Encoding = Encoding.UTF8,//编码格式（utf-8,gb2312,gbk）  
                  UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:18.0) Gecko/20100101 Firefox/18.0",//用户的浏览器类型，版本，操作系统     可选项有默认值
                  Accept = "text/html, application/xhtml+xml, */*",//    可选项有默认值
                   ContentType = "application/x-www-form-urlencoded",//返回类型    可选项有默认值
