@@ -240,6 +240,11 @@ namespace XHD.BLL
         {
             return dal.Updatekjl_api_name(fpid,DyGraphicsName);
         }
+
+        public DataSet Getkjl_api_list(string strWhere)
+        {
+            return dal.Getkjl_api_list(strWhere);
+        }
         #endregion  ExtensionMethod
 	}
 }

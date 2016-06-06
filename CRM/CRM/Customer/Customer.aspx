@@ -492,11 +492,33 @@
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
+        function viewkjl(url, newname) {
+            window.open(url + "&width=" + screen.width +
+                                "&height=" + (screen.height - 70), newname,
+                                "top=0,left=0,toolbar=no, menubar=no, scrollbars=yes,resizable=no,location=no,status=no,width=" +
+                                screen.width + ",height=" +
+                                (screen.height - 70));
+        }
+
+        function editkjl()
+        {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                viewkjl('../../CRM/ConsExam/kjl_index.aspx?cid=' + row.id + '&name=' + encodeURI("【" + row.Customer + "】" + row.address), "【" + row.address + "】");
+                //    f_openWindow_view('CRM/Customer/Customer_DynamicGraphics.aspx?cid=' + row.id + '&name=' + encodeURI(row.Customer)
+                //            + '&tel=' + row.tel
+                //            + '&sjs=' + encodeURI(row.Emp_sj), "【"+row.address+"】效果图库", 660, 550);
+            }
+            else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
         function viewdy() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-              
+               // viewkjl('../../CRM/ConsExam/kjl_index.aspx?cid=' + row.id+ '&name=' + encodeURI("【" + row.Customer + "】" + row.address), "【" + row.address + "】");
                 f_openWindow_view('CRM/Customer/Customer_DynamicGraphics.aspx?cid=' + row.id + '&name=' + encodeURI(row.Customer)
                         + '&tel=' + row.tel
                         + '&sjs=' + encodeURI(row.Emp_sj), "【"+row.address+"】效果图库", 660, 550);

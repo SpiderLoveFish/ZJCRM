@@ -656,6 +656,24 @@ namespace XHD.DAL
             }
         }
 
+
+          /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet Getkjl_api_list(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select * ");
+            strSql.Append(" FROM kjl_api ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+
+
 		#endregion  ExtensionMethod
 	}
 }
