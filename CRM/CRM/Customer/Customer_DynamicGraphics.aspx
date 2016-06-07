@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" %>
+ï»¿<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -94,12 +94,12 @@
                 zindex: 9002,
                 width: width, height: height, title: title, url: url, buttons: [
                         {
-                            text: '±£´æ', onclick: function (item, dialog) {
+                            text: 'ä¿å­˜', onclick: function (item, dialog) {
                                 f_save(item, dialog);
                             }
                         },
                         {
-                            text: '¹Ø±Õ', onclick: function (item, dialog) {
+                            text: 'å…³é—­', onclick: function (item, dialog) {
                                 f_close(item, dialog);
                             }
                         }
@@ -107,7 +107,7 @@
             };
             activeDialogs = parent.jQuery.ligerDialog.open(dialogOptions);
         }
-        //¹Ø±ÕË¢ĞÂ
+        //å…³é—­åˆ·æ–°
         function f_close(item, dialog) {
             fload();
             dialog.close();
@@ -118,7 +118,7 @@
                 width: width, height: height, title: title, url: url, buttons: [
 
                         {
-                            text: '¹Ø±Õ', onclick: function (item, dialog) {
+                            text: 'å…³é—­', onclick: function (item, dialog) {
                                 f_close(item, dialog);
                             }
                         }
@@ -130,65 +130,65 @@
 
             g = $("#maingrid4").ligerGrid({
                 columns: [
-                    { display: 'ĞòºÅ', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
+                    { display: 'åºå·', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
 
-                 //   { display: '¿Í»§', name: 'Customer', width: 120 },
+                 //   { display: 'å®¢æˆ·', name: 'Customer', width: 120 },
  
-                   { display: 'Ãû³Æ', name: 'DyGraphicsName', width: 160 },
+                   { display: 'åç§°', name: 'DyGraphicsName', width: 160 },
 
                       {
-                          display: 'Ğ§¹ûÍ¼', width: 50, render: function (item) {
+                          display: 'æ•ˆæœå›¾', width: 50, render: function (item) {
 
                                    
                                var html;
-                              if (item.DyUrl !== "") {
-                                  var html = "<a href='javascript:void(0)' onclick=view(" + item.DyUrl + ")>²é¿´</a>";
-                                  html += "</a>";
+                               if (item.DyUrl !== "") {
+                                   html = "<a href='javascript:void(0)' onclick=viewurl('" + item.DyUrl + "')>æŸ¥çœ‹</a>";
+                                   html += "</a>"
                               }
-                              else html = "ÔİÎŞ";
+                              else html = "æš‚æ— ";
                               return html;
                           }
                       },
                          {
-                             display: '»§ĞÍÍ¼', name: 'fpId', width: 80, render: function (item) {
+                             display: 'æˆ·å‹å›¾', name: 'fpId', width: 80, render: function (item) {
                                  var html;
-                                 if (item.fpId != "") html = "ÓĞ";
-                                 else html = "ÎŞ";
+                                 if (item.fpId != "") html = "æœ‰";
+                                 else html = "æ— ";
                                  return html;
                              }
                          },
                            {
-                               display: '3DÍ¼', name: 'desid', width: 80, render: function (item) {
+                               display: '3Då›¾', name: 'desid', width: 80, render: function (item) {
                                    var html;
-                                   if (item.desid != "") html = "ÓĞ";
-                                   else html = "ÎŞ";
+                                   if (item.desid != "") html = "æœ‰";
+                                   else html = "æ— ";
                                    return html;
                                }
                            },
                            {
-                               display: 'Ô¤ÀÀÍ¼', name: 'img', width: 80, render: function (item) {
+                               display: 'é¢„è§ˆå›¾', name: 'img', width: 80, render: function (item) {
                                    var html;
                                    if (item.simg !== "") {
-                                       var html = "<a href='javascript:void(0)' onclick=view('" + item.img + "')>²é¿´</a>";
+                                       var html = "<a href='javascript:void(0)' onclick=viewurl('" + item.img + "')>æŸ¥çœ‹</a>";
                                        html += "</a>"
                                    }
-                                   else html = "ÔİÎŞ";
+                                   else html = "æš‚æ— ";
                                    return html;
                                }
                            },
                            {
-                               display: 'È«¾°Í¼', name: 'pano', width: 80, render: function (item) {
+                               display: 'å…¨æ™¯å›¾', name: 'pano', width: 80, render: function (item) {
                                    var html;
                                    if (item.pano !== "") {
-                                       var html = "<a href='javascript:void(0)' onclick=view('" + item.pano + "')>²é¿´</a>";
+                                       var html = "<a href='javascript:void(0)' onclick=viewurl('" + item.pano + "')>æŸ¥çœ‹</a>";
                                        html += "</a>"
                                    }
-                                   else html = "ÔİÎŞ";
+                                   else html = "æš‚æ— ";
                                    return html;
                                }
                            },
                         {
-                            display: '±¸×¢', name: 'Remarks', align: 'left', width: 350, type: 'text'
+                            display: 'å¤‡æ³¨', name: 'Remarks', align: 'left', width: 350, type: 'text'
                             , editor: { type: 'text' }
                         }
 
@@ -222,7 +222,7 @@
 
 
         function add() {
-            f_openWindow("CRM/Customer/Customer_DynamicGraphics_add.aspx?cid=" + getparastr("cid"), "ĞÂÔöĞ§¹ûÍ¼", 500, 200);
+            f_openWindow("CRM/Customer/Customer_DynamicGraphics_add.aspx?cid=" + getparastr("cid"), "æ–°å¢æ•ˆæœå›¾", 500, 200);
 
         }
 
@@ -239,69 +239,69 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                    // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert" + "&dest=0", "ĞÂÔöĞ§¹ûÍ¼", 1200, 710);
-                viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=0', "ĞÂÔöĞ§¹ûÍ¼");
+                    // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert" + "&dest=0", "æ–°å¢æ•ˆæœå›¾", 1200, 710);
+                viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=0', "æ–°å¢æ•ˆæœå›¾");
             }
             else {
-               // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert" + "&dest=0", "ĞÂÔöĞ§¹ûÍ¼", 1200, 710);
-                viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=0', "ĞÂÔöĞ§¹ûÍ¼");
+               // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert" + "&dest=0", "æ–°å¢æ•ˆæœå›¾", 1200, 710);
+                viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=0', "æ–°å¢æ•ˆæœå›¾");
             }
         }
-        //ĞŞ¸Ä3DÍ¼
+        //ä¿®æ”¹3Då›¾
         function kjl3d() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
               
                 if (row.desid == null || row.desid == "")
-                    $.ligerDialog.warn('Ã»ÓĞ¶ÔÓ¦µÄ3DÍ¼£¬ÇëÏÈÔÚ¶ÔÓ¦»§ĞÍÍ¼ÀïĞÂÔö£¡');
+                    $.ligerDialog.warn('æ²¡æœ‰å¯¹åº”çš„3Då›¾ï¼Œè¯·å…ˆåœ¨å¯¹åº”æˆ·å‹å›¾é‡Œæ–°å¢ï¼');
                 else
-                   // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=Edit" + "&dest=1" + "&desid=" + row.desid, "ĞŞ¸Ä3DÍ¼", 1200, 710);
-                    viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=Edit' + '&dest=1' + '&desid=' + row.desid, "ĞŞ¸Ä3DÍ¼");
+                   // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=Edit" + "&dest=1" + "&desid=" + row.desid, "ä¿®æ”¹3Då›¾", 1200, 710);
+                    viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=Edit' + '&dest=1' + '&desid=' + row.desid, "ä¿®æ”¹3Då›¾");
 
             }
             else {
-                $.ligerDialog.warn('ÇëÑ¡ÔñĞĞ£¡');
+                $.ligerDialog.warn('è¯·é€‰æ‹©è¡Œï¼');
             }
         }
-        //ĞŞ¸Ä»§ĞÍÍ¼
+        //ä¿®æ”¹æˆ·å‹å›¾
         function kjlhx() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
                 //alert(row.fpId);
                 if( row.fpId==null||row.fpId=="")
-                    $.ligerDialog.warn('Ã»ÓĞ¶ÔÓ¦µÄ»§ĞÍÍ¼£¬ÇëÏÈĞÂÔö£¡');
+                    $.ligerDialog.warn('æ²¡æœ‰å¯¹åº”çš„æˆ·å‹å›¾ï¼Œè¯·å…ˆæ–°å¢ï¼');
                 else  
-                   // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=Edit" + "&dest=2" + "&fid=" + row.fpId, "ĞŞ¸Ä»§ĞÍÍ¼", 1200, 650);
-                    viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=Edit' + '&dest=2' + "&fid=" + row.fpId, "ĞŞ¸Ä»§ĞÍÍ¼");
+                   // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=Edit" + "&dest=2" + "&fid=" + row.fpId, "ä¿®æ”¹æˆ·å‹å›¾", 1200, 650);
+                    viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=Edit' + '&dest=2' + "&fid=" + row.fpId, "ä¿®æ”¹æˆ·å‹å›¾");
 
             }
             else {
-                $.ligerDialog.warn('ÇëÑ¡ÔñĞĞ£¡');
+                $.ligerDialog.warn('è¯·é€‰æ‹©è¡Œï¼');
             }
         }
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('CRM/Customer/Customer_DynamicGraphics_add.aspx?id=' + row.ccid + '&cid=' + getparastr("cid") + '&fid=' + row.fpId + '&desid=' + row.desid, "ĞŞ¸ÄĞ§¹ûÍ¼", 500, 200);
+                f_openWindow('CRM/Customer/Customer_DynamicGraphics_add.aspx?id=' + row.ccid + '&cid=' + getparastr("cid") + '&fid=' + row.fpId + '&desid=' + row.desid, "ä¿®æ”¹æ•ˆæœå›¾", 500, 200);
             }
             else {
-                $.ligerDialog.warn('ÇëÑ¡ÔñĞĞ£¡');
+                $.ligerDialog.warn('è¯·é€‰æ‹©è¡Œï¼');
             }
         }
 
-        function view(url) {
-           // f_openWindow_view('CRM/ConsExam/kjl_view.aspx?strurl=' + url, "²é¿´Í¼", screen.width, screen.height);
-            viewkjl('../../CRM/ConsExam/kjl_view.aspx?strurl=' + url, "²é¿´Í¼");
+        function viewurl(url) {
+           // f_openWindow_view('CRM/ConsExam/kjl_view.aspx?strurl=' + url, "æŸ¥çœ‹å›¾", screen.width, screen.height);
+            viewkjl('../../CRM/ConsExam/kjl_view.aspx?strurl=' + url, "æŸ¥çœ‹å›¾");
         }
-
+       
         function del() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                $.ligerDialog.confirm("È·¶¨É¾³ı£¿", function (yes) {
+                $.ligerDialog.confirm("ç¡®å®šåˆ é™¤ï¼Ÿ", function (yes) {
                     if (yes) {
                         if (row.fpId != "") {
                             if (row.desid != "") {
@@ -320,24 +320,24 @@
                                                     }
 
                                                     else {
-                                                        top.$.ligerDialog.error('É¾³ıÊ§°Ü£¡');
+                                                        top.$.ligerDialog.error('åˆ é™¤å¤±è´¥ï¼');
                                                     }
 
                                                 },
                                                 error: function () {
-                                                    top.$.ligerDialog.error('É¾³ıÊ§°Ü£¡');
+                                                    top.$.ligerDialog.error('åˆ é™¤å¤±è´¥ï¼');
                                                 }
                                             });
 
                                         }
 
                                         else {
-                                            top.$.ligerDialog.error('É¾³ıÊ§°Ü£¡');
+                                            top.$.ligerDialog.error('åˆ é™¤å¤±è´¥ï¼');
                                         }
 
                                     },
                                     error: function () {
-                                        top.$.ligerDialog.error('É¾³ıÊ§°Ü£¡');
+                                        top.$.ligerDialog.error('åˆ é™¤å¤±è´¥ï¼');
                                     }
                                 });
                             }//end row.desid != ""
@@ -357,29 +357,29 @@
                                                     }
 
                                                     else {
-                                                        top.$.ligerDialog.error('É¾³ıÊ§°Ü£¡' + responseText);
+                                                        top.$.ligerDialog.error('åˆ é™¤å¤±è´¥ï¼' + responseText);
                                                     }
 
                                                 },
                                                 error: function () {
-                                                    top.$.ligerDialog.error('É¾³ıÊ§°Ü£¡');
+                                                    top.$.ligerDialog.error('åˆ é™¤å¤±è´¥ï¼');
                                                 }
                                             });
 
                                         }
 
                                         else {
-                                            top.$.ligerDialog.error('É¾³ıÊ§°Ü£¡');
+                                            top.$.ligerDialog.error('åˆ é™¤å¤±è´¥ï¼');
                                         }
 
                                     },
                                     error: function () {
-                                        top.$.ligerDialog.error('É¾³ıÊ§°Ü£¡');
+                                        top.$.ligerDialog.error('åˆ é™¤å¤±è´¥ï¼');
                                     }
                                 });
                             }//END ELSE
                         }//END if (row.fpId != "")
-                        else {//ccidÌØÒâÎªÕâ¸ö
+                        else {//ccidç‰¹æ„ä¸ºè¿™ä¸ª
                             $.ajax({
                                 url: "../../data/CRM_Customer.ashx", type: "POST",
                                 data: { Action: "deldy", id: row.ccid, cid: getparastr("cid"), rnd: Math.random() },
@@ -390,12 +390,12 @@
                                     }
 
                                     else {
-                                        top.$.ligerDialog.error('É¾³ıÊ§°Ü£¡');
+                                        top.$.ligerDialog.error('åˆ é™¤å¤±è´¥ï¼');
                                     }
 
                                 },
                                 error: function () {
-                                    top.$.ligerDialog.error('É¾³ıÊ§°Ü£¡');
+                                    top.$.ligerDialog.error('åˆ é™¤å¤±è´¥ï¼');
                                 }
                             });
                         }//end else
@@ -403,7 +403,7 @@
                 });
             }
             else {
-                $.ligerDialog.warn("ÇëÑ¡Ôñ¿Í»§");
+                $.ligerDialog.warn("è¯·é€‰æ‹©å®¢æˆ·");
             }
         }
         function f_save(item, dialog) {
@@ -417,7 +417,7 @@
                     url: "../../data/SingleSignOn.ashx", type: "POST",
                     data: { Action: "updatehxtname", fid: fid, T_name: name, rnd: Math.random() },
                     beforesend: function () {
-                        top.$.ligerDialog.waitting('Êı¾İ±£´æÖĞ,ÇëÉÔºò...');
+                        top.$.ligerDialog.waitting('æ•°æ®ä¿å­˜ä¸­,è¯·ç¨å€™...');
                     },
                     success: function (responseText) {
                         if (responseText == "success") {
@@ -425,12 +425,12 @@
                         }
 
                         else {
-                            top.$.ligerDialog.error('±£´æÊ§°Ü£¡');
+                            top.$.ligerDialog.error('ä¿å­˜å¤±è´¥ï¼');
                         }
 
                     },
                     error: function () {
-                        top.$.ligerDialog.error('±£´æÊ§°Ü£¡');
+                        top.$.ligerDialog.error('ä¿å­˜å¤±è´¥ï¼');
                     },
                     complete: function () {
                         top.$.ligerDialog.closeWaitting();
@@ -447,14 +447,14 @@
                     url: "../../data/CRM_Customer.ashx", type: "POST",
                     data: issave,
                     beforesend: function () {
-                        top.$.ligerDialog.waitting('Êı¾İ±£´æÖĞ,ÇëÉÔºò...');
+                        top.$.ligerDialog.waitting('æ•°æ®ä¿å­˜ä¸­,è¯·ç¨å€™...');
                     },
                     success: function (responseText) {
 
                         fload();
                       },
                     error: function () {
-                        top.$.ligerDialog.error('²Ù×÷Ê§°Ü£¡');
+                        top.$.ligerDialog.error('æ“ä½œå¤±è´¥ï¼');
                     },
                     complete: function () {
                         top.$.ligerDialog.closeWaitting();
@@ -487,14 +487,14 @@
              <input type="hidden" id="h_address" value="" />
         <table style="width: 550px; margin: 5px;" class='bodytable1'>
             <tr>
-                <td colspan="8" class="table_title1">¿Í»§ĞÅÏ¢
+                <td colspan="8" class="table_title1">å®¢æˆ·ä¿¡æ¯
                      
                 </td>
               
                   </tr>
             <tr>
                 <td>
-                    <div style="width: 70px; text-align: right; float: right">¿Í»§£º</div>
+                    <div style="width: 70px; text-align: right; float: right">å®¢æˆ·ï¼š</div>
                 </td>
                 <td  >
                          <input type="text" id="T_customer" name="T_customer"  ltype="text" ligerui="{width:150,disabled:true}" validate="{required:true}" />
@@ -504,9 +504,9 @@
                 </td>
              
                  
-                <td>  <div style="width: 70px; text-align: right; float: right">µç»°£º</div></td>
+                <td>  <div style="width: 70px; text-align: right; float: right">ç”µè¯ï¼š</div></td>
                 <td><input type="text"  id="T_tel" name="T_tel"  ltype="text" ligerui="{width:100,disabled:true}"   /></td>
-              <td> <div style="width: 70px; text-align: right; float: right">Éè¼ÆÊ¦£º</div></td>
+              <td> <div style="width: 70px; text-align: right; float: right">è®¾è®¡å¸ˆï¼š</div></td>
               <td><input type="text"  id="T_sjs" name="T_sjs"  ltype="text" ligerui="{width:100,disabled:true}"   /></td>
               
                

@@ -27,6 +27,7 @@
     <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
+        <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -58,20 +59,7 @@
                     { display: '电话', name: 'tel', width: 120 },
                     { display: '小区', name: 'Community', width: 80 },
                     { display: '地址', name: 'address', width: 200 },
-                       //{
-                       //    display: '效果图', width: 40, render: function (item) {
-                       //        var html;
-                       //        if (item.DesCripe != "") {
-                       //            html = "<a href='" + item.DesCripe + "' target='_blank'>";
-                       //            html += "查看";
-                       //            html += "</a>";
-                       //        }
-                       //        else html = "暂无";
-                       //        return html;
-                       //    }
-                       //},
-                   
-                   //  { display: '客户类型', name: 'setcolor', width: 80 },
+             
                     {
                         display: '客户类型', name: 'CustomerType', width: 80, align: 'right', render: function (item) {
                             return "<span><div  style='background:#" + item.setcolor + "'>" + item.CustomerType + "</div></span>";
@@ -500,19 +488,20 @@
                                 (screen.height - 70));
         }
 
-        function editkjl()
-        {
+        function editt(){
+         
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                viewkjl('../../CRM/ConsExam/kjl_index.aspx?cid=' + row.id + '&name=' + encodeURI("【" + row.Customer + "】" + row.address), "【" + row.address + "】");
-                //    f_openWindow_view('CRM/Customer/Customer_DynamicGraphics.aspx?cid=' + row.id + '&name=' + encodeURI(row.Customer)
-                //            + '&tel=' + row.tel
-                //            + '&sjs=' + encodeURI(row.Emp_sj), "【"+row.address+"】效果图库", 660, 550);
+               
+                viewkjl('../../CRM/ConsExam/kjl_index.aspx?cid=' + row.id
+                    + '&name=' + encodeURI('【' + row.Customer + '】' + row.address),
+                    "编辑效果图");
             }
             else {
                 $.ligerDialog.warn('请选择行！');
             }
+           
         }
         function viewdy() {
             var manager = $("#maingrid4").ligerGetGridManager();

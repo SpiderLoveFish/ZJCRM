@@ -80,20 +80,29 @@
                     //alert(obj.obsDesignId + obj.obsPlan.name);
                     //names = obj.obsPlan.name
                     //fid = obj.obsPlan.obsPlanId
-                    var html = "";
+                    var html = ""; var typename = "";
                     $('#3dlist').html(html)
                     for (var n in obj) {
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
                         // alert(obj[n].simg);
                         //html = "" + obj[n].simg;
+                        if (obj[n].picType == 0)
+                            typename = "普通渲染图";
+                        else if (obj[n].picType == 1)
+                            typename = "全景图";
+                        else if (obj[n].picType == 2)
+                            typename = "俯视图";
                         html += '<div class="p1_box left cl1">' +
                            //'<div class="type"></div>' +
-                           '<a href="javascript:void(0)" onclick="view3d(\'' + obj[n].panoLink + '\')"  style="cursor:pointer;"><img src=' + obj[n].img + ' alt=' + obj[n].panoLink + '  ></a>' +
-                           '<a onclick="edit3d(\'' + obj[n].picId + '\')" class="btn">修改方案</a>' +
-                           '<a onclick="editname3d(\'' + obj[n].picId + ' \')" class="btn">修改名称</a>' +
-                           '<a onclick="del3d(\'' + obj[n].picId + '\')" class="btn">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                           '<a  class="btn2" >【3D图】<input id="' + obj[n].picId + '" type="text" value=' + obj[n].roomTypeName + '></input></a>' +
+                           '<a href="javascript:void(0)" onclick="view3d(\'' + obj[n].panoLink + '\')"  style="cursor:pointer;"><img src=' + obj[n].img + ' alt=' + obj[n].panoLink + '  ></a>';
+                           if (obj[n].picType == 1)
+                        {
+                               html += '<a onclick="edit3d(\'' + obj[n].picId + '\')" class="btn">修改方案</a>' +
+                               '<a onclick="editname3d(\'' + obj[n].picId + ' \')" class="btn">修改名称</a>' +
+                               '<a onclick="del3d(\'' + obj[n].picId + '\')" class="btn">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;';          
+                            }
+                        html +='<a  class="btn2" >【' + typename + '】<input id="' + obj[n].picId + '" type="text" value=' + obj[n].roomTypeName + '></input></a>' +
                        '</div>';
 
                     }
