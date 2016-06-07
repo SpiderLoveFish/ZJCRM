@@ -36,15 +36,18 @@
                     //alert(obj.obsDesignId + obj.obsPlan.name);
                     //names = obj.obsPlan.name
                     //fid = obj.obsPlan.obsPlanId
-                    var html="";
+                    var html = ""; var hxturl = "";
+                    
                     for (var n in obj) {
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
                        // alert(obj[n].simg);
                         //html = "" + obj[n].simg;
-                        html += '<div class="p1_box left cl1">' +
+                        ajaxhxt(obj[n].fpId, obj[n].desid)
+                      //  alert(hxturl);
+                        html += '<div id=div' + obj[n].desid + ' class="p1_box left cl1">' +
                            //'<div class="type"></div>' +
-                           '<a style="cursor:pointer;" onclick="list(\'' + obj[n].desid + '\')"><img src=' + obj[n].img + '  ></a>' +
+                           '<a style="cursor:pointer;" onclick="list(\'' + obj[n].desid + '\')"><img id=img' + obj[n].fpId + ' src=#  ></a>' +
                            '<a onclick="edit(\'' + obj[n].fpId + '\')" class="btn">修改方案</a>' +
                         '<a onclick="editname(\'' + obj[n].fpId + '\')" class="btn">修改名称</a>' +
                         '<a onclick="del(\'' + obj[n].fpId + '\')" class="btn">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
@@ -177,6 +180,24 @@
             });
         }
 
+        function ajaxhxt( fid, desid) {
+            $.ajax({
+                url: "../../data/SingleSignOn.ashx", type: "POST",
+                data: { Action: "Gethxt",  desid: desid, rnd: Math.random() },
+                success: function (responseText) {
+                    //  alert(responseText);
+                    $('#img' + fid).attr("src",responseText);
+                    //ajaxhxt(obj[n].desid)
+                    //return responseText;
+
+                },
+                error: function () {
+                   // return "";
+                }
+            });
+        }
+
+
         function add()
         {
             viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=0', "新增效果图");
@@ -197,6 +218,17 @@
         function list(desid)
         {
             getlist3d(desid)
+           
+            //$('div[name^=div]').each(function () {
+            $("div[id]").each(function () {
+           
+                $(this).removeClass("cl2");
+                $(this).addClass("cl1");
+                
+            });
+            $('#div' + desid + '').removeClass("cl1");
+            $('#div' + desid + '').addClass("cl2");
+ 
            // alert(fpId);
         }
         function edit(fpId) {

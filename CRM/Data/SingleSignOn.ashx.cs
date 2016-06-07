@@ -913,14 +913,13 @@ namespace XHD.CRM.Data
                 if (appKey == null) context.Response.Write("请先配置参数！");
                 else
                 {
-                    string designId = "FO4K7MS4H8M";
-                    // Common.PageValidate.InputText(request["designId"], 50)
+                    string designId = Common.PageValidate.InputText(request["desid"], 50);
                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     string timestamp = currenttimemillis.ToString(); //2分钟
                     // 签名加密
                     string aa = "sdfaadsasdasd";
                     string md5aa = MD5(aa).ToLower();
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
                     string api = arr[(int)paraenum.api];
                     StringBuilder apiBuilder = new StringBuilder();
                     apiBuilder.Append(api)

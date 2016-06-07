@@ -18,7 +18,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/20/2011 22:18:48</publishTime>
     </File>
     <File Include="bin/CRM.dll">
-      <publishTime>06/02/2016 14:21:32</publishTime>
+      <publishTime>06/07/2016 17:38:46</publishTime>
     </File>
     <File Include="bin/Excel.dll">
       <publishTime>08/20/2011 22:18:48</publishTime>
@@ -57,22 +57,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/20/2011 22:18:52</publishTime>
     </File>
     <File Include="bin/XHD.BLL.dll">
-      <publishTime>06/01/2016 16:04:11</publishTime>
+      <publishTime>06/07/2016 17:36:31</publishTime>
     </File>
     <File Include="bin/XHD.Comm.dll">
-      <publishTime>06/01/2016 13:01:14</publishTime>
+      <publishTime>06/07/2016 17:36:30</publishTime>
     </File>
     <File Include="bin/XHD.DAL.dll">
-      <publishTime>06/02/2016 09:06:01</publishTime>
+      <publishTime>06/07/2016 17:36:27</publishTime>
     </File>
     <File Include="bin/XHD.DBUtility.dll">
-      <publishTime>02/01/2016 13:30:14</publishTime>
+      <publishTime>06/07/2016 17:36:19</publishTime>
     </File>
     <File Include="bin/XHD.Model.dll">
-      <publishTime>06/02/2016 09:06:00</publishTime>
+      <publishTime>06/07/2016 17:36:12</publishTime>
     </File>
     <File Include="conn.config">
-      <publishTime>06/02/2016 14:00:48</publishTime>
+      <publishTime>06/07/2016 16:51:30</publishTime>
     </File>
     <File Include="copyright.html">
       <publishTime>02/01/2016 08:44:44</publishTime>
@@ -201,7 +201,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/31/2016 16:32:30</publishTime>
     </File>
     <File Include="CRM/ConsExam/kjl_edit.aspx">
-      <publishTime>06/02/2016 14:18:51</publishTime>
+      <publishTime>06/06/2016 15:05:42</publishTime>
+    </File>
+    <File Include="CRM/ConsExam/kjl_index.aspx">
+      <publishTime>06/07/2016 17:32:02</publishTime>
+    </File>
+    <File Include="CRM/ConsExam/kjl_view.aspx">
+      <publishTime>06/06/2016 15:05:33</publishTime>
     </File>
     <File Include="CRM/ConsExam/SelectCEStageCustomer.aspx">
       <publishTime>02/01/2016 08:44:39</publishTime>
@@ -228,7 +234,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/01/2016 08:44:39</publishTime>
     </File>
     <File Include="CRM/Customer/Customer.aspx">
-      <publishTime>05/30/2016 09:26:29</publishTime>
+      <publishTime>06/07/2016 11:06:57</publishTime>
     </File>
     <File Include="CRM/Customer/Customer_add.aspx">
       <publishTime>05/27/2016 13:48:25</publishTime>
@@ -240,10 +246,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/01/2016 08:44:39</publishTime>
     </File>
     <File Include="CRM/Customer/Customer_DynamicGraphics.aspx">
-      <publishTime>06/02/2016 10:55:35</publishTime>
+      <publishTime>06/07/2016 09:14:48</publishTime>
     </File>
     <File Include="CRM/Customer/Customer_DynamicGraphics_add.aspx">
-      <publishTime>05/30/2016 09:26:29</publishTime>
+      <publishTime>06/03/2016 14:26:02</publishTime>
+    </File>
+    <File Include="CRM/Customer/Customer_DynamicGraphics_bak.aspx">
+      <publishTime>06/03/2016 12:14:54</publishTime>
     </File>
     <File Include="CRM/Customer/Customer_follow.aspx">
       <publishTime>02/01/2016 08:44:39</publishTime>
@@ -511,6 +520,123 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="CSS/jquery.fancybox-1.2.6.css">
       <publishTime>02/01/2016 08:44:39</publishTime>
+    </File>
+    <File Include="CSS/kjl/css/font-awesome.css">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/css/form.css">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/css/grid.css">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/css/ie.css">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/css/reset.css">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/css/slider.css">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/css/style.css">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/css/superfish.css">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/css/touchTouch.css">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/arrows.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/arrowws.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/bg_body.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/comment_icon.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/heart_icon.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/logo.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/magnify.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/marker.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/menu_sep.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/penc_icon.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/photo_icon.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/preloader.gif">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/quotes_bg.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/socials.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/Thumbs.db">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/totop.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/video_icon.png">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/images/登入界面1_01.gif">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/js/html5shiv.js">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/js/jquery-migrate-1.1.1.js">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/js/jquery.easing.1.3.js">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/js/jquery.equalheights.js">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/js/jquery.js">
+      <publishTime>06/07/2016 08:28:54</publishTime>
+    </File>
+    <File Include="CSS/kjl/js/jquery.mobilemenu.js">
+      <publishTime>06/07/2016 08:28:54</publishTime>
+    </File>
+    <File Include="CSS/kjl/js/jquery.ui.totop.js">
+      <publishTime>06/07/2016 08:28:54</publishTime>
+    </File>
+    <File Include="CSS/kjl/js/PIE.htc">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/js/script.js">
+      <publishTime>06/07/2016 08:28:54</publishTime>
+    </File>
+    <File Include="CSS/kjl/js/superfish.js">
+      <publishTime>06/07/2016 08:28:54</publishTime>
+    </File>
+    <File Include="CSS/kjl/js/TMForm.js">
+      <publishTime>06/07/2016 08:28:53</publishTime>
+    </File>
+    <File Include="CSS/kjl/js/touchTouch.jquery.js">
+      <publishTime>06/07/2016 08:28:54</publishTime>
     </File>
     <File Include="CSS/Login.css">
       <publishTime>02/01/2016 08:44:39</publishTime>
@@ -11568,7 +11694,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/01/2016 08:44:44</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/02/2016 14:21:59</publishTime>
+      <publishTime>06/07/2016 17:33:01</publishTime>
     </File>
     <File Include="webserver/bbsapi.asmx">
       <publishTime>03/21/2016 14:02:30</publishTime>
