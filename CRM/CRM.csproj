@@ -226,7 +226,6 @@
     <Content Include="CSS\kjl\images\arrows.png" />
     <Content Include="CSS\kjl\images\arrowws.png" />
     <Content Include="CSS\kjl\images\bg_body.png" />
-    <Content Include="CSS\kjl\images\登入界面1_01.gif" />
     <Content Include="CSS\kjl\images\comment_icon.png" />
     <Content Include="CSS\kjl\images\heart_icon.png" />
     <Content Include="CSS\kjl\images\logo.png" />
@@ -833,7 +832,6 @@
     <Content Include="Data\PickingList.ashx" />
     <Content Include="Data\Budge_BasicPart.ashx" />
     <Content Include="Data\StockView.ashx" />
-    <Content Include="CSS\kjl\images\Thumbs.db" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
