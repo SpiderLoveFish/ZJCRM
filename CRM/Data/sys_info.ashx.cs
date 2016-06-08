@@ -58,6 +58,16 @@ namespace XHD.CRM.Data
 
                 info.Update(model);
             }
+            else if (request["Action"] == "host")
+            {
+                string host = request["host"];     
+                
+                //context.Response.Write(nowfileName);
+                model.sys_value = host;
+                model.id = 6;
+
+                info.Update(model);
+            }
             else if (request["Action"] == "reg")
             {
                 Common.SoftReg rg = new Common.SoftReg();

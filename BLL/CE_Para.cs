@@ -216,9 +216,9 @@ namespace XHD.BLL
         }
 
 
-        public DataSet GetSingleSignOnList(string where)
+        public DataSet GetSingleSignOnList(string where,string host)
         {
-            return dal.GetSingleSignOnList(where);
+            return dal.GetSingleSignOnList(where,host);
         }
 
         public bool Updatekjl_api(string des, int cid, string fpid,string DyGraphicsName, string imgtype, string simg, string img, string pano)

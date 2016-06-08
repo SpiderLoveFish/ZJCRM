@@ -474,16 +474,30 @@ namespace XHD.DAL
         /// <summary>
         /// 获得数据列表
         /// </summary>
-        public DataSet GetSingleSignOnList(string strWhere)
+        public DataSet GetSingleSignOnList(string strWhere,string host)
         {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("select * ");
-            strSql.Append(" FROM T_SingleSignOn ");
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("select [appkey],");
+            sb.AppendLine("	[appSecret],");
+            sb.AppendLine("	[timestamp],");
+            sb.AppendLine("  B.uid+'@'+'" + host + "' as	[appuid] ,");
+            sb.AppendLine("	[sign] ,");
+            sb.AppendLine("	B.name as [appuname] ,");
+            sb.AppendLine("	B.uid+'@'+'" + host + "' as [appuemail] ,");
+            sb.AppendLine("	B.tel as [appuphone] ,");
+            sb.AppendLine("	[appussn] ,");
+            sb.AppendLine("	[appuAddr],");
+            sb.AppendLine("	[appuavatar],");
+            sb.AppendLine("	A.[id] ,");
+            sb.AppendLine("	[api]");
+            sb.AppendLine("	 from [dbo].[T_SingleSignOn]  A");
+            sb.AppendLine("INNER JOIN [dbo].[hr_employee] B on 1=1");
+            //sb.AppendLine("where B.uid='admin'");
             if (strWhere.Trim() != "")
             {
-                strSql.Append(" where " + strWhere);
+                sb.AppendLine(" where " + strWhere);
             }
-            return DbHelperSQL.Query(strSql.ToString());
+            return DbHelperSQL.Query(sb.ToString());
         }
 
 

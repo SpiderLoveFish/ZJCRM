@@ -108,7 +108,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "GetMD5")
             {
 
-                    string[] arr = para("1");
+                string[] arr = para("1", uid);
                     string appKey =arr[(int)paraenum.appKey];
                     string appSecret =arr[(int)paraenum.appSecret];
                     string userId = arr[(int)paraenum.userId];
@@ -186,7 +186,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "Getmodelcollent")
             {
 
-                string[] arr = para("21");
+                string[] arr = para("21", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -244,7 +244,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "getmodellist")
             {
 
-                string[] arr = para("20");
+                string[] arr = para("20", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -279,7 +279,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "getmodelstyle")
             {
 
-                string[] arr = para("19");
+                string[] arr = para("19", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -313,7 +313,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "getresult")
             {
 
-                string[] arr = para("18");
+                string[] arr = para("18", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -347,7 +347,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "gethxtapi")
             {
 
-                string[] arr = para("17");
+                string[] arr = para("17", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -382,7 +382,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "getcitylist")
             {
 
-                string[] arr = para("16");
+                string[] arr = para("16", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -413,7 +413,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "getuserhxdatafb")
             {
 
-                string[] arr = para("14");
+                string[] arr = para("14", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -448,7 +448,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "getuserhxdata")
             {
 
-                string[] arr = para("13");
+                string[] arr = para("13", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -481,7 +481,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "delethxt")
             {
 
-                string[] arr = para("28");
+                string[] arr = para("28", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -512,7 +512,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "getroomdata")
             {
 
-                string[] arr = para("12");
+                string[] arr = para("12", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -543,7 +543,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "getthebasicdata")
             {
 
-                string[] arr = para("11");
+                string[] arr = para("11", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -574,7 +574,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "GETAPI")
             {
 
-                string[] arr = para("10");
+                string[] arr = para("10", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -636,7 +636,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "update3dname")
             {
 
-                string[] arr = para("9");
+                string[] arr = para("9", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -670,7 +670,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "updatehxtname")
             {
 
-                string[] arr = para("15");
+                string[] arr = para("15", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -705,7 +705,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "get3dfabasicdata")
             {
 
-                string[] arr = para("8");
+                string[] arr = para("8", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -735,7 +735,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "get3dfafb")
             {
 
-                string[] arr = para("7");
+                string[] arr = para("7", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -767,7 +767,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "get3dfalist")
             {
 
-                string[] arr = para("6");
+                string[] arr = para("6", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -803,7 +803,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "delete")
             {
 
-                string[] arr = para("5");
+                string[] arr = para("5", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -834,7 +834,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "deleteHXT")
             {
 
-                string[] arr = para("28");
+                string[] arr = para("28", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -865,7 +865,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "Getzxlist")
             {
 
-                string[] arr = para("4");
+                string[] arr = para("4", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -906,7 +906,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "Gethxt")
             {
 
-                string[] arr = para("3");
+                string[] arr = para("3", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -938,8 +938,8 @@ namespace XHD.CRM.Data
             //获取指定方案的渲染图列表
             if (request["Action"] == "Getlist")
             {
-                
-                    string[] arr = para("27");
+
+                string[] arr = para("27", uid);
                     string appKey =arr[(int)paraenum.appKey];
                     string appSecret =arr[(int)paraenum.appSecret];
                     string userId = arr[(int)paraenum.userId];
@@ -975,7 +975,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "Design3D")
             {
 
-                string[] arr = para("2");
+                string[] arr = para("2",uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
@@ -1017,11 +1017,14 @@ namespace XHD.CRM.Data
          return b;
      }
 
-         private string[] para(string id)
+         private string[] para(string id,string uid)
          {
+            
              string[] arr= new string[10];
              BLL.CE_Para cp = new BLL.CE_Para();
-             DataSet ds = cp.GetSingleSignOnList("  id=" + id + "");
+             BLL.sys_info si = new BLL.sys_info();
+             string host = si.GetList(" sys_key='sys_host'").Tables[0].Rows[0]["sys_value"].ToString();
+             DataSet ds = cp.GetSingleSignOnList("  a.id=" + id + " and B.uid='" + uid + "'", host);
              if (ds.Tables[0].Rows.Count > 0)
              {
                  // 分配给每个商家的唯一的appkey和appsecret
@@ -1145,6 +1148,7 @@ namespace XHD.CRM.Data
                  ReadWriteTimeout = 30000,//写入Post数据超时时间     可选项默认为30000
                  IsToLower = false,//得到的HTML代码是否转成小写     可选项默认转小写
                  Cookie = "",//字符串Cookie     可选项
+                  PostEncoding = Encoding.UTF8,
                   Encoding = Encoding.UTF8,//编码格式（utf-8,gb2312,gbk）  
                  UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:18.0) Gecko/20100101 Firefox/18.0",//用户的浏览器类型，版本，操作系统     可选项有默认值
                  Accept = "text/html, application/xhtml+xml, */*",//    可选项有默认值
