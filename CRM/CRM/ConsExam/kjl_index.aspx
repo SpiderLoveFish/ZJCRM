@@ -22,6 +22,7 @@
       
         var manager = "";
         $(function () {
+           
           //  alert(decodeURI(getparastr("name")));
             $('#id_name').html(decodeURI(getparastr("name")))
             $.ajax({
@@ -51,7 +52,7 @@
                            '<a onclick="edit(\'' + obj[n].fpId + '\')" class="btn">修改方案</a>' +
                         '<a onclick="editname(\'' + obj[n].fpId + '\')" class="btn">修改名称</a>' +
                         '<a onclick="del(\'' + obj[n].fpId + '\')" class="btn">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                           '<a  class="btn2" >【户型图】<input id="' + obj[n].fpId + '" type="text" value=' + decodeURI(getparastr('name')) + '></input></a>' +
+                           '<a  class="btn2" >【户型图】<input id="' + obj[n].fpId + '" type="text" value=' + obj[n].DyGraphicsName + '></input></a>' +
                        '</div>';
                         if (obj[0].desid != null && obj[0].desid != undefined && obj[0].desid!="")
                              getlist3d(obj[0].desid);
@@ -126,6 +127,7 @@
                 url: "../../data/SingleSignOn.ashx", type: "POST",
                 data: { Action: action, fid: fpid, desid: desid, cid: getparastr("cid"), rnd: Math.random() },
                 success: function (responseText) {
+                    if (fpid!="")//户型图
                     if (responseText == "success") {
                         $.ajax({
                             url: "../../data/SingleSignOn.ashx", type: "POST",
@@ -200,7 +202,7 @@
 
         function add()
         {
-            viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=0', "新增效果图");
+            viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=4', "新增效果图");
 
         }
         function view3d(strurl)
