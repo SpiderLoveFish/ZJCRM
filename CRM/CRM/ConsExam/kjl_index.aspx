@@ -48,18 +48,23 @@
                       //  alert(hxturl);
                         html += '<div id=div' + obj[n].desid + ' class="p1_box left cl1">' +
                            //'<div class="type"></div>' +
-                           '<a style="cursor:pointer;" onclick="list(\'' + obj[n].desid + '\')"><img id=img' + obj[n].fpId + ' src=#  ></a>' +
+                           '                         <table width=100% border="0"><tr><td width="9%"><strong>名称</strong>：</td><td width="45%"><span id=td' + obj[n].desid + '>' + obj[n].DyGraphicsName + '</span></td><td width="16%" align="right"><strong>更新时间：</strong></td><td width="30%">' + formatTimebytype(obj[n].dotime, 'yyyy-MM-dd') + '</td></tr></table>' +
+                           '<a  href="javascript:window.scrollTo( 0, 0 );"style="cursor:pointer;" onclick="list(\'' + obj[n].desid + '\')" ><img id=img' + obj[n].fpId + ' src=#  ></a>' +
                            '<a onclick="edit(\'' + obj[n].fpId + '\')" class="btn">修改方案</a>' +
-                        '<a onclick="editname(\'' + obj[n].fpId + '\')" class="btn">修改名称</a>' +
-                        '<a onclick="del(\'' + obj[n].fpId + '\')" class="btn">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                           '<a  class="btn2" >【户型图】<input id="' + obj[n].fpId + '" type="text" value=' + obj[n].DyGraphicsName + '></input></a>' +
+                           '<a onclick="edit3d(\'' + obj[n].desid + '\')" class="btn">去装修</a>' +
+                       
+                        '<a onclick="del(\'' + obj[n].fpId + '\',\'' + obj[n].desid + '\')" class="btn">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        
+                           '<a  class="btn2" ><label class="name"><input id="' + obj[n].fpId + '"  ltype="text"type="text" value=' + obj[n].DyGraphicsName + '></input></label></a>' +
+                            '<a onclick="editname(\'' + obj[n].fpId + '\')" class="btn">改名</a>&nbsp;' +
+                             
                        '</div>';
                         if (obj[0].desid != null && obj[0].desid != undefined && obj[0].desid!="")
                              getlist3d(obj[0].desid);
                     }
                     $('#idleft').html(html)
                     if(html.length>0)
-                        $('#idlist').html(decodeURI(getparastr("name")) + "方案列表")
+                        $('#idlist').html( obj[0].DyGraphicsName + "方案列表")
                     else $('#idlist').html("无数据，请先新增")
                     //alert(obj[n].obsPlan.obsPlanId + fid);
                     // f_save(savedata, obj[n].obsPlan.obsPlanId);
@@ -97,17 +102,24 @@
                             typename = "全景图";
                         else if (obj[n].picType == 2)
                             typename = "俯视图";
-                        html += '<div class="p1_box left cl1">' +
-                           //'<div class="type"></div>' +
-                           '<a href="javascript:void(0)" onclick="view3d(\'' + obj[n].panoLink + '\')"  style="cursor:pointer;"><img src=' + obj[n].img + ' alt=' + obj[n].panoLink + '  ></a>';
-                           if (obj[n].picType == 1)
-                        {
-                               html += '<a onclick="edit3d(\'' + obj[n].picId + '\')" class="btn">修改方案</a>' +
-                               '<a onclick="editname3d(\'' + obj[n].picId + ' \')" class="btn">修改名称</a>' +
-                               '<a onclick="del3d(\'' + obj[n].picId + '\')" class="btn">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;';          
-                            }
-                        html +='<a  class="btn2" >【' + typename + '】<input id="' + obj[n].picId + '" type="text" value=' + obj[n].roomTypeName + '></input></a>' +
+                        html += '<div class="p1_box left cl1">';
+                        //'<div class="type"></div>' +
+                        if (obj[n].panoLink == null || obj[n].panoLink == "undefined" || obj[n].panoLink == "")
+                        { html += '<a href="javascript:void(0)" onclick="view3d(\'' + obj[n].img + '\')"  style="cursor:pointer;"><img src=' + obj[n].img + ' alt=' + obj[n].panoLink + '  ></a>' }
+                        else
+                        html += '<a href="javascript:void(0)" onclick="view3d(\'' + obj[n].panoLink + '\')"  style="cursor:pointer;"><img src=' + obj[n].img + ' alt=' + obj[n].panoLink + '  ></a>';
+
+                        //if (obj[n].picType == 1)
+                        //{
+                        //       html += '<a onclick="edit3d(\'' + obj[n].picId + '\')" class="btn">修改方案</a>' +
+                        //       '<a onclick="editname3d(\'' + obj[n].picId + ' \')" class="btn">修改名称</a>' +
+                        //       '<a onclick="del3d(\'' + obj[n].picId + '\')" class="btn">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;';          
+                        //    }
+                        html +='<a  class="btn2" >【' + typename + '】'+ obj[n].roomTypeName +'</a>'+
                        '</div>';
+                        if (html.length > 0)
+                            $('#idlist').html($('#td' + desid).html() + "方案列表")
+                        else $('#idlist').html("无数据，请先新增")
 
                     }
                     $('#3dlist').html(html)
@@ -123,12 +135,15 @@
 
         function ajaxdelte(action,fpid,desid)
         {
+            if (desid == "" || desid == null || desid == 'null' || desid == undefined)
+                action = "deleteHXT";
+            else action = "delete";
             $.ajax({
                 url: "../../data/SingleSignOn.ashx", type: "POST",
                 data: { Action: action, fid: fpid, desid: desid, cid: getparastr("cid"), rnd: Math.random() },
-                success: function (responseText) {
-                    if (fpid!="")//户型图
+                success: function (responseText) { 
                     if (responseText == "success") {
+                        if (fpid != "")//户型图
                         $.ajax({
                             url: "../../data/SingleSignOn.ashx", type: "POST",
                             data: { Action: "deleteAPI", fid: fpid, desid: desid, cid: getparastr("cid"), rnd: Math.random() },
@@ -151,7 +166,7 @@
                     }
 
                     else {
-                        alert('删除失败！' );
+                        alert('删除失败！' + responseText);
                     }
 
                 },
@@ -168,7 +183,7 @@
                 success: function (responseText) {
                     if (responseText == "success") {
                         
-
+                        alert('更新成功！');
                     }
 
                     else {
@@ -202,18 +217,18 @@
 
         function add()
         {
-            viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=4', "新增效果图");
+            viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=4', "新增方案");
 
         }
         function view3d(strurl)
         {
             if (strurl == null || strurl == "undefined" || strurl == "")
             {
-                alert("没有全景图，无法查看！");
+                alert("没有相关资料，无法查看！");
                 return;
             }
             //alert(strurl);
-            viewkjl('../../CRM/ConsExam/kjl_view.aspx?strurl=' + strurl, "查看图");
+            viewkjl('../../CRM/ConsExam/kjl_view.aspx?strurl=' + strurl, "查看");
 
            // viewkjl(strurl, "查看3D图");
         }
@@ -234,7 +249,7 @@
            // alert(fpId);
         }
         function edit(fpId) {
-            viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=Edit' + '&dest=2' + "&fid=" + fpId, "修改户型图");
+            viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=Edit' + '&dest=2' + "&fid=" + fpId, "修改方案");
 
         }
         function edit3d(desid) {
@@ -252,8 +267,8 @@
             if (newname == "") { alert("请填写一个有效名称！");return}
             ajaxupdate("update3dname", "", desid, newname);
         }
-        function del(fpId) {
-            ajaxdelte("deleteHXT", fpId, "");
+        function del(fpId,desid) {
+            ajaxdelte("deleteHXT", fpId, desid);
         }
         function del3d(desid) {
             ajaxdelte("delete", "", desid);
@@ -279,11 +294,13 @@
 				<div class="grid_12">
 					<nav class="horizontal-nav full-width horizontalNav-notprocessed">
 						<ul class="sf-menu">
+                              <li><input name='sx' type='button' onclick='javascript: history.go(0)' value='刷新' /></li>
 							<li class="current">
                             <a>  <span id="id_name"></span>
                                 </a> 
 							</li>
-							<li><a onclick="add()">新增户型图</a></li>
+							<li><a onclick="add()">新增方案</a></li>
+                          
 
 						</ul>
 					</nav>

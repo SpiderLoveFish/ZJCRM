@@ -145,16 +145,16 @@ a.btn {
     color: #000;
     background-color: #c8ced4;
     display: inline-block;
-    font: 12px/12px '宋体', sans-serif;
-    padding: 8px 7px 12px;
+    font: 15px/12px '宋体', sans-serif;
+    padding: 22px 7px 12px;
     margin-top: 0px;
 }
 a.btn2 {
     color: #000;
     background-color: #3F9;
     display: inline-block;
-    font: 12px/12px '宋体', sans-serif;
-    padding: 8px 7px 12px;
+    font: 15px/12px '宋体', sans-serif;
+    padding: 12px 7px 12px;
     margin-top: 0px;
 }
 a.btn3 {
@@ -312,9 +312,9 @@ header h1 a img {
 }
 
 .p1_box {
-    position: relative;
+   
     padding: 1px;
-    margin-bottom: 36px;
+    margin-bottom: 10px;
     border: 2px solid #ff6765;
 }
 

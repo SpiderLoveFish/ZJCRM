@@ -139,11 +139,10 @@
                       {
                           display: '效果图', width: 50, render: function (item) {
 
-                                   
-                               var html;
-                               if (item.DyUrl !== "") {
-                                   html = "<a href='javascript:void(0)' onclick=viewurl('" + item.DyUrl + "')>查看</a>";
-                                   html += "</a>"
+                              var html;
+                              if (item.DyUrl !== "") {
+                                  html = "<a href='javascript:void(0)' onclick=viewurl('" + item.DyUrl + "')>查看</a>";
+                                  html += "</a>"
                               }
                               else html = "暂无";
                               return html;
