@@ -137,57 +137,56 @@
                    { display: '名称', name: 'DyGraphicsName', width: 160 },
 
                       {
-                          display: '效果图', width: 50, render: function (item) {
+                          display: '', width: 50, render: function (item) {
 
-                              var html;
-                              if (item.DyUrl !== "") {
-                                  html = "<a href='javascript:void(0)' onclick=viewurl('" + item.DyUrl + "')>查看</a>";
-                                  html += "</a>"
+                                   
+                               var html;
+                               if (item.DyUrl !== "") {
+                                   html = "<a href='" + item.DyUrl + "' target='blank')>查看</a>";
+                                   
                               }
                               else html = "暂无";
                               return html;
                           }
                       },
-                         {
-                             display: '户型图', name: 'fpId', width: 80, render: function (item) {
-                                 var html;
-                                 if (item.fpId != "") html = "有";
-                                 else html = "无";
-                                 return html;
-                             }
-                         },
-                           {
-                               display: '3D图', name: 'desid', width: 80, render: function (item) {
-                                   var html;
-                                   if (item.desid != "") html = "有";
-                                   else html = "无";
-                                   return html;
-                               }
-                           },
-                           {
-                               display: '预览图', name: 'img', width: 80, render: function (item) {
-                                   var html;
-                                   if (item.simg !== "") {
-                                       var html = "<a href='javascript:void(0)' onclick=viewurl('" + item.img + "')>查看</a>";
-                                       html += "</a>"
-                                   }
-                                   else html = "暂无";
-                                   return html;
-                               }
-                           },
-                           {
-                               display: '全景图', name: 'pano', width: 80, render: function (item) {
-                                   var html;
-                                   if (item.pano !== "") {
-                                       var html = "<a href='javascript:void(0)' onclick=viewurl('" + item.pano + "')>查看</a>";
-                                       html += "</a>"
-                                   }
-                                   else html = "暂无";
-                                   return html;
-                               }
-                           },
+                          {
+                              display: '创建时间', name: 'DoTime', width: 90, render: function (item) {
+                                  var Create_date = formatTimebytype(item.DoTime, 'yyyy-MM-dd');
+                                  return Create_date;
+                              }
+                          },
+                           //{
+                           //    display: '3D图', name: 'desid', width: 80, render: function (item) {
+                           //        var html;
+                           //        if (item.desid != "") html = "有";
+                           //        else html = "无";
+                           //        return html;
+                           //    }
+                           //},
+                           //{
+                           //    display: '预览图', name: 'img', width: 80, render: function (item) {
+                           //        var html;
+                           //        if (item.simg !== "") {
+                           //            var html = "<a href='javascript:void(0)' onclick=viewurl('" + item.img + "')>查看</a>";
+                           //            html += "</a>"
+                           //        }
+                           //        else html = "暂无";
+                           //        return html;
+                           //    }
+                           //},
+                           //{
+                           //    display: '全景图', name: 'pano', width: 80, render: function (item) {
+                           //        var html;
+                           //        if (item.pano !== "") {
+                           //            var html = "<a href='javascript:void(0)' onclick=viewurl('" + item.pano + "')>查看</a>";
+                           //            html += "</a>"
+                           //        }
+                           //        else html = "暂无";
+                           //        return html;
+                           //    }
+                           //},
                         {
-                            display: '备注', name: 'Remarks', align: 'left', width: 350, type: 'text'
+                            display: '备注', name: 'Remarks', align: 'left', width: 250, type: 'text'
                             , editor: { type: 'text' }
                         }
 

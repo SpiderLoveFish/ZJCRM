@@ -110,6 +110,9 @@
     <Content Include="CRM\Cggl\GysGl_Add.aspx" />
     <Content Include="CRM\Cggl\GysGl_map.aspx" />
     <Content Include="CRM\Cggl\map_mark.aspx" />
+    <Content Include="CRM\Cggl\Sgry.aspx" />
+    <Content Include="CRM\Cggl\Sgry_Add.aspx" />
+    <Content Include="CRM\Cggl\Sgry_Rq.aspx" />
     <Content Include="CRM\ConsExam\CEStage.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category_add.aspx" />
@@ -3964,6 +3967,24 @@
     </Compile>
     <Compile Include="CRM\Cggl\GysGl_Add.aspx.designer.cs">
       <DependentUpon>GysGl_Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\Cggl\Sgry.aspx.cs">
+      <DependentUpon>Sgry.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\Cggl\Sgry.aspx.designer.cs">
+      <DependentUpon>Sgry.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\Cggl\Sgry_Add.aspx.cs">
+      <DependentUpon>Sgry_Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\Cggl\Sgry_Add.aspx.designer.cs">
+      <DependentUpon>Sgry_Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\Cggl\Sgry_Rq.aspx.cs">
+      <DependentUpon>Sgry_Rq.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\Cggl\Sgry_Rq.aspx.designer.cs">
+      <DependentUpon>Sgry_Rq.aspx</DependentUpon>
     </Compile>
     <Compile Include="CRM\ConsExam\JD_LIST_DEL.aspx.cs">
       <DependentUpon>JD_LIST_DEL.aspx</DependentUpon>
