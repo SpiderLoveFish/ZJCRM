@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Sgry.aspx.cs" Inherits="Sgry.Sgry" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="LJ_Ewm.aspx.cs" Inherits="LJ_Ewm.LJ_Ewm" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -50,17 +50,34 @@
                             return (page - 1) * pagesize + rowindex + 1;
                         }
                     },
-                    { display: '姓名', name: 'Name', width: 60, align: 'left' },
-                    { display: '性别', name: 'Sex', width: 40, align: 'left' },
-                    { display: '年龄', name: 'BNL', width: 40, align: 'left' },
-                    { display: '工种', name: 'Gz', width: 80, align: 'left' },
-                    { display: '电话', name: 'dh', width: 100, align: 'left' },
-                    { display: '住址', name: 'Address', width: 150, align: 'left' },
-                    { display: '籍贯省', name: 'Provinces', width: 80, align: 'left' },
-                     { display: '籍贯市', name: 'City', width: 80, align: 'left' },
-                   // { display: '其他联系人', name: 'Lxr', width: 60 },
-                   // { display: '其他联系电话', name: 'Lxrdh', width: 80 },
-                    { display: '手艺介绍', name: 'Gzjs', width: 200, align: 'left' },
+                    { display: '名称', name: 'Name', width: 150, align: 'left' },
+                      {
+                           display: '外链', width: 40, render: function (item) {
+                               var html;
+                               if (item.URL != "") {
+                                   html = "<a href='" + item.URL + "' target='_blank'>";
+                                   html += "查看";
+                                   html += "</a>";
+                              }
+                               else html = "暂无";
+                               return html;
+                           }
+                      },
+                  {
+                      display: '', width: 50, render: function (item) {
+                          var html = "<a href='javascript:void(0)' onclick=QrCode('" + item.URL + "')>二维码</a>"
+                          return html;
+                      }
+                  },
+                    { display: '第一行', name: 'A', width: 200, align: 'left' },
+                    { display: '第二行', name: 'B', width: 200, align: 'left' },
+                    { display: '第三行', name: 'C', width: 200, align: 'left' },
+                    { display: '备注', name: 'Remark', width: 150 },
+                 //   { display: '第五行', name: 'E', width: 200, align: 'left' },
+                  //  { display: '第六行', name: 'F', width: 200, align: 'left' },
+                   // { display: '第七行', name: 'G', width: 200, align: 'left' },
+                   // { display: '第八行', name: 'H', width: 200, align: 'left' },
+                   // { display: '第九行', name: 'I', width: 200, align: 'left' },
                    // { display: '登记人', name: 'InEmpID', width: 80 },
                     { display: '登记日期', name: 'InDate', width: 150 }
                     //{ display: '售楼电话', name: 'Sldh', width: 80 },
@@ -71,19 +88,11 @@
                     //{ display: '城市', name: 'City', width: 80, align: 'left' },
                     //{ display: '区镇', name: 'Towns', width: 80, align: 'left' },
                  //   { display: '备注', name: 'Remark', width: 200, align: 'left' }
-                ], onBeforeShowData: function (grid, data) {
-                    startTime = new Date();
-                },
-                onSelectRow: function (data, rowindex, rowobj) {
-                    var manager = $("#maingrid5").ligerGetGridManager();
-                    manager.showData({ Rows: [], Total: 0 });
-                    var url = "Sgry.aspx?cmd=grid1&rid=" + data.ID + "&rnd=" + Math.random();
-                    manager.GetDataByURL(url);
-                },
+                ],
                 dataAction: 'server', pageSize: 30, pageSizeOptions: [20, 30, 50, 100],
-                url: "Sgry.aspx?cmd=grid&rnd=" + Math.random(),
+                url: "LJ_Ewm.aspx?cmd=grid&rnd=" + Math.random(),
                 width: '100%',
-                height: '65%',
+                height: '100%',
                 heightDiff: -1,
                 onRClickToSelect: true,
                 onContextmenu: function (parm, e) {
@@ -92,129 +101,60 @@
                     return false;
                 }
             });
-            $("#maingrid5").ligerGrid({
-                columns: [
-                        { display: '序号', width: 40, render: function (item, i) { return i + 1; } },
-                        { display: '积分类型', name: 'Jflx', width: 80 },
-                        { display: '分值', name: 'Jf', width: 60 },
-                        { display: '积分描述', name: 'Content', width: 200, align: 'left' },
-                        { display: '操作人员', name: 'InEmpName', width: 60 },
-                        { display: '操作时间', name: 'InDate', width: 145 }
-                ],
-                dataAction: 'server', pageSize: 30, pageSizeOptions: [20, 30, 50, 100],
-                url: "Sgry.aspx",
-                width: '100%', height: '100%',
-                heightDiff: -1,
-                onRClickToSelect: true,
-                onContextmenu: function (parm, e) {
-                    actionCustomerID = parm.data.id;
-                    menu1.show({ top: e.pageY, left: e.pageX });
-                    return false;
-                }
-            });
+
             $("#grid").height(document.documentElement.clientHeight - $(".toolbar").height());
             $('form').ligerForm();
             toolbar();
         });
 
         function toolbar() {
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=176&rnd=" + Math.random(), function (data, textStatus) {
+            ////debugger;
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=178&rnd=" + Math.random(), function (data, textStatus) {
                 var items = [];
                 var arr = data.Items;
                 for (var i = 0; i < arr.length; i++) {
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-                items.push({
-                    type: 'serchbtn',
-                    text: '高级搜索',
-                    icon: '../../images/search.gif',
-                    disable: true,
-                    click: function () {
-                        serchpanel();
-                    }
-                });
+                items.push({ type: 'textbox', id: 'stext', text: '搜索内容：' });
+                items.push({ type: 'button', text: '搜索', icon: '../../images/search.gif', disable: true, click: function () { doserch() } });
                 $("#toolbar").ligerToolBar({
                     items: items
                 });
                 menu = $.ligerMenu({
                     width: 120, items: getMenuItems(data)
                 });
-            });
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=94&rnd=" + Math.random(), function (data, textStatus) {
-                var items = [];
-                var arr = data.Items;
-                for (var i = 0; i < arr.length; i++) {
-                    arr[i].icon = "../../" + arr[i].icon;
-                    items.push(arr[i]);
-                }
-                $("#toolbar1").ligerToolBar({
-                    items: items
-                });
-                menu1 = $.ligerMenu({
-                    width: 120, items: getMenuItems(data)
-                });
-
+                $("#stext").ligerTextBox({ width: 200 });
                 $("#maingrid4").ligerGetGridManager().onResize();
-                $("#maingrid5").ligerGetGridManager().onResize();
             });
         }
-        function initSerchForm() {
-            $('#Name').val("");
-            $('#dh').val("");
-        }
-        function serchpanel() {
-            initSerchForm();
-            if ($(".az").css("display") == "none") {
-                $("#grid").css("margin-top", $(".az").height() + "px");
-                $("#maingrid4").ligerGetGridManager().onResize();
-                $("#maingrid5").ligerGetGridManager().onResize();
-            }
-            else {
-                $("#grid").css("margin-top", "0px");
-                $("#maingrid4").ligerGetGridManager().onResize();
-                $("#maingrid5").ligerGetGridManager().onResize();
-            }
-            $("#company").focus();
-        }
-        $(document).keydown(function (e) {
-            if (e.keyCode == 13 && e.target.applyligerui) {
-                doserch();
-            }
-        });
-        function dosearch() {
+        function doserch() {
             var sendtxt = "&cmd=grid&rnd=" + Math.random();
-            var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
+            var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL("Sgry.aspx?" + serchtxt);
-
-        }
-        function doclear() {
-            $("#serchform").each(function () {
-                this.reset();
-                $(".l-selected").removeClass("l-selected");
-            });
+            manager.GetDataByURL("LJ_Ewm.aspx?" + serchtxt);
         }
         function add() {
-            f_openWindow("CRM/Cggl/Sgry_Add.aspx", "新增工人", 600, 330);
+            f_openWindow("CRM/Cggl/LJ_Ewm_Add.aspx", "新增二维码", 600, 330);
         }
+        function QrCode(pid) {
+            var dialogOptions = {
+                width: 320, height: 360, title: "二维码预览", url: '../view/QrCode_LJ_View.aspx?pid=' + pid, buttons: [
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+
         function edit() {
-            var manager = $("#maingrid4").ligerGetGridManager();
-                        var row = manager.getSelectedRow();
-            
-            
-            if (row ) {
-                f_openWindow("CRM/Cggl/Sgry_Add.aspx?cid=" + row.ID, "工人维护", 600, 330);
-            }
-            else {
-                $.ligerDialog.warn('请选择行！');
-            }
-        }
-        function gql() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("CRM/Cggl/Sgry_Rq.aspx?cid=" + row.ID, "安排工期", 600, 330);
+                f_openWindow("CRM/Cggl/LJ_Ewm_Add.aspx?cid=" + row.ID, "维护二维码", 600, 330);
             }
             else {
                 $.ligerDialog.warn('请选择行！');
@@ -227,7 +167,7 @@
                 $.ligerDialog.confirm("确定删除？", function (yes) {
                     if (yes) {
                         $.ajax({
-                            url: "Sgry_Add.aspx?cmd=del&cid=" + row.ID + "&rnd=" + Math.random(), type: "POST",
+                            url: "LJ_Ewm_Add.aspx?cmd=del&cid=" + row.ID + "&rnd=" + Math.random(), type: "POST",
                             success: function (data) {
                                 if (data == "") {
                                     f_reload();
@@ -254,7 +194,7 @@
                 dialog.close();
 
                 $.ajax({
-                    url: "Sgry_Add.aspx", type: "POST",
+                    url: "LJ_Ewm_Add.aspx", type: "POST",
                     data: issave,
                     beforesend: function () {
                         top.$.ligerDialog.waitting('数据保存中,请稍候...');
@@ -305,9 +245,6 @@
         <div id="grid">
             <div id="maingrid4" style="margin: -1px; min-width: 800px;"></div>
             <div id="toolbar1"></div>
-            <div id="grid1" style="position: relative;">
-                <div id="maingrid5" style="margin: -1px -1px;"></div>
-            </div>
         </div>
     </form>
 </body>

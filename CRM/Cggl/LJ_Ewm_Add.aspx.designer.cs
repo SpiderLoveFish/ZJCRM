@@ -7,9 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sgry {
+namespace LJ_Ewm {
     
     
-    public partial class Sgry_Rq {
+    public partial class LJ_Ewm_Add {
     }
 }

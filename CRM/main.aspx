@@ -414,7 +414,7 @@
                 <div style="width: 278px; float: left;">
                   
                     <img id="logo" alt="" src="Images/logo/1.png" style="height: 42px; margin-left: 5px; margin-top: 2px;" />
-         
+          <!--  <a href="http://www.xczs.com"  target="_blank"> <img id="Img1" alt="" src="http://www.xczs.co/images/logo/201505231548351C5EC2.png" style="height: 42px; margin-left: 5px; margin-top: 2px;" /></a>-->
                 </div>
 
                 <div style="float: right; width: 220px; height: 47px; margin-right: 65px;">
@@ -471,7 +471,7 @@
             </div>
             <div position="bottom">
 
-                六家居装修企业客户管理系统&nbsp;&nbsp;技术支持&nbsp;QQ:4013473
+                六家居装修企业客户管理系统&nbsp;&nbsp;技术支持&nbsp;QQ:4013473&nbsp;&nbsp;业务咨询&nbsp;QQ:320186500&nbsp;微信:xczsyxs
             </div>
         </div>
     </form>
