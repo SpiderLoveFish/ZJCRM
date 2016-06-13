@@ -226,9 +226,9 @@ namespace XHD.BLL
             return dal.Updatekjl_api(des, cid, fpid,DyGraphicsName, imgtype, simg, img, pano);
 
         }
-        public bool Addkjl_api(string des, int cid, string fpid,string DyGraphicsName, string imgtype, string simg, string img, string pano)
+        public bool Addkjl_api(string des, int cid, string fpid,string DyGraphicsName, string imgtype, string simg, string img, string pano,string DP,int DPID)
         {
-            return dal.Addkjl_api(des, cid, fpid,DyGraphicsName, imgtype, simg, img, pano);
+            return dal.Addkjl_api(des, cid, fpid,DyGraphicsName, imgtype, simg, img, pano,DP,DPID);
 
         }
         public bool deletekjl_api(string des, int cid, string fpid)
@@ -241,9 +241,9 @@ namespace XHD.BLL
             return dal.Updatekjl_api_name(fpid,DyGraphicsName);
         }
 
-        public DataSet Getkjl_api_list(string strWhere)
+        public DataSet Getkjl_api_list(string strWhere,string uid)
         {
-            return dal.Getkjl_api_list(strWhere);
+            return dal.Getkjl_api_list(strWhere, uid);
         }
         #endregion  ExtensionMethod
 	}

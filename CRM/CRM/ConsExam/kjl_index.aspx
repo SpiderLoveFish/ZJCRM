@@ -49,15 +49,18 @@
                         html += '<div id=div' + obj[n].desid + ' class="p1_box left cl1">' +
                            //'<div class="type"></div>' +
                            '                         <table width=100% border="0"><tr><td width="9%"><strong>名称</strong>：</td><td width="45%"><span id=td' + obj[n].desid + '>' + obj[n].DyGraphicsName + '</span></td><td width="16%" align="right"><strong>更新时间：</strong></td><td width="30%">' + formatTimebytype(obj[n].dotime, 'yyyy-MM-dd') + '</td></tr></table>' +
-                           '<a  href="javascript:window.scrollTo( 0, 0 );"style="cursor:pointer;" onclick="list(\'' + obj[n].desid + '\')" ><img id=img' + obj[n].fpId + ' src=#  ></a>' +
-                           '<a onclick="edit(\'' + obj[n].fpId + '\')" class="btn">修改方案</a>' +
+                           '<a  href="javascript:window.scrollTo( 0, 0 );"style="cursor:pointer;" onclick="list(\'' + obj[n].desid + '\')" ><img id=img' + obj[n].fpId + ' src=#  ></a>';
+                        if (obj[n].ismy == 1)//如果是本人的，则显示操作，否则不显示
+                        {
+                            html += '<a onclick="edit(\'' + obj[n].fpId + '\')" class="btn">修改方案</a>' +
                            '<a onclick="edit3d(\'' + obj[n].desid + '\')" class="btn">去装修</a>' +
-                       
-                        '<a onclick="del(\'' + obj[n].fpId + '\',\'' + obj[n].desid + '\')" class="btn">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                        
-                           '<a  class="btn2" ><label class="name"><input id="' + obj[n].fpId + '"  ltype="text"type="text" value=' + obj[n].DyGraphicsName + '></input></label></a>' +
-                            '<a onclick="editname(\'' + obj[n].fpId + '\')" class="btn">改名</a>&nbsp;' +
+
+                        '<a onclick="del(\'' + obj[n].fpId + '\',\'' + obj[n].desid + '\')" class="btn">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;'+
+                            '<a onclick="editname(\'' + obj[n].fpId + '\')" class="btn">改名</a>&nbsp;';
                              
+                        }
+                        html +=  '<a  class="btn2" ><label class="name"><input id="' + obj[n].fpId + '"  ltype="text"type="text" value=' + obj[n].DyGraphicsName + '></input></label></a>' +
+                           
                        '</div>';
                         if (obj[0].desid != null && obj[0].desid != undefined && obj[0].desid!="")
                              getlist3d(obj[0].desid);

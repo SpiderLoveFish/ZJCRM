@@ -154,9 +154,10 @@
                         if (obj[n] == null || obj[n] == "null" || obj[n] == undefined)
                             obj[n] = "";
                     }
-                    //alert(obj.constructor); //String 构造函数
+                   //  alert(obj.professional); //String 构造函数
                     $("#T_uid").val(obj.uid);
                     $("#T_email").val(obj.email);
+                    $("#T_professional").val(obj.professional);
                     $("#T_name").val(obj.name);
                     $("#T_birthday").val(obj.birthday);
                     $("#T_rqlx").val(obj.rqlx);
@@ -166,7 +167,7 @@
                     $("#T_Adress").val(obj.address);
                     $("#T_school").val(obj.schools);
                     $("#T_edu").val(obj.education);
-                    $("#T_professional").val(obj.professional);
+                 
                     $("#T_remarks").val(obj.remarks);
 
                     $("#T_sex").ligerGetComboBoxManager().selectValue(obj.sex);
@@ -306,7 +307,31 @@
             return checked;
         }
         
-        
+        function bind() {
+            if ($("#T_professional").val() == "")
+            {
+                alert('请手工填入需要绑定的酷家乐账号!');
+                return;
+            }
+            $.ajax({
+                url: "../data/SingleSignOn.ashx", type: "POST",
+                data: { Action: "bind", rnd: Math.random() },
+                success: function (responseText) {
+                    //if (responseText == "true") {
+                        // fload();
+                        alert("绑定结果：" + responseText);
+                    //}
+
+                    //else {
+                    //    alert('绑定失败！' + responseText);
+                    //}
+
+                },
+                error: function () {
+                    alert('绑定失败！');
+                }
+            });
+        }
 
     </script>
 
@@ -424,7 +449,10 @@
                     <td colspan="3">
                         <input type="text" id="T_edu" name="T_edu" ltype="text" ligerui="{width:180}" /></td>
                     <td>
-                        <div align="right" style="width: 62px">专业：</div>
+                        <div align="right" style="width: 62px">  
+                             <input id="Button3" type="button" value="绑定酷家乐" style="height: 21px" onclick="bind()" />
+                   
+                        </div>
                     </td>
                     <td>
                         <input type="text" id="T_professional" name="T_professional" ltype="text" ligerui="{width:180}" /></td>

@@ -501,7 +501,7 @@ namespace XHD.DAL
         }
 
 
-        public bool Addkjl_api(string des, int cid, string fpid,string DyGraphicsName, string imgtype, string simg, string img, string pano)
+        public bool Addkjl_api(string des, int cid, string fpid,string DyGraphicsName, string imgtype, string simg, string img, string pano,string DP,int DPID)
         {
             var sb = new System.Text.StringBuilder();
             //先有户型图
@@ -546,7 +546,7 @@ namespace XHD.DAL
             sb.AppendLine("          imgtype , ");
             sb.AppendLine("          simg , ");
             sb.AppendLine("          img , ");
-            sb.AppendLine("          pano,DyGraphicsName ");
+            sb.AppendLine("          pano,DyGraphicsName,DoPerson,DoPersonID ");
             sb.AppendLine("        ) ");
             sb.AppendLine("VALUES  ( "+cid+" , -- curstomerid - int ");
             sb.AppendLine("          '"+des+"' , -- desid - varchar(20) ");
@@ -554,7 +554,7 @@ namespace XHD.DAL
             sb.AppendLine("          '" + imgtype + "' , -- imgtype - varchar(20) ");
             sb.AppendLine("          '" + simg + "' , -- simg - varchar(200) ");
             sb.AppendLine("          '" + img + "' , -- img - varchar(200) ");
-            sb.AppendLine("          '" + pano + "','" + DyGraphicsName + "'  -- pano - varchar(200) ");
+            sb.AppendLine("          '" + pano + "','" + DyGraphicsName + "','"+DP+"',"+DPID+"  -- pano - varchar(200) ");
             sb.AppendLine("        ) ");
             sb.AppendLine(" END ");
             SqlParameter[] parameters = {
@@ -674,10 +674,11 @@ namespace XHD.DAL
           /// <summary>
         /// 获得数据列表
         /// </summary>
-        public DataSet Getkjl_api_list(string strWhere)
+        public DataSet Getkjl_api_list(string strWhere,string uid)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select * ");
+            strSql.Append(" ,case when DoPerson='" + uid + "' then 1 else 0 end as ismy");
             strSql.Append(" FROM kjl_api ");
             if (strWhere.Trim() != "")
             {

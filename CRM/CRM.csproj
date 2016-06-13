@@ -3970,18 +3970,21 @@
     </Compile>
     <Compile Include="CRM\Cggl\Sgry.aspx.cs">
       <DependentUpon>Sgry.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CRM\Cggl\Sgry.aspx.designer.cs">
       <DependentUpon>Sgry.aspx</DependentUpon>
     </Compile>
     <Compile Include="CRM\Cggl\Sgry_Add.aspx.cs">
       <DependentUpon>Sgry_Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CRM\Cggl\Sgry_Add.aspx.designer.cs">
       <DependentUpon>Sgry_Add.aspx</DependentUpon>
     </Compile>
     <Compile Include="CRM\Cggl\Sgry_Rq.aspx.cs">
       <DependentUpon>Sgry_Rq.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CRM\Cggl\Sgry_Rq.aspx.designer.cs">
       <DependentUpon>Sgry_Rq.aspx</DependentUpon>

@@ -59,7 +59,7 @@ namespace XHD.CRM.Data
                 }
                 else if (style == "insert")
                 {
-                    if(cp.Addkjl_api(desid, Customer_id, fpId,DyGraphicsName, imgtype, simg, img, pano))
+                    if(cp.Addkjl_api(desid, Customer_id, fpId,DyGraphicsName, imgtype, simg, img, pano,uid,emp_id))
                         context.Response.Write("true");
                     else context.Response.Write("false");
 
@@ -74,7 +74,7 @@ namespace XHD.CRM.Data
                 string dt;
                 if (PageValidate.IsNumber(id))
                 {
-                    DataSet ds = cp.Getkjl_api_list(" curstomerid=" +int.Parse( id));
+                    DataSet ds = cp.Getkjl_api_list(" curstomerid=" +int.Parse( id),uid);
                     dt = Common.DataToJson.DataToJSON(ds);
                 }
                 else
@@ -178,7 +178,56 @@ namespace XHD.CRM.Data
                     }
               
             }
+            if (request["Action"] == "bind")
+            {
 
+                string[] arr = para("29", uid);
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                 if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); ;//2分钟
+                    // 签名加密
+                    string aa = "sdfaadsasdasd";
+                    string md5aa = MD5(aa).ToLower();
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    IDictionary<string, string> postdata = new Dictionary<string, string>();
+                    postdata.Add("appkey", appKey);
+                    postdata.Add("timestamp", timestamp);
+                    postdata.Add("appuid", userId);
+                    postdata.Add("sign", sign);
+                    postdata.Add("email", arr[(int)paraenum.email]);
+                 
+                    //发送POST数据  
+                    StringBuilder buffer = new StringBuilder();
+                    if (!(postdata == null || postdata.Count == 0))
+                    {
+
+                        int i = 0;
+                        foreach (string key in postdata.Keys)
+                        {
+                            if (i > 0)
+                            {
+                                buffer.AppendFormat("&{0}={1}", key, postdata[key]);
+                            }
+                            else
+                            {
+                                buffer.AppendFormat("{0}={1}", key, postdata[key]);
+                                i++;
+                            }
+                        }
+                    }
+                     string api = arr[(int)paraenum.api];
+       
+                    string result = "";
+                   result = HttpHelper_GetStr(api, "POST", buffer.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
             //取消收藏模型的接口DELETE
 
 
