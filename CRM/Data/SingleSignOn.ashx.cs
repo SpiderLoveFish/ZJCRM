@@ -178,10 +178,14 @@ namespace XHD.CRM.Data
                     }
               
             }
+            //绑定账号
             if (request["Action"] == "bind")
             {
 
-                string[] arr = para("29", uid);
+ 
+              string str_uid = Common.PageValidate.InputText(request["uid"], 50);
+         
+                string[] arr = para("29", str_uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
