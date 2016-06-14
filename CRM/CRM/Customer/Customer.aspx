@@ -42,12 +42,12 @@
             $("#maingrid4").ligerGrid({
                 columns: [
                     {
-                        display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                        display: '序号', width: 30, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                         { return (page - 1) * pagesize + rowindex + 1; }
                     },
                  
                     {
-                        display: '客户姓名', name: 'Customer', width: 80, align: 'left', render: function (item) {
+                        display: '姓名', name: 'Customer', width: 50, align: 'left', render: function (item) {
                             var html = "<a href='javascript:void(0)' onclick=view(1," + item.id + ")>";
                             if (item.Customer)
                                 html += item.Customer;
@@ -56,23 +56,40 @@
                         }
                     },
                     { display: '性别', name: 'Gender', width: 40 },
-                    { display: '电话', name: 'tel', width: 120 },
-                    { display: '小区', name: 'Community', width: 80 },
-                    { display: '地址', name: 'address', width: 200 },
+                     {
+                         display: '电话', name: 'tel', align: 'left', width: 40, render: function (item) {
+                             var html = "<div class='abc'>";
+                             if (item.tel)
+                                 html += item.tel;
+                             html += "</div>";
+                             return html;
+                         }
+                     },
+                   {
+                       display: '地址', name: 'address', align: 'left', width: 120, render: function (item) {
+                           var html = "<div class='abc'>";
+                           if (item.address)
+                               html += item.address;
+                           html += "</div>";
+                           return html;
+                       }
+                   },
+                    { display: '小区', name: 'Community', width: 60 },
+                  
              
                     {
-                        display: '客户类型', name: 'CustomerType', width: 80, align: 'right', render: function (item) {
+                        display: '客户类型', name: 'CustomerType', width: 60, align: 'right', render: function (item) {
                             return "<span><div  style='background:#" + item.setcolor + "'>" + item.CustomerType + "</div></span>";
                         }
                     },
                         {
-                            display: '客户状态', name: 'industry', width: 80, align: 'right', render: function (item) {
+                            display: '客户状态', name: 'industry', width: 60, align: 'right', render: function (item) {
                                 return "<span><div style='color:#" + item.indcolor + "'>" + item.industry + "</div></span>";
                             }
                         },
                              // { display: '客户状态', name: 'industry', width: 80 },
-                    { display: '预算价位', name: 'CustomerLevel', width: 80 },
-                    { display: '客户来源', name: 'CustomerSource', width: 80 },
+                    { display: '预算价位', name: 'CustomerLevel', width: 60 },
+                    { display: '客户来源', name: 'CustomerSource', width: 60 },
                     //{ display: '省份', name: 'Provinces', width: 80 },
                     //{ display: '城市', name: 'City', width: 80 },
                     //{ display: '区镇', name: 'Towns', width: 80 },
@@ -80,10 +97,10 @@
                     //{ display: '房号', name: 'RNo', width: 80 },
                    
                    // { display: '部门', name: 'Department', width: 80 },
-                    { display: '业务员', name: 'Employee', width: 80 },
-                    { display: '设计师', name: 'Emp_sj', width: 80 },
-                    { display: '施工监理', name: 'Emp_sg', width: 80 },
-                    { display: '客户性质', name: 'privatecustomer', width: 60 },
+                    { display: '业务员', name: 'Employee', width: 50 },
+                    { display: '设计师', name: 'Emp_sj', width: 50 },
+                    { display: '施工监理', name: 'Emp_sg', width: 60 },
+                    { display: '性质', name: 'privatecustomer', width: 40 },
      
                     {
                         display: '最后跟进', name: 'lastfollow', width: 90, render: function (item) {

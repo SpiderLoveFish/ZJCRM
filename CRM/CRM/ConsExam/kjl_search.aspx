@@ -120,7 +120,7 @@
 							
                           '<img src=' + obj[n].pics + ' alt="" class="img_inner">' +
                           '<p>'+
-                          '	<strong class="col2">' + names + '</strong><a  style="cursor:pointer;" onclick="docreate(\'' + obj[n].obsPlanId + '\')"  class="btn">创建</a>&nbsp;' +
+                          '	<strong class="col2">' + obj[n].commName + obj[n].srcArea+’</strong><a  style="cursor:pointer;" onclick="docreate(\'' + obj[n].obsPlanId + '\')"  class="btn">创建</a>&nbsp;' +
                           '	</p>'+	
                           '</div>'+
                           '</div>'+
