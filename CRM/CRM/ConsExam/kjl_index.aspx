@@ -56,7 +56,7 @@
                            '<a onclick="edit3d(\'' + obj[n].desid + '\')" class="btn">去装修</a>' +
 
                         '<a onclick="del(\'' + obj[n].fpId + '\',\'' + obj[n].desid + '\')" class="btn">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;'+
-                            '<a onclick="editname(\'' + obj[n].fpId + '\')" class="btn">改名</a>&nbsp;';
+                            '<a onclick="editname(\'' + obj[n].fpId + '\',\'' + obj[n].desid + '\')" class="btn">改名</a>&nbsp;';
                              
                         }
                         html +=  '<a  class="btn2" ><label class="name"><input id="' + obj[n].fpId + '"  ltype="text"type="text" value=' + obj[n].DyGraphicsName + '></input></label></a>' +
@@ -216,11 +216,12 @@
                 }
             });
         }
-
+     
 
         function add()
         {
-            viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=4', "新增方案");
+            
+            viewkjl('../../CRM/ConsExam/kjl_search.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=4', "新增方案");
 
         }
         function view3d(strurl)
@@ -260,10 +261,13 @@
             viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=Edit' + '&dest=1' + '&desid=' + desid, "修改3D图");
 
         }
-        function editname(fpId) {
+        function editname(fpId,desid) {
             var newname = $('#' + fpId + '').val();
             if (newname == "") { alert("请填写一个有效名称！"); return; }
-            ajaxupdate("updatehxtname",fpId,"",newname);
+            if (desid == "" || desid == null || desid == 'null' || desid==undefined)
+                ajaxupdate("updatehxtname", fpId, desid, newname);//如果没有3D方案图，则更新户型图名称
+            else 
+                ajaxupdate("update3dname", fpId, desid, newname);
         }
         function editname3d(desid) {
             var newname = $('#' + desid + '').val();

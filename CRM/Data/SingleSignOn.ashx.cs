@@ -404,7 +404,10 @@ namespace XHD.CRM.Data
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
-                string query = "金色"; long start = 0; int num = 5; long cityId = 175;
+                string query = Common.PageValidate.InputText(request["keystr"], 250);
+                long start = long.Parse(Common.PageValidate.InputText(request["strstart"], 50)); 
+                int num = 8;
+                long cityId = long.Parse(Common.PageValidate.InputText(request["cityid"], 50));
                 if (appKey == null) context.Response.Write("请先配置参数！");
                 else
                 {
@@ -413,7 +416,7 @@ namespace XHD.CRM.Data
 
                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     string timestamp = currenttimemillis.ToString(); //2分钟
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
                     string api = arr[(int)paraenum.api];
                     StringBuilder apiBuilder = new StringBuilder();
                     apiBuilder.Append(api)
@@ -448,7 +451,7 @@ namespace XHD.CRM.Data
 
                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     string timestamp = currenttimemillis.ToString(); //2分钟
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
                     string api = arr[(int)paraenum.api];
                     StringBuilder apiBuilder = new StringBuilder();
                     apiBuilder.Append(api)
@@ -475,8 +478,7 @@ namespace XHD.CRM.Data
                 else
                 {
 
-                    string planid = "3FO4K5M8YDHR";
-                    // Common.PageValidate.InputText(request["designId"], 50)
+                    string planid = Common.PageValidate.InputText(request["planid"], 50);
 
                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     string timestamp = currenttimemillis.ToString(); //2分钟

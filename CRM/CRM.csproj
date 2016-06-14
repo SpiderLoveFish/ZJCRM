@@ -125,6 +125,7 @@
     <Content Include="CRM\ConsExam\CEDetail_View.aspx" />
     <Content Include="CRM\ConsExam\CERep_Schedule.aspx" />
     <Content Include="CRM\ConsExam\CEStage_ViewDetail.aspx" />
+    <Content Include="CRM\ConsExam\kjl_search.aspx" />
     <Content Include="CRM\ConsExam\kjl_index.aspx" />
     <Content Include="CRM\ConsExam\kjl_edit.aspx" />
     <Content Include="CRM\ConsExam\Getemp.aspx" />
