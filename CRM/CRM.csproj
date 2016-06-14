@@ -109,6 +109,8 @@
     <Content Include="CRM\Cggl\GysGl.aspx" />
     <Content Include="CRM\Cggl\GysGl_Add.aspx" />
     <Content Include="CRM\Cggl\GysGl_map.aspx" />
+    <Content Include="CRM\Cggl\LJ_Ewm.aspx" />
+    <Content Include="CRM\Cggl\LJ_Ewm_Add.aspx" />
     <Content Include="CRM\Cggl\map_mark.aspx" />
     <Content Include="CRM\Cggl\Sgry.aspx" />
     <Content Include="CRM\Cggl\Sgry_Add.aspx" />
@@ -3968,6 +3970,18 @@
     </Compile>
     <Compile Include="CRM\Cggl\GysGl_Add.aspx.designer.cs">
       <DependentUpon>GysGl_Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\Cggl\LJ_Ewm.aspx.cs">
+      <DependentUpon>LJ_Ewm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\Cggl\LJ_Ewm.aspx.designer.cs">
+      <DependentUpon>LJ_Ewm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\Cggl\LJ_Ewm_Add.aspx.cs">
+      <DependentUpon>LJ_Ewm_Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\Cggl\LJ_Ewm_Add.aspx.designer.cs">
+      <DependentUpon>LJ_Ewm_Add.aspx</DependentUpon>
     </Compile>
     <Compile Include="CRM\Cggl\Sgry.aspx.cs">
       <DependentUpon>Sgry.aspx</DependentUpon>

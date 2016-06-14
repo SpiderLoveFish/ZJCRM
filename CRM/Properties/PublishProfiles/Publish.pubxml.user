@@ -18,7 +18,7 @@
       <publishTime>08/20/2011 22:18:48</publishTime>
     </File>
     <File Include="bin/CRM.dll">
-      <publishTime>06/12/2016 22:12:35</publishTime>
+      <publishTime>06/12/2016 22:53:52</publishTime>
     </File>
     <File Include="bin/Excel.dll">
       <publishTime>08/20/2011 22:18:48</publishTime>
@@ -145,6 +145,12 @@
     </File>
     <File Include="CRM/Cggl/GysGl_map.aspx">
       <publishTime>01/22/2016 12:36:20</publishTime>
+    </File>
+    <File Include="CRM/Cggl/LJ_Ewm.aspx">
+      <publishTime>06/12/2016 22:53:15</publishTime>
+    </File>
+    <File Include="CRM/Cggl/LJ_Ewm_Add.aspx">
+      <publishTime>06/12/2016 22:53:15</publishTime>
     </File>
     <File Include="CRM/Cggl/map_mark.aspx">
       <publishTime>01/21/2016 12:56:49</publishTime>
