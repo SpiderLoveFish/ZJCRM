@@ -172,6 +172,13 @@
     <Content Include="CRM\Favorites\Favorites.aspx" />
     <Content Include="CRM\Favorites\Favorites_Add.aspx" />
     <Content Include="CRM\Favorites\UploadImg.aspx" />
+    <Content Include="CRM\finance\copeanduncollected.aspx" />
+    <Content Include="CRM\finance\CRM_Cope_list.aspx" />
+    <Content Include="CRM\finance\CRM_Cope_add.aspx" />
+    <Content Include="CRM\finance\CRM_Cope.aspx" />
+    <Content Include="CRM\finance\CRM_Cope_invoice_list.aspx" />
+    <Content Include="CRM\finance\CRM_Cope_invoice_add.aspx" />
+    <Content Include="CRM\finance\CRM_Cope_invoice.aspx" />
     <Content Include="CRM\finance\invoice.aspx" />
     <Content Include="CRM\finance\invoice_add.aspx" />
     <Content Include="CRM\finance\invoice_list.aspx" />
@@ -838,6 +845,8 @@
     <Content Include="Data\PickingList.ashx" />
     <Content Include="Data\Budge_BasicPart.ashx" />
     <Content Include="Data\StockView.ashx" />
+    <Content Include="Data\CRM_Cope_invoice.ashx" />
+    <Content Include="Data\CRM_Cope.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -2831,6 +2840,7 @@
     <Content Include="ueditor1_2_5_1-utf8-net\_src\ui\uiutils.js" />
     <Content Include="View\QrCode_Generate.aspx" />
     <Content Include="webserver\bbsapi.asmx" />
+    <Content Include="webserver\kjlapi.asmx" />
     <Content Include="webserver\sms.asmx" />
     <Content Include="webserver\WebService1.asmx" />
     <Content Include="welcome.htm" />
@@ -3973,12 +3983,14 @@
     </Compile>
     <Compile Include="CRM\Cggl\LJ_Ewm.aspx.cs">
       <DependentUpon>LJ_Ewm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CRM\Cggl\LJ_Ewm.aspx.designer.cs">
       <DependentUpon>LJ_Ewm.aspx</DependentUpon>
     </Compile>
     <Compile Include="CRM\Cggl\LJ_Ewm_Add.aspx.cs">
       <DependentUpon>LJ_Ewm_Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CRM\Cggl\LJ_Ewm_Add.aspx.designer.cs">
       <DependentUpon>LJ_Ewm_Add.aspx</DependentUpon>
@@ -4187,6 +4199,12 @@
     </Compile>
     <Compile Include="Data\Budge_BasicPart.ashx.cs">
       <DependentUpon>Budge_BasicPart.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CRM_Cope.ashx.cs">
+      <DependentUpon>CRM_Cope.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CRM_Cope_invoice.ashx.cs">
+      <DependentUpon>CRM_Cope_invoice.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\StockView.ashx.cs">
       <DependentUpon>StockView.ashx</DependentUpon>
@@ -4406,6 +4424,10 @@
     </Compile>
     <Compile Include="webserver\bbsapi.asmx.cs">
       <DependentUpon>bbsapi.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="webserver\kjlapi.asmx.cs">
+      <DependentUpon>kjlapi.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="webserver\sms.asmx.cs">

@@ -553,6 +553,7 @@ function view(type, id, id1) {
         case 6: width = 770, height = 490, title = "查看收款", url = 'CRM/finance/receive_add.aspx?orderid=' + id + "&receiveid=" + id1; break;
         case 7: width = 770, height = 490, title = "查看发票", url = 'CRM/finance/invoice_add.aspx?orderid=' + id + "&invoiceid=" + id1; break;
         case 8: width = 770, height = 490, title = "查看员工", url = 'HR/hr_employee_add.aspx?empid=' + id; break;
+ 
     }
     top.$.ligerDialog.open({
         width: width,

@@ -208,6 +208,21 @@ namespace XHD.BLL
         {
             return dal.GetListCklb(strWhere);
         }
+
+        public DataSet GetList_main(string strWhere)
+        {
+            return dal.GetList_main(strWhere);
+        }
+
+        public bool UpdateInvoice(string orderid)
+        {
+            return dal.UpdateInvoice(orderid);
+        }
+
+        public bool UpdateReceive(string orderid)
+        {
+            return dal.UpdateReceive(orderid);
+        }
         #endregion  ExtensionMethod
 	}
 }

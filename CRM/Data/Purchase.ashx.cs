@@ -63,6 +63,22 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "formmain")
+            {
+                string pid = PageValidate.InputText(request["pid"], 50);
+                string dt;
+                if (pid != "")
+                {
+                    DataSet ds = bpm.GetList_main(" Purid='" + pid + "'");
+                    dt = Common.DataToJson.DataToJSON(ds);
+                }
+                else
+                {
+                    dt = "{}";
+                }
+
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "gridselectgys")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
@@ -124,6 +140,15 @@ namespace XHD.CRM.Data
                     serchtxt += " AND isNode in(0,1)";
                 else if (apr == "YY")
                     serchtxt += " AND isNode=2";
+                else if (apr == "view")
+                    serchtxt += " AND isNode=3";
+
+                string issar = request["issarr"];
+                if (issar == "1")
+                {
+                    serchtxt += " and isnull( arrears_money,0)>0";
+                }
+
 
                 string dt = "";
 

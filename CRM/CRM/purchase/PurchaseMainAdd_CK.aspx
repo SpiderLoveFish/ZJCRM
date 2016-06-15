@@ -46,6 +46,9 @@
                  loadForm(getparastr("pid"));
                  if (getparastr("status") == "0")
                      toolbar();
+                // if (getparastr("style") == "view")//查看状态的时候，
+
+                 
              }
              else {
 
@@ -480,6 +483,10 @@
          }
          function editstock()
          {
+             if (getparastr("style") == "view")//查看状态的时候，
+             {
+                 return false;
+             }
              if ($("#sckid").val() == "")
              {
                  $.ligerDialog.error("请选择一个有效的仓库！！！") ;
@@ -610,7 +617,7 @@
 	 <%--<a class="l-checkbox l-checkbox-checked"></a>--%>
 	 <input id="ckisgd" type="checkbox" name="ckisgd" />
 	 </div>
-                    是否现场 
+                    送现场 
   
                    </td>
                 <td>  <div style="width: 70px; text-align: right; float: right">采购单号：</div></td>

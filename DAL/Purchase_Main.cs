@@ -580,9 +580,81 @@ namespace XHD.DAL
         }
 
 
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetList_main(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select A.* ,B.Customer,B.tel,B.address ");
+            strSql.Append(" FROM Purchase_Main A");
+            strSql.Append(" INNER JOIN  dbo.CRM_Customer B ON A.customid=B.id ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
 
 
+        /// <summary>
+        /// 更新发票
+        /// </summary>
+        public bool UpdateInvoice(string orderid)
+        {
+            StringBuilder strSql1 = new StringBuilder();
+            strSql1.Append(" /*更新发票*/ ");
+            strSql1.Append(" UPDATE Purchase_Main SET ");
+            strSql1.Append("     invoice_money=(SELECT SUM(ISNULL(invoice_amount,0)) AS Expr1 FROM CRM_Cope_invoice WHERE ( ISNULL(isDelete,0)=0 and  order_id='" + orderid + "'))  ");
+            strSql1.Append(" WHERE (Purid='" + orderid + "') ");
 
+            StringBuilder strSql2 = new StringBuilder();
+            strSql2.Append(" /*更新发票*/ ");
+            strSql2.Append(" UPDATE Purchase_Main SET ");
+            strSql2.Append("     arrears_invoice= ISNULL(payable_amount,0) - ISNULL(invoice_money,0)  ");
+            strSql2.Append(" WHERE (Purid='" + orderid + "') ");
+
+            int rows1 = DbHelperSQL.ExecuteSql(strSql1.ToString());
+            int rows2 = DbHelperSQL.ExecuteSql(strSql2.ToString());
+
+            if (rows1 > 0 && rows2 > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// 更新发票
+        /// </summary>
+        public bool UpdateReceive(string orderid)
+        {
+            StringBuilder strSql1 = new StringBuilder();
+            strSql1.Append(" /*更新收款*/ ");
+            strSql1.Append(" UPDATE Purchase_Main SET ");
+            strSql1.Append("     paid_amount=(SELECT SUM(ISNULL(Receive_amount,0)) AS Expr1 FROM CRM_Cope WHERE ( ISNULL(isDelete,0)=0 and order_id='" + orderid + "'))  ");
+            strSql1.Append(" WHERE (Purid='" + orderid + "') ");
+
+            StringBuilder strSql2 = new StringBuilder();
+            strSql2.Append(" /*更新收款*/ ");
+            strSql2.Append(" UPDATE Purchase_Main SET ");
+            strSql2.Append("     arrears= ISNULL(payable_amount,0) - ISNULL(paid_amount,0)  ");
+            strSql2.Append(" WHERE (Purid='" + orderid + "') ");
+
+            int rows1 = DbHelperSQL.ExecuteSql(strSql1.ToString());
+            int rows2 = DbHelperSQL.ExecuteSql(strSql2.ToString());
+
+            if (rows1 > 0 && rows2 > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 		#endregion  ExtensionMethod
 	}

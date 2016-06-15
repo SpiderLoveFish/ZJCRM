@@ -128,6 +128,8 @@
     <Compile Include="Budge_Model.cs" />
     <Compile Include="budge_modelMain.cs" />
     <Compile Include="Budge_Rate.cs" />
+    <Compile Include="CRM_Cope_invoice.cs" />
+    <Compile Include="CRM_Cope.cs" />
     <Compile Include="Crm_CEDetail.cs" />
     <Compile Include="Crm_CEDetail_Version.cs" />
     <Compile Include="CRM_CEStage.cs" />
