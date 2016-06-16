@@ -52,8 +52,10 @@
                                 return html;
                             }
                         },
+                        
+                        { display: '地址', name: 'address', width: 180 },
                         {
-                            display: '跟进内容', name: 'Follow', align: 'left', width: 490, render: function (item) {
+                            display: '跟进内容', name: 'Follow', align: 'left', width: 350, render: function (item) {
                                 var html = "<div class='abc'><a href='javascript:void(0)' onclick=view(2," + item.id + ")>";
                                 if (item.Follow)
                                     html += item.Follow;

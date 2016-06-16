@@ -267,7 +267,7 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("select id,Customer_id,Customer_name,Follow,Follow_date,Follow_Type_id,Follow_Type,department_id,department_name,employee_id,employee_name,isDelete,Delete_time ");
-			strSql.Append(" FROM CRM_Follow ");
+            strSql.Append(" FROM CRM_Follow  left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj FROM  dbo.CRM_Customer) CRM_Customer on CRM_Follow.Customer_id=CRM_Customer.khid  ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -287,7 +287,7 @@ namespace XHD.DAL
 				strSql.Append(" top "+Top.ToString());
 			}
 			strSql.Append(" id,Customer_id,Customer_name,Follow,Follow_date,Follow_Type_id,Follow_Type,department_id,department_name,employee_id,employee_name,isDelete,Delete_time ");
-			strSql.Append(" FROM CRM_Follow ");
+            strSql.Append(" FROM CRM_Follow left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj FROM  dbo.CRM_Customer) CRM_Customer on CRM_Follow.Customer_id=CRM_Customer.khid ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -304,10 +304,10 @@ namespace XHD.DAL
 			StringBuilder strSql = new StringBuilder();
 			StringBuilder strSql1 = new StringBuilder();
 			strSql.Append("select ");
-			strSql.Append(" top " + PageSize + " * FROM CRM_Follow ");
+            strSql.Append(" top " + PageSize + " * FROM CRM_Follow left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj FROM  dbo.CRM_Customer) CRM_Customer on CRM_Follow.Customer_id=CRM_Customer.khid   ");
 			strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_Follow ");
 			strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-			strSql1.Append(" select count(id) FROM CRM_Follow ");
+            strSql1.Append(" select count(id) FROM CRM_Follow left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj FROM  dbo.CRM_Customer) CRM_Customer on CRM_Follow.Customer_id=CRM_Customer.khid ");
 			if (strWhere.Trim() != "")
 			{
 			    strSql.Append(" and " + strWhere);
