@@ -226,9 +226,9 @@ namespace XHD.BLL
             return dal.Updatekjl_api(des, cid, fpid,DyGraphicsName, imgtype, simg, img, pano);
 
         }
-        public bool Addkjl_api(string des, int cid, string fpid,string DyGraphicsName, string imgtype, string simg, string img, string pano,string DP,int DPID)
+        public bool Addkjl_api(string des, int cid, string fpid, string DyGraphicsName, string imgtype, string simg, string img, string pano, string DP, int DPID, string remarks)
         {
-            return dal.Addkjl_api(des, cid, fpid,DyGraphicsName, imgtype, simg, img, pano,DP,DPID);
+            return dal.Addkjl_api(des, cid, fpid, DyGraphicsName, imgtype, simg, img, pano, DP, DPID, remarks);
 
         }
         public bool deletekjl_api(string des, int cid, string fpid)

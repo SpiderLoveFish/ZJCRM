@@ -1,0 +1,23 @@
+/*锁频*/
+.ScreenLock {background-color:#3a6ea5;background-image:url("../images/ScreenLock.png")}
+.ScreenLock {background-position:50% 50%;background-repeat:no-repeat;height:100%;left:0;position:absolute;top:0;width:100%;z-index:2000}
+.ScreenLock .inputpwd {font-size:14px;height:134px;left:50%;margin:-102px 0 0 -150px;padding:28px;position:absolute;top:50%;width:280px}
+.ScreenLock h5{ height:60px; line-height:60px; padding-top:10px; padding-left:40px;background:url(../images/msg_bg.png) no-repeat 0px -476px;}
+.ScreenLock .input-text{border:1px solid #A7A6AA;height:18px;margin:0 5px 0 0;padding:2px 0 2px 5px;border: 1px solid #d0d0d0;background: #FFF url(../images/admin_img/input.png) repeat-x; font-family: Verdana, Geneva, sans-serif,"宋体";font-size:12px;}
+.ScreenLock .submit{ background: url(../images/ScreenLockBut.png) no-repeat; height:24px; width:55px;cursor:hand;display:inline-block;display:-moz-inline-stack;zoom:1;*display:inline; border:none}
+
+
+.input-text,input.date,input.endDate,.input-focus{border:1px solid #DCDDDD; height:22px; padding:0 0 0 3px}
+/* 通用按钮 */
+.btn{ padding-left:6px}
+.btn,.btn input{background: url(../images/v9/button.png) no-repeat; height:24px; line-height:24px;width:auto;_width:0;overflow:visible !ie}
+	 .btn input{background-position: right 0; border:0 none; color:#fff; padding-right:6px;_height:25px}
+.submit{padding-left:3px}
+.submit,.submit input{ background: url(../images/member/but.png) no-repeat; height:29px;width:auto;_width:0;overflow:visible !ie}
+.submit input{background-position: right top; border:none; padding:0 10px 0 7px; font-size:14px}
+input,label,img,th{vertical-align:middle;}.font-fixh{font-family: Georgia,Arial; color: #f00; font-size: 16px; font-weight: 700;}address,cite,dfn,em,var{font-style:normal;}
+code,kbd,pre,samp{font-family:courier new,courier,monospace;}
+input.button ,input.btn{padding:0.25em;width: auto;_width:0;overflow:visible !ie;}
+
+
+

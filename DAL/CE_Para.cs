@@ -501,7 +501,7 @@ namespace XHD.DAL
         }
 
 
-        public bool Addkjl_api(string des, int cid, string fpid,string DyGraphicsName, string imgtype, string simg, string img, string pano,string DP,int DPID)
+        public bool Addkjl_api(string des, int cid, string fpid, string DyGraphicsName, string imgtype, string simg, string img, string pano, string DP, int DPID, string remarks)
         {
             var sb = new System.Text.StringBuilder();
             //先有户型图
@@ -546,7 +546,7 @@ namespace XHD.DAL
             sb.AppendLine("          imgtype , ");
             sb.AppendLine("          simg , ");
             sb.AppendLine("          img , ");
-            sb.AppendLine("          pano,DyGraphicsName,DoPerson,DoPersonID ");
+            sb.AppendLine("          pano,DyGraphicsName,DoPerson,DoPersonID,remarks ");
             sb.AppendLine("        ) ");
             sb.AppendLine("VALUES  ( "+cid+" , -- curstomerid - int ");
             sb.AppendLine("          '"+des+"' , -- desid - varchar(20) ");
@@ -554,7 +554,7 @@ namespace XHD.DAL
             sb.AppendLine("          '" + imgtype + "' , -- imgtype - varchar(20) ");
             sb.AppendLine("          '" + simg + "' , -- simg - varchar(200) ");
             sb.AppendLine("          '" + img + "' , -- img - varchar(200) ");
-            sb.AppendLine("          '" + pano + "','" + DyGraphicsName + "','"+DP+"',"+DPID+"  -- pano - varchar(200) ");
+            sb.AppendLine("          '" + pano + "','" + DyGraphicsName + "','" + DP + "'," + DPID + ",'" + remarks + "'  -- pano - varchar(200) ");
             sb.AppendLine("        ) ");
             sb.AppendLine(" END ");
             SqlParameter[] parameters = {

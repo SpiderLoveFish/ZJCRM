@@ -10,6 +10,7 @@
     <link href="lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="CSS/Toolbar.css" rel="stylesheet" type="text/css" />
     <link href="CSS/core.css" rel="stylesheet" type="text/css" />
+      <link href="CSS/LockScreen.css" rel="stylesheet" type="text/css" />
     <link href="lib/ligerUI/skins/ext/css/ligerui-fix.css" rel="stylesheet" type="text/css" />
 
     <script src="lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
@@ -24,7 +25,8 @@
     <script src="lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
     <script src="JS/jquery.jclock.js" type="text/javascript"></script>
-
+    <script src="JS/remember.js" type="text/javascript"></script>
+   
     <script src="JS/Toolbar.js" type="text/javascript"></script>
     <script src="JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -34,6 +36,14 @@
         var tree = null;
         var manager = null;
         $(function () {
+           
+            if (getCookie("screenlock") == "0") {
+                var FromUrl = getQueryStringByName("FromUrl");
+                if (!FromUrl) {
+                    FromUrl = encodeURIComponent("login.aspx");
+                }
+                location.href = decodeURIComponent(FromUrl);
+            }
             setInterval("getUser()", 30000);
             $("#pageloading").height($(window).height());
             //布局
@@ -76,6 +86,23 @@
             //softreg();
             //show_welcome();
         });
+
+
+
+        //监听键盘事件
+        document.onkeyup = function (event) {
+            var e = event || window.event;
+            var keyCode = e.keyCode || e.which;
+            switch (keyCode) {
+
+                case 113://F2快捷键
+                    lock();
+                    break;
+                 
+            }
+
+        }
+
         function getsysinfo() {
             $.ajax({
                 type: "GET",
@@ -214,6 +241,7 @@
             var toolbar = new Toolbar({
                 renderTo: 'filters', items: [],
                 filters: [
+                    { id: 'filter-screen', title: '锁屏', bodyStyle: 'filter-mail', handler: function () { lock() } },
                     { id: 'filter-home', title: '桌面', bodyStyle: 'filter-home', handler: function () { f_addTab('home') } },
                     { id: 'filter-fav', title: '个人收藏', bodyStyle: 'filter-theme', handler: function () { f_addTab('fav', '个人收藏', 'crm/DataShare/Favorites_View.aspx') } },
                     { id: 'filter-help', title: '系统帮助', bodyStyle: 'filter-help', handler: function () { f_addTab('help', '系统帮助', 'crm/help/help_share.aspx') } },
@@ -275,7 +303,7 @@
                     jitem.attr("url", url);
                 }
                 //$("#mainframe").attr("src", url);                
-
+                
                 f_addTab(tabid, $("span:first", jitem).html(), url); if ($(this).hasClass("selected")) {
                     return;
                 }
@@ -293,6 +321,45 @@
             });
 
         }
+
+        function lock()
+        {
+            //javascript: alert(document.cookie)
+            $("#lock_password").focus();
+            if (getCookie("screenlock") == "1")
+            {
+                $("#dvLockScreen").css('display', 'block');
+                SetCookie("screenlock", "0");
+                if (getCookie("xhdcrm_uid") && getCookie("xhdcrm_uid") != null)
+                    $("#T_uid").val(getCookie("xhdcrm_uid"))
+                delCookie("xhdcrm_uid");
+            }
+             else
+            {
+                 var FromUrl = getQueryStringByName("FromUrl");
+            if (!FromUrl) {
+                FromUrl = encodeURIComponent("login.aspx");
+            }
+            location.href = decodeURIComponent(FromUrl);
+            }
+           
+        }
+        function check_screenlock()
+        {
+            if ($("#lock_password").val() == getCookie("screenpwd") && getCookie("screenlock") == "0") {
+                $("#dvLockScreen").css('display', 'none');
+                SetCookie("screenlock", "1");
+                $("#lock_password").val("");
+                SetCookie("xhdcrm_uid", $("#T_uid").val(), 30);
+               
+            }
+            else {
+                $("#lock_tips").html("密码错误或者已经过期！！！");
+                //javascript: location.replace("login.aspx");
+                
+            }
+        }
+
         function show_welcome(item) {
             if (getCookie("xhd_crm_show_wellcome") == 1 || item == 1) {
                 var dialog = $.ligerDialog.open({
@@ -408,7 +475,18 @@
 </head>
 <body>
     <form id="form1" onsubmit="return false">
+
         <div id="pageloading"></div>
+        <div id="dvLockScreen" class="ScreenLock" style="display:none">
+    <div id="dvLockScreenWin" class="inputpwd">
+    <h5><b class="ico ico-info"></b><span id="lock_tips">锁屏状态，请输入密码解锁</span></h5>
+    <div class="input">
+    	<label class="lb">请输入密码：</label>
+        <input type="password" id="lock_password" style="width:120px" class="input-text" size="24">
+        <input type="submit" class="submit" value="&nbsp;" name="dosubmit" onclick="check_screenlock(); return false;">
+   <input type="hidden" id="T_uid" />
+         </div></div>
+</div>
         <div style="background: #d2e2f2; height: 74px; overflow: hidden;">
             <div style="height: 47px; margin: 0; padding: 0;">
                 <div style="width: 278px; float: left;">

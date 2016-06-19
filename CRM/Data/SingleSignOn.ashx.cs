@@ -59,7 +59,7 @@ namespace XHD.CRM.Data
                 }
                 else if (style == "insert")
                 {
-                    if(cp.Addkjl_api(desid, Customer_id, fpId,DyGraphicsName, imgtype, simg, img, pano,uid,emp_id))
+                    if(cp.Addkjl_api(desid, Customer_id, fpId,DyGraphicsName, imgtype, simg, img, pano,uid,emp_id,""))
                         context.Response.Write("true");
                     else context.Response.Write("false");
 
@@ -184,7 +184,8 @@ namespace XHD.CRM.Data
 
  
               string str_uid = Common.PageValidate.InputText(request["uid"], 50);
-         
+              string bindid = Common.PageValidate.InputText(request["bindid"], 50);
+      
                 string[] arr = para("29", str_uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
@@ -203,7 +204,7 @@ namespace XHD.CRM.Data
                     postdata.Add("timestamp", timestamp);
                     postdata.Add("appuid", userId);
                     postdata.Add("sign", sign);
-                    postdata.Add("email", arr[(int)paraenum.email]);
+                    postdata.Add("email", bindid);
                  
                     //发送POST数据  
                     StringBuilder buffer = new StringBuilder();
@@ -229,6 +230,15 @@ namespace XHD.CRM.Data
                     string result = "";
                    result = HttpHelper_GetStr(api, "POST", buffer.ToString());
                     context.Response.Write(result);
+                    if (result == "success")
+                    {
+                        BLL.hr_employee hr = new BLL.hr_employee();
+                        Model.hr_employee mhr = new Model.hr_employee();
+                        mhr.ID = int.Parse(Common.PageValidate.InputText(request["id"], 50));
+                        mhr.uid=str_uid;
+                        mhr.professional=bindid;
+                        hr.UpdateKJL(mhr);
+                    }
                 }
 
             }
@@ -399,7 +409,9 @@ namespace XHD.CRM.Data
             //搜索户型图接口
             if (request["Action"] == "gethxtapi")
             {
-
+                string suid = Common.PageValidate.InputText(request["uid"], 250);
+                if (suid != "")
+                    uid = suid;
                 string[] arr = para("17", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];

@@ -38,6 +38,10 @@ namespace XHD.BLL
             return dal.Update(model);
         }
 
+        public bool UpdateKJL(XHD.Model.hr_employee model)
+        {
+            return dal.UpdateKJL(model);
+        }
         /// <summary>
         /// Ô¤É¾³ý
         /// </summary>

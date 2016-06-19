@@ -314,14 +314,18 @@
                 alert('新增账号无法绑定，请先保存在编辑状态绑定!');
                 return;
             }
+
             if ($("#T_professional").val() == ""|| $("#T_uid").val()=="")
             {
                 alert('请手工填入需要绑定的酷家乐账号!');
                 return;
             }
+            top.$.ligerDialog.confirm("绑定为一次性，请谨慎操作！！", "确认操作？",
+                function (yes) {
+                    if(yes==true)
             $.ajax({
                 url: "../data/SingleSignOn.ashx", type: "POST",
-                data: { Action: "bind",uid:$("#T_uid").val(), rnd: Math.random() },
+                data: { Action: "bind",id:getparastr("empid"),uid:$("#T_uid").val(),bindid:$("#T_professional").val(), rnd: Math.random() },
                 success: function (responseText) {
                     //if (responseText == "true") {
                         // fload();
@@ -336,6 +340,8 @@
                 error: function () {
                     alert('绑定失败！');
                 }
+            });
+            
             });
         }
 

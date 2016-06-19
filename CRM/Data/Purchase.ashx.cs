@@ -269,19 +269,21 @@ namespace XHD.CRM.Data
                   string status =  PageValidate.InputText(request["status"], 50) ;
                   if (bpm.Updatestatus(pid, status))
                   {
-                      if (StringToDecimal(status)==3)//当确认的时候，重新计算下                     
+                      if (StringToDecimal(status) == 3)//当确认的时候，重新计算下                     
                       {
                           if (bpm.updatetotal(pid, StringToDecimal(status)) > 0)
-                      
-                              {
-                                  log.add_trace(pid, status, "", empname);
-                                  context.Response.Write("true");
-                              }else
-                                  {
+                          {
+                              log.add_trace(pid, status, "", empname);
+                              context.Response.Write("true");
+                          }
+                          else
+                          {
                               context.Response.Write("false");
-                                      }
-                      }else{
-                      context.Response.Write("false");
+                          }
+                      }
+                      else
+                      {
+                          context.Response.Write("true");
                       }
                   }
                   else

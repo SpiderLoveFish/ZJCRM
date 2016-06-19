@@ -223,6 +223,7 @@ function getCookie(name)//取cookies函数
 }
 function SetCookie(name, value, time)//两个参数，一个是cookie的名子，一个是值  
 {
+    if (time == null) time = 30;//如果默认没有时间，则默认为30分钟
     var exp = new Date();
     exp.setDate(exp.getDate() + time);
     document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();

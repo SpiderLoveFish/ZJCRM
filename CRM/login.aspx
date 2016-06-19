@@ -107,6 +107,8 @@
                                 case 2:
                                     SetCookie("xhdcrm_uid", uid, 30);
                                     SetCookie("xhd_crm_show_wellcome", "1");
+                                    SetCookie("screenlock", "1",300);
+                                    SetCookie("screenpwd", pwd, 300)
                                     location.href = decodeURIComponent(FromUrl);
                                     break;
                                 case 3:
@@ -197,8 +199,8 @@
                   </tr>
                   <tr>
                       <th colspan="2" align="right"><input type="image" src="images/login06.png" name="login" id="login" /></th>
-                      <td width="88" align="right" valign="middle"><a href="#"><img src="Images/login/qq.png" onclick="qq_login()" /></a></td>
-                      <td width="101" valign="middle"><a href="http://www.kujiale.com/v/xczs/login" target="_blank"><img src="Images/kjl.png" /></a></td>
+                      <td width="88" align="right" valign="middle"><a href="#"><!--<img src="Images/login/qq.png" onclick="qq_login()" /></a>--></td>
+                      <td width="101" valign="middle">&nbsp;</td>
                   </tr>
               </table>
               </form>
@@ -208,6 +210,6 @@
         <!--container-->
     </div>
     <!--#wrap-->
-
+<form> <div align="center"> <input type="BUTTON" name="FullScreen" value="全屏显示" onClick="window.open(document.location, 'big', 'fullscreen=yes')"> </div> </form> 
 </body>
 </html>

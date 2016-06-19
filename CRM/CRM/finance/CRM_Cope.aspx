@@ -63,19 +63,19 @@
                    { display: '订单状态', name: 'isNode', width: 70 },
                   {
                       display: '应付金额（￥）', name: 'payable_amount', width: 100, align: 'right', render: function (item) {
-                          return "<div style='color:#135294'>" + toMoney(item.Total_Money) + "</div>";
+                          return "<div style='color:#135294'>" + toMoney(item.payable_amount) + "</div>";
                       }
                   },
               
                    {
                        display: '已付金额（￥）', name: 'paid_amount', width: 100, align: 'right', render: function (item) {
-                           return "<div style='color:#135294'>" + toMoney(item.receive_money) + "</div>";
+                           return "<div style='color:#135294'>" + toMoney(item.paid_amount) + "</div>";
                        }
                    },
                  
                    {
                        display: '欠款（￥）', name: 'arrears', width: 100, align: 'right', render: function (item) {
-                           return "<div style='color:#135294'>" + toMoney(item.invoice_money) + "</div>";
+                           return "<div style='color:#135294'>" + toMoney(item.arrears) + "</div>";
                        }
                    },
                     {

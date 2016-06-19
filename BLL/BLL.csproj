@@ -190,6 +190,7 @@
     <Compile Include="public_help.cs" />
     <Compile Include="public_help_category.cs" />
     <Compile Include="public_data.cs" />
+    <Compile Include="WebSite_User.cs" />
     <Compile Include="Xm_list.cs" />
   </ItemGroup>
   <ItemGroup>

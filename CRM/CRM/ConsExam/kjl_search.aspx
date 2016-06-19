@@ -66,32 +66,8 @@
                           alert("创建失败，请重新创建！" + copyid);
                           return;
                       }
-                      $.ajax({
-                          url: "../../data/SingleSignOn.ashx", type: "POST",
-                          data: { Action: "GetMD5", dest: 2, fid: copyid, rnd: Math.random() },
-                          // dataType: 'content', //这里修改为content   
-                          success: function (responseText) {
-                              // $.ligerDialog.warn(responseText);
-                              //location.href = "http://www.baidu.com";
-                              //alert(responseText);
-                              //$.ligerDialog.warn(responseText);
-                              //$.ligerDialog.warn(obj.errorMsg);
-                              // $("#maingrid4").append("<lable >错误代码：" + obj.errorMsg + "</lable>");
-                              try {
-                                  var obj = JSON.parse(responseText);
-                                  if (obj.errorCode == 0) {
-                                      viewkjl(obj.errorMsg, "新增方案");
-
-                                  }
-                                  else
-                                      alert(obj.errorMsg);
-
-                              } catch (e) {
-                                  alert(e.message);
-
-                              }
-                          }
-                      });
+                      viewkjl('../../CRM/ConsExam/kjl_edit.aspx?fid=' + copyid + '&style=insert' + '&dest=2', "新增方案");
+ 
                   },
                   error: function () {
                       alert("创建失败");
@@ -120,7 +96,7 @@
 							
                           '<img src=' + obj[n].pics + ' alt="" class="img_inner">' +
                           '<p>'+
-                          '	<strong class="col2">' + obj[n].commName + obj[n].srcArea+’</strong><a  style="cursor:pointer;" onclick="docreate(\'' + obj[n].obsPlanId + '\')"  class="btn">创建</a>&nbsp;' +
+                          '	<strong class="col2">' + obj[n].commName + obj[n].srcArea+'㎡</strong><a  style="cursor:pointer;" onclick="docreate(\'' + obj[n].obsPlanId + '\')"  class="btn">创建</a>&nbsp;' +
                           '	</p>'+	
                           '</div>'+
                           '</div>'+

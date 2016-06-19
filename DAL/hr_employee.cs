@@ -216,6 +216,30 @@ namespace XHD.DAL
             }
         }
 
+        public bool UpdateKJL(XHD.Model.hr_employee model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update hr_employee set ");
+            
+            strSql.Append("professional='"+model.professional+"' ");
+         
+            strSql.Append(" where ID="+model.ID +"");
+            SqlParameter[] parameters = {
+                                        };
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+
         /// <summary>
         /// Ô¤É¾³ı
         /// </summary>
