@@ -45,7 +45,7 @@
                         if (names.length >= 15) names = names.substr(0, 15) + '...';
 
                         html += '    <li class="clearfix" style="position: relative;"> ' +
-                        '<a href="#" target="_blank">' +
+                        '<a href="#" target="_blank"></a>' +
                         ' <div class="carImg left dInline"> ' +
                         '   <img src=' + obj[n].pics + ' width="266" /> ' +
                         '  </div>' +
@@ -58,10 +58,10 @@
                     
                         ' <p>' + obj[n].name + '</p>' +
                         '  <div class="price">' +
-                        '   <p>面积：</p>' +
-                        '  <i></i> <span class="num nBlue">' + obj[n].srcArea + '</span><font> 平方米</font> <font> ' + obj[n].specName + '</font> ' +
+                        '   <p>面积：' +
+                        '  <i></i> <span class="num nBlue">' + obj[n].srcArea + '</span><font> 平方米</font></p> <p>户型： <font> ' + obj[n].specName + '</font> </p> ' +
                         '   </div>' +
-                        ' <div class="login-button"><input type="button" class="fM"  style="cursor:pointer;" value="自己DIY" onclick="docreate(\'' + obj[n].obsPlanId + '\')" ></input>&nbsp;' +
+                        ' <p><div class="login-button"><input type="button" class="fM"  style="cursor:pointer;" value="自己DIY" onclick="docreate(\'' + obj[n].obsPlanId + '\')" ></input>></p>&nbsp;' +
                         '  </div> </div>' +
                         ' </div>' +
                 
@@ -239,7 +239,7 @@
   <div class="top">
     <div class="wrap clearfix"> <a href="#" class="logo left"><img src="images/logo.png"/></a>
       <div class="nav left dInline" id="headerMenu">
-      <a class="on" href="index.aspx">首页</a>
+      <a href="index.aspx">首页</a>
       <a href="about.html">关于亿金</a>
       <a href="maiche_list.html">我要买车</a>
       <a href="wymc.html">我要卖车</a>
@@ -253,18 +253,20 @@
   </div>
   <div class="head-search">
     <div class="wrap clearfix">
-              
+
+           <div class="yjxj clearfix left" action="/index/keyword/" method="post" enctype="multipart/form-data">     
  <input type="text" id="keyword" name="keyword" placeholder="请输入您想要的户型搜索" class="left" />
         <input type="button" value="搜 索" onclick="search()" class="right" />
       </div>
-      <div class="hotWords left dInline"> 热门品牌：
-          <a href="#">奥迪A6L</a><a href="#">宝马5系</a>
-          <a href="#">奔驰E级</a><a href="#">奥迪A4L</a><a href="#">奔驰C级</a> 
-
-      </div>
+      <div class="hotWords left dInline"> <a  onclick="more()">换一批</a> 热门小区：
+         <a href="#">新城域</a><a href="#">新城柏丽湾</a>
+              </div>
+     
     </div>
+  
   </div>
- 
+
+  </div>
 <style type="text/css">
 #banner .prevs,#banner .nexts{position:absolute;top:220px;z-index: 100;margin-top:-25px;}
 #banner .nexts{right:0;}
@@ -300,6 +302,7 @@
       <div class="in-tit clearfix">
         <h1 class="left dInline"> 精品户型 </h1>
       </div>
+         <div class="proMore"> <a  onclick="more()">换一批</a> </div>
       <div class="jpBox">
       
         <div class="jpCont">
@@ -309,7 +312,7 @@
                
               
             </ul>
-            <div class="proMore"> <a  onclick="more()">查看更多>></a> </div>
+            <div class="proMore"> <a  onclick="more()">换一批</a> </div>
           </div>
           
          

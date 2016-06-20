@@ -16,14 +16,14 @@ body{min-width: 1190px;}
 #header{position:fixed;left:0;top:0;width:100%;z-index: 88;}
 .top{height:50px;overflow:hidden; background:url(../images/top.jpg) no-repeat center top;line-height:50px;}
 .logo{margin-right:10px; }
-.nav a{color:#fff;font-size:14px;display:inline-block;padding:0 20px;}
+.nav a{color:#000;font-size:14px;display:inline-block;padding:0 20px;}
 .nav a:hover,.nav a.on{background-color:#113d6a;}
-.top span.right{color:#fff;}
-.top span.right a{color:#fff;display:inline-block;padding:0 10px;}
+.top span.right{color:#000;}
+.top span.right a{color:#000;display:inline-block;padding:0 10px;}
 .head-search{background:#f3f3f3;height:39px;line-height:39px; border-bottom:1px solid #ddd;padding:14px 0;}
 .head-search .yjxj{width:550px;height:39px; }
-.head-search .yjxj input.left{width:439px;height:37px;line-height:37px;padding:0 10px;font-family:'Microsoft Yahei';border:1px solid #d2d2d2;border-right:none;}
-.head-search .yjxj input.right{width:89px;height:39px;background:#006eca;color:#fff;font-size:16px;font-family:'Microsoft Yahei';cursor: pointer;}
+.head-search .yjxj input.left{width:439px;height:37px;line-height:37px;padding:0 10px;font-family:'Microsoft Yahei';border:1px solid #fbc608;border-right:none;}
+.head-search .yjxj input.right{width:89px;height:39px;background:#fbc608;color:#000;font-size:16px;font-family:'Microsoft Yahei';cursor: pointer;}
 .hotWords{margin-left:25px;padding-left:25px; background:url(../images/jy.gif) no-repeat center left;height:37px;line-height:37px;}
 .hotWords a{padding:0 8px;}
 
