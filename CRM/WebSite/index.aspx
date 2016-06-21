@@ -7,32 +7,49 @@
     <link rel="stylesheet" type="text/css" href="css/base.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel="stylesheet" type="text/css" href="css/layout.css">
-
-    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script> 
+      <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script> 
     <script type="text/javascript" src="../JS/XHD.js"></script>
      <script src="../jlui3.2/lib/json2.js" type="text/javascript"></script>
     <script src="../lib/jquery.form.js" type="text/javascript"></script>
      <script src="js/website.js"></script>
      <script src="../JS/jquery.md5.js" type="text/javascript"></script>
-   
+     <script src="js/lazyload-min.js"></script>
         <script type="text/javascript">
             var startstr = 0;
             var varCODE = "code";
+             LazyLoad.css(["css/cityStyle.css"], function () {
+                LazyLoad.js(["js/cityScript.js"], function () {
+                    var test = new citySelector.cityInit("inputcity");
+                   });
+            });
+          
             $(function () {
                 if (getCookie("website_uid") == null || getCookie("website_uid") == "" || getCookie("website_uid") == undefined)
                 { }
                 else
                     loginin(getCookie("website_uid"))
 
-            ajaxhxtapi($('#keyword1').val());
- 
+              ajaxhxtapi($('#keyword1').val());
+          
+             });
+
+       
+            $("#citySelect").on('input', function (e) {
+                alert('Changed!')
+                $('#citySelect').val(JSON.stringify(test))
+
             });
+
         //搜索户型图接口
             function ajaxhxtapi(keystr) {
+                //x选择城市
+                var ciid = 166;
+                if ($('#cityid').val() != undefined)
+                    ciid = $('#cityid').val();
                 if (keystr == undefined) keystr = "";
             $.ajax({
                 url: "../data/website.ashx", type: "POST",
-                data: { Action: "gethxtapi",uid:'admin', cityid: 175, keystr: keystr, strstart: startstr, rnd: Math.random() },
+                data: { Action: "gethxtapi", uid: 'admin', cityid: ciid, keystr: keystr, strstart: startstr, rnd: Math.random() },
                 success: function (responseText) {
                     // alert(responseText);
                     var obj = eval(responseText);
@@ -247,7 +264,9 @@
       <!--<a href="shfw.html">售后服务</a>-->
       <a id="MemberMenuChange" class="b-login" href="会员中心首页.html" target="_self">会员中心</a>
       </div>
-      <span class="right" id="rightMenuHtml">
+          <input type="text" class="file" readonly="readonly"   id="inputcity"  value="苏州" >
+     <input type="hidden" id="cityid" value="166" />
+     <span class="right" id="rightMenuHtml">
 				<a href="#" class="b-login" id="b-login">登录</a>|<a href="#" id="b-regist">注册</a>|&nbsp;&nbsp;&nbsp;&nbsp;400-0512-004		
                 </span> </div>
   </div>
@@ -268,6 +287,32 @@
 
   </div>
 <style type="text/css">
+    .file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
 #banner .prevs,#banner .nexts{position:absolute;top:220px;z-index: 100;margin-top:-25px;}
 #banner .nexts{right:0;}
 #banner .banShow a{display:block;width: 100%;height:465px;}
@@ -287,6 +332,7 @@
    <div class="xnrj">
    <img src="images/in1.png"/>
     <form class="clearfix" >
+          
       <input type="text" maxlength="" id="keyword1" name="keyword" placeholder="请输入您想要的户型搜索" class="left" />
       <input type="button" value="" onclick="search()" class="right" />
     </form>
