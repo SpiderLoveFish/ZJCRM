@@ -480,7 +480,7 @@ namespace XHD.DAL
             sb.AppendLine("select [appkey],");
             sb.AppendLine("	[appSecret],");
             sb.AppendLine("	[timestamp],");
-            sb.AppendLine(" case when isnull(professional,'')='' then  B.uid+'@'+'" + host + "' else professional end as	[appuid] ,");
+            sb.AppendLine("   B.uid+'@'+'" + host + "'  as	[appuid] ,");
             sb.AppendLine("	[sign] ,");
             sb.AppendLine("	B.name as [appuname] ,");
             sb.AppendLine("	B.uid+'@'+'" + host + "' as [appuemail] ,");

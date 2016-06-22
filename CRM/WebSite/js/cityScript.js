@@ -102,6 +102,18 @@ citySelector.cityInit = function (input) {
 
         });
  
+
+        $(document).mouseup(function(e){
+            var containers = $('#js_cityBox, #js_cityName');
+            containers.each(function(){
+                if($(this).has(e.target).length === 0){
+                    e.stopPropagation();
+                    $("#js_cityBox").remove();
+                }
+            });
+          
+        })
+
         var _input = input;
         $("#js_cityBox").on("click", ".js_cityName", function (e) {
             e.stopPropagation();

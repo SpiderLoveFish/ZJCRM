@@ -2860,7 +2860,7 @@
     <Content Include="WebSite\css\alert.css" />
     <Content Include="WebSite\css\apply.css" />
     <Content Include="WebSite\css\base.css" />
-    <Content Include="WebSite\css\citySelector.css" />
+    <Content Include="WebSite\css\cityStyle.css" />
     <Content Include="WebSite\css\ding.css" />
     <Content Include="WebSite\css\hurst.css" />
     <Content Include="WebSite\css\index.css" />
@@ -3035,7 +3035,7 @@
     <Content Include="WebSite\images\ystar.png" />
     <Content Include="WebSite\index.html" />
     <Content Include="WebSite\js\CarLoad.js" />
-    <Content Include="WebSite\js\citySelector.js" />
+    <Content Include="WebSite\js\cityScript.js" />
     <Content Include="WebSite\js\DD_belatedPNG.js" />
     <Content Include="WebSite\js\index.js" />
     <Content Include="WebSite\js\jquery-1.8.2.min.js" />
