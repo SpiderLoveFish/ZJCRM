@@ -2856,6 +2856,8 @@
     <Content Include="WebSite\bootstrap\js\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="WebSite\bootstrap\js\bootstrap.min.js" />
     <Content Include="WebSite\contact.html" />
+    <Content Include="WebSite\memberEdit.aspx" />
+    <Content Include="WebSite\member.aspx" />
     <Content Include="WebSite\css\about.css" />
     <Content Include="WebSite\css\alert.css" />
     <Content Include="WebSite\css\apply.css" />
@@ -3036,6 +3038,7 @@
     <Content Include="WebSite\index.html" />
     <Content Include="WebSite\js\CarLoad.js" />
     <Content Include="WebSite\js\cityScript.js" />
+    <Content Include="WebSite\js\cityselect.js" />
     <Content Include="WebSite\js\DD_belatedPNG.js" />
     <Content Include="WebSite\js\index.js" />
     <Content Include="WebSite\js\jquery-1.8.2.min.js" />

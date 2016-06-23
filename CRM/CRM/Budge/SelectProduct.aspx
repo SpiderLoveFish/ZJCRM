@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" %>
+ï»¿<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -32,18 +32,19 @@
             $("#maingrid4").ligerGrid({
                 columns: [
                     //{ display: 'ID', name: 'ID', type: 'int', width: 50 },
-                    { display: 'ĞòºÅ', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
-                  { display: '²ÄÁÏ±àºÅ', name: 'C_code', width: 80, align: 'left' },
-                  { display: '²ÄÁÏÃû³Æ', name: 'product_name', width: 100, align: 'left' },
-                  { display: '²ÄÁÏĞÍºÅ', name: 'ProModel', width: 100, align: 'left' },
-                  { display: '²ÄÁÏ¹æ¸ñ', name: 'specifications', width: 100, align: 'left' },
-                  { display: 'ËùÊôÆ·ÅÆ', name: 'Brand', width: 100, align: 'left' },
-                  { display: 'Àà±ğ', name: 'category_name', width: 100, align: 'left' },
-                  { display: 'µ¥Î»', name: 'unit', width: 40, align: 'left' }
+                    { display: 'åºå·', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
+                  { display: 'ææ–™ç¼–å·', name: 'C_code', width: 80, align: 'left' },
+                  { display: 'ææ–™åç§°', name: 'product_name', width: 100, align: 'left' },
+                  { display: 'ææ–™å‹å·', name: 'ProModel', width: 100, align: 'left' },
+                  { display: 'ææ–™è§„æ ¼', name: 'specifications', width: 100, align: 'left' },
+                  { display: 'æ‰€å±å“ç‰Œ', name: 'Brand', width: 100, align: 'left' },
+                  { display: 'ç±»åˆ«', name: 'category_name', width: 100, align: 'left' },
+                     { display: 'ä»·æ ¼(Â¥)', name: 'price', width: 80, align: 'left' },
+                  { display: 'å•ä½', name: 'unit', width: 40, align: 'left' }
                   //,
                   //{
-                  //    display: 'Í¼ÎÄ', width: 40, render: function (item) {
-                  //        var html = "<a href='javascript:void(0)' onclick=view(" + item.product_id + ")>²é¿´</a>"
+                  //    display: 'å›¾æ–‡', width: 40, render: function (item) {
+                  //        var html = "<a href='javascript:void(0)' onclick=view(" + item.product_id + ")>æŸ¥çœ‹</a>"
                   //        return html;
                   //    }
                   //}
@@ -55,7 +56,7 @@
                 url: strurl, 
                 width: '100%',
                 height: '100%',
-                //title: "Ô±¹¤ÁĞ±í",
+                //title: "å‘˜å·¥åˆ—è¡¨",
                 heightDiff: 0,
                 
                 onContextmenu: function (parm, e) {
@@ -66,20 +67,20 @@
             });
 
             toolbar(style);
-            $("#lbtip").css("display", 'none');//ÌáÊ¾ÏÈÒş²Ø
+            $("#lbtip").css("display", 'none');//æç¤ºå…ˆéšè—
         });
 
 
-    //¼àÌı¼üÅÌÊÂ¼ş
+    //ç›‘å¬é”®ç›˜äº‹ä»¶
         document.onkeyup=function(event){
             var e=event||window.event;
             var keyCode=e.keyCode||e.which;
             switch(keyCode){
                    
-                case 113://F2¿ì½İ¼ü
+                case 113://F2å¿«æ·é”®
                     add();
                     break;      
-                case 13://»Ø³µ
+                case 13://å›è½¦
                     doserch();
                     break;
             }
@@ -100,11 +101,11 @@
             f_load();
             $("#lbtip").css("display", 'inline');
             $("#lbtip").addClass("green");
-            $("#lbtip").val('Ìí¼Ó³É¹¦£¡£¡£¡');
+            $("#lbtip").val('æ·»åŠ æˆåŠŸï¼ï¼ï¼');
             setTimeout(function () {
                 $("#lbtip").css("display", 'none');
                 
-                // $.ligerDialog.error("Ìí¼ÓÊ§°Ü,Çë¼ì²éºó¼ÌĞø²Ù×÷£¡");
+                // $.ligerDialog.error("æ·»åŠ å¤±è´¥,è¯·æ£€æŸ¥åç»§ç»­æ“ä½œï¼");
               
             }, 1000);
            
@@ -115,11 +116,11 @@
             f_load();
             $("#lbtip").css("display", 'inline');
             $("#lbtip").addClass("red");
-            $("#lbtip").val('Ìí¼ÓÊ§°Ü,Çë¼ì²éºó¼ÌĞø²Ù×÷£¡£¡£¡');
+            $("#lbtip").val('æ·»åŠ å¤±è´¥,è¯·æ£€æŸ¥åç»§ç»­æ“ä½œï¼ï¼ï¼');
             setTimeout(function () {
                 $("#lbtip").css("display", 'none');
 
-            // $.ligerDialog.error("Ìí¼ÓÊ§°Ü,Çë¼ì²éºó¼ÌĞø²Ù×÷£¡");
+            // $.ligerDialog.error("æ·»åŠ å¤±è´¥,è¯·æ£€æŸ¥åç»§ç»­æ“ä½œï¼");
            
             }, 1000);
            
@@ -144,10 +145,10 @@
          function toolbar(style) {
             var items = [];
 
-            items.push({ type: 'textbox', id: 'stext', text: 'Ãû³Æ£º' });
+            items.push({ type: 'textbox', id: 'stext', text: 'åç§°ï¼š' });
             
-            items.push({ type: 'textbox', id: 'stextlx', text: 'ÀàĞÍ£º' });
-            items.push({ type: 'button', text: 'ËÑË÷', icon: '../images/search.gif', disable: true, click: function () { doserch() } });
+            items.push({ type: 'textbox', id: 'stextlx', text: 'ç±»å‹ï¼š' });
+            items.push({ type: 'button', text: 'æœç´¢', icon: '../images/search.gif', disable: true, click: function () { doserch() } });
             items.push({ type: 'textbox', id: 'lbtip', text: '' });
             $("#toolbar").ligerToolBar({
                 items: items
@@ -166,15 +167,15 @@
             $("#maingrid4").ligerGetGridManager().onResize();
           
         }
-        //²éÑ¯
+        //æŸ¥è¯¢
         function doserch() {
             var style = getparastr("style");
             var strurl = "../../data/PurchaseList.ashx?Action=allgrid";
-            if (style == "ALL")//È«²¿²úÆ·
+            if (style == "ALL")//å…¨éƒ¨äº§å“
                 strurl = "../../data/PurchaseList.ashx?Action=allgrid";
-            else if (style == "ysA")//Ô¤ËãA
+            else if (style == "ysA")//é¢„ç®—A
                 strurl = "../../data/PurchaseList.ashx?Action=getlist";
-            else if (style == "ysB")//Ô¤ËãA
+            else if (style == "ysB")//é¢„ç®—A
                 strurl = "../../data/PurchaseList.ashx?Action=getlist";
             var sendtxt = "&rnd=" + Math.random();
             var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
@@ -190,9 +191,9 @@
         }
         function view(id) {
             var dialogOptions = {
-                width: 770, height: 510, title: "²ÄÁÏµµ°¸Í¼ÎÄ½éÉÜ", url: '../view/product_view.aspx?pid=' + id + '&rnd=' + Math.random(), buttons: [
+                width: 770, height: 510, title: "ææ–™æ¡£æ¡ˆå›¾æ–‡ä»‹ç»", url: '../view/product_view.aspx?pid=' + id + '&rnd=' + Math.random(), buttons: [
                         {
-                            text: '¹Ø±Õ', onclick: function (item, dialog) {
+                            text: 'å…³é—­', onclick: function (item, dialog) {
                                 dialog.close();
                             }
                         }
@@ -209,7 +210,7 @@
             for (var item = 0; item < rows.length; item++)
                 prouductid += ',' + rows[item].product_id;
             if (prouductid == '') {
-                $.ligerDialog.error("ÇëÖÁÉÙÑ¡ÔñÒ»¸öÓĞĞ§²ÄÁÏÊı¾İ£¡");
+                $.ligerDialog.error("è¯·è‡³å°‘é€‰æ‹©ä¸€ä¸ªæœ‰æ•ˆææ–™æ•°æ®ï¼");
                 return;
             }
             //  alert(getparastr("pid"));

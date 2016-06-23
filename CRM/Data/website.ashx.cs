@@ -37,7 +37,9 @@ namespace XHD.CRM.Data
             //DataSet dsemp = emp.GetList("id=" + emp_id);
             //string empname = dsemp.Tables[0].Rows[0]["name"].ToString();
             string uid = "admin";
-                //dsemp.Tables[0].Rows[0]["uid"].ToString();
+            BLL.sys_info si = new BLL.sys_info();
+            string host = si.GetList(" sys_key='sys_host'").Tables[0].Rows[0]["sys_value"].ToString();
+            //dsemp.Tables[0].Rows[0]["uid"].ToString();
 
 
             if (request["Action"] == "login")
@@ -53,14 +55,20 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "reg")
             {
-                mwu.tel = PageValidate.InputText(request["tel"], 50);
+                string tel=PageValidate.InputText(request["tel"], 50);
+                mwu.tel = tel;
                 mwu.pwd = PageValidate.InputText(request["pwd"], 50);
                 mwu.nickname = PageValidate.InputText(request["nickname"], 50);
                 mwu.sex = PageValidate.InputText(request["sex"], 50);
-                mwu.kjl_login = uid;
+                mwu.kjl_login = uid + "@" + host;
                 mwu.userid = PageValidate.InputText(request["tel"], 50);
+                mwu.village = PageValidate.InputText(request["xq"], 50);
+
+              
                 mwu.status = "Y";
                 string id = PageValidate.InputText(request["id"], 50);
+
+
                 if (!string.IsNullOrEmpty(id) && id != "null")
                 {
 
@@ -71,9 +79,16 @@ namespace XHD.CRM.Data
                 }
                 else
                 {
-                    if (bwu.Add(mwu) > 0)
-                        context.Response.Write("true");
-                    else context.Response.Write("false");
+                    if (bwu.ExistsTel(tel))
+                    {
+                        context.Response.Write("false:tel");
+                    }
+                    else
+                    {
+                        if (bwu.Add(mwu) > 0)
+                            context.Response.Write("true");
+                        else context.Response.Write("false");
+                    }
 
                 }
             }
@@ -470,8 +485,9 @@ namespace XHD.CRM.Data
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
                 string query = Common.PageValidate.InputText(request["keystr"], 250);
-                long start = long.Parse(Common.PageValidate.InputText(request["strstart"], 50)); 
-                int num = 6;
+                long start = long.Parse(Common.PageValidate.InputText(request["strstart"], 50));
+                int num = int.Parse(Common.PageValidate.InputText(request["searchnum"], 50)); 
+             
                 long cityId = long.Parse(Common.PageValidate.InputText(request["cityid"], 50));
                 if (appKey == null) context.Response.Write("请先配置参数！");
                 else
@@ -1144,6 +1160,7 @@ namespace XHD.CRM.Data
              BLL.CE_Para cp = new BLL.CE_Para();
              BLL.sys_info si = new BLL.sys_info();
              string host = si.GetList(" sys_key='sys_host'").Tables[0].Rows[0]["sys_value"].ToString();
+           
              DataSet ds = cp.GetSingleSignOnList("  a.id=" + id + " and B.uid='" + uid + "'", host);
              if (ds.Tables[0].Rows.Count > 0)
              {

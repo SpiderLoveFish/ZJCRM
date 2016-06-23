@@ -46,9 +46,9 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into WebSite_User(");
-			strSql.Append("userid,tel,pwd,dotime,nickname,birthday,sex,status,kjl_login)");
+            strSql.Append("userid,tel,pwd,dotime,nickname,birthday,sex,status,kjl_login,village)");
 			strSql.Append(" values (");
-			strSql.Append("@userid,@tel,@pwd,@dotime,@nickname,@birthday,@sex,@status,@kjl_login)");
+            strSql.Append("@userid,@tel,@pwd,@dotime,@nickname,@birthday,@sex,@status,@kjl_login,@village)");
 			strSql.Append(";select @@IDENTITY");
 			SqlParameter[] parameters = {
 					new SqlParameter("@userid", SqlDbType.VarChar,20),
@@ -59,7 +59,8 @@ namespace XHD.DAL
 					new SqlParameter("@birthday", SqlDbType.SmallDateTime),
 					new SqlParameter("@sex", SqlDbType.Char,1),
 					new SqlParameter("@status", SqlDbType.Char,1),
-					new SqlParameter("@kjl_login", SqlDbType.VarChar,20)};
+					new SqlParameter("@kjl_login", SqlDbType.VarChar,20),
+                    new SqlParameter("@village", SqlDbType.VarChar,50)};
 			parameters[0].Value = model.userid;
 			parameters[1].Value = model.tel;
 			parameters[2].Value = model.pwd;
@@ -68,7 +69,8 @@ namespace XHD.DAL
 			parameters[5].Value = model.birthday;
 			parameters[6].Value = model.sex;
 			parameters[7].Value = model.status;
-			parameters[8].Value = model.kjl_login;
+            parameters[8].Value = model.kjl_login;
+                parameters[9].Value = model.village;
 
 			object obj = DbHelperSQL.GetSingle(strSql.ToString(),parameters);
 			if (obj == null)
@@ -87,16 +89,21 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("update WebSite_User set ");
+            if (model.userid!="")
 			strSql.Append("userid=@userid,");
-			strSql.Append("tel=@tel,");
+            if (model.pwd != "")
 			strSql.Append("pwd=@pwd,");
 			strSql.Append("dotime=@dotime,");
+            if (model.nickname != "")
 			strSql.Append("nickname=@nickname,");
 			strSql.Append("birthday=@birthday,");
-			strSql.Append("sex=@sex,");
-			strSql.Append("status=@status,");
+            if (model.sex != "")
+			strSql.Append("sex=@sex,"); 
 			strSql.Append("kjl_login=@kjl_login");
-			strSql.Append(" where id=@id");
+            if (model.village != "")
+            strSql.Append(",village=@village");
+            strSql.Append(",status=@status");
+            strSql.Append(" where (id=@id or tel=@tel)");
 			SqlParameter[] parameters = {
 					new SqlParameter("@userid", SqlDbType.VarChar,20),
 					new SqlParameter("@tel", SqlDbType.VarChar,20),
@@ -107,6 +114,7 @@ namespace XHD.DAL
 					new SqlParameter("@sex", SqlDbType.Char,1),
 					new SqlParameter("@status", SqlDbType.Char,1),
 					new SqlParameter("@kjl_login", SqlDbType.VarChar,20),
+                    	new SqlParameter("@village", SqlDbType.VarChar,50),
 					new SqlParameter("@id", SqlDbType.Int,4)};
 			parameters[0].Value = model.userid;
 			parameters[1].Value = model.tel;
@@ -117,7 +125,8 @@ namespace XHD.DAL
 			parameters[6].Value = model.sex;
 			parameters[7].Value = model.status;
 			parameters[8].Value = model.kjl_login;
-			parameters[9].Value = model.id;
+            parameters[9].Value = model.village;
+			parameters[10].Value = model.id;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -181,7 +190,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 id,userid,tel,pwd,dotime,nickname,birthday,sex,status,kjl_login from WebSite_User ");
+            strSql.Append("select  top 1 id,userid,tel,pwd,dotime,nickname,birthday,sex,status,kjl_login,village from WebSite_User ");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)
@@ -249,6 +258,10 @@ namespace XHD.DAL
 				{
 					model.kjl_login=row["kjl_login"].ToString();
 				}
+                if (row["village"] != null)
+                {
+                    model.kjl_login = row["village"].ToString();
+                }
 			}
 			return model;
 		}
@@ -259,7 +272,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select id,userid,tel,pwd,dotime,nickname,birthday,sex,status,kjl_login ");
+            strSql.Append("select id,userid,tel,pwd,dotime,nickname,birthday,sex,status,kjl_login,village ");
 			strSql.Append(" FROM WebSite_User ");
 			if(strWhere.Trim()!="")
 			{
@@ -279,7 +292,7 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" id,userid,tel,pwd,dotime,nickname,birthday,sex,status,kjl_login ");
+            strSql.Append(" id,userid,tel,pwd,dotime,nickname,birthday,sex,status,kjl_login,village");
 			strSql.Append(" FROM WebSite_User ");
 			if(strWhere.Trim()!="")
 			{
@@ -363,6 +376,23 @@ namespace XHD.DAL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
+        
+		/// <summary>
+		/// 是否存在该记录
+		/// </summary>
+		public bool ExistsTel(string id)
+		{
+			StringBuilder strSql=new StringBuilder();
+			strSql.Append("select count(1) from WebSite_User");
+			strSql.Append(" where tel=@id");
+			SqlParameter[] parameters = {
+					new SqlParameter("@id", SqlDbType.VarChar,20)
+			};
+			parameters[0].Value = id;
+
+			return DbHelperSQL.Exists(strSql.ToString(),parameters);
+		}
+
 
 		#endregion  ExtensionMethod
 	}

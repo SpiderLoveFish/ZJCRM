@@ -19,7 +19,9 @@ namespace XHD.Model
 		private DateTime? _birthday;
 		private string _sex="M";
 		private string _status="Y";
-		private string _kjl_login="admin@mb.xczs.com";
+		private string _kjl_login;
+        private string _village; 
+
 		/// <summary>
 		/// 
 		/// </summary>
@@ -100,6 +102,13 @@ namespace XHD.Model
 			set{ _kjl_login=value;}
 			get{return _kjl_login;}
 		}
+
+        public string village
+		{
+            set { _village = value; }
+            get { return _village; }
+		}
+        
 		#endregion Model
 
 	}

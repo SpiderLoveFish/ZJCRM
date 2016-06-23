@@ -172,7 +172,10 @@ namespace XHD.BLL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
-
+        public bool ExistsTel(string tel)
+        {
+            return dal.ExistsTel(tel);
+        }
 		#endregion  ExtensionMethod
 	}
 }

@@ -70,7 +70,7 @@ z-index:2;
 .jpTit a.on i{position:absolute;left:0;top:-1px;width:100%;height:3px;background:#2e71b8;}
 .jpTit a.last{/*width:152px;*/border-right:none;}
 .jpCont{padding:10px 0;text-align:left;}
-.jpCont li{float: left;display:inline;width:542px;margin:30px 0 0 35px;}
+.jpCont li{float: left;display:inline;width:200px;margin:30px 0 0 35px;}
 .jpCont li .carImg{width:266px;height:178px;}
 .jpCont li .carTxt{width:273px;height:163px; border:1px solid #f0f0f0;border-left:none;position:relative;left:-7px;}
 .jpCont li .carTxt .c-txt{padding:15px 18px 0;}

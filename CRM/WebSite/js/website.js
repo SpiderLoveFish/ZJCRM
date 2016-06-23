@@ -37,7 +37,7 @@ function send(e) {
 
             }
             if (obj.returnsms.returnstatus == "Success") {
-                alert('发送成功。' + obj.returnsms.message);
+                alert('短信发送成功。注意查收！' + obj.returnsms.message);
             } else {
                 alert(obj.returnsms.message);
             }
