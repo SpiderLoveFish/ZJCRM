@@ -106,7 +106,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "save")
             {
               //唯一可能，2个FID全部为空，只有3D
-                int Customer_id = int.Parse(request["cid"]);
+                 int Customer_id = 0;
                 string fpId = PageValidate.InputText(request["fid"], 50);
                 string desid = PageValidate.InputText(request["desid"], 50);
                 string imgtype = PageValidate.InputText(request["imgtype"], 255);

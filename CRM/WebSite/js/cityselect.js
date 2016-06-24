@@ -87,7 +87,33 @@ Vcity._m = {
 
 /* 所有城市数据,可以按照格式自行添加（北京|beijing|bj），前16条为热门城市 */
 
-Vcity.allCity = ['新城域|xinchengyu|xcy','夏桥家园|xiaqiaojiayuan|xqjy'];
+Vcity.allCity = ['新城域|XinChengYu|XCY',
+'世茂碟湖湾|ShiMaoDieHuWan|SMDHW',
+'香溢紫郡|XiangIZiJun|XYYJ',
+'森隆满园|SenLongManYuan|SLMY',
+'柏丽湾|BaiLiWan|BLW',
+'中大未来城|ZhongDaWeiLaiCheng|YDWLC',
+'金塘园|JinTangYuan|JTY',
+'中兴国际广场|ZhongXinGuoJiGuangChang|YXGJGC',
+'裕花园|YuHuaYuan|YHY',
+'东外滩|DongWaiTan|DWT',
+'衡山城|HengShanCheng|HSC',
+'海上印象|HaiShangYinXiang|HSYX',
+'首创|ShouChuang|SC',
+'三水萧林|SanShuiXiaoLin|SSXL',
+'晒谷场|ShaiGuChang|SGC',
+'顺城明湾|ShunChengMingWan|SCMW',
+'中星城际广场|ZhongXingChengJiGuangChang|YXCJGC',
+'绿洲家园|LueZhouJiaYuan|LYJY',
+'绿地|LueDi|LD',
+'裕景园|YuJingYuan|YJY',
+'碧悦湾|BiYueWan|BYW',
+'柏丽湾|BaiLiWan|BLW',
+'中央时代社区|ZhongYangShiDaiSheQiu|YYSDSQ',
+'常发香城名湾|ChangFaXiangChengMingWan|CFXCMW',
+'中南世纪城|ZhongNanShiJiCheng|YNSJC',
+'巴比伦|BaBiLun|BBL',
+'枫景苑|FengJingYuan|FJY'];
 
 
 /* 正则表达式 筛选中文城市名、拼音、首字母 */

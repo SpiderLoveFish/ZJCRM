@@ -328,6 +328,9 @@
 
            <div class="yjxj clearfix left" action="/index/keyword/" method="post" enctype="multipart/form-data">     
  <input type="text" id="keyword" name="keyword" onkeyup="copyob1toob2()" placeholder="请输入小区名称" class="left" />
+                      <script type="text/javascript">
+                           var test = new Vcity.CitySelector({ input: 'keyword' });
+</script>
         <input type="button" value="搜 索"  onclick="search()" class="right" />
       </div>
       <div class="hotWords left dInline"> <a  onclick="more()">换一批</a> 热门小区：
@@ -391,8 +394,11 @@
    <img src="images/in1.png"/>
     <form class="clearfix" >
           
-      <input type="text" maxlength="" onkeyup="copyob1toob()" id="keyword1" name="keyword" placeholder="请输入小区名称" class="left" />
+      <input type="text" maxlength="" onkeyup="copyob1toob()" id="keyword1" name="keyword"  placeholder="请输入小区名称" class="left" />
       <input type="button" value=""  onclick="search()" class="right" />
+        <script type="text/javascript">
+            var test = new Vcity.CitySelector({ input: 'keyword1' });
+</script>
     </form>
 
    </div>
@@ -528,6 +534,7 @@
 
 <!--右侧内容的结束-->
 
+
 <!--会员登录和注册弹出框开始-->
 <div id="popBox">
   <div class="popCont"> <a class="p_closed">关闭</a>
@@ -545,19 +552,17 @@
               <input class="input" id="T_pwd" type="password" value="" maxlength="16"  name="password">
             </li>
           </ul>
-          <div class="login-check">
-            <input type="checkbox" id="ck" name="checkbox" style=" width:auto;" />
+          <!--<div class="login-check">
+            <input type="checkbox" name="checkbox" style=" width:auto;" />
             <label>记住我</label>
-            <%--<a href="#">忘记登录密码？</a> </div>--%>
+            <a href="#">忘记登录密码？</a> </div>-->
           <div class="login-button">
             <input type="hidden" value="" name="carid" class="ordercarid" />
             <input type="hidden" value="" name="carstatus" class="orderstatus" />
             <input type="button"  value="登&nbsp;&nbsp;&nbsp;&nbsp;陆" class="fM" onclick="ok()" />
-            
+             <span id="msg1"style="font-family:华文中宋; font-size:large; color:red; "></span>
                </div>
-               <span id="msg1"style="font-family:华文中宋; font-size:large; color:red; "></span>
-        </div>
-                <!--<div class="security-pro">
+          <!--<div class="security-pro">
 			            <i class="icons ver-green-down"></i>
 			            <b>您的信息已通过256位SGC加密保护，数据传输安全</b>
 			        </div>-->
@@ -579,15 +584,16 @@
             </li>
             <li class="clearfix">
               <label>姓&nbsp;&nbsp;名</label><input class="input" id="nickname" type="text" value=""  name="realname" placeholder="姓名" style="width:100px;">
-                <select class="input" name="makeid"  id="sex" placeholder="性别" style="width:140px; height:42px">
-                    <option  value="M" >男</option>
-                  <option value="F">女</option>
+                <select class="input" name="makeid"  id="Select1" placeholder="性别" style="width:140px; height:42px">
+                    <option value=""> 选择性别</option>
+                    <option value="男" >男</option>
+                  <option value="女">女</option>
                     
                   </select>
             </li>
          
               <li class="clearfix">
-             <label>小&nbsp;&nbsp;区</label><input id="txtxq" type="text" width="20" class="cityinput" id="citySelect" placeholder="请输入小区">
+             <label>小&nbsp;&nbsp;区</label><input type="text" width="20" class="cityinput" id="citySelect" placeholder="请输入小区">
 	
 	<!-- 以下仅测试IE6下的状况,不用管它 -->
 

@@ -245,6 +245,7 @@ namespace XHD.BLL
         {
             return dal.Getkjl_api_list(strWhere, uid);
         }
+       
         #endregion  ExtensionMethod
 	}
 }

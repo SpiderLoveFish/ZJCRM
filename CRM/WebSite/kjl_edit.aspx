@@ -131,32 +131,31 @@
                 success: function (responseText) {
                     // alert(responseText);
                     if (responseText == "true") {
-                        top.$.ligerDialog.closeWaitting();
+                       
                         //  f_reload();
                         // alert(JSON.stringify(data));
                         if (data.action === 'kjl_completed') {
                             // alert(JSON.stringify(data));
-                            window.opener = null;
-                            window.open('', '_self');
-                            window.close();
+                            top.opener = null;
+                            top.close()
                         }
                     }
 
                     else {
-                        top.$.ligerDialog.closeWaitting();
+                       
                         if (data.action === 'kjl_completed') {
                             // alert(JSON.stringify(data));
-                            window.opener = null;
-                            window.open('', '_self');
-                            window.close();
+                            top.opener = null;
+                            top.close()
                         }
-                        top.$.ligerDialog.error('±£¥Ê ß∞‹1£°');
-
+                       
                     }
                 },
                 error: function () {
-                    top.$.ligerDialog.closeWaitting();
-                    top.$.ligerDialog.error('±£¥Ê ß∞‹2£°', "", null, 9003);
+
+                    alert("±£¥Ê ß∞‹2");
+                    top.opener = null;
+                    top.close()
                 }
             });
 
@@ -197,7 +196,7 @@
                     },
                     error: function () {
 
-                        top.$.ligerDialog.error('±£¥Ê ß∞‹desid£°', "", null, 9003);
+                        alert("±£¥Ê ß∞‹desid");
                     }
                 });
             }
@@ -226,8 +225,7 @@
 
                     },
                     error: function () {
-
-                        top.$.ligerDialog.error('±£¥Ê ß∞‹fid£°', "", null, 9003);
+                        alert("±£¥Ê ß∞‹fid");
                     }
                 });
             }
