@@ -1,4 +1,4 @@
-body{background:#fff;color:#515256;font-family:'Microsoft Yahei';}
+body{background:#ddd;color:#515256;font-family:'Microsoft Yahei';}
 *{transition-delay:0ms;transition-timing-function:linear;transition-duration:260ms;transition-property:color,background-color,background-image,transform,rectangle;}
 body,html{-webkit-text-size-adjust:none;width:100%;min-width:1200px; }
 * html,* html body{background-image:url(about:blank);background-attachment:fixed;}

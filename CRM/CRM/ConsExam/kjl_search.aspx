@@ -66,7 +66,7 @@
                           alert("创建失败，请重新创建！" + copyid);
                           return;
                       }
-                      viewkjl('../../CRM/ConsExam/kjl_edit.aspx?fid=' + copyid + '&style=insert' + '&dest=2', "新增方案");
+                      viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&fid=' + copyid + '&style=insert' + '&dest=2', "新增方案");
  
                   },
                   error: function () {

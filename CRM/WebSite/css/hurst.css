@@ -1,4 +1,4 @@
-.mebBox{background:#fff url(../images/m_bg1.jpg) no-repeat center top;min-height:826px;}
+.mebBox{background:#fff url(../images/m_bg1.jpg) no-repeat center top;min-height:100%;}
 .meb-cont{padding-top:40px;}
 .meb-nav{width:194px;background:#fff;box-shadow:0 0 5px rgba(0,0,0,0.1);}
 .meb-nav li{height:56px;}

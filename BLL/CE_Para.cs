@@ -245,8 +245,14 @@ namespace XHD.BLL
         {
             return dal.Getkjl_api_list(strWhere, uid);
         }
-       
+
+
+
+        public bool Addkjl_list_text(string uid, int style, string userid, string text, string remarks)
+        {
+            return dal.Addkjl_list_text(uid,style,userid,text,remarks);
+        }
         #endregion  ExtensionMethod
-	}
+    }
 }
 

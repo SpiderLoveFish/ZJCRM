@@ -30,7 +30,7 @@
         var names = "";
 
         $(function () {
-            
+             
             //$('#j-fp-name').bind('input propertychange', function () {
             //    $('#name').val($(this).val());
             //});
@@ -127,33 +127,32 @@
                 data: datas,
                 success: function (responseText) {
                     // alert(responseText);
+                    // alert(responseText);
                     if (responseText == "true") {
-                        top.$.ligerDialog.closeWaitting();
+                       
                         //  f_reload();
                         // alert(JSON.stringify(data));
                         if (data.action === 'kjl_completed') {
                             // alert(JSON.stringify(data));
-                            window.opener = null;
-                            window.open('', '_self');
-                            window.close();
+                            top.opener = null;
+                            top.close()
                         }
                     }
 
                     else {
-                        top.$.ligerDialog.closeWaitting();
+                       
                         if (data.action === 'kjl_completed') {
                             // alert(JSON.stringify(data));
-                            window.opener = null;
-                            window.open('', '_self');
-                            window.close();
+                            top.opener = null;
+                            top.close()
                         }
-                        top.$.ligerDialog.error('±£¥Ê ß∞‹1£°');
-
                     }
                 },
                 error: function () {
-                    top.$.ligerDialog.closeWaitting();
-                    top.$.ligerDialog.error('±£¥Ê ß∞‹2£°', "", null, 9003);
+
+                    alert("±£¥Ê ß∞‹2");
+                    top.opener = null;
+                    top.close()
                 }
             });
 

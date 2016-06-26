@@ -24,8 +24,8 @@
 .thPic1{width:482px;}
 .thPic1 li{width:231px;height:231px;background:#fff;float:left;display:inline;margin-right:10px;margin-bottom:8px;}
 .thPic2{width:100%;}
-.thPic2 li{width:225px;height:231px;background:#fff;float:left;display:inline;margin-right:13px;margin-bottom:18px;}
-.car-pic {display: table-cell; width: 225px; height: 155px;vertical-align: middle;overflow: hidden}
+.thPic2 li{width:231px;height:231px;background:#fff;float:left;display:inline;margin-right:10px;margin-bottom:8px;}
+.car-pic {display: table-cell; width: 231px; height: 155px;vertical-align: middle;overflow: hidden}
 .car-pic img,.tBox{-webkit-transition: all 300ms ease; -moz-transition: all 300ms ease; -ms-transition: all 300ms ease;transition: all 300ms ease;}
 .car-pic img{ position: relative; left: 0;}
 .thPic1 li .price font{color:#666;}

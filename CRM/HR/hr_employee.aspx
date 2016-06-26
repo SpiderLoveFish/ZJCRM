@@ -183,6 +183,45 @@
             }
         }
 
+        function kjl()
+        {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                top.$.ligerDialog.waitting();
+                $.ajax({
+                    url: "../data/website.ashx", type: "POST",
+                    data: { Action: "getuserhxdata_tongbu", struid: row.uid, num: 999, rnd: Math.random() },
+                    success: function (responseText) {
+                        top.$.ligerDialog.closeWaitting();
+                        if (responseText == "true") {
+                           
+                        }
+                        $.ajax({
+                            url: "../data/website.ashx", type: "POST",
+                            data: { Action: "get3dlist_tongbu", struid: row.uid, num: 999, rnd: Math.random() },
+                            success: function (responseText) {
+                                top.$.ligerDialog.closeWaitting();
+                                if (responseText == "true") {
+                           
+                                }
+                        
+
+                            }, error: function () {
+                                top.$.ligerDialog.closeWaitting();
+                                top.$.ligerDialog.error('同步失败！', "", null, 9003);
+                            }
+                        });
+
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+                        top.$.ligerDialog.error('同步失败！', "", null, 9003);
+                    }
+                });
+            }
+        }
+
         function changepwd() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();

@@ -259,8 +259,7 @@
         function loginin(nickname)
         {
            // alert(nickname);
-            var html = '   当前城市：<input type="text" style="width:40px;" class="file" readonly="readonly"   id="inputcity"  value="苏州" > <input type="hidden" id="cityid" value="166" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '+
-                        ' 你好：' + nickname + '|<a href="#" id="b-tuichu">退出</a>|&nbsp;&nbsp;&nbsp;&nbsp;400-0512-004	';
+            var html =' 你好：' + nickname + '|<a href="#" id="b-tuichu">退出</a>|&nbsp;&nbsp;&nbsp;&nbsp;400-0512-004	';
             $('#rightMenuHtml').html(html);
             $('#popBox').fadeOut();
                
@@ -316,11 +315,11 @@
       <!--<a href="shfw.html">售后服务</a>-->
       <a id="MemberMenuChange" class="b-login" onclick="member()">个人中心</a>
       </div>
-
-     <span class="right" id="rightMenuHtml">
-              当前城市：<input type="text" style="width:40px;" class="file" readonly="readonly"   id="inputcity"  value="苏州" >
-     <input type="hidden" id="cityid" value="166" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="#" class="b-login" id="b-login">登录</a>|<a href="#" id="b-regist">注册</a>|&nbsp;&nbsp;&nbsp;&nbsp;400-0512-004		
+        当前城市：<input type="text" style="width:40px;" class="file" readonly="readonly"   id="inputcity"  value="苏州" >
+     <input type="hidden" id="cityid" value="166" />
+    <span class="right" id="rightMenuHtml">
+            
+				 <a href="#" class="b-login" id="b-login">登录</a>|<a href="#" id="b-regist">注册</a>|&nbsp;&nbsp;&nbsp;&nbsp;400-0512-004		
                 </span> </div>
   </div>
   <div class="head-search"> 
@@ -413,7 +412,9 @@
 <table width="100%" border="0">
   <tr>
       <td> <h1 class="left dInline"> 搜索户型结果 </h1></td>
+       
     <td><a  onclick="more()">换一批</a></td>
+      <td><a  onclick="more()">重新加载</a></td>
     <td><a  onclick="add()">自已画</a></td>
   </tr>
 </table>
@@ -430,6 +431,7 @@
             <div class="proMore"> <table width="100%" border="0">
   <tr>
     <td><a  onclick="more()">换一批</a></td>
+        <td><a  onclick="more()">重新加载</a></td>
     <td><a  onclick="add()">自已画</a></td>
   </tr>
 </table> </div>
@@ -500,7 +502,7 @@
 <!--底部的结束-->
 
 <!--右侧内容的开始-->
-<div id="miniBus" style="right:-280px;">
+<%--<div id="miniBus" style="right:-280px;">
 	<div class="mini-bar">
 		<div class="mini-barlist">
 			<ul>
@@ -530,7 +532,7 @@
 	<div class="mini-cont">
 	 </div>
 	 
-</div>
+</div>--%>
 
 <!--右侧内容的结束-->
 
@@ -624,7 +626,7 @@
 <script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"></script> 
 <script type="text/javascript" src="js/index.js"></script> 
 <!--右侧滑动-->
-<script type="text/javascript" src="js/miniBar.js"></script>
+<%--<script type="text/javascript" src="js/miniBar.js"></script>--%>
 <script type="text/javascript" src="js/lg_reg.js"></script>
 
 

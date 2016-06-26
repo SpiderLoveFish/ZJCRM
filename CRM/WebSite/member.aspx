@@ -42,7 +42,26 @@
 </head>
 <body>
  
-<div id="header">
+<div id="DIV1">
+	<div class="top">
+		<div class="wrap clearfix">
+			<a href="#" class="logo left"><img src="images/logo.png"/></a>
+			<div class="nav left dInline" id="Div2">
+          <a href="http://www.xczs.com">首页</a>
+      <a href="index.aspx">家装DIY</a>
+      <a href="#">看案例</a>
+                  <a id="MemberMenuChange" class="b-login" onclick="member()">会员中心</a>
+      </div>
+				<span class="right" id="rightMenuHtml">
+        <a href="#">登录</a>|<a href="#" id="b-tuichu">退出</a>|&nbsp;&nbsp;&nbsp;&nbsp;
+			</span>
+		</div>
+	</div>
+
+</div>
+
+<!--头部的结束-->
+<%--<div id="header">
  <div class="top">
     <div class="wrap clearfix"> <a href="#" class="logo left"><img src="images/logo.png"/></a>
       <div class="nav left dInline" id="headerMenu">
@@ -57,18 +76,15 @@
 		</div>
 	</div>
  
-</div>
+</div>--%>
 
-<div id="about">
-	<div class="mTags wrap">
-		<a href="#">心成装饰</a>><a href="#">会员中心</a>
-	</div>
+<div >
 	<div class="mebBox">
 		<div class="meb-cont clearfix wrap">
 			<div class="meb-nav left dInline">
 				<ul class="clearfix">
 					<li class="on"><a href="#">会员中心</a></li>
-                    <li ><a href="#">我的需求</a></li>
+                    <li ><a href="my_sj.html">我的方案</a></li>
           
                     <li><a href="memberEdit.aspx">账户管理</a></li>				
                 </ul>
@@ -85,6 +101,41 @@
     </div>
 </div>
 	 		</div>
+            <div class="mr-detail">
+					<div class="me-box">
+						<div class="mx-a">
+							<ul class="clearfix">
+								<li>
+									<img src="images/hu1.png"/>
+									<span>您目前有 <a href="my_sj.html"><b>1</b></a> 个装修方案</span>
+								</li>
+							</ul>
+						</div>
+						<div class="mx-b">
+							<ul>
+								<li class="clearfix">
+									<span class="left">
+										<img src="images/hu3.png"/>
+									</span>
+									<div class="mb-txt left dInline">
+										<h2>马上查看 <a href="my_sj.html">我的方案</a> </h2>
+										<p></p>
+									</div>
+								</li>
+								<!--<li class="clearfix last">
+									<span class="left">
+										<img src="images/hu4.png"/>
+									</span>
+									<div class="mb-txt left dInline">
+										<h2>您可以定制 <a href="#">到车通知</a> </h2>
+										<p>不想在每天数以万计的车源中错过自己满意的二手车吗？亿金收集您的需求，第一时间为您推送符合您的信息</p>
+									</div>
+								</li>-->
+							</ul>
+						</div>
+					</div>
+					
+				</div>
 		</div>
 	</div>
 </div>
@@ -92,52 +143,8 @@
 
 <!--底部的开始-->
 <div id="footer">
-  <div class="foot-a1">
-    <div class="wrap">
-      <ul class="clearfix">
-        
-      </ul>
-    </div>
-  </div>
   <div class="foot-a">
-    <div class="wrap clearfix">
-      <div class="fDl left dInline "> <strong>心成承诺</strong>
-        <ul>
-          <li><a href="#">质量保证</a></li>
-        </ul>
-      </div>
-      <div class="fDl left dInline "> <strong>装修指南</strong>
-        <ul>
-          <li><a href="#" target="_blank">五要素</a></li>
-          <li><a href="#" target="_blank">20年前开桑塔纳的大款们，</a></li>
-        </ul>
-      </div>
-      <div class="fDl left dInline "> <strong>售后服务</strong>
-        <ul>
-          <li><a href="#">24小时上门</a></li>
-          <li><a href="#">免费维修</a></li>
-        </ul>
-      </div>
-      <div class="fDl left dInline "> <strong>关于心成</strong>
-        <ul>
-          <li><a href="#" target="_blank">心成动态</a></li>
-          <li><a href="#" target="_blank">心成荣誉</a></li>
-          <li><a href="#" target="_blank">心成优势</a></li>
-          <li><a href="#" target="_blank">联系心成</a></li>
-          <li><a href="#" target="_blank">心成团队</a></li>
-        </ul>
-      </div>
-      <div class="fDl left dInline "> <strong>心成文化</strong>
-        <ul>
-          <li><a href="#">改变、规范、引领市场</a></li>
-          <li><a href="#">颠覆装修理念</a></li>
-        </ul>
-      </div>
-      <div class="fDl left dInline fDl1">
-        <div class="dLx"> <img src="images/dLx.jpg"/> </div>
-        <div style="height:50px;"></div>
-      </div>
-    </div>
+      <br />
   </div>
   <div class="foot-b"> Copyright © 2007 - 2016 昆山心成装饰设计工程有限公司 版权所有 苏ICP备09040162号 <br/>
  

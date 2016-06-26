@@ -613,6 +613,46 @@ namespace XHD.CRM.Data
                 }
 
             }
+            //获取用户下的户型图数据 同步
+            if (request["Action"] == "getuserhxdata_tongbu")
+            {
+                string struid = Common.PageValidate.InputText(request["struid"], 50);
+
+                string[] arr = para("13", struid);
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                long start = 0; int num = 2;
+                string strnum = Common.PageValidate.InputText(request["num"], 50);
+                num = int.Parse(strnum);
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+
+                    string planid = Common.PageValidate.InputText(request["fid"], 50);
+                    num = int.Parse(Common.PageValidate.InputText(request["num"], 50));
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                          .Append("?start=").Append(start)
+                         .Append("&num=").Append(num)
+                    .Append("&appkey=").Append(appKey)
+                      .Append("&appuid=").Append(userId)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign);
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    if (result != "request time out")
+                    {
+                        cp.Addkjl_list_text(struid, 1, userId, result, "");
+                        context.Response.Write("true");
+                    }
+                }
+
+            }
             //删除户型图
             if (request["Action"] == "delethxt")
             {
@@ -706,6 +746,68 @@ namespace XHD.CRM.Data
                 }
 
             }
+            // 全屋漫游图生成接口(tongbu 同步)
+            if (request["Action"] == "GETAPI_tongbu")
+            {
+                string struid = Common.PageValidate.InputText(request["struid"], 50);
+
+                string[] arr = para("10", struid);
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); ;//2分钟
+                    // 签名加密
+                    string picid = Common.PageValidate.InputText(request["picid"], 50);
+
+                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
+                    IDictionary<string, string> postdata = new Dictionary<string, string>();
+                    postdata.Add("appkey", appKey);
+                    postdata.Add("timestamp", timestamp); 
+                    postdata.Add("sign", sign);
+                    postdata.Add("picids", picid);
+                    postdata.Add("override", "true"); 
+
+                    //发送POST数据  
+                    StringBuilder buffer = new StringBuilder();
+                    if (!(postdata == null || postdata.Count == 0))
+                    {
+
+                        int i = 0;
+                        foreach (string key in postdata.Keys)
+                        {
+                            if (i > 0)
+                            {
+                                buffer.AppendFormat("&{0}={1}", key, postdata[key]);
+                            }
+                            else
+                            {
+                                buffer.AppendFormat("{0}={1}", key, postdata[key]);
+                                i++;
+                            }
+                        }
+                    }
+
+                    // 设置HTTP请求的参数，等同于以query string的方式附在URL后面
+                    //// API地址，生产环境域名对应为www.kujiale.com
+                    string api = arr[(int)paraenum.api];
+                    //// 构造HTTP请求
+               
+                    string result = "";
+
+                    result = HttpHelper_GetStr(api, "POST", buffer.ToString());
+
+                    if (result != "request time out")
+                    {
+                        cp.Addkjl_list_text(struid, 3, userId, result, picid);
+                        context.Response.Write("true");
+                    }
+                }
+
+            }
            // 全屋漫游图生成接口(未完成)
             if (request["Action"] == "GETAPI")
             {
@@ -720,20 +822,16 @@ namespace XHD.CRM.Data
                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     string timestamp = currenttimemillis.ToString(); ;//2分钟
                     // 签名加密
-                    string aa = "sdfaadsasdasd";
-                    string md5aa = MD5(aa).ToLower();
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string picid = Common.PageValidate.InputText(request["picid"], 50);
+
+                    string sign = MD5(appSecret + appKey + timestamp).ToLower();
                     IDictionary<string, string> postdata = new Dictionary<string, string>();
                     postdata.Add("appkey", appKey);
                     postdata.Add("timestamp", timestamp);
-                    postdata.Add("appuid", userId);
                     postdata.Add("sign", sign);
-                    postdata.Add("appuname", arr[(int)paraenum.userName]);
-                    postdata.Add("appuemail", arr[(int)paraenum.email]);
-                    postdata.Add("appuphone", arr[(int)paraenum.phone]);
-                    postdata.Add("appussn", arr[(int)paraenum.ssn]);
-                    postdata.Add("appuaddr", arr[(int)paraenum.address]);
-                    postdata.Add("appuavatar", arr[(int)paraenum.avatar]);
+                    postdata.Add("picids", picid);
+                    postdata.Add("override", "true"); 
+
 
                     //发送POST数据  
                     StringBuilder buffer = new StringBuilder();
@@ -932,6 +1030,49 @@ namespace XHD.CRM.Data
                     string result = "";
                     result = HttpGet(apiBuilder.ToString());
                     context.Response.Write(result);
+                }
+
+            }
+
+
+            //获取指定用户的3D方案列表,tongbu同步
+            if (request["Action"] == "get3dlist_tongbu")
+            {
+
+                string struid = Common.PageValidate.InputText(request["struid"], 50);
+                string[] arr = para("6", struid);
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    // Common.PageValidate.InputText(request["designId"], 50)
+                    long start = 0; int num = 100;
+                    string strnum = Common.PageValidate.InputText(request["num"], 50);
+                    num = int.Parse(strnum);
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); //2分钟
+                    // 签名加密
+                     
+                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api)
+                    .Append("?start=").Append(start)
+                    .Append("&num=").Append(num)
+                    .Append("&appkey=").Append(appKey)
+                    .Append("&appuid=").Append(userId)
+                    .Append("&timestamp=").Append(timestamp)
+                    .Append("&sign=").Append(sign);
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                   
+                    if (result != "request time out")
+                    {
+                        cp.Addkjl_list_text(struid, 0, userId, result, "");
+                        context.Response.Write("true");
+                    }
                 }
 
             }
@@ -1187,6 +1328,43 @@ namespace XHD.CRM.Data
 
              return arr;
          }
+
+
+         private string[] para_spec(string id, string uid)
+         {
+
+             string[] arr = new string[10];
+             BLL.CE_Para cp = new BLL.CE_Para();
+             BLL.sys_info si = new BLL.sys_info();
+             string host = si.GetList(" sys_key='sys_host'").Tables[0].Rows[0]["sys_value"].ToString();
+
+             DataSet ds = cp.GetSingleSignOnList("  a.id=" + id + " and B.uid='" + uid + "'", host);
+             if (ds.Tables[0].Rows.Count > 0)
+             {
+                 // 分配给每个商家的唯一的appkey和appsecret
+                 foreach (DataRow dr in ds.Tables[0].Rows)
+                 {
+
+                     arr[0] = dr["appKey"].ToString();
+                     arr[1] = dr["appSecret"].ToString();
+                     // 设定API文档中提到的参数
+                     arr[2] = dr["appuid"].ToString();
+                     arr[3] = dr["appuname"].ToString();
+                     arr[4] = dr["appuemail"].ToString();
+                     arr[5] = dr["appuphone"].ToString();
+                     arr[6] = dr["appussn"].ToString();
+                     arr[7] = dr["appuAddr"].ToString();
+                     arr[8] = dr["appuavatar"].ToString();
+                     arr[9] = dr["api"].ToString();
+                 }
+
+                 // DataRow[] rows = ds.Tables[0].Select("1=1");
+                 //arr = rows.Select(x => x[0].ToString()).ToArray();
+             }
+
+             return arr;
+         }
+
 
          protected enum paraenum
          {

@@ -689,6 +689,45 @@ namespace XHD.DAL
 
 
 
+        public bool Addkjl_list_text(string uid, int style, string userid, string text, string remarks)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine(" delete dbo.kjl_list_text  where uid='"+uid+"' and DoStyle="+style+"");
+            sb.AppendLine("INSERT INTO dbo.kjl_list_text ");
+            sb.AppendLine("        ( userid , ");
+            sb.AppendLine("          uid , ");
+            sb.AppendLine("          text , ");
+            sb.AppendLine("          dotime , ");
+            sb.AppendLine("          IsUse , ");
+            sb.AppendLine("          DoStyle , ");
+            sb.AppendLine("          Remarks ");
+            sb.AppendLine("        ) ");
+            sb.AppendLine("VALUES  ( '"+userid+"' , -- userid - varchar(50) ");
+            sb.AppendLine("          '"+uid+"' , -- uid - varchar(20) ");
+            sb.AppendLine("          '"+text+"' , -- text - text ");
+            sb.AppendLine("          getdate() , -- dotime - datetime ");
+            sb.AppendLine("          'N' , -- IsUse - char(1) ");
+            sb.AppendLine("          "+style+" , -- DoStyle - int ");
+            sb.AppendLine("          '"+remarks+"'  -- Remarks - varchar(100) ");
+            sb.AppendLine("        ) ");
+            sb.AppendLine(" ");
+            sb.AppendLine(" ");
+            sb.AppendLine(" ");
+            SqlParameter[] parameters = {
+                                       };
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+
 		#endregion  ExtensionMethod
 	}
 }

@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="css/jquery.fancybox-1.3.4.css">
+<meta charset="UTF-8">
+<title>心成装饰-家装DIY</title>
+<meta name="description" content="心成装饰-家装DIY"/>
+<meta name="keywords" content="心成装饰-家装DIY"> 
+<link rel="stylesheet" type="text/css" href="css/base.css">
+<link rel="stylesheet" type="text/css" href="css/layout.css">
+<link rel="stylesheet" type="text/css" href="css/sell.css">
+<link rel="stylesheet" type="text/css" href="css/alert.css">
+<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+
+
+<!--[if IE 6]>
+<script type="text/javascript" src="js/DD_belatedPNG.js"></script>
+<script>
+        DD_belatedPNG.fix('*');
+    </script>
+<![endif]--> 
+</head>                                        
+<body>
+<!--头部的开始-->
+<div id="header">
+	<div class="top">
+		<div class="wrap clearfix">
+			<a href="#" class="logo left"><img src="images/logo.png"/></a>
+			<div class="nav left dInline" id="headerMenu">
+      <a href="http://www.xczs.com">首页</a>
+      <a href="index.aspx">家装DIY</a>
+      <a href="#">看案例</a>
+      <!--<a href="shfw.html">售后服务</a>-->
+      <a id="MemberMenuChange" class="b-login" onclick="member()">会员中心</a>
+      </div>
+			<span class="right" id="rightMenuHtml">
+				<a href="#" class="b-login" id="b-login">登录</a>|<a href="#" id="b-regist">注册</a>|&nbsp;&nbsp;&nbsp;&nbsp;			</span>
+		</div>
+	</div>
+	<div class="head-search">
+		<div class="wrap clearfix">
+			<div class="yjxj clearfix left" action="/index/keyword/" method="post" enctype="multipart/form-data">
+        <input type="text" name="keyword" placeholder="请输入您想要方案名称或小区名称" class="left" />
+        <input type="submit" value="搜 索" class="right" />
+      </div>
+			<div class="hotWords left dInline">
+				搜索我的方案<a href="#"></a>     
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--头部的结束-->
+
+<style>
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {color: #000;}
+input:-moz-placeholder, textarea:-moz-placeholder {color:#000;}
+input::-moz-placeholder, textarea::-moz-placeholder {color:#000;}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {color:#000;}
+.select-item{margin-bottom: 25px;}
+</style>
+
+<div id="about">
+<div class="wrap">
+      <div class="in-tit clearfix">
+      <div class="inBox clearfix"></div>
+        <h1 class="left dInline">我的方案</h1>
+        <!--<div class="end-time right dInline">
+					距离结束只剩下<b>20</b>小时<b>50</b>分<b>18</b>秒
+				</div>--> 
+      </div>
+      <div class="inBox clearfix">
+        
+          <div class="thPic2 left dInline pve">
+            <ul class="clearfix">
+
+              <li class="pve"> <a href="#" target="_blank"> <span>新城域 1982-01-11</span>
+              <div class="car-pic"> <img src="http://qhyxpic.oss.kujiale.com/fpimgnew/2015/12/16/KZYTO5IKAEDPWA7OAAAAABY8448179biz_800x800.jpg@!160x160" /> </div>
+              <div class="price">  <span class="num nBlue">121.8㎡</span> <font>2室1厅1卫1厨</font> </div>
+              <p>方案名称</p>
+              </a></li>
+                
+                              <li class="pve"> <a href="#" target="_blank"> <span>新城域 1982-01-11</span>
+              <div class="car-pic"> <img src="http://qhyxpic.oss.kujiale.com/fpimgnew/2015/12/16/KZYTO5IKAEDPWA7OAAAAABY8448179biz_800x800.jpg@!160x160" /> </div>
+              <div class="price">  <span class="num nBlue">121.8㎡</span> <font>2室1厅1卫1厨</font> </div>
+              <p>方案名称</p>
+              </a></li>
+                                            <li class="pve"> <a href="#" target="_blank"> <span>新城域 1982-01-11</span>
+              <div class="car-pic"> <img src="http://qhyxpic.oss.kujiale.com/fpimgnew/2015/12/16/KZYTO5IKAEDPWA7OAAAAABY8448179biz_800x800.jpg@!160x160" /> </div>
+              <div class="price">  <span class="num nBlue">121.8㎡</span> <font>2室1厅1卫1厨</font> </div>
+              <p>方案名称</p>
+              </a></li>
+
+            </ul>
+</div>
+          <div class="pages"> <a class="on" href="#">1</a><a class="" href="#">2</a><a class="" href="#">3</a><a class="" href="#">4</a><a class="" href="#">5</a> <a href="#">>></a> <a href="#">32</a> </div>
+  </div>
+      
+  <div class="sellBox">
+		<div class="main-a">
+		</div>
+  </div>
+<div id="popBoxYzm" style="display:none">
+	<div class="popForm">
+    	<div class="p-detail">
+				<form action="" enctype="multipart/form-data" method="post" name="yzmcheck" id="yzmcheck">
+					 <ul class="login-items" style="width:100%">
+			            <li>
+			                <label>手机号/label>
+			                <input type="text" value="" maxlength="32"  name="mobile" id="shoujihao" style="width:120px">
+                            <input type="checkbox" name="remembermobile" style=" width:auto; margin:10px 20px 0" id="remembermobile" />
+			            	<label>记住此号</label>
+			            </li>
+			            <li>
+			                <label>验证码</label>
+			                <input type="text" value="" maxlength="16"  name="verify" id="yanzhengma" style="width:120px; margin-right:20px;">
+                            <img src="../../../Admin/Login/buildVerify.html" id="yzcode" width="100" height="42" alt="点击切换" onclick="this.src='../../../Admin/Login/buildVerify.html'">
+			            </li>
+			        </ul>
+			        <div class="login-button">
+			            <input type="button"  value="立即提交" class="fM" onclick="sendtosend()" style="line-height:20px" />
+			        </div>
+				</form>
+        </div>
+        <a class="closed">×</a>
+	</div>
+</div>
+<div style="display:none;">
+	<div id="showDiv">
+		<div class="guBox">
+			<h3>您的爱车</h3>
+			<p>欧蓝德(进口) 2014款欧蓝德(进口)2.4L四驱豪华超值版7座 </p>
+			<span>上牌时间：<font> 2014-12</font> </span><span>行驶里程： <font>1万公里</font></span>
+			<h3>评估价：<strong>￥18.14万</strong></h3>
+		</div>
+		<img src="images/jzgu.png" class="s_gu" />
+	</div>
+</div>
+<style type="text/css">
+.sa-list li{width:223px;}
+#showDiv{width:800px;height:270px;background:#fff;position:relative;}
+#showDiv .s_gu{position:absolute;right:20px;bottom:15px;}
+.guBox{padding:20px 30px 0 30px;font-size:20px;}
+.guBox h3{color:#000;font-weight: normal;margin-top:30px;font-size:20px;}
+.guBox h3 strong{font-weight: bold;color:#0756b5}
+.guBox p{color:#427dc6;font-weight: bold;padding:10px 0;}
+.guBox span{font-size:14px;display:inline-block;margin-right:15px;}
+.guBox span font{font-weight: bold;color:#437ec6;font-size:14px;}
+</style>
+</div>
+
+
+<div id="popBox">
+	<div class="popCont">
+		<a class="p_closed">关闭</a>
+		<div class="p-tab">
+			<a>会员登录<i></i></a><a>会员注册<i></i></a>
+		</div>
+		<div class="p-detail">
+			<div class="p-dl">
+				<form onsubmit="return check();" enctype="multipart/form-data" method="post" name="form" id="form">
+					 <ul class="login-items">
+			            <li>
+			                <label>用户名(手机号)</label>
+			                <input class="input" type="text" value="" maxlength="32"  name="username" placeholder="请输入您的手机号">
+			            </li>
+			            <li>
+			                <label>密码</label>
+			                <input class="input" type="password" value="" maxlength="16"  name="password">
+			            </li>
+			        </ul>
+			        <div class="login-check">
+			            <input type="checkbox" name="checkbox" style=" width:auto;" />
+			            <label>记住我</label>
+			            <a href="../../../Meet/editPass">忘记登录密码？</a>
+			        </div>
+			        <div class="login-button">
+                    	<input type="hidden" value="" name="carid" class="ordercarid" />
+                        <input type="hidden" value="" name="carstatus" class="orderstatus" />
+			            <input type="button"  value="登&nbsp;&nbsp;&nbsp;&nbsp;陆" class="fM" onclick="$('#form').submit()" />
+			        </div>
+			        <!--<div class="security-pro">
+			            <i class="icons ver-green-down"></i>
+			            <b>您的信息已通过256位SGC加密保护，数据传输安全</b>
+			        </div>-->
+				</form>
+			</div>
+			<div class="p-dl">
+				<form class="registForm" onsubmit="return regcheck();" enctype="multipart/form-data" method="post" name="reg" id="reg">
+					 <ul class="login-items">
+			            <li class="clearfix">
+			                <input class="input" name="mobile" id="mobile" type="text" value="" placeholder="手机号码（登录帐号）">
+			            </li>
+			            <li class="clearfix">
+			                <input class="input left" type="text" value=""  name="verify" placeholder="输入验证码" style="width:100px;" />
+			                <div id="send"><a href="#" class="send_code right">获取验证码</a></div>
+			            </li>
+			            <li class="clearfix">
+			                <input class="input" type="text" value=""  name="realname" placeholder="姓名">
+			            </li>
+			            <li class="clearfix sex">
+			                <input type="radio" checked="" name="gender" value="M" /> 男&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="gender" value="F" /> 女 
+			            </li>
+			            <li class="clearfix">
+			                <input id="" class="input" type="password" name="password" value="" placeholder="输入密码（六位字符）">
+			            </li>
+			        </ul>
+			      
+			        <div class="login-button">
+                    	<input type="hidden" value="" name="carid" class="ordercarid" />
+                        <input type="hidden" value="" name="carstatus" class="orderstatus" />
+			            <input type="button"  value="立即注册" class="fM" onclick="$('#reg').submit()" />
+			        </div>
+			      
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/lg_reg.js"></script>
+<!--<script type="text/javascript" src="js/borrow.js"></script>-->
+
+
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+       format: 'yyyy-mm',
+		language:"zh-CN",        
+		startView: 3,
+		minView: 3,
+		autoclose:true	
+
+    });
+</script>
+
+
+
+
+
+</body>
+</html>
