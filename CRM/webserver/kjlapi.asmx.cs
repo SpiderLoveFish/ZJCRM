@@ -11,6 +11,7 @@ using System.Net.Cache;
 using System.Security.Cryptography;
 using System.Data;
 using System.Text;
+using XHD.CRM.Data;
 
 namespace XHD.CRM.webserver
 {
@@ -27,6 +28,8 @@ namespace XHD.CRM.webserver
 
         BLL.CE_Para cp = new BLL.CE_Para();
         BLL.hr_employee emp = new BLL.hr_employee();
+        BLL.WebSite_User bwu = new BLL.WebSite_User();
+        Model.WebSite_User mwu = new Model.WebSite_User();
        // int emp_id = int.Parse(CoockiesID);
         //DataSet dsemp = emp.GetList("id=" + emp_id);
        // string empname = dsemp.Tables[0].Rows[0]["name"].ToString();
@@ -40,446 +43,111 @@ namespace XHD.CRM.webserver
             return "Hello World";
         }
 
-          [WebMethod]
-          public void GetMD5(string dest, string planid, string designid)
-                 {
-
-                 string[] arr = para("1", uid);
-                    string appKey =arr[(int)paraenum.appKey];
-                    string appSecret =arr[(int)paraenum.appSecret];
-                    string userId = arr[(int)paraenum.userId];
-                    string result = "";
-                    if (appKey == null)
-                    {
-                        result= "请先配置参数！" ;
-                    }
-                    else
-                    {
-                        object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                        string timestamp = currenttimemillis.ToString(); ;//2分钟
-                        // 签名加密
-                        string aa = "sdfaadsasdasd";
-                        string md5aa = MD5(aa).ToLower();
-                        string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
-                        IDictionary<string, string> postdata = new Dictionary<string, string>();
-                        postdata.Add("appkey", appKey);
-                        postdata.Add("timestamp", timestamp);
-                        postdata.Add("appuid", userId);
-                        postdata.Add("sign", sign);
-                        postdata.Add("appuname", arr[(int)paraenum.userName]);
-                        postdata.Add("appuemail", arr[(int)paraenum.email]);
-                        postdata.Add("appuphone", arr[(int)paraenum.phone]);
-                        postdata.Add("appussn", arr[(int)paraenum.ssn]);
-                        postdata.Add("appuaddr", arr[(int)paraenum.address]);
-                        postdata.Add("appuavatar", arr[(int)paraenum.avatar]);
-                        postdata.Add("apputype", "0");
-                        postdata.Add("dest", dest);
-                        postdata.Add("designid", designid);
-                        postdata.Add("planid", planid);
-                        //发送POST数据  
-                        StringBuilder buffer = new StringBuilder();
-                        if (!(postdata == null || postdata.Count == 0))
-                        {
-
-                            int i = 0;
-                            foreach (string key in postdata.Keys)
-                            {
-                                if (i > 0)
-                                {
-                                    buffer.AppendFormat("&{0}={1}", key, postdata[key]);
-                                }
-                                else
-                                {
-                                    buffer.AppendFormat("{0}={1}", key, postdata[key]);
-                                    i++;
-                                }
-                            }
-                        }
-
-                        // 设置HTTP请求的参数，等同于以query string的方式附在URL后面
-                        //// API地址，生产环境域名对应为www.kujiale.com
-                        string api = arr[(int)paraenum.api];
-                        //// 构造HTTP请求
-                        string test = "http://wwww.baidu.com";
-
-                    
-                        result = HttpHelper_GetStr(api, "POST", buffer.ToString());
-                       writereturnstr( result );
-                    }
-              
-            }
-
-
-        
-            //搜索户型图接口
-          [WebMethod]
-             public void gethxtapi(string query, string start, string cityId)
-            {
-
-                string[] arr = para("17", uid);
-                string appKey = arr[(int)paraenum.appKey];
-                string appSecret = arr[(int)paraenum.appSecret];
-                string userId = arr[(int)paraenum.userId];
-                   int num = 8;
-                   string result = "";
-                   if (appKey == null)
-                    {
-                        result= "请先配置参数！" ;
-                    }
-                else
-                {
-
-                    // Common.PageValidate.InputText(request["designId"], 50)
-
-                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                    string timestamp = currenttimemillis.ToString(); //2分钟
-                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
-                    string api = arr[(int)paraenum.api];
-                    StringBuilder apiBuilder = new StringBuilder();
-                    apiBuilder.Append(api)
-                    .Append("?appkey=").Append(appKey)
-                    .Append("&timestamp=").Append(timestamp)
-                    .Append("&sign=").Append(sign)
-                    .Append("&q=").Append(query)
-                    .Append("&start=").Append(start)
-                    .Append("&num=").Append(num)
-                    .Append("&cityid=").Append(cityId);
-                   
-                    result = HttpGet(apiBuilder.ToString());
-                    writereturnstr( result);
-                }
-
-            }
-            //获取酷家乐城市列表
-          [WebMethod]
-           public void  getcitylist()
-            {
-
-                string[] arr = para("16", uid);
-                string appKey = arr[(int)paraenum.appKey];
-                string appSecret = arr[(int)paraenum.appSecret];
-                string userId = arr[(int)paraenum.userId];
-                string result = "";
-                if (appKey == null)
-                    {
-                       result= "请先配置参数！" ;
-                    }
-                else
-                {
-
-                     // Common.PageValidate.InputText(request["designId"], 50)
-
-                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                    string timestamp = currenttimemillis.ToString(); //2分钟
-                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
-                    string api = arr[(int)paraenum.api];
-                    StringBuilder apiBuilder = new StringBuilder();
-                    apiBuilder.Append(api)
-                    .Append("?appkey=").Append(appKey)
-                    .Append("&timestamp=").Append(timestamp)
-                    .Append("&sign=").Append(sign) ;
-                
-                    result = HttpGet(apiBuilder.ToString());
-                  
-                }
-             writereturnstr(result);
-
-            }
-
-            //获取指定户型图的副本
-          [WebMethod]
-           public void getuserhxdatafb(string planid)
-            {
-
-                string[] arr = para("14", uid);
-                string appKey = arr[(int)paraenum.appKey];
-                string appSecret = arr[(int)paraenum.appSecret];
-                string userId = arr[(int)paraenum.userId];
-                string result = "";
-                if (appKey == null)
-                    {
-                        result= "请先配置参数！" ;
-                    }
-                else
-                {
- 
-                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                    string timestamp = currenttimemillis.ToString(); //2分钟
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
-                    string api = arr[(int)paraenum.api];
-                    StringBuilder apiBuilder = new StringBuilder();
-                    apiBuilder.Append(api)
-                       .Append("/" + planid)
-                         .Append("/copy")
-                    .Append("?appkey=").Append(appKey)
-                    .Append("&timestamp=").Append(timestamp)
-                    .Append("&sign=").Append(sign)
-                     .Append("&appuid=").Append(userId);
-                  
-                    result = HttpGet(apiBuilder.ToString());
-                    writereturnstr( result);
-                }
-
-            }
-
-            //获取用户下的户型图数据
-          [WebMethod]
-            public void  getuserhxdata(string planid,int num)
-            {
-
-                string[] arr = para("13", uid);
-                string appKey = arr[(int)paraenum.appKey];
-                string appSecret = arr[(int)paraenum.appSecret];
-                string userId = arr[(int)paraenum.userId];
-                long start = 0;
-                string result = "";
-              if (appKey == null)
-                    {
-                        result= "请先配置参数！" ;
-                    }
-                else
-                {
-
-                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                    string timestamp = currenttimemillis.ToString(); //2分钟
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
-                    string api = arr[(int)paraenum.api];
-                    StringBuilder apiBuilder = new StringBuilder();
-                    apiBuilder.Append(api)
-                          .Append("?start=").Append(start)
-                         .Append("&num=").Append(num)
-                    .Append("&appkey=").Append(appKey)
-                      .Append("&appuid=").Append(userId)
-                    .Append("&timestamp=").Append(timestamp)
-                    .Append("&sign=").Append(sign);
-       
-                    result = HttpGet(apiBuilder.ToString());
-                    writereturnstr(  result );
-                }
-
-            }
-          //获取指定户型的基本数据
-          [WebMethod]
-            public void getthebasicdata(string planid)
-            {
-
-                string[] arr = para("11", uid);
-                string appKey = arr[(int)paraenum.appKey];
-                string appSecret = arr[(int)paraenum.appSecret];
-                string userId = arr[(int)paraenum.userId];
-                string result = "";
-                if (appKey == null)
-                {
-                    result= "请先配置参数！";
-                }
-                else
-                {
-
-                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                    string timestamp = currenttimemillis.ToString(); //2分钟
-                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
-                    string api = arr[(int)paraenum.api];
-                    StringBuilder apiBuilder = new StringBuilder();
-                    apiBuilder.Append(api)
-                    .Append("/" + planid)
-                     .Append("/info")
-                    .Append("?appkey=").Append(appKey)
-                    .Append("&timestamp=").Append(timestamp)
-                    .Append("&sign=").Append(sign);
-                 
-                    result = HttpGet(apiBuilder.ToString());
-                   writereturnstr( "["+result+"]" );
-                }
-
-            }
-
-          //更新3D渲染方案的名字put
-          [WebMethod]
-            public void update3dname(string newName, string designId)
-            {
-
-                string[] arr = para("9", uid);
-                string appKey = arr[(int)paraenum.appKey];
-                string appSecret = arr[(int)paraenum.appSecret];
-                string userId = arr[(int)paraenum.userId];
-                string result = "";
-                if (appKey == null)
-                {
-                    result= "请先配置参数！";
-                }
-                else
-                {
-                
-                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                    string timestamp = currenttimemillis.ToString(); //2分钟
-                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
-                    string api = arr[(int)paraenum.api];
-                    StringBuilder apiBuilder = new StringBuilder();
-                    apiBuilder.Append(api)
-                    .Append("/" + designId)
-                    .Append("?appkey=").Append(appKey)
-                    .Append("&timestamp=").Append(timestamp)
-                    .Append("&sign=").Append(sign)
-                    .Append("&name=").Append(newName); ;
-                        result = HttpHelper_GetStr(apiBuilder.ToString(),"PUT",""); 
-                   writereturnstr( result) ;
-                }
-
-            }
-          //更新户型图名字put
-          [WebMethod]
-            public void updatehxtname(string newName, string planid)
-            {
-
-                string[] arr = para("15", uid);
-                string appKey = arr[(int)paraenum.appKey];
-                string appSecret = arr[(int)paraenum.appSecret];
-                string userId = arr[(int)paraenum.userId];
-                string result = "";
-                if (appKey == null)
-                {
-                    result= "请先配置参数！";
-                }
-                else
-                {
-                
-                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                    string timestamp = currenttimemillis.ToString(); //2分钟
-                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
-                    string api = arr[(int)paraenum.api];
-                    StringBuilder apiBuilder = new StringBuilder();
-                    apiBuilder.Append(api)
-                    .Append("/" + planid)
-                    .Append("?appkey=").Append(appKey)
-                    .Append("&timestamp=").Append(timestamp)
-                    .Append("&sign=").Append(sign)
-                    .Append("&name=").Append(newName); ;
-                     //result = HttpPut(apiBuilder.ToString());
-                    result = HttpHelper_GetStr(apiBuilder.ToString(),"PUT","");
-                    if(result=="success")
-                    cp.Updatekjl_api_name(planid,newName);
-                    writereturnstr( result) ;
-                }
-
-            }
-
-           //获取指定用户的3D方案列表
-          [WebMethod]
-           public void  get3dfalist(long start ,int num)
-            {
-
-                string[] arr = para("6", uid);
-                string appKey = arr[(int)paraenum.appKey];
-                string appSecret = arr[(int)paraenum.appSecret];
-                string userId = arr[(int)paraenum.userId];
-                string result = "";
-                if (appKey == null)
-                {
-                    result= "请先配置参数！";
-                }
-                else
-                {
-                     // Common.PageValidate.InputText(request["designId"], 50)
-                  //  long start = 0; int num = 2;
-                    
-                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                    string timestamp = currenttimemillis.ToString(); //2分钟
-                    // 签名加密
-                    string aa = "sdfaadsasdasd";
-                    string appUid = "1";
-                    string md5aa = MD5(aa).ToLower();
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
-                    string api = arr[(int)paraenum.api];
-                    StringBuilder apiBuilder = new StringBuilder();
-                    apiBuilder.Append(api)
-                    .Append("?start=").Append(start)
-                    .Append("&num=").Append(num)
-                    .Append("&appkey=").Append(appKey)
-                    .Append("&appuid=").Append(appUid)
-                    .Append("&timestamp=").Append(timestamp)
-                    .Append("&sign=").Append(sign);
-                     
-                    result = HttpGet(apiBuilder.ToString());
-                   writereturnstr(  result) ;
-                }
-
-            }
-          //获取指定方案的户型图
-          [WebMethod]
-           public void Gethxt(string designId)
-            {
-
-                string[] arr = para("3", uid);
-                string appKey = arr[(int)paraenum.appKey];
-                string appSecret = arr[(int)paraenum.appSecret];
-                string userId = arr[(int)paraenum.userId];
-                string result = "";
-                if (appKey == null)
-                {
-                    result= "请先配置参数！";
-                }
-                else
-                {
-                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                    string timestamp = currenttimemillis.ToString(); //2分钟
-                    // 签名加密
-                    string aa = "sdfaadsasdasd";
-                    string md5aa = MD5(aa).ToLower();
-                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
-                    string api = arr[(int)paraenum.api];
-                    StringBuilder apiBuilder = new StringBuilder();
-                    apiBuilder.Append(api)
-                         .Append("/"+designId)
-                        .Append("/planpic")//?starttime=
-                        // .Append((int.Parse(timestamp) - (300 * 24 * 3600 * 1000)).ToString())
-                    .Append("?appkey=").Append(appKey)
-                    .Append("&timestamp=").Append(timestamp)
-                    .Append("&sign=").Append(sign);
-                    
-                    result = HttpGet(apiBuilder.ToString());
-                     writereturnstr( result) ;
-                }
-
-            }
          
-          //获取指定方案的渲染图列表
           [WebMethod]
-           public void Getlist(string designId)
+          public void loginwebsite(string tel, string pwd)
+          {
+
+              DataSet ds = bwu.GetList(" pwd='" +MD5( pwd) + "' and userid='" + tel + "'");
+
+              string dt = Common.DataToJson.DataToJSON(ds);
+
+              writereturnstr("[" + dt + "]");
+
+          }
+          [WebMethod]
+          public void regebsite(string id,string tel, string pwd, string nickname, string xq,string sex)
+          {
+              BLL.sys_info si = new BLL.sys_info();
+              string host = si.GetList(" sys_key='sys_host'").Tables[0].Rows[0]["sys_value"].ToString();
+           
+              mwu.tel = tel;
+              mwu.pwd = pwd;
+              mwu.nickname = nickname;
+              mwu.sex = sex;
+              mwu.kjl_login = uid + "@" + host;
+              mwu.userid = tel;
+              mwu.village = xq;
+
+
+              mwu.status = "Y";
+             
+
+              if (!string.IsNullOrEmpty(id) && id != "null")
+              {
+
+                  mwu.id = int.Parse(id);
+                  if (bwu.Update(mwu))
+                      writereturnstr("true");
+                  else writereturnstr("false");
+              }
+              else
+              {
+                  if (bwu.ExistsTel(tel))
+                  {
+                      writereturnstr("false:tel");
+                  }
+                  else
+                  {
+                      if (bwu.Add(mwu) > 0)
+                          writereturnstr("true");
+                      else writereturnstr("false");
+                  }
+
+              }
+ 
+          }
+
+
+          [WebMethod]
+          public void savekjl(string uid,string fpId, string desid, string simg, string imgtype, string img, string style, string pano, string tel, string DyGraphicsName)
+          {
+
+              int Customer_id = 0;
+  
+              if (fpId == "null" || fpId == null) fpId = "";
+              if (desid == "null" || desid == null) desid = "";
+              if (style == "Edit")
+              {
+                  if (cp.Updatekjl_api(desid, Customer_id, fpId, DyGraphicsName, imgtype, simg, img, pano))
+                      writereturnstr("true");
+                  else writereturnstr("false");
+
+              }
+              else if (style == "insert")
+              {
+                  if (cp.Addkjl_api(desid, Customer_id, fpId, DyGraphicsName, imgtype, simg, img, pano, uid, 0, tel))
+                      writereturnstr("true");
+                  else writereturnstr("false");
+
+
+              }
+          }
+         [WebMethod]
+          public void GetSMS(string mobile, string YZM)
             {
 
-                string[] arr = para("27", uid);
-                    string appKey =arr[(int)paraenum.appKey];
-                    string appSecret =arr[(int)paraenum.appSecret];
-                    string userId = arr[(int)paraenum.userId];
-                    string result = "";
-                    if (appKey == null)
-                    {
-                        result= "请先配置参数！";
-                    }
-                    else
-                    {
-                         object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                        string timestamp = currenttimemillis.ToString(); //2分钟
-                        // 签名加密
-                        string aa = "sdfaadsasdasd";
-                        string md5aa = MD5(aa).ToLower();
-                        string sign = MD5(appSecret + appKey  + timestamp).ToLower();
-                        string api = arr[(int)paraenum.api];
-                        StringBuilder apiBuilder = new StringBuilder();
-                        apiBuilder.Append(api)
-                             .Append("/"+designId)
-                            .Append("/renderpics")//?starttime=
-                           // .Append((int.Parse(timestamp) - (300 * 24 * 3600 * 1000)).ToString())
-                        .Append("?appkey=").Append(appKey)
-                        .Append("&timestamp=").Append(timestamp)
-                        .Append("&sign=").Append(sign);
-                     
-                        result = HttpGet(apiBuilder.ToString());
-                        writereturnstr( result) ;
-                    }
-               
+                Data.sms sms = new Data.sms();
+                string mes = "您好，心成装饰给您发的验证码为" + YZM + "，请勿向任何单位或个人泄露。【心成装饰】";
+                string a = sms.SendSMS(false, "", mes, mobile);
+                //"{\"?xml\":{\"@version\":\"1.0\",\"@encoding\":\"utf-8\"},\"returnsms\":{\"returnstatus\":\"Success\",\"message\":\"ok\",\"remainpoint\":\"10196\",\"taskID\":\"302471\",\"successCounts\":\"1\"}}"; //
+              
+                writereturnstr(a);
             }
 
+         [WebMethod]
+         public void Getkjl_api(string mobile,int pageindex,int pagesize)
+         {
+             string Total;
+            int PageIndex = int.Parse(pageindex == null ? "1" : pageindex.ToString());
+            int PageSize = int.Parse(pagesize == null ? "10" : pagesize.ToString());
+            string   serchtxt  = " remarks = '" + mobile + "'";
+            string sorttext = "   DoTime desc";
+            DataSet ds = cp.GetListkjl_api(PageSize, PageIndex, serchtxt, sorttext, out Total);
+
+             string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+             writereturnstr(dt);
+         }
 
              private static string MD5(string input)
              {
@@ -488,8 +156,44 @@ namespace XHD.CRM.webserver
 
                  return b;
              }
+             [WebMethod]
+             public void Getsyskjl(string id,string kjluid)
+             {
+                 string struid = uid;
+                 if (!string.IsNullOrEmpty(id) && id != "null")
+                 {
+                     struid = kjluid;
+                 }
+                 string[] arr = new string[10];
+                 BLL.CE_Para cp = new BLL.CE_Para();
+                 BLL.sys_info si = new BLL.sys_info();
+                 string host = si.GetList(" sys_key='sys_host'").Tables[0].Rows[0]["sys_value"].ToString();
+                 DataSet ds = cp.GetSingleSignOnList("  a.id=" + id + " and B.uid='" + struid + "'", host);
+                 if (ds.Tables[0].Rows.Count > 0)
+                 {
+                     // 分配给每个商家的唯一的appkey和appsecret
+                     foreach (DataRow dr in ds.Tables[0].Rows)
+                     {
 
+                         arr[0] = dr["appKey"].ToString();
+                         arr[1] = dr["appSecret"].ToString();
+                         // 设定API文档中提到的参数
+                         arr[2] = dr["appuid"].ToString();
+                         arr[3] = dr["appuname"].ToString();
+                         arr[4] = dr["appuemail"].ToString();
+                         arr[5] = dr["appuphone"].ToString();
+                         arr[6] = dr["appussn"].ToString();
+                         arr[7] = dr["appuAddr"].ToString();
+                         arr[8] = dr["appuavatar"].ToString();
+                         arr[9] = dr["api"].ToString();
+                     }
 
+                     // DataRow[] rows = ds.Tables[0].Select("1=1");
+                     //arr = rows.Select(x => x[0].ToString()).ToArray();
+                 }
+                 string dt = Common.DataToJson.DataToJSON(ds);
+                 writereturnstr(dt);
+             }
              private string[] para(string id, string uid)
              {
 

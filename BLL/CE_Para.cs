@@ -246,7 +246,10 @@ namespace XHD.BLL
             return dal.Getkjl_api_list(strWhere, uid);
         }
 
-
+        public DataSet GetListkjl_api(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetListkjl_api(PageSize,PageIndex,strWhere,filedOrder,out Total);
+        }
 
         public bool Addkjl_list_text(string uid, int style, string userid, string text, string remarks)
         {

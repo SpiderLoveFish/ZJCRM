@@ -686,7 +686,27 @@ namespace XHD.DAL
             }
             return DbHelperSQL.Query(strSql.ToString());
         }
-
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        public DataSet GetListkjl_api(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + " * FROM kjl_api");
+            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM kjl_api ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(id) FROM  kjl_api");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
 
 
         public bool Addkjl_list_text(string uid, int style, string userid, string text, string remarks)
