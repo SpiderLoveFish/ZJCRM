@@ -73,10 +73,11 @@ namespace XHD.CRM.webserver
               mwu.status = "Y";
              
 
-              if (!string.IsNullOrEmpty(id) && id != "null")
+             // if (!string.IsNullOrEmpty(id) && id != "null")
+              if(id=="1")
               {
 
-                  mwu.id = int.Parse(id);
+                 //mwu.id = int.Parse(id);
                   if (bwu.Update(mwu))
                       writereturnstr("true");
                   else writereturnstr("false");
