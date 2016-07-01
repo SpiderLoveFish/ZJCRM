@@ -503,12 +503,12 @@ namespace XHD.CRM.Data
                     serchtxt += " and Emp_id_sj = " + int.Parse(request["employee_sj_val"]);
 
                 if (!string.IsNullOrEmpty(request["startdate"]))
-                    serchtxt += " and Create_date >= '" + PageValidate.InputText(request["startdate"], 255) + "'";
+                    serchtxt += " and a.Create_date >= '" + PageValidate.InputText(request["startdate"], 255) + "'";
 
                 if (!string.IsNullOrEmpty(request["enddate"]))
                 {
                     DateTime enddate = DateTime.Parse(request["enddate"]).AddHours(23).AddMinutes(59).AddSeconds(59);
-                    serchtxt += " and Create_date <= '" + enddate + "'";
+                    serchtxt += " and a.Create_date <= '" + enddate + "'";
                 }
 
                 if (!string.IsNullOrEmpty(request["startdate_del"]))

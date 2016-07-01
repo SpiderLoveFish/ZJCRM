@@ -61,17 +61,17 @@
                         }
                     }, 
                     { display: '楼盘地址', name: 'Address', width: 200, align: 'left' },
-                    { display: '建筑类别', name: 'Jzlb', width: 100, align: 'left' },
-                    { display: '容积率', name: 'Rjl', width: 60 },
-                    { display: '绿化率', name: 'Lhl', width: 60 },
-                    { display: '开盘时间', name: 'Kpsj', width: 100, align: 'left' },
-                    { display: '物业公司', name: 'Wygs', width: 100, align: 'left' },
-                    { display: '物业电话', name: 'Wydh', width: 80 },
-                    { display: '物业费', name: 'Wyf', width: 80 },
-                    { display: '售楼电话', name: 'Sldh', width: 80 },
-                    { display: '开发商', name: 'Kfs', width: 100, align: 'left' },
-                    { display: '交通状况', name: 'Jtzk', width: 200, align: 'left' },
-                    { display: '均价', name: 'Jj', width: 100 },
+                    //{ display: '建筑类别', name: 'Jzlb', width: 100, align: 'left' },
+                    //{ display: '容积率', name: 'Rjl', width: 60 },
+                    //{ display: '绿化率', name: 'Lhl', width: 60 },
+                    //{ display: '开盘时间', name: 'Kpsj', width: 100, align: 'left' },
+                    //{ display: '物业公司', name: 'Wygs', width: 100, align: 'left' },
+                    //{ display: '物业电话', name: 'Wydh', width: 80 },
+                    //{ display: '物业费', name: 'Wyf', width: 80 },
+                    //{ display: '售楼电话', name: 'Sldh', width: 80 },
+                    //{ display: '开发商', name: 'Kfs', width: 100, align: 'left' },
+                    //{ display: '交通状况', name: 'Jtzk', width: 200, align: 'left' },
+                    //{ display: '均价', name: 'Jj', width: 100 },
                     { display: '省份', name: 'Provinces', width: 80, align: 'left' },
                     { display: '城市', name: 'City', width: 80, align: 'left' },
                     { display: '区镇', name: 'Towns', width: 80, align: 'left' },
@@ -97,7 +97,7 @@
 
         function toolbar() {
             ////debugger;
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=5&rnd=" + Math.random(), function (data, textStatus) {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=179&rnd=" + Math.random(), function (data, textStatus) {
                 var items = [];
                 var arr = data.Items;
                 for (var i = 0; i < arr.length; i++) {

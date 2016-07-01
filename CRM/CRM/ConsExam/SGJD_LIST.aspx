@@ -11,14 +11,25 @@
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
 
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-   <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="../../lib/json2.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
+    <script src="../../lib/jquery.form.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+    <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script type="text/javascript">
         var manager = "";
         $(function () {
@@ -30,9 +41,17 @@
                        { return (page - 1) * pagesize + rowindex + 1; }
                    },
                     // { display: '客户编号', name: 'CustomerID', width: 50, align: 'left' },
-                      { display: '客户姓名', name: 'CustomerName', width: 80, align: 'left' },
-                       { display: '客户电话', name: 'tel', width: 100, align: 'left' },
-                        { display: '客户地址', name: 'address', width: 250, align: 'left' },
+                      { display: '姓名', name: 'CustomerName', width: 60, align: 'left' },
+                       {
+                           display: '电话', name: 'tel', align: 'left', width: 40, render: function (item) {
+                               var html = "<div class='abc'>";
+                               if (item.tel)
+                                   html += item.tel;
+                               html += "</div>";
+                               return html;
+                           }
+                       },
+                        { display: '客户地址', name: 'address', width: 150, align: 'left' },
                       { display: '施工监理', name: 'sgjl', width: 80, align: 'left' },
                         { display: '业务员', name: 'ywy', width: 80, align: 'left' },
                    // { display: '设计师', name: 'sjs', width: 120, align: 'left' },
@@ -66,10 +85,39 @@
                          return html;
                      }
                  },
+                  {
+                      display: '要求日期', name: 'Jh_date', width: 90, align: 'left', render: function (item) {
+                          return formatTimebytype(item.Jh_date, 'yyyy/MM/dd');
+                      }
+                  },
+                                             //{
+                                             //    display: '现状', name: 'Jh_date', width: 100, align: 'left', render: function (item) {
+                                             //        var html;
+                                             //        var myDate = new Date();
+                                             //        var days = getdays(formatTimebytype(item.Jh_date, 'yyyy/MM/dd'), myDate);
+                                             //        days = -days;
+                                             //        if (days < 0)
+                                             //            html = "<span  class='gj'> 拖期 " + days * -1 + " 天</span>";
+                                             //        else
+                                             //            html = "<span  class='blue'>剩余 " + days + " 天</span>";
+
+
+
+
+                                             //        return html;
+                                             //    }
+                                             //},
                         { display: '状态', name: 'Stage_icon', width: 80, align: 'left' },
-                { display: '备注', name: 'Remarks', width: 200, align: 'left' }
+                { display: '备注', name: 'Remarks', width: 100, align: 'left' }
 
                 ],
+                onAfterShowData: function (grid) {
+                    $(".abc").hover(function (e) {
+                        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                    }, function (e) {
+                        $(this).ligerHideTip(e);
+                    });
+                },
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],

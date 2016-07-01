@@ -12,15 +12,27 @@
     <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
 
+   
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-   <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="../../lib/json2.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
+    <script src="../../lib/jquery.form.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+        <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script type="text/javascript">
         var manager = "";
         $(function () {
@@ -30,12 +42,20 @@
                          display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                          { return (page - 1) * pagesize + rowindex + 1; }
                      },
-                      { display: '预算编号', name: 'id', width: 150, align: 'left' },
-                          { display: '预算名称', name: 'BudgetName', width: 150, align: 'left' },
-                      { display: '客户姓名', name: 'CustomerName', width: 80, align: 'left' },
-                       { display: '客户电话', name: 'tel', width: 100, align: 'left' },
+                      { display: '预算编号', name: 'id', width: 100, align: 'left' },
+                          { display: '预算名称', name: 'BudgetName', width: 120, align: 'left' },
+                      { display: '姓名', name: 'CustomerName', width: 60, align: 'left' },
+                      {
+                          display: '电话', name: 'tel', align: 'left', width: 40, render: function (item) {
+                              var html = "<div class='abc'>";
+                              if (item.tel)
+                                  html += item.tel;
+                              html += "</div>";
+                              return html;
+                          }
+                      },
                         { display: '客户地址', name: 'address', width: 200, align: 'left' },
-                   { display: '预算金额', name: 'BudgetAmount', width: 80, align: 'left' },
+                   { display: '金额', name: 'BudgetAmount', width: 60, align: 'left' },
 
                       {
                           display: '状态', name: 'txtstatus', width: 60, align: 'left', render: function (item) {
@@ -59,9 +79,16 @@
                             }
                         },
                         { display: '设计师', name: 'sjs', width: 80, align: 'left' },
-                { display: '备注', name: 'Remarks', width: 200, align: 'left' }
+                { display: '备注', name: 'Remarks', width: 100, align: 'left' }
 
                 ],
+                onAfterShowData: function (grid) {
+                    $(".abc").hover(function (e) {
+                        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                    }, function (e) {
+                        $(this).ligerHideTip(e);
+                    });
+                },
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
@@ -98,6 +125,20 @@
                     items.push(arr[i]);
                 }
                 items.push({
+                    type: 'textbox',
+                    id: 'keyword1',
+                    text: ''
+                });
+                items.push({
+                    type: 'button',
+                    text: '搜索',
+                    icon: '../../images/search.gif',
+                    disable: true,
+                    click: function () {
+                        doserch()
+                    }
+                });
+                items.push({
                     type: 'serchbtn',
                     text: '高级搜索',
                     icon: '../../images/search.gif',
@@ -115,6 +156,7 @@
                 });
 
                 $("#maingrid4").ligerGetGridManager().onResize();
+                $("#keyword1").ligerTextBox({ width: 200, nullText: "输入关键词搜索" })
             });
         }
 
