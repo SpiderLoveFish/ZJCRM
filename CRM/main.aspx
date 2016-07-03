@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>六家居装修企业客户管理系统</title>
+    <title>山山装饰企业ERP系统</title>
     <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
 
     <link href="lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
@@ -247,7 +247,7 @@
                     { id: 'filter-help', title: '系统帮助', bodyStyle: 'filter-help', handler: function () { f_addTab('help', '系统帮助', 'crm/help/help_share.aspx') } },
                     { id: 'filter-sett', title: '个人设置', bodyStyle: 'filter-person', handler: function () { personalinfoupdate() } },
                     { id: 'filter-sett', title: '修改密码', bodyStyle: 'filter-sett', handler: function () { changepwd() } },
-                    { id: 'filter-kjl', title: '酷家乐', bodyStyle: 'filter-kjl', handler: function () { show_kjl() } },
+                   // { id: 'filter-kjl', title: '酷家乐', bodyStyle: 'filter-kjl', handler: function () { show_kjl() } },
                     //{ id: 'filter-theme', title: '系统信息', bodyStyle: 'filter-theme', handler: function () { show_welcome(1) } },
                     { id: 'filter-out', title: '退出系统', bodyStyle: 'filter-out', handler: function () { logout() } }
                 ]
@@ -549,7 +549,7 @@
             </div>
             <div position="bottom">
 
-                六家居装修企业客户管理系统&nbsp;&nbsp;技术支持&nbsp;QQ:4013473&nbsp;&nbsp;业务咨询&nbsp;QQ:320186500&nbsp;微信:xczsyxs
+                山山装饰企业ERP系统&nbsp;&nbsp;技术支持&nbsp;QQ:4013473&nbsp;&nbsp;业务咨询&nbsp;QQ:175556055&nbsp;微信:xczsyxs
             </div>
         </div>
     </form>

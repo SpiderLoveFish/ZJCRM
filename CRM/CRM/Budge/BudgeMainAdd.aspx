@@ -42,7 +42,7 @@
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
         var manager = ""; var g;
-        var treemanager,gcomb;
+        var treemanager, gcomb;
         $(function () {
             var urlstr = "";
             $.metadata.setType("attr", "validate");
@@ -51,10 +51,10 @@
             $("form").ligerForm();
             if (getparastr("bid") != null) {
                 $("#qdkh").attr("style", "display:none");
-                 
+
                 loadForm(getparastr("bid"));
                 urlstr = '../../data/Budge.ashx?Action=tree&bid=' + getparastr("bid") + '&rnd=' + Math.random();
-            //审核，失效或者编辑时，已经提交
+                //审核，失效或者编辑时，已经提交
                 if (getparastr("style") != null || getparastr("status") == "1")
                     InitButton();
                 else {
@@ -65,18 +65,18 @@
                 $("#divcenter").addClass("l-window-mask");
                 $("#tr2").hide();
                 $("#tr_contact4").hide();
-                  $("#selecbj").addClass("l-window-mask");
+                $("#selecbj").addClass("l-window-mask");
                 urlstr = '../../data/Budge.ashx?Action=tree&rnd=' + Math.random();
-                 var myDate = new Date();
+                var myDate = new Date();
 
-                 gcomb = $('#T_company').ligerComboBox({ width: 180, onBeforeOpen: f_selectContact });
-                 toolbar();
+                gcomb = $('#T_company').ligerComboBox({ width: 180, onBeforeOpen: f_selectContact });
+                toolbar();
             }
 
-          
-          
+
+
             $("#layout1").ligerLayout({ leftWidth: 150, allowLeftResize: false, allowLeftCollapse: true, space: 2, heightDiff: -1 });
- 
+
             $("#tree1").ligerTree({
                 url: urlstr,
                 onSelect: onSelect,
@@ -102,13 +102,13 @@
 
                 }
             });
-         
-          var  menutree = $.ligerMenu({
+
+            var menutree = $.ligerMenu({
 
                 top: 100, left: 100, width: 120, items:
 
                 [
- 
+
                 { text: '删除部件', click: removeTreeItem }
 
                 ]
@@ -123,60 +123,73 @@
             });
 
 
-         g= $("#maingrid4").ligerGrid({
+            g = $("#maingrid4").ligerGrid({
                 columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
-                  
+
                     { display: '名称', name: 'product_name', width: 120 },
-                     { display: '部位', name: 'ComponentName', width: 80 },
+                     { display: '部位', name: 'ComponentName', width: 50 },
 
                     { display: '类别', name: 'Cname', width: 120 },
                      {
-                         display: '单价', name: 'TotalPrice', type: 'float', width: 60, align: 'right'
+                         display: '单价', name: 'TotalPrice', type: 'float', width: 50, align: 'right'
                      },
-                     
-                        {
-                            display: '数量', name: 'SUM', width: 120, align: 'left'
-                            , type: 'float', editor: { type: 'float' },
-                            totalSummary:
-                            {
-                                type: 'sum'
-                            }
 
+                    {
+                        display: "数量", name: "SUM", type: "float", isAllowHide: false, align: "right", width: 60,
+                        editor: { type: "spinner" },
+                        totalSummary: {
+                            //type:'sum,count,max,min,avg'
+                            render: function (suminf, column) {
+                                return "<span style='color:red'>" + suminf.sum.toFixed(2) + "</span>";
+                            }
+                        }
+                    },
+                        {
+                            display: "金额", name: "je", type: "float", isAllowHide: false, align: "right", width: 60,
+                            editor: { type: "spinner" },
+                            totalSummary: {
+                                //type:'sum,count,max,min,avg'
+                                render: function (suminf, column) {
+                                    return "<span style='color:red'>" + suminf.sum.toFixed(2) + "</span>";
+                                }
+                            }
                         },
-                         {
-                             display: '金额', name: 'je', type: 'float', width: 100, align: 'right',
-                             totalSummary:
-                             {
-                                 type: 'sum'
-                             }
-                         },
+                         
 
                      {
-                         display: '折扣',   name: 'Discount', width: 80, align: 'right',
+                         display: '折扣', name: 'Discount', width: 30, align: 'right',
                          type: 'float'
                      },
-                       {
-                           display: '折后金额',  name: 'zkje', width: 100, align: 'right',
-                           type: 'float',
-                           totalSummary:
-                           {
-                               type: 'sum'
-                           }
-                       },
-                   
+                        {
+                            display: "折后金额", name: "zkje", type: "float", isAllowHide: false, align: "right", width: 60,
+                            editor: { type: "spinner" },
+                            totalSummary: {
+                                //type:'sum,count,max,min,avg'
+                                render: function (suminf, column) {
+                                    return "<span style='color:red'>" + suminf.sum.toFixed(2) + "</span>";
+                                }
+                            }
+                        },
+                      
                     { display: '单位', name: 'unit', width: 40 },
                      { display: '类型', name: 'C_style', width: 40 },
                         {
-                            display: '备注', name: 'Remarks', align: 'left', width: 400, render: function (item) {
+                            display: '备注', name: 'Remarks', align: 'left', width: 175, render: function (item) {
                                 var html = "<div class='abc'>";
                                 if (item.Remarks)
                                     html += item.Remarks;
                                 html += "</div>";
                                 return html;
                             }
-                        }
-                 
+                        },
+                         {
+                             display: '图文', width: 40, render: function (item) {
+                                 var html = "<a href='javascript:void(0)' onclick=view(" + item.xmid + ")>查看</a>"
+                                 return html;
+                             }
+                         }
+
                 ],
                 dataAction: 'server',
                 url: "../../data/Budge.ashx?Action=griddetail&bid=" + $("#T_budgeid").val() + "&compname=0&rnd=" + Math.random(),
@@ -186,7 +199,7 @@
                 height: '100%',
                 heightDiff: -1,
                 enabledEdit: true,
-                allowHideColumn:true,
+                allowHideColumn: true,
                 onBeforeEdit: f_onBeforeEdit,
                 onBeforeSubmitEdit: f_onBeforeSubmitEdit,
                 onAfterEdit: f_onAfterEdit,
@@ -197,7 +210,7 @@
                 //        $(this).ligerHideTip(e);
                 //    });
                 //},
-                onAfterShowData:ishidecol,
+                onAfterShowData: ishidecol,
                 //checkbox: true, name: "ischecked", checkboxAll: false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
                 onContextmenu: function (parm, e) {
                     actionproduct_id = parm.data.id;
@@ -205,11 +218,11 @@
                     return false;
                 }
             });
-          
-         $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
 
-      
-            
+            $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
+
+
+
         })
 
 
@@ -229,7 +242,7 @@
                                 if (responseText == "true") {
                                     top.$.ligerDialog.closeWaitting();
                                     treemanager.remove(node.target);
-                                    
+
                                     fload();
                                 }
 
@@ -245,33 +258,30 @@
                         });
                     }
                 })
-               
-                    }
-                    else
-                    {
-                        alert('请先选择节点');
-                    }
 
-                    
+            }
+            else {
+                alert('请先选择节点');
+            }
+
+
         }
 
 
-        function InitButton()
-        {
-           
+        function InitButton() {
+
             $(".l-button").each(function () {
                 $(this).css('background', 'none')
                 $(this).css('color', '#666')
                 $(this).removeAttr('onclick');
-            
+
             });
-          
+
 
         }
 
-        function ishidecol()
-        {
-   
+        function ishidecol() {
+
         }
 
         //只允许编辑前3行
@@ -293,16 +303,16 @@
         //编辑后事件 
         function f_onAfterEdit(e) {
             if (e.column.name == "SUM") {
-               
+
                 var manager = $("#maingrid4").ligerGetGridManager();
                 var row = manager.getSelectedRow();
 
                 if (row) {
                     $.ajax({
                         url: "../../data/Budge.ashx", type: "POST",
-                        data: { Action: "saveupdatesum", bid: $("#T_budgeid").val() , id: row.id, editsum: e.value, rnd: Math.random() },
+                        data: { Action: "saveupdatesum", bid: $("#T_budgeid").val(), id: row.id, editsum: e.value, rnd: Math.random() },
                         success: function (responseText) {
-                    
+
                             if (responseText == "true") {
                                 top.$.ligerDialog.closeWaitting();
                                 fload();
@@ -323,7 +333,7 @@
 
         function onSelect(note) {
             var manager = $("#maingrid4").ligerGetGridManager();
-          
+
             manager.showData({ Rows: [], Total: 0 });
             var url = "../../data/Budge.ashx?Action=griddetail&bid=" + $("#T_budgeid").val() + "&compname=" + escape(note.data.text) + "&rnd=" + Math.random();
             manager.GetDataByURL(url);
@@ -339,7 +349,7 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-  
+
                 $("#toolbar").ligerToolBar({
                     items: items
 
@@ -348,7 +358,7 @@
                     width: 120, items: getMenuItems(data)
                 });
 
-                 $("#maingrid4").ligerGetGridManager().onResize();
+                $("#maingrid4").ligerGetGridManager().onResize();
             });
         }
 
@@ -367,7 +377,7 @@
             top.$.ligerDialog.open({
                 zindex: 9003,
                 title: '选择项目', width: 850, height: 400,
-                url: "CRM/Budge/SelectProduct.aspx?bid=" + getparastr("bid")+'&compname=' + escape(compname), buttons: [
+                url: "CRM/Budge/SelectProduct.aspx?bid=" + getparastr("bid") + '&compname=' + escape(compname), buttons: [
                     { text: '确定(F2)', onclick: f_selectProductOK },
                     { text: '取消', onclick: f_selectContactCancel }
                 ]
@@ -409,7 +419,7 @@
             else {
                 $.ligerDialog.warn('请选择部件！');
             }
-            f_openWindowselect("../../crm/product/product_add.aspx?type=Selectbudge&id=" + getparastr("bid")+"&compname=" + escape(compname) , "新增材料档案", 800, 500);
+            f_openWindowselect("../../crm/product/product_add.aspx?type=Selectbudge&id=" + getparastr("bid") + "&compname=" + escape(compname), "新增材料档案", 800, 500);
 
 
         }
@@ -440,8 +450,7 @@
 
             }
         }
-        function f_selectProductOK(item, dialog)
-        {
+        function f_selectProductOK(item, dialog) {
             if ($("#T_companyid").val() == "") {
                 $.ligerDialog.error("请选择一个有效的客户！！！");
                 return;
@@ -450,14 +459,14 @@
             var compname = "";
             if (notes != null && notes != undefined) {
                 // notes.data.id
-               
+
                 compname = notes.data.text;
             }
             else {
                 $.ligerDialog.warn('请选择部件！');
             }
             var rows = null;
-         
+
             if (!dialog.frame.f_select()) {
                 alert('请选择行!');
                 return;
@@ -470,15 +479,14 @@
 
                 }
                 var url = '../../data/Budge.ashx?Action=savedetailadd&bid=' + $("#T_budgeid").val() + "&xmlist=" + pid + '&compname=' + escape(compname) + '&rdm=' + Math.random();
-                dosave(url,dialog);
+                dosave(url, dialog);
             }
         }
 
         function edit() {
-           // f_openWindow("crm/Budge/BudgeMainAdd.aspx", "新增客户", 1100, 660);
+            // f_openWindow("crm/Budge/BudgeMainAdd.aspx", "新增客户", 1100, 660);
         }
-        function dosave(saveurl, dialog)
-        {
+        function dosave(saveurl, dialog) {
             $.ajax({
                 type: 'post',
                 url: saveurl,
@@ -525,9 +533,9 @@
                 $.ligerDialog.warn("请选择类别！");
             }
         }
-      
+
         function loadForm(oaid) {
-             $.ajax({
+            $.ajax({
                 type: "GET",
                 url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
                 data: { Action: 'form', bid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
@@ -539,11 +547,11 @@
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
                     }
-                   // alert(obj.CustomerID); //String 构造函数
+                    // alert(obj.CustomerID); //String 构造函数
                     $("#T_companyid").val(obj.CustomerID);
-                    $("#T_company").val(obj.CustomerName + "("+obj.address+")");
+                    $("#T_company").val(obj.CustomerName + "(" + obj.address + ")");
                     $("#T_budge_name").val(obj.BudgetName);
-                    $("#T_zje").val(obj.zje);
+                    $("#T_zje").val(obj.zje + obj.fjfy);
                     $("#T_zje2").val(obj.JJAmount);
                     $("#T_zje3").val(obj.ZCAmount);
                     $("#T_fjje").val(obj.fjfy);
@@ -553,25 +561,24 @@
                     $("#T_budgeid").val(obj.id);
                     $("#T_employee").val(obj.ywy);
                     $("#T_employee2").val(obj.sjs);
-                  
-                    if (obj.DetailDiscount != 1)
-                    {
+
+                    if (obj.DetailDiscount != 1) {
                         // alert(obj.DetailDiscount);
-                      
+
 
                         $("#T_zk").val(obj.DetailDiscount);
-                      
+
                     }
-                   
+
                 }
             });
         }
-         
+
         function f_selectContact() {
             top.$.ligerDialog.open({
                 zindex: 9003,
                 title: '选择客户', width: 850, height: 400,
-               
+
                 //url: " hr/Getemp_Auth.aspx?auth=1", buttons: [
                 url: "CRM/Budge/SelectBudgeCustomer.aspx", buttons: [
                     { text: '确定', onclick: f_selectContactOK },
@@ -580,10 +587,10 @@
             });
             return false;
         }
-        
+
         function f_selectContactOK(item, dialog) {
             //var data = dialog.frame.f_select();
-            var fn =  dialog.frame.f_select;           
+            var fn = dialog.frame.f_select;
             var data = fn();
             if (!data) {
                 alert('请选择一个有效客户!');
@@ -596,15 +603,15 @@
             dialog.close();
         }
         function getmaxid() {
-           
+
             $.ajax({
                 type: "get",
                 url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
-                data: { Action: 'getmaxid',  rnd: Math.random() }, /* 注意参数的格式和名称 */
+                data: { Action: 'getmaxid', rnd: Math.random() }, /* 注意参数的格式和名称 */
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
-                   
+
                     var obj = eval(result);
                     for (var n in obj) {
                         if (obj[n] == "null" || obj[n] == null)
@@ -624,19 +631,19 @@
             dialog.close();
             fload();
         }
-        function fillemp(id, tel, emp, sgjl, sjs, ywy, sjsid, sgjlid, ywyid,jhdate) {
+        function fillemp(id, tel, emp, sgjl, sjs, ywy, sjsid, sgjlid, ywyid, jhdate) {
             $("#T_companyid").val(id);
             $("#T_company").val(emp);
             $("#T_budge_name").val(tel);
-           
+
 
             $("#T_remarks").val("");
-         
 
-        
+
+
         }
-        
-         
+
+
         function addcustomer() {
             if ($("#T_companyid").val() == "") {
                 $.ligerDialog.error("请选择一个有效的客户！！！");
@@ -646,8 +653,7 @@
                 type: 'post',
                 url: "../../data/Budge.ashx?Action=saveadd&bid=" + $("#T_budgeid").val() + "&cid=" + $("#T_companyid").val() + "&remark=" + $("#T_remarks").val() + '&bname=' + $("#T_budge_name").val() + '&rdm=' + Math.random(),
                 success: function (data) {
-                    if (data == 'false')
-                    {
+                    if (data == 'false') {
                         getmaxid();
                         $.ligerDialog.error("保存错误！！！重新保存！");
                     }
@@ -658,7 +664,7 @@
                         $("#selecbj").removeClass("l-window-mask");
                         $("#tr2").show();
                         $("#tr_contact4").show();
-                        }
+                    }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     $.ligerDialog.error("保存错误！！！");
@@ -666,8 +672,7 @@
             });
         }
         //添加部位
-        function addbj()
-        {
+        function addbj() {
             if ($("#T_companyid").val() == "") {
                 $.ligerDialog.error("请选择一个有效的客户！！！");
                 return;
@@ -681,51 +686,50 @@
                 ]
             });
             return false;
-          // f_openWindow_bj("CRM/Budge/SelectBJ.aspx", "选择部位", 650, 400);
+            // f_openWindow_bj("CRM/Budge/SelectBJ.aspx", "选择部位", 650, 400);
         }
         //获取部件
         function f_getbj(item, dialog) {
             var rows = null;
-         
+
             if (!dialog.frame.f_select()) {
                 alert('请选择行!');
                 return;
             }
             else {
                 rows = dialog.frame.f_select();
-                var bjid='';
+                var bjid = '';
                 for (var i = 0; i < rows.length; i++) {
                     bjid = bjid + ',' + rows[i].id;
- 
+
                 }
-              
+
                 $.ajax({
                     type: 'post',
                     url: "../../data/Budge.ashx?Action=savebjlist&cid=" + $("#T_companyid").val() + "&bid=" + $("#T_budgeid").val() + '&bjlist=' + bjid + '&rdm=' + Math.random(),
                     success: function (data) {
-                       // alert(bjid);
-                        var url = '../../data/Budge.ashx?Action=tree&bid=' + $("#T_budgeid").val() +'&rnd=' + Math.random();
+                        // alert(bjid);
+                        var url = '../../data/Budge.ashx?Action=tree&bid=' + $("#T_budgeid").val() + '&rnd=' + Math.random();
 
                         treemanager.clear();
-                        treemanager.loadData(0,url,"");
+                        treemanager.loadData(0, url, "");
                         dialog.close();
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         dialog.frame.f_error();
                     }
                 });
-               
+
             }
         }
         //最后一次全部计算
-        function f_save()
-        {
+        function f_save() {
             if ($("#T_companyid").val() == "") {
                 $.ligerDialog.error("请选择保存一个有效的客户！！！");
                 return;
             }
             var sendtxt = "&Action=saveall";
-             return $("form :input").fieldSerialize() + sendtxt;
+            return $("form :input").fieldSerialize() + sendtxt;
         }
         //绝对退回
         function f_saveretrn() {
@@ -742,9 +746,9 @@
                 $.ligerDialog.error("请选择保存一个有效的客户！！！");
                 return;
             }
-            var sta=2;
-            if(getparastr("style")=="apr")//审核
-                sta=2;
+            var sta = 2;
+            if (getparastr("style") == "apr")//审核
+                sta = 2;
             if (getparastr("style") == "cancel")//作废
                 sta = 99;
             if (getparastr("status") == "1") sta = 0;//撤回
@@ -752,8 +756,7 @@
             return sendtxt;
         }
         //存储模板
-        function savemodel()
-        {
+        function savemodel() {
             if ($("#T_companyid").val() == "") {
                 $.ligerDialog.error("请选择保存一个有效的客户！！！");
                 return;
@@ -770,36 +773,34 @@
             });
             return false;
         }
-        function f_savemodel(item, dialog)
-        {
-           var issave = dialog.frame.f_save();   
-                if (issave) {
-                    dialog.close();
-                    top.$.ligerDialog.waitting('数据保存中,请稍候...');
-                    $.ajax({
-                        url: "../../data/Budge.ashx", type: "POST",
-                        data: issave,
-                        success: function (responseText) {
-                            top.$.ligerDialog.closeWaitting();
-                            if (responseText == "false") {
-                                top.$.ligerDialog.error('操作失败！');
-                            }
-                            else {
-                                fload();
-                            }
-                        },
-                        error: function () {
-                            top.$.ligerDialog.closeWaitting();
-
+        function f_savemodel(item, dialog) {
+            var issave = dialog.frame.f_save();
+            if (issave) {
+                dialog.close();
+                top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                $.ajax({
+                    url: "../../data/Budge.ashx", type: "POST",
+                    data: issave,
+                    success: function (responseText) {
+                        top.$.ligerDialog.closeWaitting();
+                        if (responseText == "false") {
+                            top.$.ligerDialog.error('操作失败！');
                         }
-                    });
+                        else {
+                            fload();
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
 
-                }
-            
+                    }
+                });
+
+            }
+
         }
         //选择模板
-        function selectmodel()
-        {
+        function selectmodel() {
             top.$.ligerDialog.open({
                 zindex: 9003,
                 title: '选择模板', width: 850, height: 400,
@@ -812,14 +813,13 @@
             return false;
         }
         //引用模板
-        function f_selectmodel(item, dialog)
-        {
+        function f_selectmodel(item, dialog) {
             if (!dialog.frame.f_select()) {
                 alert('请选择行!');
                 return;
             }
             var rows = dialog.frame.f_select();
-             //alert(rows.model_id);
+            //alert(rows.model_id);
             $.ajax({
                 url: "../../data/Budge.ashx", type: "POST",
                 data: { Action: "savemodeltobudge", bid: $("#T_budgeid").val(), modelid: rows.model_id, rnd: Math.random() },
@@ -841,12 +841,11 @@
 
                 }
             });
-          
+
         }
         //更新折扣
-        function addzk()
-        {
- 
+        function addzk() {
+
             if ($("#T_zk").val() <= 0) {
                 top.$.ligerDialog.error('折扣必须大于0！');
                 return;
@@ -858,20 +857,20 @@
 
                 success: function (data) {
                     if (data == 'true') {
-                        fload(); 
+                        fload();
                     }
                     else $.ligerDialog.error("保存错误！！！");
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     $.ligerDialog.error("保存错误！！！");
-                    
+
                 }
             });
-            
+
         }
         //刷新价格改为重新计算
         function refreshprice() {
-          
+
             var issave = $("form :input").fieldSerialize() + "&Action=saveall";
             $.ajax({
                 url: "../../data/Budge.ashx", type: "POST",
@@ -910,45 +909,43 @@
 
         }
         //折扣，默认和手动
-        function savetotal()
-        {
-          
-          
-                if ($("#T_sl").val() > 1 || $("#T_sl").val() < 0) {
-                    top.$.ligerDialog.error('税率必须大于等于0小于1！');
-                    return;
-                }
+        function savetotal() {
+
+
+            if ($("#T_sl").val() > 1 || $("#T_sl").val() < 0) {
+                top.$.ligerDialog.error('税率必须大于等于0小于1！');
+                return;
+            }
             var t_sl = $("#T_sl").val();
             $.ajax({
                 type: "get",
                 url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
-                data: { Action: 'savetotal',bid:getparastr("bid"),sl:t_sl, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                data: { Action: 'savetotal', bid: getparastr("bid"), sl: t_sl, rnd: Math.random() }, /* 注意参数的格式和名称 */
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
-                  
+
                     var obj = eval(result);
-                  
+
                     for (var n in obj) {
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
                     }
-                   // alert(obj.sj); //String 构造函数
-                    
-                        $("#T_sj").val(toMoney(obj.sj));
-                        $("#T_zje").val(toMoney(obj.zje));
-                    
+                    // alert(obj.sj); //String 构造函数
+
+                    $("#T_sj").val(toMoney(obj.sj));
+                    $("#T_zje").val(toMoney(obj.zje));
+
 
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("计算失败，重新保存！");
                 }
             });
-                    
+
         }
         //附加金额
-        function addfjje()
-        {
+        function addfjje() {
             top.$.ligerDialog.open({
                 zindex: 9003,
                 title: '附加金额', width: 850, height: 550,
@@ -960,11 +957,24 @@
             });
             return false;
         }
-        function fload()
-        {
+        function fload() {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);
         }
+
+        function view(id) {
+            var dialogOptions = {
+                width: 770, height: 510, title: "材料档案图文介绍", url: '../view/product_view.aspx?pid=' + id + '&rnd=' + Math.random(), buttons: [
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+
     </script>
   
 </head>

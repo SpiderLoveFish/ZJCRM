@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
-    <title>六家居装企管理系统</title>
+    <title>山山装企ERP管理系统</title>
     <link rel="stylesheet" type="text/css" href="css/login.css" />
     <script src="lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>

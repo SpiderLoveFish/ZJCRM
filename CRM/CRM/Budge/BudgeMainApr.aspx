@@ -254,6 +254,17 @@
               $.ligerDialog.warn('请选择行！');
           }
       }
+      //查询
+      function xq() {
+          var manager = $("#maingrid4").ligerGetGridManager();
+          var row = manager.getSelectedRow();
+          if (row) {
+              f_openWindowview("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&style=apr", "查看预算", 1110, 600);
+          } else {
+              $.ligerDialog.warn('请选择行！');
+          }
+      }
+       
       function ret() {
           var manager = $("#maingrid4").ligerGetGridManager();
           var row = manager.getSelectedRow();

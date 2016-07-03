@@ -44,7 +44,10 @@ namespace XHD.CRM.Data
                 model.remarks = PageValidate.InputText(request["T_remarks"], 255);
                 model.url = PageValidate.InputText(request["T_url"], 255);
                 model.t_content = PageValidate.InputText(request["T_content"], int.MaxValue);
-                model.price = decimal.Parse(request["T_price"].ToString());
+                model.price = decimal.Parse(request["T_zc_price"].ToString()) + decimal.Parse(request["T_fc_price"].ToString()) + decimal.Parse(request["T_rg_price"].ToString());
+                model.zc_price = decimal.Parse(request["T_zc_price"].ToString());
+                model.fc_price = decimal.Parse(request["T_fc_price"].ToString());
+                model.rg_price = decimal.Parse(request["T_rg_price"].ToString());
                 model.nbj = decimal.Parse(request["T_nbj"].ToString());
                 model.xh = PageValidate.InputText(request["T_xh"], 255);
                 model.xl = PageValidate.InputText(request["T_xl"], 255);
@@ -130,7 +133,19 @@ namespace XHD.CRM.Data
                     }
                     if (dr["price"].ToString() != request["T_price"])
                     {
-                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "价格", dr["price"].ToString(), request["T_price"]);
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "总价格", dr["price"].ToString(), request["T_price"]);
+                    }
+                    if (dr["zc_price"].ToString() != request["T_zc_price"])
+                    {
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "主材单价", dr["zc_price"].ToString(), request["T_zc_price"]);
+                    }
+                    if (dr["fc_price"].ToString() != request["T_fc_price"])
+                    {
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "辅材单价", dr["fc_price"].ToString(), request["T_fc_price"]);
+                    }
+                    if (dr["rg_price"].ToString() != request["T_rg_price"])
+                    {
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "人工单价", dr["rg_price"].ToString(), request["T_rg_price"]);
                     }
                     if (dr["InternalPrice"].ToString() != request["T_nbj"])
                     {

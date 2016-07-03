@@ -21,6 +21,9 @@ namespace XHD.Model
         private string _url;
         private string _t_content;
 		private decimal? _price;
+        private decimal? _zc_price;
+        private decimal? _fc_price;
+        private decimal? _rg_price;
 
 		private int? _isdelete;
 		private DateTime? _delete_time;
@@ -121,6 +124,21 @@ namespace XHD.Model
 			set{ _price=value;}
 			get{return _price;}
 		}
+        public decimal? zc_price
+        {
+            set { _zc_price = value; }
+            get { return _zc_price; }
+        }
+        public decimal? fc_price
+        {
+            set { _fc_price = value; }
+            get { return _fc_price; }
+        }
+        public decimal? rg_price
+        {
+            set { _rg_price = value; }
+            get { return _rg_price; }
+        }
 		/// <summary>
 		/// 
 		/// </summary>

@@ -178,6 +178,18 @@ namespace XHD.BLL
                     {
                         model.url = dt.Rows[n]["url"].ToString();
                     }
+                    if (dt.Rows[n]["zc_price"] != null && dt.Rows[n]["zc_price"].ToString() != "")
+                    {
+                        model.zc_price = decimal.Parse(dt.Rows[n]["zc_price"].ToString());
+                    }
+                    if (dt.Rows[n]["fc_price"] != null && dt.Rows[n]["fc_price"].ToString() != "")
+                    {
+                        model.fc_price = decimal.Parse(dt.Rows[n]["fc_price"].ToString());
+                    }
+                    if (dt.Rows[n]["rg_price"] != null && dt.Rows[n]["rg_price"].ToString() != "")
+                    {
+                        model.rg_price = decimal.Parse(dt.Rows[n]["rg_price"].ToString());
+                    }
                     if (dt.Rows[n]["price"] != null && dt.Rows[n]["price"].ToString() != "")
                     {
                         model.price = decimal.Parse(dt.Rows[n]["price"].ToString());

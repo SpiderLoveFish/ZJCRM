@@ -234,7 +234,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var rows = manager.getCheckedRows();
             if (rows.length == 1)
-                f_openWindow('crm/product/product_add.aspx?style=' + getparastr("style") + '&pid=' + rows[0].product_id, "修改产品", 790, 600);
+                f_openWindow('crm/product/product_add.aspx?style=' + getparastr("style") + '&pid=' + rows[0].product_id, "修改产品", 980, 600);
             else
                 $.ligerDialog.warn('请选择产品！');
         }
@@ -243,7 +243,7 @@
             var notes = $("#tree1").ligerGetTreeManager().getSelected();
 
             if (notes != null && notes != undefined) {
-                f_openWindow('crm/product/product_add.aspx?style=' + getparastr("style") + '&categoryid=' + notes.data.id, "新增产品", 790, 600);
+                f_openWindow('crm/product/product_add.aspx?style=' + getparastr("style") + '&categoryid=' + notes.data.id, "新增产品", 980, 600);
             }
             else {
                 $.ligerDialog.warn('请选择产品类别！');

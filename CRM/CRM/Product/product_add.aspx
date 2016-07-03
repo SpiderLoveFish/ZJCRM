@@ -42,32 +42,31 @@
             $("form").ligerForm();
 
             UE.getEditor('editor', {
-                initialFrameWidth: 738, toolbars: [
+                initialFrameWidth: 700, initialFrameHeight: 200, toolbars: [
                ['source', '|', 'undo', 'redo', '|',
-                'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+                'bold', 'italic', 'underline', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
                 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
                 'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
                 'directionalityltr', 'directionalityrtl', 'indent', '|',
                 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
                 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
-                'insertimage', 'emotion', 'template', 'background', '|',
-                'horizontal', 'date', 'time', 'spechars', '|',
-                'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', '|',
-                'preview', 'searchreplace']
+                'insertimage', 'emotion', '|',
+                'horizontal', 'date', 'time', 'spechars']
                 ],
-                autoHeightEnabled: false
+                autoHeightEnabled: true
             });
+            $("#T_product_unit").ligerComboBox({ width: 150, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random()})
 
             $("#T_product_category").ligerComboBox({
-                width: 280,
-                selectBoxWidth: 280,
-                selectBoxHeight: 280,
+                width: 150,
+                selectBoxWidth: 150,
+                selectBoxHeight: 150,
                 valueField: 'id',
                 textField: 'text',
                 initValue: getparastr("categoryid"),
                 treeLeafOnly: false,
                 tree: {
-                    url: '../../data/crm_product_category.ashx?Action=tree&style='+getparastr("style")+'&rnd=' + Math.random(),
+                    url: '../../data/crm_product_category.ashx?Action=tree&style=' + getparastr("style") + '&rnd=' + Math.random(),
                     //onSelect: onSelect,
                     idFieldName: 'id',
                     valueField: 'text',
@@ -80,7 +79,7 @@
                         newvalue = -1;
 
                     } else {
-                      //  $("#C_code").val((getpinyin(newtext)).substr(0, 2));
+                        //  $("#C_code").val((getpinyin(newtext)).substr(0, 2));
                     }
                 }
             });
@@ -88,14 +87,14 @@
             if (getparastr("pid")) {
                 loadForm(getparastr("pid"));
             }
-            $('#T_gys').ligerComboBox({ width: 280, onBeforeOpen: f_selectContact });
-
+            $('#T_gys').ligerComboBox({ width: 150, onBeforeOpen: f_selectContact });
+      
         });
         function f_selectContact() {
             top.$.ligerDialog.open({
                 zindex: 9003,
                 title: '选择客户', width: 850, height: 400,
-               //../../data/Crm_product.ashx?Action=combogys&rnd=" + Math.random(), initValue: obj.Suppliers });
+                //../../data/Crm_product.ashx?Action=combogys&rnd=" + Math.random(), initValue: obj.Suppliers });
                 //url: " hr/Getemp_Auth.aspx?auth=1", buttons: [
                 url: "CRM/Product/Selectgys.aspx", buttons: [
                     { text: '确定', onclick: f_selectContactOK },
@@ -104,10 +103,10 @@
             });
             return false;
         }
-        
+
         function f_selectContactOK(item, dialog) {
             //var data = dialog.frame.f_select();
-            var fn =  dialog.frame.f_select;           
+            var fn = dialog.frame.f_select;
             var data = fn();
             if (!data) {
                 alert('请选择一个有效供应商!');
@@ -122,13 +121,12 @@
         function fillemp(Name) {
             $("#T_gys").val(Name);
         }
-        function f_getcode()
-        {
+        function f_getcode() {
             return $("#C_code").val();
         }
         //材料选择自定义材料保存
         function f_select() {
-          
+
             if ($(form1).valid()) {
                 var arr = [];
                 arr.push(UE.getEditor('editor').getContent());
@@ -149,9 +147,9 @@
                                 //  dialog.close();
                                 top.$.ligerDialog.closeWaitting();
                                 $.ligerDialog.alert("保存成功，继续添加！");
-                                        $("#form1").each(function () {
-                                            this.reset();
-                                            $(".l-selected").removeClass("l-selected"); 
+                                $("#form1").each(function () {
+                                    this.reset();
+                                    $(".l-selected").removeClass("l-selected");
                                 });
                             }
                         },
@@ -177,14 +175,14 @@
         }
 
         function f_save() {
-                        if ($(form1).valid()) {
-                            var arr = [];
-                            arr.push(UE.getEditor('editor').getContent());
-                            var sendtxt = "&Action=save&pid=" + getparastr("pid") + "&T_content=" + escape(arr);
-                            return $("form :input").fieldSerialize() + sendtxt+"&style="+getparastr("style");
-                        }
-             
-          
+            if ($(form1).valid()) {
+                var arr = [];
+                arr.push(UE.getEditor('editor').getContent());
+                var sendtxt = "&Action=save&pid=" + getparastr("pid") + "&T_content=" + escape(arr);
+                return $("form :input").fieldSerialize() + sendtxt + "&style=" + getparastr("style");
+            }
+
+
         }
 
         function loadForm(oaid) {
@@ -200,13 +198,16 @@
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
                     }
-                    //alert(obj.constructor); //String 构造函数
+                    //alert(obj.unit); //String 构造函数
                     $("#T_product_name").val(obj.product_name);
-                   // $("#T_product_unit").val(obj.unit);
+                    // $("#T_product_unit").val(obj.unit);
                     $("#T_specifications").val(obj.specifications);
                     $("#T_remarks").val(obj.remarks);
                     $("#T_url").val(obj.url);
                     $("#T_price").val(toMoney(obj.price));
+                    $("#T_zc_price").val(toMoney(obj.zc_price));
+                    $("#T_fc_price").val(toMoney(obj.fc_price));
+                    $("#T_rg_price").val(toMoney(obj.rg_price));
                     UE.getEditor('editor').setContent(myHTMLDeCode(obj.t_content));
                     $("#T_product_category").ligerGetComboBoxManager().selectValue(obj.category_id);
                     $("#T_nbj").val(toMoney(obj.InternalPrice));
@@ -217,28 +218,43 @@
                     $("#T_pp").val(obj.Brand);
                     $("#C_code").val(obj.C_code);
                     //emptyText: '（空）',
-                    $("#T_product_unit").ligerComboBox({ width: 280, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random(),  initValue: obj.unit });
-                   // $("#T_gys").ligerComboBox({ width: 280, url: "../../data/Crm_product.ashx?Action=combogys&rnd=" + Math.random(), initValue: obj.Suppliers });
-                    
+                    $("#T_product_unit").val(obj.unit);
+                    //$("#T_product_unit").ligerComboBox({ width: 150, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random(), initValue: obj.unit })
+                    // $("#T_gys").ligerComboBox({ width: 280, url: "../../data/Crm_product.ashx?Action=combogys&rnd=" + Math.random(), initValue: obj.Suppliers });
+
                 }
             });
         }
 
         function set_tomoney(value) {
             $("#T_price").val(toMoney(value));
-           
+
+        }
+        function set_tomoney_zc(value) {
+            $("#T_price").val(parseFloat($("#T_zc_price").val().replace(",", "")) + parseFloat($("#T_fc_price").val().replace(",", "")) + parseFloat($("#T_rg_price").val().replace(",", "")));
+
+            $("#T_zc_price").val(toMoney(value));
+
+        }
+        function set_tomoney_fc(value) {
+            $("#T_price").val(parseFloat($("#T_zc_price").val().replace(",", "")) + parseFloat($("#T_fc_price").val().replace(",", "")) + parseFloat($("#T_rg_price").val().replace(",", "")));
+            $("#T_fc_price").val(toMoney(value));
+
+        }
+        function set_tomoney_rg(value) {
+            $("#T_price").val(parseFloat($("#T_zc_price").val().replace(",", "")) + parseFloat($("#T_fc_price").val().replace(",", "")) + parseFloat($("#T_rg_price").val().replace(",", "")));
+            $("#T_rg_price").val(toMoney(value));
+
         }
         function set_tomoney_nbj(value) {
-          
             $("#T_nbj").val(toMoney(value));
         }
 
         ///多音字默认第一个
-        function getpinyin(str)
-        {
+        function getpinyin(str) {
             //var str = document.getElementById("txtChinese").value.trim();
             if (str == "") return '';
-            var py='';
+            var py = '';
             var arrRslt = makePy(str);
             for (var j = 0; j < arrRslt.length; j++) {
                 py = py + arrRslt[j];
@@ -246,112 +262,125 @@
             return py;
         }
 
+        function checkInt(o) {
+            theV = isNaN(parseInt(o.value)) ? 0 : parseInt(o.value);
+            if (theV != o.value) { o.value = theV; }
+            T_price.value = T_zc_price.value + T_fc_price.value + T_rg_price.value;
+        }
+        function checkP(o) {
+            theV = isNaN(parseFloat(o.value)) ? 0 : parseFloat(o.value);
+            theV = parseInt(theV * 100) / 100;
+            if (theV != o.value) {
+                theV = (theV * 100).toString();
+                theV = theV.substring(0, theV.length - 2) + "." + theV.substring(theV.length - 2, theV.length)
+                o.value = theV;
+            }
+            T_price.value = T_zc_price.value + T_fc_price.value + T_rg_price.value;
+        }
 
     </script>
 </head>
 <body>
     <form id="form1" onsubmit="return false">     
         <table align="left" border="0" cellpadding="3" cellspacing="1">
-            <tr>
-                <td>
-                    <div align="left" style="width:60px">产品名称：</div>
-                </td>
-                <td colspan="3">
-                    <input type='text' id="T_product_name" name="T_product_name" ltype="text" ligerui="{width:637}" validate="{required:true}" /></td>
+                        <tr>
+                <td colspan="8" class="table_title1">基本信息</td>
             </tr>
-
             <tr>
+               
                 <td>
                     <div align="left" style="width: 60px">产品类别：</div>
                 </td>
                 <td>
-                    <input type="text" id="T_product_category" name="T_product_category" validate="{required:true}"  ligerui="{width:280}" /></td>
-                <td>
-                    <div align="left" style="width: 60px">单位：</div>
+                    <input type="text" id="T_product_category" name="T_product_category" validate="{required:true}"  ligerui="{width:150}" /></td>
+                 <td>
+                    <div align="left" style="width:60px">产品名称：</div>
                 </td>
-                <td>
-                    <input type='text' id="T_product_unit" name="T_product_unit" ltype='text' ligerui="{width:280}" /></td>
+                <td><input type='text' id="T_product_name" name="T_product_name" ltype="text" ligerui="{width:150}" validate="{required:true}" /></td>
+                <td><div align="left" style="width: 60px">单位：</div></td>
+                <td> <input type='text' id="T_product_unit" name="T_product_unit" validate="{required:true}"  ligerui="{width:150}" /></td>
+                <td><div align="left" style="width: 60px">产品规格：</div></td>
+                <td><input type='text' id="T_specifications" name="T_specifications" ltype="text" ligerui="{width:150}" /></td>
             </tr>
 
             <tr>
                 <td>
-                    <div align="left" style="width: 60px">价格(元)：</div>
+                     <div align="left" style="width: 60px">品牌：</div>
                 </td>
                 <td>
-                    <input type="text" id="T_price" name="T_price" value="0.00" ltype='text' onchange="set_tomoney(this.value)" style="text-align:right" ligerui="{width:280,number:true}" validate="{required:true}" /></td>
-                <td>
-                    <div align="left" style="width: 60px">产品规格：</div>
-                </td>
-                <td>
-                    <input type='text' id="T_specifications" name="T_specifications" ltype="text" ligerui="{width:280}" /></td>
-            </tr>
-
-            <tr>
-                <td>
-                    <div align="left" style="width: 60px">网址：</div>
-                </td>
-                <td>
-                    <input type="text" id="T_url" name="T_url" ltype='text' ligerui="{width:280}" validate="{required:false,url:true}" /></td>
-                <td style="vertical-align: top">
-                    <div align="left" style="width: 60px">备注：</div>
-                </td>
-                <td>
-                    <input type='text' id="T_remarks" name="T_remarks" ltype="text" ligerui="{width:280}" /></td>
-            </tr>
-            <tr>
+                  <input type='text' id="T_pp" name="T_pp" ltype="text" ligerui="{width:150}" /></td>
                 <td>
                     <div align="left" style="width: 60px">型号：</div>
                 </td>
                 <td>
-                    <input type="text" id="T_xh" name="T_xh" ltype='text' ligerui="{width:280}"   /></td>
-                <td style="vertical-align: top">
-                    <div align="left" style="width: 60px">系列：</div>
-                </td>
-                <td>
-                    <input type='text' id="T_xl" name="T_xl" ltype="text" ligerui="{width:280}" /></td>
+                <input type="text" id="T_xh" name="T_xh" ltype='text' ligerui="{width:150}"   />
+                  </td>
+                <td> <div align="left" style="width: 60px">系列：</div></td>
+                <td>  <input type='text' id="T_xl" name="T_xl" ltype="text" ligerui="{width:150}" /></td>
+                <td> <div align="left" style="width: 60px">主题：</div></td>
+                <td> <input type='text' id="T_zt" name="T_zt" ltype="text" ligerui="{width:150}" /></td>
             </tr>
+
+
+
             <tr>
+             <td><div align="left" style="width:60px">物料代码：</div></td>
+                <td>  <input type='text' id="C_code" name="C_code" ltype="text" ligerui="{width:150,disabled:true}"   /></td>
+            
                 <td>
-                    <div align="left" style="width: 60px">品牌：</div>
+                    <div align="left" style="width: 60px">网址：</div>
                 </td>
                 <td>
-                          <input type='text' id="T_pp" name="T_pp" ltype="text" ligerui="{width:280}" /></td>
-          <td>
-                    <div align="left" style="width: 60px">主题：</div>
-                </td>
-                <td>
-                    <input type='text' id="T_zt" name="T_zt" ltype="text" ligerui="{width:280}" /></td>
-            </tr>
-             <tr>
-                <td>
-                    <div align="left" style="width:60px">供应商：</div>
-                </td>
-                <td >
-                    <input type='text' id="T_gys" name="T_gys" ltype="text" ligerui="{width:280}"   /></td>
-           <td>
+                    <input type="text" id="T_url" name="T_url" ltype='text' ligerui="{width:150}" validate="{required:false,url:true}" /></td>
+               
+               
+                <td>  <div align="left" style="width:60px">供应商：</div></td>
+                <td>  <input type='text' id="T_gys" name="T_gys" ligerui="{width:150}"   /></td>
+                 <td>
                     <div align="left" style="width: 60px">内部价：</div>
                 </td>
                 <td>
-                    <input type="text" id="T_nbj" name="T_nbj" value="0.00" ltype='text' onchange="set_tomoney_nbj(this.value)" style="text-align:right" ligerui="{width:280,number:true}" validate="{required:true}" /></td>
-               
-                  </tr>
-                         <tr>
-                <td>
-                    <div align="left" style="width:60px">物料代码：</div>
-                </td>
-                <td >
-                    <input type='text' id="C_code" name="C_code" ltype="text" ligerui="{width:280,disabled:true}"   /></td>
-           <td>
-                    <div align="left" style="width: 60px"></div>
-                </td>
-                <td>
-                 </td>
-               
-                  </tr>
+                    <input type="text" id="T_nbj" name="T_nbj" value="0.00" ltype='text' onchange="set_tomoney_nbj(this.value)" style="text-align:right" ligerui="{width:150,number:true}" validate="{required:true}" /></td>
+                
+            </tr>
             <tr>
-                <td colspan="4">
-                    <textarea id="editor" style="width: 637px;"></textarea>
+                <td colspan="8" class="table_title1">预算价格信息</td>
+            </tr>
+           
+             <tr>
+               <td>
+                <div align="left" style="width: 60px">主材单价：</div>  
+               </td>
+               <td >
+               <input type="text" id="T_zc_price" name="T_zc_price" value="0.00" ltype='text' onchange="set_tomoney_zc(this.value)" style="text-align:right" ligerui="{width:150,number:true}" validate="{required:true}"  />
+               </td>
+            <td>
+                <div align="left" style="width: 60px">辅材单价：</div>  
+               </td>
+               <td >
+               <input type="text" id="T_fc_price" name="T_fc_price" value="0.00" ltype='text' onchange="set_tomoney_fc(this.value)" style="text-align:right" ligerui="{width:150,number:true}" validate="{required:true}" />
+               </td>
+                <td> <div align="left" style="width: 60px">人工单价：</div></td>
+                <td> <input type="text" id="T_rg_price" name="T_rg_price" value="0.00" ltype='text' onchange="set_tomoney_rg(this.value)" style="text-align:right" ligerui="{width:150,number:true}" validate="{required:true}" /></td>
+                <td>
+                <div align="left" style="width: 60px">总价格：</div>  
+               </td>
+               <td >
+               <input type="text" id="T_price" name="T_price" value="0.00" ltype='text' onchange="set_tomoney(this.value)" style="text-align:right" ligerui="{width:150,number:true,disabled:true}" validate="{required:true}" />
+               </td>
+               
+          </tr>
+                  <tr>
+                <td colspan="8" class="table_title1">图文及工艺说明</td>
+            </tr>     
+            <tr>
+                <td colspan="6" rowspan="2">
+                    <textarea id="editor" style="width: 700px;" cols="20"></textarea>
                 </td>
+                <td colspan="2"><div align="left" style="width: 60px">工艺说明↓</div></td>
+            </tr>
+            <tr>
+              <td colspan="2"> <textarea id="T_remarks" name="T_remarks" cols="100" rows="20" class="l-textarea" style="width:230px"></textarea></td>
             </tr>
 
         </table>

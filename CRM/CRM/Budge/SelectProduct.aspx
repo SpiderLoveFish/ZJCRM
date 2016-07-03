@@ -40,7 +40,14 @@
                   { display: '所属品牌', name: 'Brand', width: 100, align: 'left' },
                   { display: '类别', name: 'category_name', width: 100, align: 'left' },
                      { display: '价格(¥)', name: 'price', width: 80, align: 'left' },
-                  { display: '单位', name: 'unit', width: 40, align: 'left' }
+                  { display: '单位', name: 'unit', width: 40, align: 'left' },
+
+                    {
+                        display: '图文', width: 40, render: function (item) {
+                            var html = "<a href='javascript:void(0)' onclick=view(" + item.id + ")>查看</a>"
+                            return html;
+                        }
+                    }
                   //,
                   //{
                   //    display: '图文', width: 40, render: function (item) {
