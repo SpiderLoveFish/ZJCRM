@@ -51,7 +51,7 @@
                         }
                     },
                     { display: '性别', name: 'Sex', width: 40 },
-                    { display: '电话', name: 'Tel', width: 120, align: 'right' },
+                    //{ display: '电话', name: 'Tel', width: 120, align: 'right' },
                     { display: '当前总积分', name: 'Jf', width: 80 },
                     { display: '已发放积分', name: 'Jf1', width: 80 },
                     { display: '已使用积分', name: 'Jf2', width: 80 }

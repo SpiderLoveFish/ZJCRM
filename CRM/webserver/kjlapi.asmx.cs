@@ -137,12 +137,14 @@ namespace XHD.CRM.webserver
             }
 
          [WebMethod]
-         public void Getkjl_api(string mobile,int pageindex,int pagesize)
+         public void Getkjl_api(string mobile,int pageindex,int pagesize,string strwhere)
          {
              string Total;
             int PageIndex = int.Parse(pageindex == null ? "1" : pageindex.ToString());
             int PageSize = int.Parse(pagesize == null ? "10" : pagesize.ToString());
             string   serchtxt  = " remarks = '" + mobile + "'";
+            if (strwhere != "")
+                serchtxt += "  and DyGraphicsName like'%"+strwhere+"%'";
             string sorttext = "   DoTime desc";
             DataSet ds = cp.GetListkjl_api(PageSize, PageIndex, serchtxt, sorttext, out Total);
 

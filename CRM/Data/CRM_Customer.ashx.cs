@@ -368,9 +368,9 @@ namespace XHD.CRM.Data
                     modelcontact.C_createDate = DateTime.Now;
                     modelcontact.C_hobby = PageValidate.InputText(request["T_hobby"], 1000);
                     modelcontact.C_remarks = PageValidate.InputText(request["T_contact_remarks"], 4000);
-                    int ct = contact.Add(modelcontact);
+                   // int ct = contact.Add(modelcontact);
 
-                    context.Response.Write(ct);
+                    context.Response.Write(customerid);
 
                 }
 

@@ -1,40 +1,9 @@
-@charset "utf-8";
-
-@import url(reset.css);
-@import url(base.css);
-
-#Login{width:595px; height:355px; margin:0 auto;font-size: 1.2em;line-height:1.8; margin-top:170px;}
-.box{ background: url(../images/login_bg.jpg) left top no-repeat; position:relative; height:353px;width:595px; overflow: hidden;zoom:1;}
-.box p.a01{ position:absolute; left:13px; top:19px;}
-.box dl{ position:absolute; left:30px; top:127px; width:195px; color:#505050;}
-.box dl dt{ font-size:14px; font-weight:bold; margin-bottom:10px;}
-.box table.a02{ position:absolute; left:257px; top:127px;}
-.box table.a02 th{ text-align:right; margin-right:10px; font-weight:normal; padding: 5px 0 5px 0;}
-.box table.a02 .a03{ width:145px; height:24px; border:none;line-height:24px;font-size:12px; padding-left:22px;background: url(../images/login02.jpg) left center no-repeat; margin-left:10px;}
-.box table.a02 .a04{ width:145px; height:24px; border:none;line-height:24px;font-size:12px; padding-left:22px;background:url(../images/login03.jpg) left center no-repeat; margin-left:10px;}
-.box table.a02 .a05{ width:60px; height:22px; border:none; line-height:22px;font-size:12px; padding-left:5px;background:url(../images/login04.jpg) left center no-repeat; margin-left:10px;}
-body {background:#f4ffe5;}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* CSS Document */
+*{ padding:0; margin:0}ul,ol,li{ list-style:none}img{ border:none;}
+body { background:#3c7fb5;background-repeat:no-repeat;background-attachment:fixed;}
+.box1{ height:507px; background:url(../images/loginb1.png) repeat-x; padding-top:106px}
+.box2{ width:399px; height:405px; background:url(../images/loginb2.png) center no-repeat; margin:0px auto; padding:0px 65px 0px;}
+.box2 h1{ font:22px "微软雅黑"; line-height:32px; text-align:center;padding-top:130px; color:#FFF; font-weight:normal}
+.box2 table{margin-top:68px}
+.box2 table tr td{ font-size:12px;line-height:30px; color:#3c5d88; padding-bottom:5px}.box_inp1{ width:133px; height:29px; border:none; background:url(../images/input1.jpg) no-repeat; padding:0px 5px; line-height:29px;}.box_inp2{ width:58px; height:29px; border:none; background:url(../images/input2.jpg) no-repeat; padding:0px 5px; line-height:29px;}
+.subbtm{width:95px; height:25px; border:none;background:url(../images/subbtm.png) no-repeat; color:#466388}.copy{ text-align:center; font-size:12px; line-height:24px; color:#ffffff; margin-top:50px;}

@@ -44,6 +44,7 @@ namespace XHD.CRM.Data
                 model.title = PageValidate.InputText(request["T_title"], 255);
                 model.t_content = PageValidate.InputText(request["T_content"], int.MaxValue);
                 model.orderid = int.Parse(request["T_orderid"]);
+                model.qxbd = PageValidate.InputText(request["T_qxbd"], 1000);
                 
                 string pid = PageValidate.InputText(request["pid"], 50);
                 if (!string.IsNullOrEmpty(pid) && pid != "null")

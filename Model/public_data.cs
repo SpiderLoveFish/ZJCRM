@@ -22,6 +22,7 @@ namespace XHD.Model
 		private int? _isdelete;
 		private DateTime? _delete_time;
         private int? _orderid;
+        private string _qxbd;
 		/// <summary>
 		/// 
 		/// </summary>
@@ -117,6 +118,11 @@ namespace XHD.Model
         {
             set { _orderid = value; }
             get { return _orderid; }
+        }
+        public string qxbd
+        {
+            set { _qxbd = value; }
+            get { return _qxbd; }
         }
 		#endregion Model
 

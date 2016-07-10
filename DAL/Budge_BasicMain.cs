@@ -115,31 +115,31 @@ namespace XHD.DAL
 			}
 		}
 		/// <summary>
-		/// 更新一条数据
+		/// 更新一条数据,只更新名称
 		/// </summary>
 		public bool Update(XHD.Model.Budge_BasicMain model)
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("update Budge_BasicMain set ");
-			strSql.Append("customer_id=@customer_id,");
+            //strSql.Append("customer_id=@customer_id,");
 			strSql.Append("BudgetName=@BudgetName,");
 			strSql.Append("DoPerson=@DoPerson,");
 			strSql.Append("DoTime=@DoTime,");
-			strSql.Append("IsStatus=@IsStatus,");
-			strSql.Append("ProjectDirectCost=@ProjectDirectCost,");
-			strSql.Append("DirectCostDiscount=@DirectCostDiscount,");
-			strSql.Append("AdditionalCost=@AdditionalCost,");
-			strSql.Append("BudgetAmount=@BudgetAmount,");
-			strSql.Append("DiscountAmount=@DiscountAmount,");
-			strSql.Append("CostAmount=@CostAmount,");
-			strSql.Append("SigningAmount=@SigningAmount,");
-			strSql.Append("SigningTime=@SigningTime,");
-			strSql.Append("Profit=@Profit,");
-			strSql.Append("Remarks=@Remarks,");
-			strSql.Append("Mmaterial=@Mmaterial,");
-			strSql.Append("MmaterialDiscount=@MmaterialDiscount,");
-			strSql.Append("fbAmount=@fbAmount,");
-			strSql.Append("versions=@versions");
+            //strSql.Append("IsStatus=@IsStatus,");
+            //strSql.Append("ProjectDirectCost=@ProjectDirectCost,");
+            //strSql.Append("DirectCostDiscount=@DirectCostDiscount,");
+            //strSql.Append("AdditionalCost=@AdditionalCost,");
+            //strSql.Append("BudgetAmount=@BudgetAmount,");
+            //strSql.Append("DiscountAmount=@DiscountAmount,");
+            //strSql.Append("CostAmount=@CostAmount,");
+            //strSql.Append("SigningAmount=@SigningAmount,");
+            //strSql.Append("SigningTime=@SigningTime,");
+            //strSql.Append("Profit=@Profit,");
+            //strSql.Append("Remarks=@Remarks,");
+            //strSql.Append("Mmaterial=@Mmaterial,");
+            //strSql.Append("MmaterialDiscount=@MmaterialDiscount,");
+            //strSql.Append("fbAmount=@fbAmount,");
+            strSql.Append("versions=@versions");
 			strSql.Append(" where id=@id ");
 			SqlParameter[] parameters = {
 					new SqlParameter("@customer_id", SqlDbType.Int,4),
@@ -545,7 +545,8 @@ namespace XHD.DAL
         public DataSet GetList_form(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(" select    A.*,ISNULL(b_zje,0) as zje,C.b_sj,C.b_sl,A.DiscountAmount*ISNULL(rate,0) as fjfy,B.id AS CustomerID,  B.tel,B.Customer AS CustomerName,B.Emp_sg AS sgjl,B.address  ");
+            strSql.Append(" select    A.*,ISNULL(b_zje,0) as zje,C.b_sj,C.b_sl,A.FJAmount as fjfy,B.id AS CustomerID,");
+            strSql.Append(" isnull(C.b_zkzje,0) zkzje,  B.tel,B.Customer AS CustomerName,B.Emp_sg AS sgjl,B.address  ");
             strSql.Append(" ,B.Emp_sj AS sjs,B.Employee AS ywy ");
               strSql.Append(" FROM dbo.Budge_BasicMain A ");
               strSql.Append(" INNER JOIN dbo.CRM_Customer B ON A.customer_id=B.id   ");

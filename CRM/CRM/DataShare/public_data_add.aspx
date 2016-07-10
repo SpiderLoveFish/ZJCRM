@@ -42,7 +42,7 @@
             $("form").ligerForm();
 
             UE.getEditor('editor', {
-                initialFrameWidth: 738, toolbars: [
+                initialFrameWidth: 680, toolbars: [
                ['source', '|', 'link', 'unlink', '|', 'undo', 'redo', '|',
                 'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
                 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
@@ -52,8 +52,7 @@
                 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
                 'insertimage', 'emotion', 'template', 'background', '|',
                 'horizontal', 'date', 'time', 'spechars', '|',
-                'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', '|',
-                'preview', 'searchreplace']
+                'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols']
                 ],
                 autoHeightEnabled: false
             });
@@ -109,6 +108,7 @@
                     UE.getEditor('editor').setContent(myHTMLDeCode(obj.t_content));
                     $("#T_category").ligerGetComboBoxManager().selectValue(obj.category_id);
                     $("#T_orderid").val(obj.orderid);
+                    $("#T_qxbd").val(obj.qxbd);
                 }
             });
         }
@@ -119,13 +119,13 @@
         <table align="left" border="0" cellpadding="3" cellspacing="1">
             <tr>
                 <td>
-                    <div align="left" style="width: 60px">资料标题：</div>
+                    <div align="left" style="width: 60px">标题：</div>
                 </td>
                 <td>
                     <input type='text' id="T_title" name="T_title" ltype='text' ligerui="{width:200}" />
                 </td>
                 <td>
-                    <div align="left" style="width: 60px">资料类别：</div>
+                    <div align="left" style="width: 60px">分类：</div>
                 </td>
                 <td>
                     <input type="text" id="T_category" name="T_category" validate="{required:true}"  ligerui="{width:200}" />
@@ -136,11 +136,13 @@
                 <td height="23" >
                     <input type="text" id="T_orderid" name="T_orderid" value="20"  ltype='spinner' ligerui="{type:'int',width:80}"  ligerui="{width:80}" validate="{required:true}"/>
                 </td>
+                <td align="left" ><b><font  color="#FF0000">↓七星宝典内容编辑↓</font></b></td>
             </tr>
             <tr>
                 <td colspan="6">
-                    <textarea id="editor" style="width:650px;"></textarea>
+                    <textarea id="editor" style="width:680px;"></textarea>
                 </td>
+                <td colspan="2" valign="top"><textarea id="T_qxbd" name="T_qxbd" cols="100" rows="29" class="l-textarea" style="width:250px"></textarea></td>
             </tr>
         </table>
     </form>

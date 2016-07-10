@@ -15,7 +15,54 @@
            loadHead(getparastr("bid"));
            loadFormPrint(getparastr("bid"));
            loadBody(getparastr("bid"));
+           loadlogo();
+           loadfjf(getparastr("bid"));
        });
+
+       function loadfjf(oaid)
+       {
+           $.ajax({
+               type: "GET",
+               url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
+               data: { Action: 'gridrate', bid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+               contentType: "application/json; charset=utf-8",
+               dataType: "json",
+               success: function (result) {
+                   var obj = result.Rows;
+              
+                   $.each(obj, function (i, data) {
+                       
+                       item = "<tr><td>" + data['RateName'] + "</td> "
+                           + " <td>" + data['rate'] + "</td> <td>" + data['RateAmount'] + "</td>"
+                           + " </tr>";
+                       $('.table3').append(item);
+
+                   });
+               },
+               error: function (XMLHttpRequest, textStatus, errorThrown) {
+                   alert(textStatus);
+               }
+           })
+       }
+
+       function loadlogo()
+       {
+           $.ajax({
+               type: "GET",
+               url: "../../data/sys_info.ashx", /* 注意后面的名字对应CS的方法名称 */
+               data: { Action: 'grid', rnd: Math.random() }, /* 注意参数的格式和名称 */
+               contentType: "application/json; charset=utf-8",
+               dataType: "json",
+               success: function (result) {
+                   var obj = eval(result);
+                   var rows = obj.Rows;
+
+                   //alert(obj.constructor); //String 构造函数
+                   $("#T_logo").html(rows[1].sys_value);
+                  // $("#logo").attr("src", "../" + rows[2].sys_value);
+               }
+           });
+       }
 
 
        function loadHead(oaid) {
@@ -33,16 +80,16 @@
                    }
 
                    $("#T_kh").html(obj.CustomerName + '(' + obj.address + ')');
-                    $("#T_tel").html(obj.tel);
-                    $("#T_sjs").html(obj.sjs);
-                    $("#T_zje").html(obj.BudgetAmount);
-                    $("#T_fjje").html(obj.AdditionalCost);
-                    $("#T_zcje").html(obj.ZCAmount);
-                    $("#T_jjje").html(obj.JJAmount);
-                    $("#T_bzr").html();
-                    $("#T_shr").html();
-                    $("#T_sxrq").html(formatTimebytype(obj.ConfirmDate, 'yyyy-MM-dd'));
-                  
+                   $("#T_tel").html(obj.tel);
+                   $("#T_sjs").html(obj.sjs);
+                   $("#T_zje").html(Math.round(obj.BudgetAmount + obj.FJAmount));
+                   $("#T_fjje").html(obj.FJAmount);
+                   $("#T_zcje").html(obj.ZCAmount);
+                   $("#T_jjje").html(obj.JJAmount);
+                   $("#T_bzr").html();
+                   $("#T_shr").html();
+                   $("#T_sxrq").html(formatTimebytype(obj.ConfirmDate, 'yyyy-MM-dd'));
+
 
                },
                error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -55,24 +102,24 @@
            $.ajax({
                type: "GET",
                url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
-               data: { Action: 'griddetail',pagesize:999, bid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+               data: { Action: 'griddetail', pagesize: 999, bid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
                contentType: "application/json; charset=utf-8",
                dataType: "json",
                success: function (result) {
                    var obj = result.Rows;
                    var item = ""; var cn = ""; var sum = 0;
                    $.each(obj, function (i, data) {
-                   
+
                        if (data['SUM'] == null) sum = 0;
-                         else  sum = data['SUM'];
+                       else sum = data['SUM'];
                        if (data['ComponentName'] != cn) {
                            item = "<tr><td align=center colspan='7'><b>" + data['ComponentName'] + "</b></td></tr>"
-                           + "<tr><td>" + data['Cname'] + "</td><td>" + data['brand'].replace('//', "") + "</td><td>" + data['TotalPrice'] + "</td><td>" + sum + "</td> "
+                           + "<tr><td>" + data['Cname'] + "</td><td>" + data['brand'] + "</td><td>" + data['TotalPrice'] + "</td><td>" + sum + "</td> "
                                + " <td>" + data['je'] + "</td><td>" + data['unit'] + "</td> <td>" + data['C_style'] + "</td>"
                                + " </tr>";
                        }
                        else {
-                           item = "<tr><td>" + data['Cname'] + "</td><td>" + data['brand'].replace('//', "") + "</td><td>" + data['TotalPrice'] + "</td><td>" + sum + "</td> "
+                           item = "<tr><td>" + data['Cname'] + "</td><td>" + data['brand'] + "</td><td>" + data['TotalPrice'] + "</td><td>" + sum + "</td> "
                                + " <td>" + data['je'] + "</td><td>" + data['unit'] + "</td> <td>" + data['C_style'] + "</td>"
                                + " </tr>";
                        }
@@ -99,10 +146,10 @@
                    $.each(obj, function (i, data) {
                        if (data['zcje'] == null) zcje = 0;
                        else zcje = data['zcje'];
-                       item = "<tr><td>" + data['ComponentName'] + "</td><td>" + data['zl'] + "</td><td>" + data['zsl'] + "</td> "
+                       item = "<tr><td>" + data['ComponentName'] + "</td> "
                            + " <td>" + data['zje'] + "</td><td>" + zcje + "</td> <td>" + data['jcje'] + "</td>"
                            + " </tr>";
-                       $('.table').append(item);
+                       $('.table2').append(item);
 
                    });
                },
@@ -120,7 +167,7 @@
            var strStyle = "<style> table,td,th {border-width: 1px;border-style: solid;border-collapse: collapse}</style>"
            LODOP.ADD_PRINT_TABLE(128, "5%", "90%", 314, strStyle + document.getElementById("div2").innerHTML);
            LODOP.SET_PRINT_STYLEA(0, "Vorient", 3);
-           LODOP.ADD_PRINT_TABLE(26, 0, "90%", 314,  document.getElementById("div3").innerHTML);
+           LODOP.ADD_PRINT_TABLE(26, 0, "90%", 314, document.getElementById("div3").innerHTML);
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 0);
            LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 1);
            //这样只有最后一页有
@@ -134,7 +181,7 @@
            //LODOP.ADD_PRINT_HTM(344, "5%", "90%", 54, document.getElementById("div4").innerHTML);
            //LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
            //LODOP.SET_PRINT_STYLEA(0, "LinkedItem",2);
-            
+
            LODOP.ADD_PRINT_HTM(1, 600, 300, 100, "<font color='#0000ff' format='ChineseNum'><span tdata='pageNO'>第##页</span>/<span tdata='pageCount'>共##页</span></font>");
 
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
@@ -152,7 +199,7 @@
 </p>
 
          <div id="div1">
-<DIV style="LINE-HEIGHT: 30px" class=size16 align=center><STRONG><font >心成装饰预算清单 （<SPAN id="T_pid" ></SPAN> ）</font></STRONG></DIV>        
+<DIV style="LINE-HEIGHT: 30px" class=size16 align=center><STRONG><font ><span id="T_logo"></span>预算清单 （<SPAN id="T_pid" ></SPAN> ）</font></STRONG></DIV>        
 <TABLE  border=0 cellSpacing=0 cellPadding=0 width="100%">
   <TBODY>
   
@@ -173,16 +220,18 @@
 </div>
 <%--<p>----------------------div2:------------------------------------------------------------------------------------</p>--%>
 <div id="div2">
-
-<TABLE   class="table table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse" bordercolor="#333333">
+<table width="100%" cellSpacing=0 cellPadding=0 border=0 >
+<tr>
+ <td valign="top">
+<TABLE   class="table2 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse" bordercolor="#333333">
 <thead>
   <TR>
      <TD width="10%">
       <DIV align=center><b>部位</b></DIV></TD>
-    <TD width="10%">
+    <!--<TD width="10%">
       <DIV align=center><b>产品种类</b></DIV></TD>
     <TD width="10%">
-      <DIV align=center><b>总数量</b></DIV></TD>
+      <DIV align=center><b>总数量</b></DIV></TD>-->
     <TD width="10%">
       <DIV align=center><b>基建金额</b></DIV></TD>
         <TD width="10%">
@@ -198,6 +247,41 @@
       
   </tfoot>
 </TABLE>
+</td>
+<td  valign="top">
+    <TABLE   class="table3 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse" bordercolor="#333333">
+<thead>
+  <TR>
+     <TD colspan="3">
+      <DIV align=center><b>附加费用</b></DIV></TD>
+    <!--<TD width="10%">
+      <DIV align=center><b>产品种类</b></DIV></TD>
+    <TD width="10%">
+      <DIV align=center><b>总数量</b></DIV></TD>-->
+    </TR>
+        <tr>
+          <TD width="10%">
+      <DIV align=center><b>附加项目</b></DIV></TD>
+    <!--<TD width="10%">
+      <DIV align=center><b>产品种类</b></DIV></TD>
+    <TD width="10%">
+      <DIV align=center><b>总数量</b></DIV></TD>-->
+    <TD width="10%">
+      <DIV align=center><b>费率</b></DIV></TD>
+        <TD width="10%">
+          <DIV align=center><b>金额</b></DIV></TD>
+    </TR>
+</thead>      
+  <TBODY>      
+ 
+  <tfoot>
+  
+      
+  </tfoot>
+</TABLE>
+    </td>
+    </tr>
+    </table>
 </div>
 <%--<p>----------------------div3:------------------------------------------------------------------------------------</p>--%>
 <div id="div3">

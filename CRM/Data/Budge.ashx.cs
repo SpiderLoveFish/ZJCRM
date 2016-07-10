@@ -49,14 +49,19 @@ namespace XHD.CRM.Data
             {
                 string bid = PageValidate.InputText(request["bid"], 250);
                 string sl = PageValidate.InputText(request["sl"], 250);
+                string zk = PageValidate.InputText(request["zk"], 250);
+
                 string josnstr = "";
                 if (bd.updatetotal(bid,StringToDecimal( sl)) > 0)
-                { 
-                  if(bd.GetTax(bid).Tables[0].Rows.Count>0)
-                      foreach (DataRow dw in bd.GetTax(bid).Tables[0].Rows)
-                      {
-                          josnstr = "{ 'sj':'" + dw["b_sj"].ToString() + "','zje':'" + dw["b_zje"].ToString() + "'}";
-                      }
+                {
+                    if (bd.updateAll(bid, StringToDecimal(zk), StringToDecimal(sl)) > 0)
+                    {
+                        if (bd.GetTax(bid).Tables[0].Rows.Count > 0)
+                            foreach (DataRow dw in bd.GetTax(bid).Tables[0].Rows)
+                            {
+                                josnstr = "{ 'sj':'" + dw["b_sj"].ToString() + "','zje':'" + dw["b_zje"].ToString() + "'}";
+                            }
+                    }
                 }
                 if (josnstr.Length <= 0) josnstr = "{}";
                  //{"status": 1, "sum": 9}
@@ -68,9 +73,16 @@ namespace XHD.CRM.Data
                 string bid = PageValidate.InputText(request["T_budgeid"], 50);
                 string sl = PageValidate.InputText(request["T_sl"], 50);
                 string zk = PageValidate.InputText(request["T_zk"], 50);
+
+                string bname = PageValidate.InputText(request["T_budge_name"], 250);
                 string submit = PageValidate.InputText(request["style"], 50);
                 if (bd.updateAll(bid, StringToDecimal(zk), StringToDecimal(sl)) > 0)
                 {
+                    mbb.id = bid;
+                    mbb.DoTime = DateTime.Now;
+                    mbb.DoPerson = emp_id;
+                    mbb.BudgetName = bname;
+                    bbb.Update(mbb);
                     
                     if (submit == "submit")//提交要改下状态
                     {
@@ -93,16 +105,16 @@ namespace XHD.CRM.Data
                 if (status == "2")//审核
                 {
                     string cid = PageValidate.InputText(request["cid"], 50);
-                    DataSet ds = bbb.GetList(" IsStatus=2 and customer_id='" + cid + "'");
-                    if (ds.Tables[0].Rows.Count > 0)
-                        context.Response.Write("false:exist");
-                    else
-                    {
+                   // DataSet ds = bbb.GetList(" IsStatus=2 and customer_id='" + cid + "'");
+                    //if (ds.Tables[0].Rows.Count > 0)
+                    //    context.Response.Write("false:exist");
+                    //else
+                    //{
                         if (bbb.updatestatus(StringToInt(status), bid))
                             context.Response.Write("true");
                         else
                             context.Response.Write("false");
-                    }
+                   // }
                 }
                 else
                 {

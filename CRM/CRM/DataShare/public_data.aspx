@@ -8,18 +8,26 @@
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
 
-    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-    <script src="../../JS/XHD.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-
+    <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
+        <script src="../../JS/Toolbar.js" type="text/javascript"></script>
+    <script src="../../JS/XHD.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script type="text/javascript">
         var manager = "";
         var treemanager;
@@ -53,7 +61,16 @@
                             return "<a href='javascript:void(0)' onclick=view(" + item.id + ")>查看</a>";
                         }
                     },
-                    { display: '标题', name: 'title', width: 250, align: 'left' },
+                    { display: '标题', name: 'title', width: 200, align: 'left' },
+                    {
+                        display: '七星宝典', name: 'qxbd', align: 'left', width: 100, render: function (item) {
+                            var html = "<div class='abc'>";
+                            if (item.qxbd)
+                                html += item.qxbd;
+                            html += "</div>";
+                            return html;
+                        }
+                    },
                     { display: '发布人', name: 'create_name', width: 80 },
                     {
                         display: '发布时间', name: 'create_time', width: 120, render: function (item) {
@@ -62,6 +79,13 @@
                     },
                     { display: '排序', name: 'orderid', width: 50 }
                 ],
+                onAfterShowData: function (grid) {
+                    $(".abc").hover(function (e) {
+                        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                    }, function (e) {
+                        $(this).ligerHideTip(e);
+                    });
+                },
                 dataAction: 'server',
                 url: "../../data/public_data.ashx?Action=grid&categoryid=0&rnd=" + Math.random(),
                 pageSize: 30,
@@ -148,7 +172,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row)
-                f_openWindow('crm/DataShare/public_data_add.aspx?pid=' + row.id, "修改资料", 780, 510);
+                f_openWindow('crm/DataShare/public_data_add.aspx?pid=' + row.id, "修改资料", 1000, 500);
             else
                 $.ligerDialog.warn('请选择行！');
         }
@@ -157,7 +181,7 @@
             var notes = $("#tree1").ligerGetTreeManager().getSelected();
 
             if (notes != null && notes != undefined) {
-                f_openWindow('crm/DataShare/public_data_add.aspx?categoryid=' + notes.data.id, "新增资料", 780, 510);
+                f_openWindow('crm/DataShare/public_data_add.aspx?categoryid=' + notes.data.id, "新增资料", 1000, 500);
             }
             else {
                 $.ligerDialog.warn('请选择资料目录！');

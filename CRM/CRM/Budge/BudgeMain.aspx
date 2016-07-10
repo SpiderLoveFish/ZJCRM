@@ -262,7 +262,13 @@
       function add() {
             f_openWindow("crm/Budge/BudgeMainAdd.aspx", "新增预算", 1100, 660);
         }
-
+      function cs() {
+          var manager = $("#maingrid4").ligerGetGridManager();
+          var row = manager.getSelectedRow();
+          if (row) {
+              f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus+"&isshowzk=Y", "修改预算", 1100, 600);
+          }
+      }
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();

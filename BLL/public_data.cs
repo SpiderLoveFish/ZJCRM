@@ -186,6 +186,10 @@ namespace XHD.BLL
                     {
                         model.orderid = int.Parse(dt.Rows[n]["orderid"].ToString());
                     }
+                    if (dt.Rows[n]["qxbd"] != null && dt.Rows[n]["qxbd"].ToString() != "")
+                    {
+                        model.qxbd = dt.Rows[n]["qxbd"].ToString();
+                    }
                     
                     modelList.Add(model);
                 }

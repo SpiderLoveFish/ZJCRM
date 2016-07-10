@@ -466,6 +466,7 @@ namespace XHD.DAL
       strSql.Append("  SELECT  customer_id ,'" + modelid + "' ,budge_id , versions , b_Part_id ,parentid , BP_Name ");
       strSql.Append(" FROM dbo.Budge_Para_Ver ");
       strSql.Append("  WHERE budge_id='" + bid + "' ");
+      strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = { };
              
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);

@@ -43,6 +43,7 @@
     <script type="text/javascript">
         var manager = ""; var g;
         var treemanager, gcomb;
+        var isshowzk=getparastr("isshowzk");
         $(function () {
             var urlstr = "";
             $.metadata.setType("attr", "validate");
@@ -134,7 +135,13 @@
                      {
                          display: '单价', name: 'TotalPrice', type: 'float', width: 50, align: 'right'
                      },
-
+                     {
+                         display: '主材单价', name: 'zc_price', type: 'float', width: 50, align: 'right'
+                     }, {
+                         display: '辅材单价', name: 'fc_price', type: 'float', width: 50, align: 'right'
+                     }, {
+                         display: '人工单价', name: 'rg_price', type: 'float', width: 50, align: 'right'
+                     },
                     {
                         display: "数量", name: "SUM", type: "float", isAllowHide: false, align: "right", width: 60,
                         editor: { type: "spinner" },
@@ -157,20 +164,20 @@
                         },
                          
 
-                     {
-                         display: '折扣', name: 'Discount', width: 30, align: 'right',
-                         type: 'float'
-                     },
-                        {
-                            display: "折后金额", name: "zkje", type: "float", isAllowHide: false, align: "right", width: 60,
-                            editor: { type: "spinner" },
-                            totalSummary: {
-                                //type:'sum,count,max,min,avg'
-                                render: function (suminf, column) {
-                                    return "<span style='color:red'>" + suminf.sum.toFixed(2) + "</span>";
-                                }
-                            }
-                        },
+                     //{
+                     //    display: '折扣', name: 'Discount', width: 30, align: 'right',
+                     //    type: 'float'
+                     //},
+                     //   {
+                     //       display: "折后金额", name: "zkje", type: "float", isAllowHide: false, align: "right", width: 60,
+                     //       editor: { type: "spinner" },
+                     //       totalSummary: {
+                     //           //type:'sum,count,max,min,avg'
+                     //           render: function (suminf, column) {
+                     //               return "<span style='color:red'>" + suminf.sum.toFixed(2) + "</span>";
+                     //           }
+                     //       }
+                     //   },
                       
                     { display: '单位', name: 'unit', width: 40 },
                      { display: '类型', name: 'C_style', width: 40 },
@@ -220,9 +227,15 @@
             });
 
             $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
-
-
-
+            if (isshowzk == "Y") {
+            }
+            else
+            {
+                //g.toggleCol('Discount', false);
+                //g.toggleCol('zkje', false);
+                $("#zk1").attr("style", "display:none");
+                $("#zk2").attr("style", "display:none");
+            }
         })
 
 
@@ -551,7 +564,7 @@
                     $("#T_companyid").val(obj.CustomerID);
                     $("#T_company").val(obj.CustomerName + "(" + obj.address + ")");
                     $("#T_budge_name").val(obj.BudgetName);
-                    $("#T_zje").val(obj.zje + obj.fjfy);
+                    $("#T_zje").val(obj.zje);
                     $("#T_zje2").val(obj.JJAmount);
                     $("#T_zje3").val(obj.ZCAmount);
                     $("#T_fjje").val(obj.fjfy);
@@ -561,14 +574,20 @@
                     $("#T_budgeid").val(obj.id);
                     $("#T_employee").val(obj.ywy);
                     $("#T_employee2").val(obj.sjs);
-
-                    if (obj.DetailDiscount != 1) {
+                    $("#T_zjezk").val(obj.zkzje);
+                    var zk = obj.DetailDiscount;
+                    if (zk == "") zk = 1;
+                    if (zk != 1) {
                         // alert(obj.DetailDiscount);
+                        //g.toggleCol('Discount', true);
+                        //g.toggleCol('zkje', true);
+                        $("#zk1").attr("style", "display:");
+                        $("#zk2").attr("style", "display:");
 
-
-                        $("#T_zk").val(obj.DetailDiscount);
-
+                       
                     }
+                    $("#T_zk").val(zk);
+
 
                 }
             });
@@ -917,10 +936,12 @@
                 return;
             }
             var t_sl = $("#T_sl").val();
+            var t_zk = $("#T_zk").val();
+            if (t_zk == "") t_zk == 1;
             $.ajax({
                 type: "get",
                 url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
-                data: { Action: 'savetotal', bid: getparastr("bid"), sl: t_sl, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                data: { Action: 'savetotal', bid: getparastr("bid"), sl: t_sl,zk:t_zk, rnd: Math.random() }, /* 注意参数的格式和名称 */
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
@@ -1086,16 +1107,27 @@
                       </a>
                     </td>
                      </tr></table>
-                </td><td colspan="2"   class="table_title1"> 
-           
+                </td><td colspan="2" id="zk1"   class="table_title1"> 
+           <table>
+               <tr>
+                   <td>
+                折扣金额:
+                   </td>
+                   <td>
 
-                       <span class="red">(0.9 = 九折）</span> 
+                      <input type="text"  id="T_zjezk" name="T_zjezk"  ltype="text" ligerui="{width:80,disabled:true}"
 
+                   </td>
+               </tr>
+           </table>
+                   
                      </td>
-                <td colspan="4"   class="table_title1"><table id="iszktable">
+                <td colspan="4" id="zk2"  class="table_title1">
+                    <table id="iszktable">
                   <tr>
-                    <td><input type="text"  value="1" id="T_zk" name="T_zk"  ltype="text" ligerui="{width:60,number: true}"   /></td>
-                    <td><a id="A1" class="l-button"  position="right" style="width:62px;" onClick="addzk()"> 确定折扣 </a></td>
+                    <td><input type="text"  value="1" id="T_zk" name="T_zk"  ltype="text" ligerui="{width:40,number: true}"   /></td>
+                    <td><a id="A1" class="l-button"  position="right" style="width:50px;" onClick="addzk()"> 确定折扣 </a></td>
+                   <td> <span class="red">(0.9 = 九折）</span> </td>
                   </tr>
                 </table></td>
   </tr>

@@ -1,12 +1,9 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http//www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="Content-Script-Type" content="text/javascript" />
-    <meta http-equiv="Content-Style-Type" content="text/css" />
-    <title>山山装企ERP管理系统</title>
-    <link rel="stylesheet" type="text/css" href="css/login.css" />
-    <script src="lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/login.css" type="text/css" rel="stylesheet" />
+
+ <script src="lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
     <script src="JS/jquery.md5.js" type="text/javascript"></script>
     <script src="JS/remember.js" type="text/javascript"></script>
@@ -154,62 +151,41 @@
     <script type="text/javascript">
         if (top.location != self.location) top.location = self.location;
     </script>
-</head>
-<body>
-    <div id="wrap">
-        <div id="Login">
-          <div class="box">
-                <p class="a01">
-                    <img src="images/login01.jpg" alt="六家居装企管理系统" /></p>
-            <dl>
-                    <dt>
-                        <table width="200" border="0">
-                            <tr>
-                                <td> <div style="width: 200px; float: left;">
-        
-                    <img id="logo" alt="" style="height: 42px; margin-left: 5px; margin-top: 2px;" />
-                    <%--</a>--%>
-                </div></td>
-                            </tr>
-                        </table>
-                    </dt>
 
-              </dl>
-              <table width="325" summary="登录页面" class="a02">
-                  <tr>
-                      <th width="53">用户名：</th>
-                      <td colspan="3">
-                          <input id="T_uid" name="T_uid" type="text" class="a03" /></td>
-                  </tr>
-                  <tr>
-                      <th>密  &nbsp;码：</th>
-                      <td colspan="3">
-                          <input id="T_pwd" name="T_pwd" type="password" class="a04" /></td>
-                  </tr>
-                  <tr>
-                      <th>验证码：</th>
-                      <td colspan="3">
-                          <input id="T_validate" name="T_validte" type="text" class="a05" />
-                          <img src="ValidateCode.aspx" alt="看不清楚，换一张" name="validate" width="75" height="25" id="validate" title="看不清楚，换一张" onclick="this.src=this.src+'?'" /></td>
-                  </tr>
-                  <tr>
-                    <th colspan="2" align="left">&nbsp;</th>
-                    <td valign="middle">&nbsp;</td>
-                    <td valign="middle">&nbsp;</td>
-                  </tr>
-                  <tr>
-                      <th colspan="2" align="right"><input type="image" src="images/login06.png" name="login" id="login" /></th>
-                      <td width="88" align="right" valign="middle"><a href="#"><!--<img src="Images/login/qq.png" onclick="qq_login()" /></a>--></td>
-                      <td width="101" valign="middle">&nbsp;</td>
-                  </tr>
-              </table>
-              </form>
-            </div>
-            <!-- #main-->
-        </div>
-        <!--container-->
+</head>
+
+<body>
+  <div class="box1">
+    <div class="box2">
+      <h1> <img id="logo" alt="" style="height: 42px; margin-left: 5px; margin-top: 2px;" /></h1>
+      
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="30%" align="right">用户：</td>
+    <td width="40%"><input id="T_uid" name="T_uid" type="text" class="box_inp1"/></td>
+    <td width="30%"></td>
+  </tr>
+  <tr>
+    <td align="right">密码：</td>
+    <td><input  id="T_pwd" name="T_pwd"  type="password" class="box_inp1"/></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="right">验证码：</td>
+    <td> <input id="T_validate" name="T_validte" type="text" class="box_inp2"/><img src="ValidateCode.aspx" alt="看不清楚，换一张" name="validate" width="75" height="25" id="validate" title="看不清楚，换一张" onclick="this.src=this.src+'?'" />
+      </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><input type="image" src="images/login06.png" name="login" id="login" /></td>
+    <td> <input type="BUTTON" name="FullScreen" value="全屏" class="box_inp2" onClick="window.open(document.location, 'big', 'fullscreen=yes')"></td>
+  </tr>
+</table>
     </div>
-    <!--#wrap-->
-<form> <div align="center"> <input type="BUTTON" name="FullScreen" value="全屏显示" onClick="window.open(document.location, 'big', 'fullscreen=yes')"> </div> </form> 
+    </form>
+    <div class="copy">三人行 技术支持</div>
+    <form> <div align="center"> &nbsp;</div> </form> 
+  </div>
 </body>
 </html>

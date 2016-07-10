@@ -42,8 +42,8 @@ namespace XHD.DAL
         { 
             StringBuilder strSql=new StringBuilder();
         strSql.Append("  INSERT INTO Budge_BasicDetail ");
-        strSql.Append(" (budge_id,xmid,unit,ComponentName,Cname,TotalPrice,discount,totaldiscountprice) ");
-        strSql.Append(" SELECT '" + bid + "',product_id,unit,'" + compname + "',category_name,price,1,price FROM dbo.CRM_product WHERE product_id IN(" + xmlistid + ") ");
+        strSql.Append(" (budge_id,xmid,unit,ComponentName,Cname,TotalPrice,discount,totaldiscountprice,fc_price,rg_price,zc_price) ");
+        strSql.Append(" SELECT '" + bid + "',product_id,unit,'" + compname + "',category_name,price,1,price,fc_price,rg_price,zc_price FROM dbo.CRM_product WHERE product_id IN(" + xmlistid + ") ");
 
         SqlParameter[] parameters = { };
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);

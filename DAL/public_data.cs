@@ -45,9 +45,9 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into public_data(");
-            strSql.Append("category_id,category_name,create_id,create_name,create_time,isDelete,Delete_time,title,t_content,orderid)");
+            strSql.Append("category_id,category_name,create_id,create_name,create_time,isDelete,Delete_time,title,t_content,orderid,qxbd)");
             strSql.Append(" values (");
-            strSql.Append("@category_id,@category_name,@create_id,@create_name,@create_time,@isDelete,@Delete_time,@title,@t_content,@orderid)");
+            strSql.Append("@category_id,@category_name,@create_id,@create_name,@create_time,@isDelete,@Delete_time,@title,@t_content,@orderid,@qxbd)");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
 					new SqlParameter("@category_id", SqlDbType.Int,4),
@@ -59,7 +59,8 @@ namespace XHD.DAL
 					new SqlParameter("@Delete_time", SqlDbType.DateTime),
                     new SqlParameter("@title", SqlDbType.VarChar,250),
                     new SqlParameter("@t_content", SqlDbType.VarChar,-1),
-                    new SqlParameter("@orderid", SqlDbType.Int,4)};
+                    new SqlParameter("@orderid", SqlDbType.Int,4),
+                    new SqlParameter("@qxbd", SqlDbType.VarChar,1000)};
             parameters[0].Value = model.category_id;
             parameters[1].Value = model.category_name;
             parameters[2].Value = model.create_id;
@@ -70,7 +71,7 @@ namespace XHD.DAL
             parameters[7].Value = model.title;
             parameters[8].Value = model.t_content;
             parameters[9].Value = model.orderid;
-
+            parameters[10].Value = model.qxbd;
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {
@@ -95,7 +96,8 @@ namespace XHD.DAL
             strSql.Append("create_time=@create_time,");
             strSql.Append("title=@title,");
             strSql.Append("t_content=@t_content,");
-            strSql.Append("orderid=@orderid");
+            strSql.Append("orderid=@orderid,");
+            strSql.Append("qxbd=@qxbd");
 
             strSql.Append(" where id=@id");
             SqlParameter[] parameters = {
@@ -107,7 +109,8 @@ namespace XHD.DAL
                     new SqlParameter("@create_time", SqlDbType.DateTime),
                     new SqlParameter("@title", SqlDbType.VarChar,250),
                     new SqlParameter("@t_content", SqlDbType.VarChar,-1),
-                    new SqlParameter("@orderid", SqlDbType.Int,4)};
+                    new SqlParameter("@orderid", SqlDbType.Int,4),
+                    new SqlParameter("@qxbd", SqlDbType.VarChar,1000),};
             parameters[0].Value = model.id;
             parameters[1].Value = model.category_id;
             parameters[2].Value = model.category_name;
@@ -117,6 +120,7 @@ namespace XHD.DAL
             parameters[6].Value = model.title;
             parameters[7].Value = model.t_content;
             parameters[8].Value = model.orderid;
+            parameters[9].Value = model.qxbd;
 
             int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -198,7 +202,7 @@ namespace XHD.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select top 1 id,category_id,category_name,create_id,create_name,create_time,isDelete,Delete_time,title,t_content,orderid from public_data ");
+            strSql.Append("select top 1 id,category_id,category_name,create_id,create_name,create_time,isDelete,Delete_time,title,t_content,orderid,qxbd from public_data ");
             strSql.Append(" where id=@id");
             SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)};
@@ -252,6 +256,10 @@ namespace XHD.DAL
                 {
                     model.orderid = int.Parse(ds.Tables[0].Rows[0]["orderid"].ToString());
                 }
+                if (ds.Tables[0].Rows[0]["qxbd"] != null && ds.Tables[0].Rows[0]["qxbd"].ToString() != "")
+                {
+                    model.qxbd = ds.Tables[0].Rows[0]["qxbd"].ToString();
+                }
                 return model;
             }
             else
@@ -266,7 +274,7 @@ namespace XHD.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select id,category_id,category_name,create_id,create_name,create_time,isDelete,Delete_time,title,t_content,orderid ");
+            strSql.Append("select id,category_id,category_name,create_id,create_name,create_time,isDelete,Delete_time,title,t_content,orderid,qxbd ");
             strSql.Append(" FROM public_data ");
             if (strWhere.Trim() != "")
             {
@@ -286,7 +294,7 @@ namespace XHD.DAL
             {
                 strSql.Append(" top " + Top.ToString());
             }
-            strSql.Append(" id,category_id,category_name,create_id,create_name,create_time,isDelete,Delete_time,title,t_content,orderid ");
+            strSql.Append(" id,category_id,category_name,create_id,create_name,create_time,isDelete,Delete_time,title,t_content,orderid,qxbd ");
             strSql.Append(" FROM public_data ");
             if (strWhere.Trim() != "")
             {

@@ -169,6 +169,9 @@
         //明细
    
         function add() {
+            
+                f_openWindow("crm/Budge/BudgeModelMainAdd.aspx", "查看模板", 1100, 660);
+            
                     }
 
         function edit() {
