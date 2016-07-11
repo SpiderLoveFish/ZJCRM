@@ -43,11 +43,9 @@
     <script type="text/javascript">
         var manager = ""; var g;
         var treemanager, gcomb;
-<<<<<<< HEAD
+ 
         var isshowzk=getparastr("isshowzk");
-=======
->>>>>>> origin/master
-        $(function () {
+      $(function () {
             var urlstr = "";
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
@@ -137,7 +135,7 @@
                     { display: '类别', name: 'Cname', width: 120 },
                      {
                          display: '单价', name: 'TotalPrice', type: 'float', width: 50, align: 'right'
-<<<<<<< HEAD
+ 
                      },
                      {
                          display: '主材单价', name: 'zc_price', type: 'float', width: 50, align: 'right'
@@ -146,10 +144,8 @@
                      }, {
                          display: '人工单价', name: 'rg_price', type: 'float', width: 50, align: 'right'
                      },
-=======
-                     },
-
->>>>>>> origin/master
+ 
+                    
                     {
                         display: "数量", name: "SUM", type: "float", isAllowHide: false, align: "right", width: 60,
                         editor: { type: "spinner" },
@@ -162,7 +158,7 @@
                     },
                         {
                             display: "金额", name: "je", type: "float", isAllowHide: false, align: "right", width: 60,
-                            editor: { type: "spinner" },
+                         
                             totalSummary: {
                                 //type:'sum,count,max,min,avg'
                                 render: function (suminf, column) {
@@ -172,7 +168,7 @@
                         },
                          
 
-<<<<<<< HEAD
+ 
                      //{
                      //    display: '折扣', name: 'Discount', width: 30, align: 'right',
                      //    type: 'float'
@@ -187,28 +183,15 @@
                      //           }
                      //       }
                      //   },
-=======
-                     {
-                         display: '折扣', name: 'Discount', width: 30, align: 'right',
-                         type: 'float'
-                     },
-                        {
-                            display: "折后金额", name: "zkje", type: "float", isAllowHide: false, align: "right", width: 60,
-                            editor: { type: "spinner" },
-                            totalSummary: {
-                                //type:'sum,count,max,min,avg'
-                                render: function (suminf, column) {
-                                    return "<span style='color:red'>" + suminf.sum.toFixed(2) + "</span>";
-                                }
-                            }
-                        },
->>>>>>> origin/master
+ 
+                
+ 
                       
                     { display: '单位', name: 'unit', width: 40 },
                      { display: '类型', name: 'C_style', width: 40 },
                         {
-                            display: '备注', name: 'Remarks', align: 'left', width: 175, render: function (item) {
-                                var html = "<div class='abc'>";
+                            display: '备注', name: 'proremarks', align: 'left', width: 175, render: function (item) {
+                                var html = "<div class='abcd'>";
                                 if (item.Remarks)
                                     html += item.Remarks;
                                 html += "</div>";
@@ -235,13 +218,13 @@
                 onBeforeEdit: f_onBeforeEdit,
                 onBeforeSubmitEdit: f_onBeforeSubmitEdit,
                 onAfterEdit: f_onAfterEdit,
-                //onAfterShowData: function (grid) {
-                //    $(".abc").hover(function (e) {
-                //        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
-                //    }, function (e) {
-                //        $(this).ligerHideTip(e);
-                //    });
-                //},
+                onAfterShowData: function (grid) {
+                    $(".abcd").hover(function (e) {
+                        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                    }, function (e) {
+                        $(this).ligerHideTip(e);
+                    });
+                },
                 onAfterShowData: ishidecol,
                 //checkbox: true, name: "ischecked", checkboxAll: false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
                 onContextmenu: function (parm, e) {
@@ -252,7 +235,6 @@
             });
 
             $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
-<<<<<<< HEAD
             if (isshowzk == "Y") {
             }
             else
@@ -262,11 +244,6 @@
                 $("#zk1").attr("style", "display:none");
                 $("#zk2").attr("style", "display:none");
             }
-=======
-
-
-
->>>>>>> origin/master
         })
 
 
@@ -605,8 +582,7 @@
                     $("#T_budgeid").val(obj.id);
                     $("#T_employee").val(obj.ywy);
                     $("#T_employee2").val(obj.sjs);
-<<<<<<< HEAD
-                    $("#T_zjezk").val(obj.zkzje);
+                   $("#T_zjezk").val(obj.zkzje);
                     var zk = obj.DetailDiscount;
                     if (zk == "") zk = 1;
                     if (zk != 1) {
@@ -620,8 +596,7 @@
                     }
                     $("#T_zk").val(zk);
 
-=======
-
+ 
                     if (obj.DetailDiscount != 1) {
                         // alert(obj.DetailDiscount);
 
@@ -629,8 +604,7 @@
                         $("#T_zk").val(obj.DetailDiscount);
 
                     }
->>>>>>> origin/master
-
+ 
                 }
             });
         }
@@ -911,7 +885,9 @@
                 top.$.ligerDialog.error('折扣必须大于0！');
                 return;
             }
-            var url = '../../data/Budge.ashx?Action=saveupdatedisprice&bid=' + $("#T_budgeid").val() + "&zk=" + $("#T_zk").val() + '&rdm=' + Math.random();
+            var t_sl = $("#T_sl").val();
+            if (t_sl == "") t_sl = 1;
+            var url = '../../data/Budge.ashx?Action=saveupdatedisprice&bid=' + $("#T_budgeid").val() + "&zk=" + $("#T_zk").val() + '&sl='+t_sl+'&rdm=' + Math.random();
             $.ajax({
                 type: 'post',
                 url: url,
@@ -983,12 +959,8 @@
             $.ajax({
                 type: "get",
                 url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
-<<<<<<< HEAD
-                data: { Action: 'savetotal', bid: getparastr("bid"), sl: t_sl,zk:t_zk, rnd: Math.random() }, /* 注意参数的格式和名称 */
-=======
-                data: { Action: 'savetotal', bid: getparastr("bid"), sl: t_sl, rnd: Math.random() }, /* 注意参数的格式和名称 */
->>>>>>> origin/master
-                contentType: "application/json; charset=utf-8",
+              data: { Action: 'savetotal', bid: getparastr("bid"), sl: t_sl,zk:t_zk, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
 

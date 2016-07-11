@@ -192,9 +192,17 @@ namespace XHD.CRM.Data
 
                 string bid = PageValidate.InputText(request["bid"], 50);
                 string zk = PageValidate.InputText(request["zk"], 255);
-               
-                if(bbdetail.UpdateDisPrice( StringToDecimal(zk),bid))
-                    context.Response.Write("true");
+                string sl = PageValidate.InputText(request["zk"], 255);
+
+                if (bbdetail.UpdateDisPrice(StringToDecimal(zk), bid))
+                {
+                    if (bd.updateAll(bid, StringToDecimal(zk), StringToDecimal(sl)) > 0)
+                    {
+
+                        context.Response.Write("true");
+                    }else  context.Response.Write("false");
+           
+                }
                 else context.Response.Write("false");
             }
             //刷新价格

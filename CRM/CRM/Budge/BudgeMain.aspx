@@ -12,7 +12,7 @@
     <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
 
-<<<<<<< HEAD
+  
    
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
@@ -33,29 +33,7 @@
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
         <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
-=======
-   
-    <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
-    <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
-        <script src="../../JS/Toolbar.js" type="text/javascript"></script>
-    <script src="../../JS/XHD.js" type="text/javascript"></script>
->>>>>>> origin/master
-    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script type="text/javascript">
         var manager = "";
         $(function () {
@@ -68,7 +46,8 @@
                       { display: '预算编号', name: 'id', width: 100, align: 'left' },
                           { display: '预算名称', name: 'BudgetName', width: 120, align: 'left' },
                       { display: '姓名', name: 'CustomerName', width: 60, align: 'left' },
-<<<<<<< HEAD
+ 
+                    
                       {
                           display: '电话', name: 'tel', align: 'left', width: 40, render: function (item) {
                               var html = "<div class='abc'>";
@@ -77,16 +56,7 @@
                               html += "</div>";
                               return html;
                           }
-=======
-                      {
-                          display: '电话', name: 'tel', align: 'left', width: 40, render: function (item) {
-                              var html = "<div class='abc'>";
-                              if (item.tel)
-                                  html += item.tel;
-                              html += "</div>";
-                              return html;
-                          }
->>>>>>> origin/master
+ 
                       },
                         { display: '客户地址', name: 'address', width: 200, align: 'left' },
                    { display: '金额', name: 'BudgetAmount', width: 60, align: 'left' },
@@ -116,21 +86,14 @@
                 { display: '备注', name: 'Remarks', width: 100, align: 'left' }
 
                 ],
-<<<<<<< HEAD
+ 
                 onAfterShowData: function (grid) {
                     $(".abc").hover(function (e) {
                         $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
                     }, function (e) {
                         $(this).ligerHideTip(e);
                     });
-=======
-                onAfterShowData: function (grid) {
-                    $(".abc").hover(function (e) {
-                        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
-                    }, function (e) {
-                        $(this).ligerHideTip(e);
-                    });
->>>>>>> origin/master
+ 
                 },
                 dataAction: 'server',
                 pageSize: 30,

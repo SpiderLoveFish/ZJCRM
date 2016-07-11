@@ -8,7 +8,7 @@
      <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/input.css"  type="text/css"  rel="stylesheet" />
-<<<<<<< HEAD
+ 
     
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
@@ -29,29 +29,7 @@
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
         <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
-=======
-    
-    <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
-    <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
-        <script src="../../JS/Toolbar.js" type="text/javascript"></script>
-    <script src="../../JS/XHD.js" type="text/javascript"></script>
->>>>>>> origin/master
-    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
    
     <script type="text/javascript">
         var manager = "";
@@ -87,7 +65,7 @@
                 columns: [
        { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                   { display: '姓名', name: 'CustomerName', width: 60, align: 'left' },
-<<<<<<< HEAD
+ 
                        {
                            display: '电话', name: 'tel', align: 'left', width: 40, render: function (item) {
                                var html = "<div class='abc'>";
@@ -96,16 +74,7 @@
                                html += "</div>";
                                return html;
                            }
-=======
-                       {
-                           display: '电话', name: 'tel', align: 'left', width: 40, render: function (item) {
-                               var html = "<div class='abc'>";
-                               if (item.tel)
-                                   html += item.tel;
-                               html += "</div>";
-                               return html;
-                           }
->>>>>>> origin/master
+ 
                        },
                         { display: '客户地址', name: 'address', width: 150, align: 'left' },
                       { display: '施工监理', name: 'sgjl', width: 80, align: 'left' },
@@ -146,21 +115,13 @@
 
                 ],
 
-<<<<<<< HEAD
+ 
                 onAfterShowData: function (grid) {
                     $(".abc").hover(function (e) {
                         $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
                     }, function (e) {
                         $(this).ligerHideTip(e);
                     });
-=======
-                onAfterShowData: function (grid) {
-                    $(".abc").hover(function (e) {
-                        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
-                    }, function (e) {
-                        $(this).ligerHideTip(e);
-                    });
->>>>>>> origin/master
                 },
                 dataAction: 'server',
                 url: "../../data/CRM_CEDetail.ashx?Action=grid", pageSize: 30,

@@ -627,7 +627,7 @@ namespace XHD.DAL
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
             strSql.Append(" top " + PageSize + " A.*,C.C_style ,TotalPrice*ISNULL(SUM,0)AS je,TotalDiscountPrice*ISNULL(SUM,0)AS zkje,B.product_name");
-            strSql.Append(" ,specifications+'/'+promodel+'/'+brand AS brand ");
+            strSql.Append(" ,specifications+'/'+promodel+'/'+brand AS brand,b.remarks as proremarks ");
             strSql.Append(" FROM dbo.Budge_BasicDetail A INNER JOIN dbo.CRM_product B ON A.xmid=B.product_id ");
             strSql.Append(" INNER JOIN dbo.CRM_product_category C ON  B.category_id=C.id");
             strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_BasicDetail ");
