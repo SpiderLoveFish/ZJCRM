@@ -59,7 +59,7 @@ namespace XHD.CRM.Data
                         if (bd.GetTax(bid).Tables[0].Rows.Count > 0)
                             foreach (DataRow dw in bd.GetTax(bid).Tables[0].Rows)
                             {
-                                josnstr = "{ 'sj':'" + dw["b_sj"].ToString() + "','zje':'" + dw["b_zje"].ToString() + "'}";
+                                josnstr = "{ 'sj':'" + dw["b_sj"].ToString() + "','zje':'" + dw["b_zje"].ToString() + "','b_zkzje':'" + dw["b_zkzje"].ToString() + "'}";
                             }
                     }
                 }
@@ -192,18 +192,24 @@ namespace XHD.CRM.Data
 
                 string bid = PageValidate.InputText(request["bid"], 50);
                 string zk = PageValidate.InputText(request["zk"], 255);
-                string sl = PageValidate.InputText(request["zk"], 255);
-
+                string sl = PageValidate.InputText(request["sl"], 255);
+                string josnstr = "";
                 if (bbdetail.UpdateDisPrice(StringToDecimal(zk), bid))
                 {
                     if (bd.updateAll(bid, StringToDecimal(zk), StringToDecimal(sl)) > 0)
                     {
-
-                        context.Response.Write("true");
-                    }else  context.Response.Write("false");
+                        if (bd.GetTax(bid).Tables[0].Rows.Count > 0)
+                            foreach (DataRow dw in bd.GetTax(bid).Tables[0].Rows)
+                            {
+                                josnstr = "{ 'sj':'" + dw["b_sj"].ToString() + "','zje':'" + dw["b_zje"].ToString() + "','b_zkzje':'" + dw["b_zkzje"].ToString() + "'}";
+                            }
+                     
+                    } 
            
                 }
-                else context.Response.Write("false");
+                if (josnstr.Length <= 0) josnstr = "{}";
+                //{"status": 1, "sum": 9}
+                context.Response.Write(josnstr);
             }
             //刷新价格
             if (request["Action"] == "saveupdaterefprice")

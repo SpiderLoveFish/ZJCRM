@@ -43,9 +43,8 @@
     <script type="text/javascript">
         var manager = ""; var g;
         var treemanager, gcomb;
- 
         var isshowzk=getparastr("isshowzk");
-      $(function () {
+        $(function () {
             var urlstr = "";
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
@@ -53,7 +52,16 @@
             $("form").ligerForm();
             if (getparastr("bid") != null) {
                 $("#qdkh").attr("style", "display:none");
-
+                loadfjf(getparastr("bid"));//附加金额  
+               // $("#tipfjje").attr("style", "display:none");
+                $("#tipfjje").hover(function ()
+                {
+                    $(this).ligerTip({ content: $("#tipfjje").html(), width: 300 });
+                },
+                    function ()
+                    {$(this).ligerHideTip();}
+                   ); //透过jquery的hover来赋值一个鼠标移入移出事件
+                $("#tipfjje").ligerHideTip(); //关闭弹出的tip
                 loadForm(getparastr("bid"));
                 urlstr = '../../data/Budge.ashx?Action=tree&bid=' + getparastr("bid") + '&rnd=' + Math.random();
                 //审核，失效或者编辑时，已经提交
@@ -133,22 +141,26 @@
                      { display: '部位', name: 'ComponentName', width: 50 },
 
                     { display: '类别', name: 'Cname', width: 120 },
+                     
                      {
-                         display: '单价', name: 'TotalPrice', type: 'float', width: 50, align: 'right'
- 
+                         display: '主材￥', name: 'zc_price', type: 'float', width: 50, align: 'right', render: function (item) {
+                             return "<div style='color:#135294'>" + item.zc_price + "</div>";
+                         }
+                     }, {
+                         display: '辅材￥', name: 'fc_price', type: 'float', width: 50, align: 'right',render: function (item) {
+                             return "<div style='color:#135294'>" + item.fc_price + "</div>";
+                         }
+                     }, {
+                         display: '人工￥', name: 'rg_price', type: 'float', width: 50, align: 'right',render: function (item) {
+                             return "<div style='color:#135294'>" + item.rg_price + "</div>";
+                         }
                      },
                      {
-                         display: '主材单价', name: 'zc_price', type: 'float', width: 50, align: 'right'
-                     }, {
-                         display: '辅材单价', name: 'fc_price', type: 'float', width: 50, align: 'right'
-                     }, {
-                         display: '人工单价', name: 'rg_price', type: 'float', width: 50, align: 'right'
+                         display: '总价￥', name: 'TotalPrice', type: 'float', width: 50, align: 'right'
                      },
- 
-                    
                     {
-                        display: "数量", name: "SUM", type: "float", isAllowHide: false, align: "right", width: 60,
-                        editor: { type: "spinner" },
+                        display: "数量", name: "SUM", type: "float", align: "right", width: 60,
+                        editor: { type: "float" },
                         totalSummary: {
                             //type:'sum,count,max,min,avg'
                             render: function (suminf, column) {
@@ -157,8 +169,7 @@
                         }
                     },
                         {
-                            display: "金额", name: "je", type: "float", isAllowHide: false, align: "right", width: 60,
-                         
+                            display: "金额￥", name: "je", type: "float", width: 50, align: 'right',
                             totalSummary: {
                                 //type:'sum,count,max,min,avg'
                                 render: function (suminf, column) {
@@ -168,7 +179,6 @@
                         },
                          
 
- 
                      //{
                      //    display: '折扣', name: 'Discount', width: 30, align: 'right',
                      //    type: 'float'
@@ -183,17 +193,14 @@
                      //           }
                      //       }
                      //   },
- 
-                
- 
                       
                     { display: '单位', name: 'unit', width: 40 },
                      { display: '类型', name: 'C_style', width: 40 },
                         {
-                            display: '备注', name: 'proremarks', align: 'left', width: 175, render: function (item) {
-                                var html = "<div class='abcd'>";
-                                if (item.Remarks)
-                                    html += item.Remarks;
+                            display: '工艺说明', name: 'proremarks', align: 'left', width: 150, render: function (item) {
+                                var html = "<div class='abc'>";
+                                if (item.proremarks)
+                                    html += item.proremarks;
                                 html += "</div>";
                                 return html;
                             }
@@ -219,13 +226,13 @@
                 onBeforeSubmitEdit: f_onBeforeSubmitEdit,
                 onAfterEdit: f_onAfterEdit,
                 onAfterShowData: function (grid) {
-                    $(".abcd").hover(function (e) {
+                    $(".abc").hover(function (e) {
                         $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
                     }, function (e) {
                         $(this).ligerHideTip(e);
                     });
                 },
-                onAfterShowData: ishidecol,
+               // onAfterShowData: ishidecol,
                 //checkbox: true, name: "ischecked", checkboxAll: false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
                 onContextmenu: function (parm, e) {
                     actionproduct_id = parm.data.id;
@@ -246,7 +253,31 @@
             }
         })
 
+        function loadfjf(oaid) {
+            $.ajax({
+                type: "GET",
+                url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
+                data: { Action: 'gridrate', bid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var obj = result.Rows;
+                    var item;
+                    $.each(obj, function (i, data) {
 
+                        item = "<tr><td>" + data['RateName'] + "</td> "
+                            + " <td>" + data['rate'] + "</td> <td>" + data['RateAmount'] + "</td>"
+                            + " </tr>";
+                        $('.abcde').append(item);
+
+                    });
+                  
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(textStatus);
+                }
+            })
+        }
         function removeTreeItem() {
             if (getparastr("style") != null || getparastr("status") == "1") {
                 top.$.ligerDialog.error('非编辑状态无法删除！');
@@ -572,7 +603,7 @@
                     $("#T_companyid").val(obj.CustomerID);
                     $("#T_company").val(obj.CustomerName + "(" + obj.address + ")");
                     $("#T_budge_name").val(obj.BudgetName);
-                    $("#T_zje").val(obj.zje + obj.fjfy);
+                    $("#T_zje").val(obj.zje);
                     $("#T_zje2").val(obj.JJAmount);
                     $("#T_zje3").val(obj.ZCAmount);
                     $("#T_fjje").val(obj.fjfy);
@@ -582,7 +613,7 @@
                     $("#T_budgeid").val(obj.id);
                     $("#T_employee").val(obj.ywy);
                     $("#T_employee2").val(obj.sjs);
-                   $("#T_zjezk").val(obj.zkzje);
+                    $("#T_zjezk").val(obj.zkzje);
                     var zk = obj.DetailDiscount;
                     if (zk == "") zk = 1;
                     if (zk != 1) {
@@ -596,15 +627,7 @@
                     }
                     $("#T_zk").val(zk);
 
- 
-                    if (obj.DetailDiscount != 1) {
-                        // alert(obj.DetailDiscount);
 
-
-                        $("#T_zk").val(obj.DetailDiscount);
-
-                    }
- 
                 }
             });
         }
@@ -885,18 +908,24 @@
                 top.$.ligerDialog.error('折扣必须大于0！');
                 return;
             }
-            var t_sl = $("#T_sl").val();
-            if (t_sl == "") t_sl = 1;
-            var url = '../../data/Budge.ashx?Action=saveupdatedisprice&bid=' + $("#T_budgeid").val() + "&zk=" + $("#T_zk").val() + '&sl='+t_sl+'&rdm=' + Math.random();
+            var sl = $("#T_sl").val();
+            if (sl == "") sl = 0;
+            var url = '../../data/Budge.ashx?Action=saveupdatedisprice&bid=' + $("#T_budgeid").val() + "&zk=" + $("#T_zk").val() + '&sl='+sl+'&rdm=' + Math.random();
             $.ajax({
                 type: 'post',
                 url: url,
-
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
                 success: function (data) {
-                    if (data == 'true') {
-                        fload();
+                    var obj = eval(data);
+                    for (var n in obj) {
+                        if (obj[n] == "null" || obj[n] == null)
+                            obj[n] = "";
                     }
-                    else $.ligerDialog.error("保存错误！！！");
+                    // alert(obj.sj); //String 构造函数
+                    $("#T_zjezk").val(toMoney(obj.b_zkzje));
+                    $("#T_sj").val(toMoney(obj.sj));
+                    $("#T_zje").val(toMoney(obj.zje));
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     $.ligerDialog.error("保存错误！！！");
@@ -959,8 +988,8 @@
             $.ajax({
                 type: "get",
                 url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
-              data: { Action: 'savetotal', bid: getparastr("bid"), sl: t_sl,zk:t_zk, rnd: Math.random() }, /* 注意参数的格式和名称 */
-                 contentType: "application/json; charset=utf-8",
+                data: { Action: 'savetotal', bid: getparastr("bid"), sl: t_sl,zk:t_zk, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
 
@@ -971,7 +1000,7 @@
                             obj[n] = "";
                     }
                     // alert(obj.sj); //String 构造函数
-
+                    $("#T_zjezk").val(toMoney(obj.b_zkzje));
                     $("#T_sj").val(toMoney(obj.sj));
                     $("#T_zje").val(toMoney(obj.zje));
 
@@ -1119,10 +1148,29 @@
                 </td><td colspan="3"   class="table_title1"> 
                         <table><tr>
                            <td>&nbsp;</td><td>
+                               <table>
+                                   <tr><td>
                       <a id="A7" class="l-button"  position="right" style="width:80px;" onClick="addfjje()">
                           添加附加费用
 
-                      </a>
+                      </a></td>
+                                       <td> 
+                         <div id="tipfjje" class="abcd" style="width:-30px;height:15px">
+                             <table  class="abcde" >
+                             <tr>
+                                        <TD colspan="3">附加费明细</td>
+                                        </tr>
+                              <tr>
+                               
+                                       <TD width="40%">项目</td>
+                                        <TD width="40%">费率</td>
+                                        <TD width="20%">金额</td>
+                         
+                                   </tr>
+
+                             </table>
+                         </div>
+                             </td>  </tr>    </table>
                     </td>
                      </tr></table>
                 </td><td colspan="2" id="zk1"   class="table_title1"> 
@@ -1144,8 +1192,8 @@
                     <table id="iszktable">
                   <tr>
                     <td><input type="text"  value="1" id="T_zk" name="T_zk"  ltype="text" ligerui="{width:40,number: true}"   /></td>
-                    <td><a id="A1" class="l-button"  position="right" style="width:50px;" onClick="addzk()"> 确定折扣 </a></td>
-                   <td> <span class="red">(0.9 = 九折）</span> </td>
+                    <td><a id="A1" class="l-button"  position="right" style="width:50px;" onClick="addzk()"> 打折</a></td>
+                   <td> <span class="red">(0.9=九折）</span> </td>
                   </tr>
                 </table></td>
   </tr>
