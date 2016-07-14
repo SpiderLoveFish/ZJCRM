@@ -165,7 +165,7 @@
            LODOP.PRINT_INIT("分页打印综合表格");
            LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4");
            var strStyle = "<style> table,td,th {border-width: 1px;border-style: solid;border-collapse: collapse}</style>"
-           LODOP.ADD_PRINT_TABLE(128, "5%", "90%", 314, strStyle + document.getElementById("div2").innerHTML);
+           LODOP.ADD_PRINT_HTM(128, "5%", "90%", 314, strStyle + document.getElementById("div2").innerHTML);
            LODOP.SET_PRINT_STYLEA(0, "Vorient", 3);
            LODOP.ADD_PRINT_TABLE(26, 0, "90%", 314, document.getElementById("div3").innerHTML);
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 0);
@@ -249,7 +249,7 @@
 </TABLE>
 </td>
 <td  valign="top">
-    <TABLE   class="table3 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse" bordercolor="#333333">
+    <TABLE   class="table3 table-striped table-bordered table-condensed" border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse" bordercolor="#333333">
 <thead>
   <TR>
      <TD colspan="3">
