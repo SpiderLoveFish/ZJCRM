@@ -249,7 +249,7 @@
           var manager = $("#maingrid4").ligerGetGridManager();
           var row = manager.getSelectedRow();
           if (row) {
-              f_openWindowview("crm/Print/BudgePrint.aspx?bid=" + row.id , "打印", 1100, 600);
+              f_openWindowview("crm/Print/BudgePrintlist.aspx?bid=" + row.id , "打印", 800, 400);
           } else {
               $.ligerDialog.warn('请选择行！');
           }

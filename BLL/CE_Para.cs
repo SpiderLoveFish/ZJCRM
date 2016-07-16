@@ -255,6 +255,12 @@ namespace XHD.BLL
         {
             return dal.Addkjl_list_text(uid,style,userid,text,remarks);
         }
+
+        public DataSet GetPrint_list(string strWhere)
+        {
+            return dal.GetPrint_list(strWhere);
+        }
+
         #endregion  ExtensionMethod
     }
 }

@@ -631,6 +631,16 @@ namespace XHD.CRM.Data
                 context.Response.Write(dt);
 
             }
+            if (request["Action"] == "gridprint")
+            {
+                string style = PageValidate.InputText(request["style"], 50);
+                
+                BLL.CE_Para ce = new BLL.CE_Para();
+                DataSet ds = ce.GetPrint_list(" PrintStyle='" + style + "'");//预算类型
+                string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0],"");
+
+                context.Response.Write(dt);
+            }
             //选择已筛选的版本部位
             if (request["Action"] == "tree")
             {

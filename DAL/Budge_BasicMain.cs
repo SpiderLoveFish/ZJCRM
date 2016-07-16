@@ -572,13 +572,21 @@ namespace XHD.DAL
             sb.AppendLine("  WHERE budge_id='" + bid + "'");
             sb.AppendLine("  GROUP BY c.c_style,ComponentName");
             sb.AppendLine("SELECT ComponentName, COUNT(xmid)AS	zl");
-            sb.AppendLine(", isnull(SUM([SUM]),0) AS zsl,isnull(SUM(DiscountSubTotal),0) AS zje");
+            sb.AppendLine(", isnull(SUM([SUM]),0) AS zsl,isnull(SUM(a.TotalPrice*[SUM]),0) AS zje,isnull(SUM(a.zc_price*[SUM]),0) AS zc_zje,isnull(SUM(a.fc_price*[SUM]),0) AS fc_zje,isnull(SUM(a.rg_price*[SUM]),0) AS rg_zje");
             sb.AppendLine(",(SELECT isnull(je,0) as je FROM #temp WHERE C_style='主材' AND ComponentName=A.ComponentName	 ) AS zcje, (SELECT isnull(je,0) as je FROM #temp WHERE C_style='基建' AND ComponentName=A.ComponentName) jcje");
             sb.AppendLine(" FROM  dbo.Budge_BasicDetail A");
             sb.AppendLine(" INNER JOIN dbo.CRM_product B ON A.xmid=B.product_id");
             sb.AppendLine(" INNER JOIN  dbo.CRM_product_category C ON B.category_id=C.id");
             sb.AppendLine("  WHERE budge_id='" + bid + "'");
             sb.AppendLine(" GROUP BY ComponentName");
+            sb.AppendLine("  UNION ALL");
+            sb.AppendLine("SELECT '合计', COUNT(xmid)AS	zl");
+            sb.AppendLine(", isnull(SUM([SUM]),0) AS zsl,isnull(SUM(a.TotalPrice*[SUM]),0) AS zje,isnull(SUM(a.zc_price*[SUM]),0) AS zc_zje,isnull(SUM(a.fc_price*[SUM]),0) AS fc_zje,isnull(SUM(a.rg_price*[SUM]),0) AS rg_zje");
+            sb.AppendLine(",0 AS zcje, 0 as jcje");
+            sb.AppendLine(" FROM  dbo.Budge_BasicDetail A");
+            sb.AppendLine(" INNER JOIN dbo.CRM_product B ON A.xmid=B.product_id");
+            sb.AppendLine(" INNER JOIN  dbo.CRM_product_category C ON B.category_id=C.id");
+            sb.AppendLine("  WHERE budge_id='" + bid + "'");
             sb.AppendLine("");
             return DbHelperSQL.Query(sb.ToString());
         }

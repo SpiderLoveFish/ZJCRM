@@ -746,7 +746,22 @@ namespace XHD.DAL
             }
         }
 
-
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetPrint_list(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select * ");
+            strSql.Append(" ");
+            strSql.Append(" FROM Budge_Print_list ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+     
 
 		#endregion  ExtensionMethod
 	}
