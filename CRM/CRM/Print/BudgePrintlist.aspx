@@ -20,6 +20,7 @@
            loadForm("YS");           
        });
        function OpenURL(url) {
+       
            window.open(url + "?bid=" + getparastr("bid"), "_blank", 'top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=no,location=n o, status=no');
 
           // f_openWindowview("crm/Print/" + url + "?bid=" + getparastr("bid"), "打印", 800, 400);
@@ -42,13 +43,14 @@
                            else
                            item ="";
                        item += " <td class='table_title1'>" +
-                   "  <a id='A5' class='l-button' value='" + data['Budge_File'] + "'  position='right' style='width:120px;' onClick='OpenURL(this.value)'>" +
-                    "   "+data['Budge_Print'] +"</a> "+
+                   "  <input  id='A5'  class='l-button' value=" + data['Budge_Print'] + " name='" + data['Budge_File'] + "'  position='right' style='width:120px;' onClick='OpenURL(this.name)'>" +
+                    "   </input > " +
              " <img src=' " + data['PrintIcon'] + "' width='100' height='100'></td> " +
              " <td style='width:10px;height:10px'> <div id='tip' class='tips' style='width:20px;height:20px; overflow: hidden;'>   " +
                         
                  " " + data['Remark'] + "   </div>  </td> " +
-                  "  " ;
+                  "  ";
+                
                        len++;
                        if (len == 3) {
                          
