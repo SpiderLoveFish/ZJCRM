@@ -12,61 +12,86 @@
     <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
 
+  
+   
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-   <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="../../lib/json2.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
+    <script src="../../lib/jquery.form.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+        <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
+     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script type="text/javascript">
         var manager = "";
         $(function () {
-            var strurl = "../../data/Budge.ashx?Action=gridselectmodel";
-
-
-
             $("#maingrid4").ligerGrid({
                 columns: [
-                    //{ display: 'ID', name: 'ID', type: 'int', width: 50 },
-                    { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
-                   { display: '模板编号', name: 'model_id', width: 120, align: 'left' },
-                   { display: '模板名称', name: 'model_name', width: 150, align: 'left' },
-                   { display: '创建人', name: 'name', width: 100, align: 'left' },
-                   {
-                       display: '创建日期', name: 'DoTime', width: 100, align: 'left', render: function (item) {
-                           return formatTimebytype(item.DoTime, 'yyyy-MM-dd');
-                       }
-                   },
-                     { display: '引用次数', name: 'citations', width: 100, align: 'left' },
-                       { display: '备注', name: 'Remarks', width: 100, align: 'left' },
-                   { display: '原预算', name: 'budge_id', width: 150, align: 'left' }
+                     {
+                         display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                         { return (page - 1) * pagesize + rowindex + 1; }
+                     },
+                      { display: '模板编号', name: 'id', width: 100, align: 'left' },
+                          { display: '模板名称', name: 'BudgetName', width: 120, align: 'left' },
+                      { display: '姓名', name: 'CustomerName', width: 60, align: 'left' },
+ 
+                    
+                  
+                    
+                 
+                        { display: '创建人', name: 'name', width: 80, align: 'left' },
+                        {
+                            display: '创建日期', name: 'DoTime', width: 100, align: 'left', render: function (item) {
+                                return formatTimebytype(item.DoTime, 'yyyy-MM-dd');
+                            }
+                        },
+                          { display: '引用次数', name: 'FromTimes', width: 100, align: 'left' },
+
+                        { display: '原预算', name: 'id', width: 80, align: 'left' },
+                { display: '备注', name: 'Remarks', width: 100, align: 'left' }
 
                 ],
-                checkbox: false,
+  
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: strurl,
+                url: "../../data/Budge.ashx?Action=grid&IsModel=Y",//增加选择条件 0 编辑 1 审核
                 width: '100%',
                 height: '100%',
-                //title: "员工列表",
-                heightDiff: 0,
-
+                //tree: { columnName: 'StageDescription' },
+                heightDiff: -1,
+                onRClickToSelect: true,
                 onContextmenu: function (parm, e) {
                     actionCustomerID = parm.data.id;
                     menu.show({ top: e.pageY, left: e.pageX });
                     return false;
                 }
+
             });
 
+
+
+            initLayout();
+            $(window).resize(function () {
+                initLayout();
+            });
             toolbar();
-            $("#lbtip").css("display", 'none');//提示先隐藏
         });
         function toolbar() {
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=154&rnd=" + Math.random(), function (data, textStatus) {
+            var url = "../../data/toolbar.ashx?Action=GetSys&mid=153&rnd=" + Math.random();
+            $.getJSON(url, function (data, textStatus) {
                 //alert(data);
                 var items = [];
                 var arr = data.Items;
@@ -74,6 +99,34 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
+                items.push({
+                    type: 'textbox',
+                    id: 'keyword1',
+                    text: ''
+                });
+                items.push({
+                    type: 'button',
+                    text: '搜索',
+                    icon: '../../images/search.gif',
+                    disable: true,
+                    click: function () {
+                        doserch()
+                    }
+                });
+                items.push({
+                    type: 'textbox',
+                    id: 'keyword1',
+                    text: ''
+                });
+                items.push({
+                    type: 'button',
+                    text: '搜索',
+                    icon: '../../images/search.gif',
+                    disable: true,
+                    click: function () {
+                        doserch()
+                    }
+                });
                 items.push({
                     type: 'serchbtn',
                     text: '高级搜索',
@@ -92,6 +145,7 @@
                 });
 
                 $("#maingrid4").ligerGetGridManager().onResize();
+                $("#keyword1").ligerTextBox({ width: 200, nullText: "输入关键词搜索" })
             });
         }
 
@@ -114,21 +168,20 @@
             $("#dzstext").addClass("l-text");
             $("#dhstext").addClass("l-text");
             $("#sgjlstext").addClass("l-text");
-            $("#ztstext").ligerComboBox({ width: 100 })
-            //$("#dclbstext").ligerTextBox({ width: 100 });
-
-            $("#dclbstext").addClass("l-text");
-            $("#dclestext").addClass("l-text");
+           
+            $("#T_sjs").addClass("l-text");
+            $("#T_ysbh").addClass("l-text");
+           
 
         }
 
         //查询
         function doserch() {
-            var sendtxt = "&Action=gridselectmodel&rnd=" + Math.random();
+            var sendtxt = "&Action=grid&rnd=" + Math.random();
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
             //  alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL("../../data/Budge.ashx?" + serchtxt);
+            manager.GetDataByURL("../../data/Budge.ashx?str_condition=0&" + serchtxt);
         }
         function doclear() {
             //var serchtxt = $("#serchform :input").reset();
@@ -152,11 +205,35 @@
             };
             activeDialogs = parent.jQuery.ligerDialog.open(dialogOptions);
         }
+        //撤回
+        var activeDialogsch = null;
+        function f_openWindow_ch(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+                    {
+                        text: '撤回', onclick: function (item, dialog) {
+                            f_saveret(item, dialog);
+                        }
+                    },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialogsch = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
         var activeDialog = null;
         function f_openWindow(url, title, width, height) {
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
-                       
+                        {
+                            text: '保存', onclick: function (item, dialog) {
+                                f_save(item, dialog);
+                            }
+                        },
+                         
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();
@@ -166,24 +243,89 @@
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
-        //明细
-   
-        function add() {
-            
-                f_openWindow("crm/Budge/BudgeModelMainAdd.aspx", "查看模板", 1100, 660);
-            
-                    }
-
+     
+      function add() {
+          f_openWindow("crm/Budge/BudgeMainAdd.aspx?IsModel=Y", "新增预算模板", 1100, 660);
+        }
+      function cs() {
+          var manager = $("#maingrid4").ligerGetGridManager();
+          var row = manager.getSelectedRow();
+          if (row) {
+              f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&isshowzk=Y" + "&IsModel=Y", "修改预算", 1100, 600);
+          }
+      }
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("crm/Budge/BudgeModelMainAdd.aspx?mid=" + row.model_id, "查看模板", 1100, 660);
+              
+                f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus + "&IsModel=Y", "修改预算模板", 1100, 600);
+               
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
         }
+        function f_saveret(item, dialog)
+        {
 
+            var issave = dialog.frame.f_saveapr();
+
+            if (issave) {
+                dialog.close();
+                top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                $.ajax({
+                    url: "../../data/Budge.ashx", type: "POST",
+                    data: issave,
+                    success: function (responseText) {
+                        top.$.ligerDialog.closeWaitting();
+                        if (responseText == "false") {
+                            top.$.ligerDialog.error('操作失败！');
+                        }
+                        else {
+                            //  alert(issave); 
+                            f_reload();
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+
+                    }
+                });
+
+            }
+        }
+        function ret() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                $.ligerDialog.confirm("确定退回吗？", function (yes) {
+                    if (yes) {
+                        $.ajax({
+                            url: "../../data/Budge.ashx", type: "POST",
+                            data: { Action: "saveupdatestatus",status:0, bid: row.id, rnd: Math.random() },
+                            success: function (responseText) {
+                                if (responseText == "true") {
+                                    top.$.ligerDialog.closeWaitting();
+                                    f_reload();
+                                }
+
+                                else {
+                                    top.$.ligerDialog.closeWaitting();
+                                    top.$.ligerDialog.error('退回失败！');
+                                }
+                            },
+                            error: function () {
+                                top.$.ligerDialog.closeWaitting();
+                                top.$.ligerDialog.error('退回失败！', "", null, 9003);
+                            }
+                        });
+                    }
+                })
+            } else {
+                $.ligerDialog.warn("请选择类别！");
+            }
+        }
+        
         function del() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
@@ -192,7 +334,7 @@
                     if (yes) {
                         $.ajax({
                             url: "../../data/Budge.ashx", type: "POST",
-                            data: { Action: "delmodel", mid: row.model_id, rnd: Math.random() },
+                            data: { Action: "del", bid: row.id, rnd: Math.random() },
                             success: function (responseText) {
                                 if (responseText == "true") {
                                     top.$.ligerDialog.closeWaitting();
@@ -215,7 +357,65 @@
                 $.ligerDialog.warn("请选择类别！");
             }
         }
-    function f_reload() {
+
+        function f_save(item, dialog) {
+
+            var issave = dialog.frame.f_savemb();
+         
+            if (issave) {
+                dialog.close();
+                top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                $.ajax({
+                    url: "../../data/Budge.ashx", type: "POST",
+                    data: issave,
+                    success: function (responseText) {
+                        top.$.ligerDialog.closeWaitting();
+                        if (responseText == "false") {
+                            top.$.ligerDialog.error('操作失败！');
+                        }
+                        else {
+                          //  alert(issave); 
+                            f_reload();
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+
+                    }
+                });
+
+            }
+        }
+        function f_submit(item, dialog) {
+
+            var issave = dialog.frame.f_save();
+
+            if (issave) {
+                dialog.close();
+                top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                $.ajax({
+                    url: "../../data/Budge.ashx", type: "POST",
+                    data: issave + "&style=submit",
+                    success: function (responseText) {
+                        top.$.ligerDialog.closeWaitting();
+                        if (responseText == "false") {
+                            top.$.ligerDialog.error('操作失败！');
+                        }
+                        else {
+                            //  alert(issave); 
+                            f_reload();
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+
+                    }
+                });
+
+            }
+        } 
+
+        function f_reload() {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);
             top.flushiframegrid("tabid39");
@@ -279,27 +479,19 @@
                     <td>
                         <input id='sgjlstext' name="sgjlstext" type='text'  ltype='text' ligerui='{width:120}' /></td>
 
-                    <td>
-                        <div style='width: 60px; text-align: right; float: right' >状态：</div>
+                     <td>
+                        <div style='width: 60px; text-align: right; float: right'>设计师：</div>
                     </td>
                     <td>
-                        <div style='width: 100px; float: left'>
-                            <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui="{width:196,data:[{id:'正在施工',text:'正在施工'},{id:'施工完成',text:'施工完成'}]}" validate="{required:false}" />
-                        </div>
-                         
+                        <input id='T_sjs' name="T_sjs" type='text'  ltype='text' ligerui='{width:120}' /></td>
+                     <td>
+                        <div style='width: 60px; text-align: right; float: right'>预算编号：</div>
                     </td>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>达成率：</div>
-                    </td>
-                    <td>
-                        <div style='width: 300px; float: left'>
-                            <input type='text' id='dclbstext' name='dclbstext'    ltype='text'  ligerui="{width:50}" />
-                    
-                         -->
+                        <input id='T_ysbh' name="T_ysbh" type='text'  ltype='text' ligerui='{width:120}' /></td>
+
                    
-                            <input type='text' id='dclestext' name='dclestext'    ltype='text' ligerui="{width:50}"  />
-                        </div>
-                    </td>
+                   
 
                 </tr>
             

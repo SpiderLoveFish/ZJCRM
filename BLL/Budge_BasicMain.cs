@@ -35,12 +35,17 @@ namespace XHD.BLL
 			return dal.Add(model);
 		}
 
+        public bool AddMB(XHD.Model.Budge_BasicMain model,string mblx)
+        {
+            return dal.Addmb(model,mblx);
+        }
+
 		/// <summary>
 		/// 更新一条数据
 		/// </summary>
-		public bool Update(XHD.Model.Budge_BasicMain model)
+		public bool Update(XHD.Model.Budge_BasicMain model,string mblx)
 		{
-			return dal.Update(model);
+			return dal.Update(model,mblx);
 		}
         public bool updatestatus(int status, string bid)
         {

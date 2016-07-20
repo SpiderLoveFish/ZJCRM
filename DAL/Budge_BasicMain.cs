@@ -114,10 +114,72 @@ namespace XHD.DAL
 				return false;
 			}
 		}
+
+        public bool Addmb(XHD.Model.Budge_BasicMain model,string mblx)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into Budge_BasicMain(");
+            strSql.Append("id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions,IsModel,ModelStyle,FromTimes)");
+            strSql.Append(" values (");
+            strSql.Append("@id,@customer_id,@BudgetName,@DoPerson,@DoTime,@IsStatus,@ProjectDirectCost,@DirectCostDiscount,@AdditionalCost,@BudgetAmount,@DiscountAmount,@CostAmount,@SigningAmount,@SigningTime,@Profit,@Remarks,@Mmaterial,@MmaterialDiscount,@fbAmount,@versions,'Y','"+mblx+"',0)");
+            SqlParameter[] parameters = {
+					new SqlParameter("@id", SqlDbType.VarChar,15),
+					new SqlParameter("@customer_id", SqlDbType.Int,4),
+					new SqlParameter("@BudgetName", SqlDbType.VarChar,250),
+					new SqlParameter("@DoPerson", SqlDbType.Int,4),
+					new SqlParameter("@DoTime", SqlDbType.DateTime),
+					new SqlParameter("@IsStatus", SqlDbType.Int,4),
+					new SqlParameter("@ProjectDirectCost", SqlDbType.Decimal,9),
+					new SqlParameter("@DirectCostDiscount", SqlDbType.Decimal,9),
+					new SqlParameter("@AdditionalCost", SqlDbType.Decimal,9),
+					new SqlParameter("@BudgetAmount", SqlDbType.Decimal,9),
+					new SqlParameter("@DiscountAmount", SqlDbType.Decimal,9),
+					new SqlParameter("@CostAmount", SqlDbType.Decimal,9),
+					new SqlParameter("@SigningAmount", SqlDbType.Decimal,9),
+					new SqlParameter("@SigningTime", SqlDbType.DateTime),
+					new SqlParameter("@Profit", SqlDbType.Decimal,9),
+					new SqlParameter("@Remarks", SqlDbType.VarChar,250),
+					new SqlParameter("@Mmaterial", SqlDbType.Decimal,9),
+					new SqlParameter("@MmaterialDiscount", SqlDbType.Decimal,9),
+					new SqlParameter("@fbAmount", SqlDbType.Decimal,9),
+					new SqlParameter("@versions", SqlDbType.SmallInt,2)};
+            parameters[0].Value = model.id;
+            parameters[1].Value = model.customer_id;
+            parameters[2].Value = model.BudgetName;
+            parameters[3].Value = model.DoPerson;
+            parameters[4].Value = model.DoTime;
+            parameters[5].Value = model.IsStatus;
+            parameters[6].Value = model.ProjectDirectCost;
+            parameters[7].Value = model.DirectCostDiscount;
+            parameters[8].Value = model.AdditionalCost;
+            parameters[9].Value = model.BudgetAmount;
+            parameters[10].Value = model.DiscountAmount;
+            parameters[11].Value = model.CostAmount;
+            parameters[12].Value = model.SigningAmount;
+            parameters[13].Value = model.SigningTime;
+            parameters[14].Value = model.Profit;
+            parameters[15].Value = model.Remarks;
+            parameters[16].Value = model.Mmaterial;
+            parameters[17].Value = model.MmaterialDiscount;
+            parameters[18].Value = model.fbAmount;
+            parameters[19].Value = model.versions;
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+	
+
 		/// <summary>
 		/// 更新一条数据,只更新名称
 		/// </summary>
-		public bool Update(XHD.Model.Budge_BasicMain model)
+        public bool Update(XHD.Model.Budge_BasicMain model, string mblx)
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("update Budge_BasicMain set ");
@@ -125,6 +187,8 @@ namespace XHD.DAL
 			strSql.Append("BudgetName=@BudgetName,");
 			strSql.Append("DoPerson=@DoPerson,");
 			strSql.Append("DoTime=@DoTime,");
+            if (mblx!="")
+                strSql.Append(" ModelStyle='"+mblx+"',");
             //strSql.Append("IsStatus=@IsStatus,");
             //strSql.Append("ProjectDirectCost=@ProjectDirectCost,");
             //strSql.Append("DirectCostDiscount=@DirectCostDiscount,");
@@ -495,7 +559,7 @@ namespace XHD.DAL
             strSql.Append("select ");
             strSql.Append(" top " + PageSize + " A.*,B.tel,C.name,B.Customer AS CustomerName,B.Emp_sg AS sgjl,Emp_sj AS sjs,B.address ");
             strSql.Append(" ,CASE IsStatus WHEN 0 THEN '待提交' WHEN 1 THEN '待审核' WHEN 2 THEN '已生效' WHEN 99 THEN '已作废' ELSE '未知状态'END	 AS txtstatus ");
-            strSql.Append(" FROM dbo.Budge_BasicMain A INNER JOIN dbo.CRM_Customer B ON A.customer_id=B.id ");
+            strSql.Append(" FROM dbo.Budge_BasicMain A LEFT JOIN dbo.CRM_Customer B ON A.customer_id=B.id ");
             strSql.Append(" INNER JOIN  dbo.hr_employee C ON A.DoPerson=C.ID ");
             strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_BasicMain ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");

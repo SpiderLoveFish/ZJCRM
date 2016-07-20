@@ -514,7 +514,7 @@ namespace XHD.DBUtility
                 }
                 catch (System.Data.SqlClient.SqlException ex)
                 {
-                    throw new Exception(ex.Message);
+                   throw new Exception(ex.Message);
                 }
                 return ds;
             }

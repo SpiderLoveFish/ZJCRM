@@ -88,12 +88,13 @@
   <ItemGroup>
     <Content Include="copyright.html" />
     <Content Include="CRM\Budge\BudgeMain.aspx" />
-    <Content Include="CRM\Budge\BudgeModelMain.aspx" />
+    <Content Include="CRM\Budge\BudgeModelMain_bak.aspx" />
     <Content Include="CRM\Budge\BudgeMainAdd.aspx" />
     <Content Include="CRM\Budge\BudgeModelMainAdd.aspx" />
     <Content Include="CRM\Budge\BudgeMainApr.aspx" />
     <Content Include="CRM\Budge\Budge_BasicPart.aspx" />
     <Content Include="CRM\Budge\Budge_BasicPart_add.aspx" />
+    <Content Include="CRM\Budge\BudgeModelMain.aspx" />
     <Content Include="CRM\Budge\SelectFjjeDetail.aspx" />
     <Content Include="CRM\Budge\SelectFjje.aspx" />
     <Content Include="CRM\Budge\SelectModel.aspx" />

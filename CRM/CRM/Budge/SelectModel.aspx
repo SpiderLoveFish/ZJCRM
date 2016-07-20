@@ -25,42 +25,52 @@
     <script type="text/javascript">
        
         $(function () {
-            var strurl = "../../data/Budge.ashx?Action=gridselectmodel";
-            
+            //var strurl = "../../data/Budge.ashx?Action=gridselectmodel";
+            var strurl = "../../data/Budge.ashx?Action=grid&IsModel=Y";
            
 
             $("#maingrid4").ligerGrid({
                 columns: [
-                    //{ display: 'ID', name: 'ID', type: 'int', width: 50 },
-                    { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
-                   { display: '模板编号', name: 'model_id', width: 120, align: 'left' },
-                   { display: '模板名称', name: 'model_name', width: 150, align: 'left' },
-                   { display: '创建人', name: 'name', width: 100, align: 'left' },
-                   {
-                       display: '创建日期', name: 'DoTime', width: 100, align: 'left', render: function (item) {
-                           return formatTimebytype(item.DoTime, 'yyyy-MM-dd');
-                       }
-                   },
-                     { display: '引用次数', name: 'citations', width: 100, align: 'left' },
-                       { display: '备注', name: 'Remarks', width: 100, align: 'left' },
-                   { display: '原预算', name: 'budge_id', width: 150, align: 'left' }
-                  
+                     {
+                         display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                         { return (page - 1) * pagesize + rowindex + 1; }
+                     },
+                      { display: '模板编号', name: 'id', width: 100, align: 'left' },
+                          { display: '模板名称', name: 'BudgetName', width: 120, align: 'left' },
+                      { display: '姓名', name: 'CustomerName', width: 60, align: 'left' },
+
+
+
+
+
+                        { display: '创建人', name: 'name', width: 80, align: 'left' },
+                        {
+                            display: '创建日期', name: 'DoTime', width: 100, align: 'left', render: function (item) {
+                                return formatTimebytype(item.DoTime, 'yyyy-MM-dd');
+                            }
+                        },
+                          { display: '引用次数', name: 'FromTimes', width: 100, align: 'left' },
+
+                        { display: '原预算', name: 'id', width: 80, align: 'left' },
+                { display: '备注', name: 'Remarks', width: 100, align: 'left' }
+
                 ],
-                checkbox: false,
+
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: strurl, 
+                url: strurl,//增加选择条件 0 编辑 1 审核
                 width: '100%',
                 height: '100%',
-                //title: "员工列表",
-                heightDiff: 0,
-                
+                //tree: { columnName: 'StageDescription' },
+                heightDiff: -1,
+                onRClickToSelect: true,
                 onContextmenu: function (parm, e) {
-                actionCustomerID = parm.data.id;
-                menu.show({ top: e.pageY, left: e.pageX });
-                return false;
-            }
+                    actionCustomerID = parm.data.id;
+                    menu.show({ top: e.pageY, left: e.pageX });
+                    return false;
+                }
+
             });
 
             toolbar();
@@ -120,6 +130,7 @@
             var items = [];
 
             items.push({ type: 'textbox', id: 'stext', text: '名称：' });
+            items.push({ type: 'textbox', id: 'stextlx', text: '类型：' });
              items.push({ type: 'button', text: '搜索', icon: '../images/search.gif', disable: true, click: function () { doserch() } });
             items.push({ type: 'textbox', id: 'lbtip', text: '' });
             $("#toolbar").ligerToolBar({
@@ -128,14 +139,28 @@
             });
 
             $("#stext").ligerTextBox({ width: 200 });
-            
+            $('#stextlx').ligerComboBox({
+                width: 97,
+                selectBoxWidth: 240,
+                selectBoxHeight: 200,
+                valueField: 'id',
+                textField: 'text',
+                treeLeafOnly: false,
+                tree: {
+                     data: [                
+                { text: '常规模板' },
+                { text: '套餐模板' } 
+                     ],
+                     checkbox: false
+                }
+            });
             $("#maingrid4").ligerGetGridManager().onResize();
           
            }
            //查询
            function doserch() {
-               var strurl = "../../data/Budge.ashx?Action=gridselectmodel";
-               
+               var strurl = "../../data/Budge.ashx?Action=grid&IsModel=Y";
+
                var sendtxt = "&rnd=" + Math.random();
                var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
                //alert(serchtxt);           

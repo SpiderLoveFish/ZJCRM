@@ -76,23 +76,27 @@ namespace XHD.CRM.Data
 
                 string bname = PageValidate.InputText(request["T_budge_name"], 250);
                 string submit = PageValidate.InputText(request["style"], 50);
+                string mblx = PageValidate.InputText(request["T_mblx"], 50);
+              
+             
                 if (bd.updateAll(bid, StringToDecimal(zk), StringToDecimal(sl)) > 0)
                 {
                     mbb.id = bid;
                     mbb.DoTime = DateTime.Now;
                     mbb.DoPerson = emp_id;
                     mbb.BudgetName = bname;
-                    bbb.Update(mbb);
-                    
+                    bbb.Update(mbb, mblx);
+
                     if (submit == "submit")//提交要改下状态
                     {
-                        if (bbb.updatestatus(1,bid))
+                        if (bbb.updatestatus(1, bid))
                             context.Response.Write("true");
                         else
                             context.Response.Write("false");
-                      
-                    }else
-                    context.Response.Write("true");
+
+                    }
+                    else
+                        context.Response.Write("true");
                 }
                 else context.Response.Write("false");
             }
@@ -141,8 +145,51 @@ namespace XHD.CRM.Data
                 //{"status": 1, "sum": 9}
                 context.Response.Write(josnstr);
             }
-            
 
+             if (request["Action"] == "saveallmb")
+             {
+                 string bid = PageValidate.InputText(request["T_budgeid"], 50);
+               
+                 //bbb.GetMaxId();
+                 string remarks = PageValidate.InputText(request["T_remarks"], 250);
+                 string bname = PageValidate.InputText(request["T_budge_name"], 250);
+               
+                 int cid = 0;
+                 string mblx = PageValidate.InputText(request["T_mblx"], 50);
+              
+                 mbb.customer_id = cid;
+                 mbb.DoTime = DateTime.Now;
+                 mbb.DoPerson = emp_id;
+                 mbb.id = bid;
+                 mbb.BudgetName = bname;
+                 mbb.IsStatus = 0;
+                 //防止多人操作，单据重复
+                 DataSet IsExist = bbb.GetList(" id='" + bid + "'");
+                 if (IsExist.Tables[0].Rows.Count > 0)
+                 {
+                     if (bbb.Update(mbb, mblx))
+                         context.Response.Write("true");
+                     else 
+                     context.Response.Write("false");
+                 }
+                 else
+                 {
+                     if ( bbb.AddMB(mbb,mblx))
+                         context.Response.Write("true");
+                     else context.Response.Write("false");
+                 }
+                //if (string.IsNullOrEmpty(mblx))
+                //{
+                //    mbb.id = bid;
+                //    mbb.DoTime = DateTime.Now;
+                //    mbb.DoPerson = emp_id;
+                //    mbb.BudgetName = bname;
+                //    bbb.AddMB(mbb,mblx);
+                
+                //}
+               
+
+             }
             if (request["Action"] == "saveadd")
             {
                 string bid = PageValidate.InputText(request["bid"], 250);
@@ -442,19 +489,37 @@ namespace XHD.CRM.Data
                     serchtxt += " and (Customer like N'%" + PageValidate.InputText(request["s_khstext"], 255) + "%' OR address like N'%" + PageValidate.InputText(request["s_khstext"], 255) + "%')";
                 }
 
-                if (str_condition == "0")
-                    serchtxt += " and IsStatus in(0,1)";
-                else if (str_condition == "1")
+                if (!string.IsNullOrEmpty(request["stext"]))
+                    serchtxt += " and BudgetName like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["stextlx"]))
                 {
-                    serchtxt += " and IsStatus  in(1)";
+                    if (request["stextlx"] != "")
+                        serchtxt += " and ModelStyle like N'%" + PageValidate.InputText(request["stextlx"], 255) + "%'";
+
                 }
-                else if (str_condition == "3")
+                //是否模板
+                string ISMODEL = PageValidate.InputText(request["IsModel"], 50);
+                if (string.IsNullOrEmpty(ISMODEL))
                 {
-                    serchtxt += " and IsStatus=3";
+                    ISMODEL = "N";                    
                 }
-                else  
+                serchtxt += " and isnull(IsModel,'N')='" + ISMODEL + "'";
+                if (ISMODEL == "N")//如果不是模板下面生效
                 {
-                    serchtxt += " and IsStatus not in(0)";
+                    if (str_condition == "0")
+                        serchtxt += " and IsStatus in(0,1)";
+                    else if (str_condition == "1")
+                    {
+                        serchtxt += " and IsStatus  in(1)";
+                    }
+                    else if (str_condition == "3")
+                    {
+                        serchtxt += " and IsStatus=3";
+                    }
+                    else
+                    {
+                        serchtxt += " and IsStatus not in(0)";
+                    }
                 }
                 string dt = "";
 
