@@ -35,6 +35,7 @@
                            + " <td  align='right'>" + data['rate'].toFixed(2) + "</td> <td  align='right'>" + data['RateAmount'].toFixed(2) + "</td>"
                            + " </tr>";
                        $('.table3').append(item);
+                                    
 
                    });
                },
@@ -57,6 +58,7 @@
 
                    //alert(obj.constructor); //String 构造函数
                    $("#T_logo").html(rows[1].sys_value);
+                   $("#T_logo_2").html(rows[1].sys_value);
                    $("#logo").attr("src", "../../" + rows[2].sys_value);
                }
            });
@@ -77,23 +79,32 @@
                            obj[n] = "";
                    }
 
-                   $("#T_kh").html(obj.CustomerName + '(' + obj.address + ')');
+                   $("#T_kh").html(obj.CustomerName);
+                   $("#T_address").html(obj.address);
                    $("#T_tel").html(obj.tel);
                    $("#T_sjs").html(obj.sjs);
                    $("#T_zje").html((obj.BudgetAmount + obj.FJAmount).toFixed(2));
-                   $("#T_fjje").html(obj.FJAmount.toFixed(2));
+                   $("#T_clje").html((obj.BudgetAmount).toFixed(2));
+                   $("#T_fjje").html((obj.FJAmount).toFixed(2));
                    $("#T_zcje").html(obj.ZCAmount.toFixed(2));
                    $("#T_jjje").html(obj.JJAmount.toFixed(2));
                    $("#T_bzr").html();
                    $("#T_shr").html();
                    $("#T_sxrq").html(formatTimebytype(obj.ConfirmDate, 'yyyy-MM-dd'));
+                   $("#T_Remarks").html(obj.Remarks);
                    $("#T_BudgetName").html(obj.BudgetName);
+                   $("#T_sjstel").html(obj.sjstel);
+
+                   var itemgender = "";
+                   if (obj.gender ="男") { itemgender = "先生" }
+                   else { itemgender = "女士"; }
+                   $("#T_gender").append(itemgender);
                    var itemDetailDiscount="";
-                   if (obj.DetailDiscount < 1) { itemDetailDiscount = "折扣为：" + obj.DetailDiscount*10+"折" }
+                   if (obj.DetailDiscount < 1) { itemDetailDiscount = "折扣：" + obj.DetailDiscount*10+"折" }
                    else { itemDetailDiscount = ""; }
                    $("#T_DetailDiscount").append(itemDetailDiscount);
                    var itemDiscountAmount = "";
-                   if (obj.DetailDiscount < 1) { itemDiscountAmount = "折后金额为：" + ((obj.BudgetAmount + obj.FJAmount) * obj.DetailDiscount).toFixed(2) }
+                   if (obj.DetailDiscount < 1) { itemDiscountAmount = "折后金额：" + ((obj.BudgetAmount + obj.FJAmount) * obj.DetailDiscount).toFixed(2) }
                    else { itemDiscountAmount = ""; }
                    $("#T_DiscountAmount").append(itemDiscountAmount);
                    
@@ -174,9 +185,10 @@
            LODOP.ADD_PRINT_RECT("0%", "0%", "100%", "100%", 0, 1);//满屏
            LODOP.SET_PRINT_PAGESIZE(2, 0, 0, "A4");
            var strStyle = " <style> table,td,th {border-width: 1px;border-style: solid;border-collapse: collapse}</style>"
-           LODOP.ADD_PRINT_HTM(150, "5%", "90%", 314, strStyle + document.getElementById("div2").innerHTML);
+           LODOP.ADD_PRINT_HTM(90, "5%", "90%", 314, strStyle + document.getElementById("div2").innerHTML);
+
            LODOP.SET_PRINT_STYLEA(0, "Vorient", 3);
-           LODOP.ADD_PRINT_TABLE(26, 0, "90%", 314, document.getElementById("div3").innerHTML);
+           LODOP.ADD_PRINT_TABLE(150, 0, "90%", 314, document.getElementById("div3").innerHTML);
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 0);
            LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 1);
           
@@ -229,7 +241,7 @@
 
     
 <TABLE  border=0 cellSpacing=0 cellPadding=0 width="100%">
-  <TBODY>
+<%--  <TBODY>
   
   <TR>
      <TD width="35%" colspan="2"  ><font >客户:<SPAN id="T_kh" ></SPAN></font></TD>
@@ -239,19 +251,30 @@
       </TR>
       <TR>
     <TD width="25%"  ><font >总金额:<SPAN id="T_zje" ></SPAN></font></TD>
-          <TD  width="25%"><font >附加金额： <SPAN id="T_fjje" ></SPAN></font></TD>
+          <TD  width="25%"></TD>
     <TD  width="25%"><font > <SPAN id="T_DetailDiscount" ></SPAN></font></TD>
     <TD width="25%" ><font ><SPAN id="T_DiscountAmount"></SPAN></font></TD>
   
       </TR>
-      </TBODY></TABLE>
+      </TBODY>--%></TABLE>
 </div>
 <%--<p>----------------------div2:------------------------------------------------------------------------------------</p>--%>
-<div id="div2">
-<table width="100%" cellSpacing=0 cellPadding=0 border=0 >
+<div id="div2"><table width="100%" cellSpacing=0 cellPadding=0 border=0 >
+    <tr>
+      <td > <p align="left">&nbsp;&nbsp;尊敬的<SPAN  style="color:blue" id="T_kh" ></SPAN><SPAN id="T_gender" ></SPAN>，您好，首先非常感谢您对我们的信任并选择<span id="T_logo_2"></span>为您装修，现在为您提供您的爱家-<SPAN style="color:blue" id="T_address" ></SPAN>的装修预算，我是设计师<SPAN style="color:blue" id="T_sjs" ></SPAN>，我的联系电话是<SPAN  style="color:blue" id="T_sjstel" ></SPAN>,如有任何问题可致电咨询。<br>
+          <br>
+          此份预算的总金额分为两部分组成，材料、人工与附加费用   
+     </p><p>
+          &nbsp;1、材料人工费用为<SPAN  style="color:blue" id="T_clje" ></SPAN>元<br>
+          &nbsp;2、您家附加费用为<SPAN  style="color:blue" id="T_fjje" ></SPAN>元 <SPAN id="T_table3" ></SPAN>(设计费：费率2% 1000元 管理费：费率1% 500元)<br>
+          &nbsp;3、两项合计费用为<SPAN  style="color:blue" id="T_zje" ></SPAN>元 <br>
+      
+     </p>
+下面是分部位的材料人工汇总金额。</td>
+        </tr>
 <tr>
- <td valign="top" width="50%">
-<TABLE   class="table2 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="99%" style="border-collapse:collapse;font-size:10px" bordercolor="#333333">
+ <td valign="top" >
+<TABLE   class="table2 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="50%" style="border-collapse:collapse;font-size:10px" bordercolor="#333333">
 <thead>
   <TR>
      <TD width="10%">
@@ -278,8 +301,8 @@
   </tfoot>
 </TABLE>
 </td>
-<td  valign="top" width="50%">
-    <TABLE   class="table3 table-striped table-bordered table-condensed" border=1 cellSpacing=0 cellPadding=1 width="99%" style="border-collapse:collapse;font-size:10px" bordercolor="#333333" >
+<%--<td  valign="top" width="50%">
+    <TABLE   class="table3 table-striped table-bordered table-condensed" border=1 cellSpacing=0 cellPadding=1 width="99%" style="border-collapse:collapse;font-size:10px"; bordercolor="#333333" >
 <thead>
   <TR>
      <TD colspan="3">
@@ -312,14 +335,16 @@
 	   
 	<TD width="14%" align="right">　</TD>
 	<TD width="19%" tdata="allSum" format="#,##0.00" align="right"><font color="#0000FF">###元</font></TD>    
- </tr>
+ </tr>
+
       
   </tfoot>
 </TABLE>
-    </td>
+    </td>--%>
     </tr>
     </table>
 </div>
+       
 <%--<p>----------------------div3:------------------------------------------------------------------------------------</p>--%>
 <div id="div3">
   <TABLE   class="table1 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse;font-size:9px" bordercolor="#333333">
