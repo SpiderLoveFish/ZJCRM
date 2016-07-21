@@ -31,6 +31,10 @@
     <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
+        var istc = getparastr("istc");
+        var tc = "复制";
+        if (istc == "Y") tc = "套餐模板";
+        else if (istc == "N") tc = "常规模板";
         $(function () {
             
             $.metadata.setType("attr", "validate");
@@ -54,45 +58,50 @@
                 return $("form :input").fieldSerialize() + sendtxt;
             //}
         }
-       
+        function f_saveinsert(){
+            var sendtxt = "&Action=saveallmb&T_mblx=" + tc.replace("复制","");//复制不能作为模型
+            // alert($("form :input").fieldSerialize() + sendtxt);
+            return $("form :input").fieldSerialize() + sendtxt;
+        }
+         
         function loadForm() {            
             $("#T_companyid").val(getparastr("cid"));
-            $("#T_company").val(decodeURI( getparastr("cname")));     
+            $("#T_company").val(tc+decodeURI(getparastr("cname")));
             $("#T_budgeid").val(getparastr("bid")); 
-            $("#T_compname").val("复制" + decodeURI(getparastr("bname")));
+            $("#T_compname").val(tc + decodeURI(getparastr("bname")));
             IsExisModelID();
         }
          
-        function IsExisModelID() {
+            function IsExisModelID() {
         
-            $.ajax({
-                type: "get",
-                url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
-                data: { Action: 'isexistmodelid',bid:getparastr("bid"), rnd: Math.random() }, /* 注意参数的格式和名称 */
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (result) {
+                $.ajax({
+                    type: "get",
+                    url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
+                    data: { Action: 'isexistmodelid',bid:getparastr("bid"), rnd: Math.random() }, /* 注意参数的格式和名称 */
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
                   
-                    var obj = eval(result);
+                        var obj = eval(result);
                   
-                    for (var n in obj) {
-                        if (obj[n] == "null" || obj[n] == null)
-                            obj[n] = "";
-                    }
-                     //alert(obj.bid); //String 构造函数
-                    if (obj.bid == undefined || obj.bid == '')
-                     { $("#lbtips").html(); }
-                    else{
-                        $("#lbtips").html("此预算已经有如下模板：" + obj.bid);
-                        $("#lbtips").addClass("red");
-                    }
+                        for (var n in obj) {
+                            if (obj[n] == "null" || obj[n] == null)
+                                obj[n] = "";
+                        }
+                        //alert(obj.bid); //String 构造函数
+                        if (obj.bid == undefined || obj.bid == '')
+                        { $("#lbtips").html(); }
+                        else{
+                            $("#lbtips").html("此预算已经有如下模板：" + obj.bid);
+                            $("#lbtips").addClass("red");
+                        }
 
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("获取预算编号失败，重新选择！");
-                }
-            });
-        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("获取预算编号失败，重新选择！");
+                    }
+                });
+            }
 
 
     </script>

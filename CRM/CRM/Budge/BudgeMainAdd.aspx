@@ -45,6 +45,10 @@
         var treemanager, gcomb;
         var isshowzk = getparastr("isshowzk");
         var IsModel = getparastr("IsModel");
+        var istc = getparastr("istc");
+        var tc = "常规模板";
+        if (istc == "Y") tc = "套餐模板";
+        else if (istc == "N") tc = "常规模板";
         $(function () {
             var urlstr = "";
             $.metadata.setType("attr", "validate");
@@ -256,12 +260,14 @@
             }
             
             if (IsModel == 'Y') {
-                getmaxid();
+                //getmaxid();
+                $("#T_budgeid").val(getparastr("bid"));
                 $("#T_companyid").val(0);
                 $("#T_company").val("模板");
                 $("#T_budge_name").val("模板");
                 $("#T_remarks").val("");
                 $("#tbmb").attr("style", "display:none");
+                $("#T_mblx").val(tc);
             }
            
         })
@@ -796,8 +802,8 @@
         }
         //模板保存
         function f_savemb() {
-            if ($("#T_mblx").val() == "") {
-                $.ligerDialog.error("请选择一个有效单据类型！！！");
+            if ($("#T_budge_name").val() == "") {
+                $.ligerDialog.error("请输入一个有效单据名称！！！");
                 return;
             }
             var sendtxt = "&Action=saveallmb";
@@ -805,8 +811,8 @@
         }
         //最后一次全部计算
         function f_save() {
-            if ($("#T_companyid").val() == "" || $("#T_mblx").val() == "") {
-                $.ligerDialog.error("请选择保存一个有效的客户或单据类型！！！");
+            if ($("#T_companyid").val() == "" || $("#T_budge_name").val() == "") {
+                $.ligerDialog.error("请选择保存一个有效的客户或输入名称！！！");
                 return;
             }
             var sendtxt = "&Action=saveall";
@@ -1155,7 +1161,7 @@
                 </td>
                    <td colspan="3"   class="table_title1">
                            
-               
+                 <input id="T_mblx" name="T_mblx" value="常规模板" type="hidden"/>
                        <table >
                            <tr id="tbmb">
                            <td>
@@ -1225,16 +1231,7 @@
                   </tr>
                 </table></td>
   </tr>
-            <tr>
-                <td>   <div style="width: 70px; text-align: right; float: right">单据类型：</div>
-                </td>
-                               <td colspan="13">
-                                    <input id="T_mblx" name="T_mblx" type="text"
-                                 ltype="select" ligerui="{width:196,data:[{id:'常规模板',text:'常规模板'},{id:'套餐模板',text:'套餐模板'}]}" 
-                                 />
-                               </td>
-                           </tr>
-           
+ 
         </table>
         </div>
   

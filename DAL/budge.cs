@@ -413,7 +413,7 @@ namespace XHD.DAL
         {
             string per = "M";
             per = per + DateTime.Now.ToString("yyMMdd-");
-            string strsql = "select max(REPLACE(model_id,'" + per + "',''))+1 from budge_modelMain where model_id like '" + per + "%'";
+            string strsql = "select max(REPLACE(id,'" + per + "',''))+1 from Budge_BasicMain where id like '" + per + "%'";
             object obj = DbHelperSQL.GetSingle(strsql);
             if (obj == null)
             {
@@ -610,6 +610,116 @@ namespace XHD.DAL
         }
 
         public int AddModelToBudge(string bid, string modelid)
+        {
+            var sb = new System.Text.StringBuilder();
+           
+            sb.AppendLine("  INSERT INTO [dbo].[Budge_BasicDetail]");
+            sb.AppendLine("  ( ");
+            sb.AppendLine("budge_id, ");
+            sb.AppendLine("xmid, ");
+            sb.AppendLine("ComponentName, ");
+            sb.AppendLine("Cname, ");
+            sb.AppendLine("unit, ");
+            sb.AppendLine("MmaterialPrice, ");
+            sb.AppendLine("IsShowPrice, ");
+            sb.AppendLine("SecmaterialPrice, ");
+            sb.AppendLine("ArtificialPrice, ");
+            sb.AppendLine("MechanicalLoss, ");
+            sb.AppendLine("MaterialLoss, ");
+            sb.AppendLine("TotalPrice, ");
+            sb.AppendLine("IsDiscount, ");
+            sb.AppendLine("Discount, ");
+            sb.AppendLine("TotalDiscountPrice, ");
+            sb.AppendLine("MaterialCost, ");
+            sb.AppendLine("MechanicalCost, ");
+            sb.AppendLine("ArtificialCost, ");
+            sb.AppendLine("SUM, ");
+            sb.AppendLine("SubTotal, ");
+            sb.AppendLine("DiscountSubTotal, ");
+            sb.AppendLine("Remarks, ");
+            sb.AppendLine("zc_price, ");
+            sb.AppendLine("fc_price, ");
+            sb.AppendLine("rg_price) ");
+            sb.AppendLine(" SELECT ");
+            sb.AppendLine("'" + bid + "', ");
+            sb.AppendLine("xmid, ");
+            sb.AppendLine("ComponentName, ");
+            sb.AppendLine("Cname, ");
+            sb.AppendLine("unit, ");
+            sb.AppendLine("MmaterialPrice, ");
+            sb.AppendLine("IsShowPrice, ");
+            sb.AppendLine("SecmaterialPrice, ");
+            sb.AppendLine("ArtificialPrice, ");
+            sb.AppendLine("MechanicalLoss, ");
+            sb.AppendLine("MaterialLoss, ");
+            sb.AppendLine("TotalPrice, ");
+            sb.AppendLine("IsDiscount, ");
+            sb.AppendLine("Discount, ");
+            sb.AppendLine("TotalDiscountPrice, ");
+            sb.AppendLine("MaterialCost, ");
+            sb.AppendLine("MechanicalCost, ");
+            sb.AppendLine("ArtificialCost, ");
+            sb.AppendLine("SUM, ");
+            sb.AppendLine("SubTotal, ");
+            sb.AppendLine("DiscountSubTotal, ");
+            sb.AppendLine("Remarks, ");
+            sb.AppendLine("zc_price, ");
+            sb.AppendLine("fc_price, ");
+            sb.AppendLine("rg_price ");
+            sb.AppendLine(" FROM [dbo].[Budge_BasicDetail] WHERE budge_id='" + modelid + "' ");
+
+            sb.AppendLine("  INSERT INTO [dbo].[Budge_Rate_Ver]");
+            sb.AppendLine("  (");
+            sb.AppendLine("rateid, ");
+            sb.AppendLine("budge_id, ");
+            sb.AppendLine("RateName, ");
+            sb.AppendLine("measure, ");
+            sb.AppendLine("rate, ");
+            sb.AppendLine("RateAmount, ");
+            sb.AppendLine("Remarks) ");
+            sb.AppendLine(" SELECT ");
+            sb.AppendLine("rateid, ");
+            sb.AppendLine("'" + bid + "', ");
+            sb.AppendLine("RateName, ");
+            sb.AppendLine("measure, ");
+            sb.AppendLine("rate, ");
+            sb.AppendLine("RateAmount, ");
+            sb.AppendLine("Remarks ");
+            sb.AppendLine(" FROM [dbo].[Budge_Rate_Ver] WHERE budge_id='" + modelid + "' ");
+
+            sb.AppendLine("  INSERT INTO [dbo].[Budge_tax]");
+            sb.AppendLine("  (");
+            sb.AppendLine("budge_id, ");
+            sb.AppendLine("b_sl, ");
+            sb.AppendLine("b_sj, ");
+            sb.AppendLine("b_zje, ");
+            sb.AppendLine("remarks, ");
+            sb.AppendLine("b_zkzje) ");
+            sb.AppendLine(" SELECT ");
+            sb.AppendLine("'" + bid + "', ");
+            sb.AppendLine("b_sl, ");
+            sb.AppendLine("b_sj, ");
+            sb.AppendLine("b_zje, ");
+            sb.AppendLine("remarks, ");
+            sb.AppendLine("b_zkzje ");
+            sb.AppendLine(" FROM [dbo].[Budge_tax] WHERE budge_id='" + modelid + "' ");
+
+
+            sb.AppendLine(";select @@IDENTITY");
+            SqlParameter[] parameters = { };
+
+            object obj = DbHelperSQL.GetSingle(sb.ToString(), parameters);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+
+        public int AddModelToBudge_bak(string bid, string modelid)
         {
             StringBuilder strSql = new StringBuilder();
 

@@ -36,6 +36,9 @@
      <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script type="text/javascript">
         var manager = "";
+        var istc = getparastr("istc"); //是否套餐
+        var tc = "常规模板";
+        if (istc == "Y") tc = "套餐模板";
         $(function () {
             $("#maingrid4").ligerGrid({
                 columns: [
@@ -90,7 +93,7 @@
             toolbar();
         });
         function toolbar() {
-            var url = "../../data/toolbar.ashx?Action=GetSys&mid=153&rnd=" + Math.random();
+            var url = "../../data/toolbar.ashx?Action=GetSys&mid=154&rnd=" + Math.random();
             $.getJSON(url, function (data, textStatus) {
                 //alert(data);
                 var items = [];
@@ -207,12 +210,12 @@
         }
         //撤回
         var activeDialogsch = null;
-        function f_openWindow_ch(url, title, width, height) {
+        function f_openWindowinsert(url, title, width, height) {
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
                     {
-                        text: '撤回', onclick: function (item, dialog) {
-                            f_saveret(item, dialog);
+                        text: '保存', onclick: function (item, dialog) {
+                            f_saveinsert(item, dialog);
                         }
                     },
                         {
@@ -245,13 +248,13 @@
         }
      
       function add() {
-          f_openWindow("crm/Budge/BudgeMainAdd.aspx?IsModel=Y", "新增预算模板", 1100, 660);
+          f_openWindowinsert("crm/Budge/SaveModel.aspx?IsModel=Y&istc=" + istc + "&cid=0&cname=模板", "新增预算模板-" + tc, 700, 300);
         }
       function cs() {
           var manager = $("#maingrid4").ligerGetGridManager();
           var row = manager.getSelectedRow();
           if (row) {
-              f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&isshowzk=Y" + "&IsModel=Y", "修改预算", 1100, 600);
+              f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&isshowzk=Y" + "&IsModel=Y&istc=" + istc, "预算模板-" + tc, 1100, 600);
           }
       }
         function edit() {
@@ -259,12 +262,42 @@
             var row = manager.getSelectedRow();
             if (row) {
               
-                f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus + "&IsModel=Y", "修改预算模板", 1100, 600);
+                f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus + "&IsModel=Y&istc=" + istc, "修改预算模板-" + tc, 1100, 600);
                
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
         }
+        //保存新增
+        function f_saveinsert(item, dialog)
+        {
+            var issave = dialog.frame.f_saveinsert(); 
+            if (issave) {
+                dialog.close();
+                top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                $.ajax({
+                    url: "../../data/Budge.ashx", type: "POST",
+                    data: issave,
+                    success: function (responseText) {
+                     
+                        top.$.ligerDialog.closeWaitting();
+                        if (responseText == "false") {
+                            top.$.ligerDialog.error('保存失败！');
+                        }
+                        else {
+                            f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + responseText + "&IsModel=Y&istc=" + istc, "新增预算模板-" + tc, 1100, 600);
+
+                          
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+
+                    }
+                });
+            }
+        }
+
         function f_saveret(item, dialog)
         {
 

@@ -148,7 +148,12 @@ namespace XHD.CRM.Data
 
              if (request["Action"] == "saveallmb")
              {
-                 string bid = PageValidate.InputText(request["T_budgeid"], 50);
+                 //string bid = PageValidate.InputText(request["bid"], 50);
+                // string remaks = PageValidate.InputText(request["T_remarks"], 250);
+                 string modelname = PageValidate.InputText(request["T_compname"], 250);
+                 string bid = bd.GetMaxModelId();
+
+                 //string bid = PageValidate.InputText(request["T_budgeid"], 50);
                
                  //bbb.GetMaxId();
                  string remarks = PageValidate.InputText(request["T_remarks"], 250);
@@ -161,7 +166,7 @@ namespace XHD.CRM.Data
                  mbb.DoTime = DateTime.Now;
                  mbb.DoPerson = emp_id;
                  mbb.id = bid;
-                 mbb.BudgetName = bname;
+                 mbb.BudgetName = bname + modelname;
                  mbb.IsStatus = 0;
                  //防止多人操作，单据重复
                  DataSet IsExist = bbb.GetList(" id='" + bid + "'");
@@ -175,7 +180,7 @@ namespace XHD.CRM.Data
                  else
                  {
                      if ( bbb.AddMB(mbb,mblx))
-                         context.Response.Write("true");
+                         context.Response.Write(bid);//特殊处理
                      else context.Response.Write("false");
                  }
                 //if (string.IsNullOrEmpty(mblx))
@@ -274,7 +279,7 @@ namespace XHD.CRM.Data
                 string modelname = PageValidate.InputText(request["T_compname"], 250);
                 string modelid = bd.GetMaxModelId();
                 if (bd.AddModel(bid,modelid, modelname,emp_id, remaks) > 0)
-                    context.Response.Write("true");
+                    context.Response.Write("true");//特殊处理
                 else context.Response.Write("false");
             }
             if (request["Action"] == "savemodeltobudge")
