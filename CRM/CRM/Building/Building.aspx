@@ -97,7 +97,7 @@
 
         function toolbar() {
             ////debugger;
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=179&rnd=" + Math.random(), function (data, textStatus) {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=130&rnd=" + Math.random(), function (data, textStatus) {
                 var items = [];
                 var arr = data.Items;
                 for (var i = 0; i < arr.length; i++) {

@@ -48,7 +48,7 @@
                      },
                       { display: '模板编号', name: 'id', width: 100, align: 'left' },
                           { display: '模板名称', name: 'BudgetName', width: 120, align: 'left' },
-                      { display: '姓名', name: 'CustomerName', width: 60, align: 'left' },
+                     // { display: '姓名', name: 'CustomerName', width: 60, align: 'left' },
  
                     
                   
@@ -62,8 +62,9 @@
                         },
                           { display: '引用次数', name: 'FromTimes', width: 100, align: 'left' },
 
-                        { display: '原预算', name: 'id', width: 80, align: 'left' },
-                { display: '备注', name: 'Remarks', width: 100, align: 'left' }
+                      //  { display: '原预算', name: 'id', width: 80, align: 'left' },
+                { display: '备注', name: 'Remarks', width: 100, align: 'left' },
+                 { display: '类型', name: 'ModelStyle', width: 100, align: 'left' }
 
                 ],
   
@@ -116,20 +117,7 @@
                         doserch()
                     }
                 });
-                items.push({
-                    type: 'textbox',
-                    id: 'keyword1',
-                    text: ''
-                });
-                items.push({
-                    type: 'button',
-                    text: '搜索',
-                    icon: '../../images/search.gif',
-                    disable: true,
-                    click: function () {
-                        doserch()
-                    }
-                });
+                
                 items.push({
                     type: 'serchbtn',
                     text: '高级搜索',

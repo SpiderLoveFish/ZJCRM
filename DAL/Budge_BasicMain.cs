@@ -610,11 +610,12 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append(" select    A.*,ISNULL(b_zje,0) as zje,C.b_sj,C.b_sl,A.FJAmount as fjfy,B.id AS CustomerID,");
-            strSql.Append(" isnull(C.b_zkzje,0) zkzje,  B.tel,B.Customer AS CustomerName,B.Emp_sg AS sgjl,B.address  ");
+            strSql.Append(" isnull(C.b_zkzje,0) zkzje,  B.tel,B.Customer AS CustomerName,B.Emp_sg AS sgjl,B.address,cc.tel as sjstel,B.gender  ");
             strSql.Append(" ,B.Emp_sj AS sjs,B.Employee AS ywy ");
               strSql.Append(" FROM dbo.Budge_BasicMain A ");
               strSql.Append(" INNER JOIN dbo.CRM_Customer B ON A.customer_id=B.id   ");
               strSql.Append(" LEFT JOIN dbo.Budge_tax C ON	 A.id =C.budge_id ");
+              strSql.Append(" LEFT JOIN dbo.hr_employee CC ON	 B.emp_id_sj=CC.[ID] ");
               strSql.Append(" LEFT JOIN (SELECT SUM(rate) AS rate,budge_id FROM  dbo.Budge_Rate_Ver GROUP BY budge_id) D ON  A.id =D.budge_id ");
             if (strWhere.Trim() != "")
             {

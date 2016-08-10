@@ -16,14 +16,13 @@
      <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
    <script src="../../JS/XHD.js" type="text/javascript"></script>
    <script type="text/javascript">
-       $(function () {        
-           loadForm("YS");           
+       $(function () {
+           loadForm("YS");
        });
        function OpenURL(url) {
-       
-           window.open(url + "?bid=" + getparastr("bid"), "_blank", 'top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=no,location=n o, status=no');
+                window.open(url + "?bid=" + getparastr("bid"), "_blank", 'top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=no,location=n o, status=no');
 
-          // f_openWindowview("crm/Print/" + url + "?bid=" + getparastr("bid"), "打印", 800, 400);
+           // f_openWindowview("crm/Print/" + url + "?bid=" + getparastr("bid"), "打印", 800, 400);
 
        }
        function loadForm(style) {
@@ -37,36 +36,36 @@
                    var obj = result.Rows;
                    var item = ""; var len = 0;//4格换一行
                    $.each(obj, function (i, data) {
-                     
-                       if (len==0)
+
+                       if (len == 0)
                            item = " <tr>";
-                           else
-                           item ="";
+                       else
+                           item = "";
                        item += " <td class='table_title1'>" +
                    "  <input  id='A5'  class='l-button' value=" + data['Budge_Print'] + " name='" + data['Budge_File'] + "'  position='right' style='width:120px;' onClick='OpenURL(this.name)'>" +
                     "   </input > " +
-             " <img src=' " + data['PrintIcon'] + "' width='100' height='100'></td> " +
-             " <td style='width:10px;height:10px'> <div id='tip' class='tips' style='width:20px;height:20px; overflow: hidden;'>   " +
-                        
-                 " " + data['Remark'] + "   </div>  </td> " +
+             "</td> " +
+             " <td style='width:50px;height:10px'> <div id='tip' class='tips' style='width:60px;height:15px; overflow: hidden;'>   " +
+
+                 " 查看介绍 ：" + data['Remark'] + "   </div>  </td> " +
                   "  ";
-                
+
                        len++;
                        if (len == 3) {
-                         
+
                            item += " </tr>";
                            len = 0;
                        }
-                     
 
-                           $('.table').append(item);
+
+                       $('.table').append(item);
                        $(".tips").hover(function (e) {
                            $(this).ligerTip({ content: $(this).html(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
                        }, function (e) {
                            $(this).ligerHideTip(e);
                        });
                        // $(".tips").ligerHideTip(); //关闭弹出的tip
-                       
+
 
                    });
                },

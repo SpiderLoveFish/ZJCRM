@@ -37,7 +37,7 @@
                      },
                       { display: '模板编号', name: 'id', width: 100, align: 'left' },
                           { display: '模板名称', name: 'BudgetName', width: 120, align: 'left' },
-                      { display: '姓名', name: 'CustomerName', width: 60, align: 'left' },
+                    //  { display: '姓名', name: 'CustomerName', width: 60, align: 'left' },
 
 
 
@@ -51,8 +51,9 @@
                         },
                           { display: '引用次数', name: 'FromTimes', width: 100, align: 'left' },
 
-                        { display: '原预算', name: 'id', width: 80, align: 'left' },
-                { display: '备注', name: 'Remarks', width: 100, align: 'left' }
+                      //  { display: '原预算', name: 'id', width: 80, align: 'left' },
+                { display: '备注', name: 'Remarks', width: 100, align: 'left' },
+                 { display: '类型', name: 'ModelStyle', width: 100, align: 'left' }
 
                 ],
 

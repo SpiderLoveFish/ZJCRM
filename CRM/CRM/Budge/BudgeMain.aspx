@@ -135,6 +135,7 @@
                     id: 'keyword1',
                     text: ''
                 });
+                items.push({ type: 'textbox', id: 'stextlx', text: '类型：' });
                 items.push({
                     type: 'button',
                     text: '搜索',
@@ -144,20 +145,9 @@
                         doserch()
                     }
                 });
-                items.push({
-                    type: 'textbox',
-                    id: 'keyword1',
-                    text: ''
-                });
-                items.push({
-                    type: 'button',
-                    text: '搜索',
-                    icon: '../../images/search.gif',
-                    disable: true,
-                    click: function () {
-                        doserch()
-                    }
-                });
+               
+               
+               
                 items.push({
                     type: 'serchbtn',
                     text: '高级搜索',
@@ -177,6 +167,21 @@
 
                 $("#maingrid4").ligerGetGridManager().onResize();
                 $("#keyword1").ligerTextBox({ width: 200, nullText: "输入关键词搜索" })
+                $('#stextlx').ligerComboBox({
+                    width: 97,
+                    selectBoxWidth: 240,
+                    selectBoxHeight: 200,
+                    valueField: 'id',
+                    textField: 'text',
+                    treeLeafOnly: false,
+                    tree: {
+                        data: [
+                   { text: '常规预算' },
+                   { text: '套餐预算' }
+                        ],
+                        checkbox: false
+                    }
+                });
             });
         }
 

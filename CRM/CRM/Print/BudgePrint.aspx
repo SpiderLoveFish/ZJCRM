@@ -35,9 +35,20 @@
                            + " <td  align='right'>" + data['rate'].toFixed(2) + "</td> <td  align='right'>" + data['RateAmount'].toFixed(2) + "</td>"
                            + " </tr>";
                        $('.table3').append(item);
+
                                     
 
                    });
+                   $.each(obj, function (i, data) {
+
+                       item =  data['RateName']+":费率"+ (data['rate']*100)+"% 费用：" + data['RateAmount'].toFixed(2) +";"
+                   
+                       $('#T_table3').append(item);
+
+
+
+                   });
+                  
                },
                error: function (XMLHttpRequest, textStatus, errorThrown) {
                    alert(textStatus);
@@ -94,11 +105,11 @@
                    $("#T_Remarks").html(obj.Remarks);
                    $("#T_BudgetName").html(obj.BudgetName);
                    $("#T_sjstel").html(obj.sjstel);
-
                    var itemgender = "";
-                   if (obj.gender ="男") { itemgender = "先生" }
+                   if (obj.gender =='男') { itemgender = "先生" }
                    else { itemgender = "女士"; }
                    $("#T_gender").append(itemgender);
+
                    var itemDetailDiscount="";
                    if (obj.DetailDiscount < 1) { itemDetailDiscount = "折扣：" + obj.DetailDiscount*10+"折" }
                    else { itemDetailDiscount = ""; }
@@ -108,7 +119,6 @@
                    else { itemDiscountAmount = ""; }
                    $("#T_DiscountAmount").append(itemDiscountAmount);
                    
-
 
                },
                error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -132,8 +142,8 @@
                        if (data['SUM'] == null) sum = 0;
                        else sum = data['SUM'];
                        if (data['ComponentName'] != cn) {
-                           item = "<tr><td align='left' colspan='9' ><font size='2' ><b>&nbsp;&nbsp;" + data['ComponentName'] + "</b></font></td></tr>"
-                           + "<tr><td >" + data['Cname'] + data['brand'] + "</td><td align='right'>" + data['zc_price'].toFixed(2) + "</td><td align='right'>" + data['fc_price'].toFixed(2) + "</td><td>" + data['rg_price'].toFixed(2) + "</td><td align='right'>" + data['TotalPrice'].toFixed(2) + "</td><td align='right'>" + sum.toFixed(2) + "</td> "
+                           item = "<tr><td align='left' colspan='9' ><font size='2' ><b>&nbsp;&nbsp;" + data['ComponentName'] + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(合计：" + data['BwSubTotal'] + ")</b></font></td></tr>"
+                           + "<tr><td >" + data['Cname'] + data['brand'] + "</td><td align='right'>" + data['zc_price'].toFixed(2) + "</td><td align='right'>" + data['fc_price'].toFixed(2) + "</td><td align='right'>" + data['rg_price'].toFixed(2) + "</td><td align='right'>" + data['TotalPrice'].toFixed(2) + "</td><td align='right'>" + sum.toFixed(2) + "</td> "
                                + " <td align='right'>" + data['je'].toFixed(2) + "</td><td>" + data['unit'] + "</td> <td>" + data['proremarks'].replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>") + "</td>"
                                + " </tr>";
                        }
@@ -188,12 +198,12 @@
            LODOP.ADD_PRINT_HTM(90, "5%", "90%", 314, strStyle + document.getElementById("div2").innerHTML);
 
            LODOP.SET_PRINT_STYLEA(0, "Vorient", 3);
-           LODOP.ADD_PRINT_TABLE(150, 0, "90%", 314, document.getElementById("div3").innerHTML);
+           LODOP.ADD_PRINT_TABLE(100, "5%", "90%", 314, document.getElementById("div3").innerHTML);
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 0);
            LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 1);
           
            //这样只有最后一页有
-           LODOP.ADD_PRINT_HTM(26, 0, "90%", 54, document.getElementById("div4").innerHTML);
+           LODOP.ADD_PRINT_HTM(26, "5%", "90%", 54, document.getElementById("div4").innerHTML);
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 0);
            LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 2);
            LODOP.ADD_PRINT_HTM(26, "5%", "90%", 109, document.getElementById("div1").innerHTML);
@@ -212,6 +222,7 @@
            LODOP.SET_PRINT_STYLEA(0, "Horient", 1);
            //LODOP.ADD_PRINT_TEXT(3,34,196,20,"总页眉：《两个发货单的演示》");
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
+           LODOP.SET_SHOW_MODE("LANDSCAPE_DEFROTATED", 1);
            LODOP.PREVIEW();
        };
     </script>
@@ -261,12 +272,12 @@
 <%--<p>----------------------div2:------------------------------------------------------------------------------------</p>--%>
 <div id="div2"><table width="100%" cellSpacing=0 cellPadding=0 border=0 >
     <tr>
-      <td > <p align="left">&nbsp;&nbsp;尊敬的<SPAN  style="color:blue" id="T_kh" ></SPAN><SPAN id="T_gender" ></SPAN>，您好，首先非常感谢您对我们的信任并选择<span id="T_logo_2"></span>为您装修，现在为您提供您的爱家-<SPAN style="color:blue" id="T_address" ></SPAN>的装修预算，我是设计师<SPAN style="color:blue" id="T_sjs" ></SPAN>，我的联系电话是<SPAN  style="color:blue" id="T_sjstel" ></SPAN>,如有任何问题可致电咨询。<br>
+      <td > <p align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尊敬的<SPAN  style="color:blue" id="T_kh" ></SPAN><SPAN id="T_gender" ></SPAN>，您好，首先非常感谢您对我们的信任并选择<span id="T_logo_2"></span>为您装修，现在为您提供您的爱家-<SPAN style="color:blue" id="T_address" ></SPAN>的装修预算，我是设计师<SPAN style="color:blue" id="T_sjs" ></SPAN>，我的联系电话是<SPAN  style="color:blue" id="T_sjstel" ></SPAN>,如有任何问题可致电咨询。您的联系电话是<SPAN  style="color:blue" id="T_tel" ></SPAN>,服务期间我们将及时向您汇报进度。<br>
           <br>
           此份预算的总金额分为两部分组成，材料、人工与附加费用   
      </p><p>
           &nbsp;1、材料人工费用为<SPAN  style="color:blue" id="T_clje" ></SPAN>元<br>
-          &nbsp;2、您家附加费用为<SPAN  style="color:blue" id="T_fjje" ></SPAN>元 <SPAN id="T_table3" ></SPAN>(设计费：费率2% 1000元 管理费：费率1% 500元)<br>
+          &nbsp;2、您家附加费用为<SPAN  style="color:blue" id="T_fjje" ></SPAN>元 (<SPAN  style="font-size:10px" id="T_table3" ></SPAN>) <br>
           &nbsp;3、两项合计费用为<SPAN  style="color:blue" id="T_zje" ></SPAN>元 <br>
       
      </p>
@@ -274,7 +285,7 @@
         </tr>
 <tr>
  <td valign="top" >
-<TABLE   class="table2 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="50%" style="border-collapse:collapse;font-size:10px" bordercolor="#333333">
+<TABLE   class="table2 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="80%" style="border-collapse:collapse;font-size:15px" bordercolor="#333333">
 <thead>
   <TR>
      <TD width="10%">

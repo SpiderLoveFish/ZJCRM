@@ -68,7 +68,7 @@
             $("#T_companyid").val(getparastr("cid"));
             $("#T_company").val(tc+decodeURI(getparastr("cname")));
             $("#T_budgeid").val(getparastr("bid")); 
-            $("#T_compname").val(tc + decodeURI(getparastr("bname")));
+           // $("#T_compname").val(tc + decodeURI(getparastr("bname")));
             IsExisModelID();
         }
          
@@ -125,7 +125,7 @@
                     
                 </td>
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">‘§À„±‡∫≈£∫</div>
+                    <div style="width: 80px; text-align: right; float: right">±‡∫≈£∫</div>
                 </td>
                 <td>
                     <input id="T_budgeid" name="T_budgeid" type="text" ltype="text" ligerui="{width:180,disabled:true}" validate="{required:false}" /></td>
@@ -137,7 +137,7 @@
                 </td>
                 <td colspan="3">
 
-                    <input id="T_compname" name="T_compname" type="text" ltype="text" ligerui="{width:490}" /></td>
+                    <input id="T_compname" name="T_compname" type="text" ltype="text" ligerui="{width:490}" validate="{required:true}" /></td>
             </tr>
             <tr id="tr_contact4">
                 <td>
