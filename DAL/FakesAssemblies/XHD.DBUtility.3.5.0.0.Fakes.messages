@@ -1,0 +1,4 @@
+D:\Source\GitHub\ZJCRM\DAL\Fakes\XHD.DBUtility.fakes : warning : Cannot generate stub for XHD.DBUtility.EffentNextType: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\XHD.DBUtility.fakes : warning : Cannot generate stub for XHD.DBUtility.DbHelperMySQL: Could not resolve assembly 'MySql.Data, Version=6.4.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d'. Are you missing an assembly reference?.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\XHD.DBUtility.fakes : warning : Cannot generate shim for XHD.DBUtility.EffentNextType: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\XHD.DBUtility.fakes : warning : Cannot generate shim for XHD.DBUtility.DbHelperMySQL: Could not resolve assembly 'MySql.Data, Version=6.4.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d'. Are you missing an assembly reference?.

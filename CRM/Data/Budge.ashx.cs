@@ -151,7 +151,8 @@ namespace XHD.CRM.Data
                  //string bid = PageValidate.InputText(request["bid"], 50);
                 // string remaks = PageValidate.InputText(request["T_remarks"], 250);
                  string modelname = PageValidate.InputText(request["T_compname"], 250);
-                 string bid = bd.GetMaxModelId();
+                 string bid = PageValidate.InputText(request["T_budgeid"], 50);
+                     //bd.GetMaxModelId();
 
                  //string bid = PageValidate.InputText(request["T_budgeid"], 50);
                
@@ -166,7 +167,7 @@ namespace XHD.CRM.Data
                  mbb.DoTime = DateTime.Now;
                  mbb.DoPerson = emp_id;
                  mbb.id = bid;
-                 mbb.BudgetName = bname + modelname;
+                 mbb.BudgetName = bname;//+ modelname
                  mbb.IsStatus = 0;
                  //防止多人操作，单据重复
                  DataSet IsExist = bbb.GetList(" id='" + bid + "'");
@@ -360,7 +361,7 @@ namespace XHD.CRM.Data
                    {
                        if(bbdetail.Delete(bid))
                         context.Response.Write("true");
-                       else context.Response.Write("false");
+                       else context.Response.Write("false:detail");
                     }
                     else
                     {

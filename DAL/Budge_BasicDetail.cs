@@ -3,6 +3,8 @@ using System.Data;
 using System.Text;
 using System.Data.SqlClient;
 using XHD.DBUtility;//Please add references
+using System.Collections.Generic;
+
 namespace XHD.DAL
 {
 	/// <summary>
@@ -334,17 +336,15 @@ namespace XHD.DAL
         /// </summary>
         public bool Delete(string  bid)
         {
-
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from Budge_BasicDetail ");
-            strSql.Append(" where budge_id='"+bid+"'");
-            strSql.Append("delete from Budge_Para_Ver ");
-            strSql.Append(" where budge_id='" + bid + "'");
+             List<String> l=new List<string>();
+             l.Add(" delete from Budge_Para_Ver where budge_id='" + bid + "'");
+             l.Add(" delete from Budge_BasicDetail where budge_id='" + bid + "'");
+           
             SqlParameter[] parameters = {
 					 
 			};
-            
-            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+
+            int rows = DbHelperSQL.ExecuteSqlTran(l);
             if (rows > 0)
             {
                 return true;

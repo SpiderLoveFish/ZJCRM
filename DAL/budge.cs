@@ -703,7 +703,22 @@ namespace XHD.DAL
             sb.AppendLine("remarks, ");
             sb.AppendLine("b_zkzje ");
             sb.AppendLine(" FROM [dbo].[Budge_tax] WHERE budge_id='" + modelid + "' ");
-
+        
+            sb.AppendLine("INSERT INTO dbo.Budge_Para_Ver");
+            sb.AppendLine("        ( customer_id ,");
+            sb.AppendLine("          budge_id ,");
+            sb.AppendLine("          versions ,");
+            sb.AppendLine("          b_Part_id ,");
+            sb.AppendLine("          parentid ,");
+            sb.AppendLine("          BP_Name");
+            sb.AppendLine("        )");
+            sb.AppendLine(" SELECT customer_id ,");
+            sb.AppendLine("          '" + bid + "' ,");
+            sb.AppendLine("          versions ,");
+            sb.AppendLine("          b_Part_id ,");
+            sb.AppendLine("          parentid ,");
+            sb.AppendLine("          BP_Name FROM dbo.Budge_Para_Ver");
+            sb.AppendLine("		  WHERE	budge_id='" + modelid + "'");
 
             sb.AppendLine(";select @@IDENTITY");
             SqlParameter[] parameters = { };

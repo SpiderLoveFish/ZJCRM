@@ -47,18 +47,22 @@
             
         })
         function f_save() {
-            //if ($('#T_employee_sg').val == "" || $('#T_employee_sg').val == null)
-            //{
-               // alert('操作失败，施工监理不能为空，请先到客户档案中维护！');
-            //    return;
-            //}
+            if ($('#T_compname').val == "" || $('#T_compname').val == null)
+            {
+                alert('模板名称必须填入！');
+                return;
+            }
             //if ($(form1).valid()) {
             var sendtxt = "&Action=savemodel&bid=" + getparastr("bid");
                // alert($("form :input").fieldSerialize() + sendtxt);
                 return $("form :input").fieldSerialize() + sendtxt;
             //}
         }
-        function f_saveinsert(){
+        function f_saveinsert() {
+            if ($('#T_compname').val == "" || $('#T_compname').val == null) {
+                alert('模板名称必须填入！');
+                return;
+            }
             var sendtxt = "&Action=saveallmb&T_mblx=" + tc.replace("复制","");//复制不能作为模型
             // alert($("form :input").fieldSerialize() + sendtxt);
             return $("form :input").fieldSerialize() + sendtxt;

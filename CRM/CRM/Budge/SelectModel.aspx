@@ -96,7 +96,7 @@
         }
 
 
-        function f_select() {
+        function f_selectMB() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var rows = manager.getSelectedRow();
             return rows;

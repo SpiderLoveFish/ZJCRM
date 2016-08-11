@@ -361,7 +361,10 @@
                                     top.$.ligerDialog.closeWaitting();
                                     f_reload();
                                 }
-
+                                if (responseText == "false:detail") {//有可能没有明细，忽略
+                                    top.$.ligerDialog.closeWaitting();
+                                    f_reload();
+                                }
                                 else {
                                     top.$.ligerDialog.closeWaitting();
                                     top.$.ligerDialog.error('删除失败！');

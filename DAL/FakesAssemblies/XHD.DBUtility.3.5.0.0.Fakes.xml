@@ -1,0 +1,1013 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>XHD.DBUtility.3.5.0.0.Fakes</name>
+    </assembly>
+    <members>
+        <member name="T:XHD.DBUtility.Fakes.ShimBaseSqlMapDao">
+            <summary>Shim type of XHD.DBUtility.BaseSqlMapDao</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.#ctor(XHD.DBUtility.BaseSqlMapDao)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.ExecuteQueryForListOf1StringObject``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.String,System.Object,System.Collections.Generic.IList{``0}})">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteQueryForList(String statementName, Object parameterObject)</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.ExecuteQueryForListOf1StringObjectInt32Int32``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.String,System.Object,System.Int32,System.Int32,System.Collections.Generic.IList{``0}})">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteQueryForList(String statementName, Object parameterObject, Int32 skipResults, Int32 maxResults)</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.ExecuteQueryForObjectOf1StringObject``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.String,System.Object,``0})">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteQueryForObject(String statementName, Object parameterObject)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.Constructor">
+            <summary>Sets the shim of BaseSqlMapDao.BaseSqlMapDao()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.ExecuteDeleteStringObject">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteDelete(String statementName, Object parameterObject)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.ExecuteInsertStringObject">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteInsert(String statementName, Object parameterObject)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.ExecuteQueryForPaginatedListStringObjectInt32">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteQueryForPaginatedList(String statementName, Object parameterObject, Int32 pageSize)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.ExecuteUpdateStringObject">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteUpdate(String statementName, Object parameterObject)</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.AllInstances.ExecuteQueryForListOf1StringObject``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{XHD.DBUtility.BaseSqlMapDao,System.String,System.Object,System.Collections.Generic.IList{``0}})">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteQueryForList(String statementName, Object parameterObject)</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.AllInstances.ExecuteQueryForListOf1StringObjectInt32Int32``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{XHD.DBUtility.BaseSqlMapDao,System.String,System.Object,System.Int32,System.Int32,System.Collections.Generic.IList{``0}})">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteQueryForList(String statementName, Object parameterObject, Int32 skipResults, Int32 maxResults)</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.AllInstances.ExecuteQueryForObjectOf1StringObject``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{XHD.DBUtility.BaseSqlMapDao,System.String,System.Object,``0})">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteQueryForObject(String statementName, Object parameterObject)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.AllInstances.ExecuteDeleteStringObject">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteDelete(String statementName, Object parameterObject)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.AllInstances.ExecuteInsertStringObject">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteInsert(String statementName, Object parameterObject)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.AllInstances.ExecuteQueryForPaginatedListStringObjectInt32">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteQueryForPaginatedList(String statementName, Object parameterObject, Int32 pageSize)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimBaseSqlMapDao.AllInstances.ExecuteUpdateStringObject">
+            <summary>Sets the shim of BaseSqlMapDao.ExecuteUpdate(String statementName, Object parameterObject)</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimCommandInfo">
+            <summary>Shim type of XHD.DBUtility.CommandInfo</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimCommandInfo.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimCommandInfo.#ctor(XHD.DBUtility.CommandInfo)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimCommandInfo.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimCommandInfo.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo.Constructor">
+            <summary>Sets the shim of CommandInfo.CommandInfo()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo.ConstructorStringSqlParameterArray">
+            <summary>Sets the shim of CommandInfo.CommandInfo(String sqlText, SqlParameter[] para)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo.ConstructorStringSqlParameterArrayEffentNextType">
+            <summary>Sets the shim of CommandInfo.CommandInfo(String sqlText, SqlParameter[] para, EffentNextType type)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo.OnSolicitationEvent">
+            <summary>Sets the shim of CommandInfo.OnSolicitationEvent()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo.SolicitationEventAddEventHandler">
+            <summary>Sets the shim of CommandInfo.add_SolicitationEvent(EventHandler value)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo.SolicitationEventRemoveEventHandler">
+            <summary>Sets the shim of CommandInfo.remove_SolicitationEvent(EventHandler value)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo._solicitationEventAddEventHandler">
+            <summary>Sets the shim of CommandInfo.add__solicitationEvent(EventHandler value)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo._solicitationEventRemoveEventHandler">
+            <summary>Sets the shim of CommandInfo.remove__solicitationEvent(EventHandler value)</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimCommandInfo.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo.AllInstances.OnSolicitationEvent">
+            <summary>Sets the shim of CommandInfo.OnSolicitationEvent()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo.AllInstances.SolicitationEventAddEventHandler">
+            <summary>Sets the shim of CommandInfo.add_SolicitationEvent(EventHandler value)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo.AllInstances.SolicitationEventRemoveEventHandler">
+            <summary>Sets the shim of CommandInfo.remove_SolicitationEvent(EventHandler value)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo.AllInstances._solicitationEventAddEventHandler">
+            <summary>Sets the shim of CommandInfo.add__solicitationEvent(EventHandler value)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimCommandInfo.AllInstances._solicitationEventRemoveEventHandler">
+            <summary>Sets the shim of CommandInfo.remove__solicitationEvent(EventHandler value)</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimDESEncrypt">
+            <summary>Shim type of XHD.DBUtility.DESEncrypt</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDESEncrypt.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDESEncrypt.#ctor(XHD.DBUtility.DESEncrypt)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDESEncrypt.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDESEncrypt.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDESEncrypt.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDESEncrypt.Constructor">
+            <summary>Sets the shim of DESEncrypt.DESEncrypt()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDESEncrypt.DecryptString">
+            <summary>Sets the shim of DESEncrypt.Decrypt(String Text)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDESEncrypt.DecryptStringString">
+            <summary>Sets the shim of DESEncrypt.Decrypt(String Text, String sKey)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDESEncrypt.EncryptString">
+            <summary>Sets the shim of DESEncrypt.Encrypt(String Text)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDESEncrypt.EncryptStringString">
+            <summary>Sets the shim of DESEncrypt.Encrypt(String Text, String sKey)</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimDESEncrypt.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimDbHelperOleDb">
+            <summary>Shim type of XHD.DBUtility.DbHelperOleDb</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperOleDb.#ctor(XHD.DBUtility.DbHelperOleDb)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperOleDb.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperOleDb.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.Constructor">
+            <summary>Sets the shim of DbHelperOleDb.DbHelperOleDb()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.ExecuteReaderString">
+            <summary>Sets the shim of DbHelperOleDb.ExecuteReader(String strSQL)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.ExecuteReaderStringOleDbParameterArray">
+            <summary>Sets the shim of DbHelperOleDb.ExecuteReader(String SQLString, OleDbParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.ExecuteSqlInsertImgStringByteArray">
+            <summary>Sets the shim of DbHelperOleDb.ExecuteSqlInsertImg(String strSQL, Byte[] fs)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.ExecuteSqlString">
+            <summary>Sets the shim of DbHelperOleDb.ExecuteSql(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.ExecuteSqlStringOleDbParameterArray">
+            <summary>Sets the shim of DbHelperOleDb.ExecuteSql(String SQLString, OleDbParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.ExecuteSqlStringString">
+            <summary>Sets the shim of DbHelperOleDb.ExecuteSql(String SQLString, String content)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.ExecuteSqlTranArrayList">
+            <summary>Sets the shim of DbHelperOleDb.ExecuteSqlTran(ArrayList SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.ExecuteSqlTranHashtable">
+            <summary>Sets the shim of DbHelperOleDb.ExecuteSqlTran(Hashtable SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.ExistsString">
+            <summary>Sets the shim of DbHelperOleDb.Exists(String strSql)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.ExistsStringOleDbParameterArray">
+            <summary>Sets the shim of DbHelperOleDb.Exists(String strSql, OleDbParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.GetMaxIDStringString">
+            <summary>Sets the shim of DbHelperOleDb.GetMaxID(String FieldName, String TableName)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.GetSingleString">
+            <summary>Sets the shim of DbHelperOleDb.GetSingle(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.GetSingleStringOleDbParameterArray">
+            <summary>Sets the shim of DbHelperOleDb.GetSingle(String SQLString, OleDbParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.PrepareCommandOleDbCommandOleDbConnectionOleDbTransactionStringOleDbParameterArray">
+            <summary>Sets the shim of DbHelperOleDb.PrepareCommand(OleDbCommand cmd, OleDbConnection conn, OleDbTransaction trans, String cmdText, OleDbParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.QueryString">
+            <summary>Sets the shim of DbHelperOleDb.Query(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.QueryStringOleDbParameterArray">
+            <summary>Sets the shim of DbHelperOleDb.Query(String SQLString, OleDbParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOleDb.StaticConstructor">
+            <summary>Sets the shim of DbHelperOleDb.DbHelperOleDb()</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimDbHelperOleDb.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimDbHelperOra">
+            <summary>Shim type of XHD.DBUtility.DbHelperOra</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperOra.#ctor(XHD.DBUtility.DbHelperOra)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperOra.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperOra.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.BuildIntCommandOracleConnectionStringIDataParameterArray">
+            <summary>Sets the shim of DbHelperOra.BuildIntCommand(OracleConnection connection, String storedProcName, IDataParameter[] parameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.BuildQueryCommandOracleConnectionStringIDataParameterArray">
+            <summary>Sets the shim of DbHelperOra.BuildQueryCommand(OracleConnection connection, String storedProcName, IDataParameter[] parameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.Constructor">
+            <summary>Sets the shim of DbHelperOra.DbHelperOra()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.ExecuteReaderString">
+            <summary>Sets the shim of DbHelperOra.ExecuteReader(String strSQL)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.ExecuteReaderStringOracleParameterArray">
+            <summary>Sets the shim of DbHelperOra.ExecuteReader(String SQLString, OracleParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.ExecuteSqlInsertImgStringByteArray">
+            <summary>Sets the shim of DbHelperOra.ExecuteSqlInsertImg(String strSQL, Byte[] fs)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.ExecuteSqlString">
+            <summary>Sets the shim of DbHelperOra.ExecuteSql(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.ExecuteSqlStringOracleParameterArray">
+            <summary>Sets the shim of DbHelperOra.ExecuteSql(String SQLString, OracleParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.ExecuteSqlStringString">
+            <summary>Sets the shim of DbHelperOra.ExecuteSql(String SQLString, String content)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.ExecuteSqlTranArrayList">
+            <summary>Sets the shim of DbHelperOra.ExecuteSqlTran(ArrayList SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.ExecuteSqlTranHashtable">
+            <summary>Sets the shim of DbHelperOra.ExecuteSqlTran(Hashtable SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.ExistsString">
+            <summary>Sets the shim of DbHelperOra.Exists(String strSql)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.ExistsStringOracleParameterArray">
+            <summary>Sets the shim of DbHelperOra.Exists(String strSql, OracleParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.GetMaxIDStringString">
+            <summary>Sets the shim of DbHelperOra.GetMaxID(String FieldName, String TableName)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.GetSingleString">
+            <summary>Sets the shim of DbHelperOra.GetSingle(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.GetSingleStringOracleParameterArray">
+            <summary>Sets the shim of DbHelperOra.GetSingle(String SQLString, OracleParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.PrepareCommandOracleCommandOracleConnectionOracleTransactionStringOracleParameterArray">
+            <summary>Sets the shim of DbHelperOra.PrepareCommand(OracleCommand cmd, OracleConnection conn, OracleTransaction trans, String cmdText, OracleParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.QueryString">
+            <summary>Sets the shim of DbHelperOra.Query(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.QueryStringOracleParameterArray">
+            <summary>Sets the shim of DbHelperOra.Query(String SQLString, OracleParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.RunProcedureStringIDataParameterArray">
+            <summary>Sets the shim of DbHelperOra.RunProcedure(String storedProcName, IDataParameter[] parameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.RunProcedureStringIDataParameterArrayInt32Out">
+            <summary>Sets the shim of DbHelperOra.RunProcedure(String storedProcName, IDataParameter[] parameters, Int32&amp; rowsAffected)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.RunProcedureStringIDataParameterArrayString">
+            <summary>Sets the shim of DbHelperOra.RunProcedure(String storedProcName, IDataParameter[] parameters, String tableName)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperOra.StaticConstructor">
+            <summary>Sets the shim of DbHelperOra.DbHelperOra()</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimDbHelperOra.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimDbHelperSQL">
+            <summary>Shim type of XHD.DBUtility.DbHelperSQL</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperSQL.#ctor(XHD.DBUtility.DbHelperSQL)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperSQL.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperSQL.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.BuildIntCommandSqlConnectionStringIDataParameterArray">
+            <summary>Sets the shim of DbHelperSQL.BuildIntCommand(SqlConnection connection, String storedProcName, IDataParameter[] parameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.BuildQueryCommandSqlConnectionStringIDataParameterArray">
+            <summary>Sets the shim of DbHelperSQL.BuildQueryCommand(SqlConnection connection, String storedProcName, IDataParameter[] parameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ColumnExistsStringString">
+            <summary>Sets the shim of DbHelperSQL.ColumnExists(String tableName, String columnName)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.Constructor">
+            <summary>Sets the shim of DbHelperSQL.DbHelperSQL()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteReaderString">
+            <summary>Sets the shim of DbHelperSQL.ExecuteReader(String strSQL)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteReaderStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQL.ExecuteReader(String SQLString, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteSqlByTimeStringInt32">
+            <summary>Sets the shim of DbHelperSQL.ExecuteSqlByTime(String SQLString, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteSqlGetStringString">
+            <summary>Sets the shim of DbHelperSQL.ExecuteSqlGet(String SQLString, String content)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteSqlInsertImgStringByteArray">
+            <summary>Sets the shim of DbHelperSQL.ExecuteSqlInsertImg(String strSQL, Byte[] fs)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteSqlString">
+            <summary>Sets the shim of DbHelperSQL.ExecuteSql(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteSqlStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQL.ExecuteSql(String SQLString, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteSqlStringString">
+            <summary>Sets the shim of DbHelperSQL.ExecuteSql(String SQLString, String content)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteSqlTranHashtable">
+            <summary>Sets the shim of DbHelperSQL.ExecuteSqlTran(Hashtable SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteSqlTranListOfCommandInfo">
+            <summary>Sets the shim of DbHelperSQL.ExecuteSqlTran(List`1&lt;CommandInfo&gt; cmdList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteSqlTranListOfCommandInfoListOfCommandInfo">
+            <summary>Sets the shim of DbHelperSQL.ExecuteSqlTran(List`1&lt;CommandInfo&gt; list, List`1&lt;CommandInfo&gt; oracleCmdSqlList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteSqlTranListOfString">
+            <summary>Sets the shim of DbHelperSQL.ExecuteSqlTran(List`1&lt;String&gt; SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteSqlTranWithIndentityHashtable">
+            <summary>Sets the shim of DbHelperSQL.ExecuteSqlTranWithIndentity(Hashtable SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExecuteSqlTranWithIndentityListOfCommandInfo">
+            <summary>Sets the shim of DbHelperSQL.ExecuteSqlTranWithIndentity(List`1&lt;CommandInfo&gt; SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExistsString">
+            <summary>Sets the shim of DbHelperSQL.Exists(String strSql)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.ExistsStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQL.Exists(String strSql, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.GetMaxIDStringString">
+            <summary>Sets the shim of DbHelperSQL.GetMaxID(String FieldName, String TableName)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.GetSingleString">
+            <summary>Sets the shim of DbHelperSQL.GetSingle(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.GetSingleStringInt32">
+            <summary>Sets the shim of DbHelperSQL.GetSingle(String SQLString, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.GetSingleStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQL.GetSingle(String SQLString, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.PrepareCommandSqlCommandSqlConnectionSqlTransactionStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQL.PrepareCommand(SqlCommand cmd, SqlConnection conn, SqlTransaction trans, String cmdText, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.QueryString">
+            <summary>Sets the shim of DbHelperSQL.Query(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.QueryStringInt32">
+            <summary>Sets the shim of DbHelperSQL.Query(String SQLString, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.QueryStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQL.Query(String SQLString, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.RunProcedureStringIDataParameterArray">
+            <summary>Sets the shim of DbHelperSQL.RunProcedure(String storedProcName, IDataParameter[] parameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.RunProcedureStringIDataParameterArrayInt32Out">
+            <summary>Sets the shim of DbHelperSQL.RunProcedure(String storedProcName, IDataParameter[] parameters, Int32&amp; rowsAffected)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.RunProcedureStringIDataParameterArrayString">
+            <summary>Sets the shim of DbHelperSQL.RunProcedure(String storedProcName, IDataParameter[] parameters, String tableName)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.RunProcedureStringIDataParameterArrayStringInt32">
+            <summary>Sets the shim of DbHelperSQL.RunProcedure(String storedProcName, IDataParameter[] parameters, String tableName, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.StaticConstructor">
+            <summary>Sets the shim of DbHelperSQL.DbHelperSQL()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQL.TabExistsString">
+            <summary>Sets the shim of DbHelperSQL.TabExists(String TableName)</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimDbHelperSQL.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimDbHelperSQLP">
+            <summary>Shim type of XHD.DBUtility.DbHelperSQLP</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperSQLP.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperSQLP.#ctor(XHD.DBUtility.DbHelperSQLP)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperSQLP.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperSQLP.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.BuildIntCommandSqlConnectionStringIDataParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.BuildIntCommand(SqlConnection connection, String storedProcName, IDataParameter[] parameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.BuildQueryCommandSqlConnectionStringIDataParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.BuildQueryCommand(SqlConnection connection, String storedProcName, IDataParameter[] parameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ColumnExistsStringString">
+            <summary>Sets the shim of DbHelperSQLP.ColumnExists(String tableName, String columnName)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.Constructor">
+            <summary>Sets the shim of DbHelperSQLP.DbHelperSQLP()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ConstructorString">
+            <summary>Sets the shim of DbHelperSQLP.DbHelperSQLP(String ConnectionString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteReaderString">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteReader(String strSQL)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteReaderStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteReader(String SQLString, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteSqlByTimeStringInt32">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlByTime(String SQLString, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteSqlGetStringString">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlGet(String SQLString, String content)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteSqlInsertImgStringByteArray">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlInsertImg(String strSQL, Byte[] fs)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteSqlString">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSql(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteSqlStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSql(String SQLString, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteSqlStringString">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSql(String SQLString, String content)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteSqlTranHashtable">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlTran(Hashtable SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteSqlTranListOfCommandInfo">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlTran(List`1&lt;CommandInfo&gt; cmdList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteSqlTranListOfCommandInfoListOfCommandInfo">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlTran(List`1&lt;CommandInfo&gt; list, List`1&lt;CommandInfo&gt; oracleCmdSqlList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteSqlTranListOfString">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlTran(List`1&lt;String&gt; SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteSqlTranWithIndentityHashtable">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlTranWithIndentity(Hashtable SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExecuteSqlTranWithIndentityListOfCommandInfo">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlTranWithIndentity(List`1&lt;CommandInfo&gt; SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExistsString">
+            <summary>Sets the shim of DbHelperSQLP.Exists(String strSql)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.ExistsStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.Exists(String strSql, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.GetMaxIDStringString">
+            <summary>Sets the shim of DbHelperSQLP.GetMaxID(String FieldName, String TableName)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.GetSingleString">
+            <summary>Sets the shim of DbHelperSQLP.GetSingle(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.GetSingleStringInt32">
+            <summary>Sets the shim of DbHelperSQLP.GetSingle(String SQLString, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.GetSingleStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.GetSingle(String SQLString, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.PrepareCommandSqlCommandSqlConnectionSqlTransactionStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.PrepareCommand(SqlCommand cmd, SqlConnection conn, SqlTransaction trans, String cmdText, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.QueryString">
+            <summary>Sets the shim of DbHelperSQLP.Query(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.QueryStringInt32">
+            <summary>Sets the shim of DbHelperSQLP.Query(String SQLString, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.QueryStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.Query(String SQLString, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.RunProcedureStringIDataParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.RunProcedure(String storedProcName, IDataParameter[] parameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.RunProcedureStringIDataParameterArrayInt32Out">
+            <summary>Sets the shim of DbHelperSQLP.RunProcedure(String storedProcName, IDataParameter[] parameters, Int32&amp; rowsAffected)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.RunProcedureStringIDataParameterArrayString">
+            <summary>Sets the shim of DbHelperSQLP.RunProcedure(String storedProcName, IDataParameter[] parameters, String tableName)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.RunProcedureStringIDataParameterArrayStringInt32">
+            <summary>Sets the shim of DbHelperSQLP.RunProcedure(String storedProcName, IDataParameter[] parameters, String tableName, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.TabExistsString">
+            <summary>Sets the shim of DbHelperSQLP.TabExists(String TableName)</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ColumnExistsStringString">
+            <summary>Sets the shim of DbHelperSQLP.ColumnExists(String tableName, String columnName)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteReaderString">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteReader(String strSQL)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteReaderStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteReader(String SQLString, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteSqlByTimeStringInt32">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlByTime(String SQLString, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteSqlGetStringString">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlGet(String SQLString, String content)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteSqlInsertImgStringByteArray">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlInsertImg(String strSQL, Byte[] fs)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteSqlString">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSql(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteSqlStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSql(String SQLString, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteSqlStringString">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSql(String SQLString, String content)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteSqlTranHashtable">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlTran(Hashtable SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteSqlTranListOfCommandInfo">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlTran(List`1&lt;CommandInfo&gt; cmdList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteSqlTranListOfCommandInfoListOfCommandInfo">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlTran(List`1&lt;CommandInfo&gt; list, List`1&lt;CommandInfo&gt; oracleCmdSqlList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteSqlTranListOfString">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlTran(List`1&lt;String&gt; SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteSqlTranWithIndentityHashtable">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlTranWithIndentity(Hashtable SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExecuteSqlTranWithIndentityListOfCommandInfo">
+            <summary>Sets the shim of DbHelperSQLP.ExecuteSqlTranWithIndentity(List`1&lt;CommandInfo&gt; SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExistsString">
+            <summary>Sets the shim of DbHelperSQLP.Exists(String strSql)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.ExistsStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.Exists(String strSql, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.GetMaxIDStringString">
+            <summary>Sets the shim of DbHelperSQLP.GetMaxID(String FieldName, String TableName)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.GetSingleString">
+            <summary>Sets the shim of DbHelperSQLP.GetSingle(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.GetSingleStringInt32">
+            <summary>Sets the shim of DbHelperSQLP.GetSingle(String SQLString, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.GetSingleStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.GetSingle(String SQLString, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.QueryString">
+            <summary>Sets the shim of DbHelperSQLP.Query(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.QueryStringInt32">
+            <summary>Sets the shim of DbHelperSQLP.Query(String SQLString, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.QueryStringSqlParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.Query(String SQLString, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.RunProcedureStringIDataParameterArray">
+            <summary>Sets the shim of DbHelperSQLP.RunProcedure(String storedProcName, IDataParameter[] parameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.RunProcedureStringIDataParameterArrayInt32Out">
+            <summary>Sets the shim of DbHelperSQLP.RunProcedure(String storedProcName, IDataParameter[] parameters, Int32&amp; rowsAffected)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.RunProcedureStringIDataParameterArrayString">
+            <summary>Sets the shim of DbHelperSQLP.RunProcedure(String storedProcName, IDataParameter[] parameters, String tableName)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.RunProcedureStringIDataParameterArrayStringInt32">
+            <summary>Sets the shim of DbHelperSQLP.RunProcedure(String storedProcName, IDataParameter[] parameters, String tableName, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperSQLP.AllInstances.TabExistsString">
+            <summary>Sets the shim of DbHelperSQLP.TabExists(String TableName)</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimOracleHelper">
+            <summary>Shim type of XHD.DBUtility.OracleHelper</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimOracleHelper.#ctor(XHD.DBUtility.OracleHelper)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimOracleHelper.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimOracleHelper.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.CacheParametersStringOracleParameterArray">
+            <summary>Sets the shim of OracleHelper.CacheParameters(String cacheKey, OracleParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.Constructor">
+            <summary>Sets the shim of OracleHelper.OracleHelper()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.ExecuteNonQueryOracleConnectionCommandTypeStringOracleParameterArray">
+            <summary>Sets the shim of OracleHelper.ExecuteNonQuery(OracleConnection connection, CommandType cmdType, String cmdText, OracleParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.ExecuteNonQueryOracleTransactionCommandTypeStringOracleParameterArray">
+            <summary>Sets the shim of OracleHelper.ExecuteNonQuery(OracleTransaction trans, CommandType cmdType, String cmdText, OracleParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.ExecuteNonQueryStringCommandTypeStringOracleParameterArray">
+            <summary>Sets the shim of OracleHelper.ExecuteNonQuery(String connectionString, CommandType cmdType, String cmdText, OracleParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.ExecuteNonQueryStringString">
+            <summary>Sets the shim of OracleHelper.ExecuteNonQuery(String connectionString, String cmdText)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.ExecuteReaderStringCommandTypeStringOracleParameterArray">
+            <summary>Sets the shim of OracleHelper.ExecuteReader(String connectionString, CommandType cmdType, String cmdText, OracleParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.ExecuteScalarOracleConnectionCommandTypeStringOracleParameterArray">
+            <summary>Sets the shim of OracleHelper.ExecuteScalar(OracleConnection connectionString, CommandType cmdType, String cmdText, OracleParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.ExecuteScalarOracleTransactionCommandTypeStringOracleParameterArray">
+            <summary>Sets the shim of OracleHelper.ExecuteScalar(OracleTransaction transaction, CommandType commandType, String commandText, OracleParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.ExecuteScalarStringCommandTypeStringOracleParameterArray">
+            <summary>Sets the shim of OracleHelper.ExecuteScalar(String connectionString, CommandType cmdType, String cmdText, OracleParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.ExecuteSqlTranStringListOfCommandInfo">
+            <summary>Sets the shim of OracleHelper.ExecuteSqlTran(String conStr, List`1&lt;CommandInfo&gt; cmdList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.ExecuteSqlTranStringListOfString">
+            <summary>Sets the shim of OracleHelper.ExecuteSqlTran(String conStr, List`1&lt;String&gt; SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.ExistsStringString">
+            <summary>Sets the shim of OracleHelper.Exists(String connectionString, String strOracle)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.GetCachedParametersString">
+            <summary>Sets the shim of OracleHelper.GetCachedParameters(String cacheKey)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.GetSingleStringString">
+            <summary>Sets the shim of OracleHelper.GetSingle(String connectionString, String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.OraBitBoolean">
+            <summary>Sets the shim of OracleHelper.OraBit(Boolean value)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.OraBoolString">
+            <summary>Sets the shim of OracleHelper.OraBool(String value)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.PrepareCommandOracleCommandOracleConnectionOracleTransactionCommandTypeStringOracleParameterArray">
+            <summary>Sets the shim of OracleHelper.PrepareCommand(OracleCommand cmd, OracleConnection conn, OracleTransaction trans, CommandType cmdType, String cmdText, OracleParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.PrepareCommandOracleCommandOracleConnectionOracleTransactionStringOracleParameterArray">
+            <summary>Sets the shim of OracleHelper.PrepareCommand(OracleCommand cmd, OracleConnection conn, OracleTransaction trans, String cmdText, OracleParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.QueryStringString">
+            <summary>Sets the shim of OracleHelper.Query(String connectionString, String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.QueryStringStringOracleParameterArray">
+            <summary>Sets the shim of OracleHelper.Query(String connectionString, String SQLString, OracleParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimOracleHelper.StaticConstructor">
+            <summary>Sets the shim of OracleHelper.OracleHelper()</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimOracleHelper.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimPubConstant">
+            <summary>Shim type of XHD.DBUtility.PubConstant</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimPubConstant.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimPubConstant.#ctor(XHD.DBUtility.PubConstant)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimPubConstant.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimPubConstant.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimPubConstant.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimPubConstant.ConnectionStringGet">
+            <summary>Sets the shim of PubConstant.get_ConnectionString()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimPubConstant.Constructor">
+            <summary>Sets the shim of PubConstant.PubConstant()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimPubConstant.GetConnectionStringString">
+            <summary>Sets the shim of PubConstant.GetConnectionString(String configName)</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimPubConstant.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimSqlHelper">
+            <summary>Shim type of XHD.DBUtility.SqlHelper</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimSqlHelper.#ctor(XHD.DBUtility.SqlHelper)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimSqlHelper.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimSqlHelper.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimSqlHelper.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimSqlHelper.CacheParametersStringSqlParameterArray">
+            <summary>Sets the shim of SqlHelper.CacheParameters(String cacheKey, SqlParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimSqlHelper.Constructor">
+            <summary>Sets the shim of SqlHelper.SqlHelper()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimSqlHelper.ExecuteNonQuerySqlConnectionCommandTypeStringSqlParameterArray">
+            <summary>Sets the shim of SqlHelper.ExecuteNonQuery(SqlConnection connection, CommandType cmdType, String cmdText, SqlParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimSqlHelper.ExecuteNonQuerySqlTransactionCommandTypeStringSqlParameterArray">
+            <summary>Sets the shim of SqlHelper.ExecuteNonQuery(SqlTransaction trans, CommandType cmdType, String cmdText, SqlParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimSqlHelper.ExecuteNonQueryStringCommandTypeStringSqlParameterArray">
+            <summary>Sets the shim of SqlHelper.ExecuteNonQuery(String connectionString, CommandType cmdType, String cmdText, SqlParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimSqlHelper.ExecuteReaderStringCommandTypeStringSqlParameterArray">
+            <summary>Sets the shim of SqlHelper.ExecuteReader(String connectionString, CommandType cmdType, String cmdText, SqlParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimSqlHelper.ExecuteScalarSqlConnectionCommandTypeStringSqlParameterArray">
+            <summary>Sets the shim of SqlHelper.ExecuteScalar(SqlConnection connection, CommandType cmdType, String cmdText, SqlParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimSqlHelper.ExecuteScalarStringCommandTypeStringSqlParameterArray">
+            <summary>Sets the shim of SqlHelper.ExecuteScalar(String connectionString, CommandType cmdType, String cmdText, SqlParameter[] commandParameters)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimSqlHelper.GetCachedParametersString">
+            <summary>Sets the shim of SqlHelper.GetCachedParameters(String cacheKey)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimSqlHelper.PrepareCommandSqlCommandSqlConnectionSqlTransactionCommandTypeStringSqlParameterArray">
+            <summary>Sets the shim of SqlHelper.PrepareCommand(SqlCommand cmd, SqlConnection conn, SqlTransaction trans, CommandType cmdType, String cmdText, SqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimSqlHelper.StaticConstructor">
+            <summary>Sets the shim of SqlHelper.SqlHelper()</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimSqlHelper.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.StubBaseSqlMapDao">
+            <summary>Stub type of XHD.DBUtility.BaseSqlMapDao</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubBaseSqlMapDao.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubBaseSqlMapDao.InitializeStub">
+            <summary>Initializes a new instance of type StubBaseSqlMapDao</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubBaseSqlMapDao.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubBaseSqlMapDao.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubBaseSqlMapDao.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.StubCommandInfo">
+            <summary>Stub type of XHD.DBUtility.CommandInfo</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubCommandInfo.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubCommandInfo.#ctor(System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubCommandInfo.#ctor(System.String,System.Data.SqlClient.SqlParameter[],XHD.DBUtility.EffentNextType)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubCommandInfo.InitializeStub">
+            <summary>Initializes a new instance of type StubCommandInfo</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubCommandInfo.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubCommandInfo.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubCommandInfo.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.StubDESEncrypt">
+            <summary>Stub type of XHD.DBUtility.DESEncrypt</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubDESEncrypt.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubDESEncrypt.InitializeStub">
+            <summary>Initializes a new instance of type StubDESEncrypt</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDESEncrypt.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDESEncrypt.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDESEncrypt.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.StubDbHelperOleDb">
+            <summary>Stub type of XHD.DBUtility.DbHelperOleDb</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubDbHelperOleDb.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubDbHelperOleDb.InitializeStub">
+            <summary>Initializes a new instance of type StubDbHelperOleDb</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperOleDb.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperOleDb.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperOleDb.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.StubDbHelperOra">
+            <summary>Stub type of XHD.DBUtility.DbHelperOra</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubDbHelperOra.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubDbHelperOra.InitializeStub">
+            <summary>Initializes a new instance of type StubDbHelperOra</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperOra.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperOra.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperOra.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.StubDbHelperSQL">
+            <summary>Stub type of XHD.DBUtility.DbHelperSQL</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubDbHelperSQL.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubDbHelperSQL.InitializeStub">
+            <summary>Initializes a new instance of type StubDbHelperSQL</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperSQL.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperSQL.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperSQL.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.StubDbHelperSQLP">
+            <summary>Stub type of XHD.DBUtility.DbHelperSQLP</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubDbHelperSQLP.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubDbHelperSQLP.#ctor(System.String)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubDbHelperSQLP.InitializeStub">
+            <summary>Initializes a new instance of type StubDbHelperSQLP</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperSQLP.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperSQLP.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperSQLP.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.StubOracleHelper">
+            <summary>Stub type of XHD.DBUtility.OracleHelper</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubOracleHelper.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubOracleHelper.InitializeStub">
+            <summary>Initializes a new instance of type StubOracleHelper</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubOracleHelper.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubOracleHelper.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubOracleHelper.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.StubPubConstant">
+            <summary>Stub type of XHD.DBUtility.PubConstant</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubPubConstant.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubPubConstant.InitializeStub">
+            <summary>Initializes a new instance of type StubPubConstant</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubPubConstant.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubPubConstant.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubPubConstant.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.StubSqlHelper">
+            <summary>Stub type of XHD.DBUtility.SqlHelper</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubSqlHelper.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubSqlHelper.InitializeStub">
+            <summary>Initializes a new instance of type StubSqlHelper</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubSqlHelper.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubSqlHelper.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubSqlHelper.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+    </members>
+</doc>

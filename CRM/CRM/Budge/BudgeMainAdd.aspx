@@ -618,8 +618,8 @@
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
                     }
-                    // alert(obj.CustomerID); //String 构造函数
-                    $("#T_companyid").val(obj.CustomerID);
+                  //  alert(obj.BudgetName); //String 构造函数
+                    $("#T_companyid").val(obj.customer_id);
                     $("#T_company").val(obj.CustomerName + "(" + obj.address + ")");
                     $("#T_budge_name").val(obj.BudgetName);
                     $("#T_zje").val(obj.zje);
@@ -901,19 +901,19 @@
         }
         //引用模板
         function f_selectmodel(item, dialog) {
-            if (!dialog.frame.f_select()) {
+            if (!dialog.frame.f_selectMB()) {
                 alert('请选择行!');
                 return;
             }
-            var rows = dialog.frame.f_select();
-            //alert(rows.model_id);
+            var rows = dialog.frame.f_selectMB();
+            // alert(rows.id);
             $.ajax({
                 url: "../../data/Budge.ashx", type: "POST",
-                data: { Action: "savemodeltobudge", bid: $("#T_budgeid").val(), modelid: rows.model_id, rnd: Math.random() },
+                data: { Action: "savemodeltobudge", bid: $("#T_budgeid").val(), modelid: rows.id, rnd: Math.random() },
                 success: function (responseText) {
                     top.$.ligerDialog.closeWaitting();
                     if (responseText == "false") {
-                        top.$.ligerDialog.error('操作失败！');
+                        top.$.ligerDialog.error('操作失败！请先检查此模板是否有正确明细。');
                     }
                     else {
                         dialog.close();
