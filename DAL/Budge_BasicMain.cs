@@ -59,9 +59,9 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into Budge_BasicMain(");
-			strSql.Append("id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions)");
+            strSql.Append("id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions,ModelStyle)");
 			strSql.Append(" values (");
-			strSql.Append("@id,@customer_id,@BudgetName,@DoPerson,@DoTime,@IsStatus,@ProjectDirectCost,@DirectCostDiscount,@AdditionalCost,@BudgetAmount,@DiscountAmount,@CostAmount,@SigningAmount,@SigningTime,@Profit,@Remarks,@Mmaterial,@MmaterialDiscount,@fbAmount,@versions)");
+            strSql.Append("@id,@customer_id,@BudgetName,@DoPerson,@DoTime,@IsStatus,@ProjectDirectCost,@DirectCostDiscount,@AdditionalCost,@BudgetAmount,@DiscountAmount,@CostAmount,@SigningAmount,@SigningTime,@Profit,@Remarks,@Mmaterial,@MmaterialDiscount,@fbAmount,@versions,@ModelStyle)");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.VarChar,15),
 					new SqlParameter("@customer_id", SqlDbType.Int,4),
@@ -82,7 +82,8 @@ namespace XHD.DAL
 					new SqlParameter("@Mmaterial", SqlDbType.Decimal,9),
 					new SqlParameter("@MmaterialDiscount", SqlDbType.Decimal,9),
 					new SqlParameter("@fbAmount", SqlDbType.Decimal,9),
-					new SqlParameter("@versions", SqlDbType.SmallInt,2)};
+					new SqlParameter("@versions", SqlDbType.SmallInt,2),
+                                        	new SqlParameter("@ModelStyle", SqlDbType.VarChar,50)};
 			parameters[0].Value = model.id;
 			parameters[1].Value = model.customer_id;
 			parameters[2].Value = model.BudgetName;
@@ -103,6 +104,7 @@ namespace XHD.DAL
 			parameters[17].Value = model.MmaterialDiscount;
 			parameters[18].Value = model.fbAmount;
 			parameters[19].Value = model.versions;
+            parameters[20].Value = model.ModelStyle;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -328,7 +330,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions from Budge_BasicMain ");
+            strSql.Append("select  top 1 id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions,ModelStyle from Budge_BasicMain ");
 			strSql.Append(" where id=@id ");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.VarChar,15)			};
@@ -435,6 +437,10 @@ namespace XHD.DAL
 				{
 					model.versions=int.Parse(row["versions"].ToString());
 				}
+                if (row["ModelStyle"] != null)
+                {
+                    model.Remarks = row["ModelStyle"].ToString();
+                }
 			}
 			return model;
 		}

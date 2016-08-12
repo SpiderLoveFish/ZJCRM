@@ -123,7 +123,7 @@
             $.ligerDialog.closeWaitting();
             f_load();
           
-              $.ligerDialog.error("添加失败,请检查后继续操作！");
+            $.ligerDialog.error("添加失败,请检查后继续操作！如：模板是否有正确明细");
           
         
         }

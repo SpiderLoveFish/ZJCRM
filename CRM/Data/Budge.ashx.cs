@@ -209,6 +209,7 @@ namespace XHD.CRM.Data
               mbb.id = bid;
               mbb.BudgetName = bname;
               mbb.IsStatus = 0;
+              mbb.ModelStyle = "常规预算";
                 //防止多人操作，单据重复
             DataSet IsExist=  bbb.GetList(" id='"+bid+"'");
             if (IsExist.Tables[0].Rows.Count > 0)
@@ -496,7 +497,20 @@ namespace XHD.CRM.Data
                 }
 
                 if (!string.IsNullOrEmpty(request["stext"]))
+                { 
                     serchtxt += " and BudgetName like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
+                }
+                if (!string.IsNullOrEmpty(request["keyword1"]))
+                {
+                    if (request["keyword1"] != "输入关键词搜索")
+                    {
+                        serchtxt += " and (a.BudgetName like N'%" + PageValidate.InputText(request["keyword1"], 255) + "%'";
+                        serchtxt += " OR a.id like N'%" + PageValidate.InputText(request["keyword1"], 255) + "%'";
+                        serchtxt += " OR B.tel like N'%" + PageValidate.InputText(request["keyword1"], 255) + "%'";
+                        serchtxt += " OR B.address like N'%" + PageValidate.InputText(request["keyword1"], 255) + "%' )";
+                    }
+                }
+                
                 if (!string.IsNullOrEmpty(request["stextlx"]))
                 {
                     if (request["stextlx"] != "")

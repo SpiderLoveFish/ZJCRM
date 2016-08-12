@@ -71,7 +71,7 @@
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/Budge.ashx?Action=grid&IsModel=Y",//增加选择条件 0 编辑 1 审核
+                url: "../../data/Budge.ashx?Action=grid&IsModel=Y&stextlx=" + tc,//增加选择条件 0 编辑 1 审核
                 width: '100%',
                 height: '100%',
                 //tree: { columnName: 'StageDescription' },
@@ -168,11 +168,11 @@
 
         //查询
         function doserch() {
-            var sendtxt = "&Action=grid&rnd=" + Math.random();
+            var sendtxt = "&Action=grid&IsModel=Y&stextlx=" + tc+"&rnd=" + Math.random();
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
             //  alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL("../../data/Budge.ashx?str_condition=0&" + serchtxt);
+            manager.GetDataByURL("../../data/Budge.ashx?" + serchtxt);
         }
         function doclear() {
             //var serchtxt = $("#serchform :input").reset();
@@ -361,7 +361,7 @@
                                     top.$.ligerDialog.closeWaitting();
                                     f_reload();
                                 }
-                                if (responseText == "false:detail") {//有可能没有明细，忽略
+                               else if (responseText == "false:detail") {//有可能没有明细，忽略
                                     top.$.ligerDialog.closeWaitting();
                                     f_reload();
                                 }

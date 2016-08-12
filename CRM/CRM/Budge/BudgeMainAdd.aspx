@@ -913,7 +913,8 @@
                 success: function (responseText) {
                     top.$.ligerDialog.closeWaitting();
                     if (responseText == "false") {
-                        top.$.ligerDialog.error('操作失败！请先检查此模板是否有正确明细。');
+                        dialog.frame.f_error();
+                       // top.top.$.ligerDialog.error('操作失败！请先检查此模板是否有正确明细。');
                     }
                     else {
                         dialog.close();

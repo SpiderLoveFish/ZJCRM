@@ -83,8 +83,8 @@
                             }
                         },
                         { display: '设计师', name: 'sjs', width: 80, align: 'left' },
-                { display: '备注', name: 'Remarks', width: 100, align: 'left' }
-
+                { display: '备注', name: 'Remarks', width: 100, align: 'left' },
+                { display: '类型', name: 'ModelStyle', width: 80, align: 'left' }
                 ],
  
                 onAfterShowData: function (grid) {
@@ -215,9 +215,10 @@
         function doserch() {
             var sendtxt = "&Action=grid&rnd=" + Math.random();
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
+            var sertxt = $("#form1 :input").fieldSerialize() +"&"+ serchtxt;
             //  alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL("../../data/Budge.ashx?str_condition=0&" + serchtxt);
+            manager.GetDataByURL("../../data/Budge.ashx?str_condition=0&" + sertxt);
         }
         function doclear() {
             //var serchtxt = $("#serchform :input").reset();

@@ -30,6 +30,8 @@ namespace XHD.Model
 		private decimal? _mmaterialdiscount;
 		private decimal? _fbamount;
 		private int? _versions;
+        private string _ModelStyle;
+        
 		/// <summary>
 		/// 
 		/// </summary>
@@ -190,6 +192,12 @@ namespace XHD.Model
 			set{ _versions=value;}
 			get{return _versions;}
 		}
+
+        public string ModelStyle
+        {
+            set { _ModelStyle = value; }
+            get { return _ModelStyle; }
+        }
 		#endregion Model
 
 	}

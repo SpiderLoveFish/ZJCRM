@@ -612,7 +612,16 @@ namespace XHD.DAL
         public int AddModelToBudge(string bid, string modelid)
         {
             var sb = new System.Text.StringBuilder();
-           
+
+            sb.Append("  DELETE	Budge_BasicDetail WHERE budge_id='" + bid + "'  ");
+            sb.Append(" DELETE Budge_Rate_Ver WHERE budge_id='" + bid + "' ");
+            sb.Append(" DELETE Budge_Para_Ver WHERE budge_id='" + bid + "' ");
+
+           //修改类型
+            sb.AppendLine("UPDATE Budge_BasicMain SET ModelStyle=( SELECT  SUBSTRING(ISNULL(ModelStyle,'常规预算'),0,3)+'预算' FROM dbo.Budge_BasicMain	");
+            sb.AppendLine(" WHERE	 id='" + modelid + "')");
+            sb.AppendLine(" WHERE	 id='" + bid + "'");
+
             sb.AppendLine("  INSERT INTO [dbo].[Budge_BasicDetail]");
             sb.AppendLine("  ( ");
             sb.AppendLine("budge_id, ");
