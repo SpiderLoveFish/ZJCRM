@@ -514,7 +514,7 @@ namespace XHD.CRM.Data
                 if (!string.IsNullOrEmpty(request["stextlx"]))
                 {
                     if (request["stextlx"] != "")
-                        serchtxt += " and ModelStyle like N'%" + PageValidate.InputText(request["stextlx"], 255) + "%'";
+                        serchtxt += " and ModelStyle like N'%" + PageValidate.InputText(request["stextlx"].Substring(0,2), 255) + "%'";
 
                 }
                 //是否模板

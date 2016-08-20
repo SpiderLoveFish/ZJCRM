@@ -235,6 +235,7 @@
                 items.push({
                     type: 'textbox',
                     id: 'keyword1',
+                    name: 'keyword1',
                     text: ''
                 });
                 items.push({
@@ -423,8 +424,10 @@
         });
         function doserch() {
             var sendtxt = "&Action=grid&rnd=" + Math.random();
-            var serchtxt = $("#serchform :input").fieldSerialize() + "&keyword1=" + $("#keyword1").val() + sendtxt;
-            //alert(serchtxt);           
+            var stxt = $("#form1 :input").fieldSerialize();
+
+            var serchtxt = $("#serchform :input").fieldSerialize() + "&" + stxt + sendtxt;
+            alert(serchtxt);           
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.GetDataByURL("../../data/crm_customer.ashx?" + serchtxt);
 
