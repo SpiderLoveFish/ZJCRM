@@ -49,12 +49,10 @@
                             obj[n] = "";
                     }
                    
-                    $("#Name").val(obj.Name);
-                    $("#Address").val(obj.Address);
-                    $("#lxrid").val(obj.Lxrid);
-                    $("#lxr").val(obj.Lxr);
-                    $("#lxrdh").val(obj.Lxrdh);
-                    $("#Remark").val(obj.Remark);
+                    $("#RateName").val(obj.RateName);
+                    $("#measure").val(obj.measure);
+                    $("#rate").val(obj.rate);
+                    $("#Remarks").val(obj.Remarks);
 
                    
                    
@@ -65,16 +63,7 @@
                 }
             });
         }
-        function f_selectlxr() {
-            top.$.ligerDialog.open({
-                zindex: 9003,
-                title: '选择员工', width: 850, height: 400, url: "hr/Getemp.aspx?isvew=Y", buttons: [
-                    { text: '确定', onclick: f_selectlxrOK },
-                    { text: '取消', onclick: function (item, dialog) { dialog.close(); } }
-                ]
-            });
-            return false;
-        }
+       
 
         
         function f_save() {
@@ -98,14 +87,14 @@
                    
                 
                      <div style="float: left; width: 420px;">
-                       <input type="text" id="Name" name="Name" ltype="text" ligerui="{width:420}" /> 
+                       <input type="text" id="RateName" name="RateName" ltype="text" ligerui="{width:420}" /> 
                     </div>
                    
 
 
                 </td>
                 </tr>
-            <tr>
+          <%--  <tr>
                 <td>
                     <div style="width: 100px; text-align: right; float: right">附加费说明：</div>
                 </td>
@@ -113,7 +102,7 @@
                    
                 
                      <div style="float: left; width: 365px;">
-                       <input type="text" id="Address" name="Address" ltype="text" ligerui="{width:420}" /> 
+                       <input type="text" id="Remarks" name="Remarks" ltype="text" ligerui="{width:420}" /> 
                     </div>
                     
 
@@ -121,13 +110,13 @@
 
                
             </tr>
-            
+            --%>
             <tr>
                 <td>
                     <div style="width: 100px; text-align: right; float: right">附加费率：</div>
                 </td>
                 <td>
-                  <input type="text" id="lxr" name="lxr" ltype="text" ligerui="{width:100}" validate="{required:true}" />
+                  <input type="text" id="rate" name="rate" ltype="text" ligerui="{width:100}" validate="{required:true}" />
                    
                 </td>
                                 <td>
@@ -137,12 +126,12 @@
                 
             </tr>
            
-            <tr>
+           <tr>
                 <td>
                     <div style="width: 100px; text-align: right; float: right">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</div>
                 </td>
                 <td colspan="3">
-                    <textarea id="Remark" name="Remark" cols="100" rows="4" class="l-textarea" style="width:420px"></textarea>
+                    <textarea id="Remarks" name="Remarks" cols="100" rows="4" class="l-textarea" style="width:420px"></textarea>
              
                 </td>
             </tr>

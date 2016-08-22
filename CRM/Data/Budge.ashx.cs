@@ -151,7 +151,11 @@ namespace XHD.CRM.Data
                  //string bid = PageValidate.InputText(request["bid"], 50);
                 // string remaks = PageValidate.InputText(request["T_remarks"], 250);
                  string modelname = PageValidate.InputText(request["T_compname"], 250);
-                 string bid = PageValidate.InputText(request["T_budgeid"], 50);
+                 string bid = bd.GetMaxModelId();
+                 if(PageValidate.InputText(request["T_budgeid"], 50)==""||PageValidate.InputText(request["T_budgeid"], 50)=="null")
+                     bid = bd.GetMaxModelId();
+                 else bid = PageValidate.InputText(request["T_budgeid"], 50);
+                     //PageValidate.InputText(request["T_budgeid"], 50);
                      //bd.GetMaxModelId();
 
                  //string bid = PageValidate.InputText(request["T_budgeid"], 50);
@@ -167,7 +171,7 @@ namespace XHD.CRM.Data
                  mbb.DoTime = DateTime.Now;
                  mbb.DoPerson = emp_id;
                  mbb.id = bid;
-                 mbb.BudgetName = bname;//+ modelname
+                 mbb.BudgetName = bname + modelname;
                  mbb.IsStatus = 0;
                  //防止多人操作，单据重复
                  DataSet IsExist = bbb.GetList(" id='" + bid + "'");
@@ -513,8 +517,12 @@ namespace XHD.CRM.Data
                 
                 if (!string.IsNullOrEmpty(request["stextlx"]))
                 {
+                    string stextlx = "";
+                    if (PageValidate.InputText(request["stextlx"], 255) == "Y") stextlx = "套餐";
+                    else if (PageValidate.InputText(request["stextlx"], 255) == "N") stextlx = "常规";
+                    else stextlx = PageValidate.InputText(request["stextlx"].Substring(0, 2), 255);
                     if (request["stextlx"] != "")
-                        serchtxt += " and ModelStyle like N'%" + PageValidate.InputText(request["stextlx"].Substring(0,2), 255) + "%'";
+                        serchtxt += " and ModelStyle like N'%" + stextlx + "%'";
 
                 }
                 //是否模板
@@ -538,7 +546,7 @@ namespace XHD.CRM.Data
                     }
                     else
                     {
-                        serchtxt += " and IsStatus not in(0)";
+                        serchtxt += " and IsStatus not in(-1)";
                     }
                 }
                 string dt = "";

@@ -71,7 +71,7 @@
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/Budge.ashx?Action=grid&IsModel=Y&stextlx=" + tc,//增加选择条件 0 编辑 1 审核
+                url: "../../data/Budge.ashx?Action=grid&IsModel=Y&stextlx=" + istc,//增加选择条件 0 编辑 1 审核
                 width: '100%',
                 height: '100%',
                 //tree: { columnName: 'StageDescription' },

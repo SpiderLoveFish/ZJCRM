@@ -23,7 +23,7 @@ namespace Budge_Rate
                     {
                         var sb = new System.Text.StringBuilder();
                         sb.AppendLine("SELECT * ");
-                        sb.AppendLine("FROM dbo.KcGl_Jcb_Cklb ");
+                        sb.AppendLine("FROM dbo.Budge_Rate ");
                         sb.AppendLine("WHERE ID='" + Request["cid"] + "'");
                         DataRow[] dr = SqlDB.ExecuteDataTable(sb.ToString()).Output1.Select("");
                         string jdata = Tools.DataRowToJson(dr, Types.JosnType.Form);
@@ -55,29 +55,19 @@ namespace Budge_Rate
                     var sb = new System.Text.StringBuilder();
                     if (string.IsNullOrWhiteSpace(ID) || ID == "null")
                     {
-                        sb.AppendLine("INSERT INTO dbo.KcGl_Jcb_Cklb (Name,Address,lxr,lxrdh,Remark,IsDel,InEmpID,InDate) ");
-                        sb.AppendLine("VALUES  ('" + Request["Name"] + "', ");
-                        sb.AppendLine("         '" + Request["Address"] + "', ");
-                        sb.AppendLine("         '" + Request["lxr"] + "', ");
+                        sb.AppendLine("INSERT INTO dbo. (RateName,measure,rate,Remarks) ");
+                        sb.AppendLine("VALUES  ('" + Request["RateName"] + "', ");
+                        sb.AppendLine("         '按工程直接费用百分比计算', ");
+                        sb.AppendLine(" " + Request["rate"] + ", ");
                      //   sb.AppendLine("         '" + Request["lxrid"] + "', ");
-                        sb.AppendLine("         '" + Request["lxrdh"] + "', ");
-                        sb.AppendLine("         '" + Request["Remark"] + "', ");
-                        sb.AppendLine("         'N', ");
-                        sb.AppendLine("         '" + ticket.UserData+ "', ");
-                        sb.AppendLine("         GETDATE() ");
-                        sb.AppendLine("         ) ");
+                        sb.AppendLine("         '" + Request["Remarks"] + "') ");
                     }
                     else
-                    {   
-                        sb.AppendLine("UPDATE dbo.KcGl_Jcb_Cklb SET ");
-                        sb.AppendLine("         Name='" + Request["Name"] + "', ");
-                        sb.AppendLine("         Address='" + Request["Address"] + "', ");
-                        sb.AppendLine("         lxr='" + Request["lxr"] + "', ");
-                       // sb.AppendLine("         lxr='" + Request["lxrid"] + "', ");
-                        sb.AppendLine("         lxrdh='" + Request["lxrdh"] + "', ");
-                        sb.AppendLine("         Remark='" + Request["Remark"] + "', ");
-                        sb.AppendLine("         EditEmpID='" + ticket.UserData + "',");
-                        sb.AppendLine("         EditDate=GETDATE() ");
+                    {
+                        sb.AppendLine("UPDATE dbo.Budge_Rate SET ");
+                        sb.AppendLine("         RateName='" + Request["RateName"] + "', ");
+                        sb.AppendLine("         rate='" + Request["rate"] + "', ");
+                        sb.AppendLine("         Remarks='" + Request["Remarks"] + "' ");
                         sb.AppendLine("WHERE ID='" + ID + "' ");
 
                     }
@@ -103,8 +93,8 @@ namespace Budge_Rate
                     var cookie = Request.Cookies[FormsAuthentication.FormsCookieName];
                     var ticket = FormsAuthentication.Decrypt(cookie.Value);
                     var sb = new System.Text.StringBuilder();
-                    sb.AppendLine("SELECT * FROM dbo.KcGl_Jcb_Cklb ");
-                    sb.AppendLine("WHERE ID='" + ID + "' AND IsDel='Y' ");
+                    sb.AppendLine("SELECT * FROM dbo.Budge_Rate ");
+                    sb.AppendLine("WHERE ID=" + ID);
                     var rv = SqlDB.ExecuteDataTable(sb.ToString());
                     if (!rv.Result)
                         Response.Write(rv.Message);
@@ -118,11 +108,8 @@ namespace Budge_Rate
                     }
                     //此楼盘中有未删除的客户，不能删除！
                     sb.Clear();
-                    sb.AppendLine("UPDATE dbo.KcGl_Jcb_Cklb SET ");
-                    sb.AppendLine("         IsDel='Y', ");
-                    sb.AppendLine("         DelEmpID='" + ticket.UserData + "',");
-                    sb.AppendLine("         DelDate=GETDATE() ");
-                    sb.AppendLine("WHERE ID='" + ID + "' ");
+                    sb.AppendLine("delete dbo.Budge_Rate ");
+                    sb.AppendLine("WHERE ID=" + ID );
 
                     var rv1 = SqlDB.ExecuteNoneQuery(sb.ToString());
                     if (!rv1.Result)

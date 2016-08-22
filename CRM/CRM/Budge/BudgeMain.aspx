@@ -168,16 +168,16 @@
                 $("#maingrid4").ligerGetGridManager().onResize();
                 $("#keyword1").ligerTextBox({ width: 200, nullText: "输入关键词搜索" })
                 $('#stextlx').ligerComboBox({
-                    width: 97,
-                    selectBoxWidth: 240,
-                    selectBoxHeight: 200,
+                    width: 80,
+                    selectBoxWidth: 100,
+                    selectBoxHeight: 100,
                     valueField: 'id',
                     textField: 'text',
                     treeLeafOnly: false,
                     tree: {
                         data: [
-                   { text: '常规预算' },
-                   { text: '套餐预算' }
+                   { text: '常规' },
+                   { text: '套餐' }
                         ],
                         checkbox: false
                     }
