@@ -207,7 +207,18 @@
            
             $("#T_sjs").addClass("l-text");
             $("#T_ysbh").addClass("l-text");
-           
+            $('#t_zt').ligerComboBox({
+                width: 100,
+                selectBoxWidth: 100,
+                selectBoxHeight: 100,
+                valueField: 'id',
+                textField: 'text',
+                treeLeafOnly: false,
+                tree: {
+                    data: [{ id: '', text: '全部' }, { id: '0', text: '待提交' }, { id: '1', text: '待审核' }, { id: '2', text: '已生效' }, { id: '99', text: '已删除' }],
+                    checkbox: false
+                }
+            });
 
         }
 
@@ -533,7 +544,13 @@
                     <td>
                         <input id='T_ysbh' name="T_ysbh" type='text'  ltype='text' ligerui='{width:120}' /></td>
 
-                   
+                   <td>
+                        <input id="t_zt" name="t_zt" type="text" ltype="select" ligerui="{width:196,data:[{id:'',text:'全部'},{id:'0',text:'待提交'},{id:'1',text:'待审核'},{id:'2',text:'已生效'},{id:'99',text:'已删除'}]}"  />
+
+                   </td>
+           
+                  
+
                    
 
                 </tr>

@@ -49,7 +49,7 @@ namespace XHD.DAL
         strSql.Append(" WHERE id IN(" + plist + ") ");
         strSql.Append(" and id not in(select b_Part_id from Budge_Para_Ver where budge_id='" + bid + "' )");
         SqlParameter[] parameters = { };
-            object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
+            object obj = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
         if (obj == null)
         {
             return 0;
@@ -59,6 +59,95 @@ namespace XHD.DAL
             return Convert.ToInt32(obj);
         }
         }
+
+        public int AddBJcopylist(string copyname, string bid, string bpid)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("INSERT INTO dbo.Budge_Para_Ver");
+            sb.AppendLine("        ( customer_id ,");
+            sb.AppendLine("          budge_id ,");
+            sb.AppendLine("          versions ,");
+            sb.AppendLine("          b_Part_id ,");
+            sb.AppendLine("          parentid ,");
+            sb.AppendLine("          BP_Name");
+            sb.AppendLine("        )");
+            sb.AppendLine(" SELECT");
+            sb.AppendLine("		 customer_id ,");
+            sb.AppendLine("          budge_id ,");
+            sb.AppendLine("          versions ,");
+            sb.AppendLine("          " + bpid + " ,");
+            sb.AppendLine("          parentid ,");
+            sb.AppendLine("         (SELECT BP_Name  FROM dbo.Budge_BasicPart WHERE id='" + bpid + "')  FROM  dbo.Budge_Para_Ver  A");
+            sb.AppendLine("		  WHERE	 budge_id='" + bid + "' AND A.BP_Name='" + copyname + "'");
+            sb.AppendLine("		  AND  A.b_Part_id NOT IN('" + bpid + "')");
+            sb.AppendLine("");
+            sb.AppendLine("");
+            sb.AppendLine("		  INSERT INTO dbo.Budge_BasicDetail");
+            sb.AppendLine("		          ( budge_id ,");
+            sb.AppendLine("		            xmid ,");
+            sb.AppendLine("		            ComponentName ,");
+            sb.AppendLine("		            Cname ,");
+            sb.AppendLine("		            unit ,");
+            sb.AppendLine("		            MmaterialPrice ,");
+            sb.AppendLine("		            IsShowPrice ,");
+            sb.AppendLine("		            SecmaterialPrice ,");
+            sb.AppendLine("		            ArtificialPrice ,");
+            sb.AppendLine("		            MechanicalLoss ,");
+            sb.AppendLine("		            MaterialLoss ,");
+            sb.AppendLine("		            TotalPrice ,");
+            sb.AppendLine("		            IsDiscount ,");
+            sb.AppendLine("		            Discount ,");
+            sb.AppendLine("		            TotalDiscountPrice ,");
+            sb.AppendLine("		            MaterialCost ,");
+            sb.AppendLine("		            MechanicalCost ,");
+            sb.AppendLine("		            ArtificialCost ,");
+            sb.AppendLine("		            SUM ,");
+            sb.AppendLine("		            SubTotal ,");
+            sb.AppendLine("		            DiscountSubTotal ,");
+            sb.AppendLine("		            Remarks ,");
+            sb.AppendLine("		            zc_price ,");
+            sb.AppendLine("		            fc_price ,");
+            sb.AppendLine("		            rg_price");
+            sb.AppendLine("		          )");
+            sb.AppendLine("		  SELECT budge_id ,");
+            sb.AppendLine("		            xmid ,");
+            sb.AppendLine("		           (SELECT BP_Name  FROM dbo.Budge_BasicPart WHERE id='" + bpid + "')  ,");
+            sb.AppendLine("		            Cname ,");
+            sb.AppendLine("		            unit ,");
+            sb.AppendLine("		            MmaterialPrice ,");
+            sb.AppendLine("		            IsShowPrice ,");
+            sb.AppendLine("		            SecmaterialPrice ,");
+            sb.AppendLine("		            ArtificialPrice ,");
+            sb.AppendLine("		            MechanicalLoss ,");
+            sb.AppendLine("		            MaterialLoss ,");
+            sb.AppendLine("		            TotalPrice ,");
+            sb.AppendLine("		            IsDiscount ,");
+            sb.AppendLine("		            Discount ,");
+            sb.AppendLine("		            TotalDiscountPrice ,");
+            sb.AppendLine("		            MaterialCost ,");
+            sb.AppendLine("		            MechanicalCost ,");
+            sb.AppendLine("		            ArtificialCost ,");
+            sb.AppendLine("		            SUM ,");
+            sb.AppendLine("		            SubTotal ,");
+            sb.AppendLine("		            DiscountSubTotal ,");
+            sb.AppendLine("		            Remarks ,");
+            sb.AppendLine("		            zc_price ,");
+            sb.AppendLine("		            fc_price ,");
+            sb.AppendLine("		            rg_price FROM dbo.Budge_BasicDetail WHERE  budge_id='" + bid + "' AND ComponentName='" + copyname + "'");
+            sb.AppendLine("					AND ComponentName NOT IN(SELECT BP_Name FROM dbo.Budge_BasicPart WHERE id=" + bpid + ")");
+            sb.AppendLine("");
+            sb.AppendLine(""); SqlParameter[] parameters = { };
+            object obj = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+
 
         /// <summary>
         /// 增加一条数据
@@ -595,10 +684,10 @@ namespace XHD.DAL
             sb.AppendLine(" FROM [dbo].[Budge_tax] WHERE budge_id='" + bid + "' ");
 
 
-            sb.AppendLine(";select @@IDENTITY");
+            //sb.AppendLine(";select @@IDENTITY");
             SqlParameter[] parameters = { };
-             
-            object obj = DbHelperSQL.GetSingle(sb.ToString(), parameters);
+
+            object obj = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
             if (obj == null)
             {
                 return 0;
@@ -729,10 +818,10 @@ namespace XHD.DAL
             sb.AppendLine("          BP_Name FROM dbo.Budge_Para_Ver");
             sb.AppendLine("		  WHERE	budge_id='" + modelid + "'");
 
-            sb.AppendLine(";select @@IDENTITY");
+            //sb.AppendLine(";select @@IDENTITY");
             SqlParameter[] parameters = { };
 
-            object obj = DbHelperSQL.GetSingle(sb.ToString(), parameters);
+            object obj = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
             if (obj == null)
             {
                 return 0;
@@ -768,7 +857,7 @@ namespace XHD.DAL
             strSql.Append("  WHERE model_id='" + modelid + "'");
             SqlParameter[] parameters = { };
 
-            object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
+            object obj = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             if (obj == null)
             {
                 return 0;
@@ -782,6 +871,24 @@ namespace XHD.DAL
         public int copybudge(string copyid ,string maxid,string userid)
         {
             StringBuilder strSql = new StringBuilder();
+           
+            strSql.Append(" INSERT INTO  dbo.Budge_BasicDetail ");
+            strSql.Append("     (    budge_id , xmid ,ComponentName ,Cname ,unit , MmaterialPrice , ");
+            strSql.Append("       IsShowPrice , SecmaterialPrice ,ArtificialPrice , MechanicalLoss , MaterialLoss , ");
+            strSql.Append("        TotalPrice ,IsDiscount ,Discount,TotalDiscountPrice , MaterialCost , MechanicalCost , ");
+            strSql.Append("       ArtificialCost , SUM , Remarks ");
+            strSql.Append("    ) ");
+            strSql.Append("  SELECT    '" + maxid + "' , xmid ,ComponentName ,Cname ,unit , MmaterialPrice , ");
+            strSql.Append("     IsShowPrice , SecmaterialPrice ,ArtificialPrice , MechanicalLoss , MaterialLoss , ");
+            strSql.Append("     TotalPrice ,IsDiscount ,Discount,TotalDiscountPrice , MaterialCost , MechanicalCost ,");
+            strSql.Append("    ArtificialCost , SUM , Remarks FROM Budge_BasicDetail  ");
+            strSql.Append("   WHERE budge_id='" + copyid + "' ");
+            strSql.Append("  INSERT INTO dbo.Budge_Para_Ver");
+            strSql.Append("    ( customer_id , budge_id  , versions , b_Part_id ,parentid , BP_Name) ");
+            strSql.Append("  SELECT  customer_id , '" + maxid + "' , versions , b_Part_id ,parentid , BP_Name ");
+            strSql.Append(" FROM Budge_Para_Ver  ");
+            strSql.Append("  WHERE budge_id='" + copyid + "'");
+
             strSql.Append("INSERT INTO dbo.Budge_BasicMain");
             strSql.Append("        ( id , customer_id , BudgetName , DoPerson ,DoTime , IsStatus ,");
             strSql.Append(" ProjectDirectCost ,");
@@ -826,26 +933,11 @@ namespace XHD.DAL
             strSql.Append("          ZCAmount ,");
             strSql.Append("          FJAmount ,");
             strSql.Append("          DetailDiscount ,");
-            strSql.Append("          versions  FROM Budge_BasicMain where id='"+copyid+"' ");
-            strSql.Append(" INSERT INTO  dbo.Budge_BasicDetail ");
-            strSql.Append("     (    budge_id , xmid ,ComponentName ,Cname ,unit , MmaterialPrice , ");
-            strSql.Append("       IsShowPrice , SecmaterialPrice ,ArtificialPrice , MechanicalLoss , MaterialLoss , ");
-            strSql.Append("        TotalPrice ,IsDiscount ,Discount,TotalDiscountPrice , MaterialCost , MechanicalCost , ");
-            strSql.Append("       ArtificialCost , SUM , Remarks ");
-            strSql.Append("    ) ");
-            strSql.Append("  SELECT    '" + maxid + "' , xmid ,ComponentName ,Cname ,unit , MmaterialPrice , ");
-            strSql.Append("     IsShowPrice , SecmaterialPrice ,ArtificialPrice , MechanicalLoss , MaterialLoss , ");
-            strSql.Append("     TotalPrice ,IsDiscount ,Discount,TotalDiscountPrice , MaterialCost , MechanicalCost ,");
-            strSql.Append("    ArtificialCost , SUM , Remarks FROM Budge_BasicDetail  ");
-            strSql.Append("   WHERE budge_id='" + copyid + "' ");
-            strSql.Append("  INSERT INTO dbo.Budge_Para_Ver");
-            strSql.Append("    ( customer_id , budge_id  , versions , b_Part_id ,parentid , BP_Name) ");
-            strSql.Append("  SELECT  customer_id , '" + maxid + "' , versions , b_Part_id ,parentid , BP_Name ");
-            strSql.Append(" FROM Budge_Para_Ver  ");
-            strSql.Append("  WHERE budge_id='" + copyid + "'");
+            strSql.Append("          versions  FROM Budge_BasicMain where id='" + copyid + "' ");
+
             SqlParameter[] parameters = { };
 
-            object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
+            object obj = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             if (obj == null)
             {
                 return 0;

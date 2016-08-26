@@ -100,6 +100,7 @@
                 idFieldName: 'id',
                 //parentIDFieldName: 'pid',
                 //usericon: 'd_icon',
+                nodeDraggable:true,
                 checkbox: false,
                 itemopen: false,
                 onSuccess: function () {
@@ -126,7 +127,8 @@
 
                 [
 
-                { text: '删除部件', click: removeTreeItem }
+                { text: '删除部件', click: removeTreeItem },
+                { text: '复制部件', click: copyTreeItem }
 
                 ]
 
@@ -297,6 +299,30 @@
                 }
             })
         }
+
+        function copyTreeItem() {
+            if (getparastr("style") != null || getparastr("status") == "1") {
+                top.$.ligerDialog.error('非编辑状态无法复制！');
+                return;
+            }
+            var node = treemanager.getSelected();
+            if (node) {
+                top.$.ligerDialog.open({
+                    zindex: 9003,
+                    title: '选择部件', width: 850, height: 400,
+                    url: "CRM/Budge/SelectBJSingle.aspx?bjmc=" + node.data.text, buttons: [
+                      { text: '确定', onclick: f_getbjsingle },
+                      { text: '取消', onclick: f_selectContactCancel }
+                    ]
+                });
+                return false;
+
+            } else {
+                alert('请先选择节点');
+            }
+        }
+
+
         function removeTreeItem() {
             if (getparastr("style") != null || getparastr("status") == "1") {
                 top.$.ligerDialog.error('非编辑状态无法删除！');
@@ -766,6 +792,42 @@
             return false;
             // f_openWindow_bj("CRM/Budge/SelectBJ.aspx", "选择部位", 650, 400);
         }
+
+        function f_getbjsingle(item, dialog) {
+           
+            
+            if (!dialog.frame.f_select()) {
+                alert('请选择行!');
+                return;
+            }
+            else {
+                var data = dialog.frame.f_select();
+                var bjid = data.id;
+                var copybj = dialog.frame.f_copybj();
+               // alert(copybj)
+                //for (var i = 0; i < rows.length; i++) {
+                //    bjid = bjid + ',' + rows[i].id;
+              
+                $.ajax({
+                    type: 'post',
+                    url: "../../data/Budge.ashx?Action=savebjcopylist&bjid=" + bjid + "&bid=" + $("#T_budgeid").val() + '&copybj=' + encodeURI(encodeURI(copybj)) + '&rdm=' + Math.random(),
+                    success: function (data) {
+                        // alert(bjid);
+                        var url = '../../data/Budge.ashx?Action=tree&bid=' + $("#T_budgeid").val() + '&rnd=' + Math.random();
+
+                        treemanager.clear();
+                        treemanager.loadData(0, url, "");
+                        dialog.close();
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        dialog.frame.f_error();
+                    }
+                });
+            }
+
+           
+
+        }
         //获取部件
         function f_getbj(item, dialog) {
             var rows = null;
@@ -917,6 +979,7 @@
                        // top.top.$.ligerDialog.error('操作失败！请先检查此模板是否有正确明细。');
                     }
                     else {
+                        $("#T_mblx").val(rows.ModelStyle);//引用后，类型变为引用的模板类型
                         dialog.close();
                         fload();
                         var url = '../../data/Budge.ashx?Action=tree&bid=' + $("#T_budgeid").val() + '&rnd=' + Math.random();

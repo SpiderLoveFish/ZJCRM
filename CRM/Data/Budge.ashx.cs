@@ -468,6 +468,8 @@ namespace XHD.CRM.Data
                 string str_condition = PageValidate.InputText(request["str_condition"], 50);
                 string sortname = request["sortname"];
                 string sortorder = request["sortorder"];
+                if (sortname == "txtstatus")//前台显示汉字，但是查询中没有这个字段
+                    sortname = "IsStatus";
 
                 if (string.IsNullOrEmpty(sortname))
                     sortname = "  IsStatus";
@@ -549,6 +551,17 @@ namespace XHD.CRM.Data
                         serchtxt += " and IsStatus not in(-1)";
                     }
                 }
+                if (!string.IsNullOrEmpty(request["t_zt"]))
+                {
+                    string zt = "";
+                    if (request["t_zt"] == "待提交") zt = "0";
+                    if (request["t_zt"] == "待审核") zt = "1";
+                    if (request["t_zt"] == "已生效") zt = "2";
+                    if (request["t_zt"] == "已删除") zt = "99";
+                    if (zt!="")
+                        serchtxt += " and IsStatus  in(" + zt + ")";
+                }
+
                 string dt = "";
 
                 DataSet ds = bbb.GetBudge_BasicMain(PageSize, PageIndex, serchtxt, sorttext, out Total);
@@ -783,6 +796,21 @@ namespace XHD.CRM.Data
                 if (bjlist.Length > 1) bjlist = bjlist.Substring(1);
                 bd.AddBJlist(customerid, bid, bjlist);
             }
+
+            if (request["Action"] == "savebjcopylist")
+            {
+
+                string bpname = PageValidate.InputText(request["bjid"], 255);
+                string bid = PageValidate.InputText(request["bid"], 255);
+                string copybj =HttpUtility.UrlDecode( PageValidate.InputText(request["copybj"], 255));
+                //if (bjlist.Length > 1) bjlist = bjlist.Substring(1);
+                bd.AddBJcopylist(copybj, bid, bpname);
+                     //context.Response.Write("true");
+                     //   else
+                     //context.Response.Write("false");
+            }
+
+            
 
         }
 

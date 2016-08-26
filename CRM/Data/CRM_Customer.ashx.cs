@@ -737,6 +737,114 @@ namespace XHD.CRM.Data
 
 
                 string serchtxt = " isDelete=0 and xy is not null";
+                if (!string.IsNullOrEmpty(request["companyid"]))
+                    serchtxt += " and id =" + int.Parse(request["companyid"]);
+
+                if (!string.IsNullOrEmpty(request["company"]))
+                    serchtxt += " and Customer like N'%" + PageValidate.InputText(request["company"], 255) + "%'";
+
+                if (!string.IsNullOrEmpty(request["address"]))
+                    serchtxt += " and address like N'%" + PageValidate.InputText(request["address"], 255) + "%'";
+
+                if (!string.IsNullOrEmpty(request["industry"]))
+                    serchtxt += " and industry like N'%" + PageValidate.InputText(request["industry"], 255) + "%'";
+
+                if (!string.IsNullOrEmpty(request["tel"]))
+                    serchtxt += " and tel like N'%" + PageValidate.InputText(request["tel"], 255) + "%'";
+
+                if (!string.IsNullOrEmpty(request["mobil"]))
+                    serchtxt += " and mobil like N'%" + PageValidate.InputText(request["mobil"], 255) + "%'";
+
+                if (!string.IsNullOrEmpty(request["qq"]))
+                    serchtxt += " and QQ like N'%" + PageValidate.InputText(request["qq"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["cus_sourse"]))
+                    serchtxt += " and CustomerSource like N'%" + PageValidate.InputText(request["cus_sourse"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["WXZHT"]))
+                    serchtxt += " and WXZT_NAME like N'%" + PageValidate.InputText(request["WXZHT"], 255) + "%'";
+
+                string keyword = PageValidate.InputText(request["keyword"], 500);
+                if (!string.IsNullOrEmpty(keyword) && keyword != "输入关键词搜索地址、描述、备注")
+                {
+                    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
+                }
+                string t_mapstasus = PageValidate.InputText(request["t_mapstasus"], 50);
+                if (!string.IsNullOrEmpty(t_mapstasus))
+                {
+                    if (t_mapstasus == "已标地图")
+                        serchtxt += " and isnull(xy,'')!='' ";
+                    else if (t_mapstasus == "未标地图")
+                        serchtxt += " and isnull(xy,'')='' ";
+                }
+                string keyword1 = PageValidate.InputText(request["keyword1"], 500);
+                if (!string.IsNullOrEmpty(keyword1) && keyword1 != "输入关键词搜索")
+                {
+                    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword1);
+                }
+                if (!string.IsNullOrEmpty(request["customertype"]))
+                    serchtxt += " and CustomerType_id = " + int.Parse(request["customertype_val"]);
+
+                if (!string.IsNullOrEmpty(request["customerlevel"]))
+                    serchtxt += " and CustomerLevel_id = " + int.Parse(request["customerlevel_val"]);
+
+                if (!string.IsNullOrEmpty(request["T_CustomerSource"]))
+                    serchtxt += " and CustomerSource_id = " + int.Parse(request["T_CustomerSource_val"]);
+
+                if (!string.IsNullOrEmpty(request["T_Community"]))
+                    serchtxt += " and Community_id = " + int.Parse(request["T_Community_val"]);
+
+                if (!string.IsNullOrEmpty(request["T_Towns"]))
+                    serchtxt += " and Towns_id = " + int.Parse(request["T_Towns_val"]);
+
+                if (!string.IsNullOrEmpty(request["T_Provinces"]))
+                    serchtxt += " and Provinces_id = " + int.Parse(request["T_Provinces_val"]);
+
+                if (!string.IsNullOrEmpty(request["T_City"]))
+                    serchtxt += " and City_id = " + int.Parse(request["T_City_val"]);
+
+                if (!string.IsNullOrEmpty(request["department"]))
+                    serchtxt += " and Department_id = " + int.Parse(request["department_val"]);
+
+                if (!string.IsNullOrEmpty(request["employee"]))
+                    serchtxt += " and Employee_id = " + int.Parse(request["employee_val"]);
+
+                if (!string.IsNullOrEmpty(request["department_sg"]))
+                    serchtxt += " and Dpt_id_sg = " + int.Parse(request["department_sg_val"]);
+
+                if (!string.IsNullOrEmpty(request["employee_sg"]))
+                    serchtxt += " and Emp_id_sg = " + int.Parse(request["employee_sg_val"]);
+
+                if (!string.IsNullOrEmpty(request["department_sj"]))
+                    serchtxt += " and Dpt_id_sj = " + int.Parse(request["department_sj_val"]);
+
+                if (!string.IsNullOrEmpty(request["employee_sj"]))
+                    serchtxt += " and Emp_id_sj = " + int.Parse(request["employee_sj_val"]);
+
+                if (!string.IsNullOrEmpty(request["startdate"]))
+                    serchtxt += " and a.Create_date >= '" + PageValidate.InputText(request["startdate"], 255) + "'";
+
+                if (!string.IsNullOrEmpty(request["enddate"]))
+                {
+                    DateTime enddate = DateTime.Parse(request["enddate"]).AddHours(23).AddMinutes(59).AddSeconds(59);
+                    serchtxt += " and a.Create_date <= '" + enddate + "'";
+                }
+
+                if (!string.IsNullOrEmpty(request["startdate_del"]))
+                    serchtxt += " and Delete_time >= '" + PageValidate.InputText(request["startdate_del"], 255) + "'";
+
+                if (!string.IsNullOrEmpty(request["enddate_del"]))
+                {
+                    DateTime enddatedel = DateTime.Parse(request["enddate_del"]).AddHours(23).AddMinutes(59).AddSeconds(59);
+                    serchtxt += " and Delete_time <= '" + enddatedel + "'";
+                }
+
+                if (!string.IsNullOrEmpty(request["startfollow"]))
+                    serchtxt += " and lastfollow >= '" + PageValidate.InputText(request["startfollow"], 255) + "'";
+
+                if (!string.IsNullOrEmpty(request["endfollow"]))
+                {
+                    DateTime enddate = DateTime.Parse(request["endfollow"]).AddHours(23).AddMinutes(59).AddSeconds(59);
+                    serchtxt += " and lastfollow <= '" + enddate + "'";
+                }
                 //权限
                 //serchtxt += DataAuth();
                 DataSet ds = customer.GetMapList(serchtxt);

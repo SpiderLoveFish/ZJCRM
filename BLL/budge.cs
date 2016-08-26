@@ -121,7 +121,10 @@ namespace XHD.BLL
         {
             return dal.copybudge(copyid,maxid,userid);
         }
-
+        public int AddBJcopylist(string copyname, string bid, string bpname)
+        {
+            return dal.AddBJcopylist(copyname,bid,bpname);
+        }
     }
 }
 

@@ -27,9 +27,9 @@
         $(function () {
             var strurl = "../../data/Budge.ashx?Action=selecttree";
             
-           
+       
 
-            $("#maingrid4").ligerGrid({
+        var  g=   $("#maingrid4").ligerGrid({
                 columns: [
                     //{ display: 'ID', name: 'ID', type: 'int', width: 50 },
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
@@ -46,7 +46,6 @@
                 height: '100%',
                 //title: "员工列表",
                 heightDiff: 0,
-                
                 onContextmenu: function (parm, e) {
                 actionCustomerID = parm.data.id;
                 menu.show({ top: e.pageY, left: e.pageX });
@@ -56,6 +55,7 @@
 
             toolbar();
             $("#lbtip").css("display", 'none');//提示先隐藏
+ 
         });
 
 
