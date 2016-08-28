@@ -166,6 +166,102 @@
         <member name="T:XHD.DBUtility.Fakes.ShimDESEncrypt.AllInstances">
             <summary>Define shims for all instances members</summary>
         </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimDbHelperMySQL">
+            <summary>Shim type of XHD.DBUtility.DbHelperMySQL</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperMySQL.#ctor(XHD.DBUtility.DbHelperMySQL)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperMySQL.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.ShimDbHelperMySQL.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.Constructor">
+            <summary>Sets the shim of DbHelperMySQL.DbHelperMySQL()</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteReaderString">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteReader(String strSQL)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteReaderStringMySqlParameterArray">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteReader(String SQLString, MySqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteSqlByTimeStringInt32">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteSqlByTime(String SQLString, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteSqlGetStringString">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteSqlGet(String SQLString, String content)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteSqlInsertImgStringByteArray">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteSqlInsertImg(String strSQL, Byte[] fs)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteSqlString">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteSql(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteSqlStringMySqlParameterArray">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteSql(String SQLString, MySqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteSqlStringString">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteSql(String SQLString, String content)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteSqlTranHashtable">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteSqlTran(Hashtable SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteSqlTranListOfCommandInfo">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteSqlTran(List`1&lt;CommandInfo&gt; cmdList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteSqlTranListOfCommandInfoListOfCommandInfo">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteSqlTran(List`1&lt;CommandInfo&gt; list, List`1&lt;CommandInfo&gt; oracleCmdSqlList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteSqlTranListOfString">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteSqlTran(List`1&lt;String&gt; SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteSqlTranWithIndentityHashtable">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteSqlTranWithIndentity(Hashtable SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExecuteSqlTranWithIndentityListOfCommandInfo">
+            <summary>Sets the shim of DbHelperMySQL.ExecuteSqlTranWithIndentity(List`1&lt;CommandInfo&gt; SQLStringList)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExistsString">
+            <summary>Sets the shim of DbHelperMySQL.Exists(String strSql)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.ExistsStringMySqlParameterArray">
+            <summary>Sets the shim of DbHelperMySQL.Exists(String strSql, MySqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.GetMaxIDStringString">
+            <summary>Sets the shim of DbHelperMySQL.GetMaxID(String FieldName, String TableName)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.GetSingleString">
+            <summary>Sets the shim of DbHelperMySQL.GetSingle(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.GetSingleStringInt32">
+            <summary>Sets the shim of DbHelperMySQL.GetSingle(String SQLString, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.GetSingleStringMySqlParameterArray">
+            <summary>Sets the shim of DbHelperMySQL.GetSingle(String SQLString, MySqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.PrepareCommandMySqlCommandMySqlConnectionMySqlTransactionStringMySqlParameterArray">
+            <summary>Sets the shim of DbHelperMySQL.PrepareCommand(MySqlCommand cmd, MySqlConnection conn, MySqlTransaction trans, String cmdText, MySqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.QueryString">
+            <summary>Sets the shim of DbHelperMySQL.Query(String SQLString)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.QueryStringInt32">
+            <summary>Sets the shim of DbHelperMySQL.Query(String SQLString, Int32 Times)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.QueryStringMySqlParameterArray">
+            <summary>Sets the shim of DbHelperMySQL.Query(String SQLString, MySqlParameter[] cmdParms)</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.ShimDbHelperMySQL.StaticConstructor">
+            <summary>Sets the shim of DbHelperMySQL.DbHelperMySQL()</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.ShimDbHelperMySQL.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
         <member name="T:XHD.DBUtility.Fakes.ShimDbHelperOleDb">
             <summary>Shim type of XHD.DBUtility.DbHelperOleDb</summary>
         </member>
@@ -878,6 +974,24 @@
             <summary>Gets or sets the instance behavior.</summary>
         </member>
         <member name="P:XHD.DBUtility.Fakes.StubDESEncrypt.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:XHD.DBUtility.Fakes.StubDbHelperMySQL">
+            <summary>Stub type of XHD.DBUtility.DbHelperMySQL</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubDbHelperMySQL.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:XHD.DBUtility.Fakes.StubDbHelperMySQL.InitializeStub">
+            <summary>Initializes a new instance of type StubDbHelperMySQL</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperMySQL.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperMySQL.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:XHD.DBUtility.Fakes.StubDbHelperMySQL.InstanceObserver">
             <summary>Gets or sets the instance observer.</summary>
         </member>
         <member name="T:XHD.DBUtility.Fakes.StubDbHelperOleDb">

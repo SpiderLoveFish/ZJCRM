@@ -272,18 +272,21 @@
     }
 
     function initSerchForm() {
-        //var a = $('#T_City').ligerComboBox({ width: 96, emptyText: '（空）' });
-        //var b = $('#T_Provinces').ligerComboBox({
-        //    width: 97,
-
-        //    url: "../../data/Param_City.ashx?Action=combo1&rnd=" + Math.random(),
-        //    onSelected: function (newvalue) {
-        //        $.get("../../data/Param_City.ashx?Action=combo2&pid=" + newvalue + "&rnd=" + Math.random(), function (data, textStatus) {
-        //            a.setData(eval(data));
-        //        });
-        //    }, emptyText: '（空）'
-        //});
-
+        $("#company").addClass("l-text");
+        $("#tel").addClass("l-text");
+     
+        $('#t_mapstasus').ligerComboBox({
+            width: 100,
+            selectBoxWidth: 100,
+            selectBoxHeight: 100,
+            valueField: 'id',
+            textField: 'text',
+            treeLeafOnly: false,
+            tree: {
+                data:[{id:'0',text:'全部'},{id:'1',text:'已标地图'},{id:'2',text:'未标地图'}],
+                checkbox: false
+            }
+        });
         b = $('#T_Towns').ligerComboBox({
             width: 97,
             //url: "../../data/Param_City.ashx?Action=combo&rnd=" + Math.random(),
