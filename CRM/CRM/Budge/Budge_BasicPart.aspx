@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" %>
+ï»¿<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -24,11 +24,11 @@
             $("#maingrid4").ligerGrid({
                 columns: [
                     {
-                        display: 'ÐòºÅ', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                        display: 'ï¿½ï¿½ï¿½', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                         { return (page - 1) * pagesize + rowindex + 1; }
                     },
-                      { display: 'í˜Ðò', name: 'OrderBy', width: 50, align: 'left' },
-                    { display: 'Àà±ðÃû³Æ', name: 'BP_Name', width: 250, align: 'left' }
+                      { display: 'ï¿½ï¿½ï¿½', name: 'OrderBy', width: 50, align: 'left' },
+                    { display: 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', name: 'BP_Name', width: 250, align: 'left' }
                      
                 ],
                 dataAction: 'server',
@@ -82,12 +82,12 @@
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
                         {
-                            text: '±£´æ', onclick: function (item, dialog) {
+                            text: 'ï¿½ï¿½ï¿½ï¿½', onclick: function (item, dialog) {
                                 f_save(item, dialog);
                             }
                         },
                         {
-                            text: '¹Ø±Õ', onclick: function (item, dialog) {
+                            text: 'ï¿½Ø±ï¿½', onclick: function (item, dialog) {
                                 dialog.close();
                             }
                         }
@@ -98,16 +98,16 @@
 
 
         function add() {
-            f_openWindow("crm/Budge/Budge_BasicPart_add.aspx", "ÐÂÔöÀà±ð", 480, 320);
+            f_openWindow("crm/Budge/Budge_BasicPart_add.aspx", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", 480, 320);
         }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('crm/Budge/Budge_BasicPart_add.aspx?cid=' + row.id, "ÐÞ¸ÄÀà±ð", 480, 320);
+                f_openWindow('crm/Budge/Budge_BasicPart_add.aspx?cid=' + row.id, "ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½", 480, 320);
             } else {
-                $.ligerDialog.warn('ÇëÑ¡ÔñÐÐ£¡');
+                $.ligerDialog.warn('ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ð£ï¿½');
             }
         }
 
@@ -115,7 +115,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                $.ligerDialog.confirm("Àà±ðÉ¾³ý²»ÄÜ»Ö¸´£¬È·¶¨É¾³ý£¿", function (yes) {
+                $.ligerDialog.confirm("ï¿½ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½Ü»Ö¸ï¿½ï¿½ï¿½È·ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½", function (yes) {
                     if (yes) {
                         $.ajax({
                             url: "../../data/Budge_BasicPart.ashx", type: "POST",
@@ -128,25 +128,25 @@
                                  
                                 else {
                                     top.$.ligerDialog.closeWaitting();
-                                    top.$.ligerDialog.error('É¾³ýÊ§°Ü£¡');
+                                    top.$.ligerDialog.error('É¾ï¿½ï¿½Ê§ï¿½Ü£ï¿½');
                                 }
                             },
                             error: function () {
                                 top.$.ligerDialog.closeWaitting();
-                                top.$.ligerDialog.error('É¾³ýÊ§°Ü£¡', "", null, 9003);
+                                top.$.ligerDialog.error('É¾ï¿½ï¿½Ê§ï¿½Ü£ï¿½', "", null, 9003);
                             }
                         });
                     }
                 })
             } else {
-                $.ligerDialog.warn("ÇëÑ¡Ôñ²úÆ·Àà±ð£¡");
+                $.ligerDialog.warn("ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½");
             }
         }
         function f_save(item, dialog) {
             var issave = dialog.frame.f_save();
             if (issave) {
                 dialog.close();
-                top.$.ligerDialog.waitting('Êý¾Ý±£´æÖÐ,ÇëÉÔºò...');
+                top.$.ligerDialog.waitting('ï¿½ï¿½ï¿½Ý±ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½Ôºï¿½...');
                 $.ajax({
                     url: "../../data/Budge_BasicPart.ashx", type: "POST",
                     data: issave,
@@ -154,7 +154,7 @@
                         top.$.ligerDialog.closeWaitting();
                         if (responseText == "false:type")
                         {
-                            top.$.ligerDialog.error('²Ù×÷Ê§°Ü£¬ÉÏ¼¶Àà±ð²»ÄÜÊÇ×Ô¼º£¡');
+                            top.$.ligerDialog.error('ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½');
                         }
                         else
                         {                              

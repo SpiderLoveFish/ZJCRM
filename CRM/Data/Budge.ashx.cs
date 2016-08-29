@@ -26,6 +26,8 @@ namespace XHD.CRM.Data
             Model.Budge_BasicMain mbb = new Model.Budge_BasicMain();
             BLL.Budge_BasicDetail bbdetail =new BLL.Budge_BasicDetail();
             BLL.budge bd = new BLL.budge();
+            BLL.Sys_log log = new BLL.Sys_log();
+           
             
             var cookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
             var ticket = FormsAuthentication.Decrypt(cookie.Value);
@@ -66,6 +68,7 @@ namespace XHD.CRM.Data
                 if (josnstr.Length <= 0) josnstr = "{}";
                  //{"status": 1, "sum": 9}
                 context.Response.Write(josnstr);
+                log.add_trace(bid, "", "savetotal", empname);
             }
             //最后保存
             if (request["Action"] == "saveall")
@@ -99,6 +102,7 @@ namespace XHD.CRM.Data
                         context.Response.Write("true");
                 }
                 else context.Response.Write("false");
+                log.add_trace(bid, "", "saveall", empname);
             }
             //修改状态，退回，审核，失效
             if (request["Action"] == "saveupdatestatus")
@@ -127,7 +131,7 @@ namespace XHD.CRM.Data
                     else
                         context.Response.Write("false");
                 }
-                 
+                log.add_trace(bid, "", "saveupdatestatus", empname);
             }
             //是否存在这个预算的模板
              if (request["Action"] == "isexistmodelid")
@@ -197,7 +201,7 @@ namespace XHD.CRM.Data
                 //    bbb.AddMB(mbb,mblx);
                 
                 //}
-               
+                 log.add_trace(bid, "", "saveallmb", empname);
 
              }
             if (request["Action"] == "saveadd")
@@ -224,7 +228,7 @@ namespace XHD.CRM.Data
                    context.Response.Write("true");
                else context.Response.Write("false");
             }
-                
+            log.add_trace(bid, "", "saveadd", empname);  
             }
             if (request["Action"] == "savedetailadd")
             {       
@@ -234,6 +238,8 @@ namespace XHD.CRM.Data
                 
                 if (xmlist.Length > 1) xmlist = xmlist.Substring(1);
                 bbdetail.insertlist(bid, xmlist,compname);
+
+                log.add_trace(bid, "", "savedetailadd", empname);  
             }
             //附加费用保存
             if (request["Action"] == "saveratelist")
@@ -243,6 +249,8 @@ namespace XHD.CRM.Data
 
                 if (ratelist.Length > 1) ratelist = ratelist.Substring(1);
                 bd.insertRatelist(bid, ratelist);
+
+                log.add_trace(bid, "", "saveratelist", empname);  
             }
             //折扣价格
             if (request["Action"] == "saveupdatedisprice")
@@ -268,6 +276,8 @@ namespace XHD.CRM.Data
                 if (josnstr.Length <= 0) josnstr = "{}";
                 //{"status": 1, "sum": 9}
                 context.Response.Write(josnstr);
+
+                log.add_trace(bid, "", "saveupdatedisprice", empname);  
             }
             //刷新价格
             if (request["Action"] == "saveupdaterefprice")
@@ -277,6 +287,8 @@ namespace XHD.CRM.Data
                 if(bbdetail.UpdateRefreshPrice( bid))
                     context.Response.Write("true");
                 else context.Response.Write("false");
+
+                log.add_trace(bid, "", "saveupdaterefprice", empname);  
             }
             if (request["Action"] == "savemodel")
             {
@@ -287,6 +299,8 @@ namespace XHD.CRM.Data
                 if (bd.AddModel(bid,modelid, modelname,emp_id, remaks) > 0)
                     context.Response.Write("true");//特殊处理
                 else context.Response.Write("false");
+
+                log.add_trace(bid, "", "savemodel", empname);  
             }
             if (request["Action"] == "savemodeltobudge")
             {
@@ -295,6 +309,7 @@ namespace XHD.CRM.Data
                 if (bd.AddModelToBudge(bid, modelid) > 0)
                     context.Response.Write("true");
                 else context.Response.Write("false");
+                log.add_trace(bid, "", "savemodeltobudge", empname);  
             }
 
             if (request["Action"] == "copybudge")
@@ -304,7 +319,9 @@ namespace XHD.CRM.Data
                 if (bd.copybudge(copyid, maxid, emp_id.ToString()) > 0)
                     context.Response.Write(maxid);
                 else context.Response.Write("false");
-            }
+                log.add_trace(maxid, "", "copybudge", empname);  
+
+            } 
 
             if (request["Action"] == "saveupdatesum")
             {
@@ -316,7 +333,9 @@ namespace XHD.CRM.Data
                     if (bbdetail.UpdateSum(sum,StringToInt(id),bid))
                         context.Response.Write("true");
                     else context.Response.Write("false");
+
                 }
+                log.add_trace(bid, "", "saveupdatesum", empname);  
             }
             if (request["Action"] == "deldetail")
             {
@@ -336,7 +355,7 @@ namespace XHD.CRM.Data
                 {
                     context.Response.Write("false");
                 }
-                  
+                  log.add_trace(bid, "", "deldetail", empname);  
             }
             if (request["Action"] == "delcomp")
             {
@@ -356,7 +375,7 @@ namespace XHD.CRM.Data
                 {
                     context.Response.Write("false");
                 }
-
+                log.add_trace(bid, "", "delcomp", empname);  
             }
             //删除条件
             if (request["Action"] == "del")
@@ -372,6 +391,7 @@ namespace XHD.CRM.Data
                     {
                         context.Response.Write("false");
                     }
+                    log.add_trace(bid, "", "del", empname);  
             }
             //删除条件
             if (request["Action"] == "delmodel")
@@ -390,6 +410,7 @@ namespace XHD.CRM.Data
                 {
                     context.Response.Write("false");
                 }
+                log.add_trace(mid, "", "delmodel", empname);  
             }
             if (request["Action"] == "delratever")
             {
@@ -407,7 +428,7 @@ namespace XHD.CRM.Data
                 {
                     context.Response.Write("false");
                 }
-
+                log.add_trace(id, "", "delratever", empname);  
             }
             if (request["Action"] == "form")
             {
@@ -798,6 +819,7 @@ namespace XHD.CRM.Data
                 string bjlist = PageValidate.InputText(request["bjlist"], 255);
                 if (bjlist.Length > 1) bjlist = bjlist.Substring(1);
                 bd.AddBJlist(customerid, bid, bjlist);
+                log.add_trace(bid, "", "savebjlist", empname);  
             }
 
             if (request["Action"] == "savebjcopylist")
@@ -805,12 +827,14 @@ namespace XHD.CRM.Data
 
                 string bpname = PageValidate.InputText(request["bjid"], 255);
                 string bid = PageValidate.InputText(request["bid"], 255);
+               //request.ContentType="application/x-www-form-urlencoded ; charset=UTF-8";
                 string copybj =  PageValidate.InputText(request["copybj"], 255) ;
                 //if (bjlist.Length > 1) bjlist = bjlist.Substring(1);
                 bd.AddBJcopylist(copybj, bid, bpname);
                      //context.Response.Write("true");
                      //   else
                      //context.Response.Write("false");
+                log.add_trace(bid, "", "savebjcopylist", empname);  
             }
 
             

@@ -3,7 +3,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-           <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
 
@@ -161,10 +160,10 @@
 
                 </td>
             </tr>
-                   <tr>
+                <tr>
                 <td height="23" style="width: 85px" colspan="2">
 
-                    <div align="left" style="width: 62px">í˜Ðò£º</div>
+                    <div align="left" style="width: 62px">Ë³Ðò£º</div>
                 </td>
                 <td height="23">
 
