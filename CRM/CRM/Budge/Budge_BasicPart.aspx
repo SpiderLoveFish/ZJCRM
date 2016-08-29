@@ -4,7 +4,6 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-           <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/Toolbar.css" rel="stylesheet" type="text/css" />
@@ -24,12 +23,12 @@
             $("#maingrid4").ligerGrid({
                 columns: [
                     {
-                        display: '���', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                        display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                         { return (page - 1) * pagesize + rowindex + 1; }
                     },
-                      { display: '���', name: 'OrderBy', width: 50, align: 'left' },
-                    { display: '�������', name: 'BP_Name', width: 250, align: 'left' }
-                     
+                      { display: '顺序', name: 'OrderBy', width: 50, align: 'left' },
+                    { display: '类别名称', name: 'BP_Name', width: 250, align: 'left' }
+
                 ],
                 dataAction: 'server',
                 pageSize: 30,
@@ -48,7 +47,7 @@
 
             });
 
-            
+
 
             initLayout();
             $(window).resize(function () {
@@ -72,7 +71,7 @@
                 menu = $.ligerMenu({
                     width: 120, items: getMenuItems(data)
                 });
-                
+
                 $("#maingrid4").ligerGetGridManager().onResize();
             });
         }
@@ -82,12 +81,12 @@
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
                         {
-                            text: '����', onclick: function (item, dialog) {
+                            text: '保存', onclick: function (item, dialog) {
                                 f_save(item, dialog);
                             }
                         },
                         {
-                            text: '�ر�', onclick: function (item, dialog) {
+                            text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();
                             }
                         }
@@ -98,16 +97,16 @@
 
 
         function add() {
-            f_openWindow("crm/Budge/Budge_BasicPart_add.aspx", "�������", 480, 320);
+            f_openWindow("crm/Budge/Budge_BasicPart_add.aspx", "新增类别", 480, 320);
         }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('crm/Budge/Budge_BasicPart_add.aspx?cid=' + row.id, "�޸����", 480, 320);
+                f_openWindow('crm/Budge/Budge_BasicPart_add.aspx?cid=' + row.id, "修改类别", 480, 320);
             } else {
-                $.ligerDialog.warn('��ѡ���У�');
+                $.ligerDialog.warn('请选择行！');
             }
         }
 
@@ -115,7 +114,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                $.ligerDialog.confirm("���ɾ�����ָܻ���ȷ��ɾ����", function (yes) {
+                $.ligerDialog.confirm("类别删除不能恢复，确定删除？", function (yes) {
                     if (yes) {
                         $.ajax({
                             url: "../../data/Budge_BasicPart.ashx", type: "POST",
@@ -125,45 +124,43 @@
                                     top.$.ligerDialog.closeWaitting();
                                     f_reload();
                                 }
-                                 
+
                                 else {
                                     top.$.ligerDialog.closeWaitting();
-                                    top.$.ligerDialog.error('ɾ��ʧ�ܣ�');
+                                    top.$.ligerDialog.error('删除失败！');
                                 }
                             },
                             error: function () {
                                 top.$.ligerDialog.closeWaitting();
-                                top.$.ligerDialog.error('ɾ��ʧ�ܣ�', "", null, 9003);
+                                top.$.ligerDialog.error('删除失败！', "", null, 9003);
                             }
                         });
                     }
                 })
             } else {
-                $.ligerDialog.warn("��ѡ���Ʒ���");
+                $.ligerDialog.warn("请选择产品类别！");
             }
         }
         function f_save(item, dialog) {
             var issave = dialog.frame.f_save();
             if (issave) {
                 dialog.close();
-                top.$.ligerDialog.waitting('���ݱ�����,���Ժ�...');
+                top.$.ligerDialog.waitting('数据保存中,请稍候...');
                 $.ajax({
                     url: "../../data/Budge_BasicPart.ashx", type: "POST",
                     data: issave,
                     success: function (responseText) {
                         top.$.ligerDialog.closeWaitting();
-                        if (responseText == "false:type")
-                        {
-                            top.$.ligerDialog.error('����ʧ�ܣ��ϼ���������Լ���');
+                        if (responseText == "false:type") {
+                            top.$.ligerDialog.error('操作失败，上级类别不能是自己！');
                         }
-                        else
-                        {                              
+                        else {
                             f_reload();
                         }
                     },
                     error: function () {
                         top.$.ligerDialog.closeWaitting();
-                        
+
                     }
                 });
 
