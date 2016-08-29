@@ -4,6 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/input.css" rel="stylesheet" />
@@ -810,7 +811,7 @@
               
                 $.ajax({
                     type: 'post',
-                    url: "../../data/Budge.ashx?Action=savebjcopylist&bjid=" + bjid + "&bid=" + $("#T_budgeid").val() + '&copybj=' + encodeURI(encodeURI(copybj)) + '&rdm=' + Math.random(),
+                    url: "../../data/Budge.ashx?Action=savebjcopylist&bjid=" + bjid + "&bid=" + $("#T_budgeid").val() + '&copybj=' +  copybj  + '&rdm=' + Math.random(),
                     success: function (data) {
                         // alert(bjid);
                         var url = '../../data/Budge.ashx?Action=tree&bid=' + $("#T_budgeid").val() + '&rnd=' + Math.random();

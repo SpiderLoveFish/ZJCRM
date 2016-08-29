@@ -599,14 +599,15 @@ namespace XHD.DAL
         /// </summary>
         public DataSet GetListPara_Ver(string strWhere)
         {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("select * ");
-            strSql.Append(" FROM Budge_Para_Ver ");
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("SELECT   A.* FROM Budge_Para_Ver	A");
+            sb.AppendLine("INNER JOIN Budge_BasicPart B ON A.b_Part_id=B.id");
+            sb.AppendLine("");
             if (strWhere.Trim() != "")
             {
-                strSql.Append(" where " + strWhere);
+                sb.Append(" where " + strWhere);
             }
-            return DbHelperSQL.Query(strSql.ToString());
+            return DbHelperSQL.Query(sb.ToString());
         }
 
         /// <summary>

@@ -48,12 +48,13 @@ namespace XHD.DAL
 			strSql.Append("insert into Budge_BasicPart(");
 			strSql.Append("BP_Name)");
 			strSql.Append(" values (");
-			strSql.Append("@BP_Name)");
+            strSql.Append("@BP_Name,@OrderBy)");
 			strSql.Append(";select @@IDENTITY");
 			SqlParameter[] parameters = {
-					new SqlParameter("@BP_Name", SqlDbType.VarChar,100)};
+					new SqlParameter("@BP_Name", SqlDbType.VarChar,100),
+                     new SqlParameter("@OrderBy", SqlDbType.Int,20)};
 			parameters[0].Value = model.BP_Name;
-
+            parameters[1].Value = model.OrderBy;
 			object obj = DbHelperSQL.GetSingle(strSql.ToString(),parameters);
 			if (obj == null)
 			{
@@ -72,13 +73,16 @@ namespace XHD.DAL
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("update Budge_BasicPart set ");
 			strSql.Append("BP_Name=@BP_Name");
+            strSql.Append(" ,OrderBy=@OrderBy");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@BP_Name", SqlDbType.VarChar,100),
-					new SqlParameter("@id", SqlDbType.Int,4)};
+					new SqlParameter("@id", SqlDbType.Int,4),
+                  new SqlParameter("@OrderBy", SqlDbType.Int,4)
+                                        };
 			parameters[0].Value = model.BP_Name;
 			parameters[1].Value = model.id;
-
+            parameters[2].Value = model.OrderBy;
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
 			{
@@ -141,7 +145,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 id,BP_Name from Budge_BasicPart ");
+            strSql.Append("select  top 1 id,BP_Name,OrderBy from Budge_BasicPart ");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)
@@ -177,6 +181,10 @@ namespace XHD.DAL
 				{
 					model.BP_Name=row["BP_Name"].ToString();
 				}
+                if (row["OrderBy"] != null && row["OrderBy"].ToString() != "")
+                {
+                    model.id = int.Parse(row["OrderBy"].ToString());
+                }
 			}
 			return model;
 		}
@@ -187,7 +195,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select id,BP_Name ");
+            strSql.Append("select id,BP_Name,OrderBy ");
 			strSql.Append(" FROM Budge_BasicPart ");
 			if(strWhere.Trim()!="")
 			{
@@ -207,7 +215,7 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" id,BP_Name ");
+            strSql.Append(" id,BP_Name,OrderBy ");
 			strSql.Append(" FROM Budge_BasicPart ");
 			if(strWhere.Trim()!="")
 			{

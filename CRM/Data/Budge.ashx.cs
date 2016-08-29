@@ -563,7 +563,7 @@ namespace XHD.CRM.Data
                 }
 
                 //权限
-                //serchtxt += DataAuth(emp_id.ToString());
+                serchtxt += DataAuth(emp_id.ToString());
 
                 string dt = "";
 
@@ -755,7 +755,7 @@ namespace XHD.CRM.Data
             {
                  string serchtxt = " 1=1 ";
                  string bid = PageValidate.InputText(request["bid"], 50);
-                 serchtxt += " AND budge_id='"+bid+"'"; 
+                 serchtxt += " AND budge_id='"+bid+"' Order by Orderby"; 
                 DataSet ds = bbb.GetListPara_Ver(serchtxt);
                 StringBuilder str = new StringBuilder();
                 str.Append("[");
@@ -805,7 +805,7 @@ namespace XHD.CRM.Data
 
                 string bpname = PageValidate.InputText(request["bjid"], 255);
                 string bid = PageValidate.InputText(request["bid"], 255);
-                string copybj =HttpUtility.UrlDecode( PageValidate.InputText(request["copybj"], 255));
+                string copybj =  PageValidate.InputText(request["copybj"], 255) ;
                 //if (bjlist.Length > 1) bjlist = bjlist.Substring(1);
                 bd.AddBJcopylist(copybj, bid, bpname);
                      //context.Response.Write("true");

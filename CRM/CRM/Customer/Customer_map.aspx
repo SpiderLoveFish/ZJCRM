@@ -219,7 +219,7 @@
         $(window).resize(function () {
             resize();
         });
-       
+        $('form').ligerForm();
         getPoint("");
         getCity();
     })
@@ -272,9 +272,7 @@
     }
 
     function initSerchForm() {
-        $("#company").addClass("l-text");
-        $("#tel").addClass("l-text");
-     
+       
         $('#t_mapstasus').ligerComboBox({
             width: 100,
             selectBoxWidth: 100,
@@ -422,8 +420,8 @@
     function toolbar() {
 
         var items = [];
-        items.push({ type: 'textbox', id: 'T_Provinces', text: '城市：' });
-        items.push({ type: 'textbox', id: 'T_City' });
+        items.push({ type: 'textbox', id: 'TT_Provinces', text: '城市：' });
+        items.push({ type: 'textbox', id: 'TT_City' });
         items.push({ type: 'button', text: '设为默认', icon: '../../images/icon/67.png', disable: true, click: function () { defaultCity() } });
 
         items.push({ type: "filter", icon: '../../images/icon/51.png', title: "帮助", click: function () { help(); } })
@@ -441,8 +439,8 @@
             items: items
         });
 
-        b = $('#T_City').ligerComboBox({ width: 96, emptyText: '（空）', onSelected: function (newvalue, newtext) { search(newtext); } });
-        c = $('#T_Provinces').ligerComboBox({
+        b = $('#TT_City').ligerComboBox({ width: 96, emptyText: '（空）', onSelected: function (newvalue, newtext) { search(newtext); } });
+        c = $('#TT_Provinces').ligerComboBox({
             width: 97,
             url: "../../data/Param_City.ashx?Action=combo1&rnd=" + Math.random(),
             onSelected: function (newvalue, newtext) {
@@ -463,7 +461,7 @@
     }
 
     function defaultCity() {
-        var city = $("#T_City").val() || $("#T_Provinces").val() || "";
+        var city = $("#TT_City").val() || $("#TT_Provinces").val() || "";
         if (!city) {
             $.ligerDialog.warn('请选择城市再设置！');
             return;

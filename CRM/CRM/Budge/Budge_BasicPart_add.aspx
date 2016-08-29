@@ -3,6 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+           <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
 
@@ -49,7 +50,7 @@
 
         function f_save() {
             if ($(form1).valid()) {
-                var sendtxt = "&Action=save&bpid=" + getparastr("cid") + "&bpname" + $("#T_bp_name").val();
+                var sendtxt = "&Action=save&bpid=" + getparastr("cid");
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }
@@ -160,7 +161,17 @@
 
                 </td>
             </tr>
-              
+                   <tr>
+                <td height="23" style="width: 85px" colspan="2">
+
+                    <div align="left" style="width: 62px">í˜Ðò£º</div>
+                </td>
+                <td height="23">
+
+                    <input type="text" id="T_orderby" name="T_orderby" ltype="text" ligerui="{width:180}" validate="{required:true}" />
+
+                </td>
+            </tr>
 
         </table>
     </form>

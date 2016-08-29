@@ -43,7 +43,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "save")
             {
                 model.BP_Name = PageValidate.InputText(request["T_bp_name"], 300);
-             //  model.id = StringToInt(PageValidate.InputText(request["bpid"], 50));
+                model.OrderBy = StringToInt(PageValidate.InputText(request["T_orderby"], 50));
 
 
                string xmid = PageValidate.InputText(request["bpid"], 50);
@@ -73,9 +73,9 @@ namespace XHD.CRM.Data
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " id";
+                    sortname = " OrderBy";
                 if (string.IsNullOrEmpty(sortorder))
-                    sortorder = " desc";
+                    sortorder = " ASC";
 
                 string sorttext = " " + sortname + " " + sortorder;
 

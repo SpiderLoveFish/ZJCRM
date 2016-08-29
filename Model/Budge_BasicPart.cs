@@ -12,6 +12,7 @@ namespace XHD.Model
 		#region Model
 		private int _id;
 		private string _bp_name;
+        private int _orderby;
 		/// <summary>
 		/// 
 		/// </summary>
@@ -28,6 +29,12 @@ namespace XHD.Model
 			set{ _bp_name=value;}
 			get{return _bp_name;}
 		}
+
+        public int OrderBy
+        {
+            set { _orderby = value; }
+            get { return _orderby; }
+        }
 		#endregion Model
 
 	}

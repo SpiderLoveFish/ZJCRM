@@ -4,6 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+           <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/Toolbar.css" rel="stylesheet" type="text/css" />
@@ -26,6 +27,7 @@
                         display: 'ÐòºÅ', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                         { return (page - 1) * pagesize + rowindex + 1; }
                     },
+                      { display: 'í˜Ðò', name: 'OrderBy', width: 50, align: 'left' },
                     { display: 'Àà±ðÃû³Æ', name: 'BP_Name', width: 250, align: 'left' }
                      
                 ],
