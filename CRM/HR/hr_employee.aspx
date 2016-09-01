@@ -222,6 +222,23 @@
             }
         }
 
+        function save_cpwd(item, dialog)
+        {
+            var postdata = dialog.frame.f_save();
+            if (postdata)
+            $.ajax({
+                url: "../data/hr_employee.ashx", type: "POST",
+                data: postdata,
+                success: function (responseText) {
+                    dialog.close();
+                    alert('修改成功!')
+                },
+                error: function () {
+                    alert('修改失败!');
+                }
+            });
+        }
+
         function changepwd() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
@@ -237,7 +254,7 @@
                             [
                                 {
                                     text: '保存', onclick: function (item, dialog) {
-                                        dialog.frame.f_save();
+                                        save_cpwd(item, dialog); 
                                     }
                                 },
                                 {

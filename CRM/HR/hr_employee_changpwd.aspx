@@ -17,6 +17,8 @@
     <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
 
+    <script src="../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
+    <script src="../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
 
     <script src="../lib/jquery-validation/jquery.validate.js" type="text/javascript"></script>
@@ -24,8 +26,13 @@
     <script src="../lib/jquery-validation/messages_cn.js" type="text/javascript"></script>
     <script src="../lib/ligerUI/js/common.js" type="text/javascript"></script>
     <script src="../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
-    <script src="../JS/XHD.js" type="text/javascript"></script>
     <script src="../lib/jquery.form.js" type="text/javascript"></script>
+
+    <script src="../lib/json2.js" type="text/javascript"></script>
+    <script src="../js/calendar.js" type="text/javascript"></script>
+
+    <script src="../JS/XHD.js" type="text/javascript"></script>
+      
     <script type="text/javascript">
         $(function () {
             $.metadata.setType("attr", "validate");
@@ -42,17 +49,7 @@
             if ($(form1).valid()) {
                 var sendtxt = "&Action=allchangepwd&empid=" + getparastr("empid") + "&rnd=" + Math.random();
                 var postdata = $("form :input").fieldSerialize() + sendtxt;
-                $.ajax({
-                    url: "../data/hr_employee.ashx", type: "POST",
-                    data: postdata,
-                    success: function (responseText) {
-                        parent.$.ligerDialog.close();
-                        alert('修改成功!')
-                    },
-                    error: function () {
-                        alert('修改失败!');
-                    }
-                });
+                return postdata;
             }
         }
 

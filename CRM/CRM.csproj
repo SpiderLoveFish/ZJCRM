@@ -92,6 +92,8 @@
     <Content Include="CRM\Budge\BudgeMainAdd.aspx" />
     <Content Include="CRM\Budge\BudgeModelMainAdd.aspx" />
     <Content Include="CRM\Budge\BudgeMainApr.aspx" />
+    <Content Include="CRM\Budge\Budge_PrintDesc_add.aspx" />
+    <Content Include="CRM\Budge\Budge_PrintDesc.aspx" />
     <Content Include="CRM\Budge\Budge_BasicPart.aspx" />
     <Content Include="CRM\Budge\Budge_BasicPart_add.aspx" />
     <Content Include="CRM\Budge\BudgeModelMain.aspx" />
@@ -201,6 +203,8 @@
     <Content Include="CRM\Jifen\Jifen_kh_add.aspx" />
     <Content Include="CRM\Jifen\Jifen_yg.aspx" />
     <Content Include="CRM\Jifen\Jifen_yg_add.aspx" />
+    <Content Include="CRM\KcGl\Budge_Rate.aspx" />
+    <Content Include="CRM\KcGl\Budge_Rate_Add.aspx" />
     <Content Include="CRM\KcGl\Jcb_Ckgl.aspx" />
     <Content Include="CRM\KcGl\Jcb_Ckgl_Add.aspx" />
     <Content Include="CRM\Print\BudgePrint.aspx" />
@@ -4330,6 +4334,20 @@
     </Compile>
     <Compile Include="CRM\Jifen\Jifen_yg_add.aspx.designer.cs">
       <DependentUpon>Jifen_yg_add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\KcGl\Budge_Rate.aspx.cs">
+      <DependentUpon>Budge_Rate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CRM\KcGl\Budge_Rate.aspx.designer.cs">
+      <DependentUpon>Budge_Rate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\KcGl\Budge_Rate_Add.aspx.cs">
+      <DependentUpon>Budge_Rate_Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CRM\KcGl\Budge_Rate_Add.aspx.designer.cs">
+      <DependentUpon>Budge_Rate_Add.aspx</DependentUpon>
     </Compile>
     <Compile Include="CRM\KcGl\Jcb_Ckgl.aspx.cs">
       <DependentUpon>Jcb_Ckgl.aspx</DependentUpon>

@@ -212,6 +212,26 @@ namespace XHD.BLL
         {
             return dal.GetPrintCount(bid);
         }
+
+
+        public DataSet GetBudge_PrintDescribe(string strWhere)
+        {
+            return dal.GetBudge_PrintDescribe(strWhere);
+        }
+
+
+        public DataSet GetBudge_PrintDescribe(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetBudge_PrintDescribe(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+        public bool SavePrintDesc(string sname, string dname, string id)
+        {
+            return dal.SavePrintDesc(sname, dname, id);
+        }
+        public bool DeletePrintDesc(string id)
+        {
+            return dal.DeletePrintDesc(id);
+        }
 		#endregion  ExtensionMethod
 	}
 }

@@ -176,6 +176,11 @@ namespace XHD.BLL
         {
             return dal.GetList(PageSize,PageIndex,strWhere,filedOrder,out Total);
         }
+
+        public bool Exists_Budge_Para_Ver(int id)
+        {
+            return dal.Exists_Budge_Para_Ver(id);
+        }
 		#endregion  ExtensionMethod
 	}
 }

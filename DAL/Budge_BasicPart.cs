@@ -46,7 +46,7 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into Budge_BasicPart(");
-			strSql.Append("BP_Name)");
+            strSql.Append("BP_Name,OrderBy)");
 			strSql.Append(" values (");
             strSql.Append("@BP_Name,@OrderBy)");
 			strSql.Append(";select @@IDENTITY");
@@ -317,7 +317,20 @@ namespace XHD.DAL
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
             return DbHelperSQL.Query(strSql.ToString());
         }
-    
+
+
+        public bool Exists_Budge_Para_Ver(int id)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select count(1) from Budge_Para_Ver");
+            strSql.Append(" where b_Part_id=@id ");
+            SqlParameter[] parameters = {
+					new SqlParameter("@id", SqlDbType.Int,4)};
+            parameters[0].Value = id;
+
+            return DbHelperSQL.Exists(strSql.ToString(), parameters);
+        }
+
 		#endregion  ExtensionMethod
 	}
 }

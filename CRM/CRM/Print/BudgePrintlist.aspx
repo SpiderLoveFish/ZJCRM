@@ -7,20 +7,29 @@
       <link href="../../CSS/styles.css" rel="stylesheet" />
      <link href="../../CSS/Toolbar.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
-   
+    
+    
+
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
+     <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+         <script src="../../lib/ligerUI/js/ligerui.all.js" type="text/javascript"></script>
       <script src="../../lib/jquery.form.js" type="text/javascript"></script>
    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-  
+     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
      <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
    <script src="../../JS/XHD.js" type="text/javascript"></script>
    <script type="text/javascript">
+       var g;
        $(function () {
            loadForm("YS");
+           
+         
+          // $("#select2").ligerComboBox();
        });
        function OpenURL(url) {
-                window.open(url + "?bid=" + getparastr("bid"), "_blank", 'top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=no,location=n o, status=no');
+ 
+           window.open(url + "?bid=" + getparastr("bid") + "&selectid=" + $("#selectvalue").val(), "_blank", 'top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=no,location=n o, status=no');
 
            // f_openWindowview("crm/Print/" + url + "?bid=" + getparastr("bid"), "打印", 800, 400);
 
@@ -47,8 +56,8 @@
              "</td> " +
              " <td style='width:50px;height:10px'> <div id='tip' class='tips' style='width:60px;height:15px; overflow: hidden;'>   " +
 
-                 " 查看介绍 ：" + data['Remark'] + "   </div>  </td> " +
-                  "  ";
+                 " 查看介绍 ：" + data['Remark'] + "   </div>  </td> ";
+                  
 
                        len++;
                        if (len == 3) {
@@ -68,6 +77,19 @@
 
 
                    });
+
+
+               g=    $("#select2").ligerComboBox({
+                       width: 196,
+                       selectBoxWidth: 240,
+                       selectBoxHeight: 200,
+                       valueField: 'id',
+                       textField: 'text',
+                       url: "../../data/Budge.ashx?Action=comboprintdescr&rnd=" + Math.random(), emptyText: '（空）', initValue: obj.Zxfg_id
+                   , onSelected: function (value, newvalue) {
+                       $("#selectvalue").val(value)
+                   }
+               });
                },
                error: function (XMLHttpRequest, textStatus, errorThrown) {
                    alert(textStatus);
@@ -93,8 +115,13 @@
 </head>
 <body style="padding: 0px;overflow:hidden;">
     <form id="form1" onsubmit="return false">
+       选择一个预算备注说明：   <input  type='text' id='select2' name='select2'></input >
    <table class="table" align="left" border="0" cellpadding="3" cellspacing="1">
           </table>
+        <br />
+         
+
+        <input id="selectvalue" type="hidden" name="selectvalue" />
     </form>
 </body>
 </html>

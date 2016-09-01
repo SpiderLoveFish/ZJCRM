@@ -26,17 +26,17 @@
                         display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                         { return (page - 1) * pagesize + rowindex + 1; }
                     },
-                      { display: '顺序', name: 'OrderBy', width: 50, align: 'left' },
-                    { display: '类别名称', name: 'BP_Name', width: 250, align: 'left' }
+                      { display: '编号', name: 'id', width: 50, align: 'left' },
+                    { display: '简称', name: 'ShortName', width: 250, align: 'left' }
 
                 ],
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/Budge_BasicPart.ashx?Action=grid",
+                url: "../../data/Budge.ashx?Action=gridprintdescr",
                 width: '100%',
                 height: '100%',
-                tree: { columnName: 'CEStage_category' },
+            
                 heightDiff: -1,
                 onRClickToSelect: true,
                 onContextmenu: function (parm, e) {
@@ -97,14 +97,14 @@
 
 
         function add() {
-            f_openWindow("crm/Budge/Budge_BasicPart_add.aspx", "新增类别", 480, 320);
+            f_openWindow("crm/Budge/Budge_PrintDesc_add.aspx", "新增备注", 580, 520);
         }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('crm/Budge/Budge_BasicPart_add.aspx?cid=' + row.id, "修改类别", 480, 320);
+                f_openWindow('crm/Budge/Budge_PrintDesc_add.aspx?id=' + row.id, "修改备注", 580, 520);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
@@ -117,8 +117,8 @@
                 $.ligerDialog.confirm("类别删除不能恢复，确定删除？", function (yes) {
                     if (yes) {
                         $.ajax({
-                            url: "../../data/Budge_BasicPart.ashx", type: "POST",
-                            data: { Action: "del", bpid: row.id, rnd: Math.random() },
+                            url: "../../data/Budge.ashx", type: "POST",
+                            data: { Action: "delprintdescr", id: row.id, rnd: Math.random() },
                             success: function (responseText) {
                                 if (responseText == "true") {
                                     top.$.ligerDialog.closeWaitting();
@@ -151,20 +151,17 @@
                 dialog.close();
                 top.$.ligerDialog.waitting('数据保存中,请稍候...');
                 $.ajax({
-                    url: "../../data/Budge_BasicPart.ashx", type: "POST",
+                    url: "../../data/Budge.ashx", type: "POST",
                     data: issave,
                     success: function (responseText) {
                         top.$.ligerDialog.closeWaitting();
-                        if (responseText == "false:type") {
-                            top.$.ligerDialog.error('操作失败，上级类别不能是自己！');
-                        }
-                        else {
+                         
                             f_reload();
-                        }
+                        
                     },
                     error: function () {
                         top.$.ligerDialog.closeWaitting();
-
+                        top.$.ligerDialog.error('删除失败！', "", null, 9003);
                     }
                 });
 

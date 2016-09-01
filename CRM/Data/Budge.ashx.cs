@@ -337,6 +337,29 @@ namespace XHD.CRM.Data
                 }
                 log.add_trace(bid, "", "saveupdatesum", empname);  
             }
+
+            //保存备注
+            if (request["Action"] == "saveprintdescr")
+            {
+                string id = PageValidate.InputText(request["id"], 50);
+                string T_sname = PageValidate.InputText(request["T_sname"], 250);
+                string T_dname = PageValidate.InputText(request["T_Remark"], int.MaxValue);
+                if (!string.IsNullOrEmpty(id) && id != "null")
+                {
+                    bbb.SavePrintDesc(T_sname,T_dname,id);
+                }
+                else bbb.SavePrintDesc(T_sname, T_dname, "");
+                
+                log.add_trace(id, "", "saveprintdescr", empname);
+            }
+
+            if (request["Action"] == "delprintdescr")
+            {
+                string id = PageValidate.InputText(request["id"], 50);
+                if (bbb.DeletePrintDesc(id))
+                    context.Response.Write("true");
+                else context.Response.Write("false");
+            }
             if (request["Action"] == "deldetail")
             {
                    string  id =  PageValidate.InputText(request["id"], 50);
@@ -356,6 +379,7 @@ namespace XHD.CRM.Data
                     context.Response.Write("false");
                 }
                   log.add_trace(bid, "", "deldetail", empname);  
+            
             }
             if (request["Action"] == "delcomp")
             {
@@ -482,6 +506,71 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "formprintdescr")
+            {
+                string id = PageValidate.InputText(request["id"], 50);
+                string dt;
+                if (id != "")
+                {
+
+                    DataSet ds = bbb.GetBudge_PrintDescribe("  id='" + id + "'");
+                    dt = Common.DataToJson.DataToJSON(ds);
+                }
+                else
+                {
+                    dt = "{}";
+                }
+
+                context.Response.Write(dt);
+            }
+
+            if (request["Action"] == "comboprintdescr")
+            {
+              
+                DataSet ds = bbb.GetBudge_PrintDescribe("");
+
+                StringBuilder str = new StringBuilder();
+
+                str.Append("[");
+                //str.Append("{id:0,text:'无'},");
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    str.Append("{id:" + ds.Tables[0].Rows[i]["id"].ToString() + ",text:'" + ds.Tables[0].Rows[i]["ShortName"] + "'},");
+                }
+                str.Replace(",", "", str.Length - 1, 1);
+                str.Append("]");
+
+                context.Response.Write(str);
+            }
+            if (request["Action"] == "gridprintdescr")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+                string txtsearch = PageValidate.InputText(request["stext"], 255);
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+                if (txtsearch != "")
+                    serchtxt += "  AND ShortName LIKE '%" + txtsearch + "%'  ";
+
+
+                string dt = "";
+
+                DataSet ds = bbb.GetBudge_PrintDescribe(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+
             if (request["Action"] == "grid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);

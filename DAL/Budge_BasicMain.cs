@@ -664,6 +664,92 @@ namespace XHD.DAL
         }
 
 
+
+        public DataSet GetBudge_PrintDescribe( string strWhere )
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("SELECT    * FROM Budge_PrintDescribe	 "); 
+            sb.AppendLine("");
+            if (strWhere.Trim() != "")
+            {
+                sb.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(sb.ToString());
+
+        }
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        public DataSet GetBudge_PrintDescribe(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "  * FROM Budge_PrintDescribe ");
+            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_PrintDescribe ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(id) FROM Budge_PrintDescribe A");
+
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                //strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+        public bool SavePrintDesc(string sname,string dname,string id)
+        {
+            var sb = new System.Text.StringBuilder();
+            if(id=="")
+            {
+                sb.AppendLine(" INSERT INTO dbo.Budge_PrintDescribe");
+                sb.AppendLine("         ( ShortName, DescribeName )");
+                sb.AppendLine(" VALUES  ( '" + sname + "',"); // ShortName - varchar(50)
+                sb.AppendLine("           '" + dname + "'"); // DescribeName - varchar(max)
+                sb.AppendLine("           )");
+                sb.AppendLine("");
+            }
+            else
+            {
+                sb.AppendLine("UPDATE	 dbo.Budge_PrintDescribe SET DescribeName='" + dname + "',ShortName='" + sname + "' WHERE id="+id+"	");
+            }
+           
+
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString());
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool DeletePrintDesc(string id)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from Budge_PrintDescribe ");
+            strSql.Append(" where id=@id ");
+            SqlParameter[] parameters = {
+					new SqlParameter("@id", SqlDbType.VarChar,15)			};
+            parameters[0].Value = id;
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+	
+
 		#endregion  ExtensionMethod
 	}
 }

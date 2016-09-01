@@ -134,8 +134,13 @@ namespace XHD.CRM.Data
                 //参数安全过滤
                 string c_id = PageValidate.InputText(request["bpid"], 50);
 
-                DataSet ds = ccpc.GetList(" id=" + int.Parse(c_id));
- 
+                 //DataSet ds = ccpc.GetList(" id=" + int.Parse(c_id));
+                if (ccpc.Exists_Budge_Para_Ver(int.Parse(c_id)))
+                {
+                    context.Response.Write("false:exist");
+                }
+                else
+                {
                     bool isdel = ccpc.Delete(int.Parse(c_id));
                     if (isdel)
                     {
@@ -146,7 +151,7 @@ namespace XHD.CRM.Data
                         string UserName = empname;
                         string IPStreet = request.UserHostAddress;
                         int EventID = int.Parse(c_id);
-                        string EventTitle = ds.Tables[0].Rows[0]["id"].ToString();
+                        string EventTitle = c_id;// ds.Tables[0].Rows[0]["id"].ToString();
                         string Original_txt = null;
                         string Current_txt = null;
 
@@ -160,8 +165,8 @@ namespace XHD.CRM.Data
                     {
                         context.Response.Write("false");
                     }
-                
 
+                }
             }
 
         }

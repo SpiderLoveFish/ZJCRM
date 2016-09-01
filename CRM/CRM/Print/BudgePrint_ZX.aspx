@@ -17,6 +17,10 @@
            loadBody(getparastr("bid"));
            loadlogo();
            loadfjf(getparastr("bid"));
+           if (getparastr("selectid") == null || getparastr("selectid") == "" || getparastr("selectid") == "null" || getparastr("selectid") == undefined)
+           { }
+           else
+               loadbz(getparastr("selectid"));
        });
 
        function loadfjf(oaid) {
@@ -188,6 +192,30 @@
            })
        }
 
+       function loadbz(oaid) {
+
+           $.ajax({
+               type: "GET",
+               url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
+               data: { Action: 'formprintdescr', id: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+               contentType: "application/json; charset=utf-8",
+               dataType: "json",
+               success: function (result) {
+                   var obj = eval(result);
+                   for (var n in obj) {
+                       if (obj[n] == "null" || obj[n] == null)
+                           obj[n] = "";
+                   }
+
+                   $("#T_bz").html(obj.DescribeName);
+
+               },
+               error: function (XMLHttpRequest, textStatus, errorThrown) {
+                   alert(textStatus);
+               }
+           });
+       }
+
 
        function PreviewMytable() {
            var LODOP = getLodop();
@@ -222,6 +250,14 @@
            LODOP.SET_PRINT_STYLEA(0, "Horient", 1);
            //LODOP.ADD_PRINT_TEXT(3,34,196,20,"总页眉：《两个发货单的演示》");
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
+
+           LODOP.NewPageA();
+
+           LODOP.ADD_PRINT_HTM("15%", "5%", "90%", "90%", document.getElementById("div5").innerHTML);
+           LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
+           LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 3);
+
+
            LODOP.PREVIEW();
        };
     </script>
@@ -401,6 +437,21 @@
           <td >编制人：	</td> <td><SPAN id="T_bzr" ></SPAN>	</td>
            <td>审核人：	</td> <td><SPAN id="T_shr" ></SPAN>	</td>
            <td colspan="2">生效日期：<SPAN id="T_sxrq" ></SPAN>	</td>
+<td></td>
+      </tr>
+      </TBODY>
+  </TABLE>
+      </div>
+
+        
+          <%--<p>----------------------div5:------------------------------------------------------------------------------------</p>--%>
+  <div id="div5">
+
+  <TABLE  border=0 cellSpacing=0 cellPadding=0 width="100%">
+  <TBODY>
+      <tr>
+             <DIV align=center><b>备注说明</b></DIV> 
+        <DIV<SPAN id="T_bz" ></SPAN>	</DIV>  
 <td></td>
       </tr>
       </TBODY>

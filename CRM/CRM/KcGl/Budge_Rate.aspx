@@ -52,8 +52,8 @@
                     },
                     { display: '附加费名称', name: 'RateName', width: 150, align: 'left' },
                     { display: '附加费说明', name: 'measure', width: 200, align: 'left' },
-                    { display: '附加费率', name: 'rate', width: 60, align: 'right' },
-                    { display: '备注', name: 'Remarks', width: 200, align: 'left' }
+                    { display: '附加费率', name: 'rate', width: 60 },
+                    { display: '备注', name: 'Remark', width: 200, align: 'left' }
                    // { display: '登记人', name: 'InEmpID', width: 80 },
                    // { display: '登记日期', name: 'InDate', width: 150 }
                     //{ display: '售楼电话', name: 'Sldh', width: 80 },
@@ -117,7 +117,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("CRM/KcGl/Budge_Rate_Add.aspx?cid=" + row.id, "附加费维护", 600, 220);
+                f_openWindow("CRM/KcGl/Budge_Rate_Add.aspx?cid=" + row.ID, "附加费维护", 600, 220);
             }
             else {
                 $.ligerDialog.warn('请选择行！');
