@@ -585,6 +585,7 @@
         }
         function f_save(item, dialog) {
             var issave = dialog.frame.f_save();
+        
             if (issave) {
                 dialog.close();
 

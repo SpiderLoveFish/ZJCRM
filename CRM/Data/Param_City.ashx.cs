@@ -158,7 +158,12 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "getBuilding")
             {
-                DataSet ds = SqlDB.ExecuteDataSet("SELECT  ID id,Name text FROM CRM_Building WHERE IsDel ='N'").Output1;
+                string sql = "SELECT  ID id,Name text FROM CRM_Building WHERE IsDel ='N'";
+                string strwhere = PageValidate.InputText(request["City"], 50);
+                if (!string.IsNullOrEmpty(strwhere))
+                    sql += " AND Name like '%"+strwhere+"%'";
+                DataSet ds = SqlDB.ExecuteDataSet(sql).Output1;
+
 
                 StringBuilder str = new StringBuilder();
 
@@ -171,6 +176,27 @@ namespace XHD.CRM.Data
                 str.Append("]");
 
                 context.Response.Write(str);
+            }
+            if (request["Action"] == "getBuildinggrid")
+            {
+                string sql = "SELECT  ID id,Name FROM CRM_Building WHERE IsDel ='N'";
+                string strwhere = PageValidate.InputText(request["City"], 50);
+                if (!string.IsNullOrEmpty(strwhere))
+                    sql += " AND Name like '%" + strwhere + "%'";
+                DataSet ds = SqlDB.ExecuteDataSet(sql).Output1;
+
+                string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], ds.Tables[0].Rows.Count.ToString());
+                //StringBuilder str = new StringBuilder();
+
+                //str.Append("[");
+                //for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                //{
+                //    str.Append("{id:" + ds.Tables[0].Rows[i]["id"].ToString() + ",text:'" + ds.Tables[0].Rows[i]["text"] + "'},");
+                //}
+                //str.Replace(",", "", str.Length - 1, 1);
+                //str.Append("]");
+
+                context.Response.Write(dt);
             }
 
 

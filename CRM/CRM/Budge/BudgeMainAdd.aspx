@@ -55,18 +55,17 @@
             XHD.validate($(form1));
 
             $("form").ligerForm();
-           
+
             if (getparastr("bid") != null || IsModel == 'Y')//当编辑或模板的时候
             {
                 $("#qdkh").attr("style", "display:none");
                 loadfjf(getparastr("bid"));//附加金额  
-               // $("#tipfjje").attr("style", "display:none");
-                $("#tipfjje").hover(function ()
-                {
+                // $("#tipfjje").attr("style", "display:none");
+                $("#tipfjje").hover(function () {
                     $(this).ligerTip({ content: $("#tipfjje").html(), width: 300 });
                 },
                     function ()
-                    {$(this).ligerHideTip();}
+                    { $(this).ligerHideTip(); }
                    ); //透过jquery的hover来赋值一个鼠标移入移出事件
                 $("#tipfjje").ligerHideTip(); //关闭弹出的tip
                 loadForm(getparastr("bid"));
@@ -100,7 +99,7 @@
                 idFieldName: 'id',
                 //parentIDFieldName: 'pid',
                 //usericon: 'd_icon',
-                nodeDraggable:true,
+                nodeDraggable: true,
                 checkbox: false,
                 itemopen: false,
                 onSuccess: function () {
@@ -150,17 +149,17 @@
                      { display: '部位', name: 'ComponentName', width: 50 },
 
                     { display: '类别', name: 'Cname', width: 120 },
-                     
+
                      {
                          display: '主材￥', name: 'zc_price', type: 'float', width: 50, align: 'right', render: function (item) {
                              return "<div style='color:#135294'>" + item.zc_price + "</div>";
                          }
                      }, {
-                         display: '辅材￥', name: 'fc_price', type: 'float', width: 50, align: 'right',render: function (item) {
+                         display: '辅材￥', name: 'fc_price', type: 'float', width: 50, align: 'right', render: function (item) {
                              return "<div style='color:#135294'>" + item.fc_price + "</div>";
                          }
                      }, {
-                         display: '人工￥', name: 'rg_price', type: 'float', width: 50, align: 'right',render: function (item) {
+                         display: '人工￥', name: 'rg_price', type: 'float', width: 50, align: 'right', render: function (item) {
                              return "<div style='color:#135294'>" + item.rg_price + "</div>";
                          }
                      },
@@ -186,7 +185,7 @@
                                 }
                             }
                         },
-                         
+
 
                      //{
                      //    display: '折扣', name: 'Discount', width: 30, align: 'right',
@@ -202,7 +201,7 @@
                      //           }
                      //       }
                      //   },
-                      
+
                     { display: '单位', name: 'unit', width: 40 },
                      { display: '类型', name: 'C_style', width: 40 },
                         {
@@ -241,7 +240,7 @@
                         $(this).ligerHideTip(e);
                     });
                 },
-               // onAfterShowData: ishidecol,
+                // onAfterShowData: ishidecol,
                 //checkbox: true, name: "ischecked", checkboxAll: false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
                 onContextmenu: function (parm, e) {
                     actionproduct_id = parm.data.id;
@@ -253,14 +252,13 @@
             $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
             if (isshowzk == "Y") {
             }
-            else
-            {
+            else {
                 //g.toggleCol('Discount', false);
                 //g.toggleCol('zkje', false);
                 $("#zk1").attr("style", "display:none");
                 $("#zk2").attr("style", "display:none");
             }
-            
+
             if (IsModel == 'Y') {
                 //getmaxid();
                 $("#T_budgeid").val(getparastr("bid"));
@@ -271,9 +269,23 @@
                 $("#tbmb").attr("style", "display:none");
                 $("#T_mblx").val(tc);
             }
-           
-        })
 
+        })
+    
+        //document.onkeyup = function (event) {
+        //    var e = event || window.event;
+        //    var keyCode = e.keyCode || e.which;
+        //    switch (keyCode) {
+
+                
+        //        case 9://回车
+        //            g.endEditToNext();
+        //            break;
+        //    }
+
+        //}
+
+      
         function loadfjf(oaid) {
             $.ajax({
                 type: "GET",
@@ -292,7 +304,7 @@
                         $('.abcde').append(item);
 
                     });
-                  
+
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert(textStatus);
@@ -414,7 +426,14 @@
                                 top.$.ligerDialog.closeWaitting();
                                 fload();
                             }
-
+                           // <td class="l-grid-row-cell" columnindex="0" style="width:50px; "><div class="l-grid-row-cell-inner l-grid-row-cell-inner-fixedheight" style="width:42px; ">4</div></td>
+                            // alert(JSON.stringify(e));
+                            
+                           // var cell = g.grideditor;
+                           //var jprev = $(cell);
+                           //alert(JSON.stringify(cell));
+                          
+                           //jprev.parent("tr").next(".l-grid-row").find("td:first");
                         },
                         error: function () {
                             top.$.ligerDialog.closeWaitting();
@@ -644,7 +663,7 @@
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
                     }
-                  //  alert(obj.BudgetName); //String 构造函数
+                    //  alert(obj.BudgetName); //String 构造函数
                     $("#T_companyid").val(obj.customer_id);
                     $("#T_company").val(obj.CustomerName + "(" + obj.address + ")");
                     $("#T_budge_name").val(obj.BudgetName);
@@ -669,7 +688,7 @@
                         $("#zk1").attr("style", "display:");
                         $("#zk2").attr("style", "display:");
 
-                       
+
                     }
                     $("#T_zk").val(zk);
 
@@ -794,8 +813,8 @@
         }
 
         function f_getbjsingle(item, dialog) {
-           
-            
+
+
             if (!dialog.frame.f_select()) {
                 alert('请选择行!');
                 return;
@@ -804,14 +823,14 @@
                 var data = dialog.frame.f_select();
                 var bjid = data.id;
                 var copybj = dialog.frame.f_copybj();
-               // alert(copybj)
+                // alert(copybj)
                 //for (var i = 0; i < rows.length; i++) {
                 //    bjid = bjid + ',' + rows[i].id;
-              
+
                 $.ajax({
                     type: 'post',
-                    contentType:'application/x-www-form-urlencoded; charset=UTF-8',
-                    url: "../../data/Budge.ashx?Action=savebjcopylist&bjid=" + bjid + "&bid=" + $("#T_budgeid").val() + '&copybj=' +  copybj  + '&rdm=' + Math.random(),
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    url: "../../data/Budge.ashx?Action=savebjcopylist&bjid=" + bjid + "&bid=" + $("#T_budgeid").val() + '&copybj=' + copybj + '&rdm=' + Math.random(),
                     success: function (data) {
                         // alert(bjid);
                         var url = '../../data/Budge.ashx?Action=tree&bid=' + $("#T_budgeid").val() + '&rnd=' + Math.random();
@@ -826,7 +845,7 @@
                 });
             }
 
-           
+
 
         }
         //获取部件
@@ -977,7 +996,7 @@
                     top.$.ligerDialog.closeWaitting();
                     if (responseText == "false") {
                         dialog.frame.f_error();
-                       // top.top.$.ligerDialog.error('操作失败！请先检查此模板是否有正确明细。');
+                        // top.top.$.ligerDialog.error('操作失败！请先检查此模板是否有正确明细。');
                     }
                     else {
                         $("#T_mblx").val(rows.ModelStyle);//引用后，类型变为引用的模板类型
@@ -1004,7 +1023,7 @@
             }
             var sl = $("#T_sl").val();
             if (sl == "") sl = 0;
-            var url = '../../data/Budge.ashx?Action=saveupdatedisprice&bid=' + $("#T_budgeid").val() + "&zk=" + $("#T_zk").val() + '&sl='+sl+'&rdm=' + Math.random();
+            var url = '../../data/Budge.ashx?Action=saveupdatedisprice&bid=' + $("#T_budgeid").val() + "&zk=" + $("#T_zk").val() + '&sl=' + sl + '&rdm=' + Math.random();
             $.ajax({
                 type: 'post',
                 url: url,
@@ -1082,7 +1101,7 @@
             $.ajax({
                 type: "get",
                 url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
-                data: { Action: 'savetotal', bid: getparastr("bid"), sl: t_sl,zk:t_zk, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                data: { Action: 'savetotal', bid: getparastr("bid"), sl: t_sl, zk: t_zk, rnd: Math.random() }, /* 注意参数的格式和名称 */
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
@@ -1160,10 +1179,10 @@
                 </td>
                   </tr>
             <tr>
-                <td>
+                <td class="table_title1">
                     <div style="width: 70px; text-align: right; float: right">客户信息：</div>
                 </td>
-                <td colspan="3">
+                <td colspan="3" class="table_title1">
                          <input type="text" id="T_company" name="T_company"  ltype="text" ligerui="{width:250,disabled:true}" validate="{required:true}" />
                      <input id="T_companyid" name="T_companyid" type="hidden" />
                      <input id="T_version" name="T_version" type="hidden" />
@@ -1171,33 +1190,33 @@
                     
                 </td>
                 
-                <td>
+                <td class="table_title1">
                     <div style="width: 70px; text-align: right; float: right">预算编号：</div>
                 </td>
-                <td colspan="3">
+                <td colspan="3" class="table_title1">
                       <%--<input id="T_budgeid" name="T_budgeid" type="text" validate="{required:true}" style="width: 196px" />--%>
                     <input id="T_budgeid" name="T_budgeid" type="text" ltype="text" 
                         ligerui="{width:250,disabled:true}" validate="{required:false}" />
 
                 </td>
-                <td>
+                <td class="table_title1">
                     <div style="width: 70px; text-align: right; float: right">预算名称：</div>
                 </td>
-                <td colspan="5">
+                <td colspan="5" class="table_title1">
                     <input id="T_budge_name" name="T_budge_name" type="text" ltype="text" ligerui="{width:280}" validate="{required:false}" />                    <input id="T_employee1" name="T_employee1" type="hidden" />                </td>
              </tr>
              
             <tr    >
-                <td>  <div style="width: 70px; text-align: right; float: right">总金额：</div></td>
-                <td><input type="text"  id="T_zje" name="T_zje"  ltype="text" ligerui="{width:80,disabled:true}"   /></td>
-              <td> <div style="width: 70px; text-align: right; float: right">基建金额：</div></td>
-              <td><input type="text"  id="T_zje2" name="T_zje2"  ltype="text" ligerui="{width:80,disabled:true}"   /></td>
-                <td><div style="width: 70px; text-align: right; float: right">主材金额：</div></td>
-                <td><input type="text"  id="T_zje3" name="T_zje3"  ltype="text" ligerui="{width:80,disabled:true}"   /></td>
-                <td><div style="width: 70px; text-align: right; float: right">附加金额：</div></td>
-                <td><input type="text"  id="T_fjje" name="T_fjje"  ltype="text" ligerui="{width:80,disabled:true}"   /></td>
+                <td class="table_title1">  <div style="width: 70px; text-align: right; float: right">总金额：</div></td>
+                <td class="table_title1"><input type="text"  id="T_zje" name="T_zje"  ltype="text" ligerui="{width:80,disabled:true}"   /></td>
+              <td class="table_title1"> <div style="width: 70px; text-align: right; float: right">基建金额：</div></td>
+              <td class="table_title1"><input type="text"  id="T_zje2" name="T_zje2"  ltype="text" ligerui="{width:80,disabled:true}"   /></td>
+                <td class="table_title1"><div style="width: 70px; text-align: right; float: right">主材金额：</div></td>
+                <td class="table_title1"><input type="text"  id="T_zje3" name="T_zje3"  ltype="text" ligerui="{width:80,disabled:true}"   /></td>
+                <td class="table_title1"><div style="width: 70px; text-align: right; float: right">附加金额：</div></td>
+                <td class="table_title1"><input type="text"  id="T_fjje" name="T_fjje"  ltype="text" ligerui="{width:80,disabled:true}"   /></td>
           
-               <td colspan="6" id="tr_contact4">
+               <td colspan="6" id="tr_contact4" class="table_title1">
                    <table class="table_title1"><tr>
                         <td><div style="width: 60px; text-align: right; float: right">税金：</div></td>
                <td><input type="text"  id="T_sj" name="T_sj"  ltype="text" ligerui="{width:60,disabled:true}"   /></td>
@@ -1272,11 +1291,12 @@
                              </td>  </tr>    </table>
                     </td>
                      </tr></table>
-                </td><td colspan="2" id="zk1"   class="table_title1"> 
-           <table>
+                </td>
+                   <td colspan="2"    class="table_title1"> 
+           <table id="zk1">
                <tr>
                    <td>
-                折扣金额:
+                          折扣金额:
                    </td>
                    <td>
 
@@ -1287,8 +1307,8 @@
            </table>
                    
                      </td>
-                <td colspan="4" id="zk2"  class="table_title1">
-                    <table id="iszktable">
+                <td colspan="4"   class="table_title1">
+                    <table id="zk2">
                   <tr>
                     <td><input type="text"  value="1" id="T_zk" name="T_zk"  ltype="text" ligerui="{width:40,number: true}"   /></td>
                     <td><a id="A1" class="l-button"  position="right" style="width:50px;" onClick="addzk()"> 打折</a></td>

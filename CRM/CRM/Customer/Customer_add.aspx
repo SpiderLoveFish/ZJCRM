@@ -75,6 +75,7 @@
                     $("#T_Gender").val(obj.Gender);
                     $("#T_BNo").val(obj.BNo);
                     $("#T_RNo").val(obj.RNo);
+                    $("#T_DyNo").val(obj.DyNo);
                     $("#T_customername").val(obj.contact);
                     $("#T_address").val(obj.address);
                     $("#T_qq").val(obj.QQ);
@@ -140,62 +141,62 @@
                     //客户状态 
                     $("#T_private").ligerGetComboBoxManager().selectValue(obj.privatecustomer);
 
-                    //所属楼盘 小区名称
-                    $('#T_Community').ligerComboBox({
+                  
+                    var gCommunity = $('#T_Community').ligerComboBox({
                         width: 196,
                         initValue: obj.Community_id,
                         url: "../../data/Param_City.ashx?Action=getBuilding&rnd=" + Math.random(),
-                        onSelected: function (newvalue, newtext) {
-                           // debugger
-                            if (!newvalue) {
-                                newvalue = -1;
-                                $("#T_address").val("");//T_BNo T_RNo
-                                $("#h_address").val("");
-                            } else {
-                                //var address = newvalue;
-                                //if ($("#T_BNo").val() != "")
-                                //    address = address + $("#T_BNo").val() + '栋  '
-
-                                //if ($("#T_RNo").val() != "")
-                                //    address = address + $("#T_RNo").val() + '室  '
-
-                                //$("#T_address").val(address);//T_BNo T_RNo
-                                //$("#h_address").val(newvalue);
-                             
-                                $.get("../../data/Param_City.ashx?Action=getAddressByID&pid=" + newvalue + "&rnd=" + Math.random(),
-                                    function (data, textStatus) {
-                                        
-                                        var address = data;
-                                        if ($("#T_BNo").val() != "")
-                                            address = address + $("#T_BNo").val() + '栋'
-
-                                        if ($("#T_RNo").val() != "")
-                                            address = address + $("#T_RNo").val() + '室'
-
-                                        $("#T_address").val(address);//T_BNo T_RNo
-                                        $("#h_address").val(data);
-                                       
-                                        if ((obj.address != '') && ci > 0) { ci=true; }
-                                        else
-                                        {
-                                            $("#T_address").val(obj.address);//T_BNo T_RNo
-                                            ci=true;
-                                        }
-
-                                    });
-
-
-                            }
-                        },
-                        emptyText: '（空）'
+                        onBeforeOpen: f_selectComm 
+                       
                     });
-                    $("#T_BNo,#T_RNo").change(function () {
+                    //所属楼盘 小区名称
+                    //$('#T_Community').ligerComboBox({
+                    //    width: 196,
+                    //    initValue: obj.Community_id,
+                    //    url: "../../data/Param_City.ashx?Action=getBuilding&rnd=" + Math.random(),
+                    //    onSelected: function (newvalue, newtext) {
+                    //       // debugger
+                    //        if (!newvalue) {
+                    //            newvalue = -1;
+                    //            $("#T_address").val("");//T_BNo T_RNo
+                    //            $("#h_address").val("");
+                    //        } else {
+                    //            $.get("../../data/Param_City.ashx?Action=getAddressByID&pid=" + newvalue + "&rnd=" + Math.random(),
+                    //               function (data, textStatus) {
+
+                    //                   var address = data;
+                    //                   if ($("#T_BNo").val() != "")
+                    //                       address = address + $("#T_BNo").val() + '栋'
+
+                    //                   if ($("#T_RNo").val() != "")
+                    //                       address = address + $("#T_RNo").val() + '室'
+
+                    //                   $("#T_address").val(address);//T_BNo T_RNo
+                    //                   $("#h_address").val(data);
+
+                    //                   if ((obj.address != '') && ci > 0) { ci = true; }
+                    //                   else
+                    //                   {
+                    //                       $("#T_address").val(obj.address);//T_BNo T_RNo
+                    //                       ci = true;
+                    //                   }
+
+                    //               });
+
+                              
+
+                    //        }
+                    //    },
+                    //    emptyText: '（空）'
+                    //});
+                    $("#T_BNo,#T_RNo,#T_DyNo").change(function () {
                         
                         //if ($("#h_address").val() == "") return;
                         var address = $("#h_address").val();
                         if ($("#T_BNo").val() != "")
                             address = address + $("#T_BNo").val() + '栋'
-
+                        if ($("#T_DyNo").val() != "")
+                            address = address + $("#T_DyNo").val() + '单元'
                         if ($("#T_RNo").val() != "")
                             address = address + $("#T_RNo").val() + '室'
 
@@ -203,65 +204,65 @@
                     });
 
 
-
-                    //d = $('#T_Community').ligerComboBox({
-                    //    width: 196,
-                    //    initValue: obj.Community_id,
-                    //    url: "custom.ashx?Action=getBuilding&rnd=" + Math.random(),
-                    //    onSelected: function (newvalue, newtext) {
-                    //        if (!newvalue)
-                    //            newvalue = -1;
-                    //    },
-                    //    emptyText: '（空）'
-                    //});
-
-                    ////地区
-                    //b = $('#T_Towns').ligerComboBox({
-                    //    width: 97,
-                    //    initValue: obj.Towns_id,
-                    //    //url: "../../data/Param_City.ashx?Action=combo&rnd=" + Math.random(),
-                    //    onSelected: function (newvalue, newtext) {
-                    //        if (!newvalue)
-                    //            newvalue = -1;
-                    //        $.get("../../data/Param_City.ashx?Action=combo2&pid=" + newvalue + "&rnd=" + Math.random(), function (data, textStatus) {
-                    //            a.setData(eval(data));
-                    //            a.selectValue(obj.Community_id);
-                    //        });
-                    //    }, emptyText: '（空）'
-                    //});
-                    ////城市
-                    //c = $('#T_City').ligerComboBox({
-                    //    width: 97,
-                    //    initValue: obj.City_id,
-                    //    //url: "../../data/Param_City.ashx?Action=combo&rnd=" + Math.random(),
-                    //    onSelected: function (newvalue, newtext) {
-                    //        if (!newvalue)
-                    //            newvalue = -1;
-                    //        $.get("../../data/Param_City.ashx?Action=combo2&pid=" + newvalue + "&rnd=" + Math.random(), function (data, textStatus) {
-                    //            b.setData(eval(data));
-                    //            b.selectValue(obj.Towns_id);
-                    //        });
-                    //    }, emptyText: '（空）'
-                    //});
-
-                    ////省份
-                    //d = $('#T_Provinces').ligerComboBox({
-                    //    width: 97,
-                    //    initValue: obj.Provinces_id,
-                    //    url: "../../data/Param_City.ashx?Action=combo1&rnd=" + Math.random(),
-                    //    onSelected: function (newvalue, newtext) {
-                    //        if (!newvalue)
-                    //            newvalue = -1;
-                    //        $.get("../../data/Param_City.ashx?Action=combo2&pid=" + newvalue + "&rnd=" + Math.random(), function (data, textStatus) {
-                    //            c.setData(eval(data));
-                    //            c.selectValue(obj.City_id);
-                    //        });
-                    //    }, emptyText: '（空）'
-                    //});
+ 
+          
 
                 }
             });
         }
+
+        function f_selectComm() {
+            top.$.ligerDialog.open({
+                zindex: 9003,
+                title: '选择楼盘小区', width: 850, height: 400,
+
+                //url: " hr/Getemp_Auth.aspx?auth=1", buttons: [
+                url: "CRM/Customer/SelectCommunity.aspx", buttons: [
+                    { text: '确定', onclick: f_selectCommOK },
+                    { text: '取消', onclick: f_selectContactCancel }
+                ]
+            });
+            return false;
+        }
+        function f_selectCommOK(item, dialog) {
+            var data = dialog.frame.f_select();
+            if (!data) {
+                alert('请选择楼盘小区!');
+                return;
+            }
+            filltempComm(data.id, data.Name);
+            dialog.close();
+        }
+
+        function filltempComm(newvalue, text)
+        {
+            $('#T_Community_val').val(newvalue);
+            $("#T_Community").val(text)
+            $.get("../../data/Param_City.ashx?Action=getAddressByID&pid=" + newvalue + "&rnd=" + Math.random(),
+                                     function (data, textStatus) {
+
+                                         var address = data;
+                                         if ($("#T_BNo").val() != "")
+                                             address = address + $("#T_BNo").val() + '栋'
+                                         if ($("#T_DyNo").val() != "")
+                                             address = address + $("#T_DyNo").val() + '单元'
+                                         if ($("#T_RNo").val() != "")
+                                             address = address + $("#T_RNo").val() + '室'
+
+                                         $("#T_address").val(address);//T_BNo T_RNo
+                                         $("#h_address").val(data);
+
+                                         if ((obj.address != '') && ci > 0) { ci = true; }
+                                         else
+                                         {
+                                             $("#T_address").val(obj.address);//T_BNo T_RNo
+                                             ci = true;
+                                         }
+
+                                     });
+
+        }
+
         function f_selectContact() {
             top.$.ligerDialog.open({
                 zindex: 9003,
@@ -432,6 +433,7 @@
                     </div>--%>
                     <div style="width: 196px; float: left">
                         <input id="T_Community" name="T_Community" type="text" validate="{required:true}"  />
+                         
                     </div>
                 </td>
                 <td>
@@ -465,14 +467,17 @@
                 </td>
 
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">房号：</div>
+                    <div style="width: 80px; text-align: right; float: right">单元/房号：</div>
                 </td>
                 <td>
-
-                    <div style="width: 98px; float: left">
-                        <input type="text" id="T_RNo" name="T_RNo" ltype="text" ligerui="{width:96}" />
+                    <div style="width: 88px; float: left">
+                        <input type="text" id="T_DyNo" name="T_DyNo" ltype="text" ligerui="{width:86}" />
                     </div>
-                    <div style="width: 80px; text-align: left; float: right">室</div>
+                    <div style="width: 10px; text-align: center; float: left">/</div>
+                    <div style="width: 88px; float: left">
+                        <input type="text" id="T_RNo" name="T_RNo" ltype="text" ligerui="{width:86}" />
+                    </div>
+                   <%-- <div style="width: 80px; text-align: left; float: right">室</div>--%>
                 </td>
             </tr>
             <tr>

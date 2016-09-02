@@ -175,6 +175,7 @@ namespace XHD.CRM.Data
                 model.Gender = PageValidate.InputText(request["T_Gender"], 50);
                 model.BNo = PageValidate.InputText(request["T_BNo"], 50);
                 model.RNo = PageValidate.InputText(request["T_RNo"], 50);
+                model.DyNo = PageValidate.InputText(request["T_DyNo"], 50);
 
                 string ctypeid = request["T_customertype_val"];
                 if (string.IsNullOrEmpty(ctypeid))

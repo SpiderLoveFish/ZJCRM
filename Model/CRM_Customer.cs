@@ -28,6 +28,7 @@ namespace XHD.Model
         private string _community;
         private string _bNo;
         private string _rNo;
+        private string _dyNo;
         private string _gender;
         private int? _customertype_id;
         private string _customertype;
@@ -214,7 +215,11 @@ namespace XHD.Model
             set { _bNo = value; }
             get { return _bNo; }
         }
-
+        public string DyNo
+        {
+            set { _dyNo = value; }
+            get { return _dyNo; }
+        }
         /// <summary>
         /// 
         /// </summary>
