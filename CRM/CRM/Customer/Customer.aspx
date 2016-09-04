@@ -544,7 +544,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                $.ligerDialog.confirm("确定删除？", function (yes) {
+                $.ligerDialog.confirm("确定就隐藏吗？", function (yes) {
                     if (yes) {
                         $.ajax({
                             url: "../../data/CRM_Customer.ashx", type: "POST",
