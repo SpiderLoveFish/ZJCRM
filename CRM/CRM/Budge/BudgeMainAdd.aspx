@@ -284,7 +284,29 @@
         //    }
 
         //}
+        function updateall()
+        {
+            if (getparastr("style") != null || getparastr("status") == "1") {
+                top.$.ligerDialog.error('非编辑状态无法编辑！');
+                return;
+            }
+            var node = treemanager.getSelected();
+            if (node) {
+                top.$.ligerDialog.open({
+                    zindex: 9003,
+                    title: '编辑' + node.data.text + '明细', width: 950, height: 600,
+                    url: "CRM/Budge/BudgeMainAdd_Detail.aspx?bjmc=" + node.data.text + "&bid=" + $("#T_budgeid").val(), buttons: [
+            
+                      { text: '取消', onclick: f_selectContactCancel }
+                    ]
+                });
+                return false;
 
+            } else {
+                top.$.ligerDialog.error('请先部位选择节点！');  
+            }
+
+        }
       
         function loadfjf(oaid) {
             $.ajax({
@@ -389,9 +411,7 @@
 
         }
 
-        function ishidecol() {
-
-        }
+ 
 
         //只允许编辑前3行
         function f_onBeforeEdit(e) {
@@ -425,6 +445,8 @@
                             if (responseText == "true") {
                                 top.$.ligerDialog.closeWaitting();
                                 fload();
+                            } else {
+                                top.$.ligerDialog.error('修改失败！', "", null, 9003);
                             }
                            // <td class="l-grid-row-cell" columnindex="0" style="width:50px; "><div class="l-grid-row-cell-inner l-grid-row-cell-inner-fixedheight" style="width:42px; ">4</div></td>
                             // alert(JSON.stringify(e));

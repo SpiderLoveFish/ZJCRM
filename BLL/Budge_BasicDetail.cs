@@ -51,9 +51,9 @@ namespace XHD.BLL
 		{
 			return dal.Update(model);
 		}
-        public bool UpdateSum(decimal sum, int id, string bid)
+        public bool UpdateSum(decimal sum, int id, string bid,int orderby)
         {
-            return dal.UpdateSum(sum,id,bid);
+            return dal.UpdateSum(sum, id, bid, orderby);
         }
         //折扣价格
         public bool UpdateDisPrice(decimal sum,   string bid)

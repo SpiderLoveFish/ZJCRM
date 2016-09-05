@@ -201,22 +201,41 @@ namespace XHD.DAL
 			}
 		}
 
-        public bool UpdateSum(decimal sum, int id, string bid)
+        public bool UpdateSum(decimal sum, int id, string bid,int orderby)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("update Budge_BasicDetail set ");
-            strSql.Append("SUM="+sum+"");
-            strSql.Append(" where id="+id+" and budge_id='" + bid + "'");
-            SqlParameter[] parameters = { };
-            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
-            if (rows > 0)
-            {
-                return true;
-            }
+             if (orderby>0)
+             {
+                 strSql.Append("update Budge_BasicDetail set ");
+
+                 strSql.Append("OrderBy=" + orderby + "");
+                 strSql.Append(" where id=" + id + " and budge_id='" + bid + "'");
+             }
+          
+            else if (sum >  0)
+             {
+                 strSql.Append("update Budge_BasicDetail set ");
+                 strSql.Append("SUM=" + sum + "");
+                 strSql.Append(" where id=" + id + " and budge_id='" + bid + "'");
+             }
+             if (sum == 0 && orderby == 0)
+                 return true;
             else
-            {
-                return false;
-            }
+             {
+                 SqlParameter[] parameters = { };
+                 int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+                 if (rows > 0)
+                 {
+                     return true;
+                 }
+                 else
+                 {
+
+
+                     return false;
+                 }
+             }
+            
         }
 
         public bool UpdateDisPrice(decimal zk, string bid)

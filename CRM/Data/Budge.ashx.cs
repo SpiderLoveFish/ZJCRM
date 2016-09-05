@@ -328,14 +328,23 @@ namespace XHD.CRM.Data
                 decimal  sum = StringToDecimal(request["editsum"]);
                 string bid=PageValidate.InputText(request["bid"], 50);
                 string id = PageValidate.InputText(request["id"], 50);
+
+                int orderby = StringToInt(request["editorderby"]);
+               
+
                 if (!string.IsNullOrEmpty(id) && id != "null")
                 {
-                    if (bbdetail.UpdateSum(sum,StringToInt(id),bid))
+                    if (orderby<0)
+                        if (bbdetail.UpdateSum(sum, StringToInt(id), bid, 0))
                         context.Response.Write("true");
                     else context.Response.Write("false");
 
+                    if (sum<0)
+                        if (bbdetail.UpdateSum(0, StringToInt(id), bid, orderby))
+                            context.Response.Write("true");
+                        else context.Response.Write("false");
                 }
-                log.add_trace(bid, "", "saveupdatesum", empname);  
+                //log.add_trace(bid, "", "saveupdatesum", empname);  
             }
 
             //保存备注
@@ -719,7 +728,7 @@ namespace XHD.CRM.Data
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " ComponentName";
+                    sortname = " ISNULL(OrderBy,0), ComponentName   ";
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
 
