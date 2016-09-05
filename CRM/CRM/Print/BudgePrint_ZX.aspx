@@ -207,7 +207,7 @@
                            obj[n] = "";
                    }
 
-                   $("#T_bz").html(obj.DescribeName);
+                   $("#T_bzsm").html(obj.DescribeName);
 
                },
                error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -238,9 +238,7 @@
           
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
 
-           LODOP.NewPageA();           // LODOP.SET_PRINT_STYLEA(0, "LinkNewPage", true);
-           LODOP.ADD_PRINT_HTM(-100, "1%", "90%", "90%", document.getElementById("div5").innerHTML);
-           LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 3);
+        
 
            //LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 1);//去掉就每页都有
            //这样每页都有
@@ -256,7 +254,11 @@
            //LODOP.ADD_PRINT_TEXT(3,34,196,20,"总页眉：《两个发货单的演示》");
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
 
-          
+
+           LODOP.NewPageA();
+
+           LODOP.ADD_PRINT_HTM("12%", "5%", "90%", "90%", document.getElementById("div5").innerHTML);
+
 
            LODOP.PREVIEW();
        };
@@ -451,7 +453,8 @@
   <TBODY>
       <tr>
              <DIV align=center><b>备注说明</b></DIV> 
-        <DIV<SPAN id="T_bz" ></SPAN>	</DIV>  
+        <DIV>
+             <SPAN id="T_bzsm" name="T_bzsm" ></SPAN>		</DIV>  
 <td></td>
       </tr>
       </TBODY>

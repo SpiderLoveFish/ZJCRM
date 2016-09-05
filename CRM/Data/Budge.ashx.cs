@@ -344,6 +344,7 @@ namespace XHD.CRM.Data
                 string id = PageValidate.InputText(request["id"], 50);
                 string T_sname = PageValidate.InputText(request["T_sname"], 250);
                 string T_dname = PageValidate.InputText(request["T_Remark"], int.MaxValue);
+                T_dname = T_dname.Replace("&lt;", "<").Replace("&gt;", ">");
                 if (!string.IsNullOrEmpty(id) && id != "null")
                 {
                     bbb.SavePrintDesc(T_sname,T_dname,id);
