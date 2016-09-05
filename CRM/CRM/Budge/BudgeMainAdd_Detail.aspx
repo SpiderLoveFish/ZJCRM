@@ -7,7 +7,7 @@
      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
       <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
     <title></title>
-   <link href="../../CSS/input.css" rel="stylesheet" />
+     <link href="../../CSS/input.css" rel="stylesheet" />
       <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/styles.css" rel="stylesheet" />
       <link href="../../jlui3.2/lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
@@ -63,6 +63,7 @@
          }
          //编辑后事件 
          function f_onAfterEdit(e) {
+           //  alert(JSON.stringify(e.record.id))
              if (e.column.name == "SUM" || e.column.name == "OrderBy") {
                  var manager = $("#maingrid4").ligerGetGridManager();
                  var row = manager.getSelectedRow();
@@ -72,7 +73,7 @@
                  if (row) {
                      $.ajax({
                          url: "../../data/Budge.ashx", type: "POST",
-                         data: { Action: "saveupdatesum", bid: bid, id: row.id, editorderby: obvalue, editsum: sumvalue, rnd: Math.random() },
+                         data: { Action: "saveupdatesum", bid: bid, id: e.record.id, editorderby: obvalue, editsum: sumvalue, rnd: Math.random() },
                          success: function (responseText) {
 
                              if (responseText == "true") {
@@ -164,8 +165,6 @@
                          pageSize: 20,
                          pageSizeOptions: [20, 30, 50, 100],
                          heightDiff: -1,
-                         enabledEdit: true,
-                         allowHideColumn: true,
                          onBeforeSubmitEdit: f_onBeforeSubmitEdit,
                          onAfterEdit: f_onAfterEdit,
                          onAfterShowData: function (grid) {
