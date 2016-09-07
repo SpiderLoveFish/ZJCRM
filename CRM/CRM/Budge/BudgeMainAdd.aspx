@@ -295,7 +295,7 @@
                 top.$.ligerDialog.open({
                     zindex: 9003,
                     title: '±à¼­' + node.data.text + 'Ã÷Ï¸', width: 950, height: 600,
-                    url: "CRM/Budge/BudgeMainAdd_Detail.aspx?bjmc=" + node.data.text + "&bid=" + $("#T_budgeid").val(), buttons: [
+                    url: "CRM/Budge/BudgeMainAdd_Detail.aspx?bjmc=" + decodeuri(node.data.text) + "&bid=" + $("#T_budgeid").val(), buttons: [
             
                       { text: 'È¡Ïû', onclick: f_selectContactCancel }
                     ]

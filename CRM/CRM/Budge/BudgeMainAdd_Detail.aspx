@@ -7,7 +7,7 @@
      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
       <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
     <title></title>
-     <link href="../../CSS/input.css" rel="stylesheet" />
+   <link href="../../CSS/input.css" rel="stylesheet" />
       <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/styles.css" rel="stylesheet" />
       <link href="../../jlui3.2/lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
@@ -31,14 +31,14 @@
     <script src="../../JS/XHD.js" type="text/javascript"></script>
          <script src="../../lib/jquery.form.js" type="text/javascript"></script>
          <script src="../../JS/Toolbar.js" type="text/javascript"></script>
-     <script type="text/javascript">
+      <script type="text/javascript">
          var manager = ""; var g, ck;
          var bjmc, bid, gcombgys;
          $(function () {
              $("form").ligerForm();
 
            //  $('input:checkbox').ligerCheckBox();
-             bjmc = getparastr("bjmc");
+             bjmc = encodeURI(getparastr("bjmc"));
              
              bid = getparastr("bid");
              
@@ -201,10 +201,6 @@
  </head>
     <body style="padding: 0px;overflow:hidden;">
     <form id="form1" onsubmit="return false">
-    
-        <div>
-         
-        </div>
    
             <div id="divcenter" position="center">
            
