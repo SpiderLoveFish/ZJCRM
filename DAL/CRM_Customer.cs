@@ -858,7 +858,7 @@ namespace XHD.DAL
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
             strSql.Append(" top " + PageSize + " a.id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces,City,Towns,Community,BNo,DyNo,RNo,Gender,CustomerType,CustomerLevel,CustomerSource,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,a.Create_date,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,DesCripe,WXZT_ID,WXZT_NAME,QQ,JKDZ,hxt,jgqjt,b.setcolor,c.setcolor as indcolor FROM CRM_Customer a LEFT JOIN dbo.Param_SysParam b ON a.CustomerType_id=b.id LEFT JOIN dbo.Param_SysParam c ON a.industry_id=c.id ");
-            strSql.Append(" WHERE a.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_Customer ");
+            strSql.Append(" WHERE a.Serialnumber not in ( SELECT top " + (PageIndex - 1) * PageSize + " Serialnumber FROM CRM_Customer ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(id) FROM CRM_Customer a ");
             if (strWhere.Trim() != "")

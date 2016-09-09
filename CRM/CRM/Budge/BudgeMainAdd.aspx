@@ -287,7 +287,7 @@
         function updateall()
         {
             if (getparastr("style") != null || getparastr("status") == "1") {
-                top.$.ligerDialog.error('非编辑状态无法编辑！');
+                top.$.ligerDialog.error('非编辑状态无法复制！');
                 return;
             }
             var node = treemanager.getSelected();
@@ -295,7 +295,7 @@
                 top.$.ligerDialog.open({
                     zindex: 9003,
                     title: '编辑' + node.data.text + '明细', width: 950, height: 600,
-                    url: "CRM/Budge/BudgeMainAdd_Detail.aspx?bjmc=" + decodeuri(node.data.text) + "&bid=" + $("#T_budgeid").val(), buttons: [
+                    url: "CRM/Budge/BudgeMainAdd_Detail.aspx?bjmc=" + encodeURI(node.data.text) + "&bid=" + $("#T_budgeid").val(), buttons: [
             
                       { text: '取消', onclick: f_selectContactCancel }
                     ]
@@ -439,7 +439,7 @@
                 if (row) {
                     $.ajax({
                         url: "../../data/Budge.ashx", type: "POST",
-                        data: { Action: "saveupdatesum", bid: $("#T_budgeid").val(), id: row.id, editsum: e.value, rnd: Math.random() },
+                        data: { Action: "saveupdatesum", bid: $("#T_budgeid").val(), id: row.id,editorderby:-1, editsum: e.value, rnd: Math.random() },
                         success: function (responseText) {
 
                             if (responseText == "true") {

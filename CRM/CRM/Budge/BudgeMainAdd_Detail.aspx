@@ -38,8 +38,8 @@
              $("form").ligerForm();
 
            //  $('input:checkbox').ligerCheckBox();
-             bjmc = encodeURI(getparastr("bjmc"));
-             
+             bjmc = decodeURI(getparastr("bjmc"));
+            // alert(bjmc)
              bid = getparastr("bid");
              
              initLayout();
