@@ -412,6 +412,8 @@ namespace XHD.CRM.Data
                     sortorder = " desc";
 
                 string sorttext = " " + sortname + " " + sortorder;
+                if (string.IsNullOrEmpty(sorttext))
+                    sorttext += " ,id asc";
 
                 string Total;
                 string serchtxt = null;
