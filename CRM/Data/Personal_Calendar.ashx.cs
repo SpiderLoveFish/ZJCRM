@@ -141,8 +141,8 @@ namespace XHD.CRM.Data
             }
             if (request["Action"] == "Today")
             {
-                DateTime starttime = DateTime.Parse(DateTime.Now.ToShortDateString() + " 00:00:00");
-                DateTime endtime = DateTime.Parse(DateTime.Now.AddDays(1).ToShortDateString() + " 00:00:00");
+                DateTime starttime = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
+                DateTime endtime = DateTime.Parse(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd") + " 00:00:00");
 
                 //DataSet ds = calendar.GetList(0, "datediff(day,[StartTime],getdate())=0 and datediff(day,[EndTime],getdate())=0 and emp_id=" + int.Parse(emp_id), "[StartTime] desc");
 

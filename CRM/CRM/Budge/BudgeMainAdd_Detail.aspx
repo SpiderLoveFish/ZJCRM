@@ -132,11 +132,7 @@
                              }
                          }
                      },
-                     {
-                         display: "排序顺序", name: "OrderBy", type: "int", align: "right", width: 60,
-                         editor: { type: "int" } 
-                         
-                     },
+                     
                         {
                             display: "金额￥", name: "je", type: "float", width: 50, align: 'right',
                             totalSummary: {
@@ -149,19 +145,24 @@
                                 { display: '单位', name: 'unit', width: 40 },
                              { display: '类型', name: 'C_style', width: 40 },
                         {
-                            display: '工艺说明', name: 'proremarks', align: 'left', width: 150, render: function (item) {
+                            display: '工艺说明', name: 'proremarks', align: 'left', width: 100, render: function (item) {
                                 var html = "<div class='abc'>";
                                 if (item.proremarks)
                                     html += item.proremarks;
                                 html += "</div>";
                                 return html;
                             }
+                        },
+                        {
+                            display: "排序顺序", name: "OrderBy", type: "int", align: "right", width: 60,
+                            editor: { type: "int" }
+
                         }
                          ],
                          enabledEdit: true, isScroll: true,
                          rownumbers: true,
                          dataAction: 'server',
-                         url: "../../data/Budge.ashx?Action=griddetail&bid=" + bid + "&compname=" + bjmc + "&rnd=" + Math.random(),
+                         url: "../../data/Budge.ashx?Action=griddetail&bid=" + bid + "&compname=" + escape(bjmc) + "&rnd=" + Math.random(),
                          pageSize: 20,
                          pageSizeOptions: [20, 30, 50, 100],
                          heightDiff: -1,
