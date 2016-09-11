@@ -853,7 +853,7 @@ namespace XHD.CRM.Data
                     serchtxt += " OR Emp_sg like '%" + PageValidate.InputText(request["company"], 255) + "%' )";
 
                 }
-
+                serchtxt += DataAuth(emp_id.ToString());
                 string dt = "";
                 BLL.CRM_CEStage ccpc = new BLL.CRM_CEStage();
                 DataSet ds = ccpc.GetListCustomer(PageSize, PageIndex, serchtxt, sorttext, out Total);
