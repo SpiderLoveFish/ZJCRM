@@ -93,8 +93,8 @@ namespace Budge_Rate
                     var cookie = Request.Cookies[FormsAuthentication.FormsCookieName];
                     var ticket = FormsAuthentication.Decrypt(cookie.Value);
                     var sb = new System.Text.StringBuilder();
-                    sb.AppendLine("SELECT * FROM dbo.Budge_Rate ");
-                    sb.AppendLine("WHERE ID=" + ID);
+                    sb.AppendLine("SELECT * FROM dbo.Budge_Rate_Ver ");
+                    sb.AppendLine("WHERE rateid=" + ID);
                     var rv = SqlDB.ExecuteDataTable(sb.ToString());
                     if (!rv.Result)
                         Response.Write(rv.Message);
@@ -102,7 +102,7 @@ namespace Budge_Rate
                     {
                         if (rv.Output1.Rows.Count > 0)
                         {
-                            Response.Write("不能重复删除！");
+                            Response.Write("此附加费已使用，不能删除！");
                             return;
                         }
                     }

@@ -149,12 +149,12 @@
                        else sum = data['SUM'];
                        if (data['ComponentName'] != cn) {
                            item = "<tr><td align='left' colspan='9' ><font size='2' ><b>&nbsp;&nbsp;" + data['ComponentName'] + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ºÏ¼Æ£º" + data['BwSubTotal'] + ")</b></font></td></tr>"
-                           + "<tr><td >" + data['Cname'] + data['brand'] + "</td><td align='right'>" + data['zc_price'].toFixed(2) + "</td><td align='right'>" + data['fc_price'].toFixed(2) + "</td><td align='right'>" + data['rg_price'].toFixed(2) + "</td><td align='right'>" + data['TotalPrice'].toFixed(2) + "</td><td align='right'>" + sum.toFixed(2) + "</td> "
+                           + "<tr><td >"+ data['brand'] + "</td><td align='right'>" + data['zc_price'].toFixed(2) + "</td><td align='right'>" + data['fc_price'].toFixed(2) + "</td><td align='right'>" + data['rg_price'].toFixed(2) + "</td><td align='right'>" + data['TotalPrice'].toFixed(2) + "</td><td align='right'>" + sum.toFixed(2) + "</td> "
                                + " <td align='right'>" + data['je'].toFixed(2) + "</td><td>" + data['unit'] + "</td> <td>" + data['proremarks'].replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>") + "</td>"
                                + " </tr>";
                        }
                        else {
-                           item = "<tr><td>" + data['Cname'] + data['brand'] + "</td><td align='right'>" + data['zc_price'].toFixed(2) + "</td><td align='right'>" + data['fc_price'].toFixed(2) + "</td><td align='right'>" + data['rg_price'].toFixed(2) + "</td><td align='right'>" + data['TotalPrice'].toFixed(2) + "</td><td align='right'>" + sum.toFixed(2) + "</td> "
+                           item = "<tr><td>" + data['brand'] + "</td><td align='right'>" + data['zc_price'].toFixed(2) + "</td><td align='right'>" + data['fc_price'].toFixed(2) + "</td><td align='right'>" + data['rg_price'].toFixed(2) + "</td><td align='right'>" + data['TotalPrice'].toFixed(2) + "</td><td align='right'>" + sum.toFixed(2) + "</td> "
                                + " <td align='right'>" + data['je'].toFixed(2) + "</td><td>" + data['unit'] + "</td> <td>" + data['proremarks'].replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>") + "</td>"
                                + " </tr>";
                        }

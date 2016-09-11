@@ -130,7 +130,7 @@
                 $.ligerDialog.confirm("确定删除？", function (yes) {
                     if (yes) {
                         $.ajax({
-                            url: "Budge_Rate_Add.aspx?cmd=del&cid=" + row.ID + "&rnd=" + Math.random(), type: "POST",
+                            url: "Budge_Rate_Add.aspx?cmd=del&cid=" + row.id + "&rnd=" + Math.random(), type: "POST",
                             success: function (data) {
                                 if (data == "") {
                                     f_reload();

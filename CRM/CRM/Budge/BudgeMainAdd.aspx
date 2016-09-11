@@ -144,7 +144,11 @@
             g = $("#maingrid4").ligerGrid({
                 columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
+                     {
+                         display: "排序", name: "OrderBy", type: "int", align: "right", width: 40,
+                         editor: { type: "int" }
 
+                     },
                     { display: '名称', name: 'product_name', width: 120 },
                      { display: '部位', name: 'ComponentName', width: 50 },
 
@@ -297,7 +301,7 @@
                     title: '编辑' + node.data.text + '明细', width: 950, height: 600,
                     url: "CRM/Budge/BudgeMainAdd_Detail.aspx?bjmc=" + encodeURI(node.data.text) + "&bid=" + $("#T_budgeid").val(), buttons: [
             
-                      { text: '取消', onclick: f_selectContactCancel }
+                      { text: '保存', onclick: f_selectContactCancel }
                     ]
                 });
                 return false;

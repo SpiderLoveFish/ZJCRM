@@ -101,40 +101,35 @@
  
                  g=    $("#maingrid4").ligerGrid({
                          columns: [
-                               { display: '名称', name: 'product_name', width: 120 },
-                     { display: '部位', name: 'ComponentName', width: 50 },
+                               { display: '名称', name: 'product_name', width: 80 },
+                     //{ display: '部位', name: 'ComponentName', width: 60 },
 
-                    { display: '类别', name: 'Cname', width: 120 },
+                    { display: '类别', name: 'Cname', width: 80 },
 
                      {
-                         display: '主材￥', name: 'zc_price', type: 'float', width: 50, align: 'right', render: function (item) {
+                         display: '主材￥', name: 'zc_price', type: 'float', width: 60, align: 'right', render: function (item) {
                              return "<div style='color:#135294'>" + item.zc_price + "</div>";
                          }
                      }, {
-                         display: '辅材￥', name: 'fc_price', type: 'float', width: 50, align: 'right', render: function (item) {
+                         display: '辅材￥', name: 'fc_price', type: 'float', width: 60, align: 'right', render: function (item) {
                              return "<div style='color:#135294'>" + item.fc_price + "</div>";
                          }
                      }, {
-                         display: '人工￥', name: 'rg_price', type: 'float', width: 50, align: 'right', render: function (item) {
+                         display: '人工￥', name: 'rg_price', type: 'float', width: 60, align: 'right', render: function (item) {
                              return "<div style='color:#135294'>" + item.rg_price + "</div>";
                          }
                      },
                      {
-                         display: '总价￥', name: 'TotalPrice', type: 'float', width: 50, align: 'right'
-                     },
-                     {
-                         display: "数量", name: "SUM", type: "float", align: "right", width: 60,
-                         editor: { type: "float" },
-                         totalSummary: {
-                             //type:'sum,count,max,min,avg'
-                             render: function (suminf, column) {
-                                 return "<span style='color:red'>" + suminf.sum.toFixed(2) + "</span>";
-                             }
-                         }
+                         display: '总价￥', name: 'TotalPrice', type: 'float', width: 60, align: 'right'
                      },
                      
+                     //{
+                     //    display: "排序顺序", name: "OrderBy", type: "int", align: "right", width: 60,
+                     //    editor: { type: "int" } 
+                         
+                     //},
                         {
-                            display: "金额￥", name: "je", type: "float", width: 50, align: 'right',
+                            display: "金额￥", name: "je", type: "float", width: 60, align: 'right',
                             totalSummary: {
                                 //type:'sum,count,max,min,avg'
                                 render: function (suminf, column) {
@@ -142,27 +137,31 @@
                                 }
                             }
                         },
-                                { display: '单位', name: 'unit', width: 40 },
+                                { display: '单位', name: 'unit', width: 60 },
                              { display: '类型', name: 'C_style', width: 40 },
                         {
-                            display: '工艺说明', name: 'proremarks', align: 'left', width: 100, render: function (item) {
+                            display: '工艺说明', name: 'proremarks', align: 'left', width: 60, render: function (item) {
                                 var html = "<div class='abc'>";
                                 if (item.proremarks)
                                     html += item.proremarks;
                                 html += "</div>";
                                 return html;
                             }
-                        },
-                        {
-                            display: "排序顺序", name: "OrderBy", type: "int", align: "right", width: 60,
-                            editor: { type: "int" }
-
+                        }, {
+                            display: "数量", name: "SUM", type: "float", align: "right", width: 60,
+                            editor: { type: "float" },
+                            totalSummary: {
+                                //type:'sum,count,max,min,avg'
+                                render: function (suminf, column) {
+                                    return "<span style='color:red'>" + suminf.sum.toFixed(2) + "</span>";
+                                }
+                            }
                         }
                          ],
                          enabledEdit: true, isScroll: true,
                          rownumbers: true,
                          dataAction: 'server',
-                         url: "../../data/Budge.ashx?Action=griddetail&bid=" + bid + "&compname=" + escape(bjmc) + "&rnd=" + Math.random(),
+                         url: "../../data/Budge.ashx?Action=griddetail&bid=" + bid + "&compname=" + escape( bjmc) + "&rnd=" + Math.random(),
                          pageSize: 20,
                          pageSizeOptions: [20, 30, 50, 100],
                          heightDiff: -1,

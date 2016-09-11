@@ -262,7 +262,8 @@
                         text: '撤回', onclick: function (item, dialog) {
                             f_saveret(item, dialog);
                         }
-                    },
+                    }
+                    ,
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();
@@ -285,12 +286,13 @@
                              text: '保存&提交', onclick: function (item, dialog) {
                                  f_submit(item, dialog);
                              }
-                         },
-                        {
-                            text: '关闭', onclick: function (item, dialog) {
-                                dialog.close();
-                            }
-                        }
+                         }
+                        // ,
+                        //{
+                        //    text: '关闭', onclick: function (item, dialog) {
+                        //        dialog.close();
+                        //    }
+                        //}
                 ], isResize: true, showToggle: true, timeParmName: 'a'
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);

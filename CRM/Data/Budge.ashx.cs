@@ -683,8 +683,10 @@ namespace XHD.CRM.Data
                 }
 
                 //权限
-                serchtxt += DataAuth(emp_id.ToString());
-
+                if (ISMODEL == "N")//如果不是模板下面生效
+                {
+                    serchtxt += DataAuth(emp_id.ToString());
+                }
                 string dt = "";
 
                 DataSet ds = bbb.GetBudge_BasicMain(PageSize, PageIndex, serchtxt, sorttext, out Total);
