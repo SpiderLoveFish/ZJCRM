@@ -666,6 +666,10 @@ namespace XHD.CRM.Data
                     {
                         serchtxt += " and IsStatus=3";
                     }
+                    else if (str_condition == "2")
+                    {
+                        serchtxt += " and IsStatus=2";
+                    }
                     else
                     {
                         serchtxt += " and IsStatus not in(-1)";

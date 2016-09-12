@@ -34,11 +34,19 @@
     <script src="../../JS/XHD.js" type="text/javascript"></script>
      <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script type="text/javascript">
-        var manager = "";
+        var manager = ""; var aprstyle = "apr";
         $(function () {
+          
+          
             var urlstr = "../../data/Budge.ashx?Action=grid&str_condition=1";
             if (getparastr("isprint") == "Y")
                 urlstr = "../../data/Budge.ashx?Action=grid"
+            else if (getparastr("CustOK") == "Y")
+            {
+                aprstyle = "aprCustOK";//审核时候用到
+                urlstr = "../../data/Budge.ashx?Action=grid&str_condition=2";
+            }
+              
             $("#maingrid4").ligerGrid({
                 columns: [
                    {
@@ -69,6 +77,11 @@
                               var html;
                               if (item.txtstatus == "待审核") {
                                   html = "<div style='color:#FF0000'>";
+                                  html += item.txtstatus;
+                                  html += "</div>";
+                              }
+                              else if (item.txtstatus == "待客户确认") {
+                                  html = "<div style='color:#CC0099'>";
                                   html += item.txtstatus;
                                   html += "</div>";
                               }
@@ -300,11 +313,12 @@
         }
 
      //审核
-      function apr() {
+        function apr() {
+    
           var manager = $("#maingrid4").ligerGetGridManager();
           var row = manager.getSelectedRow();
           if (row) {
-              f_openWindow_sh("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&style=apr", "审核预算", 1100, 600, "审核");
+              f_openWindow_sh("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&style=" + aprstyle, "审核预算", 1100, 600, "审核");
           } else {
               $.ligerDialog.warn('请选择行！');
           }
@@ -334,7 +348,8 @@
           var manager = $("#maingrid4").ligerGetGridManager();
           var row = manager.getSelectedRow();
           if (row) {
-              f_openWindowview("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&style=apr", "查看预算", 1110, 600);
+            
+              f_openWindowview("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&style=" + aprstyle, "查看预算", 1110, 600);
           } else {
               $.ligerDialog.warn('请选择行！');
           }

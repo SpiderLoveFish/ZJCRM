@@ -2855,6 +2855,7 @@
     <Content Include="ueditor1_2_5_1-utf8-net\_src\ui\uibase.js" />
     <Content Include="ueditor1_2_5_1-utf8-net\_src\ui\uiutils.js" />
     <Content Include="View\QrCode_Generate.aspx" />
+    <Content Include="webserver\AppApi.asmx" />
     <Content Include="webserver\bbsapi.asmx" />
     <Content Include="webserver\testapi.asmx" />
     <Content Include="webserver\kjlapi.asmx" />
@@ -4677,6 +4678,10 @@
     </Compile>
     <Compile Include="View\QrCodeHandler.ashx.cs">
       <DependentUpon>QrCodeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="webserver\AppApi.asmx.cs">
+      <DependentUpon>AppApi.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="webserver\bbsapi.asmx.cs">
       <DependentUpon>bbsapi.asmx</DependentUpon>

@@ -944,6 +944,8 @@
             var sta = 2;
             if (getparastr("style") == "apr")//审核
                 sta = 2;
+            if (getparastr("style") == "aprstyle")//客户确认审核
+                sta = 3; 
             if (getparastr("style") == "cancel")//作废
                 sta = 99;
             if (getparastr("status") == "1") sta = 0;//撤回
