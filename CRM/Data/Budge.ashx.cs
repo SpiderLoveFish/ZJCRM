@@ -685,11 +685,15 @@ namespace XHD.CRM.Data
                     if (zt!="")
                         serchtxt += " and IsStatus  in(" + zt + ")";
                 }
-
+                string isprint = PageValidate.InputText(request["isprint"], 50);
+                //isprint='Y'整体查询 isprint='V'客户查询
                 //权限
-                if (ISMODEL == "N")//如果不是模板下面生效
+                if (ISMODEL == "N"  )//如果不是模板下面生效
                 {
+                    if (isprint == "V") { }
+                    else
                     serchtxt += DataAuth(emp_id.ToString());
+
                 }
                 string dt = "";
 

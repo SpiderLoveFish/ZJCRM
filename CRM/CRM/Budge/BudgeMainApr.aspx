@@ -39,14 +39,17 @@
           
           
             var urlstr = "../../data/Budge.ashx?Action=grid&str_condition=1";
-            if (getparastr("isprint") == "Y")
-                urlstr = "../../data/Budge.ashx?Action=grid"
+            if (getparastr("isprint") == "Y")//整体查询
+                urlstr = "../../data/Budge.ashx?Action=grid&isprint=Y"
             else if (getparastr("CustOK") == "Y")
             {
                 aprstyle = "aprCustOK";//审核时候用到
                 urlstr = "../../data/Budge.ashx?Action=grid&str_condition=2";
             }
-              
+            else if (getparastr("isprint") == "V") {
+                aprstyle = "aprCustOK";//客户查询
+                urlstr = "../../data/Budge.ashx?Action=grid&str_condition=2&isprint=V";
+            }
             $("#maingrid4").ligerGrid({
                 columns: [
                    {
