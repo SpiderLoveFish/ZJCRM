@@ -4720,7 +4720,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Browsers\App_Data\" />
     <Folder Include="CSS\kjl\images\images\" />
     <Folder Include="file\contract\" />
     <Folder Include="file\customer\" />

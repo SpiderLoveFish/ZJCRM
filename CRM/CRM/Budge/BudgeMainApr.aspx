@@ -83,7 +83,7 @@
                                   html += item.txtstatus;
                                   html += "</div>";
                               }
-                              else if (item.txtstatus == "待客户确认") {
+                              else if (item.txtstatus == "待确认") {
                                   html = "<div style='color:#CC0099'>";
                                   html += item.txtstatus;
                                   html += "</div>";
@@ -141,7 +141,8 @@
             var urlstr = "../../data/toolbar.ashx?Action=GetSys&mid=157&rnd=" + Math.random();
             if (getparastr("isprint") == "Y")
                 urlstr = "../../data/toolbar.ashx?Action=GetSys&mid=158&rnd=" + Math.random()
- 
+            else if (getparastr("CustOK") == "Y")
+                urlstr = "../../data/toolbar.ashx?Action=GetSys&mid=184&rnd=" + Math.random()
             $.getJSON(urlstr, function (data, textStatus) {
                 //alert(data);
                 var items = [];
@@ -241,14 +242,21 @@
 
         //查询
         function doserch() {
+          
+
             var urlstr = "../../data/Budge.ashx?str_condition=1";
-            if (getparastr("isprint") == "Y")
-                urlstr = "../../data/Budge.ashx?str_condition=99"
+            if (getparastr("isprint") == "Y")//整体查询
+                urlstr = "../../data/Budge.ashx?isprint=Y"
+            else if (getparastr("CustOK") == "Y")//审核时候用到
+                urlstr = "../../data/Budge.ashx?str_condition=2";
+            else if (getparastr("isprint") == "V")//客户查询
+                urlstr = "../../data/Budge.ashx?str_condition=2&isprint=V";
             var sendtxt = "&Action=grid&rnd=" + Math.random();
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
-            //  alert(serchtxt);
+            var sertxt = $("#form1 :input").fieldSerialize() + "&" + serchtxt;
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL(urlstr+"&" + serchtxt);
+            alert(urlstr + "&" + sertxt);
+            manager.GetDataByURL(urlstr + "&" + sertxt);
         }
         function doclear() {
             //var serchtxt = $("#serchform :input").reset();
