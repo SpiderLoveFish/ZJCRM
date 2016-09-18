@@ -31,19 +31,28 @@ namespace XHD.CRM.webserver
         /// </summary>
         /// <returns></returns>
         [WebMethod]
-        public void aa()
+        public void App_Trace(string html,string js ,string url ,string urldata,string returndata)
         {
-         string token=   System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(
-                                              GetTimeStamp() 
-                                              //+ ds.Tables[0].Rows[0]["uid"].ToString()
-                                              , "MD5");
-         //UPDATE	 dbo.hr_employee  SET token= substring(sys.fn_sqlvarbasetostr(HashBytes('MD5','xczs'+uid+dname+tel)),3,32)
-         var sb = new System.Text.StringBuilder();
-         sb.AppendLine(" Update hr_employee");
-         sb.AppendLine(" set token='" + token + "'");
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("INSERT INTO dbo.APP_Trace ");
+            sb.AppendLine("        ( HTML , ");
+            sb.AppendLine("          JS , ");
+            sb.AppendLine("          URL , ");
+            sb.AppendLine("          URLDATA , ");
+            sb.AppendLine("          ReturnData , ");
+            sb.AppendLine("          DoTime ");
+            sb.AppendLine("        ) ");
+            sb.AppendLine("VALUES  ( '"+html+"' , -- HTML - varchar(50) ");
+            sb.AppendLine("          '"+js+"' , -- JS - varchar(50) ");
+            sb.AppendLine("          '"+url+"' , -- URL - varchar(100) ");
+            sb.AppendLine("          '"+urldata+"' , -- URLDATA - varchar(100) ");
+            sb.AppendLine("          '"+returndata+"' , -- ReturnData - varchar(1000) ");
+            sb.AppendLine("          getdate()  -- DoTime - datetime ");
+            sb.AppendLine("        ) ");
+            sb.AppendLine(" ");
          //sb.AppendLine(" where id=" + id + "");
-         //SqlParameter[] parameters = { };
-         //return DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            SqlParameter[] parameters = { };
+             DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
 
         }
 
