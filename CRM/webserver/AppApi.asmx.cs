@@ -175,13 +175,15 @@ namespace XHD.CRM.webserver
           /// 客户List
           /// </summary>
           [WebMethod]
-          public void GetCustomerList(string keyword, string ID)
+          public void GetCustomerList(string keyword, string ID,string url)
           {
               SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
 
               string serchtxt = "";
               sb.AppendLine(" SELECT id, Serialnumber,Customer,address,tel,CustomerType,Community,DesCripe,Remarks ");
+    		 sb.AppendLine(", CASE WHEN ISNULL(CustomerType_id,'')='' THEN '" + url + "'+'images/Icon/96.png'");
+              sb.AppendLine("ELSE '" + url + "'+'images/Icon/'+ CONVERT(VARCHAR(5),CustomerType_id) '.png'  END AS Avatar ");
              sb.AppendLine(" FROM dbo.CRM_Customer");
              sb.AppendLine(" where ISNULL(isDelete,0)='' ");
              if (!string.IsNullOrEmpty(keyword))
