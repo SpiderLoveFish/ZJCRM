@@ -83,7 +83,7 @@ namespace XHD.CRM.webserver
             }
            
             sb.Clear();
-            sb.AppendLine("SELECT ID, token AS UserId,name AS UserName,'"+ClientId+"' as ClientId,");
+            sb.AppendLine("SELECT ID,token, token AS UserId,name AS UserName,'"+ClientId+"' as ClientId,");
             sb.AppendLine("CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
             sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar,");
             sb.AppendLine("d_id AS CorpId,ISNULL(level,0) AS level FROM dbo.hr_employee");
@@ -100,9 +100,10 @@ namespace XHD.CRM.webserver
                      ReturnStr(false, "账号密码错误，或者账号不存在，或者账号已经停用！");
                  else
                  {
+                     log.Add_log(0, pwd, ClientId, "手机端登录", "手机端登录", 0, "手机端登录", password, "");
+               
                      string str = Common.DataToJson.GetJson(ds);
                      ReturnStr(true, str);
-                     log.Add_log(0, pwd, ClientId, "手机端登录", "手机端登录", 0, "手机端登录", password, "");
                  }
             }
              
@@ -140,7 +141,21 @@ namespace XHD.CRM.webserver
               }
 
           }
+ /// <summary>
+          /// 个人信息
+          /// </summary>
+          /// <returns></returns>
+          [WebMethod]
+          public void GetAppVersion(string appid)
+          {
+               SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
 
+              ReturnStr(true, appid);
+          }
+
+
+        
        /// <summary>
        /// 客户类型
        /// </summary>
@@ -182,14 +197,15 @@ namespace XHD.CRM.webserver
 
               string serchtxt = "";
               sb.AppendLine(" SELECT id, Serialnumber,Customer,address,tel,CustomerType,Community,DesCripe,Remarks ");
-    		 sb.AppendLine(", CASE WHEN ISNULL(CustomerType_id,'')='' THEN '" + url + "'+'images/Icon/96.png'");
-              sb.AppendLine("ELSE '" + url + "'+'images/Icon/'+ CONVERT(VARCHAR(5),CustomerType_id) '.png'  END AS Avatar ");
+              sb.AppendLine(",dbo.chinese_firstletter(Customer) as header");
+              sb.AppendLine(", CASE WHEN ISNULL(CustomerType_id,'')='' THEN '" + url + "'+'images/Icon/96.png'");
+              sb.AppendLine("ELSE '" + url + "'+'images/Icon/'+ CONVERT(VARCHAR(5),CustomerType_id) +'.png'  END AS Avatar ");
              sb.AppendLine(" FROM dbo.CRM_Customer");
              sb.AppendLine(" where ISNULL(isDelete,0)='' ");
              if (!string.IsNullOrEmpty(keyword))
              {
                 // serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
-                 serchtxt += " CustomerType_id="+keyword;
+                 serchtxt += " AND CustomerType_id="+keyword;
              }
              //加入权限控制
              serchtxt += DataAuth(ID);
