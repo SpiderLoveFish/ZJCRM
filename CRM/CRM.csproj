@@ -2855,10 +2855,8 @@
     <Content Include="ueditor1_2_5_1-utf8-net\_src\ui\uibase.js" />
     <Content Include="ueditor1_2_5_1-utf8-net\_src\ui\uiutils.js" />
     <Content Include="View\QrCode_Generate.aspx" />
-   <Content Include="webserver\AppApi.asmx" />
-    <Content Include="webserver\Api.html" />
-   <Content Include="webserver\bbsapi.asmx" />
-    <Content Include="webserver\mui.js" />
+    <Content Include="webserver\AppApi.asmx" />
+    <Content Include="webserver\bbsapi.asmx" />
     <Content Include="webserver\testapi.asmx" />
     <Content Include="webserver\kjlapi.asmx" />
     <Content Include="webserver\sms.asmx" />
