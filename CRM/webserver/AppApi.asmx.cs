@@ -109,7 +109,25 @@ namespace XHD.CRM.webserver
              
         }
 
-          /// <summary>
+         [WebMethod]
+          public void UpdateUserAvatar(string imgurl ,string token)
+        {
+             SqlParameter[] parameters = { };
+            var sb = new System.Text.StringBuilder();
+
+          
+            sb.Clear();
+            sb.AppendLine("UPDATE	 dbo.hr_employee SET title='' WHERE token= '" + token + "' ");
+             if(DbHelperSQL.ExecuteSql(sb.ToString(), parameters)>0)
+                     ReturnStr(true, "sucess");
+             else ReturnStr(false, "faile");
+                
+             
+        }
+
+        
+        
+        /// <summary>
           /// 个人信息
           /// </summary>
           /// <returns></returns>
@@ -150,8 +168,22 @@ namespace XHD.CRM.webserver
           {
                SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
-
-              ReturnStr(true, appid);
+              sb.AppendLine("SELECT * FROM dbo.App_Version WHERE	Ver!='" + appid + "'");
+              DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+              if (ds == null)
+              {
+                  ReturnStr(true, "no");
+              }
+              else
+              {
+                  if (ds.Tables[0].Rows.Count <= 0)
+                      ReturnStr(true, "no");
+                  else
+                  {
+                      //string str = Common.DataToJson.GetJson(ds);
+                      ReturnStr(true, ds.Tables[0].Rows[0][1].ToString());
+                  }
+              }
           }
 
 
@@ -160,13 +192,16 @@ namespace XHD.CRM.webserver
        /// 客户类型
        /// </summary>
           [WebMethod]
-          public void GetCustomerType()
+          public void GetCustomerType(string url)
           {
                SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
 
 
-              sb.AppendLine(" SELECT DISTINCT CustomerType_id as cid ,isnull(CustomerType,'未知') as CustomerType  FROM  CRM_Customer WHERE ISNULL(isDelete,0)=''");
+              sb.AppendLine(" SELECT DISTINCT CustomerType_id as cid ,isnull(CustomerType,'未知') as CustomerType");
+              sb.AppendLine(", CASE WHEN ISNULL(CustomerType_id,'')='' THEN '" + url + "'+'images/Icon/96.png'");
+              sb.AppendLine(" ELSE '" + url + "'+'images/Icon/'+ CONVERT(VARCHAR(5),CustomerType_id) +'.png'  END AS Avatar ");
+              sb.AppendLine("    FROM  CRM_Customer WHERE ISNULL(isDelete,0)=''");
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
 
               if (ds == null)
@@ -196,8 +231,8 @@ namespace XHD.CRM.webserver
               var sb = new System.Text.StringBuilder();
 
               string serchtxt = "";
-              sb.AppendLine(" SELECT id, Serialnumber,Customer,address,tel,CustomerType,Community,DesCripe,Remarks ");
-              sb.AppendLine(",dbo.chinese_firstletter(Customer) as header");
+              sb.AppendLine(" SELECT TOP 200 id, Serialnumber,Customer,address,tel,CustomerType,Community,DesCripe,Remarks ");
+              sb.AppendLine(",UPPER(dbo.chinese_firstletter(ltrim(Customer))) as header");
               sb.AppendLine(", CASE WHEN ISNULL(CustomerType_id,'')='' THEN '" + url + "'+'images/Icon/96.png'");
               sb.AppendLine("ELSE '" + url + "'+'images/Icon/'+ CONVERT(VARCHAR(5),CustomerType_id) +'.png'  END AS Avatar ");
              sb.AppendLine(" FROM dbo.CRM_Customer");
@@ -209,7 +244,9 @@ namespace XHD.CRM.webserver
              }
              //加入权限控制
              serchtxt += DataAuth(ID);
-             DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt, parameters);
+             string ordertxt = " ORDER BY Create_date DESC ";
+             string strsql = " SELECT * FROM ( "+sb.ToString() + serchtxt + ordertxt +")AA ORDER BY header";
+             DataSet ds = DbHelperSQL.Query(strsql, parameters);
 
               if (ds == null)
               {
@@ -227,6 +264,65 @@ namespace XHD.CRM.webserver
               }
 
           }
+
+          /// <summary>
+          /// 客户List
+          /// </summary>
+          [WebMethod]
+          public void GetCustomerList_Page(string keyword,string typeid, string ID, string url,string index)
+          {
+              SqlParameter[] parameters = { };
+              int startindex= int.Parse(index)*20;
+              int perindex =(int.Parse(index)-1)*20;
+              string sql = " SELECT TOP " + startindex + "  " +
+                            " id, Serialnumber,Customer,address,tel,CustomerType,Community,DesCripe,Remarks " +
+                            //"--,UPPER(dbo.chinese_firstletter(ltrim(Customer))) as header" +
+                            " , CASE WHEN ISNULL(CustomerType_id,'')='' THEN '"+url+"'+'images/Icon/96.png'" +
+                            " ELSE '" + url + "'+'images/Icon/'+ CONVERT(VARCHAR(5),CustomerType_id) +'.png'  END AS Avatar " +
+                            "  FROM" +
+                            " CRM_Customer " +
+                            " WHERE (" +
+                            " id>(SELECT ISNULL(MAX(id),0) FROM (SELECT TOP " + perindex + " id FROM" +
+                            " CRM_Customer ORDER BY id)AS T" +
+                            " )" +
+                            " )  " ;
+
+              string serchtxt = "";
+              if (!string.IsNullOrEmpty(keyword))
+              {
+                  serchtxt += string.Format(" AND ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
+                  //serchtxt += " WHERE CustomerType_id=" + keyword;
+              }
+              if (!string.IsNullOrEmpty(typeid))
+              {
+                  //serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
+                  serchtxt += " AND CustomerType_id=" + typeid;
+              }
+              
+              //加入权限控制
+              serchtxt += DataAuth(ID);
+              string ordertxt = "ORDER BY id";
+                  //" ORDER BY dbo.chinese_firstletter(ltrim(Customer))";
+              DataSet ds = DbHelperSQL.Query(sql + serchtxt + ordertxt, parameters);
+
+              if (ds == null)
+              {
+                  ReturnStr(false, "无数据！");
+              }
+              else
+              {
+                  if (ds.Tables[0].Rows.Count <= 0)
+                      ReturnStr(false, "无数据！");
+                  else
+                  {
+                      string str = Common.DataToJson.GetJson(ds);
+                      ReturnStr(true, str);
+                  }
+              }
+
+          }
+         
+
           /// <summary>
           /// 客户明细
           /// </summary>

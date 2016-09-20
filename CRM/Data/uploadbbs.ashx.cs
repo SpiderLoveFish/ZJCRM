@@ -20,6 +20,7 @@ namespace XHD.CRM.Data
             var files = context.Request.Files;
             if (files.Count <= 0)
             {
+                context.Response.Write("-1|0");
                 return;
             }
 
@@ -27,12 +28,13 @@ namespace XHD.CRM.Data
 
             if (file == null)
             {
-                context.Response.Write("error|file is null");
+                context.Response.Write("-1|0");
                 return;
             }
             else
             {
-                string path = context.Server.MapPath("~/uploadedFiles/");  //存储图片的文件夹
+                string path = context.Server.MapPath(@"~/images/upload/portrait/" );
+               // string path = context.Server.MapPath("~/uploadedFiles/");  //存储图片的文件夹
                 string originalFileName = file.FileName;
                 string fileExtension = originalFileName.Substring(originalFileName.LastIndexOf('.'), originalFileName.Length - originalFileName.LastIndexOf('.'));
                 string currentFileName = (new Random()).Next() + fileExtension;  //文件名中不要带中文，否则会出错
@@ -45,7 +47,7 @@ namespace XHD.CRM.Data
                 string imgUrl = "http://mb.xczs.co/uploadedFiles/" + currentFileName;
 
                 //返回图片url地址
-                context.Response.Write(imgUrl);
+                context.Response.Write("0|" + currentFileName);
                 return;
             }
         }
