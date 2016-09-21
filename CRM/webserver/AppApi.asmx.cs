@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -117,10 +117,10 @@ namespace XHD.CRM.webserver
 
           
             sb.Clear();
-            sb.AppendLine("UPDATE	 dbo.hr_employee SET title='' WHERE token= '" + token + "' ");
+            sb.AppendLine("UPDATE	 dbo.hr_employee SET title='"+imgurl+"' WHERE token= '" + token + "' ");
              if(DbHelperSQL.ExecuteSql(sb.ToString(), parameters)>0)
-                     ReturnStr(true, "sucess");
-             else ReturnStr(false, "faile");
+                 ReturnStr(true, "\"success\"");
+             else ReturnStr(false, "\"faile\"");
                 
              
         }
@@ -164,24 +164,24 @@ namespace XHD.CRM.webserver
           /// </summary>
           /// <returns></returns>
           [WebMethod]
-          public void GetAppVersion(string appid)
+          public void GetAppVersion(string ver)
           {
                SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
-              sb.AppendLine("SELECT * FROM dbo.App_Version WHERE	Ver!='" + appid + "'");
+              sb.AppendLine("SELECT * FROM dbo.App_Version WHERE	Ver!='" + ver + "'");
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
               if (ds == null)
               {
-                  ReturnStr(true, "no");
+                  ReturnStr(true, " \"no\"");
               }
               else
               {
                   if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(true, "no");
+                      ReturnStr(true," \"no\"");
                   else
                   {
                       //string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, ds.Tables[0].Rows[0][1].ToString());
+                      ReturnStr(true, "\""+ds.Tables[0].Rows[0][1].ToString()+"\"");
                   }
               }
           }
@@ -362,26 +362,31 @@ namespace XHD.CRM.webserver
         /// </summary>
         /// <param name="id"></param>
           [WebMethod]
-          public void GetCRM_Follow(string id)
+          public void GetCRM_Follow(string id,string url)
           {
               SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
 
               string serchtxt = "";
-              sb.AppendLine("SELECT id,Customer_id,Customer_name,Follow,employee_name,Follow_Type,Follow_Type  FROM  dbo.CRM_Follow");
-              sb.AppendLine(" where ISNULL(isDelete,0)='' AND Customer_id=" + id + "");
+               sb.AppendLine("SELECT CONVERT(VARCHAR(16),Follow_date,120) AS Follow_date,A.id,Customer_id,Customer_name,Follow,employee_name,Follow_Type,Follow_Type  ");
+               sb.AppendLine(" ,CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
+               sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar ");
+             sb.AppendLine("FROM dbo.CRM_Follow A ");
+              sb.AppendLine("INNER JOIN dbo.hr_employee B ON A.employee_id=B.ID ");
+
+              sb.AppendLine(" where ISNULL(A.isDelete,0)='' AND A.Customer_id=" + id + "");
 
 
               DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt, parameters);
 
               if (ds == null)
               {
-                  ReturnStr(false, "无数据！");
+                  ReturnStr(false, "\"无数据！\"");
               }
               else
               {
                   if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(false, "无数据！");
+                      ReturnStr(false, "\"无数据！\"");
                   else
                   {
                       string str = Common.DataToJson.GetJson(ds);
@@ -390,6 +395,61 @@ namespace XHD.CRM.webserver
               }
 
           }
+
+          [WebMethod]
+          public void GetMessage(string SelectType, string startIndex, string endIndex)
+          {
+              SqlParameter[] parameters = { };
+              
+              var sb = new System.Text.StringBuilder();
+              //滚动(新闻)
+                sb.AppendLine("SELECT top 5 id AS ID,news_title AS Title,'activity' AS ListType ");
+                sb.AppendLine(" , '' AS IsHostPic,CONVERT(varchar(16),news_time, 120)  AS ReleaseTime");
+                sb.AppendLine(" FROM dbo.public_news   ");
+                sb.AppendLine(" ");
+                string retstr = "[";
+              DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+              if (ds.Tables[0].Rows.Count <= 0)
+                  retstr = "[]";
+              else
+              {
+                  string str = Common.DataToJson.GetJson(ds);
+                  retstr += str;
+              }
+             
+                //审批
+              string SPstr = "[]";
+              //企业公告
+              string GGstr = "[]";
+              //调查问卷
+              string DCstr = "[]";
+              //活动报名
+              string HDstr = "[]";
+              retstr += "," + SPstr + "," + GGstr + "," + DCstr + "," + HDstr+"]";
+              ReturnStr(true,retstr);
+          }
+
+          [WebMethod]
+          public void GetApp_Conifg()
+          {
+              SqlParameter[] parameters = { };
+
+              var sb = new System.Text.StringBuilder();
+             
+              sb.AppendLine("SELECT   * FROM  dbo.App_Conifg   ");
+              
+              DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+              if (ds.Tables[0].Rows.Count <= 0)
+                  ReturnStr(false, "\"无数据！\"");
+              else
+              {
+                  string str = Common.DataToJson.GetJson(ds);
+                  ReturnStr(true, str);
+              }
+
+ 
+          }
+
 
           /// <summary>
           /// 跟进
@@ -414,8 +474,8 @@ namespace XHD.CRM.webserver
               mcf.Follow_date = DateTime.Now;
               mcf.isDelete = 0;
               if(bcf.Add(mcf)>0)
-                      ReturnStr(true, "sucess");
-              else ReturnStr(false, "faile");
+                      ReturnStr(true, "\"sucess\"");
+              else ReturnStr(false, "\"faile\"");
                 
 
           }

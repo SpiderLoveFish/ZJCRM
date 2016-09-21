@@ -863,6 +863,7 @@
     <Content Include="Data\CRM_Cope_invoice.ashx" />
     <Content Include="Data\CRM_Cope.ashx" />
     <Content Include="Data\website.ashx" />
+    <Content Include="Data\uploadapp.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -4453,6 +4454,9 @@
     </Compile>
     <Compile Include="Data\Budge_BasicPart.ashx.cs">
       <DependentUpon>Budge_BasicPart.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\uploadapp.ashx.cs">
+      <DependentUpon>uploadapp.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\website.ashx.cs">
       <DependentUpon>website.ashx</DependentUpon>
