@@ -21,9 +21,13 @@ namespace XHD.CRM.Data
 
         public void ProcessRequest(HttpContext context)
         {
+
             context.Response.ContentType = "text/plain";
              HttpRequest request = context.Request;
-           
+
+             context.Response.Write("-1|" + request["data"]);
+             return;
+            
            string dirPath = context.Server.MapPath(@"~/uploadedFiles/");
               if (request["Action"] == "uploadhead")
              dirPath = context.Server.MapPath(@"~/images/upload/portrait/"); 
@@ -34,6 +38,7 @@ namespace XHD.CRM.Data
             try
             {
                HttpFileCollection files = context.Request.Files;
+               
                 string nowfileName = DateTime.Now.ToString("yyyyMMddHHmmss") + GetRandom(6) + ".jpg";
 
                 if (files.Count > 0)

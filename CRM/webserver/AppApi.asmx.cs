@@ -159,7 +159,7 @@ namespace XHD.CRM.webserver
               }
 
           }
- /// <summary>
+            /// <summary>
           /// 个人信息
           /// </summary>
           /// <returns></returns>
@@ -225,13 +225,13 @@ namespace XHD.CRM.webserver
           /// 客户List
           /// </summary>
           [WebMethod]
-          public void GetCustomerList(string keyword, string ID,string url)
+          public void GetCustomerList(string keyword, string ID,string url,string topnumber)
           {
               SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
 
               string serchtxt = "";
-              sb.AppendLine(" SELECT TOP 200 id, Serialnumber,Customer,address,tel,CustomerType,Community,DesCripe,Remarks ");
+              sb.AppendLine(" SELECT TOP " + topnumber + " id, Serialnumber,Customer,address,tel,CustomerType,Community,DesCripe,Remarks ");
               sb.AppendLine(",UPPER(dbo.chinese_firstletter(ltrim(Customer))) as header");
               sb.AppendLine(", CASE WHEN ISNULL(CustomerType_id,'')='' THEN '" + url + "'+'images/Icon/96.png'");
               sb.AppendLine("ELSE '" + url + "'+'images/Icon/'+ CONVERT(VARCHAR(5),CustomerType_id) +'.png'  END AS Avatar ");
@@ -451,6 +451,79 @@ namespace XHD.CRM.webserver
           }
 
 
+
+          [WebMethod]
+          public void GetApp_Group(string url, string CorpID, string UserId)
+          {
+              SqlParameter[] parameters = { };
+
+              var sb = new System.Text.StringBuilder();
+              //滚动(新闻)
+              sb.AppendLine(" SELECT ID,GroupName,CorpID,UserId,ReleaseTime  ");
+              sb.AppendLine(" FROM dbo.App_Group ");
+              if (UserId!="")
+              sb.AppendLine(" WHERE CorpID='"+CorpID+"' AND UserId='"+UserId+"'  ");
+              sb.AppendLine(" ");
+              string retstr = "[";
+              string mstr = "";
+              DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+              if (ds.Tables[0].Rows.Count <= 0)
+                  mstr = "[]";
+              else
+              {
+                  mstr = Common.DataToJson.GetJson(ds);
+           
+              }
+              sb.Clear();
+              string detailstr = "";
+              sb.AppendLine("  SELECT B.ID, A.ID AS GroupID, A.CorpID,A.UserId, ");
+              sb.AppendLine("   GroupUserID, B.name AS UserName ");
+              sb.AppendLine(" ,CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
+              sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar ");
+         
+              sb.AppendLine(" FROM dbo.App_Group_Detail A");
+              sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.GroupUserID=B.token ");
+              if (UserId != "")
+              sb.AppendLine(" WHERE  A.CorpID='" + CorpID + "' AND A.UserId='" + UserId + "'  ");
+              sb.AppendLine(" ");
+              DataSet dsdetail = DbHelperSQL.Query(sb.ToString(), parameters);
+              if (dsdetail.Tables[0].Rows.Count <= 0)
+                  detailstr = "[]";
+              else
+              {
+                    detailstr = Common.DataToJson.GetJson(ds);
+    
+              }
+              retstr += mstr+ "," + detailstr +  "]";
+              ReturnStr(true, retstr);
+          }
+
+
+          [WebMethod]
+          public void GetUserList(string url)
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+
+              sb.AppendLine("SELECT token as UserId,  uid as LoginId,name as UserName,tel,tel as Mobile ,dname as DepartmentName,zhiwu,email as Email,Address, ");
+              sb.AppendLine(" CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
+              sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar ");
+              sb.AppendLine(" ,UPPER(dbo.chinese_firstletter(ltrim(name))) as Header");
+              sb.AppendLine("  FROM hr_employee WHERE ISNULL(isDelete,0)='' ");
+              sb.AppendLine(" ORDER BY UPPER(dbo.chinese_firstletter(ltrim(name)))");
+              DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+ 
+                  if (ds.Tables[0].Rows.Count <= 0)
+                      ReturnStr(false, "[]");
+                  else
+                  {
+                      string str = Common.DataToJson.GetJson(ds);
+                      ReturnStr(true, str);
+                  }
+              
+
+          }
+         
           /// <summary>
           /// 跟进
           /// </summary>
