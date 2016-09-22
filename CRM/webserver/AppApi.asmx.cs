@@ -225,7 +225,7 @@ namespace XHD.CRM.webserver
           /// 客户List
           /// </summary>
           [WebMethod]
-          public void GetCustomerList(string keyword, string ID,string url,string topnumber)
+          public void GetCustomerList(string keyword, string ID, string url, string topnumber, string searchkey)
           {
               SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
@@ -241,6 +241,11 @@ namespace XHD.CRM.webserver
              {
                 // serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
                  serchtxt += " AND CustomerType_id="+keyword;
+             }
+             if (!string.IsNullOrEmpty(searchkey))
+             {
+                 serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", searchkey);
+
              }
              //加入权限控制
              serchtxt += DataAuth(ID);
@@ -333,7 +338,7 @@ namespace XHD.CRM.webserver
               var sb = new System.Text.StringBuilder();
 
               string serchtxt = "";
-              sb.AppendLine(" SELECT id, Serialnumber,Customer,address,tel,Create_name,Emp_sj AS sjs,Employee AS ywy,Emp_sg AS sgjl ");
+              sb.AppendLine(" SELECT id, Serialnumber,Customer,address,tel,Create_name,CustomerType,Emp_sj AS sjs,Employee AS ywy,Emp_sg AS sgjl ");
               sb.AppendLine(" FROM dbo.CRM_Customer");
               sb.AppendLine(" where ISNULL(isDelete,0)='' AND id=" + id + "");
                
@@ -362,20 +367,27 @@ namespace XHD.CRM.webserver
         /// </summary>
         /// <param name="id"></param>
           [WebMethod]
-          public void GetCRM_Follow(string id,string url)
+          public void GetCRM_Follow(string id,string url,string nowindex)
           {
               SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
-
+              int startindex = int.Parse( nowindex)-10;
+              int perindex =  int.Parse(nowindex);
               string serchtxt = "";
-               sb.AppendLine("SELECT CONVERT(VARCHAR(16),Follow_date,120) AS Follow_date,A.id,Customer_id,Customer_name,Follow,employee_name,Follow_Type,Follow_Type  ");
+              sb.AppendLine("SELECT top " + perindex + " CONVERT(VARCHAR(16),Follow_date,120) AS Follow_date,A.id,Customer_id,Customer_name,Follow,employee_name,Follow_Type,Follow_Type  ");
                sb.AppendLine(" ,CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
                sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar ");
+               sb.AppendLine(" ,(SELECT COUNT(1) FROM CRM_Follow where Customer_id=" + id + ") AS TotalCount");
              sb.AppendLine("FROM dbo.CRM_Follow A ");
               sb.AppendLine("INNER JOIN dbo.hr_employee B ON A.employee_id=B.ID ");
 
               sb.AppendLine(" where ISNULL(A.isDelete,0)='' AND A.Customer_id=" + id + "");
-
+              sb.AppendLine(" AND  (");
+                            sb.AppendLine("A.id>(SELECT ISNULL(MAX(id),0) FROM (SELECT TOP " + perindex + " id FROM");
+                            sb.AppendLine(" CRM_Follow ORDER BY id)AS T");
+                            sb.AppendLine(" )");
+                          sb.AppendLine(")  ");
+              sb.AppendLine(" ORDER BY Follow_date desc");
 
               DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt, parameters);
 
@@ -404,7 +416,7 @@ namespace XHD.CRM.webserver
               var sb = new System.Text.StringBuilder();
               //滚动(新闻)
                 sb.AppendLine("SELECT top 5 id AS ID,news_title AS Title,'activity' AS ListType ");
-                sb.AppendLine(" , '' AS IsHostPic,CONVERT(varchar(16),news_time, 120)  AS ReleaseTime");
+                sb.AppendLine(" , img AS IsHostPic,CONVERT(varchar(16),news_time, 120)  AS ReleaseTime");
                 sb.AppendLine(" FROM dbo.public_news   ");
                 sb.AppendLine(" ");
                 string retstr = "[";
@@ -453,17 +465,18 @@ namespace XHD.CRM.webserver
 
 
           [WebMethod]
-          public void GetApp_Group(string url, string CorpID, string UserId)
+          public void GetApp_Group(string url, string CorpID, string UserId,string GroupID)
           {
               SqlParameter[] parameters = { };
 
               var sb = new System.Text.StringBuilder();
               //滚动(新闻)
-              sb.AppendLine(" SELECT ID,GroupName,CorpID,UserId,ReleaseTime  ");
-              sb.AppendLine(" FROM dbo.App_Group ");
+              sb.AppendLine(" SELECT ID,GroupID,GroupName,CorpID,UserId,ReleaseTime  ");
+              sb.AppendLine(" FROM dbo.App_Group WHERE 1=1 ");
               if (UserId!="")
-              sb.AppendLine(" WHERE CorpID='"+CorpID+"' AND UserId='"+UserId+"'  ");
-              sb.AppendLine(" ");
+                  sb.AppendLine(" AND UserId='" + UserId + "'  ");// CorpID='"+CorpID+"' AND 
+              if (GroupID != "")
+                  sb.AppendLine("  AND GroupID='" + GroupID + "'");
               string retstr = "[";
               string mstr = "";
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
@@ -476,22 +489,24 @@ namespace XHD.CRM.webserver
               }
               sb.Clear();
               string detailstr = "";
-              sb.AppendLine("  SELECT B.ID, A.ID AS GroupID, A.CorpID,A.UserId, ");
+              sb.AppendLine("  SELECT B.ID, GroupID, A.CorpID,A.UserId, ");
               sb.AppendLine("   GroupUserID, B.name AS UserName ");
               sb.AppendLine(" ,CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
               sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar ");
          
               sb.AppendLine(" FROM dbo.App_Group_Detail A");
               sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.GroupUserID=B.token ");
+              sb.AppendLine(" where 1=1 ");
               if (UserId != "")
-              sb.AppendLine(" WHERE  A.CorpID='" + CorpID + "' AND A.UserId='" + UserId + "'  ");
-              sb.AppendLine(" ");
+                  sb.AppendLine(" AND  A.UserId='" + UserId + "' ");//A.CorpID='" + CorpID + "' AND 
+              if (GroupID != "")
+                  sb.AppendLine("  AND A.GroupID='" + GroupID + "'");
               DataSet dsdetail = DbHelperSQL.Query(sb.ToString(), parameters);
               if (dsdetail.Tables[0].Rows.Count <= 0)
                   detailstr = "[]";
               else
               {
-                    detailstr = Common.DataToJson.GetJson(ds);
+                  detailstr = Common.DataToJson.GetJson(dsdetail);
     
               }
               retstr += mstr+ "," + detailstr +  "]";
@@ -547,9 +562,75 @@ namespace XHD.CRM.webserver
               mcf.Follow_date = DateTime.Now;
               mcf.isDelete = 0;
               if(bcf.Add(mcf)>0)
-                      ReturnStr(true, "\"sucess\"");
+                  ReturnStr(true, "\"success\"");
               else ReturnStr(false, "\"faile\"");
                 
+
+          }
+          [WebMethod]
+          public void DeleteApp_Group(string ID)
+          {
+              var sb = new System.Text.StringBuilder();
+              sb.AppendLine("DELETE dbo.App_Group_Detail ");
+              sb.AppendLine(" WHERE GroupID=" + ID);
+              sb.AppendLine("DELETE dbo.App_Group ");
+              sb.AppendLine(" WHERE GroupID="+ID);
+              SqlParameter[] parameters = { };
+              var RV = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+              if (RV > 0)
+                  ReturnStr(true, "\"success\"");
+              else ReturnStr(false, "\"faile\"");
+          }
+
+          [WebMethod]
+          public void AddApp_Group(string GroupID,  string GroupName,
+                string UserId, string UserList 
+              )
+          {
+              var sb = new System.Text.StringBuilder();
+              sb.AppendLine("INSERT INTO dbo.App_Group ");
+              sb.AppendLine("        ( GroupName , ");
+              sb.AppendLine("          CorpID , ");
+              sb.AppendLine("          GroupID , ");
+              sb.AppendLine("          UserId , ");
+              sb.AppendLine("          ReleaseTime ");
+              sb.AppendLine("        ) ");
+              sb.AppendLine("VALUES  ( '"+GroupName+"' ,   ");
+              sb.AppendLine("          '' ,  ");
+              sb.AppendLine("          '" + GroupID + "' , ");
+              sb.AppendLine("          '" + UserId + "' , ");
+              sb.AppendLine("          GETDATE()   ");
+              sb.AppendLine("        ) ");
+              sb.AppendLine(" ");
+              string[] str = UserList.Split(',');
+              foreach (string s in str)
+              {
+                  if (s.Length > 0)
+                  {
+                      sb.AppendLine(" INSERT INTO dbo.App_Group_Detail ");
+                      sb.AppendLine("        ( GroupName , ");
+                      sb.AppendLine("          CorpID , ");
+                      sb.AppendLine("          UserId , ");
+                      sb.AppendLine("          GroupUserID , ");
+                      sb.AppendLine("          GroupID , ");
+                      sb.AppendLine("          ReleaseTime ");
+                      sb.AppendLine("        ) ");
+                      sb.AppendLine(" VALUES  ( '" + GroupName + "' ,   ");
+                      sb.AppendLine("          '' ,  ");
+                      sb.AppendLine("          '" + UserId + "' ,     ");
+                      sb.AppendLine("          '" + s + "' ,    ");
+                      sb.AppendLine("          " + GroupID + " ,  ");
+                      sb.AppendLine("         getdate() ");
+                      sb.AppendLine("        ) ");
+                  }
+
+              }
+              SqlParameter[] parameters = { };
+            var RV = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (RV > 0)
+                ReturnStr(true, "\"success\"");
+              else ReturnStr(false, "\"faile\"");
+
 
           }
 

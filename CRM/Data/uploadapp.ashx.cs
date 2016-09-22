@@ -24,9 +24,11 @@ namespace XHD.CRM.Data
 
             context.Response.ContentType = "text/plain";
              HttpRequest request = context.Request;
+             //if (request["data"]=="")
+             //context.Response.Write("-1|" + "0");
+             //else context.Response.Write("-1|" + "1");
 
-             context.Response.Write("-1|" + request["data"]);
-             return;
+             //return;
             
            string dirPath = context.Server.MapPath(@"~/uploadedFiles/");
               if (request["Action"] == "uploadhead")
