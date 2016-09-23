@@ -22,8 +22,9 @@ namespace XHD.CRM.Data
         public void ProcessRequest(HttpContext context)
         {
 
-            context.Response.ContentType = "text/plain";
+            context.Response.ContentType =  "text/plain";
              HttpRequest request = context.Request;
+            
              //if (request["data"]=="")
              //context.Response.Write("-1|" + "0");
              //else context.Response.Write("-1|" + "1");
@@ -37,29 +38,37 @@ namespace XHD.CRM.Data
             {
                 Directory.CreateDirectory(dirPath);
             }
-            try
-            {
-               HttpFileCollection files = context.Request.Files;
+          
+            //return;
+             try
+             {
+                 string nowfileName = DateTime.Now.ToString("yyyyMMddHHmmss") + GetRandom(6) + ".jpg";
+                 var a = request.Form["base64"];
+                 string err = Base64StringToImage(a.Replace("data:image/png;base64,", ""), dirPath + nowfileName);
+                 if (err == "") context.Response.Write("0|" + nowfileName);
+                 else context.Response.Write("-1|" + err);
+
+            //   HttpFileCollection files = context.Request.Files;
                
-                string nowfileName = DateTime.Now.ToString("yyyyMMddHHmmss") + GetRandom(6) + ".jpg";
+               
 
-                if (files.Count > 0)
-                {
-                    //string str=Base64StringToImage(request["base64"], dirPath + nowfileName);
-                    //if (str=="")
-                    //    context.Response.Write("0|0" + nowfileName);
-                    //else context.Response.Write("-1|0" + str);
-                    for (int i = 0; i < files.Count; i++)
-                    {
-                        HttpPostedFile file = context.Request.Files[i];
-                        string filePath = dirPath + nowfileName;
+            //    if (files.Count > 0)
+            //    {
+            //        //string str=Base64StringToImage(request["base64"], dirPath + nowfileName);
+            //        //if (str=="")
+            //        //    context.Response.Write("0|0" + nowfileName);
+            //        //else context.Response.Write("-1|0" + str);
+            //        for (int i = 0; i < files.Count; i++)
+            //        {
+            //            HttpPostedFile file = context.Request.Files[i];
+            //            string filePath = dirPath + nowfileName;
 
-                        file.SaveAs(filePath);
-                        context.Response.Write("0|" + nowfileName);
-                    }
+            //            file.SaveAs(filePath);
+            //            context.Response.Write("0|" + nowfileName);
+            //        }
                   
-                }
-                else context.Response.Write("-1|0");
+            //    }
+            //    else context.Response.Write("-1|0");
             }
             catch (Exception e)
             {

@@ -466,9 +466,10 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             strSql.Append("delete from CRM_Customer ");
             strSql.Append(" where id=@id");
+            strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)
-};
+                };
             parameters[0].Value = id;
 
             int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
@@ -1332,6 +1333,62 @@ namespace XHD.DAL
 
 
         #endregion  Method
+
+        #region 收藏客户
+            /// <summary>
+        /// 增加一条数据
+        /// </summary>
+        public int AddFavorite(string cid,string uid)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("INSERT INTO dbo.Crm_Customer_Favorite");
+            sb.AppendLine("        ( customer_id, userid, DoTime )");
+            sb.AppendLine("VALUES  ( "+cid+","); // customer_id - int
+            sb.AppendLine("          " + uid + ","); // userid - int
+            sb.AppendLine("          getdate"); // DoTime - datetime
+            sb.AppendLine("          )");
+            SqlParameter[] parameters = {
+				 
+                };
+            object obj = DbHelperSQL.GetSingle(sb.ToString(), parameters);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public bool DeleteFavorite(string cid, string uid)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from Crm_Customer_Favorite ");
+            strSql.Append(" where customer_id="+cid+" AND userid="+uid+"");
+            strSql.Append(";select @@IDENTITY");
+            SqlParameter[] parameters = {
+				 
+                };
+             
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+     
+
+        #endregion
     }
 }
 

@@ -454,6 +454,15 @@ namespace XHD.BLL
             return dal.Adddy(cid, dyname, dyurl, remarks);
         }
         #endregion  Method
+
+        public int AddFavorite(string cid, string uid)
+        {
+            return dal.AddFavorite(cid,uid);
+        }
+        public bool DeleteFavorite(string cid, string uid)
+        {
+            return dal.DeleteFavorite(cid, uid);
+        }
     }
 }
 

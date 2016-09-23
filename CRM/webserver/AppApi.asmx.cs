@@ -635,6 +635,44 @@ namespace XHD.CRM.webserver
           }
 
 
+        /// <summary>
+        /// 客户收藏
+        /// </summary>
+          [WebMethod]
+          public void UpdateCustomerFavorite(string customerid,string userid,string UStyle)
+          {
+              SqlParameter[] parameters = { };
+              BLL.CRM_Customer cc = new BLL.CRM_Customer();
+              if(UStyle=="Insert")
+              {
+                 
+
+                  if (cc.AddFavorite(customerid, userid) <= 0)
+                      ReturnStr(false, "\"faile\"");
+                  else
+                  {
+
+                      ReturnStr(true, "\"success\"");
+                  }
+              }
+              else if (UStyle == "Delete")
+              {
+                
+
+                  if (!cc.DeleteFavorite(customerid, userid))
+                      ReturnStr(false, "\"faile\"");
+                  else
+                  {
+
+                      ReturnStr(true, "\"success\"");
+                  }
+              }
+
+          }
+
+
+
+
        /// <summary>
        /// 时间戳
        /// </summary>
