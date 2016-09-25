@@ -68,7 +68,7 @@ namespace XHD.CRM.webserver
             var sb = new System.Text.StringBuilder();
 
             sb.AppendLine("SELECT   * FROM");
-            sb.AppendLine("hr_employee WHERE ISNULL(isDelete,0)='' AND uid='" + user + "' AND pwd='" + password + "' AND ISNULL(token,'')=''");
+            sb.AppendLine("hr_employee WHERE ISNULL(isDelete,0)='0' AND uid='" + user + "' AND pwd='" + password + "' AND ISNULL(token,'')=''");
             bool isexist = DbHelperSQL.Exists(sb.ToString(), null);
             if (isexist)
             {
@@ -87,17 +87,17 @@ namespace XHD.CRM.webserver
             sb.AppendLine("CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
             sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar,");
             sb.AppendLine("d_id AS CorpId,ISNULL(level,0) AS level FROM dbo.hr_employee");
-            sb.AppendLine(" where ISNULL(isDelete,0)='' AND  uid='" + user + "' AND pwd='" + password + "' ");
+            sb.AppendLine(" where ISNULL(isDelete,0)='0' AND  uid='" + user + "' AND pwd='" + password + "' ");
             DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
           
              if (ds == null)
              {
-                 ReturnStr(false, "账号密码错误，或者账号不存在，或者账号已经停用！");
+                 ReturnStr(true, "[]");
              }
                 else
              {
                  if(ds.Tables[0].Rows.Count<=0)
-                     ReturnStr(false, "账号密码错误，或者账号不存在，或者账号已经停用！");
+                     ReturnStr(true, "[]");
                  else
                  {
                      log.Add_log(0, pwd, ClientId, "手机端登录", "手机端登录", 0, "手机端登录", password, "");
@@ -140,7 +140,7 @@ namespace XHD.CRM.webserver
               sb.AppendLine("SELECT  uid,name,tel,dname,zhiwu,email,Address, ");
               sb.AppendLine(" CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
               sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar ");
-              sb.AppendLine("  FROM hr_employee WHERE ISNULL(isDelete,0)='' AND token='" + token + "' ");
+              sb.AppendLine("  FROM hr_employee WHERE ISNULL(isDelete,0)='0' AND token='" + token + "' ");
                         DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
 
               if (ds == null)
@@ -196,12 +196,11 @@ namespace XHD.CRM.webserver
           {
                SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
-
-
-              sb.AppendLine(" SELECT DISTINCT CustomerType_id as cid ,isnull(CustomerType,'未知') as CustomerType");
-              sb.AppendLine(", CASE WHEN ISNULL(CustomerType_id,'')='' THEN '" + url + "'+'images/Icon/96.png'");
-              sb.AppendLine(" ELSE '" + url + "'+'images/Icon/'+ CONVERT(VARCHAR(5),CustomerType_id) +'.png'  END AS Avatar ");
-              sb.AppendLine("    FROM  CRM_Customer WHERE ISNULL(isDelete,0)=''");
+              sb.AppendLine(" SELECT  ");
+              sb.AppendLine("   DISTINCT id as cid ,isnull(params_name,'未知') as CustomerType");
+              sb.AppendLine(", CASE WHEN ISNULL(icon,'')='' THEN '" + url + "'+'images/Icon/96.png'");
+              sb.AppendLine(" ELSE '" + url + "'+icon  END AS Avatar ");
+              sb.AppendLine("   FROM dbo.Param_SysParam WHERE parentid=1");
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
 
               if (ds == null)
@@ -225,22 +224,32 @@ namespace XHD.CRM.webserver
           /// 客户List
           /// </summary>
           [WebMethod]
-          public void GetCustomerList(string keyword, string ID, string url, string topnumber, string searchkey)
+          public void GetCustomerList(string keyword, string ID, string url, string topnumber, string searchkey )
           {
               SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
 
               string serchtxt = "";
-              sb.AppendLine(" SELECT TOP " + topnumber + " id, Serialnumber,Customer,address,tel,CustomerType,Community,DesCripe,Remarks ");
+              sb.AppendLine(" SELECT TOP " + topnumber + " A.id, Serialnumber,Customer,address,tel,CustomerType,Community,DesCripe,Remarks ");
               sb.AppendLine(",UPPER(dbo.chinese_firstletter(ltrim(Customer))) as header");
               sb.AppendLine(", CASE WHEN ISNULL(CustomerType_id,'')='' THEN '" + url + "'+'images/Icon/96.png'");
-              sb.AppendLine("ELSE '" + url + "'+'images/Icon/'+ CONVERT(VARCHAR(5),CustomerType_id) +'.png'  END AS Avatar ");
-             sb.AppendLine(" FROM dbo.CRM_Customer");
-             sb.AppendLine(" where ISNULL(isDelete,0)='' ");
+              sb.AppendLine("ELSE '" + url + "'+C.icon  END AS Avatar ");
+             sb.AppendLine(" FROM dbo.CRM_Customer A");
+             sb.AppendLine("  INNER JOIN Param_SysParam C on C.id=A.CustomerType_id and parentid=1");
+
+             if (!string.IsNullOrEmpty(keyword))
+             {
+                 if (keyword == "fav")//收藏客户
+                     sb.AppendLine("  LEFT JOIN Crm_Customer_Favorite B on B.customer_id=A.id and userid=" + ID);
+
+             } sb.AppendLine(" where ISNULL(isDelete,0)='0' ");
              if (!string.IsNullOrEmpty(keyword))
              {
                 // serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
-                 serchtxt += " AND CustomerType_id="+keyword;
+             
+                 if (keyword == "fav")//收藏客户
+                     serchtxt += " AND B.customer_id is not null ";
+                 else serchtxt += " AND CustomerType_id=" + keyword;
              }
              if (!string.IsNullOrEmpty(searchkey))
              {
@@ -249,18 +258,18 @@ namespace XHD.CRM.webserver
              }
              //加入权限控制
              serchtxt += DataAuth(ID);
-             string ordertxt = " ORDER BY Create_date DESC ";
+             string ordertxt = " ORDER BY a.Create_date DESC ";
              string strsql = " SELECT * FROM ( "+sb.ToString() + serchtxt + ordertxt +")AA ORDER BY header";
              DataSet ds = DbHelperSQL.Query(strsql, parameters);
 
               if (ds == null)
               {
-                  ReturnStr(false, "无数据！");
+                  ReturnStr(true, "[]");
               }
               else
               {
                   if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(false, "无数据！");
+                      ReturnStr(true, "[]");
                   else
                   {
                       string str = Common.DataToJson.GetJson(ds);
@@ -332,15 +341,17 @@ namespace XHD.CRM.webserver
           /// 客户明细
           /// </summary>
           [WebMethod]
-          public void GetCustomerDetail(string id)
+          public void GetCustomerDetail(string id,string userid)
           {
               SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
 
               string serchtxt = "";
-              sb.AppendLine(" SELECT id, Serialnumber,Customer,address,tel,Create_name,CustomerType,Emp_sj AS sjs,Employee AS ywy,Emp_sg AS sgjl ");
-              sb.AppendLine(" FROM dbo.CRM_Customer");
-              sb.AppendLine(" where ISNULL(isDelete,0)='' AND id=" + id + "");
+              sb.AppendLine(" SELECT A.id, Serialnumber,Customer,address,tel,Create_name,CustomerType,Emp_sj AS sjs,Employee AS ywy,Emp_sg AS sgjl ");
+              sb.AppendLine(" ,Case when B.customer_id is null then 0 else 1 end as isstart");
+              sb.AppendLine(" FROM dbo.CRM_Customer A");
+              sb.AppendLine(" LEFT JOIN Crm_Customer_Favorite B on B.customer_id=A.id AND userid="+userid);
+              sb.AppendLine(" where ISNULL(isDelete,0)='0' AND a.id=" + id + "");
                
 
               DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt, parameters);
@@ -377,28 +388,32 @@ namespace XHD.CRM.webserver
               sb.AppendLine("SELECT top " + perindex + " CONVERT(VARCHAR(16),Follow_date,120) AS Follow_date,A.id,Customer_id,Customer_name,Follow,employee_name,Follow_Type,Follow_Type  ");
                sb.AppendLine(" ,CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
                sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar ");
-               sb.AppendLine(" ,(SELECT COUNT(1) FROM CRM_Follow where Customer_id=" + id + ") AS TotalCount");
+               sb.AppendLine(" ,(SELECT COUNT(1) FROM CRM_Follow where Customer_id=" + id + " AND ISNULL(isDelete,0)='0') AS TotalCount");
              sb.AppendLine("FROM dbo.CRM_Follow A ");
               sb.AppendLine("INNER JOIN dbo.hr_employee B ON A.employee_id=B.ID ");
 
-              sb.AppendLine(" where ISNULL(A.isDelete,0)='' AND A.Customer_id=" + id + "");
-              sb.AppendLine(" AND  (");
-                            sb.AppendLine("A.id>(SELECT ISNULL(MAX(id),0) FROM (SELECT TOP " + perindex + " id FROM");
-                            sb.AppendLine(" CRM_Follow ORDER BY id)AS T");
-                            sb.AppendLine(" )");
-                          sb.AppendLine(")  ");
+              sb.AppendLine(" where ISNULL(A.isDelete,0)='0' AND A.Customer_id=" + id + "");
+              sb.AppendLine(" AND  (");//因为需求是从大到小
+              sb.AppendLine("A.id>=(SELECT ISNULL(min(id),0) FROM (SELECT TOP " + perindex + " id FROM ");
+              sb.AppendLine(" CRM_Follow where Customer_id=" + id + " AND ISNULL(isDelete,0)='0' ORDER BY Follow_date DESC )AS T ");
+              sb.AppendLine(" ) ");
+              sb.AppendLine(") ");//总数应该不会超过9亿
+              sb.AppendLine("AND   A.id<(SELECT ISNULL(min(id),999999999) FROM (SELECT TOP " + startindex + " id FROM ");
+                sb.AppendLine(" CRM_Follow where Customer_id=" + id + " AND ISNULL(isDelete,0)='0' ORDER BY Follow_date DESC )AS T ");
+                sb.AppendLine(" ) ");
+
               sb.AppendLine(" ORDER BY Follow_date desc");
 
               DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt, parameters);
 
               if (ds == null)
               {
-                  ReturnStr(false, "\"无数据！\"");
+                  ReturnStr(false, "[]");
               }
               else
               {
                   if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(false, "\"无数据！\"");
+                      ReturnStr(false, "[]");
                   else
                   {
                       string str = Common.DataToJson.GetJson(ds);
@@ -524,7 +539,7 @@ namespace XHD.CRM.webserver
               sb.AppendLine(" CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
               sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar ");
               sb.AppendLine(" ,UPPER(dbo.chinese_firstletter(ltrim(name))) as Header");
-              sb.AppendLine("  FROM hr_employee WHERE ISNULL(isDelete,0)='' ");
+              sb.AppendLine("  FROM hr_employee WHERE ISNULL(isDelete,0)='0' ");
               sb.AppendLine(" ORDER BY UPPER(dbo.chinese_firstletter(ltrim(name)))");
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
  
@@ -670,6 +685,42 @@ namespace XHD.CRM.webserver
 
           }
 
+          /// <summary>
+          /// 客户收藏
+          /// </summary>
+          [WebMethod]
+          public void UpdateFeedback(string contexts, string url, string name)
+          {
+              var sb = new System.Text.StringBuilder();
+              sb.AppendLine("INSERT INTO dbo.App_Feedback ");
+              sb.AppendLine("        ( contexts , ");
+              sb.AppendLine("          remarks , ");
+              sb.AppendLine("          DoTime , ");
+              sb.AppendLine("          DoName , ");
+              sb.AppendLine("          url ");
+              sb.AppendLine("        ) ");
+              sb.AppendLine("VALUES  ( '"+contexts+"' ,   ");
+              sb.AppendLine("          '' ,  ");
+              sb.AppendLine("          getdate() , ");
+              sb.AppendLine("          '"+name+"' ,   ");
+              sb.AppendLine("          '"+url+"'   ");
+              sb.AppendLine("        ) ");
+              sb.AppendLine(" ");
+              SqlParameter[] parameters = { };
+
+              var RV = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+              if (RV <= 0)
+                      ReturnStr(false, "\"faile\"");
+                  else
+                  {
+
+                      ReturnStr(true, "\"success\"");
+                  }
+              
+              
+
+          }
+
 
 
 
@@ -735,13 +786,13 @@ namespace XHD.CRM.webserver
                          case "none": returntxt = " and 1=2 ";
                              break;
                          case "my":
-                             returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or  Create_id=" + int.Parse(arr[1]) + ")";
+                             returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or  a.Create_id=" + int.Parse(arr[1]) + ")";
                              break;
                          case "dep":
                              if (string.IsNullOrEmpty(arr[1]))
-                                 returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or  Create_id=" + int.Parse(uid) + ")";
+                                 returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or  a.Create_id=" + int.Parse(uid) + ")";
                              else
-                                 returntxt = " and ( privatecustomer='公客' or Department_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or  Create_id=" + int.Parse(uid) + ")";
+                                 returntxt = " and ( privatecustomer='公客' or Department_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or  a.Create_id=" + int.Parse(uid) + ")";
                              break;
                          case "depall":
                              BLL.hr_department dep = new BLL.hr_department();

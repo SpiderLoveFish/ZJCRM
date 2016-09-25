@@ -1341,12 +1341,15 @@ namespace XHD.DAL
         public int AddFavorite(string cid,string uid)
         {
             var sb = new System.Text.StringBuilder();
+            sb.Append("delete from Crm_Customer_Favorite ");
+            sb.Append(" where customer_id=" + cid + " AND userid=" + uid + "");
             sb.AppendLine("INSERT INTO dbo.Crm_Customer_Favorite");
             sb.AppendLine("        ( customer_id, userid, DoTime )");
             sb.AppendLine("VALUES  ( "+cid+","); // customer_id - int
             sb.AppendLine("          " + uid + ","); // userid - int
-            sb.AppendLine("          getdate"); // DoTime - datetime
+            sb.AppendLine("          getdate()"); // DoTime - datetime
             sb.AppendLine("          )");
+            sb.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
 				 
                 };

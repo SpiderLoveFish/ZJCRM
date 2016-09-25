@@ -44,9 +44,13 @@ namespace XHD.CRM.Data
              {
                  string nowfileName = DateTime.Now.ToString("yyyyMMddHHmmss") + GetRandom(6) + ".jpg";
                  var a = request.Form["base64"];
-                 string err = Base64StringToImage(a.Replace("data:image/png;base64,", ""), dirPath + nowfileName);
+                 string err = Base64StringToImage(a.Replace("data:image/png;base64,", "").Replace("data:image/jpeg;base64,", ""), dirPath + nowfileName);
+                 //.Replace("data:image/png;base64,", "")
+                 //SqlParameter[] parameters = { };
+                 //DbHelperSQL.ExecuteSql("INSERT INTO dbo.test ( test )VALUES  ( '"+a+"'    )", parameters);
+
                  if (err == "") context.Response.Write("0|" + nowfileName);
-                 else context.Response.Write("-1|" + err);
+                 else context.Response.Write("-1|" +a.Substring(0,7)+ err);
 
             //   HttpFileCollection files = context.Request.Files;
                
