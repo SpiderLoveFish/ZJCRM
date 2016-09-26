@@ -261,6 +261,11 @@ namespace XHD.BLL
             return dal.GetPrint_list(strWhere);
         }
 
+        public DataSet GetAPI_KEY(string strWhere)
+        {
+            return dal.GetAPI_KEY(strWhere);
+        }
+
         #endregion  ExtensionMethod
     }
 }

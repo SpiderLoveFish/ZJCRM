@@ -51,7 +51,7 @@
             $("form").ligerForm();
             if (getparastr("cid") != null) {
                 loadForm(getparastr("cid"));
-             toolbar();
+             //toolbar();
             }
       
             initLayout();
@@ -61,7 +61,6 @@
 
 
 
-            loadGrid();
  
         })
 
@@ -126,7 +125,10 @@
             };
             activeDialog = top.jQuery.ligerDialog.open(dialogOptions);
         }
-        function loadGrid() {
+        function getLocalTime(nS) {
+            return new Date(parseInt(nS) * 1000).toLocaleString().substr(0, 10)
+        }
+        function loadGrid(tel) {
 
             g = $("#maingrid4").ligerGrid({
                 columns: [
@@ -134,7 +136,7 @@
 
                  //   { display: '客户', name: 'Customer', width: 120 },
  
-                   { display: '名称', name: 'DyGraphicsName', width: 160 },
+                   { display: '名称', name: 'title', width: 160 },
 
                       {
                           display: '', width: 50, render: function (item) {
@@ -142,7 +144,7 @@
                                    
                                var html;
                                if (item.DyUrl !== "") {
-                                   html = "<a href='" + item.DyUrl + "' target='blank')>查看</a>";
+                                   html = "<a href='" + item.link + "' target='blank')>查看</a>";
                                    
                               }
                               else html = "暂无";
@@ -151,7 +153,7 @@
                       },
                           {
                               display: '创建时间', name: 'DoTime', width: 90, render: function (item) {
-                                  var Create_date = formatTimebytype(item.DoTime, 'yyyy-MM-dd');
+                                  var Create_date = getLocalTime(item.addtime);
                                   return Create_date;
                               }
                           },
@@ -186,15 +188,15 @@
                            //    }
                            //},
                         {
-                            display: '备注', name: 'Remarks', align: 'left', width: 250, type: 'text'
-                            , editor: { type: 'text' }
+                            display: '备注', name: 'views', align: 'left', width: 250, type: 'text'
+                            
                         }
 
 
 
                 ],
                 dataAction: 'server',
-                url: "../../data/crm_customer.ashx?Action=griddy&cid=" + getparastr("cid") + "&rnd=" + Math.random(),
+                url: "../../data/crm_customer.ashx?Action=griddyapi&cid=" + getparastr("cid")+'&keytel='+tel + "&rnd=" + Math.random(),
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
                 width: '100%',
@@ -216,6 +218,8 @@
             $("#T_customer").val(decodeURI(getparastr("name")));
             $("#T_tel").val(decodeURI(getparastr("tel")));
             $("#T_sjs").val(decodeURI(getparastr("sjs")));
+            
+            loadGrid(decodeURI(getparastr("tel")));
         }
 
 

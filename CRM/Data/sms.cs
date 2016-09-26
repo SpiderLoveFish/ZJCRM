@@ -10,6 +10,7 @@ using System.IO;
 using System.Xml;
 using System.Data;
 using XHD.BLL;
+using Newtonsoft.Json;
 
 namespace XHD.CRM.Data
 {

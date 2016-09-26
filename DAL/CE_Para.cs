@@ -761,6 +761,23 @@ namespace XHD.DAL
             }
             return DbHelperSQL.Query(strSql.ToString());
         }
+
+
+        /// <summary>
+        /// 配置API
+        /// </summary>
+        public DataSet GetAPI_KEY(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select * ");
+            strSql.Append(" ");
+            strSql.Append(" FROM API_KEY ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
      
 
 		#endregion  ExtensionMethod

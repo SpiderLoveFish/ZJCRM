@@ -9,7 +9,7 @@ using System.Data;
 using System.Text;
 using XHD.BLL;
 using XHD.Model;
-
+ 
 namespace XHD.CRM.webserver
 {
     /// <summary>
@@ -23,10 +23,13 @@ namespace XHD.CRM.webserver
     public class AppApi : System.Web.Services.WebService
     {
         XHD.CRM.Data.C_Sys_log log = new XHD.CRM.Data.C_Sys_log();
+     
         [WebMethod]
         public string HelloWorld()
         {
             return "Hello World";
+
+           // Customer_DynamicGraphics.aspx
         }
 
        
@@ -721,8 +724,28 @@ namespace XHD.CRM.webserver
 
           }
 
+          /// <summary>
+          /// 客户收藏
+          /// </summary>
+          [WebMethod]
+          public void pushapple(string deviceToken)
+          {
+              //ReturnStr(false, Server.MapPath("..\\webserver\\zs.p12" )); 
+              //return;
+             ApplePushService apush =new ApplePushService();
+             if (!apush.Push("3143C16EF2220D8110C6E5958AAB7490FD3905E88A1D56894C"))
+                  ReturnStr(false, "\"faile\"");
+              else
+              {
+
+                  ReturnStr(true, "\"success\"");
+              }
 
 
+
+          }
+
+      
 
        /// <summary>
        /// 时间戳
@@ -824,6 +847,12 @@ namespace XHD.CRM.webserver
              }
              return str.ToString();
          }
+
+
+
+
+         
+
 
 
     }
