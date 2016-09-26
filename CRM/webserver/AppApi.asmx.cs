@@ -104,7 +104,16 @@ namespace XHD.CRM.webserver
                  else
                  {
                      log.Add_log(0, pwd, ClientId, "手机端登录", "手机端登录", 0, "手机端登录", password, "");
-               
+                     sb.Clear();
+                     sb.AppendLine("IF	NOT	EXISTS(SELECT	1	FROM	dbo.APP_PushClient	WHERE	clientid=''	AND	Versions=''	AND	userid='') ");
+                     sb.AppendLine("INSERT	INTO	dbo.APP_PushClient ");
+                     sb.AppendLine("        ( Versions, clientid, userid ) ");
+                     sb.AppendLine("VALUES  ( '" + version + "', -- Versions - varchar(10) ");
+                     sb.AppendLine("          '" + ClientId + "', -- clientid - varchar(50) ");
+                     sb.AppendLine("          '" + user + "'  -- userid - varchar(20) ");
+                     sb.AppendLine("          ) ");
+                     sb.AppendLine(" ");
+                        DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
                      string str = Common.DataToJson.GetJson(ds);
                      ReturnStr(true, str);
                  }
@@ -732,14 +741,14 @@ namespace XHD.CRM.webserver
           {
               //ReturnStr(false, Server.MapPath("..\\webserver\\zs.p12" )); 
               //return;
-             ApplePushService apush =new ApplePushService();
-             if (!apush.Push("3143C16EF2220D8110C6E5958AAB7490FD3905E88A1D56894C"))
-                  ReturnStr(false, "\"faile\"");
-              else
-              {
+             //ApplePushService apush =new ApplePushService();
+             //if (!apush.Push("3143C16EF2220D8110C6E5958AAB7490FD3905E88A1D56894C"))
+             //     ReturnStr(false, "\"faile\"");
+             // else
+             // {
 
-                  ReturnStr(true, "\"success\"");
-              }
+             //     ReturnStr(true, "\"success\"");
+             // }
 
 
 
@@ -850,10 +859,9 @@ namespace XHD.CRM.webserver
 
 
 
-
-         
-
+       
 
 
     }
 }
+ 
