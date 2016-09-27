@@ -9,6 +9,7 @@ using System.Data;
 using System.Text;
 using XHD.BLL;
 using XHD.Model;
+using System.Text.RegularExpressions;
  
 namespace XHD.CRM.webserver
 {
@@ -193,7 +194,7 @@ namespace XHD.CRM.webserver
                   else
                   {
                       //string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, "\""+ds.Tables[0].Rows[0][1].ToString()+"\"");
+                      ReturnStr(true,   Common.DataToJson.GetJson(ds) );
                   }
               }
           }
@@ -749,12 +750,40 @@ namespace XHD.CRM.webserver
 
              //     ReturnStr(true, "\"success\"");
              // }
+          
 
-
+                  ReturnStr(true, StringToUnicodeHex("f你好!http://baidu.com?abc=123"));
 
           }
 
-      
+          /// <summary>  
+          /// 将中文转化为16进制unicode字符  
+          /// 注意不要用汉字的标点符号（全拼的）
+          /// </summary>  
+          /// <param name="str"></param>  
+          /// <returns></returns>  
+          public static string StringToUnicodeHex(string str)
+          {
+              Regex rx = new Regex("[\u4e00-\u9fa5]+");//正则表达式
+              Regex rg = new Regex(@"[~!!@#\$%\^&\*\(\)\+=\|\\\}\]\{\[:;<,>\?\/""]+"); 
+              string outStr = "";
+              if (!string.IsNullOrEmpty(str))
+              {
+                  for (int i = 0; i < str.Length; i++)
+                  {
+                      string tempstr = str[i].ToString();
+                      if (!rx.IsMatch(tempstr))
+                      {
+
+                           outStr += tempstr; 
+                      }
+                        
+                      //将中文字符转为10进制整数，然后转为16进制unicode字符  
+                      else outStr += "\\u" + ((int)str[i]).ToString("x");
+                  }
+              }
+              return outStr;
+          }  
 
        /// <summary>
        /// 时间戳
@@ -776,11 +805,11 @@ namespace XHD.CRM.webserver
              string rstr="";
              if (!flag)
              {
-                 rstr= " {\"meta\":"+data+",\"data\":null}";
+                 rstr = " {\"meta\":" + StringToUnicodeHex(data) + ",\"data\":null}";
              }
              else
              {
-                 rstr = " {\"meta\":null,\"data\":" + data + "}";
+                 rstr = " {\"meta\":null,\"data\":" + StringToUnicodeHex(data) + "}";
              }
                ;
 
