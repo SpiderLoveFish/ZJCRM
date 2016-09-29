@@ -567,9 +567,10 @@ namespace XHD.DAL
             strSql.Append(" ,CASE IsStatus WHEN 0 THEN '待提交' WHEN 1 THEN '待审核' WHEN 2 THEN '待确认' WHEN 3 THEN '已生效' WHEN 99 THEN '已作废' ELSE '未知状态'END	 AS txtstatus ");
             strSql.Append(" FROM dbo.Budge_BasicMain A LEFT JOIN dbo.CRM_Customer B ON A.customer_id=B.id ");
             strSql.Append(" INNER JOIN  dbo.hr_employee C ON A.DoPerson=C.ID ");
-            strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_BasicMain ");
+            strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_BasicMain   ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-            strSql1.Append(" select count(id) FROM Budge_BasicMain A");
+            strSql1.Append(" select count(A.id) FROM Budge_BasicMain A");
+            strSql1.Append("  LEFT JOIN dbo.CRM_Customer B ON A.customer_id=B.id");
          
             if (strWhere.Trim() != "")
             {
