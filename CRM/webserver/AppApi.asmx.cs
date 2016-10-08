@@ -71,20 +71,20 @@ namespace XHD.CRM.webserver
             SqlParameter[] parameters = { };
             var sb = new System.Text.StringBuilder();
 
-            sb.AppendLine("SELECT   * FROM");
-            sb.AppendLine("hr_employee WHERE ISNULL(isDelete,0)='0' AND uid='" + user + "' AND pwd='" + password + "' AND ISNULL(token,'')=''");
-            bool isexist = DbHelperSQL.Exists(sb.ToString(), null);
-            if (isexist)
-            {
-                string token = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(
-                             GetTimeStamp() + user
-                             , "MD5").ToLower();
-                sb.Clear();
-                sb.AppendLine(" Update hr_employee");
-                sb.AppendLine(" set token='" + token + "'");
-                sb.AppendLine(" where  uid='" + user + "' AND pwd='" + password + "' AND ISNULL(token,'')=''");
-                DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
-            }
+            //sb.AppendLine("SELECT   * FROM");
+            //sb.AppendLine("hr_employee WHERE ISNULL(isDelete,0)='0' AND uid='" + user + "' AND pwd='" + password + "' AND ISNULL(token,'')=''");
+            //bool isexist = DbHelperSQL.Exists(sb.ToString(), null);
+            //if (isexist)
+            //{
+            //    string token = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(
+            //                 GetTimeStamp() + user
+            //                 , "MD5").ToLower();
+            //    sb.Clear();
+            //    sb.AppendLine(" Update hr_employee");
+            //    sb.AppendLine(" set token='" + token + "'");
+            //    sb.AppendLine(" where  uid='" + user + "' AND pwd='" + password + "' AND ISNULL(token,'')=''");
+            //    DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            //}
            
             sb.Clear();
             sb.AppendLine("SELECT ID,token, token AS UserId,name AS UserName,'"+ClientId+"' as ClientId,");
@@ -104,17 +104,17 @@ namespace XHD.CRM.webserver
                      ReturnStr(true, "[]");
                  else
                  {
-                     log.Add_log(0, pwd, ClientId, "手机端登录", "手机端登录", 0, "手机端登录", password, "");
-                     sb.Clear();
-                     sb.AppendLine("IF	NOT	EXISTS(SELECT	1	FROM	dbo.APP_PushClient	WHERE	clientid=''	AND	Versions=''	AND	userid='') ");
-                     sb.AppendLine("INSERT	INTO	dbo.APP_PushClient ");
-                     sb.AppendLine("        ( Versions, clientid, userid ) ");
-                     sb.AppendLine("VALUES  ( '" + version + "', -- Versions - varchar(10) ");
-                     sb.AppendLine("          '" + ClientId + "', -- clientid - varchar(50) ");
-                     sb.AppendLine("          '" + user + "'  -- userid - varchar(20) ");
-                     sb.AppendLine("          ) ");
-                     sb.AppendLine(" ");
-                        DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+                 //    log.Add_log(0, pwd, ClientId, "手机端登录", "手机端登录", 0, "手机端登录", password, "");
+                 //    sb.Clear();
+                 //    sb.AppendLine("IF	NOT	EXISTS(SELECT	1	FROM	dbo.APP_PushClient	WHERE	clientid=''	AND	Versions=''	AND	userid='') ");
+                 //    sb.AppendLine("INSERT	INTO	dbo.APP_PushClient ");
+                 //    sb.AppendLine("        ( Versions, clientid, userid ) ");
+                 //    sb.AppendLine("VALUES  ( '" + version + "', -- Versions - varchar(10) ");
+                 //    sb.AppendLine("          '" + ClientId + "', -- clientid - varchar(50) ");
+                 //    sb.AppendLine("          '" + user + "'  -- userid - varchar(20) ");
+                 //    sb.AppendLine("          ) ");
+                 //    sb.AppendLine(" ");
+                 //       DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
                      string str = Common.DataToJson.GetJson(ds);
                      ReturnStr(true, str);
                  }
@@ -181,16 +181,16 @@ namespace XHD.CRM.webserver
           {
                SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
-              sb.AppendLine("SELECT * FROM dbo.App_Version WHERE	Ver!='" + ver + "'");
+              sb.AppendLine("SELECT * FROM dbo.App_Version WHERE	Ver!='" + ver + "'  and IsLast='Y'");
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
               if (ds == null)
               {
-                  ReturnStr(true, " \"no\"");
+                  ReturnStr(false, "[{\"Ver\":\"no\"]");
               }
               else
               {
                   if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(true," \"no\"");
+                      ReturnStr(false, "[{\"Ver\":\"no\"]");
                   else
                   {
                       //string str = Common.DataToJson.GetJson(ds);
@@ -734,6 +734,64 @@ namespace XHD.CRM.webserver
 
           }
 
+  /// <summary>
+          /// 客户收藏
+          /// </summary>
+          [WebMethod]
+          public void Getquertions(string ID, string strWhere, string starIndex, string endIndex, string type)
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+
+              //sb.AppendLine("SELECT token as UserId,  uid as LoginId,name as UserName,tel,tel as Mobile ,dname as DepartmentName,zhiwu,email as Email,Address, ");
+              //sb.AppendLine(" CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
+              //sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar ");
+              //sb.AppendLine(" ,UPPER(dbo.chinese_firstletter(ltrim(name))) as Header");
+              //sb.AppendLine("  FROM hr_employee WHERE ISNULL(isDelete,0)='0' ");
+              //sb.AppendLine(" ORDER BY UPPER(dbo.chinese_firstletter(ltrim(name)))");
+              //DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+
+              //if (ds.Tables[0].Rows.Count <= 0)
+              //    ReturnStr(false, "[]");
+              //else
+              //{
+              //    string str = Common.DataToJson.GetJson(ds);
+              //    ReturnStr(true, str);
+              //}
+
+              ReturnStr(true, "[[],[]]");
+
+          }
+
+          [WebMethod]
+          public void GetNews(string nid, string strWhere, string starIndex, string endIndex, string type)
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+
+              //sb.AppendLine("SELECT token as UserId,  uid as LoginId,name as UserName,tel,tel as Mobile ,dname as DepartmentName,zhiwu,email as Email,Address, ");
+              //sb.AppendLine(" CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
+              //sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar ");
+              //sb.AppendLine(" ,UPPER(dbo.chinese_firstletter(ltrim(name))) as Header");
+              //sb.AppendLine("  FROM hr_employee WHERE ISNULL(isDelete,0)='0' ");
+              //sb.AppendLine(" ORDER BY UPPER(dbo.chinese_firstletter(ltrim(name)))");
+              //DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+
+              //if (ds.Tables[0].Rows.Count <= 0)
+              //    ReturnStr(false, "[]");
+              //else
+              //{
+              //    string str = Common.DataToJson.GetJson(ds);
+              //    ReturnStr(true, str);
+              //}
+
+              ReturnStr(true, "[[],[]]");
+
+          }
+
+        
+
+
           /// <summary>
           /// 客户收藏
           /// </summary>
@@ -755,6 +813,10 @@ namespace XHD.CRM.webserver
                   ReturnStr(true, StringToUnicodeHex("f你好!http://baidu.com?abc=123"));
 
           }
+
+
+
+
 
           /// <summary>  
           /// 将中文转化为16进制unicode字符  
@@ -803,13 +865,13 @@ namespace XHD.CRM.webserver
          private  void ReturnStr(bool flag,string data)
          {
              string rstr="";
-             if (!flag)
+             if (!flag)//StringToUnicodeHex
              {
-                 rstr = " {\"meta\":" + StringToUnicodeHex(data) + ",\"data\":null}";
+                 rstr = " {\"meta\":" + data + ",\"data\":null}";
              }
              else
              {
-                 rstr = " {\"meta\":null,\"data\":" + StringToUnicodeHex(data) + "}";
+                 rstr = " {\"meta\":null,\"data\":" + data + "}";
              }
                ;
 
@@ -819,6 +881,8 @@ namespace XHD.CRM.webserver
 
              Context.Response.End();
          }
+
+
 
 
         /// <summary>

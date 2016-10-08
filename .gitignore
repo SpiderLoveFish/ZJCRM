@@ -23,3 +23,7 @@ sn.txt
 CRM/webserver/Api.html
 
 CRM/webserver/mui.js
+
+.DS_Store
+
+CRM/.DS_Store
