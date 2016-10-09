@@ -102,7 +102,7 @@ namespace XHD.CRM.Data
                    }
                    string keytel = request["keytel"];
                    //+"/key/"+keytel
-                   var result = HttpHelper_GetStr(apiurl + apikey , "GET", buffer.ToString());
+                   var result = HttpHelper_GetStr(apiurl + apikey + "/key/" + keytel, "GET", buffer.ToString());
                    Newtonsoft.Json.Linq.JObject jo = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject(result);
                    
                 

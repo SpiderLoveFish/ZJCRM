@@ -144,8 +144,9 @@
                                    
                                var html;
                                if (item.DyUrl !== "") {
-                                   html = "<a href='" + item.link + "' target='blank')>查看</a>";
-                                   
+                                   var html = "<a href='javascript:void(0)' onclick=viewkjl('" + item.link + "','aa')>查看</a>"
+
+                                 
                               }
                               else html = "暂无";
                               return html;
@@ -230,6 +231,7 @@
 
         function viewkjl(url,newname)
         {
+            
             window.open(url + "&width=" + screen.width +
                                 "&height=" + (screen.height - 70), newname,
                                 "top=0,left=0,toolbar=no, menubar=no, scrollbars=yes,resizable=no,location=no,status=no,width=" +
