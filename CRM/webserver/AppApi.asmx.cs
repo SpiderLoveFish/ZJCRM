@@ -814,7 +814,186 @@ namespace XHD.CRM.webserver
 
           }
 
+          /// <summary>
+          /// 积分查询
+          /// </summary>
+          [WebMethod]
+          public void GetScore(string strwhere, string sfkh, string nowindex)
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+              int startindex = int.Parse(nowindex) - 10;
+              int perindex = int.Parse(nowindex);
+              string serchtxt = "";
+              if (strwhere != "")
+                  serchtxt += " AND (Name LIKE '%" + strwhere + "%' or tel LIKE '%" + strwhere + "%' )";
+              if (sfkh == "Y")
+              {
+                  sb.AppendLine("SELECT TOP	" + perindex + " * FROM dbo.v_Jifen_Kh");
+                  sb.AppendLine("WHERE id >");
+                  sb.AppendLine("          (");
+                  sb.AppendLine("          SELECT ISNULL(MAX(id),0)");
+                  sb.AppendLine("          FROM");
+                  sb.AppendLine("                (");
+                  sb.AppendLine("                SELECT TOP " + startindex + " id FROM v_Jifen_Kh where 1=1 " + serchtxt + " ORDER BY id");
+                  sb.AppendLine("                ) A");
+                  sb.AppendLine("          )");
+                  sb.AppendLine(" " + serchtxt + "");
+                  sb.AppendLine(" ORDER BY  ID");
+              }
+              else
+              {
+                  sb.AppendLine("SELECT TOP	" + perindex + " * FROM dbo.v_Jifen_Yg");
+                  sb.AppendLine("WHERE id >");
+                  sb.AppendLine("          (");
+                  sb.AppendLine("          SELECT ISNULL(MAX(id),0)");
+                  sb.AppendLine("          FROM");
+                  sb.AppendLine("                (");
+                  sb.AppendLine("                SELECT TOP " + startindex + " id FROM v_Jifen_Yg  where 1=1 " + serchtxt + "  ORDER BY id");
+                  sb.AppendLine("                ) A");
+                  sb.AppendLine("          )");
+                  sb.AppendLine(" " + serchtxt + "");
+                  sb.AppendLine(" ORDER BY  ID");
+              }
 
+              DataSet ds = DbHelperSQL.Query(sb.ToString() , parameters);
+
+              if (ds == null)
+              {
+                  ReturnStr(true, "[]");
+              }
+              else
+              {
+                  if (ds.Tables[0].Rows.Count <= 0)
+                      ReturnStr(true, "[]");
+                  else
+                  {
+                      string str = Common.DataToJson.GetJson(ds);
+                      ReturnStr(true, str);
+                  }
+              }
+
+          }
+
+          /// <summary>
+          /// 客户收藏
+          /// </summary>
+          [WebMethod]
+          public void UpdateScore(string sfadd, string sfkh, string id,string score,string content,string uid)
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+              string jlx = "0";
+              if (sfadd == "Y") jlx = "0"; else jlx = "1";
+              sb.AppendLine("INSERT INTO dbo.CRM_Jifen (ID,Jflx,Jf,Sfkh,Content,IsDel,InEmpID,InDate) ");
+              sb.AppendLine("VALUES  ('" + id + "', ");
+              sb.AppendLine("         '" + jlx + "', ");
+              sb.AppendLine("         '" + score + "', ");
+              sb.AppendLine("         'Y', ");
+              sb.AppendLine("         '" + content + "', ");
+              sb.AppendLine("         'N', ");
+              sb.AppendLine("         '" + uid + "', ");
+              sb.AppendLine("         GETDATE()  ");
+              sb.AppendLine("         ) ");
+
+              var RV = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+              if (RV > 0)
+                  ReturnStr(true, "\"success\"");
+              else ReturnStr(false, "\"faile\"");
+
+          }
+
+          /// <summary>
+          /// 积分查询
+          /// </summary>
+          [WebMethod]
+          public void GetBudge(string strWhere,string uid)
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+              sb.AppendLine("SELECT  B.* ,");
+              sb.AppendLine("        ISNULL(b_zje, 0) AS zje ,");
+              sb.AppendLine("        C.b_sj ,");
+              sb.AppendLine("        C.b_sl ,");
+              sb.AppendLine("        B.FJAmount AS fjfy ,");
+              sb.AppendLine("        A.id AS CustomerID ,");
+              sb.AppendLine("        ISNULL(C.b_zkzje, 0) zkzje ,");
+              sb.AppendLine("        a.tel ,");
+              sb.AppendLine("        a.Customer AS CustomerName ,");
+              sb.AppendLine("        a.Emp_sg AS sgjl ,");
+              sb.AppendLine("        a.address ,");
+              sb.AppendLine("        cc.tel AS sjstel ,");
+              sb.AppendLine("        a.gender ,");
+              sb.AppendLine("        a.Emp_sj AS sjs ,");
+              sb.AppendLine("        a.Employee AS ywy");
+              sb.AppendLine("FROM    dbo.Budge_BasicMain B");
+              sb.AppendLine("        LEFT JOIN dbo.CRM_Customer a ON B.customer_id = A.id");
+              sb.AppendLine("        LEFT JOIN dbo.Budge_tax C ON B.id = C.budge_id");
+              sb.AppendLine("        LEFT JOIN dbo.hr_employee CC ON a.emp_id_sj = CC.[ID]");
+              sb.AppendLine("        LEFT JOIN ( SELECT  SUM(rate) AS rate ,");
+              sb.AppendLine("                            budge_id");
+              sb.AppendLine("                    FROM    dbo.Budge_Rate_Ver");
+              sb.AppendLine("                    GROUP BY budge_id");
+              sb.AppendLine("                  ) D ON B.id = D.budge_id");
+              sb.AppendLine("WHERE   1 = 1  ");
+              if (strWhere.Trim() != "")
+              {
+                  sb.AppendLine(" AND " + strWhere);
+              }
+              string  serchtxt  = DataAuth(uid);
+              DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt, parameters);
+
+              if (ds == null)
+              {
+                  ReturnStr(true, "[]");
+              }
+              else
+              {
+                  if (ds.Tables[0].Rows.Count <= 0)
+                      ReturnStr(true, "[]");
+                  else
+                  {
+                      string str = Common.DataToJson.GetJson(ds);
+                      ReturnStr(true, str);
+                  }
+              }
+
+          }
+          /// <summary>
+          /// 积分查询
+          /// </summary>
+          [WebMethod]
+          public void GetBudgeDetail(string strWhere, string bid)
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+              
+              if (strWhere.Trim() != "")
+              {
+                  sb.AppendLine(" AND " + strWhere);
+              }
+              string hj = "[]"; string detail = "[]";
+              BLL.Budge_BasicMain bbb = new BLL.Budge_BasicMain();
+              BLL.Budge_BasicDetail bbdetail = new BLL.Budge_BasicDetail();
+              if (bid != "")
+              {
+                  DataSet ds = bbb.GetPrintCount(bid);
+                  hj = Common.GetGridJSON.DataTableToJSON2(ds.Tables[0]);
+                  string Total = ""; string serchtxt = "1=1";
+                  serchtxt += " and   budge_id ='" + bid + "'";
+                
+                  string sorttext = "   ISNULL(OrderBy,0), ComponentName   desc";
+                  DataSet dsd = bbdetail.GetBudge_BasicDetail(9999, 1, serchtxt, sorttext, out Total);
+                  detail = Common.GetGridJSON.DataTableToJSON2(dsd.Tables[0]);
+              }
+
+
+
+
+              string str = "{\"jhdata\":" + hj + ",\"detaildata\":" + detail + "}";
+                      ReturnStr(true, str);
+                  
+          }
 
 
 
