@@ -230,8 +230,13 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-                
-               
+              
+                items.push({
+                    type: 'textbox',
+                    id: 'stype',
+                    name: 'stype',
+                    text: '统计项'
+                });
                 items.push({
                     type: 'textbox',
                     id: 'keyword1',
@@ -279,7 +284,11 @@
                 menu1 = $.ligerMenu({
                     width: 120, items: getMenuItems(data)
                 });
-
+                $("#stype").ligerComboBox({
+                    width: 200,
+                    isMultiSelect: true,
+                    url: "../../data/param_sysparam.ashx?Action=combo&parentid=1&rnd=" + Math.random()
+                })
                 $("#keyword1").ligerTextBox({ width: 200, nullText: "输入关键词搜索" })
                 $("#maingrid4").ligerGetGridManager().onResize();
                 $("#maingrid5").ligerGetGridManager().onResize();
@@ -287,6 +296,7 @@
             });
         }
         function initSerchForm() {
+           
             //var a = $('#T_City').ligerComboBox({ width: 96, emptyText: '（空）' });
             //var b = $('#T_Provinces').ligerComboBox({
             //    width: 97,
@@ -427,7 +437,7 @@
             var stxt = $("#form1 :input").fieldSerialize();
 
             var serchtxt = $("#serchform :input").fieldSerialize() + "&" + stxt + sendtxt;
-            alert(serchtxt);           
+             //alert(serchtxt);           
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.GetDataByURL("../../data/crm_customer.ashx?" + serchtxt);
 

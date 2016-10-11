@@ -3,6 +3,10 @@ using System.Data;
 using System.Text;
 using System.Data.SqlClient;
 using XHD.DBUtility;//Please add references
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+
 namespace XHD.DAL
 {
 	/// <summary>
@@ -778,7 +782,96 @@ namespace XHD.DAL
             }
             return DbHelperSQL.Query(strSql.ToString());
         }
-     
+
+
+        public bool Addkjl_account_list(string uid, int style, string userid, string text, string remarks)
+        {
+
+            JArray ja = (JArray)JsonConvert.DeserializeObject(text);
+          
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("");
+            sb.AppendLine("DELETE	dbo.kjl_account_list WHERE uid='" + uid + "'");
+            foreach(var ja1 in ja)
+            {
+                JObject o = (JObject)ja1;
+                sb.AppendLine("INSERT INTO dbo.kjl_account_list");
+                sb.AppendLine("        ( userid ,");
+                sb.AppendLine("          uid ,");
+                sb.AppendLine("          obsPlanId ,");
+                sb.AppendLine("          planCity ,");
+                sb.AppendLine("          commName ,");
+                sb.AppendLine("          area ,");
+                sb.AppendLine("          name ,");
+                sb.AppendLine("          srcArea ,");
+                sb.AppendLine("          modifiedTime ,");
+                sb.AppendLine("          pics ,");
+                sb.AppendLine("          smallPics ,");
+                sb.AppendLine("          created ,");
+                sb.AppendLine("          dotime ,");
+                sb.AppendLine("          DoStyle");
+                sb.AppendLine("        )");
+                sb.AppendLine("VALUES  ( '" + userid + "' ,"); // userid - varchar(50)
+                sb.AppendLine("         '" + uid + "' ,"); // uid - varchar(20)
+                sb.AppendLine("          '" + o["obsPlanId"].Value<string>() + "' ,"); // obsPlanId - varchar(20)
+                sb.AppendLine("          '" + o["planCity"].Value<string>() + "' ,"); // planCity - varchar(300)
+                sb.AppendLine("         '" + o["commName"].Value<string>() + "'  ,"); // commName - varchar(300)
+                sb.AppendLine("           " + o["area"].Value<string>() + " ,"); // area - decimal
+                sb.AppendLine("          '" + o["name"].Value<string>() + "' ,"); // name - varchar(300)
+                sb.AppendLine("          " + o["srcArea"].Value<string>() + " ,"); // srcArea - float
+                sb.AppendLine("          '" + GetTime(o["modifiedTime"].ToString()) + "' ,"); // modifiedTime - datetime
+                sb.AppendLine("          '" + o["pics"].Value<string>() + "' ,"); // pics - varchar(300)
+                sb.AppendLine("          '" + o["smallPics"].Value<string>() + "' ,"); // smallPics - varchar(300)
+                sb.AppendLine("          '" + GetTime(o["created"].ToString()) + "' ,"); // created - datetime
+                sb.AppendLine("          getdate() ,"); // dotime - datetime
+                sb.AppendLine("          " + style + ""); // DoStyle - int
+                sb.AppendLine("        )");
+            }
+            
+
+            SqlParameter[] parameters = {
+                                       };
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetDS_kjl_account_list(string strWhere)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("SELECT   * FROM ");
+            sb.AppendLine("dbo.kjl_account_list");
+            //sb.AppendLine("where B.uid='admin'");
+            if (strWhere.Trim() != "")
+            {
+                sb.AppendLine(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(sb.ToString());
+        }
+
+
+        /// <summary>
+        /// 时间戳转为C#格式时间
+        /// </summary>
+        /// <param name="timeStamp">Unix时间戳格式</param>
+        /// <returns>C#格式时间</returns>
+        public static DateTime GetTime(string timeStamp)
+        {
+            DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+            long lTime = long.Parse(timeStamp + "0000");
+            TimeSpan toNow = new TimeSpan(lTime);
+            return dtStart.Add(toNow);
+        }
 
 		#endregion  ExtensionMethod
 	}

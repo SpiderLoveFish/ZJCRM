@@ -23,7 +23,9 @@
           var startstr = 0;
 
           $(function () {
-              dosearch(); 
+              syncdata();//先同步；
+              setInterval( dosearch(), 2000);
+              
           })
 
           function add() {
@@ -54,6 +56,41 @@
           }
 
 
+          function syncdata()
+          {
+              //  alert(getCookie("xhdcrm_uid"));
+              if (getCookie("xhdcrm_uid") && getCookie("xhdcrm_uid") != null)
+              $.ajax({
+                  url: "../../data/website.ashx", type: "POST",
+                  data: { Action: "getuserhxdata_tongbu", struid: getCookie("xhdcrm_uid"), num: 999, rnd: Math.random() },
+                  success: function (responseText) {
+                     
+                      if (responseText == "true") {
+
+                      }
+                      $.ajax({
+                          url: "../../data/website.ashx", type: "POST",
+                          data: { Action: "get3dlist_tongbu", struid: getCookie("xhdcrm_uid"), num: 999, rnd: Math.random() },
+                          success: function (responseText) {
+                             
+                              if (responseText == "true") {
+
+                              }
+
+
+                          }, error: function () {
+                            
+                             alert('同步失败！');
+                          }
+                      });
+
+                  },
+                  error: function () {
+                      alert('同步失败！');
+                  }
+              });
+          }
+
           //获取指定户型图的副本
           function ajaxhxtfb(planid) {
               $.ajax({
@@ -77,10 +114,10 @@
           //搜索户型图接口
           function ajaxhxtapi(keystr) {
               $.ajax({
-                  url: "../../data/SingleSignOn.ashx", type: "POST",
-                  data: { Action: "gethxtapi", cityid: 175, keystr: keystr, strstart: startstr, rnd: Math.random() },
+                  url: "../../data/CRM_Customer.ashx", type: "POST",
+                  data: { Action: "gridkjl_account_list",   keystr: keystr,   rnd: Math.random() },
                   success: function (responseText) {
-                       // alert(responseText);
+                      // alert(responseText);
                       var obj = eval(responseText);
                       var html = "";
                       for (var n in obj) {
@@ -140,7 +177,7 @@
 							
 					<li> 
                             				 
-												<input id="T_search" type="text" placeholder="小区名称"/>
+												<input id="T_search" style="height:30px" type="text" placeholder="关键字"/>
 												
 										 
                                            </li>
@@ -160,9 +197,9 @@
 					 <div id="divcontent"></div>
 					<div class="clear"></div>
 					<div class="grid_12">
-						
-                        	<a  onclick="more()"  class="round"> 加载更多</a>
-                        <a  onclick="first()" class="round"> 回到第一页</a>
+							<a href="#" class="round"> 回到<br>顶端</a>
+                        	<%--<a  onclick="more()"  class="round"> 加载更多</a>--%>
+                        <%--<a  onclick="first()" class="round"> 回到第一页</a>--%>
 					</div>
 				</div>
 			</div>

@@ -648,6 +648,7 @@ namespace XHD.CRM.Data
                     if (result != "request time out")
                     {
                         cp.Addkjl_list_text(struid, 1, userId, result, "");
+                        cp.Addkjl_account_list(struid, 1, userId, result, "");
                         context.Response.Write("true");
                     }
                 }

@@ -265,7 +265,14 @@ namespace XHD.BLL
         {
             return dal.GetAPI_KEY(strWhere);
         }
-
+        public bool Addkjl_account_list(string uid, int style, string userid, string text, string remarks)
+        {
+            return dal.Addkjl_account_list(uid, style, userid, text, remarks);
+        }
+        public DataSet GetDS_kjl_account_list(string strWhere)
+        {
+            return dal.GetDS_kjl_account_list(strWhere);
+        }
         #endregion  ExtensionMethod
     }
 }

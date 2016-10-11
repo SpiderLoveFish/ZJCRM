@@ -138,7 +138,24 @@ namespace XHD.CRM.Data
                 
                 
             }
+            if (request["Action"] == "gridkjl_account_list")
+            {
 
+                string keystr = request["keystr"];
+               
+                string serchtxt = null;
+
+               
+                    serchtxt += "  uid='" + uid + "' ";
+
+                    if (!string.IsNullOrEmpty(keystr))
+                        serchtxt += " AND  name  LIKE '%" + keystr + "%' ";
+                BLL.CE_Para cp = new BLL.CE_Para();
+                DataSet ds = cp.GetDS_kjl_account_list(serchtxt);
+
+                string dt = Common.GetGridJSON.DataTableToJSON2(ds.Tables[0]);
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "griddy")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
@@ -536,6 +553,10 @@ namespace XHD.CRM.Data
                 {
                     serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword1);
                 }
+                string items = PageValidate.InputText(context.Request["stype_val"], 255);
+                if (!string.IsNullOrEmpty(items) && items != "null")
+                    serchtxt += string.Format(" and a.CustomerType_id in({0})", items.Replace(';', ','));
+
                 if (!string.IsNullOrEmpty(request["customertype"]))
                     serchtxt += " and CustomerType_id = " + int.Parse(request["customertype_val"]);
 

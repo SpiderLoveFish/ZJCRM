@@ -147,7 +147,13 @@
                                 html += "</div>";
                                 return html;
                             }
-                        }, {
+                        },
+                         {
+                         display: "排序顺序", name: "OrderBy", type: "int", align: "right", width: 60,
+                         editor: { type: "int" } 
+
+                     },
+                        {
                             display: "数量", name: "SUM", type: "float", align: "right", width: 60,
                             editor: { type: "float" },
                             totalSummary: {
@@ -157,6 +163,7 @@
                                 }
                             }
                         }
+
                          ],
                          enabledEdit: true, isScroll: true,
                          rownumbers: true,

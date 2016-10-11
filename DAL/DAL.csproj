@@ -108,6 +108,9 @@
       <HintPath>..\Lib\MySql.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json.Net35">
+      <HintPath>..\CRM\bin\Newtonsoft.Json.Net35.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>

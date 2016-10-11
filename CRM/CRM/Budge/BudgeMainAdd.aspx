@@ -145,8 +145,7 @@
                 columns: [
                     { display: '–Ú∫≈', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                      {
-                         display: "≈≈–Ú", name: "OrderBy", type: "int", align: "right", width: 40,
-                         editor: { type: "int" }
+                         display: "≈≈–Ú", name: "OrderBy", type: "int", align: "right", width: 40 
 
                      },
                     { display: '√˚≥∆', name: 'product_name', width: 120 },
