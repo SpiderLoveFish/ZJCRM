@@ -875,6 +875,47 @@ namespace XHD.CRM.webserver
 
           }
 
+          [WebMethod]
+          public void GetScoreDetail( string sfkh, string id)
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+
+             
+               if (sfkh == "Y")
+              {
+                  sb.AppendLine("   SELECT * FROM dbo.v_Jifen_Kh_Mx where   1=1");
+              }
+              else {
+                  sb.AppendLine("   SELECT * FROM dbo.v_Jifen_Yg_Mx  where   1=1");
+              
+              }
+               if (id.Trim() != "")
+               {
+                   sb.AppendLine(" AND id=" + id);
+               }
+              DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+
+
+
+              if (ds == null)
+              {
+                  ReturnStr(true, "[]");
+              }
+              else
+              {
+                  if (ds.Tables[0].Rows.Count <= 0)
+                      ReturnStr(true, "[]");
+                  else
+                  {
+                      string str = Common.DataToJson.GetJson(ds);
+                      ReturnStr(true, str);
+                  }
+              }
+
+          }
+
+
           /// <summary>
           /// 客户收藏
           /// </summary>
