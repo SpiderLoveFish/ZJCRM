@@ -955,7 +955,7 @@ namespace XHD.CRM.webserver
               var sb = new System.Text.StringBuilder();
               sb.AppendLine("SELECT  B.JJAmount,B.ZCAmount,B.FJAmount,B.DiscountAmount, B.customer_id,B.BudgetName,B.IsStatus,B.id ,");
               sb.AppendLine("      case IsStatus when '0' then '待提交'  when '1' then '待审核'  when '3' then '待确认'  when '2' then '已生效'  when '99' then '已删除' else '未知状态' end as zt,");
-              sb.AppendLine("        ISNULL(b_zje, 0) AS zje ,");
+              sb.AppendLine("        ISNULL(b_zje, 0) AS zje ,B.DoTime,");
               sb.AppendLine("        C.b_sj ,");
               sb.AppendLine("        C.b_sl ,");
               sb.AppendLine("        B.FJAmount AS fjfy ,");
