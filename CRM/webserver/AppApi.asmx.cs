@@ -894,9 +894,10 @@ namespace XHD.CRM.webserver
                {
                    sb.AppendLine(" AND id=" + id);
                }
+               sb.AppendLine(" ORDER BY InDate DESC ");
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
 
-
+              
 
               if (ds == null)
               {
@@ -930,7 +931,7 @@ namespace XHD.CRM.webserver
               sb.AppendLine("VALUES  ('" + id + "', ");
               sb.AppendLine("         '" + jlx + "', ");
               sb.AppendLine("         '" + score + "', ");
-              sb.AppendLine("         'Y', ");
+              sb.AppendLine("         '" + sfkh + "', ");
               sb.AppendLine("         '" + content + "', ");
               sb.AppendLine("         'N', ");
               sb.AppendLine("         '" + uid + "', ");
@@ -948,11 +949,12 @@ namespace XHD.CRM.webserver
           /// 积分查询
           /// </summary>
           [WebMethod]
-          public void GetBudge(string strWhere,string uid)
+          public void GetBudge(string strWhere,string lx,string uid)
           {
               SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
-              sb.AppendLine("SELECT  B.* ,");
+              sb.AppendLine("SELECT  B.JJAmount,B.ZCAmount,B.FJAmount,B.DiscountAmount, B.customer_id,B.BudgetName,B.IsStatus,B.id ,");
+              sb.AppendLine("      case IsStatus when '0' then '待提交'  when '1' then '待审核'  when '3' then '待确认'  when '2' then '已生效'  when '99' then '已删除' else '未知状态' end as zt,");
               sb.AppendLine("        ISNULL(b_zje, 0) AS zje ,");
               sb.AppendLine("        C.b_sj ,");
               sb.AppendLine("        C.b_sl ,");
@@ -979,7 +981,15 @@ namespace XHD.CRM.webserver
               sb.AppendLine("WHERE   1 = 1  ");
               if (strWhere.Trim() != "")
               {
-                  sb.AppendLine(" AND " + strWhere);
+                  sb.AppendLine(" AND (cc.tel like '%" + strWhere + "%' OR a.address like '%" + strWhere + "%' or B.BudgetName like '%" + strWhere + "%')");
+              }
+              if (lx == "dqr")//待确认
+              {
+                  sb.AppendLine("  and B.IsStatus in(0,1,3)  "); 
+              }
+               else if (lx == "yqr")//已确认
+              {
+                  sb.AppendLine("  and B.IsStatus in(2)  ");
               }
               string  serchtxt  = DataAuth(uid);
               DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt, parameters);
@@ -1014,11 +1024,15 @@ namespace XHD.CRM.webserver
                   sb.AppendLine(" AND " + strWhere);
               }
               string hj = "[]"; string detail = "[]";
-              BLL.Budge_BasicMain bbb = new BLL.Budge_BasicMain();
+             
               BLL.Budge_BasicDetail bbdetail = new BLL.Budge_BasicDetail();
               if (bid != "")
               {
-                  DataSet ds = bbb.GetPrintCount(bid);
+                  sb.Clear();
+                  sb.AppendLine("SELECT   JJAmount,ZCAmount,FJAmount,DiscountAmount, customer_id,BudgetName,IsStatus,id");
+                  sb.AppendLine(" FROM Budge_BasicMain");
+                  sb.AppendLine(" WHERE id='"+bid+"'");
+                  DataSet ds = DbHelperSQL.Query(sb.ToString() , parameters);
                   hj = Common.GetGridJSON.DataTableToJSON2(ds.Tables[0]);
                   string Total = ""; string serchtxt = "1=1";
                   serchtxt += " and   budge_id ='" + bid + "'";
