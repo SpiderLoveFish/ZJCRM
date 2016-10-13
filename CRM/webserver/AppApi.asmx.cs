@@ -1129,7 +1129,9 @@ namespace XHD.CRM.webserver
                   serchtxt += " AND (product_name LIKE '%" + strwhere + "%' or category_name LIKE '%" + strwhere + "%' )";
               if (lx != "")
                   serchtxt += " AND C_style LIKE '%" + lx + "%'";
-              sb.AppendLine("SELECT TOP	" + perindex + " product_id,product_name,category_name,C_style,Brand,unit FROM dbo.CRM_product");
+              sb.AppendLine("SELECT TOP	" + perindex + " product_id,product_name,category_name,C_style,Brand,unit ");
+              sb.AppendLine(" ,category_id,specifications,price,ProModel,ProSeries,Themes,C_code");
+              sb.AppendLine("   FROM dbo.CRM_product");
               sb.AppendLine("WHERE product_id >");
                   sb.AppendLine("          (");
                   sb.AppendLine("          SELECT ISNULL(MAX(product_id),0)");
@@ -1176,6 +1178,7 @@ namespace XHD.CRM.webserver
               
               sb.AppendLine("SELECT   product_id,product_name,category_name,C_style,Brand,unit ");
               sb.AppendLine(" ,category_id,specifications,remarks,price,ProModel,ProSeries,Themes,C_code");
+              sb.AppendLine("   ,zc_price,fc_price,rg_price");
               sb.AppendLine(" FROM dbo.CRM_product");
               sb.AppendLine("WHERE product_id= "+pid+"");
               sb.AppendLine(" " + serchtxt + "");
