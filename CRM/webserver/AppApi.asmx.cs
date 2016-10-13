@@ -1051,7 +1051,158 @@ namespace XHD.CRM.webserver
           }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="strWhere">比如30内的</param>
+        /// <param name="lx">客户还是员工</param>
+       
+          [WebMethod]
+          public void GetUserBirthday(string strWhere, string lx )
+          {
+              SqlParameter[] parameters = { };
+ 
+              var sb = new System.Text.StringBuilder();
+              sb.AppendLine("SELECT * FROM");
+              sb.AppendLine("(");
+              sb.AppendLine("SELECT *,");
+              sb.AppendLine("CASE WHEN  datediff(day,getdate(),bir_thisyear)<0 THEN  datediff(day,getdate(),bir_nextyear) ELSE datediff(day,getdate(),bir_thisyear) END");
+              sb.AppendLine(" AS ts");
+              sb.AppendLine(",");
+              sb.AppendLine(" CONVERT(VARCHAR(10),CASE WHEN  datediff(day,getdate(),bir_thisyear)<0 THEN  bir_nextyear  ELSE  bir_thisyear  END,120)");
+              sb.AppendLine(" AS nearbir");
+              sb.AppendLine(" FROM (");
+              sb.AppendLine("SELECT birthday,");
+              sb.AppendLine("birthday_lunar,ID,name AS  UserName,tel,dname as DepartmentName,address,ISNULL(title,'') AS Avatar");
+              sb.AppendLine(",token as UserId,");
+              sb.AppendLine("dateadd(yy,datediff(yy,bir,getdate()),bir) AS bir_thisyear");
+              sb.AppendLine(",dateadd(yy,datediff(yy,bir,getdate())+1,bir) AS bir_nextyear");
+              sb.AppendLine("FROM");
+              sb.AppendLine("(");
+              sb.AppendLine("SELECT CASE WHEN rqlx='阳历' THEN birthday ELSE dbo.fn_GetLunar_normal(birthday) END AS bir,");
+              sb.AppendLine("*    FROM  dbo.hr_employee");
+              sb.AppendLine("WHERE uid NOT IN('NoVerer','admin')");
+              sb.AppendLine(")AA");
+              sb.AppendLine(")AAA");
+              sb.AppendLine(")AAAA");
+              sb.AppendLine("WHERE 1=1");
+              sb.AppendLine("");
+              if (strWhere.Trim() != "")
+              {
+                  sb.AppendLine(" AND ts<"+strWhere+"");
+              }
+             
+              sb.AppendLine("ORDER BY ts");
+              DataSet ds = DbHelperSQL.Query(sb.ToString() , parameters);
 
+              if (ds == null)
+              {
+                  ReturnStr(true, "[]");
+              }
+              else
+              {
+                  if (ds.Tables[0].Rows.Count <= 0)
+                      ReturnStr(true, "[]");
+                  else
+                  {
+                      string str = Common.DataToJson.GetJson(ds);
+                      ReturnStr(true, str);
+                  }
+              }
+
+          }
+
+
+
+          /// <summary>
+          /// 材料
+          /// </summary>
+          [WebMethod]
+          public void GetProduct(string strwhere,string lx,   string nowindex)
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+              int startindex = int.Parse(nowindex) - 10;
+              int perindex = int.Parse(nowindex);
+              string serchtxt = "";
+              if (strwhere != "")
+                  serchtxt += " AND (product_name LIKE '%" + strwhere + "%' or category_name LIKE '%" + strwhere + "%' )";
+              if (lx != "")
+                  serchtxt += " AND C_style LIKE '%" + lx + "%'";
+              sb.AppendLine("SELECT TOP	" + perindex + " product_id,product_name,category_name,C_style,Brand,unit FROM dbo.CRM_product");
+              sb.AppendLine("WHERE product_id >");
+                  sb.AppendLine("          (");
+                  sb.AppendLine("          SELECT ISNULL(MAX(product_id),0)");
+                  sb.AppendLine("          FROM");
+                  sb.AppendLine("                (");
+                  sb.AppendLine("                SELECT TOP " + startindex + " product_id FROM CRM_product where 1=1 " + serchtxt + " ORDER BY product_id");
+                  sb.AppendLine("                ) A");
+                  sb.AppendLine("          )");
+                  sb.AppendLine(" " + serchtxt + "");
+                  sb.AppendLine(" ORDER BY  product_id");
+              
+
+              DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+
+              if (ds == null)
+              {
+                  ReturnStr(true, "[]");
+              }
+              else
+              {
+                  if (ds.Tables[0].Rows.Count <= 0)
+                      ReturnStr(true, "[]");
+                  else
+                  {
+                      string str = Common.DataToJson.GetJson(ds);
+                      ReturnStr(true, str);
+                  }
+              }
+
+          }
+
+          /// <summary>
+          /// 材料详情
+          /// </summary>
+          [WebMethod]
+          public void GetProductDetail(string strwhere, string pid )
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+              
+              string serchtxt = "";
+              if (strwhere != "")
+                  serchtxt += " AND (product_name LIKE '%" + strwhere + "%' or category_name LIKE '%" + strwhere + "%' )";
+              
+              sb.AppendLine("SELECT   product_id,product_name,category_name,C_style,Brand,unit ");
+              sb.AppendLine(" ,category_id,specifications,remarks,price,ProModel,ProSeries,Themes,C_code");
+              sb.AppendLine(" FROM dbo.CRM_product");
+              sb.AppendLine("WHERE product_id= "+pid+"");
+              sb.AppendLine(" " + serchtxt + "");
+              sb.AppendLine(" ORDER BY  product_id");
+
+
+              DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+
+              if (ds == null)
+              {
+                  ReturnStr(true, "[]");
+              }
+              else
+              {
+                  if (ds.Tables[0].Rows.Count <= 0)
+                      ReturnStr(true, "[]");
+                  else
+                  {
+                      string str = Common.DataToJson.GetJson(ds);
+                      ReturnStr(true, str);
+                  }
+              }
+
+          }
+          
+
+        
           /// <summary>  
           /// 将中文转化为16进制unicode字符  
           /// 注意不要用汉字的标点符号（全拼的）
