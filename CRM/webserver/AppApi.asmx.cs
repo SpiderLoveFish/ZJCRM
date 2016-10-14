@@ -249,26 +249,43 @@ namespace XHD.CRM.webserver
               sb.AppendLine("ELSE '" + url + "'+C.icon  END AS Avatar ");
              sb.AppendLine(" FROM dbo.CRM_Customer A");
              sb.AppendLine("  INNER JOIN Param_SysParam C on C.id=A.CustomerType_id and parentid=1");
-
-             if (!string.IsNullOrEmpty(keyword))
+             sb.AppendLine("    where   1=1");
+              if (!string.IsNullOrEmpty(keyword))
              {
-                 if (keyword == "fav")//收藏客户
-                     sb.AppendLine("  LEFT JOIN Crm_Customer_Favorite B on B.customer_id=A.id and userid=" + ID);
+                 if (keyword == "search")
+                 {
+                     if (!string.IsNullOrEmpty(searchkey))
+                     {
+                         string[] str = searchkey.Split(';');
+                         sb.AppendLine(" and address    like    '%"+str[0]+"%' ");
+                         sb.AppendLine(" and Emp_sg    like    '%" + str[1] + "%' ");
+                         sb.AppendLine(" and Emp_sj    like    '%" + str[2] + "%' ");
+                         sb.AppendLine(" and A.CustomerType_id    like    '%" + str[3] + "%' ");
 
-             } sb.AppendLine(" where ISNULL(isDelete,0)='0' ");
-             if (!string.IsNullOrEmpty(keyword))
-             {
-                // serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
+                     }
+                 }
+
+             }
+              sb.AppendLine(" and ISNULL(isDelete,0)='0' ");
+             //if (!string.IsNullOrEmpty(keyword))
+             //{
+             //    if (keyword == "fav")//收藏客户
+             //        sb.AppendLine("  LEFT JOIN Crm_Customer_Favorite B on B.customer_id=A.id and userid=" + ID);
+
+             //} sb.AppendLine(" where ISNULL(isDelete,0)='0' ");
+             //if (!string.IsNullOrEmpty(keyword))
+             //{
+             //   // serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
              
-                 if (keyword == "fav")//收藏客户
-                     serchtxt += " AND B.customer_id is not null ";
-                 else serchtxt += " AND CustomerType_id=" + keyword;
-             }
-             if (!string.IsNullOrEmpty(searchkey))
-             {
-                 serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", searchkey);
+             //    if (keyword == "fav")//收藏客户
+             //        serchtxt += " AND B.customer_id is not null ";
+             //    else serchtxt += " AND CustomerType_id=" + keyword;
+             //}
+             //if (!string.IsNullOrEmpty(searchkey))
+             //{
+             //    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", searchkey);
 
-             }
+             //}
              //加入权限控制
              serchtxt += DataAuth(ID);
              string ordertxt = " ORDER BY a.Create_date DESC ";
@@ -1227,8 +1244,7 @@ namespace XHD.CRM.webserver
               }
 
           }
-          
-
+     
         
           /// <summary>  
           /// 将中文转化为16进制unicode字符  
