@@ -949,11 +949,15 @@ namespace XHD.CRM.webserver
           /// 积分查询
           /// </summary>
           [WebMethod]
-          public void GetBudge(string strWhere,string lx,string uid)
+          public void GetBudge(string strWhere, string lx, string uid , string nowindex)
           {
               SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
-              sb.AppendLine("SELECT  B.JJAmount,B.ZCAmount,B.FJAmount,B.DiscountAmount, B.customer_id,B.BudgetName,B.IsStatus,B.id ,");
+              int startindex = int.Parse(nowindex) - 10;
+              int perindex = int.Parse(nowindex);
+              string serchtxt = DataAuth(uid);
+              string ordertxt = " ORDER BY B.DoTime DESC";
+              sb.AppendLine("SELECT   TOP	10  B.JJAmount,B.ZCAmount,B.FJAmount,B.DiscountAmount, B.customer_id,B.BudgetName,B.IsStatus,B.id ,");
               sb.AppendLine("      case IsStatus when '0' then '待提交'  when '1' then '待审核'  when '3' then '待确认'  when '2' then '已生效'  when '99' then '已删除' else '未知状态' end as zt,");
               sb.AppendLine("        ISNULL(b_zje, 0) AS zje ,B.DoTime,");
               sb.AppendLine("        C.b_sj ,");
@@ -979,6 +983,24 @@ namespace XHD.CRM.webserver
               sb.AppendLine("                    GROUP BY budge_id");
               sb.AppendLine("                  ) D ON B.id = D.budge_id");
               sb.AppendLine("WHERE   1 = 1  ");
+              //分页开始
+              sb.AppendLine("AND  B.id NOT IN( SELECT  TOP	" + startindex + " B.id   ");
+              sb.AppendLine("FROM    dbo.Budge_BasicMain B");
+              sb.AppendLine("        LEFT JOIN dbo.CRM_Customer a ON B.customer_id = A.id");
+              sb.AppendLine("        LEFT JOIN dbo.Budge_tax C ON B.id = C.budge_id");
+              sb.AppendLine("        LEFT JOIN dbo.hr_employee CC ON a.emp_id_sj = CC.[ID]");
+              sb.AppendLine("        LEFT JOIN ( SELECT  SUM(rate) AS rate ,");
+              sb.AppendLine("                            budge_id");
+              sb.AppendLine("                    FROM    dbo.Budge_Rate_Ver");
+              sb.AppendLine("                    GROUP BY budge_id");
+              sb.AppendLine("                  ) D ON B.id = D.budge_id");
+              sb.AppendLine("WHERE   1 = 1  ");
+              if (strWhere.Trim() != "")
+              {
+                  sb.AppendLine(" AND (cc.tel like '%" + strWhere + "%' OR a.address like '%" + strWhere + "%' or B.BudgetName like '%" + strWhere + "%')");
+              }
+              sb.AppendLine(" ORDER BY B.DoTime DESC )");
+              //分页结束
               if (strWhere.Trim() != "")
               {
                   sb.AppendLine(" AND (cc.tel like '%" + strWhere + "%' OR a.address like '%" + strWhere + "%' or B.BudgetName like '%" + strWhere + "%')");
@@ -991,8 +1013,8 @@ namespace XHD.CRM.webserver
               {
                   sb.AppendLine("  and B.IsStatus in(2)  ");
               }
-              string  serchtxt  = DataAuth(uid);
-              DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt, parameters);
+
+              DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt + ordertxt, parameters);
 
               if (ds == null)
               {
@@ -1067,20 +1089,22 @@ namespace XHD.CRM.webserver
               sb.AppendLine("(");
               sb.AppendLine("SELECT *,");
               sb.AppendLine("CASE WHEN  datediff(day,getdate(),bir_thisyear)<0 THEN  datediff(day,getdate(),bir_nextyear) ELSE datediff(day,getdate(),bir_thisyear) END");
-              sb.AppendLine(" AS ts");
-              sb.AppendLine(",");
-              sb.AppendLine(" CONVERT(VARCHAR(10),CASE WHEN  datediff(day,getdate(),bir_thisyear)<0 THEN  bir_nextyear  ELSE  bir_thisyear  END,120)");
-              sb.AppendLine(" AS nearbir");
+              sb.AppendLine(" AS ts,datediff(yy,b,bir_thisyear) AS age,  ");//年龄
+              sb.AppendLine(" RIGHT(b,5) AS birthday,");
+              sb.AppendLine("  CONVERT(VARCHAR(10),CASE WHEN  datediff(day,getdate(),bir_thisyear)<0 THEN  bir_nextyear  ELSE  bir_thisyear  END,120)");
+              sb.AppendLine(" AS nearbir");//最近的年份生日
               sb.AppendLine(" FROM (");
-              sb.AppendLine("SELECT birthday,");
+              sb.AppendLine("SELECT birthday as b, rqlx,");
               sb.AppendLine("birthday_lunar,ID,name AS  UserName,tel,dname as DepartmentName,address,ISNULL(title,'') AS Avatar");
               sb.AppendLine(",token as UserId,");
               sb.AppendLine("dateadd(yy,datediff(yy,bir,getdate()),bir) AS bir_thisyear");
               sb.AppendLine(",dateadd(yy,datediff(yy,bir,getdate())+1,bir) AS bir_nextyear");
               sb.AppendLine("FROM");
               sb.AppendLine("(");
-              sb.AppendLine("SELECT CASE WHEN rqlx='阳历' THEN birthday ELSE dbo.fn_GetLunar_normal(birthday) END AS bir,");
-              sb.AppendLine("*    FROM  dbo.hr_employee");
+              sb.AppendLine("SELECT CASE WHEN rqlx='阳历' THEN birthday ELSE");
+              sb.AppendLine("LEFT(birthday,4)+RIGHT( (SELECT lunar FROM dbo.Lunar_Solar_List WHERE solar=CONVERT(VARCHAR(4),GETDATE(),120)+RIGHT(birthday,6)),6) ");
+              sb.AppendLine("END AS bir,");
+              sb.AppendLine(" *    FROM  dbo.hr_employee");
               sb.AppendLine("WHERE uid NOT IN('NoVerer','admin')");
               sb.AppendLine(")AA");
               sb.AppendLine(")AAA");
