@@ -221,6 +221,12 @@
         function add()
         {
             
+            viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=4', "新增方案");
+
+        }
+
+        function add_lf() {
+
             viewkjl('../../CRM/ConsExam/kjl_search.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=4', "新增方案");
 
         }
@@ -306,7 +312,8 @@
                             <a>  <span id="id_name"></span>
                                 </a> 
 							</li>
-							<li><a onclick="add()">新增方案</a></li>
+							<li><a onclick="add()">新增</a></li>
+                            <li><a onclick="add_lf()">量房</a></li>
                           
 
 						</ul>

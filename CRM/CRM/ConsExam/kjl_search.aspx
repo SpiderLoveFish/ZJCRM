@@ -133,7 +133,7 @@
 							
                           '<img src=' + obj[n].pics + ' alt="" class="img_inner">' +
                           '<p>'+
-                          '	<strong class="col2">' + obj[n].commName + obj[n].srcArea+'㎡</strong><a  style="cursor:pointer;" onclick="docreate(\'' + obj[n].obsPlanId + '\')"  class="btn">创建</a>&nbsp;' +
+                          '	<strong class="col2"> <font size="1">' + obj[n].name + obj[n].srcArea + '㎡</font></strong><a  style="cursor:pointer;" onclick="docreate(\'' + obj[n].obsPlanId + '\')"  class="btn">创建</a>&nbsp;' +
                           '	</p>'+	
                           '</div>'+
                           '</div>'+
@@ -173,7 +173,7 @@
 				<div class="grid_12">
 					<nav class="horizontal-nav full-width horizontalNav-notprocessed">
 						<ul class="sf-menu">
-							<li><a   onclick="add()"  style="cursor:pointer;">自己画</a></li>
+							<%--<li><a   onclick="add()"  style="cursor:pointer;">全网搜索</a></li>--%>
 							
 					<li> 
                             				 
@@ -181,7 +181,7 @@
 												
 										 
                                            </li>
-                                            <li><a   onclick="dosearch()"  style="cursor:pointer;">搜索</a></li>  
+                                            <li><a   onclick="dosearch()"  style="cursor:pointer;">查找</a></li>  
 						</ul>
 					</nav>
 					<div class="clear"></div>

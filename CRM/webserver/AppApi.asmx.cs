@@ -249,7 +249,7 @@ namespace XHD.CRM.webserver
               sb.AppendLine("ELSE '" + url + "'+C.icon  END AS Avatar ");
              sb.AppendLine(" FROM dbo.CRM_Customer A");
              sb.AppendLine("  INNER JOIN Param_SysParam C on C.id=A.CustomerType_id and parentid=1");
-             sb.AppendLine("    where   1=1");
+           
               if (!string.IsNullOrEmpty(keyword))
              {
                  if (keyword == "search")
@@ -257,11 +257,19 @@ namespace XHD.CRM.webserver
                      if (!string.IsNullOrEmpty(searchkey))
                      {
                          string[] str = searchkey.Split(';');
+                         if (str[5] == "fav")
+                         {
+                            // sb.AppendLine("  LEFT JOIN Crm_Customer_Favorite B on B.customer_id=A.id and userid=" + ID);
+                             sb.AppendLine("  and  A.id in (select customer_id  from  Crm_Customer_Favorite where userid=" + ID+")");
+
+                         }
+                         sb.AppendLine("    where   1=1");
                          sb.AppendLine(" and address    like    '%"+str[0]+"%' ");
                          sb.AppendLine(" and Emp_sg    like    '%" + str[1] + "%' ");
                          sb.AppendLine(" and Emp_sj    like    '%" + str[2] + "%' ");
                          sb.AppendLine(" and A.CustomerType_id    like    '%" + str[3] + "%' ");
-
+                         sb.AppendLine(" and tel    like    '%" + str[4] + "%' ");
+                         
                      }
                  }
 
@@ -460,11 +468,26 @@ namespace XHD.CRM.webserver
               
               var sb = new System.Text.StringBuilder();
               //滚动(新闻)
-                sb.AppendLine("SELECT top 5 id AS ID,news_title AS Title,'activity' AS ListType ");
-                sb.AppendLine(" , img AS IsHostPic,CONVERT(varchar(16),news_time, 120)  AS ReleaseTime");
-                sb.AppendLine(" FROM dbo.public_news   ");
-                sb.AppendLine(" ");
-                string retstr = "[";
+              if (SelectType == "IndexMsg")
+              {
+                  sb.AppendLine("SELECT top " + endIndex + " id AS ID,news_title AS Title,'activity' AS ListType ");
+                  sb.AppendLine(" ,create_name,create_id,news_content, img AS IsHostPic,CONVERT(varchar(16),news_time, 120)  AS ReleaseTime");
+                  sb.AppendLine(" FROM dbo.public_news   ");
+                  if (startIndex == "1")//列表，
+                  {
+                      int t = int.Parse(endIndex) - 10;
+                      sb.AppendLine("   where   id  not in(select top " + t + "    id  from  public_news   ORDER	BY	news_time	DESC     )");
+
+                  } sb.AppendLine(" ORDER	BY	news_time	DESC");
+              }
+              else if (SelectType == "Msgdetail")
+              {
+                  sb.AppendLine("SELECT  id AS ID,news_title AS Title,create_name,create_id,'activity' AS ListType ");
+                  sb.AppendLine(" ,news_content, img AS IsHostPic,CONVERT(varchar(16),news_time, 120)  AS ReleaseTime");
+                  sb.AppendLine(" FROM dbo.public_news   ");
+                  sb.AppendLine(" where id=" + endIndex + "");
+              }
+              string retstr = "[";
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
               if (ds.Tables[0].Rows.Count <= 0)
                   retstr = "[]";
@@ -484,6 +507,50 @@ namespace XHD.CRM.webserver
               string HDstr = "[]";
               retstr += "," + SPstr + "," + GGstr + "," + DCstr + "," + HDstr+"]";
               ReturnStr(true,retstr);
+          }
+
+          /// <summary>
+          /// gonggao
+          /// </summary>
+          /// <param name="id"></param>
+          [WebMethod]
+          public void AddMessage(string title, string context,
+              string ImageList, string IsHostPic, string type,
+              string userid,string  url
+              )
+          {
+              SqlParameter[] parameters = { };
+              string[] str = ImageList.Split(',');
+              string    imglist="";
+              if (str.Length > 0)
+                  for (int i = 0; i < str.Length-1; i++)
+                      imglist += url + "images/upload/temp/" + str[i]+"  </br>";
+              var sb = new System.Text.StringBuilder();
+              sb.AppendLine("INSERT	INTO	dbo.public_news ");
+              sb.AppendLine("        ( news_title , ");
+              sb.AppendLine("          news_content , ");
+              sb.AppendLine("          create_id , ");
+              sb.AppendLine("          create_name , ");
+              sb.AppendLine("          dep_id , ");
+              sb.AppendLine("          dep_name , ");
+              sb.AppendLine("          news_time,  ");
+              sb.AppendLine("          img ");
+              sb.AppendLine("        ) ");
+              sb.AppendLine("VALUES  ( '"+title+"' , -- news_title - varchar(250) ");
+              sb.AppendLine("          '" + imglist+context + "' , -- news_content - varchar(max) ");
+              sb.AppendLine("          "+userid+" , -- create_id - int ");
+              sb.AppendLine("          '' , -- create_name - varchar(250) ");
+              sb.AppendLine("          0 , -- dep_id - int ");
+              sb.AppendLine("          '' , -- dep_name - varchar(250) ");
+              sb.AppendLine("          getdate(),  ");
+              sb.AppendLine("          '"+IsHostPic+"'  -- img - varchar(50) ");
+              sb.AppendLine("        ) ");
+              var RV = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+              if (RV > 0)
+                  ReturnStr(true, "\"success\"");
+              else ReturnStr(false, "\"faile\"");
+
+
           }
 
           [WebMethod]
@@ -612,6 +679,7 @@ namespace XHD.CRM.webserver
                 
 
           }
+
           [WebMethod]
           public void DeleteApp_Group(string ID)
           {
@@ -1062,7 +1130,7 @@ namespace XHD.CRM.webserver
               {
                   sb.AppendLine(" AND " + strWhere);
               }
-              string hj = "[]"; string detail = "[]";
+              string hj = "[]"; string detail = "[]"; string fjdetail = "[]";
              
               BLL.Budge_BasicDetail bbdetail = new BLL.Budge_BasicDetail();
               if (bid != "")
@@ -1079,12 +1147,20 @@ namespace XHD.CRM.webserver
                   string sorttext = "   ISNULL(OrderBy,0), ComponentName   desc";
                   DataSet dsd = bbdetail.GetBudge_BasicDetail(9999, 1, serchtxt, sorttext, out Total);
                   detail = Common.GetGridJSON.DataTableToJSON2(dsd.Tables[0]);
+
+                  
+                  string sortfjtext = "  ";
+              
+                  BLL.budge bd = new budge();
+                  DataSet dsfj = bd.GetBudge_Rate_Ver(9999, 1, serchtxt, "  id  ", out Total);
+                  fjdetail = Common.GetGridJSON.DataTableToJSON2(dsfj.Tables[0]);
+                  
               }
 
 
 
 
-              string str = "{\"jhdata\":" + hj + ",\"detaildata\":" + detail + "}";
+              string str = "{\"jhdata\":" + hj + ",\"detaildata\":" + detail + ",\"fjdata\":" + fjdetail + "}";
                       ReturnStr(true, str);
                   
           }

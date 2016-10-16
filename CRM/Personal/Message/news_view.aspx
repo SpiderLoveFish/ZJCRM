@@ -21,11 +21,15 @@
                     for (var n in obj) {
                         
                     }
-
+                    var	imgs=obj.news_content.split('.jpg')
+                    if(imgs.length>1)
+                        for (var t = 0; t < imgs.length - 1; t++) {
+                            $("#news_content").html(imgs[t] + '.jpg');
+                        }
                     //alert(obj.constructor); //String 构造函数
                     $("#news_title").html(obj.news_title);
                     $("#fly_title").html(formatTimebytype(obj.news_time, 'yyyy-MM-dd') + "　　　编辑：" + obj.create_name);
-                    $("#news_content").html(myHTMLDeCode(obj.news_content));
+                    $("#news_content").html(myHTMLDeCode(imgs[imgs.length - 1]));
                 }
             });
         })

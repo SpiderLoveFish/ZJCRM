@@ -30,8 +30,8 @@ namespace XHD.CRM.Data
              //else context.Response.Write("-1|" + "1");
 
              //return;
-            
-           string dirPath = context.Server.MapPath(@"~/uploadedFiles/");
+
+             string dirPath = context.Server.MapPath(@"~/images/upload/temp/");
               if (request["Action"] == "uploadhead")
              dirPath = context.Server.MapPath(@"~/images/upload/portrait/"); 
             if (!Directory.Exists(dirPath))
