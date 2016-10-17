@@ -55,7 +55,7 @@ namespace Budge_Rate
                     var sb = new System.Text.StringBuilder();
                     if (string.IsNullOrWhiteSpace(ID) || ID == "null")
                     {
-                        sb.AppendLine("INSERT INTO dbo. (RateName,measure,rate,Remarks) ");
+                        sb.AppendLine("INSERT INTO dbo.Budge_Rate (RateName,measure,rate,Remarks) ");
                         sb.AppendLine("VALUES  ('" + Request["RateName"] + "', ");
                         sb.AppendLine("         '按工程直接费用百分比计算', ");
                         sb.AppendLine(" " + Request["rate"] + ", ");

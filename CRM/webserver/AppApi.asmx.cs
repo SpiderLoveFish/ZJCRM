@@ -71,20 +71,20 @@ namespace XHD.CRM.webserver
             SqlParameter[] parameters = { };
             var sb = new System.Text.StringBuilder();
 
-            //sb.AppendLine("SELECT   * FROM");
-            //sb.AppendLine("hr_employee WHERE ISNULL(isDelete,0)='0' AND uid='" + user + "' AND pwd='" + password + "' AND ISNULL(token,'')=''");
-            //bool isexist = DbHelperSQL.Exists(sb.ToString(), null);
-            //if (isexist)
-            //{
-            //    string token = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(
-            //                 GetTimeStamp() + user
-            //                 , "MD5").ToLower();
-            //    sb.Clear();
-            //    sb.AppendLine(" Update hr_employee");
-            //    sb.AppendLine(" set token='" + token + "'");
-            //    sb.AppendLine(" where  uid='" + user + "' AND pwd='" + password + "' AND ISNULL(token,'')=''");
-            //    DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
-            //}
+            sb.AppendLine("SELECT   * FROM");
+            sb.AppendLine("hr_employee WHERE ISNULL(isDelete,0)='0' AND uid='" + user + "' AND pwd='" + password + "' AND ISNULL(token,'')=''");
+            bool isexist = DbHelperSQL.Exists(sb.ToString(), null);
+            if (isexist)
+            {
+                string token = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(
+                             GetTimeStamp() + user
+                             , "MD5").ToLower();
+                sb.Clear();
+                sb.AppendLine(" Update hr_employee");
+                sb.AppendLine(" set token='" + token + "'");
+                sb.AppendLine(" where  uid='" + user + "' AND pwd='" + password + "' AND ISNULL(token,'')=''");
+                DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            }
            
             sb.Clear();
             sb.AppendLine("SELECT ID,token, token AS UserId,name AS UserName,'"+ClientId+"' as ClientId,");
@@ -104,17 +104,22 @@ namespace XHD.CRM.webserver
                      ReturnStr(true, "[]");
                  else
                  {
-                 //    log.Add_log(0, pwd, ClientId, "手机端登录", "手机端登录", 0, "手机端登录", password, "");
-                 //    sb.Clear();
-                 //    sb.AppendLine("IF	NOT	EXISTS(SELECT	1	FROM	dbo.APP_PushClient	WHERE	clientid=''	AND	Versions=''	AND	userid='') ");
-                 //    sb.AppendLine("INSERT	INTO	dbo.APP_PushClient ");
-                 //    sb.AppendLine("        ( Versions, clientid, userid ) ");
-                 //    sb.AppendLine("VALUES  ( '" + version + "', -- Versions - varchar(10) ");
-                 //    sb.AppendLine("          '" + ClientId + "', -- clientid - varchar(50) ");
-                 //    sb.AppendLine("          '" + user + "'  -- userid - varchar(20) ");
-                 //    sb.AppendLine("          ) ");
-                 //    sb.AppendLine(" ");
-                 //       DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+                     log.Add_log(0, pwd, ClientId, "手机端登录", "手机端登录", 0, "手机端登录", password, "");
+                     sb.Clear();
+                     sb.AppendLine(" SELECT	1	FROM	dbo.APP_PushClient	WHERE	clientid='" + ClientId + "'	AND	Versions='" + version + "'	AND	userid='" + user + "' ");
+                     bool existPushClient = DbHelperSQL.Exists(sb.ToString(), null);
+                     if (!existPushClient)
+                     {
+                         sb.Clear();
+                         sb.AppendLine("INSERT	INTO	dbo.APP_PushClient ");
+                         sb.AppendLine("        ( Versions, clientid, userid ) ");
+                         sb.AppendLine("VALUES  ( '" + version + "', -- Versions - varchar(10) ");
+                         sb.AppendLine("          '" + ClientId + "', -- clientid - varchar(50) ");
+                         sb.AppendLine("          '" + user + "'  -- userid - varchar(20) ");
+                         sb.AppendLine("          ) ");
+                         sb.AppendLine(" ");
+                         DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+                     }
                      string str = Common.DataToJson.GetJson(ds);
                      ReturnStr(true, str);
                  }
@@ -1083,6 +1088,14 @@ namespace XHD.CRM.webserver
               if (strWhere.Trim() != "")
               {
                   sb.AppendLine(" AND (cc.tel like '%" + strWhere + "%' OR a.address like '%" + strWhere + "%' or B.BudgetName like '%" + strWhere + "%')");
+              }
+              if (lx == "dqr")//待确认
+              {
+                  sb.AppendLine("  and B.IsStatus in(0,1,3)  ");
+              }
+              else if (lx == "yqr")//已确认
+              {
+                  sb.AppendLine("  and B.IsStatus in(2)  ");
               }
               sb.AppendLine(" ORDER BY B.DoTime DESC )");
               //分页结束
