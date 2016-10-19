@@ -136,7 +136,7 @@ namespace XHD.CRM.Data
                 model.remarks = PageValidate.InputText(request["T_remarks"], 255);
                 model.title = PageValidate.InputText(request["headurl"], 255);
                 model.canlogin = int.Parse(request["canlogin"]);
-
+                model.Delete_time = DateTime.Now;
                 int empid;
                 string id = PageValidate.InputText(request["id"], 50);
                 if (!string.IsNullOrEmpty(id) && id != "null")

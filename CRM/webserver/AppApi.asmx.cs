@@ -90,7 +90,7 @@ namespace XHD.CRM.webserver
             sb.AppendLine("SELECT ID,token, token AS UserId,name AS UserName,'"+ClientId+"' as ClientId,");
             sb.AppendLine("CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
             sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar,");
-            sb.AppendLine("d_id AS CorpId,ISNULL(level,0) AS level FROM dbo.hr_employee");
+            sb.AppendLine("d_id AS CorpId,ISNULL(level,0) AS level,CONVERT(VARCHAR(20),ISNULL(Delete_time,GETDATE()),120) as vertime FROM dbo.hr_employee");
             sb.AppendLine(" where ISNULL(isDelete,0)='0' AND  uid='" + user + "' AND pwd='" + password + "' ");
             DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
           
@@ -104,7 +104,7 @@ namespace XHD.CRM.webserver
                      ReturnStr(true, "[]");
                  else
                  {
-                     log.Add_log(0, pwd, ClientId, "手机端登录", "手机端登录", 0, "手机端登录", password, "");
+                     log.Add_log(0, user, ClientId, "手机端登录", "手机端登录", 0, "手机端登录", password, "");
                      sb.Clear();
                      sb.AppendLine(" SELECT	1	FROM	dbo.APP_PushClient	WHERE	clientid='" + ClientId + "'	AND	Versions='" + version + "'	AND	userid='" + user + "' ");
                      bool existPushClient = DbHelperSQL.Exists(sb.ToString(), null);
@@ -143,7 +143,36 @@ namespace XHD.CRM.webserver
              
         }
 
-        
+        /// <summary>
+        /// 验证权限(利用账号时间判断)
+        /// </summary>
+        /// <param name="imgurl"></param>
+        /// <param name="token"></param>
+         [WebMethod]
+                  public void Verifauthority (string userid ,string rightid,string vertime)
+                {
+                     SqlParameter[] parameters = { };
+                    var sb = new System.Text.StringBuilder();
+
+                    sb.Clear();
+                    sb.AppendLine("SELECT ID FROM dbo.App_Right_Employee WHERE	 empid="+userid+" AND app_meun_id="+rightid+" ");
+                    bool isexist = DbHelperSQL.Exists(sb.ToString(), null);
+                     
+                    if (isexist)
+                    {
+                        sb.Clear();
+                        sb.AppendLine("SELECT ID FROM  dbo.hr_employee WHERE CONVERT(VARCHAR(20),ISNULL(Delete_time,GETDATE()),120)='" + vertime + "' AND ISNULL(isDelete,0)=0	AND ID=" + userid + "  ");
+                        bool isexistEmployee = DbHelperSQL.Exists(sb.ToString(), null);
+                      if (isexistEmployee)   ReturnStr(true, "\"success\"");
+                        else  ReturnStr(true, "\"noperson\"");//此人不存在，需要重新登录或修改密码
+                       
+                    }
+                    else ReturnStr(true, "\"faile\""); //权限不存在
+                
+             
+                }
+
+     
         
         /// <summary>
           /// 个人信息
@@ -1048,7 +1077,7 @@ namespace XHD.CRM.webserver
               string serchtxt = DataAuth(uid);
               string ordertxt = " ORDER BY B.DoTime DESC";
               sb.AppendLine("SELECT   TOP	10  B.JJAmount,B.ZCAmount,B.FJAmount,B.DiscountAmount, B.customer_id,B.BudgetName,B.IsStatus,B.id ,");
-              sb.AppendLine("      case IsStatus when '0' then '待提交'  when '1' then '待审核'  when '3' then '待确认'  when '2' then '已生效'  when '99' then '已删除' else '未知状态' end as zt,");
+              sb.AppendLine("      case IsStatus when '0' then '待提交'  when '1' then '待审核'  when '2' then '待确认'  when '3' then '已生效'  when '99' then '已删除' else '未知状态' end as zt,");
               sb.AppendLine("        ISNULL(b_zje, 0) AS zje ,B.DoTime,");
               sb.AppendLine("        C.b_sj ,");
               sb.AppendLine("        C.b_sl ,");
@@ -1072,7 +1101,7 @@ namespace XHD.CRM.webserver
               sb.AppendLine("                    FROM    dbo.Budge_Rate_Ver");
               sb.AppendLine("                    GROUP BY budge_id");
               sb.AppendLine("                  ) D ON B.id = D.budge_id");
-              sb.AppendLine("WHERE   1 = 1  ");
+              sb.AppendLine("WHERE   1 = 1 AND  ISNULL(IsModel,'N')!='Y' ");
               //分页开始
               sb.AppendLine("AND  B.id NOT IN( SELECT  TOP	" + startindex + " B.id   ");
               sb.AppendLine("FROM    dbo.Budge_BasicMain B");
@@ -1084,18 +1113,18 @@ namespace XHD.CRM.webserver
               sb.AppendLine("                    FROM    dbo.Budge_Rate_Ver");
               sb.AppendLine("                    GROUP BY budge_id");
               sb.AppendLine("                  ) D ON B.id = D.budge_id");
-              sb.AppendLine("WHERE   1 = 1  ");
+              sb.AppendLine("WHERE   1 = 1 AND  ISNULL(IsModel,'N')!='Y' ");
               if (strWhere.Trim() != "")
               {
                   sb.AppendLine(" AND (cc.tel like '%" + strWhere + "%' OR a.address like '%" + strWhere + "%' or B.BudgetName like '%" + strWhere + "%')");
               }
               if (lx == "dqr")//待确认
               {
-                  sb.AppendLine("  and B.IsStatus in(0,1,3)  ");
+                  sb.AppendLine("  and B.IsStatus in(0,1,2)  ");
               }
               else if (lx == "yqr")//已确认
               {
-                  sb.AppendLine("  and B.IsStatus in(2)  ");
+                  sb.AppendLine("  and B.IsStatus in(3)  ");
               }
               sb.AppendLine(" ORDER BY B.DoTime DESC )");
               //分页结束
@@ -1105,11 +1134,11 @@ namespace XHD.CRM.webserver
               }
               if (lx == "dqr")//待确认
               {
-                  sb.AppendLine("  and B.IsStatus in(0,1,3)  "); 
+                  sb.AppendLine("  and B.IsStatus in(0,1,2)  "); 
               }
                else if (lx == "yqr")//已确认
               {
-                  sb.AppendLine("  and B.IsStatus in(2)  ");
+                  sb.AppendLine("  and B.IsStatus in(3)  ");
               }
 
               DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt + ordertxt, parameters);

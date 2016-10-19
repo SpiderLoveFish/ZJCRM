@@ -620,7 +620,7 @@
                 </td>
                 <td>
                     <div style="width: 100px; float: left">
-                        <input id="T_customertype" name="T_customertype" type="text" style="width: 96px" />
+                        <input id="T_customertype" name="T_customertype" type="text" style="width: 96px" validate="{required:true}"/>
                     </div>
                     <div style="width: 98px; float: left">
                         <input id="T_customerlevel" name="T_customerlevel" type="text" style="width: 96px" />

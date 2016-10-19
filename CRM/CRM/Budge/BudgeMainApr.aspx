@@ -48,7 +48,7 @@
             }
             else if (getparastr("isprint") == "V") {
                 aprstyle = "aprCustOK";//客户查询
-                urlstr = "../../data/Budge.ashx?Action=grid&str_condition=2&isprint=V";
+                urlstr = "../../data/Budge.ashx?Action=grid&str_condition=3&isprint=V";
             }
             $("#maingrid4").ligerGrid({
                 columns: [
@@ -140,9 +140,12 @@
         function toolbar() {
             var urlstr = "../../data/toolbar.ashx?Action=GetSys&mid=157&rnd=" + Math.random();
             if (getparastr("isprint") == "Y")
-                urlstr = "../../data/toolbar.ashx?Action=GetSys&mid=158&rnd=" + Math.random()
+                urlstr = "../../data/toolbar.ashx?Action=GetSys&mid=158&rnd=" + Math.random();
             else if (getparastr("CustOK") == "Y")
-                urlstr = "../../data/toolbar.ashx?Action=GetSys&mid=184&rnd=" + Math.random()
+                urlstr = "../../data/toolbar.ashx?Action=GetSys&mid=184&rnd=" + Math.random();
+            else if (getparastr("isprint") == "V") {
+                urlstr = "../../data/toolbar.ashx?Action=GetSys&mid=158&rnd=" + Math.random();
+            }
             $.getJSON(urlstr, function (data, textStatus) {
                 //alert(data);
                 var items = [];

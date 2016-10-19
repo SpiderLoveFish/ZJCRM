@@ -680,8 +680,8 @@ namespace XHD.CRM.Data
                     string zt = "";
                     if (request["t_zt"] == "待提交") zt = "0";
                     if (request["t_zt"] == "待审核") zt = "1";
-                    if (request["t_zt"] == "待确认") zt = "3"; 
-                    if (request["t_zt"] == "已生效") zt = "2";
+                    if (request["t_zt"] == "已生效") zt = "3";
+                    if (request["t_zt"] == "待确认") zt = "2";
                     if (request["t_zt"] == "已删除") zt = "99";
                     if (zt!="")
                         serchtxt += " and IsStatus  in(" + zt + ")";

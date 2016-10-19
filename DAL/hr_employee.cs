@@ -145,6 +145,7 @@ namespace XHD.DAL
             strSql.Append("portal=@portal,");
             strSql.Append("theme=@theme,");
             strSql.Append("canlogin=@canlogin,");
+            strSql.Append("Delete_time=getdate() ,");
             strSql.Append("rqlx=@rqlx");
             strSql.Append(" where ID=@ID");
             SqlParameter[] parameters = {
@@ -220,7 +221,7 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update hr_employee set ");
-            
+            strSql.Append("Delete_time=getdate() ,");
             strSql.Append("professional='"+model.professional+"' ");
          
             strSql.Append(" where ID="+model.ID +"");
@@ -530,6 +531,7 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update hr_employee set ");
+            strSql.Append("Delete_time=getdate() ,");
             strSql.Append("pwd=@pwd");
             strSql.Append(" where ID=@ID");
             SqlParameter[] parameters = {					
@@ -562,6 +564,7 @@ namespace XHD.DAL
             strSql.Append("postid=@postid,");
             strSql.Append("post=@post,");
             strSql.Append("zhiwuid=@zhiwuid,");
+            strSql.Append("Delete_time=getdate() ,");
             strSql.Append("zhiwu=@zhiwu");
             strSql.Append(" where ID=@ID");
             SqlParameter[] parameters = {
@@ -625,6 +628,7 @@ namespace XHD.DAL
             strSql.Append("professional=@professional,");
             strSql.Append("schools=@schools,");
             strSql.Append("title=@title,");
+            strSql.Append("Delete_time=getdate() ,");
             strSql.Append("rqlx=@rqlx");
             strSql.Append(" where ID=@ID");
             SqlParameter[] parameters = {
