@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 using System.Data.SqlClient;
@@ -856,6 +856,7 @@ namespace XHD.DAL
             {
                 sb.AppendLine(" where " + strWhere);
             }
+ 		sb.AppendLine(" order by modifiedtime desc”);
             return DbHelperSQL.Query(sb.ToString());
         }
 
