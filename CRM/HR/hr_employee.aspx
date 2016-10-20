@@ -182,6 +182,30 @@
                 $.ligerDialog.warn('请选择行！');
             }
         }
+        function authorized() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                top.$.ligerDialog.open({
+                    width: 800, height: 500, showToggle: true, url: 'hr/Sys_Role_authorized.aspx?Role_id=' + row.ID, title: "授权", buttons: [
+                        {
+                            text: '保存', onclick: function (item, dialog) {
+                                dialog.frame.f_save();
+                            }
+                        },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                    ]
+                });
+            }
+            else {
+                $.ligerDialog.warn("请选择行");
+            }
+
+        }
 
         function kjl()
         {

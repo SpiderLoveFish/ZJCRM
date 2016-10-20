@@ -311,6 +311,7 @@
     <Content Include="FakesAssemblies\XHD.BLL.Fakes.dll" />
     <Content Include="FakesAssemblies\XHD.BLL.Fakes.xml" />
     <Content Include="GetRegNum.aspx" />
+    <Content Include="HR\Sys_Role_authorized.aspx" />
     <Content Include="Images\big_bgcolor.jpg" />
     <Content Include="Images\bt_92X120.png" />
     <Content Include="Images\bt_blue_76X24.png" />

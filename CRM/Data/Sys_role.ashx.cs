@@ -7,6 +7,8 @@ using System.Text;
 using System.Web.Script.Serialization;
 using XHD.Common;
 using System.Web.Security;
+using XHD.DBUtility;
+using System.Data.SqlClient;
 
 namespace XHD.CRM.Data
 {
@@ -161,6 +163,46 @@ namespace XHD.CRM.Data
                 context.Response.Write(dt1);
                 context.Response.End();
             }
+
+            //app_auth
+            if (request["Action"] == "apptreegrid")
+            {
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine("SELECT app_meun_id AS Menu_id, app_meun_name AS Menu_name");
+                sb.AppendLine(",app_meun_parentid AS parentid,app_meun_parentname AS parentname ,app_meun_icon AS meun_icon");
+                sb.AppendLine(",app_meun_order AS meun_order");
+                sb.AppendLine("  FROM dbo.App_Basic_Right WHERE app_meun_parentid=0");
+
+                DataTable dt = DbHelperSQL.Query(sb.ToString()).Tables[0];
+                dt.Columns.Add(new DataColumn("Sysroler", typeof(string)));
+               
+              
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                     sb.Clear();
+                     sb.AppendLine("SELECT app_meun_id AS Btn_id, app_meun_name AS Btn_name");
+                     sb.AppendLine(",app_meun_parentid AS parentid,app_meun_parentname AS parentname ,app_meun_icon AS meun_icon");
+                     sb.AppendLine(",app_meun_order AS meun_order");
+                     sb.AppendLine("   FROM dbo.App_Basic_Right WHERE app_meun_parentid=" + dt.Rows[i]["Menu_id"].ToString() + "");
+
+                     DataSet ds = DbHelperSQL.Query(sb.ToString());
+                    string roler = "";
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        for (int j = 0; j < ds.Tables[0].Rows.Count; j++)
+                        {
+                            roler += ds.Tables[0].Rows[j]["Btn_id"].ToString() + "|" + ds.Tables[0].Rows[j]["Btn_name"].ToString();
+                            roler += ",";
+                        }
+                    }
+                    dt.Rows[i][dt.Columns.Count - 1] = roler;
+                }
+                string dt1 = "{Rows:[" + GetTasksString(0, dt) + "]}";
+                context.Response.Write(dt1);
+                context.Response.End();
+            }
+
             //get auth
             if (request["Action"] == "getauth")
             {
@@ -182,6 +224,47 @@ namespace XHD.CRM.Data
                     DataRow dr = ds.Tables[0].Rows[0];
                     roledata = dr["Menu_ids"] + "|" + dr["Button_ids"];
                 }
+                context.Response.Write(roledata);
+            }
+            //get appauth
+            if (request["Action"] == "getappauth")
+            {
+                string postdata = Convert.ToString(HttpContext.Current.Request.QueryString["postdata"]);
+                //JavaScriptSerializer json = new JavaScriptSerializer();
+                //save sa = json.Deserialize<save>(postdata);
+                //Model.Sys_authority modelauth = new Model.Sys_authority();
+                //modelauth.Role_id = int.Parse(sa.role_id);
+                //modelauth.App_ids = sa.app;
+                //modelauth.Menu_ids = sa.menu;
+                //modelauth.Button_ids = sa.btn;
+                string roledata = "0|0";
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine(" SELECT 'm'+CONVERT(VARCHAR(5),A.app_meun_id) AS meun_id   FROM  dbo.App_Right_Employee A");
+                sb.AppendLine(" INNER JOIN  App_Basic_Right B ON A.app_meun_id=B.app_meun_id");
+                sb.AppendLine("   WHERE app_meun_parentid=0 AND empid="+postdata+"");
+
+                DataTable dt = DbHelperSQL.Query(sb.ToString()).Tables[0];
+                string m = "";
+                foreach (DataRow dw in dt.Rows)
+                {
+                    m += dw["meun_id"].ToString() + ",";
+                }
+                sb.Clear();
+                sb.AppendLine(" SELECT 'b'+CONVERT(VARCHAR(5),A.app_meun_id) AS btn_id   FROM  dbo.App_Right_Employee A");
+                sb.AppendLine(" INNER JOIN  App_Basic_Right B ON A.app_meun_id=B.app_meun_id");
+                sb.AppendLine("   WHERE app_meun_parentid!=0 AND empid=" + postdata + "");
+                DataTable ds = DbHelperSQL.Query(sb.ToString()).Tables[0];
+                string b = "";
+                foreach (DataRow dw in ds.Rows)
+                {
+                    b += dw["btn_id"].ToString() + ",";
+                }
+                roledata = m+ "|" +b;
+                //if (ds.Tables[0].Rows.Count > 0)
+                //{
+                //    DataRow dr = ds.Tables[0].Rows[0];
+                //    roledata = dr["Menu_ids"] + "|" + dr["Button_ids"];
+                //}
                 context.Response.Write(roledata);
             }
             // save auth
@@ -218,6 +301,66 @@ namespace XHD.CRM.Data
                     modellog.EventType = "权限修改";
                     modellog.EventID = modelauth.Role_id.ToString();
                     log.Add(modellog);
+                }
+            }
+
+            // save appauth
+            if (request["Action"] == "saveappauth")
+            {
+                string postdata = Convert.ToString(HttpContext.Current.Request.QueryString["postdata"]);
+                JavaScriptSerializer json = new JavaScriptSerializer();
+                save sa = json.Deserialize<save>(postdata);
+                //Model.Sys_authority modelauth = new Model.Sys_authority();
+                //modelauth.Role_id 
+                int userid= int.Parse(sa.role_id);
+                //modelauth.App_ids = PageValidate.InputText(sa.app, 50);
+                //modelauth.Menu_ids 
+                string menu= PageValidate.InputText(sa.menu, int.MaxValue);
+                //modelauth.Button_ids 
+                string btn= PageValidate.InputText(sa.btn, int.MaxValue);
+
+                BLL.Sys_authority sysau = new BLL.Sys_authority();
+
+                if (!string.IsNullOrEmpty(postdata))
+                {
+                    //sysau.DeleteWhere("Role_id=" + modelauth.Role_id + " and App_ids='" + PageValidate.InputText(modelauth.App_ids, int.MaxValue) + "'");
+                    //sysau.Add(modelauth);
+                    var sb = new System.Text.StringBuilder();
+                    string[] str =(menu+btn).Split(',');
+                    string app_meun_id = "";
+                    sb.AppendLine(" DELETE App_Right_Employee WHERE empid=" + userid + "");
+                    for (int i = 0; i < str.Length;i++ )
+                    {
+                        if (str[i].Trim() != "")
+                        {
+                            app_meun_id = str[i].Trim().Replace("m", "").Replace("b", "");
+                        
+                            sb.AppendLine("INSERT INTO dbo.App_Right_Employee");
+                            sb.AppendLine("         ( app_meun_id ,");
+                            sb.AppendLine("           empid ,");
+                            sb.AppendLine("           CreatName ,");
+                            sb.AppendLine("           DoTime ,");
+                            sb.AppendLine("           Remarks");
+                            sb.AppendLine("         )");
+                            sb.AppendLine(" VALUES  ( " + app_meun_id + " ,"); // app_meun_id - int
+                            sb.AppendLine("           " + userid + " ,"); // empid - int
+                            sb.AppendLine("           '" + empname + "' ,"); // CreatName - varchar(20)
+                            sb.AppendLine("           GETDATE() ,"); // DoTime - datetime
+                            sb.AppendLine("           ''"); // Remarks - varchar(50)
+                            sb.AppendLine("         )");
+                        }
+                           
+                    }
+                    SqlParameter[] parameters = { };
+                    int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+                    if (rows > 0)
+                    {
+                        context.Response.Write("{sucess:sucess}");
+                    }
+                    
+                  
+
+                    
                 }
             }
         }
