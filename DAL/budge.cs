@@ -740,7 +740,7 @@ namespace XHD.DAL
             sb.AppendLine("Remarks, ");
             sb.AppendLine("zc_price, ");
             sb.AppendLine("fc_price, ");
-            sb.AppendLine("rg_price) ");
+            sb.AppendLine("rg_price,OrderBy) ");
             sb.AppendLine(" SELECT ");
             sb.AppendLine("'" + bid + "', ");
             sb.AppendLine("xmid, ");
@@ -766,7 +766,7 @@ namespace XHD.DAL
             sb.AppendLine("Remarks, ");
             sb.AppendLine("zc_price, ");
             sb.AppendLine("fc_price, ");
-            sb.AppendLine("rg_price ");
+            sb.AppendLine("rg_price,OrderBy ");
             sb.AppendLine(" FROM [dbo].[Budge_BasicDetail] WHERE budge_id='" + modelid + "' ");
 
             sb.AppendLine("  INSERT INTO [dbo].[Budge_Rate_Ver]");

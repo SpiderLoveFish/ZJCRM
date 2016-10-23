@@ -557,7 +557,7 @@ margin-right: 20px;
             <tr>
 
                 <td colspan="4">
-                    <div id="divchecksgxm" style="margin: -1px; height:160px;  overflow:auto; "></div>
+                    <div id="divchecksgxm" style="margin: -1px; height:200px;  overflow:auto; "></div>
                     
                 </td>
             </tr>

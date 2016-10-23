@@ -33,7 +33,12 @@
     <script type="text/javascript">
         var manager = "";
         $(function () {
-          
+            var isview = getparastr("isview");
+            var strurl = "../../data/Crm_CEStage.ashx?Action=grid1";
+            if (isview == "Y")
+            {
+                strurl = "../../data/Crm_CEStage.ashx?Action=grid1&isview=Y";
+            }
             $("#maingrid4").ligerGrid({
                 columns: [
                    {
@@ -121,7 +126,7 @@
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/Crm_CEStage.ashx?Action=grid1",
+                url: strurl,
                 width: '100%',
                 height: '100%',
                 //tree: { columnName: 'StageDescription' },
@@ -232,10 +237,31 @@
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
        
+        var activeDialogs = null;
+        function f_openWindow_view(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+                     
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialogs = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+
         function add() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
+              //  alert(isview);
+                if (getparastr("isview") == "Y")
+                    f_openWindow_view("crm/ConsExam/SGJD_LIST_add.aspx?cid=" + row.CustomerID
+                   ,
+                    "进度跟进", 800, 550);
+                    else
                 f_openWindow("crm/ConsExam/SGJD_LIST_add.aspx?cid=" + row.CustomerID
                    ,
                     "进度跟进", 800, 550);

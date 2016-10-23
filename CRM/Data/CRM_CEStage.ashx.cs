@@ -233,6 +233,10 @@ namespace XHD.CRM.Data
                 //if (!string.IsNullOrEmpty(request["dclestext"]))
                 //    serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))<= " + StringToDecimal(PageValidate.InputText(request["dclestext"], 50)) + "%";
 
+                //权限
+                if (!string.IsNullOrEmpty(request["isview"]))
+                    if (request["isview"] == "Y")
+                        serchtxt += DataAuth(emp_id.ToString());
 
 
                 string dt = "";

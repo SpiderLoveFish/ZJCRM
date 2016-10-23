@@ -82,10 +82,12 @@ namespace XHD.CRM.Data
                 }
                 catch { c_code = PageValidate.InputText(request["C_code"], 255); }
                 //已经有的就不再改了
-                if (PageValidate.InputText(request["C_code"], 255) == "")
+                if (PageValidate.InputText(request["C_code"], 255) != "")
                 {
-                    model.C_code = c_code;
+                    // model.C_code = c_code;
+                    model.C_code = PageValidate.InputText(request["C_code"], 255);
                 }
+                else { model.C_code = c_code; }
 
                 //---
                 string style = PageValidate.InputText(request["style"], 50);

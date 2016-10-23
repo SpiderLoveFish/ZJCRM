@@ -51,7 +51,7 @@
             $("form").ligerForm();
             if (getparastr("cid") != null) {
                 loadForm(getparastr("cid"));
-             //toolbar();
+             toolbar();
             }
       
             initLayout();
@@ -75,10 +75,34 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-
+                items.push({ type: 'textbox', id: 'stextlx', text: '类型：' });
+                items.push({
+                    type: 'button',
+                    text: '搜索',
+                    icon: '../../images/search.gif',
+                    disable: true,
+                    click: function () {
+                        doserch()
+                    }
+                });
                 $("#toolbar").ligerToolBar({
                     items: items
 
+                });
+                $('#stextlx').ligerComboBox({
+                    width: 80,
+                    selectBoxWidth: 100,
+                    selectBoxHeight: 100,
+                    valueField: 'id',
+                    textField: 'text',
+                    treeLeafOnly: false,
+                    tree: {
+                        data: [
+                   {id:0, text: '自定义' },
+                   { id: 1, text: '酷家乐' }
+                        ],
+                        checkbox: false
+                    }
                 });
                 menu = $.ligerMenu({
                     width: 120, items: getMenuItems(data)
@@ -469,8 +493,19 @@
         }
 
         function doserch() {
+            //var serchtxt = $("#form1 :input").fieldSerialize();
+
+            
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL("../../data/crm_customer.ashx?Action=griddy&cid=" + $("#T_customerid").val());
+            if ($("#stextlx_val").val() == "0")
+            {
+               // alert(1)
+                manager.GetDataByURL("../../data/crm_customer.ashx?Action=griddy&cid=" + getparastr("cid") );
+            
+            }else if ($("#stextlx_val").val() == "1")
+            {   
+                manager.GetDataByURL("../../data/crm_customer.ashx?Action=griddyapi&cid=" + getparastr("cid") + '&keytel=' + getparastr("tel") + "&rnd=" + Math.random());
+            }
         }
         function fload() {
 
