@@ -80,7 +80,7 @@
             $("#lbtip").css("display", 'none');//提示先隐藏
         });
         function toolbar() {
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=154&rnd=" + Math.random(), function (data, textStatus) {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=186&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
                 var items = [];
                 var arr = data.Items;

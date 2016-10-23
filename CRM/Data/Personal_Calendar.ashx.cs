@@ -141,12 +141,12 @@ namespace XHD.CRM.Data
             }
             if (request["Action"] == "Today")
             {
-                DateTime starttime = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
+                string starttime = (DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
                 DateTime endtime = DateTime.Parse(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd") + " 00:00:00");
 
                 //DataSet ds = calendar.GetList(0, "datediff(day,[StartTime],getdate())=0 and datediff(day,[EndTime],getdate())=0 and emp_id=" + int.Parse(emp_id), "[StartTime] desc");
-
-                DataSet ds = calendar.GetList(0, "'" + DateTime.Now.ToShortDateString() + " 23:59:50' >= [StartTime] and '" + DateTime.Now.ToShortDateString() + " 0:00:00' <= [EndTime] and emp_id=" + emp_id, "[StartTime] desc");
+                //'" + DateTime.Now.ToShortDateString() + " 23:59:50' >= [StartTime] and 
+                DataSet ds = calendar.GetList(7, "'" + starttime + "' <= [EndTime] and emp_id=" + emp_id, "[StartTime] ");
                 context.Response.Write(GetGridJSON.DataTableToJSON(ds.Tables[0]));
             }
         }

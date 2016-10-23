@@ -711,6 +711,9 @@ namespace XHD.DAL
             sb.AppendLine(" WHERE	 id='" + modelid + "')");
             sb.AppendLine(" WHERE	 id='" + bid + "'");
 
+            sb.AppendLine(" UPDATE	Budge_BasicMain	SET	FromTimes=ISNULL(FromTimes,0)+1");
+            sb.AppendLine(" WHERE	 id='" + modelid + "'");
+
             sb.AppendLine("  INSERT INTO [dbo].[Budge_BasicDetail]");
             sb.AppendLine("  ( ");
             sb.AppendLine("budge_id, ");

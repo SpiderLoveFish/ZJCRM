@@ -856,7 +856,7 @@ namespace XHD.DAL
             {
                 sb.AppendLine(" where " + strWhere);
             }
- 		sb.AppendLine(" order by modifiedtime desc”);
+ 		sb.AppendLine(" order by modifiedtime desc");
             return DbHelperSQL.Query(sb.ToString());
         }
 

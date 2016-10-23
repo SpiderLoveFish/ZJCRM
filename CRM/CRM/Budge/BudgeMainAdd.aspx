@@ -238,7 +238,7 @@
                 onAfterEdit: f_onAfterEdit,
                 onAfterShowData: function (grid) {
                     $(".abc").hover(function (e) {
-                        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() - 115 });
                     }, function (e) {
                         $(this).ligerHideTip(e);
                     });
@@ -560,7 +560,7 @@
             else {
                 $.ligerDialog.warn('请选择部件！');
             }
-            f_openWindowselect("../../crm/product/product_add.aspx?type=Selectbudge&id=" + getparastr("bid") + "&compname=" + escape(compname), "新增材料档案", 800, 500);
+            f_openWindowselect("../../crm/product/product_add.aspx?type=Selectbudge&id=" + getparastr("bid") + "&compname=" + escape(compname), "新增材料档案", 980, 600);
 
 
         }
