@@ -24,6 +24,7 @@ namespace XHD.CRM.webserver
     public class AppApi : System.Web.Services.WebService
     {
         XHD.CRM.Data.C_Sys_log log = new XHD.CRM.Data.C_Sys_log();
+       
      
         [WebMethod]
         public string HelloWorld()
@@ -243,12 +244,30 @@ namespace XHD.CRM.webserver
           {
                SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
-              sb.AppendLine(" SELECT  ");
-              sb.AppendLine("   DISTINCT id as cid ,isnull(params_name,'未知') as CustomerType");
-              sb.AppendLine(", CASE WHEN ISNULL(icon,'')='' THEN '" + url + "'+'images/Icon/96.png'");
-              sb.AppendLine(" ELSE '" + url + "'+icon  END AS Avatar ");
-              sb.AppendLine("   FROM dbo.Param_SysParam WHERE parentid=1");
-              DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+              if (url == "sgjl")//监理
+              {
+                  sb.Clear();
+                
+                  sb.AppendLine(" ");
+                  sb.AppendLine("SELECT	DISTINCT	Emp_id_sg	AS	cid,Emp_sg	CustomerType	 FROM dbo.CRM_Customer	WHERE	ISNULL(isDelete,0)=0 ");
+                  sb.AppendLine(" ");
+              }
+              if (url == "sjs")
+              {
+                  sb.Clear();
+                  sb.AppendLine(" ");
+                  sb.AppendLine("SELECT	DISTINCTEmp_id_sj	AS	cid,Emp_sj	CustomerType	 FROM dbo.CRM_Customer	WHERE	ISNULL(isDelete,0)=0 ");
+                  sb.AppendLine(" ");
+              }
+              else
+              {
+                  sb.AppendLine(" SELECT  ");
+                  sb.AppendLine("   DISTINCT id as cid ,isnull(params_name,'未知') as CustomerType");
+                  sb.AppendLine(", CASE WHEN ISNULL(icon,'')='' THEN '" + url + "'+'images/Icon/96.png'");
+                  sb.AppendLine(" ELSE '" + url + "'+icon  END AS Avatar ");
+                  sb.AppendLine("   FROM dbo.Param_SysParam WHERE parentid=1");
+              }
+                  DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
 
               if (ds == null)
               {
@@ -303,6 +322,7 @@ namespace XHD.CRM.webserver
                          sb.AppendLine(" and Emp_sj    like    '%" + str[2] + "%' ");
                          sb.AppendLine(" and A.CustomerType_id    like    '%" + str[3] + "%' ");
                          sb.AppendLine(" and tel    like    '%" + str[4] + "%' ");
+                         sb.AppendLine(" and Customer    like    '%" + str[5] + "%' ");//姓名
                          
                      }
                  }
@@ -1120,11 +1140,23 @@ namespace XHD.CRM.webserver
               }
               if (lx == "dqr")//待确认
               {
-                  sb.AppendLine("  and B.IsStatus in(0,1,2)  ");
+                  sb.AppendLine("  and B.IsStatus in(0,1,2,3)  ");
               }
               else if (lx == "yqr")//已确认
               {
                   sb.AppendLine("  and B.IsStatus in(3)  ");
+              }
+              else if (lx == "search")//查询
+              {
+                  sb.AppendLine("  and B.customer_id="+strWhere+"  ");
+              }
+              else if (lx == "ys_dsh")//待审核
+              {
+                  sb.AppendLine("  and B.IsStatus in(0,1)  ");
+              }
+              else if (lx == "ys_dqr")//待确认
+              {
+                  sb.AppendLine("  and B.IsStatus in(2)  ");
               }
               sb.AppendLine(" ORDER BY B.DoTime DESC )");
               //分页结束
@@ -1362,8 +1394,30 @@ namespace XHD.CRM.webserver
               }
 
           }
-     
-        
+
+
+          /// <summary>
+          /// 更新预算状态
+          /// </summary>
+          [WebMethod]
+          public void UpdateBudge(string selecttype, string id, string remarks, string username)
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+              string status = "0";
+              if (selecttype == "ys_dsh") status = "2";
+              else if (selecttype == "ys_dqr") status = "3";
+              else if (selecttype == "NoPass") status = "0"; 
+              sb.AppendLine("UPDATE	dbo.Budge_BasicMain	SET	IsStatus=" + status + "	WHERE	id=" + id + " ");
+              log.Add_Trace(id,status,remarks,username);
+              var RV = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+              if (RV > 0)
+                  ReturnStr(true, "\"success\"");
+              else ReturnStr(false, "\"faile\"");
+
+          }
+
+
           /// <summary>  
           /// 将中文转化为16进制unicode字符  
           /// 注意不要用汉字的标点符号（全拼的）
