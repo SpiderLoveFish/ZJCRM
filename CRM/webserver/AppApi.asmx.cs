@@ -1408,7 +1408,7 @@ namespace XHD.CRM.webserver
               if (selecttype == "ys_dsh") status = "2";
               else if (selecttype == "ys_dqr") status = "3";
               else if (selecttype == "NoPass") status = "0"; 
-              sb.AppendLine("UPDATE	dbo.Budge_BasicMain	SET	IsStatus=" + status + "	WHERE	id=" + id + " ");
+              sb.AppendLine("UPDATE	dbo.Budge_BasicMain	SET	IsStatus=" + status + "	WHERE	id='" + id + "' ");
               log.Add_Trace(id,status,remarks,username);
               var RV = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
               if (RV > 0)
