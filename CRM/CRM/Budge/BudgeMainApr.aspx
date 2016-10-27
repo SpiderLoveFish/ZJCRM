@@ -258,7 +258,7 @@
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
             var sertxt = $("#form1 :input").fieldSerialize() + "&" + serchtxt;
             var manager = $("#maingrid4").ligerGetGridManager();
-            alert(urlstr + "&" + sertxt);
+           // alert(urlstr + "&" + sertxt);
             manager.GetDataByURL(urlstr + "&" + sertxt);
         }
         function doclear() {

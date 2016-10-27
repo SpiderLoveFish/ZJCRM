@@ -1448,11 +1448,11 @@ namespace XHD.CRM.webserver
               var sb = new System.Text.StringBuilder();
               BLL.CE_Para cp = new BLL.CE_Para();
               app_kjl_api api = new app_kjl_api();
-              string sql = "SELECT uid FROM hr_employee	 WHERE ID= "+uid;
-              DataSet dsuid = DbHelperSQL.Query(sql, parameters);
-               uid=dsuid.Tables[0].Rows[0][0].ToString();//用户名转为UID
+
               if (type == "QJT")
               {
+                
+                  sb.Clear();
                   sb.AppendLine("SELECT id, DyUrl,DyGraphicsName,DoTime,Remarks,'自定义' AS lx ");
                   sb.AppendLine(" FROM dbo.Crm_Customer_DynamicGraphics ");
                   sb.AppendLine("     WHERE	Customer_id=  " + cid + "");
@@ -1489,8 +1489,10 @@ namespace XHD.CRM.webserver
               }
               else if (type == "XGT3D")
               {
-
-                  string ds = api.Get3D_XGT_LIST(cid,uid);
+                  string sql = "SELECT uid FROM hr_employee	 WHERE ID= " + uid;
+                  DataSet dsuid = DbHelperSQL.Query(sql, parameters);
+                  string usid = dsuid.Tables[0].Rows[0][0].ToString();//用户名转为UID
+                  string ds = api.Get3D_XGT_LIST(cid, usid);
                   ReturnStr(true, ds);
               }
           }
