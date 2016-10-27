@@ -1448,6 +1448,9 @@ namespace XHD.CRM.webserver
               var sb = new System.Text.StringBuilder();
               BLL.CE_Para cp = new BLL.CE_Para();
               app_kjl_api api = new app_kjl_api();
+              string sql = "SELECT uid FROM hr_employee	 WHERE ID= "+uid;
+              DataSet dsuid = DbHelperSQL.Query(sql, parameters);
+               uid=dsuid.Tables[0].Rows[0][0].ToString();//用户名转为UID
               if (type == "QJT")
               {
                   sb.AppendLine("SELECT id, DyUrl,DyGraphicsName,DoTime,Remarks,'自定义' AS lx ");
@@ -1457,7 +1460,7 @@ namespace XHD.CRM.webserver
                   string retstr = "[";
                   DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
                   if (ds.Tables[0].Rows.Count <= 0)
-                      retstr = "[]";
+                      retstr += "[]";
                   else
                   {
                       string str = Common.DataToJson.GetJson(ds);
