@@ -256,7 +256,7 @@ namespace XHD.CRM.webserver
               {
                   sb.Clear();
                   sb.AppendLine(" ");
-                  sb.AppendLine("SELECT	DISTINCTEmp_id_sj	AS	cid,Emp_sj	CustomerType	 FROM dbo.CRM_Customer	WHERE	ISNULL(isDelete,0)=0 ");
+                  sb.AppendLine("SELECT	DISTINCT Emp_id_sj	AS	cid,Emp_sj	CustomerType	 FROM dbo.CRM_Customer	WHERE	ISNULL(isDelete,0)=0 ");
                   sb.AppendLine(" ");
               }
               else
@@ -318,11 +318,13 @@ namespace XHD.CRM.webserver
                          }
                          sb.AppendLine("    where   1=1");
                          sb.AppendLine(" and address    like    '%"+str[0]+"%' ");
-                         sb.AppendLine(" and Emp_sg    like    '%" + str[1] + "%' ");
-                         sb.AppendLine(" and Emp_sj    like    '%" + str[2] + "%' ");
+                         if (str[1]!="")
+                             sb.AppendLine(" and Emp_id_sg   = '" + str[1] + "' ");
+                         if (str[2] != "")
+                             sb.AppendLine(" and Emp_id_sj    =    '" + str[2] + "' ");
                          sb.AppendLine(" and A.CustomerType_id    like    '%" + str[3] + "%' ");
                          sb.AppendLine(" and tel    like    '%" + str[4] + "%' ");
-                         sb.AppendLine(" and Customer    like    '%" + str[5] + "%' ");//姓名
+                         sb.AppendLine(" and Customer    like    '%" + str[6] + "%' ");//姓名
                          
                      }
                  }
@@ -978,7 +980,7 @@ namespace XHD.CRM.webserver
                   sb.AppendLine("                ) A");
                   sb.AppendLine("          )");
                   sb.AppendLine(" " + serchtxt + "");
-                  sb.AppendLine(" ORDER BY  ID");
+                  sb.AppendLine(" ORDER BY  Name");
               }
               else
               {
@@ -992,7 +994,7 @@ namespace XHD.CRM.webserver
                   sb.AppendLine("                ) A");
                   sb.AppendLine("          )");
                   sb.AppendLine(" " + serchtxt + "");
-                  sb.AppendLine(" ORDER BY  ID");
+                  sb.AppendLine(" ORDER BY  Name");
               }
 
               DataSet ds = DbHelperSQL.Query(sb.ToString() , parameters);
@@ -1166,11 +1168,23 @@ namespace XHD.CRM.webserver
               }
               if (lx == "dqr")//待确认
               {
-                  sb.AppendLine("  and B.IsStatus in(0,1,2)  "); 
+                  sb.AppendLine("  and B.IsStatus in(0,1,2,3)  ");
               }
-               else if (lx == "yqr")//已确认
+              else if (lx == "yqr")//已确认
               {
                   sb.AppendLine("  and B.IsStatus in(3)  ");
+              }
+              else if (lx == "search")//查询
+              {
+                  sb.AppendLine("  and B.customer_id=" + strWhere + "  ");
+              }
+              else if (lx == "ys_dsh")//待审核
+              {
+                  sb.AppendLine("  and B.IsStatus in(0,1)  ");
+              }
+              else if (lx == "ys_dqr")//待确认
+              {
+                  sb.AppendLine("  and B.IsStatus in(2)  ");
               }
 
               DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt + ordertxt, parameters);
@@ -1416,6 +1430,69 @@ namespace XHD.CRM.webserver
               else ReturnStr(false, "\"faile\"");
 
           }
+
+
+
+
+          /// <summary>
+          /// 全景图和效果图
+          /// tel电话
+          /// TYPE 类型
+          /// cid 客户代码或desid
+          /// uid 登录账号
+          /// </summary>
+          [WebMethod]
+          public void GetQJT(string tel, string type, string cid,string uid)
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+              BLL.CE_Para cp = new BLL.CE_Para();
+              app_kjl_api api = new app_kjl_api();
+              if (type == "QJT")
+              {
+                  sb.AppendLine("SELECT id, DyUrl,DyGraphicsName,DoTime,Remarks,'自定义' AS lx ");
+                  sb.AppendLine(" FROM dbo.Crm_Customer_DynamicGraphics ");
+                  sb.AppendLine("     WHERE	Customer_id=  " + cid + "");
+                  //第一部分，自定义
+                  string retstr = "[";
+                  DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+                  if (ds.Tables[0].Rows.Count <= 0)
+                      retstr = "[]";
+                  else
+                  {
+                      string str = Common.DataToJson.GetJson(ds);
+                      retstr += str;
+                  }
+
+                  //酷家乐
+                  string kjlstr = "";
+             
+                  string aa = api.GetKJL_QJT(tel);
+                  if (aa.Length <= 0)
+                      kjlstr = "[]";
+                  else {
+                      kjlstr += aa;
+                  }
+
+                  retstr += "," + kjlstr + "]";
+                  ReturnStr(true, retstr);
+              }
+              else if (type == "XGT")
+              {
+                  
+                    DataSet ds = cp.Getkjl_api_list(" curstomerid=" + cid, uid);
+                    string  dt = Common.DataToJson.GetJson(ds);
+                    ReturnStr(true, dt);
+              }
+              else if (type == "XGT3D")
+              {
+
+                  string ds = api.Get3D_XGT_LIST(cid,uid);
+                  ReturnStr(true, ds);
+              }
+          }
+
+
 
 
           /// <summary>  

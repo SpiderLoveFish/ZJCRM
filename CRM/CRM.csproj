@@ -4211,14 +4211,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\Caches.cs" />
+    <Compile Include="Class\DESEncrypt.cs" />
     <Compile Include="Class\GetTasks.cs" />
     <Compile Include="Class\HttpMethods.cs" />
     <Compile Include="Class\LoginMessage.cs" />
     <Compile Include="Class\Logs.cs" />
-    <Compile Include="Class\SqlDB.cs" />
-    <Compile Include="Class\DESEncrypt.cs" />
     <Compile Include="Class\ReturnValue.cs" />
     <Compile Include="Class\Serialization.cs" />
+    <Compile Include="Class\SqlDB.cs" />
     <Compile Include="Class\ToJson.cs" />
     <Compile Include="Class\Tools.cs" />
     <Compile Include="Class\Types.cs" />
@@ -4718,6 +4718,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="webserver\apppush.cs" />
+    <Compile Include="webserver\app_kjl_api.cs" />
     <Compile Include="webserver\bbsapi.asmx.cs">
       <DependentUpon>bbsapi.asmx</DependentUpon>
       <SubType>Component</SubType>
