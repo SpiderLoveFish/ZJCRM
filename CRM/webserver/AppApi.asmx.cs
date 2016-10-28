@@ -302,7 +302,7 @@ namespace XHD.CRM.webserver
               sb.AppendLine("ELSE '" + url + "'+C.icon  END AS Avatar ");
              sb.AppendLine(" FROM dbo.CRM_Customer A");
              sb.AppendLine("  INNER JOIN Param_SysParam C on C.id=A.CustomerType_id and parentid=1");
-           
+             sb.AppendLine("    where   1=1");
               if (!string.IsNullOrEmpty(keyword))
              {
                  if (keyword == "search")
@@ -316,7 +316,7 @@ namespace XHD.CRM.webserver
                              sb.AppendLine("  and  A.id in (select customer_id  from  Crm_Customer_Favorite where userid=" + ID+")");
 
                          }
-                         sb.AppendLine("    where   1=1");
+                    
                          sb.AppendLine(" and address    like    '%"+str[0]+"%' ");
                          if (str[1]!="")
                              sb.AppendLine(" and Emp_id_sg   = '" + str[1] + "' ");
@@ -1494,6 +1494,15 @@ namespace XHD.CRM.webserver
                   string usid = dsuid.Tables[0].Rows[0][0].ToString();//用户名转为UID
                   string ds = api.Get3D_XGT_LIST(cid, usid);
                   ReturnStr(true, ds);
+              }
+              else if (type == "XGT3DALL")
+              {
+                  if (cid == "") ReturnStr(true,"[]");
+                  string sql = "SELECT uid FROM hr_employee	 WHERE ID= " + uid;
+                  DataSet dsuid = DbHelperSQL.Query(sql, parameters);
+                  string usid = dsuid.Tables[0].Rows[0][0].ToString();//用户名转为UID
+                  string ds = api.Get3D_XGT_All(cid, usid);
+                  ReturnStr(true, "\""+ds+"\"");
               }
           }
 
