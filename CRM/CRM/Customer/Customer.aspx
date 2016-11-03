@@ -540,7 +540,7 @@
                // viewkjl('../../CRM/ConsExam/kjl_index.aspx?cid=' + row.id+ '&name=' + encodeURI("【" + row.Customer + "】" + row.address), "【" + row.address + "】");
                 f_openWindow_view('CRM/Customer/Customer_DynamicGraphics.aspx?cid=' + row.id + '&name=' + encodeURI(row.Customer)
                         + '&tel=' + row.tel
-                        + '&sjs=' + encodeURI(row.Emp_sj), "【"+row.address+"】效果图库", 660, 550);
+                        + '&sjs=' + encodeURI(row.Emp_sj), "【"+row.address+"】全景图库", 660, 550);
             }
             else {
                 $.ligerDialog.warn('请选择行！');

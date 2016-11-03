@@ -99,7 +99,7 @@
                     tree: {
                         data: [
                    {id:0, text: '自定义' },
-                   { id: 1, text: '酷家乐' }
+                   { id: 1, text: '云端数据' }
                         ],
                         checkbox: false
                     }
@@ -249,7 +249,7 @@
 
 
         function add() {
-            f_openWindow("CRM/Customer/Customer_DynamicGraphics_add.aspx?cid=" + getparastr("cid"), "新增效果图", 500, 200);
+            f_openWindow("CRM/Customer/Customer_DynamicGraphics_add.aspx?cid=" + getparastr("cid"), "新增全景图", 500, 200);
 
         }
 
@@ -268,11 +268,11 @@
             var row = manager.getSelectedRow();
             if (row) {
                     // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert" + "&dest=0", "新增效果图", 1200, 710);
-                viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=0', "新增效果图");
+                viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=0', "新增全景图");
             }
             else {
                // f_openWindow_view("CRM/ConsExam/kjl_edit.aspx?cid=" + getparastr("cid") + "&style=insert" + "&dest=0", "新增效果图", 1200, 710);
-                viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=0', "新增效果图");
+                viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=0', "新增全景图");
             }
         }
         //修改3D图
@@ -313,7 +313,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('CRM/Customer/Customer_DynamicGraphics_add.aspx?id=' + row.ccid + '&cid=' + getparastr("cid") + '&fid=' + row.fpId + '&desid=' + row.desid, "修改效果图", 500, 200);
+                f_openWindow('CRM/Customer/Customer_DynamicGraphics_add.aspx?id=' + row.ccid + '&cid=' + getparastr("cid") + '&fid=' + row.fpId + '&desid=' + row.desid, "修改全景图", 500, 200);
             }
             else {
                 $.ligerDialog.warn('请选择行！');

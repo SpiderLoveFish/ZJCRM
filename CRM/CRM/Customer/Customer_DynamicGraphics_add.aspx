@@ -91,7 +91,7 @@
     <form id="form1" onsubmit="return false">
         <table class="bodytable1" style="width: 500px; margin: 2px;">
             <tr>
-                <td class="table_title1" colspan="2">请填写效果图信息</td>
+                <td class="table_title1" colspan="2">请填写全景图信息</td>
             </tr>
             <tr>
 
