@@ -149,7 +149,7 @@
 
                      },
                     { display: '名称', name: 'product_name', width: 120 },
-                     { display: '部位', name: 'ComponentName', width: 50 },
+                     //{ display: '部位', name: 'ComponentName', width: 50 },
 
                     { display: '类别', name: 'Cname', width: 120 },
 
@@ -238,7 +238,7 @@
                 onAfterEdit: f_onAfterEdit,
                 onAfterShowData: function (grid) {
                     $(".abc").hover(function (e) {
-                        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() - 115 });
+                        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() });
                     }, function (e) {
                         $(this).ligerHideTip(e);
                     });
@@ -502,6 +502,77 @@
                 $("#maingrid4").ligerGetGridManager().onResize();
             });
         }
+        var activeDialogs_pz = null;
+        function f_openWindows_pz(url, title, width, height) {
+            var dialogOptions = {
+                zindex: 9002,
+                width: width, height: height, title: title, url: url, buttons: [
+                        {
+                            text: '保存', onclick: function (item, dialog) {
+                                f_savepz(item, dialog);
+                            }
+                        },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                f_close(item, dialog);
+                            }
+                        }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialogs_pz = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+
+        //配置修改
+        function pzxg() {
+            var notes = $("#tree1").ligerGetTreeManager().getSelected();
+            var compname = "";
+            if (notes != null && notes != undefined) {
+                // notes.data.id
+
+                compname = notes.data.text;
+            }
+            else {
+                $.ligerDialog.warn('请选择部件！');
+                return;
+            }
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                
+                f_openWindows_pz("crm/Budge/Budge_detail_mx_add.aspx?bid=" + $("#T_budgeid").val() + "&id=" + row.id, "修改明细", 1100, 600);
+                
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+
+        function f_savepz(item, dialog) {
+            var issave = dialog.frame.f_savePZ();
+            if (issave) {
+                dialog.close();
+                top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                $.ajax({
+                    url: "../../data/Budge.ashx", type: "POST",
+                    data: issave,
+                    success: function (responseText) {
+                        top.$.ligerDialog.closeWaitting();
+                        if (responseText == "false") {
+                            top.$.ligerDialog.error('操作失败！');
+                        }
+                        else {
+                            fload();
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+
+                    }
+                });
+
+            }
+
+        }
+
 
         function add() {
             var notes = $("#tree1").ligerGetTreeManager().getSelected();
@@ -518,7 +589,7 @@
             top.$.ligerDialog.open({
                 zindex: 9003,
                 title: '选择项目', width: 850, height: 400,
-                url: "CRM/Budge/SelectProduct.aspx?bid=" + getparastr("bid") + '&compname=' + escape(compname), buttons: [
+                url: "CRM/Budge/SelectProduct.aspx?bid=" + $("#T_budgeid").val() + '&compname=' + escape(compname), buttons: [
                     { text: '确定(F2)', onclick: f_selectProductOK },
                     { text: '取消', onclick: f_selectContactCancel }
                 ]
@@ -560,7 +631,7 @@
             else {
                 $.ligerDialog.warn('请选择部件！');
             }
-            f_openWindowselect("../../crm/product/product_add.aspx?type=Selectbudge&id=" + getparastr("bid") + "&compname=" + escape(compname), "新增材料档案", 980, 600);
+            f_openWindowselect("../../crm/product/product_add.aspx?type=Selectbudge&id=" + $("#T_budgeid").val() + "&compname=" + escape(compname), "新增材料档案", 980, 600);
 
 
         }

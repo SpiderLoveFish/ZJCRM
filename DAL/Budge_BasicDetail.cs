@@ -44,8 +44,8 @@ namespace XHD.DAL
         { 
             StringBuilder strSql=new StringBuilder();
         strSql.Append("  INSERT INTO Budge_BasicDetail ");
-        strSql.Append(" (budge_id,xmid,unit,ComponentName,Cname,TotalPrice,discount,totaldiscountprice,fc_price,rg_price,zc_price) ");
-        strSql.Append(" SELECT '" + bid + "',product_id,unit,'" + compname + "',category_name,price,1,price,fc_price,rg_price,zc_price FROM dbo.CRM_product WHERE product_id IN(" + xmlistid + ") ");
+        strSql.Append(" (budge_id,xmid,unit,ComponentName,Cname,TotalPrice,discount,totaldiscountprice,fc_price,rg_price,zc_price,Remarks) ");
+        strSql.Append(" SELECT '" + bid + "',product_id,unit,'" + compname + "',category_name,price,1,price,fc_price,rg_price,zc_price,remarks FROM dbo.CRM_product WHERE product_id IN(" + xmlistid + ") ");
 
         SqlParameter[] parameters = { };
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
@@ -533,7 +533,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select id,budge_id,xmid,ComponentName,Cname,unit,MmaterialPrice,IsShowPrice,SecmaterialPrice,ArtificialPrice,MechanicalLoss,MaterialLoss,TotalPrice,IsDiscount,TotalDiscountPrice,MaterialCost,MechanicalCost,ArtificialCost,SUM,Remarks ");
+			strSql.Append("select * ");
 			strSql.Append(" FROM Budge_BasicDetail ");
 			if(strWhere.Trim()!="")
 			{
@@ -646,7 +646,7 @@ namespace XHD.DAL
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
             strSql.Append(" top " + PageSize + " A.*,C.C_style ,TotalPrice*ISNULL(SUM,0)AS je,TotalDiscountPrice*ISNULL(SUM,0)AS zkje,B.product_name");
-            strSql.Append(" ,CASE WHEN LEN(REPLACE(replace(product_name+'/'+specifications+'/'+promodel+'/'+brand,'//','/'),'//','/'))=1 THEN '' ELSE REPLACE(replace(product_name+'/'+specifications+'/'+promodel+'/'+brand,'//','/'),'//','/') END AS brand,b.remarks as proremarks,e.BwSubTotal ");
+            strSql.Append(" ,CASE WHEN LEN(REPLACE(replace(product_name+'/'+specifications+'/'+promodel+'/'+brand,'//','/'),'//','/'))=1 THEN '' ELSE REPLACE(replace(product_name+'/'+specifications+'/'+promodel+'/'+brand,'//','/'),'//','/') END AS brand,a.Remarks as proremarks,e.BwSubTotal ");
             strSql.Append(" FROM dbo.Budge_BasicDetail A INNER JOIN dbo.CRM_product B ON A.xmid=B.product_id ");
             strSql.Append(" INNER JOIN dbo.CRM_product_category C ON  B.category_id=C.id");
             strSql.Append(" INNER JOIN (SELECT ComponentName as bwComponentName,budge_id as bwbudge_id,sum(SubTotal)BwSubTotal FROM  Budge_BasicDetail GROUP BY ComponentName,budge_id)e ON e.bwbudge_id=a.budge_id AND e.bwComponentName=a.ComponentName");

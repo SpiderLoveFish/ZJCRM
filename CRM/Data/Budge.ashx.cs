@@ -8,6 +8,7 @@ using XHD.Common;
 using System.Web.Security;
 using System.Data.OleDb;
 using System.Data.SqlClient;
+using XHD.DBUtility;
 
 namespace XHD.CRM.Data
 {
@@ -302,6 +303,32 @@ namespace XHD.CRM.Data
 
                 log.add_trace(bid, "", "savemodel", empname);  
             }
+            //修改单个明细配置
+            if (request["Action"] == "savepz")
+            {
+                string bid = PageValidate.InputText(request["bid"], 50);
+                string id = PageValidate.InputText(request["id"], 50);
+                string  zc_price = PageValidate.InputText(request["T_zc_price"], 50);
+                string  fc_price = PageValidate.InputText(request["T_fc_price"], 50);
+                string  rg_price = PageValidate.InputText(request["T_rg_price"], 50);
+                string T_price = PageValidate.InputText(request["T_price"], 50);
+                string remaks = PageValidate.InputText(request["T_remarks"], 250);
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine("");
+                sb.AppendLine("UPDATE Budge_BasicDetail SET");
+                sb.AppendLine("zc_price=" + zc_price + ",");
+                sb.AppendLine("rg_price=" + rg_price + ",");
+                sb.AppendLine("fc_price=" + fc_price + ",");
+                sb.AppendLine("TotalPrice=" + T_price + ",");
+                sb.AppendLine("Remarks='" + remaks + "'");
+                sb.AppendLine("WHERE budge_id='" + bid + "' AND id='"+id+"'");
+                if ( DbHelperSQL.ExecuteSql(sb.ToString()) > 0)
+                    context.Response.Write("true");//特殊处理
+                else context.Response.Write("false");
+
+                log.add_trace(bid, "", "savepz", empname);
+            }
+
             if (request["Action"] == "savemodeltobudge")
             {
                 string bid = PageValidate.InputText(request["bid"], 50);
@@ -480,7 +507,23 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "formdetailMX")
+            {
+                string bid = PageValidate.InputText(request["bid"], 50);
+                string id = PageValidate.InputText(request["id"], 50);
+                string dt;
+                if (bid != "")
+                {
+                    DataSet ds = bbdetail.GetList("  id='" + id + "' AND budge_id='"+bid+"'");
+                    dt = Common.DataToJson.DataToJSON(ds);
+                }
+                else
+                {
+                    dt = "{}";
+                }
 
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "formprint")
             {
                 string bid = PageValidate.InputText(request["bid"], 50);
@@ -592,9 +635,9 @@ namespace XHD.CRM.Data
                     sortname = "IsStatus";
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = "  IsStatus";
+                    sortname = "  DoTime";
                 if (string.IsNullOrEmpty(sortorder))
-                    sortorder = " ASC";
+                    sortorder = " DESC";
 
 
 

@@ -220,6 +220,7 @@ namespace XHD.DAL
 			{
 				strSql.Append(" where "+strWhere);
 			}
+            strSql.Append(" ORDER BY XMPX");
 			return DbHelperSQL.Query(strSql.ToString());
 		}
 

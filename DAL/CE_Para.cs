@@ -681,7 +681,19 @@ namespace XHD.DAL
         public DataSet Getkjl_api_list(string strWhere,string uid)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select * ");
+            strSql.Append("select   ");
+            strSql.AppendLine("curstomerid ,");
+            strSql.AppendLine("          desid ,");
+            strSql.AppendLine("          fpId ,");
+            strSql.AppendLine("          imgtype ,");
+            strSql.AppendLine("          simg ,");
+            strSql.AppendLine("          img ,");
+            strSql.AppendLine("          pano ,");
+            strSql.AppendLine("          dotime ,");
+            strSql.AppendLine("          DyGraphicsName ,");
+            strSql.AppendLine("          isnull(remarks,'') as Remarks ,");
+            strSql.AppendLine("          DoPerson ,");
+            strSql.AppendLine("          DoPersonID");
             strSql.Append(" ,case when DoPerson='" + uid + "' then 1 else 0 end as ismy");
             strSql.Append(" FROM kjl_api ");
             if (strWhere.Trim() != "")

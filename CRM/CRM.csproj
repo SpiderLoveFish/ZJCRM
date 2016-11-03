@@ -128,6 +128,7 @@
     <Content Include="CRM\Budge\BudgeModelMain.aspx" />
     <Content Include="CRM\Budge\BudgeMainAdd_Detail.aspx" />
     <Content Include="CRM\Budge\BudgeMainAdd_Detail_b.aspx" />
+    <Content Include="CRM\Budge\Budge_detail_mx_add.aspx" />
     <Content Include="CRM\Budge\SelectBJSingle.aspx" />
     <Content Include="CRM\Budge\SelectFjjeDetail.aspx" />
     <Content Include="CRM\Budge\SelectFjje.aspx" />
