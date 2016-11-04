@@ -212,7 +212,7 @@
             </tr>     
            
             <tr>
-              <td colspan="2"> <textarea id="T_remarks" name="T_remarks" cols="100" rows="20" class="l-textarea" style="width:230px"></textarea></td>
+              <td colspan="8" class="table_title1"> <textarea id="T_remarks" name="T_remarks" cols="100" rows="20" class="l-textarea" style="width:730px"></textarea></td>
             </tr>
 
         </table>

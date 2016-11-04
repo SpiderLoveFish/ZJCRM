@@ -146,13 +146,21 @@
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                      {
                          display: "排序", name: "OrderBy", type: "int", align: "right", width: 40 
-
+                        
                      },
-                    { display: '名称', name: 'product_name', width: 120 },
+                    { display: '名称', name: 'product_name', width: 200 },
                      //{ display: '部位', name: 'ComponentName', width: 50 },
 
                     { display: '类别', name: 'Cname', width: 120 },
-
+                      {
+                          display: '工艺说明', name: 'proremarks', align: 'left', width: 60, render: function (item) {
+                              var html = "<div class='abc'>";
+                              if (item.proremarks)
+                                  html += item.proremarks;
+                              html += "</div>";
+                              return html;
+                          }
+                      },
                      {
                          display: '主材￥', name: 'zc_price', type: 'float', width: 50, align: 'right', render: function (item) {
                              return "<div style='color:#135294'>" + item.zc_price + "</div>";
@@ -180,7 +188,7 @@
                         }
                     },
                         {
-                            display: "金额￥", name: "je", type: "float", width: 50, align: 'right',
+                            display: "金额￥", name: "je", type: "float", width: 80, align: 'right',
                             totalSummary: {
                                 //type:'sum,count,max,min,avg'
                                 render: function (suminf, column) {
@@ -206,16 +214,8 @@
                      //   },
 
                     { display: '单位', name: 'unit', width: 40 },
-                     { display: '类型', name: 'C_style', width: 40 },
-                        {
-                            display: '工艺说明', name: 'proremarks', align: 'left', width: 150, render: function (item) {
-                                var html = "<div class='abc'>";
-                                if (item.proremarks)
-                                    html += item.proremarks;
-                                html += "</div>";
-                                return html;
-                            }
-                        },
+                     //{ display: '类型', name: 'C_style', width: 40 },
+                      
                          {
                              display: '图文', width: 40, render: function (item) {
                                  var html = "<a href='javascript:void(0)' onclick=view(" + item.xmid + ")>查看</a>"

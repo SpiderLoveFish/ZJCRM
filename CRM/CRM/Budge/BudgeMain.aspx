@@ -59,7 +59,11 @@
  
                       },
                         { display: '客户地址', name: 'address', width: 200, align: 'left' },
-                   { display: '金额', name: 'BudgetAmount', width: 60, align: 'left' },
+                   {
+                       display: '金额', name: 'BudgetAmount', width: 60, align: 'left', render: function (item) {
+                           return "<div style='color:#135294'>" + toMoney(item.BudgetAmount + item.FJAmount) + "</div>";
+                       }
+                   },
 
                       {
                           display: '状态', name: 'txtstatus', width: 60, align: 'left', render: function (item) {
