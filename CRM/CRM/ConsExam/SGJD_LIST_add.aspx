@@ -62,6 +62,7 @@
             $(window).resize(function () {
                 initLayout();
             });
+           // alert(getparastr("cid"));
             if (getparastr("cid") != null) {
                 loadForm(getparastr("cid"));
 
@@ -218,6 +219,7 @@
                 dataType: "json",
                 success: function (result) {
                     var obj = eval(result);
+                    alert(JSON.stringify(result));
                     for (var n in obj) {
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
