@@ -185,11 +185,15 @@ namespace XHD.CRM.webserver
                SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
 
-              sb.AppendLine("SELECT  uid,name,tel,dname,zhiwu,email,Address, ");
-              sb.AppendLine(" CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
-              sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar ");
-              sb.AppendLine("  FROM hr_employee WHERE ISNULL(isDelete,0)='0' AND token='" + token + "' ");
-                        DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+              sb.AppendLine("SELECT  a.uid,a.name,a.tel,a.dname,a.zhiwu,a.email,a.Address, ");
+              sb.AppendLine(" CASE WHEN ISNULL(a.title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
+              sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+a.title  END AS Avatar ");
+              sb.AppendLine("   ,ISNULL(b.Jf,0)	AS	jf");
+              sb.AppendLine("  FROM hr_employee a   ");
+              sb.AppendLine("   LEFT	JOIN	dbo.v_Jifen_Yg	b	ON	a.ID=b.ID   ");
+              sb.AppendLine("   WHERE ISNULL(a.isDelete,0)='0' AND a.token='" + token + "' ");
+                      
+              DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
 
               if (ds == null)
               {
@@ -325,7 +329,16 @@ namespace XHD.CRM.webserver
                          sb.AppendLine(" and A.CustomerType_id    like    '%" + str[3] + "%' ");
                          sb.AppendLine(" and tel    like    '%" + str[4] + "%' ");
                          sb.AppendLine(" and Customer    like    '%" + str[6] + "%' ");//姓名
-                         
+                         if (str[7] != "")
+                             sb.AppendLine(" and a.Create_date >= '" + str[7] + " 00:00' ");//开始时间
+                         if (str[8] != "")
+                             sb.AppendLine(" and a.Create_date  <=  '" + str[8] + " 23:59' ");//
+                         if (str[9] != "")
+                         {
+                             //sb.AppendLine(" and Customer    like    '%" + str[9] + "%' ");//姓名
+                             string zh = string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", str[9]);
+                             sb.AppendLine(zh);
+                         }
                      }
                  }
 
@@ -443,6 +456,7 @@ namespace XHD.CRM.webserver
               string serchtxt = "";
               sb.AppendLine(" SELECT A.id, Serialnumber,Customer,address,tel,Create_name,CustomerType,Emp_sj AS sjs,Employee AS ywy,Emp_sg AS sgjl ");
               sb.AppendLine(" ,Case when B.customer_id is null then 0 else 1 end as isstart");
+              sb.AppendLine("  , CONVERT(VARCHAR(10),Create_date,120)	cd  ");
               sb.AppendLine(" FROM dbo.CRM_Customer A");
               sb.AppendLine(" LEFT JOIN Crm_Customer_Favorite B on B.customer_id=A.id AND userid="+userid);
               sb.AppendLine(" where ISNULL(isDelete,0)='0' AND a.id=" + id + "");
