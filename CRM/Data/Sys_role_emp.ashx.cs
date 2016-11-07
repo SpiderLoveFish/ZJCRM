@@ -8,6 +8,8 @@ using System.Data;
 using System.Text;
 using XHD.Common;
 using System.Web.Security;
+using System.Data.SqlClient;
+using XHD.DBUtility;
 
 namespace XHD.CRM.Data
 {
@@ -43,11 +45,29 @@ namespace XHD.CRM.Data
                 //rm.Delete(string.Format("RoleID={0} and empID in ({1})", int.Parse(rid), empids));
                 string[] emplist = empids.Split(',');
                 model.RoleID = int.Parse(rid);
+            
                 for (int i = 0; i < emplist.Length; i++)
                 {
                     model.empID = int.Parse(emplist[i].ToString());
                     rm.Add(model);
+                  
                 }
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine(" DELETE	App_Right_Employee WHERE Roleid=" + rid + "   ");
+                sb.AppendLine(" INSERT	 INTO dbo.App_Right_Employee");
+                sb.AppendLine("         ( app_meun_id ,");
+                sb.AppendLine("           empid ,");
+                sb.AppendLine("           Roleid ,");
+                sb.AppendLine("           CreatName ,");
+                sb.AppendLine("           DoTime ,");
+                sb.AppendLine("           Remarks");
+                sb.AppendLine("         )");
+                sb.AppendLine("SELECT app_meun_id,empID," + rid + ",'" + empname + "',GETDATE(),'' FROM  dbo.App_Role_Right a");
+                sb.AppendLine("INNER JOIN  [dbo].[sys_role_emp] b	ON a.Roleid=b.RoleID");
+                sb.AppendLine("  WHERE a.Roleid=" + rid + " ");
+                SqlParameter[] parameters = { };
+                int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+                   
 
                 BLL.Sys_log log = new BLL.Sys_log();
                 Model.Sys_log modellog = new Model.Sys_log();
@@ -66,7 +86,22 @@ namespace XHD.CRM.Data
                 string rid = PageValidate.InputText(request["role_id"], 50);
                 string empids = Common.PageValidate.InputText(request["empids"], int.MaxValue);
                 rm.Delete(string.Format("RoleID={0} and empID in ({1})", int.Parse(rid), empids));
-
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine(" DELETE	App_Right_Employee WHERE Roleid=" + rid + "   ");
+                sb.AppendLine(" INSERT	 INTO dbo.App_Right_Employee");
+                sb.AppendLine("         ( app_meun_id ,");
+                sb.AppendLine("           empid ,");
+                sb.AppendLine("           Roleid ,");
+                sb.AppendLine("           CreatName ,");
+                sb.AppendLine("           DoTime ,");
+                sb.AppendLine("           Remarks");
+                sb.AppendLine("         )");
+                sb.AppendLine("SELECT app_meun_id,empID," + rid + ",'" + empname + "',GETDATE(),'' FROM  dbo.App_Role_Right a");
+                sb.AppendLine("INNER JOIN  [dbo].[sys_role_emp] b	ON a.Roleid=b.RoleID");
+                sb.AppendLine("  WHERE a.Roleid=" + rid + " ");
+                 SqlParameter[] parameters = { };
+                    int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+                   
                 BLL.Sys_log log = new BLL.Sys_log();
                 Model.Sys_log modellog = new Model.Sys_log();
 

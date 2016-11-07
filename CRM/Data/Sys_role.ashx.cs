@@ -239,9 +239,9 @@ namespace XHD.CRM.Data
                 //modelauth.Button_ids = sa.btn;
                 string roledata = "0|0";
                 var sb = new System.Text.StringBuilder();
-                sb.AppendLine(" SELECT 'm'+CONVERT(VARCHAR(5),A.app_meun_id) AS meun_id   FROM  dbo.App_Right_Employee A");
+                sb.AppendLine(" SELECT 'm'+CONVERT(VARCHAR(5),A.app_meun_id) AS meun_id   FROM  dbo.App_Role_Right A");
                 sb.AppendLine(" INNER JOIN  App_Basic_Right B ON A.app_meun_id=B.app_meun_id");
-                sb.AppendLine("   WHERE app_meun_parentid=0 AND empid="+postdata+"");
+                sb.AppendLine("   WHERE app_meun_parentid=0 AND Roleid=" + postdata + "");
 
                 DataTable dt = DbHelperSQL.Query(sb.ToString()).Tables[0];
                 string m = "";
@@ -250,9 +250,9 @@ namespace XHD.CRM.Data
                     m += dw["meun_id"].ToString() + ",";
                 }
                 sb.Clear();
-                sb.AppendLine(" SELECT 'b'+CONVERT(VARCHAR(5),A.app_meun_id) AS btn_id   FROM  dbo.App_Right_Employee A");
+                sb.AppendLine(" SELECT 'b'+CONVERT(VARCHAR(5),A.app_meun_id) AS btn_id   FROM  dbo.App_Role_Right A");
                 sb.AppendLine(" INNER JOIN  App_Basic_Right B ON A.app_meun_id=B.app_meun_id");
-                sb.AppendLine("   WHERE app_meun_parentid!=0 AND empid=" + postdata + "");
+                sb.AppendLine("   WHERE app_meun_parentid!=0 AND Roleid=" + postdata + "");
                 DataTable ds = DbHelperSQL.Query(sb.ToString()).Tables[0];
                 string b = "";
                 foreach (DataRow dw in ds.Rows)
@@ -312,7 +312,7 @@ namespace XHD.CRM.Data
                 save sa = json.Deserialize<save>(postdata);
                 //Model.Sys_authority modelauth = new Model.Sys_authority();
                 //modelauth.Role_id 
-                int userid= int.Parse(sa.role_id);
+                int Roleid= int.Parse(sa.role_id);
                 //modelauth.App_ids = PageValidate.InputText(sa.app, 50);
                 //modelauth.Menu_ids 
                 string menu= PageValidate.InputText(sa.menu, int.MaxValue);
@@ -328,22 +328,22 @@ namespace XHD.CRM.Data
                     var sb = new System.Text.StringBuilder();
                     string[] str =(menu+btn).Split(',');
                     string app_meun_id = "";
-                    sb.AppendLine(" DELETE App_Right_Employee WHERE empid=" + userid + "");
+                    sb.AppendLine(" DELETE App_Role_Right WHERE Roleid=" + Roleid + "");
                     for (int i = 0; i < str.Length;i++ )
                     {
                         if (str[i].Trim() != "")
                         {
                             app_meun_id = str[i].Trim().Replace("m", "").Replace("b", "");
-                        
-                            sb.AppendLine("INSERT INTO dbo.App_Right_Employee");
+
+                            sb.AppendLine("INSERT INTO dbo.App_Role_Right");
                             sb.AppendLine("         ( app_meun_id ,");
-                            sb.AppendLine("           empid ,");
+                            sb.AppendLine("           Roleid ,");
                             sb.AppendLine("           CreatName ,");
                             sb.AppendLine("           DoTime ,");
                             sb.AppendLine("           Remarks");
                             sb.AppendLine("         )");
                             sb.AppendLine(" VALUES  ( " + app_meun_id + " ,"); // app_meun_id - int
-                            sb.AppendLine("           " + userid + " ,"); // empid - int
+                            sb.AppendLine("           " + Roleid + " ,"); // empid - int
                             sb.AppendLine("           '" + empname + "' ,"); // CreatName - varchar(20)
                             sb.AppendLine("           GETDATE() ,"); // DoTime - datetime
                             sb.AppendLine("           ''"); // Remarks - varchar(50)
@@ -351,6 +351,18 @@ namespace XHD.CRM.Data
                         }
                            
                     }
+                    sb.AppendLine("DELETE	App_Right_Employee WHERE Roleid=" + Roleid + " ");
+                    sb.AppendLine(" INSERT	 INTO dbo.App_Right_Employee");
+                    sb.AppendLine("         ( app_meun_id ,");
+                    sb.AppendLine("           empid ,");
+                    sb.AppendLine("           Roleid ,");
+                    sb.AppendLine("           CreatName ,");
+                    sb.AppendLine("           DoTime ,");
+                    sb.AppendLine("           Remarks");
+                    sb.AppendLine("         )");
+                    sb.AppendLine("SELECT app_meun_id,empID,"+Roleid+",'"+empname+"',GETDATE(),'' FROM  dbo.App_Role_Right a");
+                    sb.AppendLine("INNER JOIN  [dbo].[sys_role_emp] b	ON a.Roleid=b.RoleID");
+                    sb.AppendLine(" WHERE a.Roleid=" + Roleid + " ");
                     SqlParameter[] parameters = { };
                     int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
                     if (rows > 0)
