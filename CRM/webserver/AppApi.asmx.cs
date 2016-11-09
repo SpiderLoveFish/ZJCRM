@@ -570,9 +570,29 @@ namespace XHD.CRM.webserver
                 //审批
               string SPstr = "[]";
               //企业公告
-              string GGstr = "[]";
+              string GGstr = "";
+              DataSet dsGG = DbHelperSQL.Query("SELECT 1 FROM  dbo.public_news WHERE news_time>=GETDATE()-3 ", parameters);
+              if (dsGG.Tables[0].Rows.Count <= 0)
+                  GGstr = "[]";
+              else
+              {
+                  string str = Common.DataToJson.GetJson(dsGG);
+                  GGstr += str;
+              }
+              
               //调查问卷
-              string DCstr = "[]";
+              //string DCstr = "[]";
+              sb.Clear();
+               string s=  getbirstring()  ;
+              string DCstr = "";
+              DataSet dsDC = DbHelperSQL.Query(s + " AND ts< 7", parameters);
+              if (dsDC.Tables[0].Rows.Count <= 0)
+                  DCstr = "[]";
+              else
+              {
+                  string str = Common.DataToJson.GetJson(dsDC);
+                  DCstr += str;
+              }
               //活动报名
               string HDstr = "[]";
               retstr += "," + SPstr + "," + GGstr + "," + DCstr + "," + HDstr+"]";
@@ -1168,7 +1188,7 @@ namespace XHD.CRM.webserver
               }
               else if (lx == "ys_dsh")//待审核
               {
-                  sb.AppendLine("  and B.IsStatus in(0,1)  ");
+                  sb.AppendLine("  and B.IsStatus in(1)  ");
               }
               else if (lx == "ys_dqr")//待确认
               {
@@ -1273,12 +1293,9 @@ namespace XHD.CRM.webserver
         /// </summary>
         /// <param name="strWhere">比如30内的</param>
         /// <param name="lx">客户还是员工</param>
-       
-          [WebMethod]
-          public void GetUserBirthday(string strWhere, string lx )
+        /// 
+          private string getbirstring()
           {
-              SqlParameter[] parameters = { };
- 
               var sb = new System.Text.StringBuilder();
               sb.AppendLine("SELECT * FROM");
               sb.AppendLine("(");
@@ -1305,6 +1322,16 @@ namespace XHD.CRM.webserver
               sb.AppendLine(")AAA");
               sb.AppendLine(")AAAA");
               sb.AppendLine("WHERE 1=1");
+              return sb.ToString();
+          }
+       
+          [WebMethod]
+          public void GetUserBirthday(string strWhere, string lx )
+          {
+              SqlParameter[] parameters = { };
+ 
+              var sb = new System.Text.StringBuilder();
+              string s = getbirstring();
               sb.AppendLine("");
               if (strWhere.Trim() != "")
               {
@@ -1312,7 +1339,7 @@ namespace XHD.CRM.webserver
               }
              
               sb.AppendLine("ORDER BY ts");
-              DataSet ds = DbHelperSQL.Query(sb.ToString() , parameters);
+              DataSet ds = DbHelperSQL.Query(s+ sb.ToString() , parameters);
 
               if (ds == null)
               {
