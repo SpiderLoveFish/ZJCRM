@@ -1244,7 +1244,7 @@ namespace XHD.CRM.webserver
               }
               else if (lx == "ys_dsh")//待审核
               {
-                  sb.AppendLine("  and B.IsStatus in(0,1)  ");
+                  sb.AppendLine("  and B.IsStatus in(1)  ");
               }
               else if (lx == "ys_dqr")//待确认
               {
