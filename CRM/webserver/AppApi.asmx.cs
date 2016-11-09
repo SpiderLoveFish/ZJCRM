@@ -390,54 +390,84 @@ namespace XHD.CRM.webserver
           /// 客户List
           /// </summary>
           [WebMethod]
-          public void GetCustomerList_Page(string keyword,string typeid, string ID, string url,string index)
+          public void GetCustomerList_Page(string keyword, string ID, string url, string index, string searchkey)
           {
               SqlParameter[] parameters = { };
               int startindex= int.Parse(index)*20;
               int perindex =(int.Parse(index)-1)*20;
-              string sql = " SELECT TOP " + startindex + "  " +
-                            " id, Serialnumber,Customer,address,tel,CustomerType,Community,DesCripe,Remarks " +
-                            //"--,UPPER(dbo.chinese_firstletter(ltrim(Customer))) as header" +
-                            " , CASE WHEN ISNULL(CustomerType_id,'')='' THEN '"+url+"'+'images/Icon/96.png'" +
-                            " ELSE '" + url + "'+'images/Icon/'+ CONVERT(VARCHAR(5),CustomerType_id) +'.png'  END AS Avatar " +
-                            "  FROM" +
-                            " CRM_Customer " +
-                            " WHERE (" +
-                            " id>(SELECT ISNULL(MAX(id),0) FROM (SELECT TOP " + perindex + " id FROM" +
-                            " CRM_Customer ORDER BY id)AS T" +
-                            " )" +
-                            " )  " ;
+              var sb = new System.Text.StringBuilder();
 
               string serchtxt = "";
+              sb.AppendLine(" SELECT TOP 20  ");
+              sb.AppendLine(" A.id, Serialnumber,Customer,address,tel,CustomerType,Community,DesCripe,Remarks ");
+              //sb.AppendLine(",UPPER(dbo.chinese_firstletter(ltrim(Customer))) as header");
+              sb.AppendLine(", CASE WHEN ISNULL(CustomerType_id,'')='' THEN '" + url + "'+'images/Icon/96.png'");
+              sb.AppendLine("ELSE '" + url + "'+C.icon  END AS Avatar ");
+              sb.AppendLine(" FROM dbo.CRM_Customer A");
+              sb.AppendLine("  INNER JOIN Param_SysParam C on C.id=A.CustomerType_id and parentid=1");
+              sb.AppendLine("    where   1=1");
+              var sbt = new System.Text.StringBuilder();
               if (!string.IsNullOrEmpty(keyword))
               {
-                  serchtxt += string.Format(" AND ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
-                  //serchtxt += " WHERE CustomerType_id=" + keyword;
-              }
-              if (!string.IsNullOrEmpty(typeid))
-              {
-                  //serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
-                  serchtxt += " AND CustomerType_id=" + typeid;
-              }
-              
-              //加入权限控制
-              serchtxt += DataAuth(ID);
-              string ordertxt = "ORDER BY id";
-                  //" ORDER BY dbo.chinese_firstletter(ltrim(Customer))";
-              DataSet ds = DbHelperSQL.Query(sql + serchtxt + ordertxt, parameters);
+                  if (keyword == "search")
+                  {
+                      if (!string.IsNullOrEmpty(searchkey))
+                      {
+                          string[] str = searchkey.Split(';');
+                          if (str[5] == "fav")
+                          {
+                              // sb.AppendLine("  LEFT JOIN Crm_Customer_Favorite B on B.customer_id=A.id and userid=" + ID);
+                              sbt.AppendLine("  and  A.id in (select customer_id  from  Crm_Customer_Favorite where userid=" + ID + ")");
 
+                          }
+
+                          sbt.AppendLine(" and address    like    '%" + str[0] + "%' ");
+                          if (str[1] != "")
+                              sbt.AppendLine(" and Emp_id_sg   = '" + str[1] + "' ");
+                          if (str[2] != "")
+                              sbt.AppendLine(" and Emp_id_sj    =    '" + str[2] + "' ");
+                          sbt.AppendLine(" and A.CustomerType_id    like    '%" + str[3] + "%' ");
+                          sbt.AppendLine(" and tel    like    '%" + str[4] + "%' ");
+                          sbt.AppendLine(" and Customer    like    '%" + str[6] + "%' ");//姓名
+                          if (str[7] != "")
+                              sbt.AppendLine(" and a.Create_date >= '" + str[7] + " 00:00' ");//开始时间
+                          if (str[8] != "")
+                              sbt.AppendLine(" and a.Create_date  <=  '" + str[8] + " 23:59' ");//
+                          if (str[9] != "")
+                          {
+                              //sb.AppendLine(" and Customer    like    '%" + str[9] + "%' ");//姓名
+                              string zh = string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", str[9]);
+                              sbt.AppendLine(zh);
+                          }
+                      }
+                  }
+
+              }
+              sb.AppendLine(" and ISNULL(isDelete,0)='0' ");
+              serchtxt += DataAuth(ID);
+              sb.AppendLine(" AND a.id>(select ISNULL(max(id),0) from (select top " + perindex + " id from CRM_Customer WHERE 1=1  ");
+             
+              sb.AppendLine("  " +sbt.ToString() +serchtxt + " order by id)a)");
+              string ordertxt = " ORDER BY a.id   ";
+              string strsql =    sb.ToString() + sbt.ToString()+ serchtxt + ordertxt ;
+
+              DataSet ds = DbHelperSQL.Query(strsql, parameters);
+
+              string strcount = "  select count(1) count   FROM dbo.CRM_Customer A  INNER JOIN Param_SysParam C on C.id=A.CustomerType_id and parentid=1  where   1=1 " + sbt.ToString();
+              DataSet dsc = DbHelperSQL.Query(strcount, parameters);
+              string cout=dsc.Tables[0].Rows[0][0].ToString();
               if (ds == null)
               {
-                  ReturnStr(false, "无数据！");
+                  ReturnStr(true, "[[],{\"Total\":0} ]");
               }
               else
               {
                   if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(false, "无数据！");
+                      ReturnStr(true, "[[],\"Total\":0]");
                   else
                   {
                       string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, str);
+                      ReturnStr(true, "[" + str + ",{\"Total\":" + cout + "}]");
                   }
               }
 
