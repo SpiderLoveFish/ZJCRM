@@ -47,7 +47,7 @@ namespace XHD.CRM.webserver
         public PushMessage()
         {
             //toList接口每个用户状态返回是否开启，可选
-            Console.OutputEncoding = Encoding.GetEncoding(936);
+            //Console.OutputEncoding = Encoding.GetEncoding(936);
             Environment.SetEnvironmentVariable("needDetails", "true");
 
             //下为消息推送的四种方式，单独使用时，请注释掉另外三种方法
@@ -104,46 +104,53 @@ namespace XHD.CRM.webserver
         //PushMessageToList接口测试代码
         public string PushMessageToList(string HOST, string APPKEY, string MASTERSECRET, string APPID, string CLIENTID, string title, string body)
         {
-            // 推送主类（方式1，不可与方式2共存）
-            IGtPush push = new IGtPush(HOST, APPKEY, MASTERSECRET);
-            // 推送主类（方式2，不可与方式1共存）此方式可通过获取服务端地址列表判断最快域名后进行消息推送，每10分钟检查一次最快域名
-            //IGtPush push = new IGtPush("",APPKEY,MASTERSECRET);
-            ListMessage message = new ListMessage();
-
-            NotificationTemplate template = NotificationTemplateDemo(  APPKEY,   APPID);
-            // 用户当前不在线时，是否离线存储,可选
-            message.IsOffline = false;
-            // 离线有效时间，单位为毫秒，可选
-            message.OfflineExpireTime = 1000 * 3600 * 12;
-            message.Data = template;
-            //message.PushNetWorkType = 0;        //判断是否客户端是否wifi环境下推送，1为在WIFI环境下，0为不限制网络环境。
-            //设置接收者
-            List<com.igetui.api.openservice.igetui.Target> targetList = new List<com.igetui.api.openservice.igetui.Target>();
-            string[] str = CLIENTID.Split(';');
-            for (int i = 0; i < str.Length; i++)
+            try
             {
-                if (str[i].Length > 1)
+                // 推送主类（方式1，不可与方式2共存）
+                IGtPush push = new IGtPush(HOST, APPKEY, MASTERSECRET);
+                // 推送主类（方式2，不可与方式1共存）此方式可通过获取服务端地址列表判断最快域名后进行消息推送，每10分钟检查一次最快域名
+                //IGtPush push = new IGtPush("",APPKEY,MASTERSECRET);
+                ListMessage message = new ListMessage();
+
+                NotificationTemplate template = NotificationTemplateDemo(APPKEY, APPID);
+                // 用户当前不在线时，是否离线存储,可选
+                message.IsOffline = false;
+                // 离线有效时间，单位为毫秒，可选
+                message.OfflineExpireTime = 1000 * 3600 * 12;
+                message.Data = template;
+                //message.PushNetWorkType = 0;        //判断是否客户端是否wifi环境下推送，1为在WIFI环境下，0为不限制网络环境。
+                //设置接收者
+                List<com.igetui.api.openservice.igetui.Target> targetList = new List<com.igetui.api.openservice.igetui.Target>();
+                string[] str = CLIENTID.Split(';');
+                for (int i = 0; i < str.Length; i++)
                 {
+                    if (str[i].Length > 1)
+                    {
 
-                    com.igetui.api.openservice.igetui.Target target1 = new com.igetui.api.openservice.igetui.Target();
-                    target1.appId = APPID;
-                    target1.clientId = str[i];
-                    targetList.Add(target1);
+                        com.igetui.api.openservice.igetui.Target target1 = new com.igetui.api.openservice.igetui.Target();
+                        target1.appId = APPID;
+                        target1.clientId = str[i];
+                        targetList.Add(target1);
+                    }
                 }
+
+
+                // 如需要，可以设置多个接收者
+                //com.igetui.api.openservice.igetui.Target target2 = new com.igetui.api.openservice.igetui.Target();
+                //target2.AppId = APPID;
+                //target2.ClientId = "ddf730f6cabfa02ebabf06e0c7fc8da0";
+
+
+                //targetList.Add(target2);
+
+                String contentId = push.getContentId(message);
+                String pushResult = push.pushMessageToList(contentId, targetList);
+                return pushResult;
             }
-          
-
-            // 如需要，可以设置多个接收者
-            //com.igetui.api.openservice.igetui.Target target2 = new com.igetui.api.openservice.igetui.Target();
-            //target2.AppId = APPID;
-            //target2.ClientId = "ddf730f6cabfa02ebabf06e0c7fc8da0";
-
-          
-            //targetList.Add(target2);
-
-            String contentId = push.getContentId(message);
-            String pushResult = push.pushMessageToList(contentId, targetList);
-           return  pushResult ;
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
 
@@ -196,51 +203,58 @@ namespace XHD.CRM.webserver
 
      public string apnPush(string HOST, string APPKEY, string MASTERSECRET, string APPID, string DeviceToken,string title,string body)
         {
-            //APN高级推送
-            IGtPush push = new IGtPush(HOST, APPKEY, MASTERSECRET);
-            APNTemplate template = new APNTemplate();
-            APNPayload apnpayload = new APNPayload();
-            DictionaryAlertMsg alertMsg = new DictionaryAlertMsg();
-            alertMsg.Body = body;
-            alertMsg.ActionLocKey = "ActionLocKey";
-            alertMsg.LocKey = "LocKey";
-            alertMsg.addLocArg("addLocArg");
-            alertMsg.LaunchImage = "LaunchImage";
-            //IOS8.2支持字段
-            alertMsg.Title = title;
-            alertMsg.TitleLocKey = "TitleLocKey";
-            alertMsg.addTitleLocArg("addTitleLocArg");
-
-            apnpayload.AlertMsg = alertMsg;
-            apnpayload.Badge = 1;
-            apnpayload.ContentAvailable = 1;
-            apnpayload.Category = "";
-            apnpayload.Sound = "";
-            apnpayload.addCustomMsg("payload", "payload");
-            template.setAPNInfo(apnpayload);
-
-
-            /*单个用户推送接口*/
-            //SingleMessage Singlemessage = new SingleMessage();
-            //Singlemessage.Data = template;
-            //String pushResult = push.pushAPNMessageToSingle(APPID, DeviceToken, Singlemessage);
-            //Console.Out.WriteLine(pushResult);
-
-            /*多个用户推送接口*/
-            ListMessage listmessage = new ListMessage();
-            listmessage.Data = template;
-            String contentId = push.getAPNContentId(APPID, listmessage);
-            //Console.Out.WriteLine(contentId);
-            List<String> devicetokenlist = new List<string>();
-            string[] str = DeviceToken.Split(';');
-            for (int i = 0; i < str.Length;i++ )
+            try
             {
-                if (str[i].Length > 1)
-                    devicetokenlist.Add(str[i]);
+                //APN高级推送
+                IGtPush push = new IGtPush(HOST, APPKEY, MASTERSECRET);
+                APNTemplate template = new APNTemplate();
+                APNPayload apnpayload = new APNPayload();
+                DictionaryAlertMsg alertMsg = new DictionaryAlertMsg();
+                alertMsg.Body = body;
+                alertMsg.ActionLocKey = "ActionLocKey";
+                alertMsg.LocKey = "LocKey";
+                alertMsg.addLocArg("addLocArg");
+                alertMsg.LaunchImage = "LaunchImage";
+                //IOS8.2支持字段
+                alertMsg.Title = title;
+                alertMsg.TitleLocKey = "TitleLocKey";
+                alertMsg.addTitleLocArg("addTitleLocArg");
+
+                apnpayload.AlertMsg = alertMsg;
+                apnpayload.Badge = 1;
+                apnpayload.ContentAvailable = 1;
+                apnpayload.Category = "";
+                apnpayload.Sound = "";
+                apnpayload.addCustomMsg("payload", "payload");
+                template.setAPNInfo(apnpayload);
+
+
+                /*单个用户推送接口*/
+                //SingleMessage Singlemessage = new SingleMessage();
+                //Singlemessage.Data = template;
+                //String pushResult = push.pushAPNMessageToSingle(APPID, DeviceToken, Singlemessage);
+                //Console.Out.WriteLine(pushResult);
+
+                /*多个用户推送接口*/
+                ListMessage listmessage = new ListMessage();
+                listmessage.Data = template;
+                String contentId = push.getAPNContentId(APPID, listmessage);
+                //Console.Out.WriteLine(contentId);
+                List<String> devicetokenlist = new List<string>();
+                string[] str = DeviceToken.Split(';');
+                for (int i = 0; i < str.Length; i++)
+                {
+                    if (str[i].Length > 1)
+                        devicetokenlist.Add(str[i]);
+                }
+
+                String ret = push.pushAPNMessageToList(APPID, contentId, devicetokenlist);
+                return ret;
             }
-               
-            String ret = push.pushAPNMessageToList(APPID, contentId, devicetokenlist);
-                 return    ret ;
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         //通知透传模板动作内容
