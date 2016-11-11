@@ -1003,19 +1003,9 @@ namespace XHD.CRM.webserver
           [WebMethod]
           public void pushapple(string deviceToken)
           {
-              //ReturnStr(false, Server.MapPath("..\\webserver\\zs.p12" )); 
-              //return;
-             //ApplePushService apush =new ApplePushService();
-             //if (!apush.Push("3143C16EF2220D8110C6E5958AAB7490FD3905E88A1D56894C"))
-             //     ReturnStr(false, "\"faile\"");
-             // else
-             // {
+              string aa = push("1", "  ","ys-001","：测试ys-001");
 
-             //     ReturnStr(true, "\"success\"");
-             // }
-          
-
-                  ReturnStr(true, StringToUnicodeHex("f你好!http://baidu.com?abc=123"));
+              ReturnStr(true, aa);
 
           }
 
@@ -1644,7 +1634,50 @@ namespace XHD.CRM.webserver
              Context.Response.End();
          }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lx">发送类型</param>
+         private string push(string lx,string ClientWhere,string Title_add,string body_add)
+         {
+             string SQL = "SELECT * FROM dbo.App_PushSetting  where id="+lx;
+             SqlParameter[] parameters = { };
+             DataSet ds = DbHelperSQL.Query(SQL, parameters);
+             string HOST = ""; string APPKEY = ""; string MASTERSECRET = ""; string APPID = "";
+             string iosclient = "";//苹果
+             string androidclient = "";//安卓
+             string Title = ""; string BODY = "";
+             foreach (DataRow dw in ds.Tables[0].Rows)
+             {
+                 HOST = dw["HOST"].ToString();
+                 APPKEY = dw["APPKEY"].ToString();
+                 MASTERSECRET = dw["MASTERSECRET"].ToString();
+                 APPID = dw["APPID"].ToString();
+                 Title = dw["NotyTitle"].ToString() + Title_add;
+                 BODY = dw["NotyText"].ToString() + body_add;
+             }
+             string sqlclient="SELECT * FROM  dbo.APP_PushClient WHERE 1=1 ";
+             if(ClientWhere!="")
+                 sqlclient+=ClientWhere;
+              DataSet dsclient = DbHelperSQL.Query(sqlclient, parameters);
+              PushMessage pm = new PushMessage();
+              string iosresult = "";
+              foreach (DataRow dw in dsclient.Tables[0].Select(" Versions='ios'"))
+              {
+               iosclient+=";"+dw["clientid"].ToString();
+       
+              }
+              iosresult=  pm.apnPush(HOST, APPKEY, MASTERSECRET, APPID, iosclient,Title,BODY);
+              string android = "";
+              foreach (DataRow dw in dsclient.Tables[0].Select(" Versions='android'"))
+              {
+                androidclient+=";"+dw["clientid"].ToString();
+            
+                 }
+              android = pm.PushMessageToList(HOST, APPKEY, MASTERSECRET, APPID, androidclient, Title, BODY);
+             return iosresult + "<=>" + android;
 
+         }
 
 
         /// <summary>
