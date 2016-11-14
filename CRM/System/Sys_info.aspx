@@ -22,8 +22,11 @@
                 disabled: true
             });
             loadform();
+            $("#T_KEY").ligerTextBox({
+                width: 200,
+                disabled: true
+            });
            
-
             $("#btn_name").click(function () {
                 var manager = $("#T_name").ligerGetTextBoxManager();
                 if ($(this).val() == "修改")
@@ -89,6 +92,7 @@
                     //alert(obj.constructor); //String 构造函数
                     $("#T_name").val(rows[1].sys_value);
                     $("#logo").attr("src", "../" + rows[2].sys_value);
+                    $("#T_KEY").val(rows[6].sys_value);
                 }
             });
         }
@@ -120,6 +124,12 @@
                 <td height="23">
                      
                     <input type="button" value="修改" style="width:80px;height:22px;" id="btn_logo"/></td>
+            </tr>
+            <tr>
+                 <td height="23" class="table_label">APPKEY：</td>
+                <td>
+            <input type="text" name="T_KEY" id="T_KEY" />
+                </td>
             </tr>
             </table>
     </form>

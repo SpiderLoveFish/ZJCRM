@@ -16,7 +16,7 @@
     <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
        <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-   
+       <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
       <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
      <script src="../../lib/jquery.form.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
@@ -35,13 +35,22 @@
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                   { display: '材料编号', name: 'C_code', width: 80, align: 'left' },
                   { display: '材料名称', name: 'product_name', width: 100, align: 'left' },
+                        {
+                            display: '工艺说明', name: 'remarks', align: 'left', width: 60, render: function (item) {
+                                var html = "<div class='abc'>";
+                                if (item.remarks)
+                                    html += item.remarks;
+                                html += "</div>";
+                                return html;
+                            }
+                        },
                   { display: '材料型号', name: 'ProModel', width: 100, align: 'left' },
                   { display: '材料规格', name: 'specifications', width: 100, align: 'left' },
                   { display: '所属品牌', name: 'Brand', width: 100, align: 'left' },
                   { display: '类别', name: 'category_name', width: 100, align: 'left' },
                      { display: '价格(¥)', name: 'price', width: 80, align: 'left' },
                   { display: '单位', name: 'unit', width: 40, align: 'left' },
-
+               
                     {
                         display: '图文', width: 40, render: function (item) {
                             var html = "<a href='javascript:void(0)' onclick=view(" + item.id + ")>查看</a>"
@@ -65,7 +74,13 @@
                 height: '100%',
                 //title: "员工列表",
                 heightDiff: 0,
-                
+                onAfterShowData: function (grid) {
+                    $(".abc").hover(function (e) {
+                        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() });
+                    }, function (e) {
+                        $(this).ligerHideTip(e);
+                    });
+                },
                 onContextmenu: function (parm, e) {
                 actionCustomerID = parm.data.id;
                 menu.show({ top: e.pageY, left: e.pageX });
