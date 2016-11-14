@@ -72,7 +72,7 @@ namespace XHD.CRM.webserver
 
             //消息模版：TransmissionTemplate:透传模板
 
-            TransmissionTemplate template = TransmissionTemplateDemo(APPKEY, APPID);
+            TransmissionTemplate template = TransmissionTemplateDemo(APPKEY, APPID,"");
 
 
             // 单推消息模型
@@ -112,7 +112,7 @@ namespace XHD.CRM.webserver
                 //IGtPush push = new IGtPush("",APPKEY,MASTERSECRET);
                 ListMessage message = new ListMessage();
 
-                NotificationTemplate template = NotificationTemplateDemo(APPKEY, APPID);
+                NotificationTemplate template = NotificationTemplateDemo(APPKEY, APPID,title,body);
                 // 用户当前不在线时，是否离线存储,可选
                 message.IsOffline = false;
                 // 离线有效时间，单位为毫秒，可选
@@ -124,7 +124,7 @@ namespace XHD.CRM.webserver
                 string[] str = CLIENTID.Split(';');
                 for (int i = 0; i < str.Length; i++)
                 {
-                    if (str[i].Length > 1)
+                    if (str[i].Length > 5)
                     {
 
                         com.igetui.api.openservice.igetui.Target target1 = new com.igetui.api.openservice.igetui.Target();
@@ -167,7 +167,7 @@ namespace XHD.CRM.webserver
             // 设置群推接口的推送速度，单位为条/秒，仅对pushMessageToApp（对指定应用群推接口）有效
             message.Speed = 100;
 
-            TransmissionTemplate template = TransmissionTemplateDemo(APPKEY, APPID);
+            TransmissionTemplate template = TransmissionTemplateDemo(APPKEY, APPID,"");
 
             // 用户当前不在线时，是否离线存储,可选
             message.IsOffline = false;
@@ -211,13 +211,13 @@ namespace XHD.CRM.webserver
                 APNPayload apnpayload = new APNPayload();
                 DictionaryAlertMsg alertMsg = new DictionaryAlertMsg();
                 alertMsg.Body = body;
-                alertMsg.ActionLocKey = "ActionLocKey";
-                alertMsg.LocKey = "LocKey";
+                alertMsg.ActionLocKey = body;
+                alertMsg.LocKey = body;
                 alertMsg.addLocArg("addLocArg");
                 alertMsg.LaunchImage = "LaunchImage";
                 //IOS8.2支持字段
                 alertMsg.Title = title;
-                alertMsg.TitleLocKey = "TitleLocKey";
+                alertMsg.TitleLocKey = title;
                 alertMsg.addTitleLocArg("addTitleLocArg");
 
                 apnpayload.AlertMsg = alertMsg;
@@ -244,7 +244,7 @@ namespace XHD.CRM.webserver
                 string[] str = DeviceToken.Split(';');
                 for (int i = 0; i < str.Length; i++)
                 {
-                    if (str[i].Length > 1)
+                    if (str[i].Length >30)
                         devicetokenlist.Add(str[i]);
                 }
 
@@ -258,15 +258,15 @@ namespace XHD.CRM.webserver
         }
 
         //通知透传模板动作内容
-     public static NotificationTemplate NotificationTemplateDemo(string APPKEY, string APPID)
+     public static NotificationTemplate NotificationTemplateDemo(string APPKEY, string APPID,string TITLE,string    BODY)
         {
             NotificationTemplate template = new NotificationTemplate();
             template.AppId = APPID;
             template.AppKey = APPKEY;
             //通知栏标题
-            template.Title = "请填写通知标题";
+            template.Title = TITLE;
             //通知栏内容     
-            template.Text = "请填写通知内容";
+            template.Text = BODY;
             //通知栏显示本地图片
             template.Logo = "";
             //通知栏显示网络图标
@@ -274,7 +274,7 @@ namespace XHD.CRM.webserver
             //应用启动类型，1：强制应用启动  2：等待应用启动
             template.TransmissionType = "1";
             //透传内容  
-            template.TransmissionContent = "请填写透传内容";
+            template.TransmissionContent = BODY;
             //接收到消息是否响铃，true：响铃 false：不响铃   
             template.IsRing = true;
             //接收到消息是否震动，true：震动 false：不震动   
@@ -282,15 +282,18 @@ namespace XHD.CRM.webserver
             //接收到消息是否可清除，true：可清除 false：不可清除    
             template.IsClearable = true;
             //设置通知定时展示时间，结束时间与开始时间相差需大于6分钟，消息推送后，客户端将在指定时间差内展示消息（误差6分钟）
-            String begin = "2015-03-06 14:36:10";
-            String end = "2015-03-06 14:46:20";
+            //String begin = "2015-03-06 14:36:10";
+            //String end = "2015-03-06 14:46:20";
+            String begin = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+            String end = DateTime.Now.AddMinutes(10).ToString("yyyy-MM-dd hh:mm:ss");
+          
             template.setDuration(begin, end);
 
             return template;
         }
 
         //透传模板动作内容
-     public static TransmissionTemplate TransmissionTemplateDemo(string APPKEY, string APPID)
+     public static TransmissionTemplate TransmissionTemplateDemo(string APPKEY, string APPID,string content)
         {
             TransmissionTemplate template = new TransmissionTemplate();
             template.AppId = APPID;
@@ -298,10 +301,10 @@ namespace XHD.CRM.webserver
             //应用启动类型，1：强制应用启动 2：等待应用启动
             template.TransmissionType = "1";
             //透传内容  
-            template.TransmissionContent = "透传内容";
+            template.TransmissionContent = content;
             //设置通知定时展示时间，结束时间与开始时间相差需大于6分钟，消息推送后，客户端将在指定时间差内展示消息（误差6分钟）
-            String begin = "2015-03-06 14:36:10";
-            String end = "2015-03-06 14:46:20";
+            String begin = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+            String end = DateTime.Now.AddMinutes(6).ToString("yyyy-MM-dd hh:mm:ss");
             template.setDuration(begin, end);
 
             return template;
