@@ -150,7 +150,7 @@ namespace XHD.CRM.webserver
         /// <param name="imgurl"></param>
         /// <param name="token"></param>
          [WebMethod]
-                  public void Verifauthority (string userid ,string rightid,string vertime)
+          public void Verifauthority (string userid ,string rightid,string vertime)
                 {
                      SqlParameter[] parameters = { };
                     var sb = new System.Text.StringBuilder();
@@ -216,11 +216,12 @@ namespace XHD.CRM.webserver
           /// </summary>
           /// <returns></returns>
           [WebMethod]
-          public void GetAppVersion(string ver)
+          public void GetAppVersion(string ver )
           {
                SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
               sb.AppendLine("SELECT * FROM dbo.App_Version WHERE	Ver!='" + ver + "'  and IsLast='Y'");
+            
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
               if (ds == null)
               {
@@ -238,6 +239,30 @@ namespace XHD.CRM.webserver
               }
           }
 
+          [WebMethod]
+          public void GetAppVersions(string ver, string style)
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+              sb.AppendLine("SELECT * FROM dbo.App_Version WHERE	Ver!='" + ver + "'  and IsLast='Y'");
+              if (style == "ipad")
+                  sb.AppendLine(" and VerStyle='ipad'");
+              DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+              if (ds == null)
+              {
+                  ReturnStr(false, "[{\"Ver\":\"no\"]");
+              }
+              else
+              {
+                  if (ds.Tables[0].Rows.Count <= 0)
+                      ReturnStr(false, "[{\"Ver\":\"no\"]");
+                  else
+                  {
+                      //string str = Common.DataToJson.GetJson(ds);
+                      ReturnStr(true, Common.DataToJson.GetJson(ds));
+                  }
+              }
+          }
 
         
        /// <summary>
@@ -1190,7 +1215,8 @@ namespace XHD.CRM.webserver
               sb.AppendLine("                    GROUP BY budge_id");
               sb.AppendLine("                  ) D ON B.id = D.budge_id");
               sb.AppendLine("WHERE   1 = 1 AND  ISNULL(IsModel,'N')!='Y' ");
-              if (strWhere.Trim() != "")
+             
+              if (strWhere.Trim() != "" && lx != "search")//单独查询 
               {
                   sb.AppendLine(" AND (cc.tel like '%" + strWhere + "%' OR a.address like '%" + strWhere + "%' or B.BudgetName like '%" + strWhere + "%')");
               }
@@ -1216,7 +1242,8 @@ namespace XHD.CRM.webserver
               }
               sb.AppendLine(" ORDER BY B.DoTime DESC )");
               //分页结束
-              if (strWhere.Trim() != "")
+
+              if (strWhere.Trim() != "" && lx != "search")//单独查询 
               {
                   sb.AppendLine(" AND (cc.tel like '%" + strWhere + "%' OR a.address like '%" + strWhere + "%' or B.BudgetName like '%" + strWhere + "%')");
               }
