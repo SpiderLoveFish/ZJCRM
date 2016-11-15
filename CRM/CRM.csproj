@@ -42,16 +42,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GetuiServerApiSDK">
-      <HintPath>..\..\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\GetuiServerApiSDK.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\GetuiServerApiSDK.dll</HintPath>
     </Reference>
     <Reference Include="Gma.QrCodeNet.Encoding">
       <HintPath>..\..\qrcodenet\Gma.QrCodeNet\Gma.QrCodeNet.Web.Demo\bin\Gma.QrCodeNet.Encoding.dll</HintPath>
     </Reference>
     <Reference Include="Google.ProtocolBuffers">
-      <HintPath>..\..\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\Google.ProtocolBuffers.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\Google.ProtocolBuffers.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

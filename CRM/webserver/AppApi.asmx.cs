@@ -1028,7 +1028,7 @@ namespace XHD.CRM.webserver
           [WebMethod]
           public void pushapple(string deviceToken)
           {
-              string aa = push("1", "  ","ys-001","：测试ys-001");
+              string aa = push("1", "  ", "测试标题", "：测试内容");
 
               ReturnStr(true, aa);
 
