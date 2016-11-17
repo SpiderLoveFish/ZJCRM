@@ -278,14 +278,16 @@ namespace XHD.CRM.webserver
                   sb.Clear();
                 
                   sb.AppendLine(" ");
-                  sb.AppendLine("SELECT	DISTINCT	Emp_id_sg	AS	cid,Emp_sg	CustomerType	 FROM dbo.CRM_Customer	WHERE	ISNULL(isDelete,0)=0 order  by Emp_sg ");
+                  sb.AppendLine("SELECT	DISTINCT	Emp_id_sg	AS	cid,Emp_sg	CustomerType	 FROM dbo.CRM_Customer  a");
+                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sg=B.ID WHERE	ISNULL(B.isDelete,0)=0  AND Emp_id_sg IS	NOT		NULL AND Emp_id_sg>0 order  by Emp_sg ");
                   sb.AppendLine(" ");
               }
               if (url == "sjs")
               {
                   sb.Clear();
                   sb.AppendLine(" ");
-                  sb.AppendLine("SELECT	DISTINCT Emp_id_sj	AS	cid,Emp_sj	CustomerType	 FROM dbo.CRM_Customer	WHERE	ISNULL(isDelete,0)=0  order  by Emp_sj ");
+                  sb.AppendLine("SELECT	DISTINCT Emp_id_sj	AS	cid,Emp_sj	CustomerType	 FROM dbo.CRM_Customer a");
+                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sj=B.ID 	WHERE	ISNULL(B.isDelete,0)=0 AND Emp_id_sj IS	NOT		NULL AND Emp_id_sj>0 order  by Emp_sj ");
                   sb.AppendLine(" ");
               }
               else
@@ -1049,7 +1051,7 @@ namespace XHD.CRM.webserver
                   serchtxt += " AND (Name LIKE '%" + strwhere + "%' or tel LIKE '%" + strwhere + "%' )";
               if (sfkh == "Y")
               {
-                  sb.AppendLine("SELECT TOP	10 FROM dbo.v_Jifen_Kh");
+                  sb.AppendLine("SELECT TOP	10 * FROM dbo.v_Jifen_Kh");
                   sb.AppendLine("WHERE id >");
                   sb.AppendLine("          (");
                   sb.AppendLine("          SELECT ISNULL(MAX(id),0)");
@@ -1059,7 +1061,7 @@ namespace XHD.CRM.webserver
                   sb.AppendLine("                ) A");
                   sb.AppendLine("          )");
                   sb.AppendLine(" " + serchtxt + "");
-                  sb.AppendLine(" ORDER BY  Name");
+                  sb.AppendLine(" ORDER BY  id");
               }
               else
               {
@@ -1073,7 +1075,7 @@ namespace XHD.CRM.webserver
                   sb.AppendLine("                ) A");
                   sb.AppendLine("          )");
                   sb.AppendLine(" " + serchtxt + "");
-                  sb.AppendLine(" ORDER BY  Name");
+                  sb.AppendLine(" ORDER BY  id");
               }
 
               DataSet ds = DbHelperSQL.Query(sb.ToString() , parameters);
