@@ -42,16 +42,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GetuiServerApiSDK">
-      <HintPath>..\..\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\GetuiServerApiSDK.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\GetuiServerApiSDK.dll</HintPath>
     </Reference>
     <Reference Include="Gma.QrCodeNet.Encoding">
       <HintPath>..\..\qrcodenet\Gma.QrCodeNet\Gma.QrCodeNet.Web.Demo\bin\Gma.QrCodeNet.Encoding.dll</HintPath>
     </Reference>
     <Reference Include="Google.ProtocolBuffers">
-      <HintPath>..\..\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\Google.ProtocolBuffers.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\Google.ProtocolBuffers.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -61,7 +61,7 @@
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DAL\bin\Debug\Newtonsoft.Json.dll</HintPath>
+      <HintPath>Y:\Documents\CodeSource\ZJCRM1\ZJCRM\CRM\bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -876,6 +876,7 @@
     <Content Include="Data\CRM_Cope.ashx" />
     <Content Include="Data\website.ashx" />
     <Content Include="Data\uploadapp.ashx" />
+    <Fakes Include="Fakes\Newtonsoft.Json.fakes" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />

@@ -240,13 +240,16 @@ namespace XHD.CRM.webserver
           }
 
           [WebMethod]
-          public void GetAppVersions(string ver, string style)
+          public void GetAppVersions(string ver, string type)
           {
               SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
               sb.AppendLine("SELECT * FROM dbo.App_Version WHERE	Ver!='" + ver + "'  and IsLast='Y'");
-              if (style == "ipad")
+              if (type == "ipad")
                   sb.AppendLine(" and VerStyle='ipad'");
+              else if (type == "ipad")
+                  sb.AppendLine(" and VerStyle='iphone'");
+              
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
               if (ds == null)
               {
