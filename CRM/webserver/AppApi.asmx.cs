@@ -1365,7 +1365,7 @@ namespace XHD.CRM.webserver
               sb.AppendLine("  CONVERT(VARCHAR(10),CASE WHEN  datediff(day,getdate(),bir_thisyear)<0 THEN  bir_nextyear  ELSE  bir_thisyear  END,120)");
               sb.AppendLine(" AS nearbir");//最近的年份生日
               sb.AppendLine(" FROM (");
-              sb.AppendLine("SELECT birthday as b, rqlx,");
+              sb.AppendLine("SELECT birthday as b, rqlx,uid,");
               sb.AppendLine("birthday_lunar,ID,name AS  UserName,tel,dname as DepartmentName,address,ISNULL(title,'') AS Avatar");
               sb.AppendLine(",token as UserId,");
               sb.AppendLine("dateadd(yy,datediff(yy,bir,getdate()),bir) AS bir_thisyear");
@@ -1410,6 +1410,19 @@ namespace XHD.CRM.webserver
                       ReturnStr(true, "[]");
                   else
                   {
+                      if(lx=="birthday")//只能一次
+                      {
+                          string Today = DateTime.Now.ToString("yyyy-MM-dd");
+                          foreach (DataRow dw in ds.Tables[0].Select(" nearbir = '" + Today + "'"))
+                          {
+                              string title = "祝贺【" + dw["UserName"].ToString() + "】生日快乐";
+                              string body = "今天是【" + dw["UserName"].ToString() + dw["age"].ToString() + "】岁生日，我们一起祝他生日快乐!";
+
+                              push("1", " AND userid!='" + dw["uid"].ToString() + "'", title, body); pushpad("3", " AND userid!='" + dw["uid"].ToString() + "'", title, body);
+                              push("1", " AND userid='" + dw["uid"].ToString() + "'", "祝你生日快乐", "今天是你" + dw["age"].ToString() + "岁生日，我们一起祝你生日快乐!"); pushpad("3", " AND userid!='" + dw["uid"].ToString() + "'", "祝你生日快乐", "今天是你" + dw["age"].ToString() + "岁生日，我们一起祝你生日快乐!");
+                          }
+                      }
+                     
                       string str = Common.DataToJson.GetJson(ds);
                       ReturnStr(true, str);
                   }
