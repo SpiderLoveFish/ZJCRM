@@ -790,7 +790,7 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
-                serchtxt += " and   ComponentName like '%" + PageValidate.InputText(request["compname"], 255) + "%'";
+                serchtxt += " and   ComponentName = '" + PageValidate.InputText(request["compname"], 255) + "'";
                 serchtxt += " and   budge_id ='" + PageValidate.InputText(request["bid"], 255) + "'";
 
 
@@ -818,7 +818,7 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
-                serchtxt += " and   ComponentName like '%" + PageValidate.InputText(request["compname"], 255) + "%'";
+                serchtxt += " and   ComponentName = '" + PageValidate.InputText(request["compname"], 255) + "'";
                 serchtxt += " and   model_id ='" + PageValidate.InputText(request["mid"], 255) + "'";
 
 

@@ -785,6 +785,7 @@
     <Content Include="NoVerified\NVRepairTelphone.aspx" />
     <Content Include="QQ_Login.aspx" />
     <Content Include="qq_rebind.aspx" />
+    <Content Include="System\push.aspx" />
     <Content Include="System\sms.aspx" />
     <Content Include="System\SingleSignOn.aspx" />
     <Content Include="testcookie.html" />
@@ -4682,6 +4683,13 @@
     </Compile>
     <Compile Include="qq_rebind.aspx.designer.cs">
       <DependentUpon>qq_rebind.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="System\push.aspx.cs">
+      <DependentUpon>push.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="System\push.aspx.designer.cs">
+      <DependentUpon>push.aspx</DependentUpon>
     </Compile>
     <Compile Include="System\sms.aspx.cs">
       <DependentUpon>sms.aspx</DependentUpon>

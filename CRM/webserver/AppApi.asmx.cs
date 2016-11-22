@@ -220,7 +220,7 @@ namespace XHD.CRM.webserver
           {
                SqlParameter[] parameters = { };
               var sb = new System.Text.StringBuilder();
-              sb.AppendLine("SELECT * FROM dbo.App_Version WHERE	Ver!='" + ver + "'  and IsLast='Y'");
+              sb.AppendLine("SELECT * FROM dbo.App_Version WHERE	Ver!='" + ver + "'  and IsLast='Y' and VerStyle='iphone'");
             
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
               if (ds == null)
@@ -696,10 +696,15 @@ namespace XHD.CRM.webserver
               sb.AppendLine("        ) ");
               var RV = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
               if (RV > 0)
-                  ReturnStr(true, "\"success\"");
-              else ReturnStr(false, "\"faile\"");
+              {
+
               push("1", "  ", title, context);
               pushpad("3", "  ", title, context);
+              ReturnStr(true, "\"success\"");
+              }
+                
+              else ReturnStr(false, "\"faile\"");
+             
 
 
           }
@@ -1153,6 +1158,7 @@ namespace XHD.CRM.webserver
               var sb = new System.Text.StringBuilder();
               string jlx = "0";
               if (sfadd == "Y") jlx = "0"; else jlx = "1";
+              if (int.Parse(score) < 0) score = (-int.Parse(score)).ToString();
               sb.AppendLine("INSERT INTO dbo.CRM_Jifen (ID,Jflx,Jf,Sfkh,Content,IsDel,InEmpID,InDate) ");
               sb.AppendLine("VALUES  ('" + id + "', ");
               sb.AppendLine("         '" + jlx + "', ");
