@@ -1415,13 +1415,13 @@ namespace XHD.CRM.webserver
                           string Today = DateTime.Now.ToString("yyyy-MM-dd");
                           foreach (DataRow dw in ds.Tables[0].Select(" nearbir = '" + Today + "'"))
                           {
-                              string title = "祝贺【" + dw["UserName"].ToString() + "】生日快乐";
-                              string body = "今天是【" + dw["UserName"].ToString() + dw["age"].ToString() + "】岁生日，我们一起祝他生日快乐!";
+                              string title = dw["UserName"].ToString() ;
+                              string body =  dw["UserName"].ToString() + dw["age"].ToString() ;
 
-                              push("1", " AND userid!='" + dw["uid"].ToString() + "'", title, body); pushpad("3", " AND userid!='" + dw["uid"].ToString() + "'", title, body);
+                              push("4", " AND userid!='" + dw["uid"].ToString() + "'", title, body); pushpad("5", " AND userid!='" + dw["uid"].ToString() + "'", title, body);
                               push("1", " AND userid='" + dw["uid"].ToString() + "'", "祝你生日快乐", "今天是你" + dw["age"].ToString() + "岁生日，我们一起祝你生日快乐!"); pushpad("3", " AND userid!='" + dw["uid"].ToString() + "'", "祝你生日快乐", "今天是你" + dw["age"].ToString() + "岁生日，我们一起祝你生日快乐!");
                           }
-                      }
+                       }
                      
                       string str = Common.DataToJson.GetJson(ds);
                       ReturnStr(true, str);
@@ -1705,8 +1705,8 @@ namespace XHD.CRM.webserver
                  APPKEY = dw["APPKEY"].ToString();
                  MASTERSECRET = dw["MASTERSECRET"].ToString();
                  APPID = dw["APPID"].ToString();
-                 Title = dw["NotyTitle"].ToString() + Title_add;
-                 BODY = dw["NotyText"].ToString() + body_add;
+                 Title = String.Format(dw["NotyTitle"].ToString() , Title_add);
+                 BODY = String.Format(dw["NotyText"].ToString(), body_add);
              }
              string sqlclient="SELECT * FROM  dbo.APP_PushClient WHERE 1=1 ";
              if(ClientWhere!="")
@@ -1750,8 +1750,8 @@ namespace XHD.CRM.webserver
                  APPKEY = dw["APPKEY"].ToString();
                  MASTERSECRET = dw["MASTERSECRET"].ToString();
                  APPID = dw["APPID"].ToString();
-                 Title = dw["NotyTitle"].ToString() + Title_add;
-                 BODY = dw["NotyText"].ToString() + body_add;
+                 Title = String.Format(dw["NotyTitle"].ToString(), Title_add);
+                 BODY = String.Format(dw["NotyText"].ToString(), body_add);
              }
              string sqlclient = "SELECT * FROM  dbo.APP_PushClient WHERE 1=1 ";
              if (ClientWhere != "")

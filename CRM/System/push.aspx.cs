@@ -69,8 +69,8 @@ using XHD.CRM.webserver;
                 APPKEY = dw["APPKEY"].ToString();
                 MASTERSECRET = dw["MASTERSECRET"].ToString();
                 APPID = dw["APPID"].ToString();
-                Title = dw["NotyTitle"].ToString() + Title_add;
-                BODY = dw["NotyText"].ToString() + body_add;
+                Title = String.Format(dw["NotyTitle"].ToString(), Title_add);
+                BODY = String.Format(dw["NotyText"].ToString(), body_add);
             }
             string sqlclient = "SELECT * FROM  dbo.APP_PushClient WHERE 1=1 ";
             if (ClientWhere != "")
@@ -114,8 +114,8 @@ using XHD.CRM.webserver;
                 APPKEY = dw["APPKEY"].ToString();
                 MASTERSECRET = dw["MASTERSECRET"].ToString();
                 APPID = dw["APPID"].ToString();
-                Title = dw["NotyTitle"].ToString() + Title_add;
-                BODY = dw["NotyText"].ToString() + body_add;
+                Title = String.Format(dw["NotyTitle"].ToString(), Title_add);
+                BODY = String.Format(dw["NotyText"].ToString(), body_add);
             }
             string sqlclient = "SELECT * FROM  dbo.APP_PushClient WHERE 1=1 ";
             if (ClientWhere != "")
