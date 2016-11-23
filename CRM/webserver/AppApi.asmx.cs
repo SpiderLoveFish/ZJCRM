@@ -127,6 +127,27 @@ namespace XHD.CRM.webserver
             }
              
         }
+          [WebMethod]
+          public void autologin(string user, string version, string ClientId)
+          {
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+                 sb.AppendLine(" SELECT	1	FROM	dbo.APP_PushClient	WHERE	clientid='" + ClientId + "'	AND	Versions='" + version + "'	AND	userid='" + user + "' ");
+                     bool existPushClient = DbHelperSQL.Exists(sb.ToString(), null);
+                     if (!existPushClient)
+                     {
+                         sb.AppendLine("INSERT	INTO	dbo.APP_PushClient ");
+                         sb.AppendLine("        ( Versions, clientid, userid ) ");
+                         sb.AppendLine("VALUES  ( '" + version + "', -- Versions - varchar(10) ");
+                         sb.AppendLine("          '" + ClientId + "', -- clientid - varchar(50) ");
+                         sb.AppendLine("          '" + user + "'  -- userid - varchar(20) ");
+                         sb.AppendLine("          ) ");
+                         sb.AppendLine(" ");
+                         DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+                     }
+                ReturnStr(true, "\"success\"");
+             
+          }
 
          [WebMethod]
           public void UpdateUserAvatar(string imgurl ,string token)
@@ -1039,7 +1060,8 @@ namespace XHD.CRM.webserver
           [WebMethod]
           public void pushapple(string deviceToken)
           {
-              string aa = push("1", "  ", "测试标题", "：测试内容") + pushpad("3", "  ", "测试标题", "：测试内容");
+              string aa = 
+                    push("1", "  ", "测试标题", "：测试内容")  + pushpad("3", "  ", "测试标题", "：测试内容");
 
               ReturnStr(true, aa);
 
@@ -1410,8 +1432,8 @@ namespace XHD.CRM.webserver
                       ReturnStr(true, "[]");
                   else
                   {
-                      if(lx=="birthday")//只能一次
-                      {
+                      //if(lx=="birthday")//只能一次
+                      //{
                           string Today = DateTime.Now.ToString("yyyy-MM-dd");
                           foreach (DataRow dw in ds.Tables[0].Select(" nearbir = '" + Today + "'"))
                           {
@@ -1421,7 +1443,7 @@ namespace XHD.CRM.webserver
                               push("4", " AND userid!='" + dw["uid"].ToString() + "'", title, body); pushpad("5", " AND userid!='" + dw["uid"].ToString() + "'", title, body);
                               push("1", " AND userid='" + dw["uid"].ToString() + "'", "祝你生日快乐", "今天是你" + dw["age"].ToString() + "岁生日，我们一起祝你生日快乐!"); pushpad("3", " AND userid!='" + dw["uid"].ToString() + "'", "祝你生日快乐", "今天是你" + dw["age"].ToString() + "岁生日，我们一起祝你生日快乐!");
                           }
-                       }
+                     //  }
                      
                       string str = Common.DataToJson.GetJson(ds);
                       ReturnStr(true, str);
@@ -1721,12 +1743,12 @@ namespace XHD.CRM.webserver
               }
               iosresult = pm.apnPush(HOST, APPKEY, MASTERSECRET, APPID, iosclient, Title, StringTruncat(BODY,50,"..."));
               string android = "";
-              foreach (DataRow dw in dsclient.Tables[0].Select(" Versions='android' OR Versions='ios/phone'"))
+              foreach (DataRow dw in dsclient.Tables[0].Select(" Versions='android' OR Versions='android/phone'"))
               {
                 androidclient+=";"+dw["clientid"].ToString();
-            
+             // android+=  pm.PushMessageToSingle(HOST, APPKEY, MASTERSECRET, APPID, dw["clientid"].ToString());
                  }
-              android = pm.PushMessageToList(HOST, APPKEY, MASTERSECRET, APPID, androidclient, Title, StringTruncat(BODY, 50, "..."));
+              android += pm.PushMessageToList(HOST, APPKEY, MASTERSECRET, APPID, androidclient, Title, StringTruncat(BODY, 50, "..."));
            
               return iosresult + "<=>" + android  ;
 

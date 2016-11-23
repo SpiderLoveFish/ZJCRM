@@ -85,7 +85,7 @@ using XHD.CRM.webserver;
             }
             iosresult = pm.apnPush(HOST, APPKEY, MASTERSECRET, APPID, iosclient, Title, StringTruncat(BODY, 50, "..."));
             string android = "";
-            foreach (DataRow dw in dsclient.Tables[0].Select(" Versions='android' OR Versions='ios/phone'"))
+            foreach (DataRow dw in dsclient.Tables[0].Select(" Versions='android' OR Versions='android/phone'"))
             {
                 androidclient += ";" + dw["clientid"].ToString();
 

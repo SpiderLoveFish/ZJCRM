@@ -72,7 +72,7 @@ namespace XHD.CRM.webserver
 
             //消息模版：TransmissionTemplate:透传模板
 
-            TransmissionTemplate template = TransmissionTemplateDemo(APPKEY, APPID,"");
+            TransmissionTemplate template = TransmissionTemplateDemo(APPKEY, APPID, "test测试");
 
 
             // 单推消息模型
@@ -118,7 +118,7 @@ namespace XHD.CRM.webserver
                 // 离线有效时间，单位为毫秒，可选
                 message.OfflineExpireTime = 1000 * 3600 * 12;
                 message.Data = template;
-                //message.PushNetWorkType = 0;        //判断是否客户端是否wifi环境下推送，1为在WIFI环境下，0为不限制网络环境。
+                 message.PushNetWorkType = 0;        //判断是否客户端是否wifi环境下推送，1为在WIFI环境下，0为不限制网络环境。
                 //设置接收者
                 List<com.igetui.api.openservice.igetui.Target> targetList = new List<com.igetui.api.openservice.igetui.Target>();
                 string[] str = CLIENTID.Split(';');
@@ -201,7 +201,7 @@ namespace XHD.CRM.webserver
            return pushResult ;
         }
 
-     public string apnPush(string HOST, string APPKEY, string MASTERSECRET, string APPID, string DeviceToken,string title,string body)
+         public string apnPush(string HOST, string APPKEY, string MASTERSECRET, string APPID, string DeviceToken,string title,string body)
         {
             try
             {
@@ -284,8 +284,8 @@ namespace XHD.CRM.webserver
             //设置通知定时展示时间，结束时间与开始时间相差需大于6分钟，消息推送后，客户端将在指定时间差内展示消息（误差6分钟）
             //String begin = "2015-03-06 14:36:10";
             //String end = "2015-03-06 14:46:20";
-            String begin = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-            String end = DateTime.Now.AddMinutes(10).ToString("yyyy-MM-dd hh:mm:ss");
+            String begin = DateTime.Now.AddMinutes(-10).ToString("yyyy-MM-dd HH:mm:ss");
+            String end = DateTime.Now.AddMinutes(10).ToString("yyyy-MM-dd HH:mm:ss");
           
             template.setDuration(begin, end);
 
@@ -303,8 +303,8 @@ namespace XHD.CRM.webserver
             //透传内容  
             template.TransmissionContent = content;
             //设置通知定时展示时间，结束时间与开始时间相差需大于6分钟，消息推送后，客户端将在指定时间差内展示消息（误差6分钟）
-            String begin = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-            String end = DateTime.Now.AddMinutes(6).ToString("yyyy-MM-dd hh:mm:ss");
+            String begin = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            String end = DateTime.Now.AddMinutes(6).ToString("yyyy-MM-dd HH:mm:ss");
             template.setDuration(begin, end);
 
             return template;
