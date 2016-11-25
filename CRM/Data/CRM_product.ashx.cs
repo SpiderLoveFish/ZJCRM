@@ -6,6 +6,7 @@ using System.Data;
 using System.Text;
 using XHD.Common;
 using System.Web.Security;
+using XHD.DBUtility;
 
 namespace XHD.CRM.Data
 {
@@ -55,7 +56,8 @@ namespace XHD.CRM.Data
                 model.zt = PageValidate.InputText(request["T_zt"], 255);
                 model.pp = PageValidate.InputText(request["T_pp"], 255);
                // model.C_code = PageValidate.InputText(request["C_code"], 255);
-                //---
+                string isupdateprice = PageValidate.InputText(request["T_private"], 50);
+                
                 string c_code = "";
                 try
                 {
@@ -228,6 +230,28 @@ namespace XHD.CRM.Data
                         }
                     }
                 }
+                var updateprice = new System.Text.StringBuilder();
+                updateprice.AppendLine("UPDATE A SET	TotalPrice=B.price");
+                updateprice.AppendLine("FROM dbo.Budge_BasicDetail A");
+                updateprice.AppendLine("INNER JOIN  dbo.CRM_product B ON A.xmid=B.product_id");
+                updateprice.AppendLine(" WHERE A.budge_id LIKE 'M%' ");
+           
+                if (isupdateprice == "2")//全部更新
+                {
+                    updateprice.AppendLine(" AND A.xmid=" + pid + " ");
+                    DBUtility.DbHelperSQL.ExecuteSql(updateprice.ToString());
+                }
+                else if (isupdateprice == "3")//常规预算
+                {
+                    updateprice.AppendLine(" AND ModelStyle='常规模板' AND A.xmid=" + pid + " ");
+                    DBUtility.DbHelperSQL.ExecuteSql(updateprice.ToString());
+                }
+                else if (isupdateprice == "4")//套餐模板
+                {
+                    updateprice.AppendLine(" AND ModelStyle='套餐模板' AND A.xmid=" + pid + " ");
+                    DBUtility.DbHelperSQL.ExecuteSql(updateprice.ToString());
+                }
+
             }
 
             if (request["Action"] == "IsExistCode")

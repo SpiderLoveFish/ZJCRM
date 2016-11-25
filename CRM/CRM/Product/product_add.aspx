@@ -371,7 +371,13 @@
                
           </tr>
                   <tr>
-                <td colspan="8" class="table_title1">图文及工艺说明</td>
+                <td colspan="6" class="table_title1">图文及工艺说明</td>
+                      <td>更新預算</td>
+                       <td>  
+                           <input id="T_private" name="T_private" type="text" ltype="select"
+                                ligerui="{width:150,data:[{id:'1',text:'不更新'},{id:'2',text:'全部更新'},{id:'3',text:'常规预算'},{id:'4',text:'套餐模板'}]}"
+                                validate="{required:true}" /></td>
+               
             </tr>     
             <tr>
                 <td colspan="6" rowspan="2">
