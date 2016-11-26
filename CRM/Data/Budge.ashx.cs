@@ -362,12 +362,12 @@ namespace XHD.CRM.Data
                 if (!string.IsNullOrEmpty(id) && id != "null")
                 {
                     if (orderby<0)
-                        if (bbdetail.UpdateSum(sum, StringToInt(id), bid, 0))
+                        if (bbdetail.UpdateSum(sum, StringToInt(id), bid, -1))
                         context.Response.Write("true");
                     else context.Response.Write("false");
 
                     if (sum<0)
-                        if (bbdetail.UpdateSum(0, StringToInt(id), bid, orderby))
+                        if (bbdetail.UpdateSum(-1, StringToInt(id), bid, orderby))
                             context.Response.Write("true");
                         else context.Response.Write("false");
                 }

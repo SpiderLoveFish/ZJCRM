@@ -438,7 +438,7 @@
 
                 var manager = $("#maingrid4").ligerGetGridManager();
                 var row = manager.getSelectedRow();
-
+                alert(row)
                 if (row) {
                     $.ajax({
                         url: "../../data/Budge.ashx", type: "POST",

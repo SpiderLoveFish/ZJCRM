@@ -204,7 +204,7 @@ namespace XHD.DAL
         public bool UpdateSum(decimal sum, int id, string bid,int orderby)
         {
             StringBuilder strSql = new StringBuilder();
-             if (orderby>0)
+             if (orderby>=0)
              {
                  strSql.Append("update Budge_BasicDetail set ");
 
@@ -212,7 +212,7 @@ namespace XHD.DAL
                  strSql.Append(" where id=" + id + " and budge_id='" + bid + "'");
              }
           
-            else if (sum >  0)
+            else if (sum >=  0)
              {
                  strSql.Append("update Budge_BasicDetail set ");
                  strSql.Append("SUM=" + sum + "");
