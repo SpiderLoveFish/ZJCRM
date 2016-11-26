@@ -790,6 +790,8 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
+                var com = PageValidate.InputText(request["compname"], 255);
+                if(com!="")
                 serchtxt += " and   ComponentName = '" + PageValidate.InputText(request["compname"], 255) + "'";
                 serchtxt += " and   budge_id ='" + PageValidate.InputText(request["bid"], 255) + "'";
 

@@ -26,6 +26,7 @@
 
      
        function loadfjf(oaid) {
+           //alert(oaid)
            $.ajax({
                type: "GET",
                url: "../../data/Budge.ashx", /* 注意后面的名字对应CS的方法名称 */
@@ -34,6 +35,7 @@
                dataType: "json",
                success: function (result) {
                    var obj = result.Rows;
+               // alert(JSON.stringify(obj))
                    var item = "";
                    $.each(obj, function (i, data) {
 
