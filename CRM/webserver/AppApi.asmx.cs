@@ -1339,7 +1339,7 @@ namespace XHD.CRM.webserver
               if (bid != "")
               {
                   sb.Clear();
-                  sb.AppendLine("SELECT   JJAmount,ZCAmount,FJAmount,DiscountAmount, customer_id,BudgetName,IsStatus,id");
+                  sb.AppendLine("SELECT   JJAmount,ZCAmount,FJAmount,DiscountAmount+ FJAmount as DiscountAmount, customer_id,BudgetName,IsStatus,id");
                   sb.AppendLine(" FROM Budge_BasicMain");
                   sb.AppendLine(" WHERE id='"+bid+"'");
                   DataSet ds = DbHelperSQL.Query(sb.ToString() , parameters);
