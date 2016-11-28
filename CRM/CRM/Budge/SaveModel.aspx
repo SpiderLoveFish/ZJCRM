@@ -47,7 +47,7 @@
             
         })
         function f_save() {
-            if ($('#T_compname').val == "" || $('#T_compname').val == null)
+            if ($('#T_compname').val() == "" || $('#T_compname').val() == null)
             {
                 alert('模板名称必须填入！');
                 return;

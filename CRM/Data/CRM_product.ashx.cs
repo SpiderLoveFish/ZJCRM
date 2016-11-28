@@ -36,10 +36,19 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "save")
             {
-         
-                model.category_id = int.Parse(request["T_product_category_val"]);
-                model.category_name = PageValidate.InputText(request["T_product_category"], 255);
-                model.product_name = PageValidate.InputText(request["T_product_name"], 255);
+                string AddType = PageValidate.InputText(request["AddType"], 50);
+                if (AddType == "Selectbudge")//预算
+                {
+                    model.status = "YS-Temp";//预算临时复制
+                    model.isDelete = 1;
+                }
+                 
+                    model.category_id = int.Parse(request["T_product_category_val"]);
+                    model.category_name = PageValidate.InputText(request["T_product_category"], 255);
+               
+              
+                 model.product_name = PageValidate.InputText(request["T_product_name"], 255);
+              
                 model.specifications = PageValidate.InputText(request["T_specifications"], 255);
                 model.unit = PageValidate.InputText(request["T_product_unit"], 255);
                 model.remarks = PageValidate.InputText(request["T_remarks"], 255);
@@ -186,7 +195,7 @@ namespace XHD.CRM.Data
                     model.isDelete = 0;
                     ccp.Add(model);
                     //基地选材的时候，自动增加
-                    string AddType = PageValidate.InputText(request["AddType"], 50);
+                 
                     if (!string.IsNullOrEmpty(AddType) && AddType != "null")
                     {
                         if (AddType == "SelectMat")//工地选材

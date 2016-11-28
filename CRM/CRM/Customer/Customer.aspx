@@ -349,7 +349,14 @@
             $('#WXZHT').ligerComboBox({ width: 97, emptyText: '（空）', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=15&rnd=" + Math.random() });
             $('#customerlevel').ligerComboBox({ width: 96, emptyText: '（空）', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=2&rnd=" + Math.random() });
             $('#cus_sourse').ligerComboBox({ width: 120, emptyText: '（空）', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=3&rnd=" + Math.random() });
-            $('#T_Community').ligerComboBox({ width: 120, emptyText: '（空）', url: "../../data/Param_City.ashx?Action=getBuilding&rnd=" + Math.random() });
+           // $('#T_Community').ligerComboBox({ width: 120, emptyText: '（空）', url: "../../data/Param_City.ashx?Action=getBuilding&rnd=" + Math.random() });
+            var gCommunity = $('#T_Community').ligerComboBox({
+                width: 120,
+                //initValue: obj.Community_id,
+                url: "../../data/Param_City.ashx?Action=getBuilding&rnd=" + Math.random(),
+                onBeforeOpen: f_selectComm
+
+            });
             var e = $('#employee').ligerComboBox({ width: 96, emptyText: '（空）' });
             var f = $('#department').ligerComboBox({
                 width: 97,
@@ -412,6 +419,33 @@
                     });
                 }
             });
+        }
+        //楼盘
+        function f_selectComm() {
+            top.$.ligerDialog.open({
+                zindex: 9003,
+                title: '选择楼盘小区', width: 850, height: 400,
+
+                //url: " hr/Getemp_Auth.aspx?auth=1", buttons: [
+                url: "CRM/Customer/SelectCommunity.aspx", buttons: [
+                    { text: '确定', onclick: f_selectCommOK },
+                    { text: '取消', onclick: f_selectContactCancel }
+                ]
+            });
+            return false;
+        }
+        function f_selectCommOK(item, dialog) {
+            var data = dialog.frame.f_select();
+            if (!data) {
+                alert('请选择楼盘小区!');
+                return;
+            }
+            filltempComm(data.id, data.Name);
+            dialog.close();
+        }
+        function filltempComm(newvalue, text) {
+            $('#T_Community_val').val(newvalue);
+            $("#T_Community").val(text)
         }
         function serchpanel() {
             initSerchForm();

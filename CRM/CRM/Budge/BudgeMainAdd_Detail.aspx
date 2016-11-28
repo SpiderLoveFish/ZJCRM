@@ -101,7 +101,7 @@
  
                  g=    $("#maingrid4").ligerGrid({
                          columns: [
-                               { display: '名称', name: 'product_name', width: 80 },
+                               { display: '名称', name: 'product_name', width: 120 },
                      //{ display: '部位', name: 'ComponentName', width: 60 },
 
                     { display: '类别', name: 'Cname', width: 80 },

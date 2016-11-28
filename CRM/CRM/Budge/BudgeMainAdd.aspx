@@ -635,6 +635,29 @@
 
 
         }
+        //复制材料
+        function fzcl() {
+            var notes = $("#tree1").ligerGetTreeManager().getSelected();
+            var compname = "";
+            if (notes != null && notes != undefined) {
+                // notes.data.id
+
+                compname = notes.data.text;
+            }
+            else {
+                $.ligerDialog.warn('请选择部件！');
+            }
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+               // alert(JSON.stringify(row))
+                f_openWindowselect("../../crm/product/product_add.aspx?type=Selectbudge&id=" + $("#T_budgeid").val() + "&compname=" + escape(compname) + "&pid=" + row.xmid, "复制材料档案", 980, 600);
+
+            } else
+                $.ligerDialog.warn('请选择产品！');
+
+        }  
+
         function f_saveselect(item, dialog) {
             var issave = dialog.frame.f_saveSelect();
             if (issave) {

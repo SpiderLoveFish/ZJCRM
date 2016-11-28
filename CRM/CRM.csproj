@@ -110,6 +110,7 @@
     <Content Include="CRM\Budge\BudgeMainAdd_Detail.aspx" />
     <Content Include="CRM\Budge\BudgeMainAdd_Detail_b.aspx" />
     <Content Include="CRM\Budge\Budge_detail_mx_add.aspx" />
+    <Content Include="CRM\Budge\copybudge.aspx" />
     <Content Include="CRM\Budge\SelectBJSingle.aspx" />
     <Content Include="CRM\Budge\SelectFjjeDetail.aspx" />
     <Content Include="CRM\Budge\SelectFjje.aspx" />
@@ -162,6 +163,8 @@
     <Content Include="CRM\ConsExam\XM_LIST.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST.aspx" />
     <Content Include="CRM\ConsExam\SelectCEStageCustomer.aspx" />
+    <Content Include="CRM\Customer\ClassicCase.aspx" />
+    <Content Include="CRM\Customer\ClassisCase_add.aspx" />
     <Content Include="CRM\Customer\Customer_DynamicGraphics.aspx" />
     <Content Include="CRM\Customer\Customer_DynamicGraphics_add.aspx" />
     <Content Include="CRM\Customer\Customer_DynamicGraphics_bak.aspx" />
@@ -878,6 +881,7 @@
     <Content Include="Data\website.ashx" />
     <Content Include="Data\uploadapp.ashx" />
     <Fakes Include="Fakes\Newtonsoft.Json.fakes" />
+    <Content Include="Data\CRM_Classic_case.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -4469,6 +4473,9 @@
     <Compile Include="Data\Budge_BasicPart.ashx.cs">
       <DependentUpon>Budge_BasicPart.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Data\CRM_Classic_case.ashx.cs">
+      <DependentUpon>CRM_Classic_case.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Data\uploadapp.ashx.cs">
       <DependentUpon>uploadapp.ashx</DependentUpon>
     </Compile>
@@ -4715,6 +4722,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="webserver\PushMessage.cs" />
+    <Compile Include="webserver\RetrunStrCode.cs" />
     <Compile Include="webserver\testapi.asmx.cs">
       <DependentUpon>testapi.asmx</DependentUpon>
       <SubType>Component</SubType>

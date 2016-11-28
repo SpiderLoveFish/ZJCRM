@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -74,7 +74,7 @@
                         { display: '客户地址', name: 'address', width: 200, align: 'left' },
                     {
                         display: '金额', name: 'BudgetAmount', width: 80, align: 'left', render: function (item) {
-                            return "<div style='color:#135294'>" + toMoney(item.BudgetAmount + item.FJAmount) + "</div>";
+                            return "<div style='color:#135294'>" + item.BudgetAmount + item.FJAmount  + "</div>";
                         }
                     },
                       {
@@ -435,8 +435,56 @@
           }
       }
 
-        //复制预算
+
       function copy() {
+          var manager = $("#maingrid4").ligerGetGridManager();
+          var row = manager.getSelectedRow();
+          if (row) {
+              top.$.ligerDialog.open({
+                  zindex: 9003,
+                  title: '复制单据', width: 600, height: 200,
+                  url: "CRM/Budge/copybudge.aspx?copyid=" + row.id ,
+                  buttons: [
+                    { text: '确定', onclick: f_savecopy },
+                    { text: '取消', onclick: f_selectContactCancel }
+                  ]
+              });
+          } else {
+              top.$.ligerDialog.error('选择一个要复制的单据！！');
+          }
+          return false;
+      }
+      function f_savecopy(item, dialog) {
+          var issave = dialog.frame.f_save();
+          if (issave) {
+              dialog.close();
+              top.$.ligerDialog.waitting('数据保存中,请稍候...');
+              $.ajax({
+                  url: "../../data/Budge.ashx", type: "POST",
+                  data: issave,
+                  success: function (responseText) {
+                      top.$.ligerDialog.closeWaitting();
+                      if (responseText == "false") {
+                          top.$.ligerDialog.error('操作失败！');
+                      }
+                      else {
+                          f_reload();
+                      }
+                  },
+                  error: function () {
+                      top.$.ligerDialog.closeWaitting();
+
+                  }
+              });
+
+          }
+      }
+      function f_selectContactCancel(item, dialog) {
+          dialog.close();
+          fload();
+      }
+        //复制预算
+      function copy_bak() {
           var manager = $("#maingrid4").ligerGetGridManager();
           var row = manager.getSelectedRow();
           if (row) {

@@ -342,8 +342,10 @@ namespace XHD.CRM.Data
             if (request["Action"] == "copybudge")
             {
                 string copyid = PageValidate.InputText(request["copyid"], 50);
+                string customerid = PageValidate.InputText(request["T_customer_val"], 50);
+                string customer = PageValidate.InputText(request["T_customer"], 50);
                 string maxid =  bbb.GetMaxId();
-                if (bd.copybudge(copyid, maxid, emp_id.ToString()) > 0)
+                if (bd.copybudge(copyid, maxid, emp_id.ToString(), customerid, customer) > 0)
                     context.Response.Write(maxid);
                 else context.Response.Write("false");
                 log.add_trace(maxid, "", "copybudge", empname);  
@@ -784,7 +786,7 @@ namespace XHD.CRM.Data
                 if (string.IsNullOrEmpty(sortname))
                     sortname = " ISNULL(OrderBy,0), ComponentName   ";
                 if (string.IsNullOrEmpty(sortorder))
-                    sortorder = " desc";
+                    sortorder = " ASC";
 
                 string sorttext = " " + sortname + " " + sortorder;
 

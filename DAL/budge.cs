@@ -871,7 +871,7 @@ namespace XHD.DAL
             }
         }
 
-        public int copybudge(string copyid ,string maxid,string userid)
+        public int copybudge(string copyid, string maxid, string userid, string newcustomerid, string newcustomername)
         {
             StringBuilder strSql = new StringBuilder();
            
@@ -914,8 +914,8 @@ namespace XHD.DAL
             strSql.Append("          versions");
             strSql.Append("        )");
             strSql.Append("  SELECT '" + maxid + "' ,");
-            strSql.Append("          customer_id ,");
-            strSql.Append("          BudgetName ,");
+            strSql.Append("          " + newcustomerid + " ,");
+            strSql.Append("          '" + newcustomername + "' ,");
             strSql.Append("          '" + userid + "' ,");
             strSql.Append("          GETDATE() ,");
             strSql.Append("          0 ,");

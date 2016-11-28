@@ -117,9 +117,9 @@ namespace XHD.BLL
         }
 
 
-        public int copybudge(string copyid, string maxid, string userid)
+        public int copybudge(string copyid, string maxid, string userid, string newcustomerid, string newcustomername)
         {
-            return dal.copybudge(copyid,maxid,userid);
+            return dal.copybudge(copyid, maxid, userid, newcustomerid,newcustomername);
         }
         public int AddBJcopylist(string copyname, string bid, string bpname)
         {

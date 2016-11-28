@@ -24,7 +24,7 @@ namespace XHD.CRM.webserver
     public class AppApi : System.Web.Services.WebService
     {
         XHD.CRM.Data.C_Sys_log log = new XHD.CRM.Data.C_Sys_log();
-       
+        webserver.RetrunStrCode rsc = new RetrunStrCode();//返回语句
      
         [WebMethod]
         public string HelloWorld()
@@ -216,20 +216,7 @@ namespace XHD.CRM.webserver
                       
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
 
-              if (ds == null)
-              {
-                  ReturnStr(false, "账号停用！");
-              }
-              else
-              {
-                  if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(false, "账号停用！");
-                  else
-                  {
-                      string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, str);
-                      }
-              }
+              DSToJSON(ds);
 
           }
             /// <summary>
@@ -323,20 +310,7 @@ namespace XHD.CRM.webserver
               }
                   DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
 
-              if (ds == null)
-              {
-                  ReturnStr(false, "无类型！");
-              }
-              else
-              {
-                  if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(false, "无类型！");
-                  else
-                  {
-                      string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, str);
-                     }
-              }
+                  DSToJSON(ds);
 
           }
 
@@ -394,45 +368,13 @@ namespace XHD.CRM.webserver
 
              }
               sb.AppendLine(" and ISNULL(isDelete,0)='0' ");
-             //if (!string.IsNullOrEmpty(keyword))
-             //{
-             //    if (keyword == "fav")//收藏客户
-             //        sb.AppendLine("  LEFT JOIN Crm_Customer_Favorite B on B.customer_id=A.id and userid=" + ID);
-
-             //} sb.AppendLine(" where ISNULL(isDelete,0)='0' ");
-             //if (!string.IsNullOrEmpty(keyword))
-             //{
-             //   // serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
-             
-             //    if (keyword == "fav")//收藏客户
-             //        serchtxt += " AND B.customer_id is not null ";
-             //    else serchtxt += " AND CustomerType_id=" + keyword;
-             //}
-             //if (!string.IsNullOrEmpty(searchkey))
-             //{
-             //    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", searchkey);
-
-             //}
+           
              //加入权限控制
              serchtxt += DataAuth(ID);
              string ordertxt = " ORDER BY a.Create_date DESC ";
              string strsql = " SELECT * FROM ( "+sb.ToString() + serchtxt + ordertxt +")AA ORDER BY header";
              DataSet ds = DbHelperSQL.Query(strsql, parameters);
-
-              if (ds == null)
-              {
-                  ReturnStr(true, "[]");
-              }
-              else
-              {
-                  if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(true, "[]");
-                  else
-                  {
-                      string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, str);
-                  }
-              }
+             DSToJSON(ds);
 
           }
 
@@ -544,20 +486,7 @@ namespace XHD.CRM.webserver
 
               DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt, parameters);
 
-              if (ds == null)
-              {
-                  ReturnStr(false, "无数据！");
-              }
-              else
-              {
-                  if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(false, "无数据！");
-                  else
-                  {
-                      string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, str);
-                  }
-              }
+              DSToJSON(ds);
 
           }
 
@@ -594,20 +523,7 @@ namespace XHD.CRM.webserver
 
               DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt, parameters);
 
-              if (ds == null)
-              {
-                  ReturnStr(false, "[]");
-              }
-              else
-              {
-                  if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(false, "[]");
-                  else
-                  {
-                      string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, str);
-                  }
-              }
+              DSToJSON(ds);
 
           }
 
@@ -740,13 +656,7 @@ namespace XHD.CRM.webserver
               sb.AppendLine("SELECT   * FROM  dbo.App_Conifg   ");
               
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
-              if (ds.Tables[0].Rows.Count <= 0)
-                  ReturnStr(false, "\"无数据！\"");
-              else
-              {
-                  string str = Common.DataToJson.GetJson(ds);
-                  ReturnStr(true, str);
-              }
+              DSToJSON(ds);
 
  
           }
@@ -816,14 +726,8 @@ namespace XHD.CRM.webserver
               sb.AppendLine("  FROM hr_employee WHERE ISNULL(isDelete,0)='0' ");
               sb.AppendLine(" ORDER BY UPPER(dbo.chinese_firstletter(ltrim(name)))");
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
- 
-                  if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(false, "[]");
-                  else
-                  {
-                      string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, str);
-                  }
+
+              DSToJSON(ds);
               
 
           }
@@ -1111,20 +1015,31 @@ namespace XHD.CRM.webserver
 
               DataSet ds = DbHelperSQL.Query(sb.ToString() , parameters);
 
-              if (ds == null)
-              {
-                  ReturnStr(true, "[]");
-              }
-              else
-              {
-                  if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(true, "[]");
-                  else
-                  {
-                      string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, str);
-                  }
-              }
+              DSToJSON(ds);
+          }
+
+          /// <summary>
+          /// 积分查询
+          /// </summary>
+          [WebMethod]
+          public void GetScoreList(string strwhere, string sfkh, string nowindex, string type)
+          {
+              SqlParameter[] parameters = { };
+              string sql = rsc.ListSorce(sfkh,nowindex,strwhere,type);
+              DataSet ds = DbHelperSQL.Query(sql, parameters);
+              DSToJSON(ds);
+
+          }
+          /// <summary>
+          /// 积分查询
+          /// </summary>
+          [WebMethod]
+          public void GetFollowList(string nowindex, string strwhere)
+          {
+              SqlParameter[] parameters = { };
+              string sql = rsc.GetLastListFollow(nowindex, strwhere);
+              DataSet ds = DbHelperSQL.Query(sql, parameters);
+              DSToJSON(ds);
 
           }
 
@@ -1150,22 +1065,8 @@ namespace XHD.CRM.webserver
                sb.AppendLine(" ORDER BY InDate DESC ");
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
 
-              
+              DSToJSON(ds);
 
-              if (ds == null)
-              {
-                  ReturnStr(true, "[]");
-              }
-              else
-              {
-                  if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(true, "[]");
-                  else
-                  {
-                      string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, str);
-                  }
-              }
 
           }
 
@@ -1304,20 +1205,7 @@ namespace XHD.CRM.webserver
 
               DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt + ordertxt, parameters);
 
-              if (ds == null)
-              {
-                  ReturnStr(true, "[]");
-              }
-              else
-              {
-                  if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(true, "[]");
-                  else
-                  {
-                      string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, str);
-                  }
-              }
+              DSToJSON(ds);
 
           }
           /// <summary>
@@ -1486,20 +1374,7 @@ namespace XHD.CRM.webserver
 
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
 
-              if (ds == null)
-              {
-                  ReturnStr(true, "[]");
-              }
-              else
-              {
-                  if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(true, "[]");
-                  else
-                  {
-                      string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, str);
-                  }
-              }
+              DSToJSON(ds);
 
           }
 
@@ -1527,20 +1402,7 @@ namespace XHD.CRM.webserver
 
               DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
 
-              if (ds == null)
-              {
-                  ReturnStr(true, "[]");
-              }
-              else
-              {
-                  if (ds.Tables[0].Rows.Count <= 0)
-                      ReturnStr(true, "[]");
-                  else
-                  {
-                      string str = Common.DataToJson.GetJson(ds);
-                      ReturnStr(true, str);
-                  }
-              }
+              DSToJSON(ds);
 
           }
 
@@ -1642,7 +1504,28 @@ namespace XHD.CRM.webserver
           }
 
 
+        /// <summary>
+        /// DATASET 转换为JOSN发送给客户端
+        /// </summary>
+        /// <param name="ds"></param>
+        private void DSToJSON(DataSet ds)
+        {
 
+            if (ds == null)
+            {
+                ReturnStr(true, "[]");
+            }
+            else
+            {
+                if (ds.Tables[0].Rows.Count <= 0)
+                    ReturnStr(true, "[]");
+                else
+                {
+                    string str = Common.DataToJson.GetJson(ds);
+                    ReturnStr(true, str);
+                }
+            } 
+        }
 
           /// <summary>  
           /// 将中文转化为16进制unicode字符  

@@ -126,11 +126,12 @@
         }
         //材料选择自定义材料保存
         function f_select() {
-
+         
             if ($(form1).valid()) {
                 var arr = [];
                 arr.push(UE.getEditor('editor').getContent());
                 var sendtxt = "&Action=save&pid=" + getparastr("pid") + "&T_content=" + escape(arr);
+              
                 var issave = $("form :input").fieldSerialize() + sendtxt + "&AddType=SelectMat&style=" + getparastr("style") + "&cid=" + getparastr("cid");
                 if (issave) {
                     $.ligerDialog.waitting('数据保存中,请稍候...');
@@ -165,10 +166,13 @@
 
         function f_saveSelect() {
             if ($(form1).valid()) {
+                $("#C_code").val("");
                 var arr = [];//getparastr("id") 代表不同的ID，比如bid,pid,cid
                 arr.push(UE.getEditor('editor').getContent());
                 var sendtxt = "&Action=save&id=" + getparastr("id") + "&T_content=" + escape(arr); //compname预算用到的部件
-                return $("form :input").fieldSerialize() + sendtxt + "&style=" + getparastr("style") + "&AddType=" + getparastr("type") + "&compname=" + getparastr("compname");
+                
+               var ret= $("form :input").fieldSerialize() + sendtxt + "&style=" + getparastr("style") + "&AddType=" + getparastr("type") + "&compname=" + getparastr("compname");
+               return ret;
             }
 
 
