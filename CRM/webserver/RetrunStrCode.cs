@@ -18,7 +18,7 @@ namespace XHD.CRM.webserver
             int startindex = int.Parse(nowindex) - 10;
             string strtype = "";
             if (type == "M")//当月
-            { strtype = " AND  DATENAME(month,AddDate) = DATENAME(month,GETDATE())"; }
+            { strtype = " AND  DATENAME(month,InDate) = DATENAME(month,GETDATE())"; }
             else if (type == "S")//当季
             { strtype = " AND DATENAME(quarter,InDate)=DATENAME(quarter,GETDATE()) "; }
             else if (type == "Y")//当年
