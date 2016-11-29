@@ -58,6 +58,8 @@ namespace XHD.CRM.Data
 
                 info.Update(model);
             }
+            
+                
             else if (request["Action"] == "host")
             {
                 string host = request["host"];     

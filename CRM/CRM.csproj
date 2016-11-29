@@ -791,6 +791,7 @@
     <Content Include="System\push.aspx" />
     <Content Include="System\sms.aspx" />
     <Content Include="System\SingleSignOn.aspx" />
+    <Content Include="CRM\Customer\thum_img_add.aspx" />
     <Content Include="testcookie.html" />
     <Content Include="View\product_view.aspx" />
     <Content Include="CRM\Product\product.aspx" />

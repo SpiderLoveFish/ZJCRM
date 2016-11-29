@@ -123,7 +123,7 @@ namespace XHD.CRM.webserver
         {
         var sb = new System.Text.StringBuilder();
         int startindex = int.Parse(nowindex) - 10;
-            sb.AppendLine("SELECT * FROM (");
+        sb.AppendLine("SELECT top 10 * FROM (");
             sb.AppendLine("SELECT  row_number() OVER (ORDER BY Follow_date DESC ) n , id,Customer_id,Customer_name,Follow,Follow_date,Follow_Type_id,Follow_Type,employee_name");
             sb.AppendLine(" FROM");
             sb.AppendLine("dbo.CRM_Follow");
@@ -134,6 +134,103 @@ namespace XHD.CRM.webserver
             return sb.ToString();
         }
 
+
+
+        public string GetLastListClassicCase(string nowindex, string strwhere,string url)
+        {
+            var sb = new System.Text.StringBuilder();
+            int startindex = int.Parse(nowindex) - 10;
+            sb.AppendLine("SELECT top 10 * FROM (");
+            sb.AppendLine("SELECT  row_number() OVER (ORDER BY DoTime DESC ) n ,");
+            sb.AppendLine("c_title,customer_name,img_style,'"+url+"'+thum_img AS thumimg,IsStatus");
+            sb.AppendLine(" FROM  dbo.Crm_Classic_case");
+            sb.AppendLine(" WHERE 1=1 ");
+            sb.AppendLine(strwhere);
+            sb.AppendLine(")aa");
+            sb.AppendLine(" WHERE n>" + startindex);
+            return sb.ToString();
+        }
+        public string GetLastDetailClassicCase( string strwhere,string url)
+        {
+            var sb = new System.Text.StringBuilder();
+          
+        
+            sb.AppendLine("SELECT  ");
+            sb.AppendLine("*,'" + url + "'+thum_img AS thumimg");
+            sb.AppendLine(" FROM  dbo.Crm_Classic_case");
+            sb.AppendLine(" WHERE 1=1 ");
+            sb.AppendLine(strwhere);
+            sb.AppendLine(")aa");
+      
+            return sb.ToString();
+        }
+
+        public string GetBudge(string strWhere, string lx, string uid, string nowindex, string DataAuth)
+        {
+            var sb = new System.Text.StringBuilder();
+            int startindex = int.Parse(nowindex) - 10;
+          
+            sb.AppendLine("");
+            sb.AppendLine("SELECT top 10 * FROM (");
+            sb.AppendLine("SELECT   row_number() OVER (ORDER BY DoTime DESC ) n , B.JJAmount,B.ZCAmount,B.FJAmount,B.DiscountAmount, B.customer_id,B.BudgetName,B.IsStatus,B.id ,");
+            sb.AppendLine("      case IsStatus when '0' then '待提交'  when '1' then '待审核'  when '2' then '待确认'  when '3' then '已生效'  when '99' then '已删除' else '未知状态' end as zt,");
+            sb.AppendLine("        ISNULL(b_zje, 0) AS zje ,B.DoTime,");
+            sb.AppendLine("        C.b_sj ,");
+            sb.AppendLine("        C.b_sl ,");
+            sb.AppendLine("        B.FJAmount AS fjfy ,");
+            sb.AppendLine("        A.id AS CustomerID ,");
+            sb.AppendLine("        ISNULL(C.b_zkzje, 0) zkzje ,");
+            sb.AppendLine("        a.tel ,");
+            sb.AppendLine("        a.Customer AS CustomerName ,");
+            sb.AppendLine("        a.Emp_sg AS sgjl ,");
+            sb.AppendLine("        a.address ,");
+            sb.AppendLine("        cc.tel AS sjstel ,");
+            sb.AppendLine("        a.gender ,");
+            sb.AppendLine("        a.Emp_sj AS sjs ,");
+            sb.AppendLine("        a.Employee AS ywy");
+            sb.AppendLine("FROM    dbo.Budge_BasicMain B");
+            sb.AppendLine("        LEFT JOIN dbo.CRM_Customer a ON B.customer_id = A.id");
+            sb.AppendLine("        LEFT JOIN dbo.Budge_tax C ON B.id = C.budge_id");
+            sb.AppendLine("        LEFT JOIN dbo.hr_employee CC ON a.emp_id_sj = CC.[ID]");
+            sb.AppendLine("        LEFT JOIN ( SELECT  SUM(rate) AS rate ,");
+            sb.AppendLine("                            budge_id");
+            sb.AppendLine("                    FROM    dbo.Budge_Rate_Ver");
+            sb.AppendLine("                    GROUP BY budge_id");
+            sb.AppendLine("                  ) D ON B.id = D.budge_id");
+            sb.AppendLine("WHERE   1 = 1 AND  ISNULL(IsModel,'N')!='Y'");
+
+            if (strWhere.Trim() != "" && lx != "search")//单独查询 
+            {
+                sb.AppendLine(" AND (cc.tel like '%" + strWhere + "%' OR a.address like '%" + strWhere + "%' or B.BudgetName like '%" + strWhere + "%')");
+            }
+            if (lx == "dqr")//待确认
+            {
+                sb.AppendLine("  and B.IsStatus in(0,1,2,3)  ");
+            }
+            else if (lx == "yqr")//已确认
+            {
+                sb.AppendLine("  and B.IsStatus in(3)  ");
+            }
+            else if (lx == "search")//查询
+            {
+                sb.AppendLine("  and B.customer_id=" + strWhere + "  ");
+            }
+            else if (lx == "ys_dsh")//待审核
+            {
+                sb.AppendLine("  and B.IsStatus in(1)  ");
+            }
+            else if (lx == "ys_dqr")//待确认
+            {
+                sb.AppendLine("  and B.IsStatus in(2)  ");
+            }
+            sb.AppendLine(DataAuth);
+            sb.AppendLine(")AA  ");
+            sb.AppendLine(" WHERE n>" + startindex);
+           
+ 
+
+            return sb.ToString();
+        }
     }
     
 }

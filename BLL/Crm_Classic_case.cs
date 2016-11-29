@@ -172,7 +172,14 @@ namespace XHD.BLL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
-
+        public DataSet GetList(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetList(  PageSize,   PageIndex,   strWhere,   filedOrder, out   Total);
+        }
+         public bool UpdateStatus(string id, string isstatus)
+        {
+            return dal.UpdateStatus(id,isstatus);
+        }
 		#endregion  ExtensionMethod
 	}
 }
