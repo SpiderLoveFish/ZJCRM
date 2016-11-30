@@ -171,6 +171,7 @@
     <Compile Include="PurchaseList.cs" />
     <Compile Include="Purchase_Detail.cs" />
     <Compile Include="Purchase_Main.cs" />
+    <Compile Include="ScoreShop.cs" />
     <Compile Include="Sys_App.cs" />
     <Compile Include="Sys_authority.cs" />
     <Compile Include="Sys_Button.cs" />

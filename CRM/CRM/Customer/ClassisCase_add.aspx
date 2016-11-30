@@ -40,7 +40,9 @@
 
             $("form").ligerForm();
 
-           
+            $('#T_Community').ligerComboBox({ width: 196, onBeforeOpen: f_selectComm });
+           $('#T_sjs').ligerComboBox({ width: 196, onBeforeOpen: f_selectContact_sj });
+
 
             if (getparastr("cid"))
             {
@@ -49,15 +51,17 @@
             }
             else
             {
-               var gCommunity = $('#T_kh').ligerComboBox({
+               var gkh = $('#T_kh').ligerComboBox({
                 width: 196,
                 //initValue: obj.Community_id,
                 url: "../../data/Param_City.ashx?Action=getBuilding&rnd=" + Math.random(),
                 onBeforeOpen: f_selectComm
 
-            });
+               });
+               $("#T_lx").ligerComboBox({ width: 196, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=19&rnd=" + Math.random(), emptyText: '（空）' });
+
             }
-            $("#btn_logo").click(function () {
+               $("#btn_logo").click(function () {
                 top.$.ligerDialog.open({
                     width: 400, height: 80, url: "CRM/Customer/thum_img_add.aspx", title: "缩略图修改", buttons: [
                         {
@@ -77,6 +81,51 @@
                 });
             })
         })
+
+        function f_selectComm() {
+            top.$.ligerDialog.open({
+                zindex: 9003,
+                title: '选择楼盘小区', width: 850, height: 400,
+
+                //url: " hr/Getemp_Auth.aspx?auth=1", buttons: [
+                url: "CRM/Customer/SelectCommunity.aspx", buttons: [
+                    { text: '确定', onclick: f_selectCommOK },
+                    { text: '取消', onclick: f_selectContactCancel }
+                ]
+            });
+            return false;
+        }
+        function f_selectCommOK(item, dialog) {
+            var data = dialog.frame.f_select();
+            if (!data) {
+                alert('请选择楼盘小区!');
+                return;
+            }
+            $('#T_Community_val').val(data.id);
+            $("#T_Community").val(data.Name)
+            dialog.close();
+        }
+        function f_selectContact_sj() {
+            top.$.ligerDialog.open({
+                zindex: 9003,
+                title: '选择员工', width: 850, height: 400, url: "hr/Getemp.aspx?isvew=Y", buttons: [
+                    { text: '确定', onclick: f_selectContactOK_sj },
+                    { text: '取消', onclick: f_selectContactCancel }
+                ]
+            });
+            return false;
+        }
+        function f_selectContactOK_sj(item, dialog) {
+            var data = dialog.frame.f_select();
+            if (!data) {
+                alert('请选择员工!');
+                return;
+            }
+            $('#T_sjs_val').val(data.ID);
+            $("#T_sjs").val(data.name)
+           // fillemp(data.dname, data.d_id, data.name, data.ID);
+            dialog.close();
+        }
         function f_save_img(item, dialog) {
             thumimg = dialog.frame.f_return();
             // alert(thumimg);
@@ -114,7 +163,7 @@
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
                     }
-                   
+                   // alert(obj.Community);
                     $("#T_title").val(obj.c_title)
                     $('#T_khmc').val(obj.customer_name);
                     $("#T_kh").val(obj.customer_id)
@@ -125,8 +174,11 @@
                     $('#T_sjs').val(obj.designer);
                     $('#T_bz').val(obj.remarks);
                     $('#T_URL').val(obj.URL);
-                    $("#T_lx").ligerGetComboBoxManager().selectValue(obj.img_style);
+                    $("#T_lx").ligerComboBox({ width: 196, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=19&rnd=" + Math.random(), emptyText: '（空）', initValue: obj.img_style });
+
+                 
                     $("#thumimg").attr("src", "../../" + obj.thum_img);
+                    thumimg = obj.thum_img;
  
                 }
             });
@@ -220,7 +272,7 @@
                     <div style="width: 80px; text-align: right; float: right">所属楼盘：</div>
                 </td>
                 <td>
-                   <input id="T_Community" name="T_Community" type="text" ltype="text" ligerui="{width:196}"    /></td>   
+                   <input id="T_Community" name="T_Community" type="text"      /></td>   
                    
                
                 <td>
@@ -250,7 +302,7 @@
                 </td>
                 <td>
                   
-                   <input id="T_sjs" name="T_sjs" type="text" ltype="text" ligerui="{width:196}"   /></td>   
+                   <input id="T_sjs" name="T_sjs" type="text"   /></td>   
                  
             </tr>
             <tr>
@@ -261,7 +313,8 @@
                     <div style="width: 80px; text-align: right; float: right">类型：</div>
                 </td>
                 <td>
-                    <input type="text" id="T_lx" name="T_lx" style="width: 56px" ltype="select" ligerui="{width:126,data:[{id:'1',text:'全景图'},{id:'2',text:'全景放样'},{id:'3',text:'施工图'},{id:'4',text:'竣工图'}]}"   />
+                         <input id="T_lx" name="T_lx" type="text"   /></td>   
+                   <%-- <input type="text" id="T_lx" name="T_lx" style="width: 56px" ltype="select" ligerui="{width:126,data:[{id:'1',text:'全景图'},{id:'2',text:'全景放样'},{id:'3',text:'施工图'},{id:'4',text:'竣工图'}]}"   />--%>
                 <td>
                     <div style="width: 80px; text-align: right; float: right">URL地址：</div>
                 </td>

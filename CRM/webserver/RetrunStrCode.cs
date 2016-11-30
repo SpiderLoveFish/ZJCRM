@@ -119,18 +119,24 @@ namespace XHD.CRM.webserver
 
 
 
-        public string GetLastListFollow( string nowindex, string strwhere)
+        public string GetLastListFollow(string nowindex, string strwhere, string url, string serchtxt)
         {
         var sb = new System.Text.StringBuilder();
         int startindex = int.Parse(nowindex) - 10;
         sb.AppendLine("SELECT top 10 * FROM (");
-            sb.AppendLine("SELECT  row_number() OVER (ORDER BY Follow_date DESC ) n , id,Customer_id,Customer_name,Follow,Follow_date,Follow_Type_id,Follow_Type,employee_name");
-            sb.AppendLine(" FROM");
-            sb.AppendLine("dbo.CRM_Follow");
-            sb.AppendLine(" WHERE	ISNULL(isDelete,0)=0 ");
-            sb.AppendLine(strwhere);
-            sb.AppendLine("  )AA");
-            sb.AppendLine(" WHERE n>" + startindex);
+        sb.AppendLine("SELECT  row_number() OVER (ORDER BY Follow_date DESC ) n ,");
+        sb.AppendLine("CONVERT(VARCHAR(16),Follow_date,120) AS Follow_date,A.id,a.Customer_id,a.Customer_name,a.Follow,employee_name,a.Follow_Type");
+        sb.AppendLine(" ,CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
+        sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar");
+        sb.AppendLine(",C.employee_id,C.privatecustomer,C.Create_id,C.Department_id ,Emp_id_sg,Emp_id_sj,Dpt_id_sg");
+        sb.AppendLine("FROM dbo.CRM_Follow A");
+        sb.AppendLine("INNER JOIN dbo.hr_employee B ON A.employee_id=B.ID");
+        sb.AppendLine("INNER JOIN  CRM_Customer C ON A.Customer_id=C.id");
+        sb.AppendLine(" where ISNULL(A.isDelete,0)='0' ");
+        sb.AppendLine(strwhere );
+        sb.AppendLine(" )a");
+        sb.AppendLine(" WHERE n>" + startindex);
+        sb.AppendLine(serchtxt);
             return sb.ToString();
         }
 
@@ -160,7 +166,7 @@ namespace XHD.CRM.webserver
             sb.AppendLine(" FROM  dbo.Crm_Classic_case");
             sb.AppendLine(" WHERE 1=1 ");
             sb.AppendLine(strwhere);
-            sb.AppendLine(")aa");
+     
       
             return sb.ToString();
         }
@@ -231,6 +237,38 @@ namespace XHD.CRM.webserver
 
             return sb.ToString();
         }
+
+
+
+        public string GetLastListScoreShop(string nowindex, string strwhere, string url)
+        {
+            var sb = new System.Text.StringBuilder();
+            int startindex = int.Parse(nowindex) - 10;
+            sb.AppendLine("SELECT top 10 * FROM (");
+            sb.AppendLine("SELECT  row_number() OVER (ORDER BY DoTime DESC ) n ,");
+            sb.AppendLine(" * ");
+            sb.AppendLine(" FROM  dbo.ScoreShop");
+            sb.AppendLine(" WHERE 1=1 ");
+            sb.AppendLine(strwhere);
+            sb.AppendLine(")aa");
+            sb.AppendLine(" WHERE n>" + startindex);
+            return sb.ToString();
+        }
+        public string GetLastDetailScoreShop(string strwhere, string url)
+        {
+            var sb = new System.Text.StringBuilder();
+
+
+            sb.AppendLine("SELECT  ");
+            sb.AppendLine("*,'" + url + "'+ thumimg  AS thum_img");
+            sb.AppendLine(" FROM  dbo.ScoreShop");
+            sb.AppendLine(" WHERE 1=1 ");
+            sb.AppendLine(strwhere);
+         
+
+            return sb.ToString();
+        }
+
     }
     
 }

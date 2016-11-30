@@ -502,7 +502,7 @@ namespace XHD.CRM.webserver
               int startindex = int.Parse( nowindex)-10;
               int perindex =  int.Parse(nowindex);
               string serchtxt = "";
-              sb.AppendLine("SELECT top " + perindex + " CONVERT(VARCHAR(16),Follow_date,120) AS Follow_date,A.id,Customer_id,Customer_name,Follow,employee_name,Follow_Type,Follow_Type  ");
+              sb.AppendLine("SELECT top " + perindex + " CONVERT(VARCHAR(16),Follow_date,120) AS Follow_date,A.id,Customer_id,Customer_name,Follow,employee_name,Follow_Type  ");
                sb.AppendLine(" ,CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
                sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar ");
                sb.AppendLine(" ,(SELECT COUNT(1) FROM CRM_Follow where Customer_id=" + id + " AND ISNULL(isDelete,0)='0') AS TotalCount");
@@ -1034,10 +1034,11 @@ namespace XHD.CRM.webserver
           /// 积分查询
           /// </summary>
           [WebMethod]
-          public void GetFollowList(string nowindex, string strwhere)
+          public void GetFollowList(string nowindex, string strwhere,string url,string userid)
           {
               SqlParameter[] parameters = { };
-              string sql = rsc.GetLastListFollow(nowindex, strwhere);
+              string serchtxt = DataAuth(userid);
+              string sql = rsc.GetLastListFollow(nowindex, strwhere,url,  serchtxt);
               DataSet ds = DbHelperSQL.Query(sql, parameters);
               DSToJSON(ds);
 
@@ -1443,6 +1444,35 @@ namespace XHD.CRM.webserver
               DSToJSON(ds);
           }
 
+          /// <summary>
+          /// 积分商店列表
+          /// </summary>
+          /// <param name="strWhere"></param>
+          /// <param name="nowindex"></param>
+          /// <param name="url"></param>
+          [WebMethod]
+          public void GetLastListScoreShop(string strWhere, string nowindex, string url)
+          {
+
+              SqlParameter[] parameters = { };
+              string sql = rsc.GetLastListScoreShop(nowindex, strWhere, url);
+              DataSet ds = DbHelperSQL.Query(sql, parameters);
+              DSToJSON(ds);
+          }
+          /// <summary>
+          /// 积分商店明细
+          /// </summary>
+          /// <param name="strWhere"></param>
+          /// <param name="url"></param>
+          [WebMethod]
+          public void GetLastDetailScoreShop(string strWhere, string url)
+          {
+
+              SqlParameter[] parameters = { };
+              string sql = rsc.GetLastDetailScoreShop(strWhere, url);
+              DataSet ds = DbHelperSQL.Query(sql, parameters);
+              DSToJSON(ds);
+          }
 
 
         /// <summary>

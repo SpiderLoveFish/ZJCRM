@@ -163,6 +163,8 @@
     <Content Include="CRM\ConsExam\XM_LIST.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST.aspx" />
     <Content Include="CRM\ConsExam\SelectCEStageCustomer.aspx" />
+    <Content Include="CRM\Customer\ScoreShop_add.aspx" />
+    <Content Include="CRM\Customer\ScoreShop.aspx" />
     <Content Include="CRM\Customer\ClassicCase.aspx" />
     <Content Include="CRM\Customer\ClassisCase_add.aspx" />
     <Content Include="CRM\Customer\Customer_DynamicGraphics.aspx" />
@@ -181,6 +183,7 @@
     <Content Include="CRM\Customer\Customer_import.aspx" />
     <Content Include="CRM\Customer\map_mark.aspx" />
     <Content Include="CRM\Customer\SelectCommunity.aspx" />
+    <Content Include="CRM\Customer\Score_img_add.aspx" />
     <Content Include="CRM\DataShare\Favorites_View.aspx" />
     <Content Include="CRM\DataShare\public_data_share.aspx" />
     <Content Include="CRM\DataShare\public_data_view_share.aspx" />
@@ -883,6 +886,7 @@
     <Content Include="Data\uploadapp.ashx" />
     <Fakes Include="Fakes\Newtonsoft.Json.fakes" />
     <Content Include="Data\CRM_Classic_case.ashx" />
+    <Content Include="Data\ScoreShop.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -4473,6 +4477,9 @@
     </Compile>
     <Compile Include="Data\Budge_BasicPart.ashx.cs">
       <DependentUpon>Budge_BasicPart.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ScoreShop.ashx.cs">
+      <DependentUpon>ScoreShop.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\CRM_Classic_case.ashx.cs">
       <DependentUpon>CRM_Classic_case.ashx</DependentUpon>

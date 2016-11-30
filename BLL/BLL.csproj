@@ -139,6 +139,7 @@
     <Compile Include="OutStock_Main.cs" />
     <Compile Include="Purchase_Detail.cs" />
     <Compile Include="Purchase_Main.cs" />
+    <Compile Include="ScoreShop.cs" />
     <Compile Include="webservers1.cs" />
     <Compile Include="f_bbs.cs" />
     <Compile Include="Crm_CEDetail.cs" />
