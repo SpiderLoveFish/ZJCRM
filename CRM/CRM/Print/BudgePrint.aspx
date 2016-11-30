@@ -12,6 +12,7 @@
        $(function () {
 
            $("#T_pid").html(getparastr("bid"));
+           $("#T_pid_2").html(getparastr("bid"));
            loadHead(getparastr("bid"));
            loadFormPrint(getparastr("bid"));
            loadBody(getparastr("bid"));
@@ -102,6 +103,7 @@
                    $("#T_address").html(obj.address);
                    $("#T_address_2").html(obj.address);
                    $("#T_tel").html(obj.tel);
+                   $("#T_tel_2").html(obj.tel);
                    $("#T_sjs").html(obj.sjs);
                    $("#T_sjs_2").html(obj.sjs);
                    $("#T_zje").html((obj.BudgetAmount + obj.FJAmount).toFixed(2));
@@ -115,6 +117,7 @@
                    $("#T_Remarks").html(obj.Remarks);
                    $("#T_BudgetName").html(obj.BudgetName);
                    $("#T_sjstel").html(obj.sjstel);
+                   $("#T_sjstel_2").html(obj.sjstel);
                    $("T_newdata").html(new Date());
                    var itemgender = "";
                    if (obj.gender =='男') { itemgender = "先生" }
@@ -157,13 +160,13 @@
                            //alert(JSON.stringify(data))
                            item = "<tr><td align='left' colspan='9' ><font size='3' ><b>&nbsp;&nbsp;" + data['ComponentName'] + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(合计：" + data['BwSubTotal'] + ")</b></font></td></tr>"
                            + "<tr><td >"+ data['brand'] + "</td><td align='right'>" + data['zc_price'].toFixed(2) + "</td><td align='right'>" + data['fc_price'].toFixed(2) + "</td><td align='right'>" + data['rg_price'].toFixed(2) + "</td><td align='right'>" + data['TotalPrice'].toFixed(2) + "</td><td align='right'>" + sum.toFixed(2) + "</td> "
-                               + " <td align='right'>" + data['je'].toFixed(2) + "</td><td>" + data['unit'] + "</td> <td>" + data['proremarks'] + "</td>"
+                               + " <td align='right'>" + data['je'].toFixed(2) + "</td><td  align=center>" + data['unit'] + "</td> <td>" + data['proremarks'] + "</td>"
                                //.replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>")
                                + " </tr>";
                        }
                        else {
                            item = "<tr><td>" + data['brand'] + "</td><td align='right'>" + data['zc_price'].toFixed(2) + "</td><td align='right'>" + data['fc_price'].toFixed(2) + "</td><td align='right'>" + data['rg_price'].toFixed(2) + "</td><td align='right'>" + data['TotalPrice'].toFixed(2) + "</td><td align='right'>" + sum.toFixed(2) + "</td> "
-                               + " <td align='right'>" + data['je'].toFixed(2) + "</td><td>" + data['unit'] + "</td> <td>" + data['proremarks'] + "</td>"
+                               + " <td align='right'>" + data['je'].toFixed(2) + "</td><td  align=center>" + data['unit'] + "</td> <td>" + data['proremarks'] + "</td>"
                                + " </tr>";
                        }
                        $('.table1').append(item);
@@ -230,16 +233,14 @@
        function PreviewMytable() {
            var LODOP = getLodop();
            LODOP.PRINT_INIT("分页打印综合表格");
-           LODOP.ADD_PRINT_RECT("0%", "0%", "100%", "85%", 0, 0);//满屏
- 
+           LODOP.ADD_PRINT_RECT("12%", "1%", "98%", "85%", 0, 1);//满屏
            LODOP.SET_PRINT_PAGESIZE(2, 0, 0, "A4");
-          var strStyle = " <style> table,td,th {border-width: 1px;border-style: solid;border-collapse: collapse}</style>"
-          LODOP.ADD_PRINT_TABLE(150, "5%", "90%", 300, document.getElementById("div6").innerHTML);
-
+           var strStyle = " <style> table,td,th {border-width: 1px;border-style: solid;border-collapse: collapse}</style>"
+           LODOP.ADD_PRINT_TABLE(150, "5%", "90%", 300, strStyle + document.getElementById("div6").innerHTML);
            LODOP.SET_PRINT_STYLEA(0, "Vorient", 3);
           
           
-           LODOP.ADD_PRINT_TABLE(90, "5%", "90%", "90%", document.getElementById("div3").innerHTML);
+           LODOP.ADD_PRINT_TABLE(0, "5%", "90%", "90%", document.getElementById("div3").innerHTML);
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 0);
            LODOP.SET_PRINT_STYLEA(0, "LinkedItem", 1);
           
@@ -260,8 +261,11 @@
            //LODOP.SET_PRINT_STYLEA(0, "LinkedItem",2);
 
            LODOP.ADD_PRINT_HTM(1, 600, 300, 100, "<font color='#0000ff' ><span tdata='pageNO'>第##页</span>/<span tdata='pageCount'>共##页</span></font>");
- 
-           LODOP.SET_PRINT_STYLEA(0, "Horient", 1); 
+
+           LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
+
+           LODOP.SET_PRINT_STYLEA(0, "Horient", 1);
+           //LODOP.ADD_PRINT_TEXT(3,34,196,20,"总页眉：《两个发货单的演示》");
            LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
            LODOP.SET_SHOW_MODE("LANDSCAPE_DEFROTATED", 1);
 
@@ -281,6 +285,85 @@
  <p><a href="javascript:PreviewMytable();">打印</a>
 </p>
 
+           <%--<p>----------------------div6:------------------------------------------------------------------------------------</p>--%>
+  <div id="div6">
+
+  <TABLE  class="table9 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse;" bordercolor="#ffffff">
+  <TBODY>
+      <tr>
+            
+<td colspan="3">  <DIV align=center>
+
+  <p ><b><strong><font size="50"><span id="T_logo_3"></span>预算清单</font></strong></b></p>
+<br>
+    <br>
+    <br>
+    <br>
+    <br>
+  <p>&nbsp;</p>
+</DIV> 
+
+
+
+</td>
+      </tr>
+      <tr>
+        <td width="24%" rowspan="6"><p>&nbsp;</p></td>
+        <strong><font size="5">
+        <td width="20%" height="50" align="right"><strong><font size="5">业主：</font></td>
+        <td width="80%"><strong><font size="5"><SPAN   id="T_kh_2" ></SPAN></font></strong></td>
+        </font></strong>
+      </tr>
+      <tr>
+        <td height="50" align="right"><strong><font size="5">电话：</font></strong></td>
+        <td height="50"><strong><font size="5"><SPAN   id="T_tel_2" ></SPAN></font></strong></td>
+      </tr>
+      <tr>
+        <td height="50" align="right"><strong><font size="5">地址：</font></strong></td>
+        <td height="50"><strong><font size="5"><SPAN   id="T_address_2" ></SPAN></font></strong></td>
+      </tr>
+
+      <tr>
+        <td height="50" align="right"><strong><font size="5">设计师：</font></strong></td>
+        <td height="50"><strong><font size="5"><SPAN   id="T_sjs_2" ></SPAN></font></strong></td>
+      </tr>
+       <tr>
+        <td height="50" align="right"><strong><font size="5">电话：</font></strong></td>
+        <td height="50"><strong><font size="5"><SPAN   id="T_sjstel_2" ></SPAN></font></strong></td>
+      </tr>
+      <tr>
+        <td height="50" align="right"><strong><font size="5">打印日期：</font></strong></td>
+        <td height="50">
+            <strong>
+                <font size="5">
+                    <span id="t_date"></span>
+            <script language="JavaScript">
+                today = new Date();
+                function initArray() {
+                    this.length = initArray.arguments.length
+                    for (var i = 0; i < this.length; i++)
+                        this[i + 1] = initArray.arguments[i]
+                }
+                var d = new initArray(
+                "星期日",
+                "星期一",
+                "星期二",
+                "星期三",
+                "星期四",
+                "星期五",
+                "星期六");
+                var dd = today.getFullYear() + "年" +
+                                                   (today.getMonth() + 1) + "月" +
+                                                   today.getDate() + "日" +
+                                                   d[today.getDay() + 1];
+                $("#t_date").html(dd);
+
+</script></font></strong></td>
+      </tr>
+      </TBODY>
+  </TABLE>
+      </div>
+  <%--<p>----------------------div6:------------------------------------------------------------------------------------</p>--%>
          <div id="div1">
 <DIV style="LINE-HEIGHT: 30px"  align="center">  <table width="100%"  border=0 cellSpacing=0 cellPadding=0>
     <tr>
@@ -407,30 +490,30 @@
        
 <%--<p>----------------------div3:---------------------------------------------------------------------------------font-size:12px---</p>--%>
 <div id="div3">
-  <TABLE   class="table1 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse;" bordercolor="#333333">
+  <TABLE   class="table1 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse;font-size:12px" bordercolor="#333333">
 <thead>
   <TR>
   
     <TD width="20%">
       <DIV align=center><b>项目名称</b></DIV></TD>
   
-       <TD width="7%">
+       <TD width="5%">
       <DIV align=center><b>主材￥</b></DIV></TD>
-             <TD width="7%">
+             <TD width="5%">
       <DIV align=center><b>辅材￥</b></DIV></TD>
-             <TD width="7%">
+             <TD width="5%">
       <DIV align=center><b>人工￥</b></DIV></TD>
-             <TD width="7%">
+             <TD width="5%">
       <DIV align=center><b>小计￥</b></DIV></TD>
-    <TD width="7%">
+    <TD width="5%">
       <DIV align=center><b>数量</b></DIV></TD>
     
-    <TD width="7%">
+    <TD width="5%">
       <DIV align=center><b>金额￥</b></DIV></TD>
-      <TD width="7%">
+      <TD width="5%">
 
       <DIV align=center><b>单位</b></DIV></TD>
-       <TD width="31%">
+       <TD width="45%">
       <DIV align=center><b>材料及工艺说明</b></DIV></TD>
      </TR>
 </thead>      
@@ -464,7 +547,7 @@
   <TBODY>
       <tr>
             
-<td>  <DIV align=center><b>备注说明</b></DIV> 
+<td colspan="3">  <DIV align=center><b>备注说明</b></DIV> 
         <DIV>
             <SPAN id="T_bzsm" name="T_bzsm" ></SPAN>	
 
@@ -474,84 +557,20 @@
 </td>
       </tr>
       <tr>
-          <td >设计师签字：	</td> <td><SPAN id="SPAN2" ></SPAN>	</td>
-           <td>客户签字：	</td> <td><SPAN id="SPAN3" ></SPAN>	</td>
-           <td colspan="2">日期：<SPAN id="SPAN4" ></SPAN>	</td>
-<td></td>
+        <td width="26%">客户签字：</td>
+        <td width="31%">制作人：</td>
+        <td width="43%">审核人：</td>
       </tr>
+      <tr>
+        <td align="right">&nbsp;</td>
+        <td align="right">&nbsp;</td>
+        <td align="right">年 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+      </tr>
+
       </TBODY>
   </TABLE>
       </div>
-          <%--<p>----------------------div6:------------------------------------------------------------------------------------</p>--%>
-  <div id="div6">
-
-  <TABLE  class="table9 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse;" bordercolor="#ffffff">
-  <TBODY>
-      <tr>
-            
-<td colspan="3">  <DIV align=center>
-
-  <p ><b><strong><font size="50"><span id="T_logo_3"></span>预算清单</font></strong></b></p>
-<br>
-    <br>
-    <br>
-    <br>
-    <br>
-  <p>&nbsp;</p>
-</DIV> 
-
-
-
-</td>
-      </tr>
-      <tr>
-        <td width="24%" rowspan="4"><p>&nbsp;</p></td>
-        <strong><font size="5">
-        <td width="24%" height="60" align="right"><strong><font size="5">业主：</font></td>
-        <td width="52%"><strong><font size="5"><SPAN   id="T_kh_2" ></SPAN></font></strong></td>
-        </font></strong>
-      </tr>
-      <tr>
-        <td height="60" align="right"><strong><font size="5">地址：</font></strong></td>
-        <td height="60"><strong><font size="5"><SPAN   id="T_address_2" ></SPAN></font></strong></td>
-      </tr>
-      <tr>
-        <td height="60" align="right"><strong><font size="5">设计师：</font></strong></td>
-        <td height="60"><strong><font size="5"><SPAN   id="T_sjs_2" ></SPAN></font></strong></td>
-      </tr>
-      <tr>
-        <td height="60" align="right"><strong><font size="5">打印日期：</font></strong></td>
-        <td height="60">
-            <strong>
-                <font size="5">
-                    <span id="t_date"></span>
-            <script language="JavaScript">
-                                                   today = new Date();
-                                                   function initArray() {
-                                                       this.length = initArray.arguments.length
-                                                       for (var i = 0; i < this.length; i++)
-                                                           this[i + 1] = initArray.arguments[i]
-                                                   }
-                                                   var d = new initArray(
-                                                   "星期日",
-                                                   "星期一",
-                                                   "星期二",
-                                                   "星期三",
-                                                   "星期四",
-                                                   "星期五",
-                                                   "星期六");
-                                                   var dd=today.getFullYear()+ "年"+
-                                                                                      (today.getMonth()+1)+ "月"+
-                                                                                      today.getDate()+"日"+
-                                                                                      d[today.getDay() + 1];
-                                                   $("#t_date").html(dd);
-                                                 
-</script></font></strong></td>
-      </tr>
-      </TBODY>
-  </TABLE>
-      </div>
-  <%--<p>----------------------div6:------------------------------------------------------------------------------------</p>--%>
+       
     </form>
 </body>
 </html>

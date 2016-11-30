@@ -30,3 +30,4 @@ CRM/.DS_Store
 
 CRM/webserver/testapi.asmx.cs
 CRM/webserver/testapi.asmx.cs
+*.jpg

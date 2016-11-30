@@ -61,15 +61,16 @@
                 top.$.ligerDialog.open({
                     width: 400, height: 80, url: "CRM/Customer/thum_img_add.aspx", title: "缩略图修改", buttons: [
                         {
-                            text: '保存', onclick: function (item, dialog) {
-                                dialog.frame.f_save();
+                            text: '提交', onclick: function (item, dialog) {
+                                //dialog.frame.f_save();
+                                f_save_img(item, dialog);
                                 // setTimeout( loadForm(getparastr("cid")), 200);
                                 
                             }
                         },
                         {
-                            text: '提交', onclick: function (item, dialog) {
-                                f_save_img(item, dialog);
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
                             }
                         }
                     ]

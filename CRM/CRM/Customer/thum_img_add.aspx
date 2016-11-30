@@ -65,7 +65,7 @@
             <tr>
                 <td height="23">
                     <div style="width: 300px; float: left">
-                        <input id="File1" type="file" runat="server" validate="{required:true}" style="height: 21px; width: 295px;" />
+                        <input id="File1" type="file" runat="server" onchange="f_save()" validate="{required:true}" style="height: 21px; width: 295px;" />
                     </div>
                     
                 </td>

@@ -219,7 +219,7 @@
                 dataType: "json",
                 success: function (result) {
                     var obj = eval(result);
-                    alert(JSON.stringify(result));
+                   // alert(JSON.stringify(result));
                     for (var n in obj) {
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
