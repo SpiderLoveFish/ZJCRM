@@ -17,10 +17,14 @@ namespace XHD.CRM.webserver
             var sb = new System.Text.StringBuilder();
             int startindex = int.Parse(nowindex) - 10;
             string strtype = "";
-            if (type == "M")//当月
-            { strtype = " AND  DATENAME(month,InDate) = DATENAME(month,GETDATE())"; }
-            else if (type == "S")//当季
-            { strtype = " AND DATENAME(quarter,InDate)=DATENAME(quarter,GETDATE()) "; }
+            if (type == "M")//当年当月
+            { strtype = " AND  DATENAME(month,InDate) = DATENAME(month,GETDATE())";
+            strtype += " AND  DATENAME(year,InDate)= DATENAME(year,GETDATE()) ";
+            }
+            else if (type == "S")//当年当季
+            { strtype = " AND DATENAME(quarter,InDate)=DATENAME(quarter,GETDATE()) ";
+            strtype += " AND  DATENAME(year,InDate)= DATENAME(year,GETDATE()) ";
+            }
             else if (type == "Y")//当年
             { strtype = " AND  DATENAME(year,InDate)= DATENAME(year,GETDATE()) "; }
             else if (type == "Z")//自定义

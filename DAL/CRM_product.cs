@@ -461,7 +461,7 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("SELECT B.C_code, ");
-             strSql.Append(" ISNULL(MAX(A.C_code),B.c_code+'0001') AS code");
+            strSql.Append("  CASE WHEN   ISNULL(MAX(A.C_code),'')='' then	 B.c_code+'0001' ELSE MAX(A.C_code) END AS code");
               strSql.Append(" FROM dbo.CRM_product A");
              strSql.Append(" INNER JOIN dbo.CRM_product_category B ON A.category_id=B.ID");
               strSql.Append(" WHERE category_id="+catid+"  ");
