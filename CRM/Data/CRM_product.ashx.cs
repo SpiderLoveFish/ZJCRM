@@ -85,7 +85,9 @@ namespace XHD.CRM.Data
                             //已经有的就不再改了
                             if (PageValidate.InputText(request["C_code"], 255) == "")
                             {
-                                int lsh = int.Parse(dscode.Tables[0].Rows[0][1].ToString().Substring(4, 4)) + 1;
+                                int lsh = 1;
+                                try { lsh = int.Parse(dscode.Tables[0].Rows[0][1].ToString().Substring(4, 4)) + 1; }
+                                catch { }
                                 c_code = dscode.Tables[0].Rows[0][0].ToString() + lsh.ToString("0000");
                             }
                         }
@@ -240,7 +242,7 @@ namespace XHD.CRM.Data
                     }
                 }
                 var updateprice = new System.Text.StringBuilder();
-                updateprice.AppendLine("UPDATE A SET	TotalPrice=B.price");
+                updateprice.AppendLine("UPDATE A SET	TotalPrice=B.price,a.zc_price=b.zc_price,a.fc_price=b.fc_price,a.rg_price=b.rg_price ");
                 updateprice.AppendLine("FROM dbo.Budge_BasicDetail A");
                 updateprice.AppendLine("INNER JOIN  dbo.CRM_product B ON A.xmid=B.product_id");
                 updateprice.AppendLine(" WHERE A.budge_id LIKE 'M%' ");
