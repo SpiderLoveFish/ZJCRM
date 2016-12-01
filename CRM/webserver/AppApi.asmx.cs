@@ -1233,6 +1233,9 @@ namespace XHD.CRM.webserver
                       //if(lx=="birthday")//只能一次
                       //{
                           string Today = DateTime.Now.ToString("yyyy-MM-dd");
+                          string sqlexist = " SELECT 1 FROM App_TimedTask WHERE	 id=1 AND CONVERT(VARCHAR(10),NextDoTime,120)=CONVERT(VARCHAR(10),GETDATE(),120)";
+                          bool isexist = DbHelperSQL.Exists(sqlexist, null);
+                            if (isexist)
                           foreach (DataRow dw in ds.Tables[0].Select(" nearbir = '" + Today + "'"))
                           {
                               string title = dw["UserName"].ToString() ;
@@ -1240,9 +1243,11 @@ namespace XHD.CRM.webserver
 
                               push("4", " AND userid!='" + dw["uid"].ToString() + "'", title, body); pushpad("5", " AND userid!='" + dw["uid"].ToString() + "'", title, body);
                               push("1", " AND userid='" + dw["uid"].ToString() + "'", "祝你生日快乐", "今天是你" + dw["age"].ToString() + "岁生日，我们一起祝你生日快乐!"); pushpad("3", " AND userid!='" + dw["uid"].ToString() + "'", "祝你生日快乐", "今天是你" + dw["age"].ToString() + "岁生日，我们一起祝你生日快乐!");
+                              //更新最后一次的时间。天数+1
+                              string sqlupdate = " UPDATE App_TimedTask SET DoTime=GETDATE()+1,NextDoTime=GETDATE() WHERE id=1";
+                              DbHelperSQL.ExecuteSql(sqlupdate, parameters);
                           }
-                     //  }
-                     
+                      
                       string str = Common.DataToJson.GetJson(ds);
                       ReturnStr(true, str);
                   }
