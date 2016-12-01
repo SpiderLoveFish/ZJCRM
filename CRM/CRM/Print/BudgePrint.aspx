@@ -273,7 +273,7 @@
            LODOP.ADD_PRINT_HTM("12%", "5%", "90%", "90%", strStyle + document.getElementById("div2").innerHTML);
            LODOP.NewPageA();
 
-           LODOP.ADD_PRINT_HTM("12%", "5%", "90%", "90%", document.getElementById("div5").innerHTML);
+           LODOP.ADD_PRINT_HTM("12%", "5%", "70%", "90%", document.getElementById("div5").innerHTML);
 
            LODOP.PREVIEW();
        };
@@ -545,7 +545,7 @@
 
   <TABLE  border=0 cellSpacing=0 cellPadding=0 width="100%">
   <TBODY>
-      <tr>
+      <tr style="max-height:400px">
             
 <td colspan="3">  <DIV align=center><b>±¸×¢ËµÃ÷</b></DIV> 
         <DIV>

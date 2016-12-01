@@ -86,7 +86,9 @@ namespace XHD.CRM.Data
                             if (PageValidate.InputText(request["C_code"], 255) == "")
                             {
                                 int lsh = 1;
-                                try { lsh = int.Parse(dscode.Tables[0].Rows[0][1].ToString().Substring(4, 4)) + 1; }
+                                try { 
+                                    string str=dscode.Tables[0].Rows[0][1].ToString();
+                                    lsh = int.Parse(str.Substring(str.Length - 4)) + 1; }
                                 catch { }
                                 c_code = dscode.Tables[0].Rows[0][0].ToString() + lsh.ToString("0000");
                             }

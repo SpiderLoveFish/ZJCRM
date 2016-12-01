@@ -784,7 +784,7 @@ namespace XHD.CRM.Data
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " ISNULL(OrderBy,0), ComponentName   ";
+                    sortname = " ComponentName ,ISNULL(OrderBy, 0)   ";
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " ASC";
 
