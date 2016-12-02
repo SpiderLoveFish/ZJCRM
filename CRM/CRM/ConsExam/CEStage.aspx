@@ -43,7 +43,25 @@
     <script type="text/javascript">
         var manager = "";
         var szDevIP = "";
+        var type = "";
         $(function () {
+          
+            type = getparastr("type");
+           //工地管理
+            var strurl = "../../data/Crm_CEStage.ashx?Action=grid&status=0";
+            //售后管理
+            if (type == "1") strurl = "../../data/Crm_CEStage.ashx?Action=grid&status=1";
+            //全部
+            if (type == "all") {
+                strurl = "../../data/Crm_CEStage.ashx?Action=grid";
+                //document.getElementById("status1").style.display = "block";
+                //document.getElementById("status").style.display = "block";
+            }
+            else {
+                document.getElementById("status").style.display = "none";
+                document.getElementById("status1").style.display = "none";
+            }
+           // alert(strurl)
             $("#maingrid4").ligerGrid({
                 columns: [
                      {
@@ -149,7 +167,7 @@
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/Crm_CEStage.ashx?Action=grid",
+                url: strurl,
                 width: '100%',
                 height: '100%',
                 //tree: { columnName: 'StageDescription' },
@@ -251,7 +269,7 @@
 
         //查询
         function doserch() {
-            var sendtxt = "&Action=grid&rnd=" + Math.random();
+            var sendtxt = "&Action=grid&status=0&rnd=" + Math.random();
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
             //  alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -331,8 +349,34 @@
                 $.ligerDialog.warn('请选择行！');
             }
         }
+        //提交竣工
         function add() {
-            f_openWindow("crm/ConsExam/CEStage_add.aspx", "新增客户", 700, 330);
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                $.ajax({
+                    url: "../../data/Crm_CEStage.ashx", type: "POST",
+                    data: { Action: "UpdateStatus", id: row.id,status:1, rnd: Math.random() },
+                    success: function (responseText) {
+                        if (responseText == "true") {
+                            top.$.ligerDialog.closeWaitting();
+                            f_reload();
+                        }
+
+                        else {
+                            top.$.ligerDialog.closeWaitting();
+                            top.$.ligerDialog.error('提交失败！');
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+                        top.$.ligerDialog.error('提交失败！', "", null, 9003);
+                    }
+                });
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
+            //f_openWindow("crm/ConsExam/CEStage_add.aspx", "新增客户", 700, 330);
         }
         //千里眼
         function ipcam() {
@@ -477,10 +521,10 @@
                     <td>
                         <input id='sgjlstext' name="sgjlstext" type='text'  ltype='text' ligerui='{width:120}' /></td>
 
-                    <td>
+                    <td id="status">
                         <div style='width: 60px; text-align: right; float: right' >状态：</div>
                     </td>
-                    <td>
+                    <td id="status1">
                         <div style='width: 100px; float: left'>
                             <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui="{width:196,data:[{id:'正在施工',text:'正在施工'},{id:'施工完成',text:'施工完成'}]}" validate="{required:false}" />
                         </div>

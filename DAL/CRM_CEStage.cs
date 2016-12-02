@@ -452,6 +452,57 @@ namespace XHD.DAL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
+
+        public bool ExistsCestage(int id)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select count(1) from CRM_CEStage");
+            strSql.Append(" where CustomerID=@id");
+            SqlParameter[] parameters = {
+					new SqlParameter("@id", SqlDbType.Int,4)
+			};
+            parameters[0].Value = id;
+
+            return DbHelperSQL.Exists(strSql.ToString(), parameters);
+        }
+        /// <summary>
+        /// 增加一条数据
+        /// </summary>
+        public int AddCEstage(string id)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("INSERT dbo.CRM_CEStage( CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,Jh_date)");
+            sb.AppendLine("SELECT id,tel,Customer,Emp_sg,Emp_id_sg,Emp_sj,Emp_id_sj,Employee,Employee_id,0,0,'正在施工' ,Remarks,0,Jhrq2 FROM dbo.CRM_Customer WHERE id="+id);
+            sb.AppendLine("");
+            sb.Append(";select @@IDENTITY");
+            SqlParameter[] parameters = { };
+
+            object obj = DbHelperSQL.GetSingle(sb.ToString(), parameters);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+
+        public bool UpdateStatus(string status,string id)
+        {
+            StringBuilder strSql = new StringBuilder();
+            SqlParameter[] parameters = { };
+            strSql.AppendLine(" UPDATE	CRM_CEStage SET Stage_icon='" + status + "' WHERE id=" + id);
+			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+			if (rows > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
         /// <summary>
         /// 分页获取数据列表
         /// </summary>

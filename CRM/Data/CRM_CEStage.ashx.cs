@@ -33,6 +33,20 @@ namespace XHD.CRM.Data
             string empname = dsemp.Tables[0].Rows[0]["name"].ToString();
             string uid = dsemp.Tables[0].Rows[0]["uid"].ToString();
 
+
+            if (request["Action"] == "customersavecestage")
+            {
+                string customerid = Common.PageValidate.InputText(request["id"], 50);
+                if (!ccpc.ExistsCestage(int.Parse(customerid)))
+                {
+                  if(ccpc.AddCEstage(customerid)>0)
+                        context.Response.Write("true");
+                      else
+                      context.Response.Write("false");
+                }
+                else context.Response.Write("false:exist");
+            }
+
             if (request["Action"] == "save")
             {
                 //string parentid = PageValidate.InputText(request["T_category_parent_val"], 50);
@@ -109,10 +123,18 @@ namespace XHD.CRM.Data
                     ccpc.AddIPCam(cid.ToString(), devip, "admin", "888888","","1",comp);
                 }
             }
-            //最後計算
-            if (request["Action"] == "savetotal")
-            { 
-               
+            //更新状态
+            if (request["Action"] == "UpdateStatus")
+            {
+                string status = PageValidate.InputText(request["status"], 50);
+                 string id = PageValidate.InputText(request["id"], 50);
+                string s_status="";
+                if (status == "1") s_status = "施工完成";
+                else if (status == "0") s_status = "正在施工";
+                if(ccpc.UpdateStatus(s_status,id))
+                    context.Response.Write("true");
+                else context.Response.Write("false:type");
+
             }
             if (request["Action"] == "getcustomer")
             {
@@ -191,9 +213,12 @@ namespace XHD.CRM.Data
                     serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))>= " + StringToDecimal(PageValidate.InputText(request["dclbstext"], 50)) + "%";
                 if (!string.IsNullOrEmpty(request["dclestext"]))
                     serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))<= " + StringToDecimal(PageValidate.InputText(request["dclestext"], 50)) + "%";
-
-
-
+                   string status = PageValidate.InputText(request["status"], 50);
+                string s_status="";
+                if (status == "1") s_status = "施工完成";
+                else if (status == "0") s_status = "正在施工";
+                if (s_status!="")
+                serchtxt += " and Stage_icon='" + s_status + "' ";
                 string dt = "";
                
                     DataSet ds = ccpc.GetListDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);

@@ -179,6 +179,19 @@ namespace XHD.BLL
 
         #endregion  BasicMethod
         #region  ExtensionMethod
+        public bool ExistsCestage(int id)
+        {
+            return dal.ExistsCestage(id);
+        }
+        public int AddCEstage(string id)
+        {
+            return dal.AddCEstage(id);
+        }
+        public bool UpdateStatus(string status, string id)
+        {
+            return dal.UpdateStatus(status,id);
+        }
+
         /// <summary>
         /// 分页获取数据正式明细列表
         /// </summary>

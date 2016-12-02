@@ -530,6 +530,40 @@
                 $.ligerDialog.warn('请选择行！');
             }
         }
+
+        //提交施工
+        function subconstruct() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                $.ajax({
+                    url: "../../data/CRM_CEStage.ashx", type: "POST",
+                    data: { Action: "customersavecestage", id: row.id, rnd: Math.random() },
+                    success: function (responseText) {
+                        if (responseText == "true") {
+                            top.$.ligerDialog.alert('提交成功！！！');
+                            //f_reload();
+                            //f_followreload();
+                        }
+                        else if (responseText == "false") {
+                            top.$.ligerDialog.error('提交失败！');
+                        }
+                        
+                        else if (responseText == "false:exist") {
+                            top.$.ligerDialog.error('提交失败！已经存在');
+                        }
+
+                    },
+                    error: function () {
+                        top.$.ligerDialog.error('提交失败！');
+                    }
+                });
+            }
+            else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+
         var activeDialog = null;
         function f_openWindow_view(url, title, width, height) {
             var dialogOptions = {
