@@ -197,7 +197,16 @@
         }
 
         function toolbar() {
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=135&rnd=" + Math.random(), function (data, textStatus) {
+            //工地管理
+            var strurl ="../../data/toolbar.ashx?Action=GetSys&mid=135&rnd=" + Math.random();
+            //售后管理
+            if (type == "1") strurl = "../../data/toolbar.ashx?Action=GetSys&mid=192&rnd=" + Math.random();
+            //全部
+            if (type == "all") {
+                strurl = "../../data/toolbar.ashx?Action=GetSys&mid=193&rnd=" + Math.random();
+            }
+         
+                $.getJSON(strurl, function (data, textStatus) {
                 //alert(data);
                 var items = [];
                 var arr = data.Items;
@@ -315,6 +324,65 @@
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
+        //follow
+        function follow_openWindow(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+                        {
+                            text: '保存', onclick: function (item, dialog) {
+                                f_savefollow(item, dialog);
+                            }
+                        },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'b'
+            };
+            activeDialog1 = top.jQuery.ligerDialog.open(dialogOptions);
+        }
+        //工程跟进
+        function gcgj() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                follow_openWindow("CRM/ConsExam/CEStage_follow_add.aspx?cid=" + row.CustomerID+"&cestageid="+row.id, "新增跟进", 530, 400);
+            } else {
+                $.ligerDialog.warn('请选择客户！');
+            }
+        }
+        function f_savefollow(item, dialog) {
+            var issave = dialog.frame.f_save();
+            if (issave) {
+                dialog.close();
+                $.ligerDialog.waitting('数据保存中,请稍候...');
+                $.ajax({
+                    url: "../../data/CRM_CEStage_Follow.ashx", type: "POST",
+                    data: issave,
+                    success: function (responseText) {
+                        $.ligerDialog.closeWaitting();
+                   
+                    },
+                    error: function () {
+                        $.ligerDialog.closeWaitting();
+                        $.ligerDialog.error('操作失败！');
+                    }
+                });
+
+            }
+        }
+
+        //查看跟进
+        function ckgj() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindowview("CRM/ConsExam/CEStage_follow.aspx?cid=" + row.CustomerID + "&cestageid=" + row.id, "新增跟进", 867, 600);
+            } else {
+                $.ligerDialog.warn('请选择客户！');
+            }
+        }
         //明细
         function detail() {
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -348,6 +416,35 @@
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
+        }
+        //退回
+        function ret() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                $.ajax({
+                    url: "../../data/Crm_CEStage.ashx", type: "POST",
+                    data: { Action: "UpdateStatus", id: row.id, status: 0, rnd: Math.random() },
+                    success: function (responseText) {
+                        if (responseText == "true") {
+                            top.$.ligerDialog.closeWaitting();
+                            f_reload();
+                        }
+
+                        else {
+                            top.$.ligerDialog.closeWaitting();
+                            top.$.ligerDialog.error('退回失败！');
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+                        top.$.ligerDialog.error('退回失败！', "", null, 9003);
+                    }
+                });
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
+            //f_openWindow("crm/ConsExam/CEStage_add.aspx", "新增客户", 700, 330);
         }
         //提交竣工
         function add() {

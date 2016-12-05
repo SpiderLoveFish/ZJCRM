@@ -12,6 +12,11 @@ using System.Data;
 using XHD.BLL;
 using Newtonsoft.Json;
 
+using Aliyun.Acs.Core;
+using Aliyun.Acs.Core.Exceptions;
+using Aliyun.Acs.Core.Profile;
+using Aliyun.Acs.Sms.Model.V20160927;
+
 namespace XHD.CRM.Data
 {
     public class sms
@@ -77,6 +82,50 @@ namespace XHD.CRM.Data
  
               
 
+            return json;
+        }
+
+
+        public string aliyunSendSMS(string tel,string type,string para)
+        {
+            string json = "";
+            string strwhere = " servername='aliyun'";
+            if (type != "")
+                strwhere += " AND userid='"+type+"' ";
+            DataSet ds = ps.GetList_SMSConfig(0, strwhere, "");
+            if (ds == null)
+            {
+                json = "请先配置相关参数！";
+            }
+            if (ds.Tables[0].Rows.Count <= 0)
+            {
+                json = "请先配置相关参数！";
+            }
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou",dr["accessKey"].ToString() , dr["accessSecret"].ToString() );
+                IAcsClient client = new DefaultAcsClient(profile);
+                SingleSendSmsRequest request = new SingleSendSmsRequest();
+                try
+                {
+                    request.SignName = dr["SignName"].ToString(); 
+                    request.TemplateCode = dr["TemplateCode"].ToString();
+                    request.RecNum = tel;// "接收号码，多个号码可以逗号分隔";
+                    if (para == "")
+                        request.ParamString = dr["ParamString"].ToString(); //"短信模板中的变量；数字需要转换为字符串；个人用户每个变量长度必须小于15个字符。";
+                    else request.ParamString = para;
+                    SingleSendSmsResponse httpResponse = client.GetAcsResponse(request);
+                    json = httpResponse.HttpResponse.Status.ToString();
+                }
+                catch (ServerException e)
+                {
+                    json = "" + e.Message;
+                }
+                catch (ClientException e)
+                {
+                    json = "" + e.Message;
+                }
+            }
             return json;
         }
     }

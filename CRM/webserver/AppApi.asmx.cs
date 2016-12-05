@@ -194,7 +194,16 @@ namespace XHD.CRM.webserver
              
                 }
 
-     
+         [WebMethod]
+         public void Send_aliyunSendSMS(string tel,string type,string para)
+         {
+             XHD.CRM.Data.sms sms = new Data.sms();
+             string aa = sms.aliyunSendSMS(tel,type,para);
+             if(aa=="200")
+              ReturnStr(true,   aa );
+             else ReturnStr(false, aa);
+         }
+
         
         /// <summary>
           /// 个人信息
@@ -1552,7 +1561,7 @@ namespace XHD.CRM.webserver
              string rstr="";
              if (!flag)//StringToUnicodeHex
              {
-                 rstr = " {\"meta\":" + data + ",\"data\":null}";
+                 rstr = " {\"meta\":\"" + data + "\",\"data\":null}";
              }
              else
              {

@@ -29,6 +29,7 @@ public partial class sms : System.Web.UI.Page
 
     protected void Button2_Click(object sender, EventArgs e)
     {
+     
         //查询余额
       DataSet ds=  ps.GetList_SMSConfig(0,"","");
       if (ds == null) {

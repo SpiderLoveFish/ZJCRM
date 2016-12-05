@@ -41,6 +41,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="aliyun-net-sdk-core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\aliyun-net-sdk-core.dll</HintPath>
+    </Reference>
+    <Reference Include="aliyun-net-sdk-sms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\aliyun-net-sdk-sms.dll</HintPath>
+    </Reference>
     <Reference Include="GetuiServerApiSDK">
       <HintPath>..\..\..\..\Downloads\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\GetuiServerApiSDK.dll</HintPath>
     </Reference>
@@ -145,6 +153,8 @@
     <Content Include="CRM\ConsExam\CEDetail_View.aspx" />
     <Content Include="CRM\ConsExam\CERep_Schedule.aspx" />
     <Content Include="CRM\ConsExam\CEStage_ViewDetail.aspx" />
+    <Content Include="CRM\ConsExam\CEStage_follow_add.aspx" />
+    <Content Include="CRM\ConsExam\CEStage_follow.aspx" />
     <Content Include="CRM\ConsExam\kjl_search.aspx" />
     <Content Include="CRM\ConsExam\kjl_index.aspx" />
     <Content Include="CRM\ConsExam\kjl_edit.aspx" />
@@ -887,6 +897,7 @@
     <Fakes Include="Fakes\Newtonsoft.Json.fakes" />
     <Content Include="Data\CRM_Classic_case.ashx" />
     <Content Include="Data\ScoreShop.ashx" />
+    <Content Include="Data\CRM_CEStage_Follow.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -4477,6 +4488,9 @@
     </Compile>
     <Compile Include="Data\Budge_BasicPart.ashx.cs">
       <DependentUpon>Budge_BasicPart.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CRM_CEStage_Follow.ashx.cs">
+      <DependentUpon>CRM_CEStage_Follow.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\ScoreShop.ashx.cs">
       <DependentUpon>ScoreShop.ashx</DependentUpon>
