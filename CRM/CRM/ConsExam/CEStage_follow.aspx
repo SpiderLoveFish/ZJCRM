@@ -57,7 +57,7 @@
                         { display: 'µØÖ·', name: 'address', width: 180 },
                         {
                             display: '¸ú½øÄÚÈÝ', name: 'Follow', align: 'left', width: 350, render: function (item) {
-                                var html = "<div class='abc'><a href='javascript:void(0)' onclick=view(12," + item.Customer_id + ")>";
+                                var html = "<div class='abc'><a href='javascript:void(0)' onclick=view(12," + item.id + ")>";
                                 if (item.Follow)
                                     html += item.Follow;
                                 html += "</a></div>";

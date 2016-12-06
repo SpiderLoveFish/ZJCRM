@@ -68,7 +68,10 @@ namespace XHD.BLL
         {
             return dal.DeleteList(IDlist);
         }
-
+        public bool DeleteUID(string uid)
+        {
+            return dal.DeleteUID(uid);
+        }
         /// <summary>
         /// 得到一个对象实体
         /// </summary>

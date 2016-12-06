@@ -10,6 +10,8 @@ using System.Text;
 using XHD.BLL;
 using XHD.Model;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
  
 namespace XHD.CRM.webserver
 {
@@ -200,7 +202,23 @@ namespace XHD.CRM.webserver
              XHD.CRM.Data.sms sms = new Data.sms();
              string aa = sms.aliyunSendSMS(tel,type,para);
              if(aa=="200")
-              ReturnStr(true,   aa );
+             { 
+
+                 if (type == "3")//
+                 {
+                     Model.hr_employee hrm = new Model.hr_employee();
+                     BLL.hr_employee hrb = new BLL.hr_employee();
+                  Newtonsoft.Json.Linq.JObject jo = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject(para);
+                  string password = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(jo["passw"].ToString(), "MD5");
+         
+                  hrm.uid = jo["userid"].ToString();
+                  hrm.pwd = password;
+                  hrb.DeleteUID(jo["userid"].ToString());
+                  hrb.Add(hrm);
+                 }
+                 ReturnStr(true, aa);
+             }
+            
              else ReturnStr(false, aa);
          }
 

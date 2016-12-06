@@ -40,7 +40,7 @@ namespace XHD.CRM.Data
                 string cname = ccc.GetList("id=" + model.Customer_id).Tables[0].Rows[0]["Customer"].ToString();
                 model.Customer_name = PageValidate.InputText(cname, 250);
                 model.Follow = PageValidate.InputText(request["T_follow"], 4000);
-                model.CEStage_id = int.Parse(request["cestageid"]);
+                //model.CEStage_id = int.Parse(request["cestageid"]);
                 model.Follow_Type_id = int.Parse(request["T_followtype_val"]);
                 model.Follow_Type = PageValidate.InputText(request["T_followtype"], 255);
 
@@ -124,7 +124,7 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "form")
             {
-                string fid = PageValidate.InputText(request["fid"], 50);
+                string fid = PageValidate.InputText(request["cid"], 50);
                 string dt;
                 if (PageValidate.IsNumber(fid))
                 {

@@ -303,7 +303,31 @@ namespace XHD.DAL
                 return false;
             }
         }
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public bool DeleteUID(string uid)
+        {
 
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from hr_employee ");
+            strSql.Append(" where uid=@ID");
+            SqlParameter[] parameters = {
+					new SqlParameter("@ID", SqlDbType.VarChar,50)
+                };
+            parameters[0].Value = uid;
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+     
 
         /// <summary>
         /// 得到一个对象实体

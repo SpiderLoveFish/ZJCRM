@@ -168,8 +168,7 @@
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
                 url: strurl,
-                width: '100%',
-                height: '100%',
+                width: '100%', height: '65%',
                 //tree: { columnName: 'StageDescription' },
                 heightDiff: -1,
                 onRClickToSelect: true,
@@ -177,16 +176,67 @@
                     actionCustomerID = parm.data.id;
                     menu.show({ top: e.pageY, left: e.pageX });
                     return false;
+                },
+                onSelectRow: function (data, rowindex, rowobj) {
+                    var manager = $("#maingrid5").ligerGetGridManager();
+                    manager.showData({ Rows: [], Total: 0 });
+                    var url = "../../data/CRM_CEstage_Follow.ashx?Action=grid&customer_id=" + data.CustomerID;
+                    manager.GetDataByURL(url);
                 }
 
             });
-
+            $("#maingrid5").ligerGrid({
+                columns: [
+                        { display: '序号', width: 40, render: function (item, i) { return i + 1; } },
+                        {
+                            display: '跟进内容', name: 'Follow', align: 'left', width: 400, render: function (item) {
+                                var html = "<div class='abc'><a href='javascript:void(0)' onclick=view(12," + item.id + ")>";
+                                if (item.Follow)
+                                    html += item.Follow;
+                                html += "</a></div>";
+                                return html;
+                            }
+                        },
+                        {
+                            display: '跟进时间', name: 'Follow_date', width: 140, render: function (item) {
+                                return formatTimebytype(item.Follow_date, 'yyyy-MM-dd hh:mm');
+                            }
+                        },
+                        { display: '跟进方式', name: 'Follow_Type', width: 60 },
+                        {
+                            display: '跟进人', name: '', width: 80, render: function (item) {
+                                return item.employee_name;
+                            }
+                        }
+                ],
+                onAfterShowData: function (grid) {
+                    $(".abc").hover(function (e) {
+                        $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                    }, function (e) {
+                        $(this).ligerHideTip(e);
+                    });
+                },
+                dataAction: 'server', pageSize: 30, pageSizeOptions: [20, 30, 50, 100],
+                //checkbox:true,
+                url: "../../data/CRM_CEstage_Follow.ashx?Action=grid&customer_id=0",
+                width: '100%', height: '100%',
+                //title: "跟进信息",
+                heightDiff: -1,
+                onRClickToSelect: true,
+                onContextmenu: function (parm, e) {
+                    actionCustomerID = parm.data.id;
+                    menu1.show({ top: e.pageY, left: e.pageX });
+                    return false;
+                }
+            });
 
 
             initLayout();
             $(window).resize(function () {
                 initLayout();
             });
+            $("#grid").height(document.documentElement.clientHeight - $(".toolbar").height());
+            $('form').ligerForm();
             toolbar();
         });
 
@@ -246,6 +296,7 @@
                 });
                 $("#keyword1").ligerTextBox({ width: 200, nullText: "输入关键词搜索" })
                 $("#maingrid4").ligerGetGridManager().onResize();
+                $("#maingrid5").ligerGetGridManager().onResize();
             });
         }
 
@@ -362,7 +413,7 @@
                     data: issave,
                     success: function (responseText) {
                         $.ligerDialog.closeWaitting();
-                   
+                        f_followreload();
                     },
                     error: function () {
                         $.ligerDialog.closeWaitting();
@@ -559,21 +610,40 @@
             manager.loadData(true);
             top.flushiframegrid("tabid39");
         };
+        function f_followreload() {
+            var manager = $("#maingrid5").ligerGetGridManager();
+            manager.loadData(true);
+            top.flushiframegrid("tabid6");
+        };
     </script>
-    <style type="text/css">
-        .l-leaving { background: #eee; color: #999; }
+   <style type="text/css">
+        .l-treeleve1 {
+            background: yellow;
+        }
+
+        .l-treeleve2 {
+            background: yellow;
+        }
+
+        .l-treeleve3 {
+            background: #eee;
+        }
     </style>
 
 </head>
-<body style="padding: 0px;overflow:hidden;">
+<body>
+ <form id="form1" onsubmit="return false">
+        <div id="toolbar"></div>
 
-    <form id="form1" onsubmit="return false">
-        <div>
-            <div id="toolbar"></div>
-              <div id="grid">
-            <div id="maingrid4" style="margin: -1px;"></div>
-                  </div>
+        <div id="grid">
+            <div id="maingrid4" style="margin: -1px; min-width: 800px;"></div>
+            <div id="toolbar1"></div>
+            <div id="Div1" style="position: relative;">
+                <div id="maingrid5" style="margin: -1px -1px;"></div>
+            </div>
         </div>
+
+
     </form>
       <div class="az">
         <form id='serchform'>
@@ -634,7 +704,7 @@
                         <div style='width: 300px; float: left'>
                             <input type='text' id='dclbstext' name='dclbstext'    ltype='text'  ligerui="{width:50}" />
                     
-                         -->
+                   
                    
                             <input type='text' id='dclestext' name='dclestext'    ltype='text' ligerui="{width:50}"  />
                         </div>
