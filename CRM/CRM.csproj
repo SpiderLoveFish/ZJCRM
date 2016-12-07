@@ -67,6 +67,7 @@
       <HintPath>bin\Microsoft.Office.Interop.Word.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Y:\Documents\CodeSource\ZJCRM1\ZJCRM\CRM\bin\Newtonsoft.Json.dll</HintPath>
@@ -241,22 +242,23 @@
     <Content Include="CRM\Print\BudgePrintlist.aspx" />
     <Content Include="CRM\Print\PurchasePrint.aspx" />
     <Content Include="CRM\Print\LodopFuncs.js" />
+    <Content Include="CRM\Print\wtest.aspx" />
     <Content Include="CRM\Product\ProductPrintStyle.aspx" />
     <Content Include="CRM\Product\Product_QrCode_Print_Style2.aspx" />
     <Content Include="CRM\Product\Product_QrCode_Print_Model.aspx" />
     <Content Include="CRM\Product\GetProduct.aspx" />
     <Content Include="CRM\Product\Product_QrCode_Print.aspx" />
     <Content Include="CRM\Product\SelectGYS.aspx" />
-    <Content Include="CRM\purchase\StockView_out.aspx" />
-    <Content Include="CRM\purchase\StockView_In.aspx" />
-    <Content Include="CRM\purchase\StockView.aspx" />
-    <Content Include="CRM\purchase\PurchaseMainAdd_CK.aspx" />
-    <Content Include="CRM\purchase\PickingList_add.aspx" />
-    <Content Include="CRM\purchase\PurchaseMainAdd.aspx" />
-    <Content Include="CRM\purchase\PurchaseMain.aspx" />
-    <Content Include="CRM\purchase\SelectProduct.aspx" />
-    <Content Include="CRM\purchase\SelectSupplier.aspx" />
-    <Content Include="CRM\purchase\PickingList.aspx" />
+    <Content Include="CRM\Product\purchase\StockView_out.aspx" />
+    <Content Include="CRM\Product\purchase\StockView_In.aspx" />
+    <Content Include="CRM\Product\purchase\StockView.aspx" />
+    <Content Include="CRM\Product\purchase\PurchaseMainAdd_CK.aspx" />
+    <Content Include="CRM\Product\purchase\PickingList_add.aspx" />
+    <Content Include="CRM\Product\purchase\PurchaseMainAdd.aspx" />
+    <Content Include="CRM\Product\purchase\PurchaseMain.aspx" />
+    <Content Include="CRM\Product\purchase\SelectProduct.aspx" />
+    <Content Include="CRM\Product\purchase\SelectSupplier.aspx" />
+    <Content Include="CRM\Product\purchase\PickingList.aspx" />
     <Content Include="CRM\Repair\Repairphone.aspx" />
     <Content Include="CRM\Repair\UploadImg.aspx" />
     <Content Include="CRM\Sale\SelectBudge.aspx" />
@@ -898,6 +900,17 @@
     <Content Include="Data\CRM_Classic_case.ashx" />
     <Content Include="Data\ScoreShop.ashx" />
     <Content Include="Data\CRM_CEStage_Follow.ashx" />
+    <Content Include="CRM\Print\testDataSet.xsc">
+      <DependentUpon>testDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="CRM\Print\testDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>testDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="CRM\Print\testDataSet.xss">
+      <DependentUpon>testDataSet.xsd</DependentUpon>
+    </Content>
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -4403,6 +4416,18 @@
     <Compile Include="CRM\KcGl\Jcb_Ckgl_Add.aspx.designer.cs">
       <DependentUpon>Jcb_Ckgl_Add.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CRM\Print\testDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>testDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\Print\wtest.aspx.cs">
+      <DependentUpon>wtest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CRM\Print\wtest.aspx.designer.cs">
+      <DependentUpon>wtest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CRM\Product\ProductPrintStyle.aspx.cs">
       <DependentUpon>ProductPrintStyle.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -4851,6 +4876,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CRM\Print\rtest.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

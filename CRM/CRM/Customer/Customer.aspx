@@ -100,6 +100,26 @@
                     { display: '业务员', name: 'Employee', width: 50 },
                     { display: '设计师', name: 'Emp_sj', width: 50 },
                     { display: '施工监理', name: 'Emp_sg', width: 60 },
+                     {
+                         display: '施工状态', name: 'Stage_icon', width: 60, render: function (item) {
+
+                             var html;
+                             if (item.Stage_icon == "正在施工") {
+                                 html = "<div style='color:#FF0000'>";
+                                 html += item.Stage_icon;
+                                 html += "</div>";
+                             }
+                             else if (item.Stage_icon == "施工完成") {
+                                 html = "<div style='color:#339900'>";
+                                 html += item.Stage_icon;
+                                 html += "</div>";
+                             }
+                             else {
+                                 html = item.Stage_icon;
+                             }
+                             return html;
+                         }
+                     },
                     { display: '性质', name: 'privatecustomer', width: 40 },
      
                     {
@@ -285,7 +305,7 @@
                     width: 120, items: getMenuItems(data)
                 });
                 $("#stype").ligerComboBox({
-                    width: 200,
+                    width: 100,
                     isMultiSelect: true,
                     url: "../../data/param_sysparam.ashx?Action=combo&parentid=1&rnd=" + Math.random()
                 })

@@ -213,6 +213,9 @@ namespace XHD.CRM.webserver
          
                   hrm.uid = jo["userid"].ToString();
                   hrm.pwd = password;
+                  hrm.level = "99";//试用账户
+                  hrm.tel = jo["userid"].ToString();
+                  hrm.name = "试用" + jo["passw"].ToString();
                   hrb.DeleteUID(jo["userid"].ToString());
                   hrb.Add(hrm);
                  }
