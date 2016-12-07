@@ -39,7 +39,7 @@
                    $.each(obj, function (i, data) {
 
                        item = "<tr><td>" + data['RateName'] + "</td> "
-                           + " <td  align='right'>" + data['rate'].toFixed(2) + "</td> <td  align='right'>" + data['RateAmount'].toFixed(2) + "</td>"
+                           + " <td  align='right'>" + (data['rate']*100).toFixed(2)+"%" + "</td> <td  align='right'>" +toMoney( data['RateAmount']) + "</td>"
                            + " </tr>";
                        $('.table3').append(item);
 
@@ -106,9 +106,9 @@
                    $("#T_tel_2").html(obj.tel);
                    $("#T_sjs").html(obj.sjs);
                    $("#T_sjs_2").html(obj.sjs);
-                   $("#T_zje").html((obj.BudgetAmount + obj.FJAmount).toFixed(2));
-                   $("#T_clje").html((obj.BudgetAmount).toFixed(2));
-                   $("#T_fjje").html((obj.FJAmount).toFixed(2));
+                   $("#T_zje").html(toMoney((obj.BudgetAmount + obj.FJAmount)));
+                   $("#T_clje").html(toMoney((obj.BudgetAmount)));
+                   $("#T_fjje").html(toMoney((obj.FJAmount)));
                    $("#T_zcje").html(obj.ZCAmount.toFixed(2));
                    $("#T_jjje").html(obj.JJAmount.toFixed(2));
                    $("#T_bzr").html();
@@ -158,15 +158,15 @@
                        else sum = data['SUM'];
                        if (data['ComponentName'] != cn) {
                            //alert(JSON.stringify(data))
-                           item = "<tr><td align='left' colspan='9' ><font size='3' ><b>&nbsp;&nbsp;" + data['ComponentName'] + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(合计：" + data['BwSubTotal'] + ")</b></font></td></tr>"
-                           + "<tr><td >"+ data['brand'] + "</td><td align='right'>" + data['zc_price'].toFixed(2) + "</td><td align='right'>" + data['fc_price'].toFixed(2) + "</td><td align='right'>" + data['rg_price'].toFixed(2) + "</td><td align='right'>" + data['TotalPrice'].toFixed(2) + "</td><td align='right'>" + sum.toFixed(2) + "</td> "
-                               + " <td align='right'>" + data['je'].toFixed(2) + "</td><td  align=center>" + data['unit'] + "</td> <td>" + data['proremarks'] + "</td>"
+                           item = "<tr><td align='left' colspan='9' ><font size='3' ><b>&nbsp;&nbsp;" + data['ComponentName'] + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(合计：" + toMoney(data['BwSubTotal']) + ")</b></font></td></tr>"
+                           + "<tr><td >"+ data['brand'] + "</td><td align='right'>" + data['zc_price'].toFixed(2) + "</td><td align='right'>" + toMoney(data['fc_price']) + "</td><td align='right'>" + toMoney(data['rg_price']) + "</td><td align='right'>" + toMoney(data['TotalPrice']) + "</td><td align='right'>" + sum.toFixed(2) + "</td> "
+                               + " <td align='right'>" + toMoney(data['je']) + "</td><td  align=center>" + data['unit'] + "</td> <td>" + data['proremarks'] + "</td>"
                                //.replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>")
                                + " </tr>";
                        }
                        else {
-                           item = "<tr><td>" + data['brand'] + "</td><td align='right'>" + data['zc_price'].toFixed(2) + "</td><td align='right'>" + data['fc_price'].toFixed(2) + "</td><td align='right'>" + data['rg_price'].toFixed(2) + "</td><td align='right'>" + data['TotalPrice'].toFixed(2) + "</td><td align='right'>" + sum.toFixed(2) + "</td> "
-                               + " <td align='right'>" + data['je'].toFixed(2) + "</td><td  align=center>" + data['unit'] + "</td> <td>" + data['proremarks'] + "</td>"
+                           item = "<tr><td>" + data['brand'] + "</td><td align='right'>" + toMoney(data['zc_price']) + "</td><td align='right'>" + toMoney(data['fc_price']) + "</td><td align='right'>" + toMoney(data['rg_price']) + "</td><td align='right'>" + toMoney(data['TotalPrice']) + "</td><td align='right'>" + sum.toFixed(2) + "</td> "
+                               + " <td align='right'>" + toMoney(data['je']) + "</td><td  align=center>" + data['unit'] + "</td> <td>" + data['proremarks'] + "</td>"
                                + " </tr>";
                        }
                        $('.table1').append(item);
@@ -193,7 +193,7 @@
                        if (data['zcje'] == null) zcje = 0;
                        else zcje = data['zcje'];
                        item = "<tr><td>" + data['ComponentName'] + "</td> "
-                           + " <td  align='right'>" + data['zc_zje'].toFixed(2) + "</td><td  align='right'>" + data['fc_zje'].toFixed(2) + "</td> <td  align='right'>" + data['rg_zje'].toFixed(2) + "</td> <td  align='right'>" + data['zje'].toFixed(2) + "</td>"
+                           + " <td  align='right'>" + toMoney(data['zc_zje']) + "</td><td  align='right'>" + toMoney(data['fc_zje']) + "</td> <td  align='right'>" + toMoney(data['rg_zje']) + "</td> <td  align='right'>" + toMoney(data['zje']) + "</td>"
                            + " </tr>";
                        $('.table2').append(item);
 
@@ -401,25 +401,30 @@
       </TBODY>--%></TABLE>
 </div>
 <%--<p>----------------------div2:------------------------------------------------------------------------------------</p>--%>
-<div id="div2"><table width="100%" cellSpacing=0 cellPadding=0 border=0 >
+<div id="div2"><table width="100%" cellSpacing=0 cellPadding=0 border=0  bordercolor="#ffffff" >
     <tr>
       <td > <p align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;尊敬的<SPAN  style="color:blue" id="T_kh" ></SPAN><SPAN id="T_gender" ></SPAN>，您好，首先非常感谢您对我们的信任并选择<span id="T_logo_2"></span>为您装修，现在为您提供您的爱家-<SPAN style="color:blue" id="T_address" ></SPAN>的装修预算，我是设计师<SPAN style="color:blue" id="T_sjs" ></SPAN>，我的联系电话是<SPAN  style="color:blue" id="T_sjstel" ></SPAN>,如有任何问题可致电咨询。您的联系电话是<SPAN  style="color:blue" id="T_tel" ></SPAN>,服务期间我们将及时向您汇报进度。<br>
           <br>
-          此份预算的总金额分为两部分组成，材料、人工与附加费用   
+          预算总金额分为两部分：材料人工费用&nbsp;+&nbsp;附加费用   
      </p><p>
-          &nbsp;1、材料人工费用为<SPAN  style="color:blue" id="T_clje" ></SPAN>元<br>
-          &nbsp;2、您家附加费用为<SPAN  style="color:blue" id="T_fjje" ></SPAN>元 <br>
-         (<SPAN  id="T_table3" ></SPAN>) <br>
-          &nbsp;3、两项合计费用为<SPAN  style="color:blue" id="T_zje" ></SPAN>元 <br>
+        
+   
+        <%-- (<SPAN  id="T_table3" ></SPAN>) <br>--%>
+         &nbsp;<b>预算总费用：<SPAN  style="color:blue" id="T_zje" ></SPAN>元，明细如下：</b>
       
      </p>
-下面是分部位的材料人工汇总金额。</td>
+</td>
         </tr>
 <tr>
  <td valign="top" >
 <TABLE   class="table2 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="80%" style="border-collapse:collapse;font-size:15px" bordercolor="#333333">
 <thead>
+
   <TR>
+    <TD colspan="5"> &nbsp;<b>1、材料人工费用：<SPAN  style="color:blue" id="T_clje" ></SPAN>元</b></TD>
+    </TR>
+  <TR>
+     
      <TD width="10%">
       <DIV align=center><b>部位</b></DIV></TD>
     <!--<TD width="10%">
@@ -444,46 +449,41 @@
   </tfoot>
 </TABLE>
 </td>
-<%--<td  valign="top" width="50%">
-    <TABLE   class="table3 table-striped table-bordered table-condensed" border=1 cellSpacing=0 cellPadding=1 width="99%" style="border-collapse:collapse;font-size:10px"; bordercolor="#333333" >
+    </tr>
+ </br>
+    <tr>
+ <td valign="top" >
+<TABLE   class="table3 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="50%" style="border-collapse:collapse;font-size:15px" bordercolor="#333333">
 <thead>
+
   <TR>
-     <TD colspan="3">
-      <DIV align=center><b>附加费用</b></DIV></TD>
-    <!--<TD width="10%">
-      <DIV align=center><b>产品种类</b></DIV></TD>
-    <TD width="10%">
-      <DIV align=center><b>总数量</b></DIV></TD>-->
+    <TD colspan="3"> &nbsp;<b>2、附加费用：<SPAN  style="color:blue" id="T_fjje" ></SPAN>元</b></TD>
     </TR>
-        <tr>
-          <TD width="10%">
+  <TR>
+     
+     <TD width="60%">
       <DIV align=center><b>附加项目</b></DIV></TD>
     <!--<TD width="10%">
       <DIV align=center><b>产品种类</b></DIV></TD>
     <TD width="10%">
       <DIV align=center><b>总数量</b></DIV></TD>-->
-    <TD width="10%">
+    <TD width="20%">
       <DIV align=center><b>费率</b></DIV></TD>
-        <TD width="10%">
-          <DIV align=center><b>金额</b></DIV></TD>
-    </TR>
+        <TD width="20%">
+      <DIV align=center><b>金额</b></DIV></TD>
+   
+     </TR>
+  
+    
 </thead>      
   <TBODY>      
  
   <tfoot>
-  <tr>
-   
-    <TD ><b>合计</b></TD>
-    
-	   
-	<TD width="14%" align="right">　</TD>
-	<TD width="19%" tdata="allSum" format="#,##0.00" align="right"><font color="#0000FF">###元</font></TD>    
- </tr>
-
+  
       
   </tfoot>
 </TABLE>
-    </td>--%>
+</td>
     </tr>
     </table>
 </div>
