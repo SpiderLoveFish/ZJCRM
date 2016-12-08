@@ -375,7 +375,13 @@ namespace XHD.CRM.Data
                 DataSet ds = ccp.GetList(" product_id=" + int.Parse(c_id));
 
                 BLL.CRM_order_details ccod = new BLL.CRM_order_details();
+                BLL.Budge_BasicDetail bbd = new BLL.Budge_BasicDetail();
                 if (ccod.GetList("product_id=" + int.Parse(c_id)).Tables[0].Rows.Count > 0)
+                {
+                    //order
+                    context.Response.Write("false:order");
+                }
+                else if (bbd.GetList("xmid=" + int.Parse(c_id)).Tables[0].Rows.Count > 0)//预算
                 {
                     //order
                     context.Response.Write("false:order");
