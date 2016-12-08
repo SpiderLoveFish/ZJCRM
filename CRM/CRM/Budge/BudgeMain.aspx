@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -59,7 +59,7 @@
  
                       },
                         { display: '客户地址', name: 'address', width: 200, align: 'left' },    
-		 {                        display: '金额', name: 'BudgetAmount', width: 80, align: 'right', render: function (item) {                            return "<div style='color:#135294'>" + toMoney(item.BudgetAmount + item.FJAmount) + "</div>";                        }                    },
+		 {                        display: '金额', name: 'BudgetAmount', width: 80, align: 'right', render: function (item) {                            return "<div style='color:#135294'>" + toMoney((item.BudgetAmount + item.FJAmount)) + "</div>";                        }                    },
                       {
                           display: '状态', name: 'txtstatus', width: 60, align: 'left', render: function (item) {
 

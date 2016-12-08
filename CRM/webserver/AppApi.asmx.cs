@@ -330,6 +330,13 @@ namespace XHD.CRM.webserver
                   sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sj=B.ID 	WHERE	ISNULL(B.isDelete,0)=0 AND Emp_id_sj IS	NOT		NULL AND Emp_id_sj>0 order  by Emp_sj ");
                   sb.AppendLine(" ");
               }
+              if (url == "jplx")//精品类型
+              {
+                  sb.Clear();
+                  sb.AppendLine("SELECT id ,params_name  FROM Param_SysParam WHERE parentid IN(");
+                  sb.AppendLine("SELECT id FROM dbo.Param_SysParam_Type  WHERE	params_name='精品类型'");
+                  sb.AppendLine(")");
+              }
               else
               {
                   sb.AppendLine(" SELECT  ");
