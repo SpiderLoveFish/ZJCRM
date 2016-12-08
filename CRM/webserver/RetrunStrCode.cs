@@ -211,7 +211,7 @@ namespace XHD.CRM.webserver
 
             if (strWhere.Trim() != "" && lx != "search")//单独查询 
             {
-                sb.AppendLine(" AND (cc.tel like '%" + strWhere + "%' OR a.address like '%" + strWhere + "%' or B.BudgetName like '%" + strWhere + "%')");
+                sb.AppendLine(" AND (cc.tel like '%" + strWhere + "%' OR budge_id LIKE '%" + strWhere + "%' OR a.address like '%" + strWhere + "%' or B.BudgetName like '%" + strWhere + "%')");
             }
             if (lx == "dqr")//待确认
             {

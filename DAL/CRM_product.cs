@@ -218,7 +218,8 @@ namespace XHD.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from CRM_product ");
+            //strSql.Append("delete from CRM_product ");
+            strSql.Append("UPDATE	dbo.CRM_product SET status='temp-del',isDelete=1,Delete_time=GETDATE()");
             strSql.Append(" where product_id=@product_id");
             SqlParameter[] parameters = {
 					new SqlParameter("@product_id", SqlDbType.Int,4)};
