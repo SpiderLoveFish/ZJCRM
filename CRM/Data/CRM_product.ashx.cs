@@ -321,7 +321,7 @@ namespace XHD.CRM.Data
                     serchtxt += " and ( product_name like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
                     serchtxt += " or  C_code like N'%" + PageValidate.InputText(request["stext"], 255) + "%' )";
                 }
-
+                serchtxt += "  ISNULL(status,'')  NOT  LIKE '%Temp%' ";
                 //权限
                 DataSet ds = ccp.GetList(PageSize, PageIndex, serchtxt, sorttext, out Total);
                 if (!string.IsNullOrEmpty(request["type"]))

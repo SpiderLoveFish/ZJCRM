@@ -155,7 +155,12 @@
                     data: issave,
                     success: function (responseText) {
                         top.$.ligerDialog.closeWaitting();
-                        if (responseText == "false:type") {
+                     if (responseText == "false:exist")
+                        {
+                            top.$.ligerDialog.closeWaitting();
+                            top.$.ligerDialog.error('部件修改失败！此部件名称已经在使用中！！');
+                        }
+                     else if (responseText == "false:type") {
                             top.$.ligerDialog.error('操作失败，上级类别不能是自己！');
                         }
                         else {

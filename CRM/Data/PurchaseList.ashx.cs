@@ -104,6 +104,8 @@ namespace XHD.CRM.Data
                     serchtxt += " and category_name like N'%" + PageValidate.InputText(request["stextlx"], 255) + "%'";
 
                 }
+
+                serchtxt += "  ISNULL(status,'')  NOT  LIKE '%Temp%' ";
                 //权限
                 DataSet ds = cp.GetList(PageSize, PageIndex, serchtxt, sorttext, out Total);
                  

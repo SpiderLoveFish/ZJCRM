@@ -67,7 +67,10 @@
       <HintPath>bin\Microsoft.Office.Interop.Word.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 10.0\ReportViewer\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Y:\Documents\CodeSource\ZJCRM1\ZJCRM\CRM\bin\Newtonsoft.Json.dll</HintPath>
@@ -242,7 +245,6 @@
     <Content Include="CRM\Print\BudgePrintlist.aspx" />
     <Content Include="CRM\Print\PurchasePrint.aspx" />
     <Content Include="CRM\Print\LodopFuncs.js" />
-    <Content Include="CRM\Print\wtest.aspx" />
     <Content Include="CRM\Product\ProductPrintStyle.aspx" />
     <Content Include="CRM\Product\Product_QrCode_Print_Style2.aspx" />
     <Content Include="CRM\Product\Product_QrCode_Print_Model.aspx" />
@@ -900,17 +902,6 @@
     <Content Include="Data\CRM_Classic_case.ashx" />
     <Content Include="Data\ScoreShop.ashx" />
     <Content Include="Data\CRM_CEStage_Follow.ashx" />
-    <Content Include="CRM\Print\testDataSet.xsc">
-      <DependentUpon>testDataSet.xsd</DependentUpon>
-    </Content>
-    <None Include="CRM\Print\testDataSet.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>testDataSet.Designer.cs</LastGenOutput>
-    </None>
-    <Content Include="CRM\Print\testDataSet.xss">
-      <DependentUpon>testDataSet.xsd</DependentUpon>
-    </Content>
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -4416,18 +4407,6 @@
     <Compile Include="CRM\KcGl\Jcb_Ckgl_Add.aspx.designer.cs">
       <DependentUpon>Jcb_Ckgl_Add.aspx</DependentUpon>
     </Compile>
-    <Compile Include="CRM\Print\testDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>testDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="CRM\Print\wtest.aspx.cs">
-      <DependentUpon>wtest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CRM\Print\wtest.aspx.designer.cs">
-      <DependentUpon>wtest.aspx</DependentUpon>
-    </Compile>
     <Compile Include="CRM\Product\ProductPrintStyle.aspx.cs">
       <DependentUpon>ProductPrintStyle.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -4804,6 +4783,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Browsers\App_Data\" />
+    <Folder Include="CRM\Print\rdlc\" />
     <Folder Include="CSS\kjl\images\images\" />
     <Folder Include="file\contract\" />
     <Folder Include="file\customer\" />
@@ -4876,9 +4856,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="CRM\Print\rtest.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

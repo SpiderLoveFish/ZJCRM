@@ -50,8 +50,16 @@ namespace XHD.CRM.Data
 
                  if (!string.IsNullOrEmpty(xmid) && xmid != "null")
                  {
-                     model.id = StringToInt(xmid);
-                    ccpc.Update(model);
+                     if (ccpc.Exists_Budge_Para_Ver(int.Parse(xmid)))
+                     {
+                         context.Response.Write("false:exist");
+                     }
+                     else
+                     {
+                         model.id = StringToInt(xmid);
+                         ccpc.Update(model);
+                     }
+                  
                     
                  }
  
