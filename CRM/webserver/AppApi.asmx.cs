@@ -1075,7 +1075,7 @@ namespace XHD.CRM.webserver
           {
               SqlParameter[] parameters = { };
               string serchtxt = DataAuth(userid);
-              string sql = rsc.GetLastListFollow(nowindex, strwhere,url,  serchtxt);
+              string sql = rsc.GetLastListFollow(nowindex, strwhere, url, serchtxt, userid);
               DataSet ds = DbHelperSQL.Query(sql, parameters);
               DSToJSON(ds);
 

@@ -17,6 +17,7 @@ namespace XHD.CRM.webserver
             var sb = new System.Text.StringBuilder();
             int startindex = int.Parse(nowindex) - 10;
             string strtype = "";
+            
             if (type == "M")//当年当月
             { strtype = " AND  DATENAME(month,InDate) = DATENAME(month,GETDATE())";
             strtype += " AND  DATENAME(year,InDate)= DATENAME(year,GETDATE()) ";
@@ -33,7 +34,7 @@ namespace XHD.CRM.webserver
                 if (str[0] != "")
                     strtype += " AND InDate>='" + str[0] + "'";
                 if (str[1] != "")
-                    strtype += " AND AND InDate<='" + str[1] + "'";
+                    strtype += " AND   InDate<='" + str[1] + "'";
             }
             if (sfkh == "N")
             {
@@ -123,10 +124,41 @@ namespace XHD.CRM.webserver
 
 
 
-        public string GetLastListFollow(string nowindex, string strwhere, string url, string serchtxt)
+        public string GetLastListFollow(string nowindex, string strwhere, string url, string serchtxt, string userid)
         {
         var sb = new System.Text.StringBuilder();
         int startindex = int.Parse(nowindex) - 10;
+        if (!string.IsNullOrEmpty(strwhere))
+        {
+            string[] str = strwhere.Split(';');
+            if (str[5] == "fav")
+            {
+                // sb.AppendLine("  LEFT JOIN Crm_Customer_Favorite B on B.customer_id=A.id and userid=" + ID);
+                sb.AppendLine("  and  c.id in (select customer_id  from  Crm_Customer_Favorite where userid=" + userid + ")");
+
+            }
+
+            sb.AppendLine(" and c.address    like    '%" + str[0] + "%' ");
+            if (str[1] != "")
+                sb.AppendLine(" and Emp_id_sg   = '" + str[1] + "' ");
+            if (str[2] != "")
+                sb.AppendLine(" and Emp_id_sj    =    '" + str[2] + "' ");
+            sb.AppendLine(" and c.CustomerType_id    like    '%" + str[3] + "%' ");
+            sb.AppendLine(" and c.tel    like    '%" + str[4] + "%' ");
+            sb.AppendLine(" and c.Customer    like    '%" + str[6] + "%' ");//姓名
+            if (str[7] != "")
+                sb.AppendLine(" and c.Create_date >= '" + str[7] + " 00:00' ");//开始时间
+            if (str[8] != "")
+                sb.AppendLine(" and c.Create_date  <=  '" + str[8] + " 23:59' ");//
+            if (str[9] != "")
+            {
+                //sb.AppendLine(" and Customer    like    '%" + str[9] + "%' ");//姓名
+                string zh = string.Format(" and ( c.Customer like N'%{0}%' or c.tel  like N'%{0}%' or c.Community like N'%{0}%' or c.address like N'%{0}%' or c.DesCripe like N'%{0}%' or c.Remarks like N'%{0}%' ) ", str[9]);
+                sb.AppendLine(zh);
+            }
+        }
+        strwhere = sb.ToString();
+        sb.Clear();
         sb.AppendLine("SELECT top 10 * FROM (");
         sb.AppendLine("SELECT  row_number() OVER (ORDER BY Follow_date DESC ) n ,");
         sb.AppendLine("CONVERT(VARCHAR(16),Follow_date,120) AS Follow_date,A.id,a.Customer_id,a.Customer_name,a.Follow,employee_name,a.Follow_Type");
