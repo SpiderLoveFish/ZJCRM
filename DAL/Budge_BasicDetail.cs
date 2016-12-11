@@ -646,10 +646,11 @@ namespace XHD.DAL
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
             strSql.Append(" top " + PageSize + " A.*,C.C_style ,TotalPrice*ISNULL(SUM,0)AS je,TotalDiscountPrice*ISNULL(SUM,0)AS zkje,B.product_name");
-            strSql.Append(" ,CASE WHEN LEN(REPLACE(replace(product_name+'/'+specifications+'/'+promodel+'/'+brand,'//','/'),'//','/'))=1 THEN '' ELSE REPLACE(replace(product_name+'/'+specifications+'/'+promodel+'/'+brand,'//','/'),'//','/') END AS brand,a.Remarks as proremarks,e.BwSubTotal ");
+            strSql.Append(" ,CASE WHEN LEN(REPLACE(replace(product_name+'/'+specifications+'/'+promodel+'/'+brand,'//','/'),'//','/'))=1 THEN '' ELSE REPLACE(replace(product_name+'/'+specifications+'/'+promodel+'/'+brand,'//','/'),'//','/') END AS brand,a.Remarks as proremarks,e.BwSubTotal,f.BPOrderby ");
             strSql.Append(" FROM dbo.Budge_BasicDetail A INNER JOIN dbo.CRM_product B ON A.xmid=B.product_id ");
             strSql.Append(" LEFT JOIN dbo.CRM_product_category C ON  B.category_id=C.id");
             strSql.Append(" LEFT JOIN (SELECT ComponentName as bwComponentName,budge_id as bwbudge_id,sum(SubTotal)BwSubTotal FROM  Budge_BasicDetail GROUP BY ComponentName,budge_id)e ON e.bwbudge_id=a.budge_id AND e.bwComponentName=a.ComponentName");
+            strSql.Append(" LEFT JOIN (SELECT BP_Name,OrderBy AS BPOrderby FROM dbo.Budge_BasicPart)f ON f.BP_Name=a.ComponentName");
             strSql.Append(" WHERE A.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM Budge_BasicDetail ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(id) FROM Budge_BasicDetail ");
