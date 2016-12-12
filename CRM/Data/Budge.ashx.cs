@@ -236,9 +236,9 @@ namespace XHD.CRM.Data
                 string bid = PageValidate.InputText(request["bid"], 50);
                 string xmlist = PageValidate.InputText(request["xmlist"], 255);
                 string compname = PageValidate.InputText(request["compname"], 255);
-                
+                string compid = PageValidate.InputText(request["compid"], 50); 
                 if (xmlist.Length > 1) xmlist = xmlist.Substring(1);
-                bbdetail.insertlist(bid, xmlist,compname);
+                bbdetail.insertlist(bid, xmlist, compname, compid);
 
                 log.add_trace(bid, "", "savedetailadd", empname);  
             }
@@ -424,13 +424,14 @@ namespace XHD.CRM.Data
             {
                 string comp = PageValidate.InputText(request["comp"], 50);
                 string bid = PageValidate.InputText(request["bid"], 50);
+                string compid = PageValidate.InputText(request["compid"], 50);
                 if (!string.IsNullOrEmpty(comp))
                 {
 
 
                     //暂：明细和部件
                     BLL.Budge_BasicDetail bdetail = new BLL.Budge_BasicDetail();
-                    if (bdetail.Delete_comp(comp, bid))
+                    if (bdetail.Delete_comp(comp, compid, bid))
                         context.Response.Write("true");
                     else context.Response.Write("false");
                 }
@@ -793,8 +794,9 @@ namespace XHD.CRM.Data
                 string Total;
                 string serchtxt = "1=1";
                 var com = PageValidate.InputText(request["compname"], 255);
-                if(com!="")
-                serchtxt += " and   ComponentName = '" + PageValidate.InputText(request["compname"], 255) + "'";
+                var compid = PageValidate.InputText(request["compid"], 255);
+                if (com != "" || compid!="")
+                    serchtxt += " and   ( ComponentName = '" + com + "' OR ComponentID='" + compid + "')";
                 serchtxt += " and   budge_id ='" + PageValidate.InputText(request["bid"], 255) + "'";
 
 
@@ -961,7 +963,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "selecttree")
             {
                 string serchtxt = " 1=1 ";
-
+                serchtxt += " and IsStatus='Y' ";
                 DataSet ds = bbb.GetListBasicPart(serchtxt);
                 string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], ds.Tables[0].Rows.Count.ToString());
 

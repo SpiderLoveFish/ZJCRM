@@ -371,7 +371,7 @@
                     if (yes) {
                         $.ajax({
                             url: "../../data/Budge.ashx", type: "POST",
-                            data: { Action: "delcomp", bid: $("#T_budgeid").val(), comp: node.data.text, rnd: Math.random() },
+                            data: { Action: "delcomp", bid: $("#T_budgeid").val(), comp: node.data.text, compid: node.data.id, rnd: Math.random() },
                             success: function (responseText) {
                                 if (responseText == "true") {
                                     top.$.ligerDialog.closeWaitting();
@@ -474,7 +474,7 @@
 
         function onSelect(note) {
             var manager = $("#maingrid4").ligerGetGridManager();
-
+           // alert(JSON.stringify(note.data))
             manager.showData({ Rows: [], Total: 0 });
             var url = "../../data/Budge.ashx?Action=griddetail&bid=" + $("#T_budgeid").val() + "&compname=" + escape(note.data.text) + "&rnd=" + Math.random();
             manager.GetDataByURL(url);
@@ -583,13 +583,13 @@
                 compname = notes.data.text;
             }
             else {
-                $.ligerDialog.warn('请选择部件！');
+                $.ligerDialog.warn('请选择项目！');
                 return;
             }
             top.$.ligerDialog.open({
                 zindex: 9003,
                 title: '选择项目', width: 850, height: 400,
-                url: "CRM/Budge/SelectProduct.aspx?bid=" + $("#T_budgeid").val() + '&compname=' + escape(compname), buttons: [
+                url: "CRM/Budge/SelectProduct.aspx?bid=" + $("#T_budgeid").val() + '&compname=' + escape(compname) + '&compid=' + notes.data.id, buttons: [
                     { text: '确定(F2)', onclick: f_selectProductOK },
                     { text: '取消', onclick: f_selectContactCancel }
                 ]
@@ -631,7 +631,7 @@
             else {
                 $.ligerDialog.warn('请选择部件！');
             }
-            f_openWindowselect("../../crm/product/product_add.aspx?type=Selectbudge&id=" + $("#T_budgeid").val() + "&compname=" + escape(compname), "新增材料档案", 980, 600);
+            f_openWindowselect("../../crm/product/product_add.aspx?type=Selectbudge&id=" + $("#T_budgeid").val() + "&compname=" + escape(compname) + "&compid=" + notes.data.id, "新增材料档案", 980, 600);
 
 
         }
@@ -651,7 +651,7 @@
             var row = manager.getSelectedRow();
             if (row) {
                // alert(JSON.stringify(row))
-                f_openWindowselect("../../crm/product/product_add.aspx?type=Selectbudge&id=" + $("#T_budgeid").val() + "&compname=" + escape(compname) + "&pid=" + row.xmid, "复制材料档案", 980, 600);
+                f_openWindowselect("../../crm/product/product_add.aspx?type=Selectbudge&id=" + $("#T_budgeid").val() + "&compname=" + escape(compname) + "&compid=" + notes.data.id + "&pid=" + row.xmid, "复制材料档案", 980, 600);
 
             } else
                 $.ligerDialog.warn('请选择产品！');
@@ -713,7 +713,7 @@
                     pid = pid + ',' + rows[i].product_id;
 
                 }
-                var url = '../../data/Budge.ashx?Action=savedetailadd&bid=' + $("#T_budgeid").val() + "&xmlist=" + pid + '&compname=' + escape(compname) + '&rdm=' + Math.random();
+                var url = '../../data/Budge.ashx?Action=savedetailadd&bid=' + $("#T_budgeid").val() + "&xmlist=" + pid + '&compname=' + escape(compname) + '&compid=' + notes.data.id + '&rdm=' + Math.random();
                 dosave(url, dialog);
             }
         }

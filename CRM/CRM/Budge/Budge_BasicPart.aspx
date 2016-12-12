@@ -27,7 +27,21 @@
                         { return (page - 1) * pagesize + rowindex + 1; }
                     },
                       { display: '顺序', name: 'OrderBy', width: 50, align: 'left' },
-                    { display: '类别名称', name: 'BP_Name', width: 250, align: 'left' }
+                    { display: '类别名称', name: 'BP_Name', width: 250, align: 'left' },
+                    {
+                        display: '状态', name: 'IsStatus', width: 60, align: 'left', render: function (item) {
+
+                            var html;
+                            if (item.IsStatus == "Y") {
+                                html = "<div style='color:#FF0000'>生效";
+                                html += "</div>";
+                            }
+                            else {
+                                html = "停用";
+                            }
+                            return html;
+                        }
+                    }
 
                 ],
                 dataAction: 'server',
@@ -109,7 +123,37 @@
                 $.ligerDialog.warn('请选择行！');
             }
         }
+        function StartStop() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                $.ligerDialog.confirm("确定要修改状态，如果停用，则后续无法选择此部件！？", function (yes) {
+                    if (yes) {
+                        $.ajax({
+                            url: "../../data/Budge_BasicPart.ashx", type: "POST",
+                            data: { Action: "StartStop", bpid: row.id, rnd: Math.random() },
+                            success: function (responseText) {
+                                if (responseText == "true") {
+                                    top.$.ligerDialog.closeWaitting();
+                                    f_reload();
+                                }
 
+                                else {
+                                    top.$.ligerDialog.closeWaitting();
+                                    top.$.ligerDialog.error('修改失败！');
+                                }
+                            },
+                            error: function () {
+                                top.$.ligerDialog.closeWaitting();
+                                top.$.ligerDialog.error('修改失败！', "", null, 9003);
+                            }
+                        });
+                    }
+                })
+            } else {
+                $.ligerDialog.warn("请选择产品类别！");
+            }
+        }
         function del() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();

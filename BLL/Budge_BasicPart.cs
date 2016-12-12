@@ -181,6 +181,11 @@ namespace XHD.BLL
         {
             return dal.Exists_Budge_Para_Ver(id);
         }
+
+        public bool UpdateStatus(string id)
+        {
+            return dal.UpdateStatus(id);
+        }
 		#endregion  ExtensionMethod
 	}
 }

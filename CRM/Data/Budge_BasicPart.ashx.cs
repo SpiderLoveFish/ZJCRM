@@ -135,7 +135,13 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
-
+            if (request["Action"] == "StartStop")
+            {
+                string id = PageValidate.InputText(request["bpid"], 50);
+                if(ccpc.UpdateStatus(id))
+                    context.Response.Write("true");
+                else context.Response.Write("false");
+            }
             //del
             if (request["Action"] == "del")
             {

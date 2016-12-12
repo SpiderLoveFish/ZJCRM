@@ -138,6 +138,7 @@ namespace XHD.DAL
 		}
 
 
+
 		/// <summary>
 		/// 得到一个对象实体
 		/// </summary>
@@ -299,6 +300,27 @@ namespace XHD.DAL
 
 		#endregion  BasicMethod
 		#region  ExtensionMethod
+        public bool UpdateStatus(string id)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("UPDATE	 Budge_BasicPart SET IsStatus= CASE IsStatus WHEN 'Y' THEN 'N' WHEN 'N' THEN 'Y' ELSE 'Y' END ");
+            strSql.Append(" where id=@id");
+            SqlParameter[] parameters = { 
+					new SqlParameter("@id", SqlDbType.Int,4) 
+                                        }; 
+            parameters[0].Value = id; 
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
         public DataSet GetList(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
         {
             StringBuilder strSql = new StringBuilder();

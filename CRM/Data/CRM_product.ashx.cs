@@ -225,9 +225,10 @@ namespace XHD.CRM.Data
                             BLL.Budge_BasicDetail bbd = new BLL.Budge_BasicDetail();
                             string bbid = PageValidate.InputText(request["id"], 50);
                             string comp = PageValidate.InputText(request["compname"], 250);  //部件
+                            string compid = PageValidate.InputText(request["compid"], 250);  //部件
                             string pro_id = ccp.GetList(" c_code='" + c_code + "'").Tables[0].Rows[0]["product_id"].ToString();
                             //  if (pid.Length > 1) pid = pid.Substring(1);
-                            bbd.insertlist(bbid, pro_id, comp);
+                            bbd.insertlist(bbid, pro_id, comp, compid);
 
                            
 

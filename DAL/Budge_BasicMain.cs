@@ -601,7 +601,7 @@ namespace XHD.DAL
         public DataSet GetListPara_Ver(string strWhere)
         {
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine("SELECT   A.* FROM Budge_Para_Ver	A");
+            sb.AppendLine("SELECT   A.parentid, B.id,B.BP_Name FROM Budge_Para_Ver	A");
             sb.AppendLine("INNER JOIN Budge_BasicPart B ON A.b_Part_id=B.id");
             sb.AppendLine("");
             if (strWhere.Trim() != "")

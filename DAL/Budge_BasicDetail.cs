@@ -40,12 +40,12 @@ namespace XHD.DAL
 			return DbHelperSQL.Exists(strSql.ToString(),parameters);
 		}
 
-        public int insertlist(string bid,string xmlistid,string compname)
+        public int insertlist(string bid,string xmlistid,string compname,string compid)
         { 
             StringBuilder strSql=new StringBuilder();
         strSql.Append("  INSERT INTO Budge_BasicDetail ");
-        strSql.Append(" (budge_id,xmid,unit,ComponentName,Cname,TotalPrice,discount,totaldiscountprice,fc_price,rg_price,zc_price,Remarks) ");
-        strSql.Append(" SELECT '" + bid + "',product_id,unit,'" + compname + "',category_name,price,1,price,fc_price,rg_price,zc_price,remarks FROM dbo.CRM_product WHERE product_id IN(" + xmlistid + ") ");
+        strSql.Append(" (budge_id,xmid,unit,ComponentID,ComponentName,Cname,TotalPrice,discount,totaldiscountprice,fc_price,rg_price,zc_price,Remarks) ");
+        strSql.Append(" SELECT '" + bid + "',product_id,unit,'" + compid + "','" + compname + "',category_name,price,1,price,fc_price,rg_price,zc_price,remarks FROM dbo.CRM_product WHERE product_id IN(" + xmlistid + ") ");
 
         SqlParameter[] parameters = { };
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
@@ -67,13 +67,14 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into Budge_BasicDetail(");
-			strSql.Append("budge_id,xmid,ComponentName,Cname,unit,MmaterialPrice,IsShowPrice,SecmaterialPrice,ArtificialPrice,MechanicalLoss,MaterialLoss,TotalPrice,IsDiscount,TotalDiscountPrice,MaterialCost,MechanicalCost,ArtificialCost,SUM,Remarks)");
+            strSql.Append("budge_id,xmid,ComponentID,ComponentName,Cname,unit,MmaterialPrice,IsShowPrice,SecmaterialPrice,ArtificialPrice,MechanicalLoss,MaterialLoss,TotalPrice,IsDiscount,TotalDiscountPrice,MaterialCost,MechanicalCost,ArtificialCost,SUM,Remarks)");
 			strSql.Append(" values (");
-			strSql.Append("@budge_id,@xmid,@ComponentName,@Cname,@unit,@MmaterialPrice,@IsShowPrice,@SecmaterialPrice,@ArtificialPrice,@MechanicalLoss,@MaterialLoss,@TotalPrice,@IsDiscount,@TotalDiscountPrice,@MaterialCost,@MechanicalCost,@ArtificialCost,@SUM,@Remarks)");
+            strSql.Append("@budge_id,@xmid,@ComponentID,@ComponentName,@Cname,@unit,@MmaterialPrice,@IsShowPrice,@SecmaterialPrice,@ArtificialPrice,@MechanicalLoss,@MaterialLoss,@TotalPrice,@IsDiscount,@TotalDiscountPrice,@MaterialCost,@MechanicalCost,@ArtificialCost,@SUM,@Remarks)");
 			strSql.Append(";select @@IDENTITY");
 			SqlParameter[] parameters = {
 					new SqlParameter("@budge_id", SqlDbType.VarChar,15),
 					new SqlParameter("@xmid", SqlDbType.Int,4),
+                    new SqlParameter("@ComponentID", SqlDbType.Int,4),
 					new SqlParameter("@ComponentName", SqlDbType.VarChar,100),
 					new SqlParameter("@Cname", SqlDbType.VarChar,100),
 					new SqlParameter("@unit", SqlDbType.VarChar,20),
@@ -93,23 +94,24 @@ namespace XHD.DAL
 					new SqlParameter("@Remarks", SqlDbType.VarChar,-1)};
 			parameters[0].Value = model.budge_id;
 			parameters[1].Value = model.xmid;
-			parameters[2].Value = model.ComponentName;
-			parameters[3].Value = model.Cname;
-			parameters[4].Value = model.unit;
-			parameters[5].Value = model.MmaterialPrice;
-			parameters[6].Value = model.IsShowPrice;
-			parameters[7].Value = model.SecmaterialPrice;
-			parameters[8].Value = model.ArtificialPrice;
-			parameters[9].Value = model.MechanicalLoss;
-			parameters[10].Value = model.MaterialLoss;
-			parameters[11].Value = model.TotalPrice;
-			parameters[12].Value = model.IsDiscount;
-			parameters[13].Value = model.TotalDiscountPrice;
-			parameters[14].Value = model.MaterialCost;
-			parameters[15].Value = model.MechanicalCost;
-			parameters[16].Value = model.ArtificialCost;
-			parameters[17].Value = model.SUM;
-			parameters[18].Value = model.Remarks;
+            parameters[2].Value = model.ComponentID;
+			parameters[3].Value = model.ComponentName;
+			parameters[4].Value = model.Cname;
+			parameters[5].Value = model.unit;
+			parameters[6].Value = model.MmaterialPrice;
+			parameters[7].Value = model.IsShowPrice;
+			parameters[8].Value = model.SecmaterialPrice;
+			parameters[9].Value = model.ArtificialPrice;
+			parameters[10].Value = model.MechanicalLoss;
+			parameters[11].Value = model.MaterialLoss;
+			parameters[12].Value = model.TotalPrice;
+			parameters[13].Value = model.IsDiscount;
+			parameters[14].Value = model.TotalDiscountPrice;
+			parameters[15].Value = model.MaterialCost;
+			parameters[16].Value = model.MechanicalCost;
+			parameters[17].Value = model.ArtificialCost;
+			parameters[18].Value = model.SUM;
+			parameters[19].Value = model.Remarks;
 
 			object obj = DbHelperSQL.GetSingle(strSql.ToString(),parameters);
 			if (obj == null)
@@ -130,6 +132,7 @@ namespace XHD.DAL
 			strSql.Append("update Budge_BasicDetail set ");
 			strSql.Append("budge_id=@budge_id,");
 			strSql.Append("xmid=@xmid,");
+            strSql.Append("xmid=@ComponentID,");
 			strSql.Append("ComponentName=@ComponentName,");
 			strSql.Append("Cname=@Cname,");
 			strSql.Append("unit=@unit,");
@@ -151,6 +154,7 @@ namespace XHD.DAL
 			SqlParameter[] parameters = {
 					new SqlParameter("@budge_id", SqlDbType.VarChar,15),
 					new SqlParameter("@xmid", SqlDbType.Int,4),
+                    new SqlParameter("@ComponentID", SqlDbType.Int,4),
 					new SqlParameter("@ComponentName", SqlDbType.VarChar,100),
 					new SqlParameter("@Cname", SqlDbType.VarChar,100),
 					new SqlParameter("@unit", SqlDbType.VarChar,20),
@@ -171,24 +175,25 @@ namespace XHD.DAL
 					new SqlParameter("@id", SqlDbType.Int,4)};
 			parameters[0].Value = model.budge_id;
 			parameters[1].Value = model.xmid;
-			parameters[2].Value = model.ComponentName;
-			parameters[3].Value = model.Cname;
-			parameters[4].Value = model.unit;
-			parameters[5].Value = model.MmaterialPrice;
-			parameters[6].Value = model.IsShowPrice;
-			parameters[7].Value = model.SecmaterialPrice;
-			parameters[8].Value = model.ArtificialPrice;
-			parameters[9].Value = model.MechanicalLoss;
-			parameters[10].Value = model.MaterialLoss;
-			parameters[11].Value = model.TotalPrice;
-			parameters[12].Value = model.IsDiscount;
-			parameters[13].Value = model.TotalDiscountPrice;
-			parameters[14].Value = model.MaterialCost;
-			parameters[15].Value = model.MechanicalCost;
-			parameters[16].Value = model.ArtificialCost;
-			parameters[17].Value = model.SUM;
-			parameters[18].Value = model.Remarks;
-			parameters[19].Value = model.id;
+            parameters[2].Value = model.ComponentID;
+			parameters[3].Value = model.ComponentName;
+			parameters[4].Value = model.Cname;
+			parameters[5].Value = model.unit;
+			parameters[6].Value = model.MmaterialPrice;
+			parameters[7].Value = model.IsShowPrice;
+			parameters[8].Value = model.SecmaterialPrice;
+			parameters[9].Value = model.ArtificialPrice;
+			parameters[10].Value = model.MechanicalLoss;
+			parameters[11].Value = model.MaterialLoss;
+			parameters[12].Value = model.TotalPrice;
+			parameters[13].Value = model.IsDiscount;
+			parameters[14].Value = model.TotalDiscountPrice;
+			parameters[15].Value = model.MaterialCost;
+			parameters[16].Value = model.MechanicalCost;
+			parameters[17].Value = model.ArtificialCost;
+			parameters[18].Value = model.SUM;
+			parameters[19].Value = model.Remarks;
+			parameters[20].Value = model.id;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -301,15 +306,17 @@ namespace XHD.DAL
                 return false;
             }
         }
-        public bool Delete_comp(string comp, string bid)
+        public bool Delete_comp(string comp, string compid, string bid)
         {
 
             StringBuilder strSql = new StringBuilder();
             strSql.Append(" delete from Budge_BasicDetail ");
-            strSql.Append(" where ComponentName='" + comp + "'");
+            strSql.Append(" where ");
+            strSql.Append(" ( ComponentName='" + comp + "' OR ComponentID='" + compid + "' )");
             strSql.Append(" AND budge_id='" + bid + "'");
             strSql.Append(" delete from Budge_Para_Ver ");
-            strSql.Append(" where BP_Name='" + comp + "'");
+            strSql.Append(" where");
+            strSql.Append("  (BP_Name='" + comp + "' OR b_Part_id='" + compid + "')");
             strSql.Append(" AND budge_id='" + bid + "'");
             SqlParameter[] parameters = {
 				 
@@ -401,7 +408,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 id,budge_id,xmid,ComponentName,Cname,unit,MmaterialPrice,IsShowPrice,SecmaterialPrice,ArtificialPrice,MechanicalLoss,MaterialLoss,TotalPrice,IsDiscount,TotalDiscountPrice,MaterialCost,MechanicalCost,ArtificialCost,SUM,Remarks from Budge_BasicDetail ");
+            strSql.Append("select  top 1 id,budge_id,xmid,ComponentID,ComponentName,Cname,unit,MmaterialPrice,IsShowPrice,SecmaterialPrice,ArtificialPrice,MechanicalLoss,MaterialLoss,TotalPrice,IsDiscount,TotalDiscountPrice,MaterialCost,MechanicalCost,ArtificialCost,SUM,Remarks from Budge_BasicDetail ");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)
@@ -440,6 +447,10 @@ namespace XHD.DAL
 				if(row["xmid"]!=null && row["xmid"].ToString()!="")
 				{
 					model.xmid=int.Parse(row["xmid"].ToString());
+                } 
+                if (row["ComponentID"] != null && row["ComponentID"].ToString() != "")
+				{
+                    model.ComponentID = int.Parse(row["ComponentID"].ToString());
 				}
 				if(row["ComponentName"]!=null)
 				{
@@ -553,7 +564,7 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" id,budge_id,xmid,ComponentName,Cname,unit,MmaterialPrice,IsShowPrice,SecmaterialPrice,ArtificialPrice,MechanicalLoss,MaterialLoss,TotalPrice,IsDiscount,TotalDiscountPrice,MaterialCost,MechanicalCost,ArtificialCost,SUM,Remarks ");
+            strSql.Append(" id,budge_id,xmid,ComponentID,ComponentName,Cname,unit,MmaterialPrice,IsShowPrice,SecmaterialPrice,ArtificialPrice,MechanicalLoss,MaterialLoss,TotalPrice,IsDiscount,TotalDiscountPrice,MaterialCost,MechanicalCost,ArtificialCost,SUM,Remarks ");
 			strSql.Append(" FROM Budge_BasicDetail ");
 			if(strWhere.Trim()!="")
 			{

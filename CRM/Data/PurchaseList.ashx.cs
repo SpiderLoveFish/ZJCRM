@@ -105,7 +105,7 @@ namespace XHD.CRM.Data
 
                 }
 
-                serchtxt += "  ISNULL(status,'')  NOT  LIKE '%Temp%' ";
+                serchtxt += " AND ISNULL(status,'')  NOT  LIKE '%Temp%' ";
                 //权限
                 DataSet ds = cp.GetList(PageSize, PageIndex, serchtxt, sorttext, out Total);
                  

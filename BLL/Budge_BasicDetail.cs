@@ -39,9 +39,9 @@ namespace XHD.BLL
 			return dal.Add(model);
 		}
 
-        public int insertlist(string bid, string xmlistid, string compname)
+        public int insertlist(string bid, string xmlistid, string compname,string compid)
         { 
-            return dal.insertlist(bid,xmlistid,compname);
+            return dal.insertlist(bid,xmlistid,compname,compid);
         }
 
 		/// <summary>
@@ -75,9 +75,9 @@ namespace XHD.BLL
 			return dal.Delete(id);
 		}
 
-        public bool Delete_comp(string comp, string bid)
+        public bool Delete_comp(string comp, string bid,string compid)
         {
-            return dal.Delete_comp(comp, bid);
+            return dal.Delete_comp(comp, bid,compid);
         }
         public bool Delete_id(int id, string bid)
         {

@@ -13,6 +13,7 @@ namespace XHD.Model
 		private int _id;
 		private string _budge_id;
 		private int? _xmid;
+        private int? _ComponentID;
 		private string _componentname;
 		private string _cname;
 		private string _unit;
@@ -54,6 +55,17 @@ namespace XHD.Model
 			set{ _xmid=value;}
 			get{return _xmid;}
 		}
+
+        /// <summary>
+        /// 项目编号
+        /// </summary>
+        public int? ComponentID
+        {
+            set { _ComponentID = value; }
+            get { return _ComponentID; }
+        }
+   
+
 		/// <summary>
 		/// 部件名称
 		/// </summary>
