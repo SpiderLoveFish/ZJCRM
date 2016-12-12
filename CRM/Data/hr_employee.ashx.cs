@@ -41,7 +41,7 @@ namespace XHD.CRM.Data
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " ID";
+                    sortname = " status desc, name,ID ";
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
 
