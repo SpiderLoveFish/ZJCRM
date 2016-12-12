@@ -422,12 +422,18 @@ namespace XHD.CRM.webserver
           public void GetCustomerList_Page(string keyword, string ID, string url, string index, string searchkey)
           {
               SqlParameter[] parameters = { };
-              int startindex= int.Parse(index)*20;
-              int perindex =(int.Parse(index)-1)*20;
+              int pagesize = 20;
+              int startindex = int.Parse(index) * pagesize;
+              int perindex = (int.Parse(index) - 1) * pagesize;
               var sb = new System.Text.StringBuilder();
-
+              if (index == "50")//第一种
+              {
+                  startindex = 50;
+                  perindex = 0;
+                  pagesize = 50;
+              }
               string serchtxt = "";
-              sb.AppendLine(" SELECT TOP 20  ");
+              sb.AppendLine(" SELECT TOP " + pagesize + "  ");
               sb.AppendLine(" A.id, Serialnumber,Customer,address,tel,CustomerType,Community,DesCripe,Remarks ");
               //sb.AppendLine(",UPPER(dbo.chinese_firstletter(ltrim(Customer))) as header");
               sb.AppendLine(", CASE WHEN ISNULL(CustomerType_id,'')='' THEN '" + url + "'+'images/Icon/96.png'");
