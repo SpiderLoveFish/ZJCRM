@@ -223,7 +223,7 @@ namespace XHD.CRM.Data
                 model.industry_id = int.Parse(industryid);
                 model.industry = PageValidate.InputText(request["T_industry"], 255);
 
-
+                model.DesCripe = PageValidate.InputText(request["bq"], 255);
 
 
 
@@ -281,8 +281,8 @@ namespace XHD.CRM.Data
                     csourceid = "0";
                 model.CustomerSource_id = int.Parse(csourceid);
                 model.CustomerSource = PageValidate.InputText(request["T_CustomerSource"], 255);
-
-                model.DesCripe = PageValidate.InputText(request["T_descript"], 4000);
+                //暂时这个取消，用来做标签用
+               // model.DesCripe = PageValidate.InputText(request["T_descript"], 4000);
                 model.Remarks = PageValidate.InputText(request["T_remarks"], 4000);
                 model.privatecustomer = PageValidate.InputText(request["T_private"], 255);
 

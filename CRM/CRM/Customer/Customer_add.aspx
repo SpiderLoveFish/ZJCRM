@@ -31,7 +31,8 @@
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
         var ci = false;
-      
+        var  bq = "";
+        
         $(function () {
             
 
@@ -46,11 +47,38 @@
             $('#T_employee_sg').ligerComboBox({ width: 196, onBeforeOpen: f_selectContact_sg });
             $('#T_employee_sj').ligerComboBox({ width: 196, onBeforeOpen: f_selectContact_sj });
             $("#T_company").attr("validate", "{ required: true, remote: remote, messages: { required: '请输入客户姓名', remote: '此客户已存在!' } }");
+            $('#T_bq').ligerComboBox({ width: 97, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=18&rnd=" + Math.random(), emptyText: '（空）', onSelected: function (newvalue, newtext) { onSelect(newvalue,newtext); } });
 
         })
+
+        function onSelect(newvalue, newtext)
+        {
+            if (bq.indexOf(newvalue) > 0)
+                return false;
+            bq += ";" + newvalue + "," + newtext;;
+            $("#bqspan").append(" <input type='button' class='btn1' id='a" + newvalue + "' value='" + newtext + "'>");
+            addBtnEventry(newvalue, newtext);
+          
+        }
+        function addBtnEventry(id, text) {
+            $("#a" + id).bind("click", function () {
+                $.ligerDialog.confirm("是否确定删除", "是否确定删除，操作不可逆！", function (ok) {
+                    $.ligerDialog.closeWaitting();
+                    if (ok) {
+                        $("#a" + id).remove();
+                      
+                        bq = bq.replace(";" + id + "," + text, "");//取消
+    
+                    }
+                    else { return; }
+                });
+
+            });
+        }
         function f_save() {
+
             if ($(form1).valid()) {
-                var sendtxt = "&Action=save&id=" + getparastr("cid");
+                var sendtxt = "&Action=save&id=" + getparastr("cid") + "&bq=" + bq;
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }
@@ -101,6 +129,17 @@
                     $("#T_hxt").val(obj.hxt);
                     $("#T_ybqjt").val(obj.ybqjt);
                     $("#T_jgqjt").val(obj.jgqjt);
+
+                    if (obj.DesCripe != '' && obj.DesCripe != null && obj.DesCripe != 'null') {
+                        var str = obj.DesCripe.split(";");
+                        for (var i = 1; i < str.length; i++) {
+                            var strtext = str[i].split(",");
+                            if (strtext[0] == "") break;
+                            else
+                            onSelect(strtext[0], strtext[1])
+                        }
+                    }
+                       
 
                     if (obj.Department && obj.Employee)
                         fillemp(obj.Department, obj.Department_id, obj.Employee, obj.Employee_id);
@@ -723,7 +762,21 @@
                     <input id="T_dep_sj" name="T_dep_sj" type="hidden" />
                 </td>
             </tr>
-
+           <tr>
+                <td colspan="4" class="table_title1">标签信息</td>
+            </tr>
+            <tr>
+               <td>
+                    <div style="width: 80px; text-align: right; float: right">选择标签：</div>
+                </td>
+                <td>
+                    <input id="T_bq" name="T_bq" type="text" style="width: 196px" />
+                 
+                </td>
+                <td colspan="2"  >
+                   <div id="bqspan" style="margin: -1px;  overflow:auto; " ></div>
+                </td>
+            </tr>
         </table>
 
 
