@@ -501,7 +501,34 @@ namespace XHD.CRM.webserver
               }
 
           }
-         
+
+          /// <summary>
+          /// 新增客户
+          /// </summary>
+          /// <param name="id"></param>
+          [WebMethod]
+          public void AddCustomer( string data )
+          {
+              SqlParameter[] parameters = { };
+              string[] str = data.Split(';');
+              BLL.CRM_Customer bcp = new BLL.CRM_Customer();
+              Model.CRM_Customer mcp = new Model.CRM_Customer();
+              mcp.Customer=str[0];//客户名称
+              mcp.address = str[1];//地址
+              mcp.tel = str[2];//电话
+              mcp.CustomerType_id = int.Parse(str[3]);//客户类型
+              mcp.CustomerType = str[4];//客户类型
+              mcp.Create_date = DateTime.Now;//客户名称
+              if (bcp.Add(mcp) > 0)
+              { 
+                  ReturnStr(true, "\"success\"");
+              }
+
+              else ReturnStr(false, "\"faile\"");
+
+
+
+          }
 
           /// <summary>
           /// 客户明细
