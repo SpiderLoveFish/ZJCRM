@@ -435,7 +435,7 @@ namespace XHD.CRM.webserver
               string serchtxt = "";
               sb.AppendLine(" SELECT TOP " + pagesize + "  ");
               sb.AppendLine(" A.id, Serialnumber,Customer,address,tel,CustomerType,Community,DesCripe,Remarks ");
-              //sb.AppendLine(",UPPER(dbo.chinese_firstletter(ltrim(Customer))) as header");
+              sb.AppendLine(",UPPER(dbo.chinese_firstletter(ltrim(Customer))) as header");
               sb.AppendLine(", CASE WHEN ISNULL(CustomerType_id,'')='' THEN '" + url + "'+'images/Icon/96.png'");
               sb.AppendLine("ELSE '" + url + "'+C.icon  END AS Avatar ");
               sb.AppendLine(" FROM dbo.CRM_Customer A");
@@ -483,7 +483,7 @@ namespace XHD.CRM.webserver
               sb.AppendLine(" AND a.id>(select ISNULL(max(id),0) from (select top " + perindex + " id from CRM_Customer WHERE 1=1  ");
              
               sb.AppendLine("  " +sbt.ToString() +serchtxt + " order by id)a)");
-              string ordertxt = " ORDER BY a.id   ";
+              string ordertxt = " ORDER BY UPPER(dbo.chinese_firstletter(ltrim(Customer)))    ";
               string strsql =    sb.ToString() + sbt.ToString()+ serchtxt + ordertxt ;
 
               DataSet ds = DbHelperSQL.Query(strsql, parameters);
@@ -1110,7 +1110,22 @@ namespace XHD.CRM.webserver
               string serchtxt = DataAuth(userid);
               string sql = rsc.GetLastListFollow(nowindex, strwhere, url, serchtxt, userid);
               DataSet ds = DbHelperSQL.Query(sql, parameters);
-              DSToJSON(ds);
+              string cout = ds.Tables[0].Rows.Count.ToString();
+              if (ds == null)
+              {
+                  ReturnStr(true, "[[],{\"Total\":0} ]");
+              }
+              else
+              {
+                  if (ds.Tables[0].Rows.Count <= 0)
+                      ReturnStr(true, "[[],\"Total\":0]");
+                  else
+                  {
+                      string str = Common.DataToJson.GetJson(ds);
+                      ReturnStr(true, "[" + str + ",{\"Total\":" + cout + "}]");
+                  }
+              }
+
 
           }
 

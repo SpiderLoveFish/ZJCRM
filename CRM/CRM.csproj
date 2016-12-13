@@ -243,6 +243,9 @@
     <Content Include="CRM\KcGl\Jcb_Ckgl_Add.aspx" />
     <Content Include="CRM\Print\BudgePrint.aspx" />
     <Content Include="CRM\Print\BudgePrintlist.aspx" />
+    <Content Include="CRM\Print\BudgePrint_01.aspx" />
+    <Content Include="CRM\Print\BudgePrint_02.aspx" />
+    <Content Include="CRM\Print\BudgePrint_ZX.aspx" />
     <Content Include="CRM\Print\PurchasePrint.aspx" />
     <Content Include="CRM\Print\LodopFuncs.js" />
     <Content Include="CRM\Product\ProductPrintStyle.aspx" />
