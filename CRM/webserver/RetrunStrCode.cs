@@ -184,8 +184,10 @@ namespace XHD.CRM.webserver
             int startindex = int.Parse(nowindex) - 10;
             sb.AppendLine("SELECT top 10 * FROM (");
             sb.AppendLine("SELECT  row_number() OVER (ORDER BY DoTime DESC ) n ,");
+            sb.AppendLine("  CASE  WHEN	params_name LIKE '%全景图%' THEN	'qjt' WHEN	 params_name LIKE '%全景放样%' THEN 'qjfy' WHEN params_name LIKE '%施工图%' THEN 'sgt' WHEN  params_name LIKE '%竣工图%' THEN 'jgt' END AS ptype ,");
             sb.AppendLine("c_title,customer_name,img_style,'"+url+"'+thum_img AS thumimg,IsStatus");
-            sb.AppendLine(" FROM  dbo.Crm_Classic_case");
+            sb.AppendLine(" FROM  dbo.Crm_Classic_case A");
+            sb.AppendLine(" INNER JOIN  Param_SysParam	B ON A.img_style=B.id ");
             sb.AppendLine(" WHERE 1=1 ");
             sb.AppendLine(strwhere);
             sb.AppendLine(")aa");

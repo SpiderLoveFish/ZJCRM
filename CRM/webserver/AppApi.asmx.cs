@@ -523,7 +523,12 @@ namespace XHD.CRM.webserver
               mcp.address = str[1];//地址
               mcp.tel = str[2];//电话
               mcp.CustomerType_id = int.Parse(str[3]);//客户类型
-              mcp.CustomerType = str[4];//客户类型
+              mcp.CustomerType = str[4]; 
+              mcp.Community = str[5];//小区
+              mcp.Fwhx = str[6];//户型
+              mcp.Emp_id_sj = int.Parse(str[7]);//设计师
+              mcp.Emp_sj =  str[8] ;
+              mcp.Remarks = str[9];
               mcp.Create_date = DateTime.Now;//客户名称
               if (bcp.Add(mcp) > 0)
               { 
