@@ -598,6 +598,7 @@ namespace XHD.DAL
             sb.AppendLine("  ( ");
             sb.AppendLine("budge_id, ");
             sb.AppendLine("xmid, ");
+	    sb.AppendLine("Componentid, ");
             sb.AppendLine("ComponentName, ");
             sb.AppendLine("Cname, ");
             sb.AppendLine("unit, ");
@@ -624,6 +625,7 @@ namespace XHD.DAL
             sb.AppendLine(" SELECT ");
             sb.AppendLine("'"+modelid+"', ");
             sb.AppendLine("xmid, ");
+	    sb.AppendLine("Componentid, ");
             sb.AppendLine("ComponentName, ");
             sb.AppendLine("Cname, ");
             sb.AppendLine("unit, ");
@@ -720,6 +722,7 @@ namespace XHD.DAL
             sb.AppendLine("  ( ");
             sb.AppendLine("budge_id, ");
             sb.AppendLine("xmid, ");
+	sb.AppendLine("Componentid, ");
             sb.AppendLine("ComponentName, ");
             sb.AppendLine("Cname, ");
             sb.AppendLine("unit, ");
@@ -746,6 +749,7 @@ namespace XHD.DAL
             sb.AppendLine(" SELECT ");
             sb.AppendLine("'" + bid + "', ");
             sb.AppendLine("xmid, ");
+	sb.AppendLine("Componentid, ");
             sb.AppendLine("ComponentName, ");
             sb.AppendLine("Cname, ");
             sb.AppendLine("unit, ");
@@ -845,12 +849,12 @@ namespace XHD.DAL
             strSql.Append(" DELETE Budge_Para_Ver WHERE budge_id='" + bid + "' ");
 
             strSql.Append(" INSERT INTO  dbo.Budge_BasicDetail ");
-            strSql.Append("     (    budge_id , xmid ,ComponentName ,Cname ,unit , MmaterialPrice , ");
+            strSql.Append("     (    budge_id , xmid , Componentid ,ComponentName ,Cname ,unit , MmaterialPrice , ");
             strSql.Append("       IsShowPrice , SecmaterialPrice ,ArtificialPrice , MechanicalLoss , MaterialLoss , ");
             strSql.Append("        TotalPrice ,IsDiscount ,Discount,TotalDiscountPrice , MaterialCost , MechanicalCost , ");
             strSql.Append("       ArtificialCost , SUM , Remarks ");
             strSql.Append("    ) ");
-            strSql.Append("  SELECT    '" + bid + "' , xmid ,ComponentName ,Cname ,unit , MmaterialPrice , ");
+            strSql.Append("  SELECT    '" + bid + "' , xmid , Componentid ,ComponentName ,Cname ,unit , MmaterialPrice , ");
             strSql.Append("     IsShowPrice , SecmaterialPrice ,ArtificialPrice , MechanicalLoss , MaterialLoss , ");
             strSql.Append("     TotalPrice ,IsDiscount ,Discount,TotalDiscountPrice , MaterialCost , MechanicalCost ,");
             strSql.Append("    ArtificialCost , SUM , Remarks FROM Budge_Model  ");
@@ -878,12 +882,12 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
            
             strSql.Append(" INSERT INTO  dbo.Budge_BasicDetail ");
-            strSql.Append("     (    budge_id , xmid ,ComponentName ,Cname ,unit , MmaterialPrice , ");
+            strSql.Append("     (    budge_id , xmid , Componentid,ComponentName ,Cname ,unit , MmaterialPrice , ");
             strSql.Append("       IsShowPrice , SecmaterialPrice ,ArtificialPrice , MechanicalLoss , MaterialLoss , ");
             strSql.Append("        TotalPrice ,IsDiscount ,Discount,TotalDiscountPrice , MaterialCost , MechanicalCost , ");
             strSql.Append("       ArtificialCost , SUM , Remarks ");
             strSql.Append("    ) ");
-            strSql.Append("  SELECT    '" + maxid + "' , xmid ,ComponentName ,Cname ,unit , MmaterialPrice , ");
+            strSql.Append("  SELECT    '" + maxid + "' , xmid ,Componentid,ComponentName ,Cname ,unit , MmaterialPrice , ");
             strSql.Append("     IsShowPrice , SecmaterialPrice ,ArtificialPrice , MechanicalLoss , MaterialLoss , ");
             strSql.Append("     TotalPrice ,IsDiscount ,Discount,TotalDiscountPrice , MaterialCost , MechanicalCost ,");
             strSql.Append("    ArtificialCost , SUM , Remarks FROM Budge_BasicDetail  ");

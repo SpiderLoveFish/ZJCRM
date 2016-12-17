@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Text;
 using System.Data.SqlClient;
@@ -46,7 +46,7 @@ namespace XHD.DAL
         strSql.Append("  INSERT INTO Budge_BasicDetail ");
         strSql.Append(" (budge_id,xmid,unit,ComponentID,ComponentName,Cname,TotalPrice,discount,totaldiscountprice,fc_price,rg_price,zc_price,Remarks) ");
         strSql.Append(" SELECT '" + bid + "',product_id,unit,'" + compid + "','" + compname + "',category_name,price,1,price,fc_price,rg_price,zc_price,remarks FROM dbo.CRM_product WHERE product_id IN(" + xmlistid + ") ");
-
+strSql.Append(";select @@IDENTITY");
         SqlParameter[] parameters = { };
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
       

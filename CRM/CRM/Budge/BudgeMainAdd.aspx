@@ -713,6 +713,7 @@
                     pid = pid + ',' + rows[i].product_id;
 
                 }
+if(pid==‘’) {alert(‘请选择至少一个有效数据！！’);return;}
                 var url = '../../data/Budge.ashx?Action=savedetailadd&bid=' + $("#T_budgeid").val() + "&xmlist=" + pid + '&compname=' + escape(compname) + '&compid=' + notes.data.id + '&rdm=' + Math.random();
                 dosave(url, dialog);
             }

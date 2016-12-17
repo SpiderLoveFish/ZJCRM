@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" %>
+<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -238,7 +238,7 @@
             //  alert(getparastr("pid"));
             $.ajax({
                 type: 'post',
-                url: "../../data/Budge.ashx?Action=savedetailadd&bid=" + getparastr("bid") + "&compname=" + getparastr("compname") + + "&compid=" + getparastr("compid") + "&xmlist=" + prouductid + '&rdm=' + Math.random(),
+                url: "../../data/Budge.ashx?Action=savedetailadd&bid=" + getparastr("bid") + "&compname=" + getparastr("compname") + "&compid=" + getparastr("compid") + "&xmlist=" + prouductid + '&rdm=' + Math.random(),
                 success: function (data) {
 
                     f_sucess();
