@@ -85,6 +85,7 @@ namespace XHD.DAL
             sb.AppendLine("		  INSERT INTO dbo.Budge_BasicDetail");
             sb.AppendLine("		          ( budge_id ,");
             sb.AppendLine("		            xmid ,");
+            sb.AppendLine("		            ComponentID ,");
             sb.AppendLine("		            ComponentName ,");
             sb.AppendLine("		            Cname ,");
             sb.AppendLine("		            unit ,");
@@ -111,6 +112,7 @@ namespace XHD.DAL
             sb.AppendLine("		          )");
             sb.AppendLine("		  SELECT budge_id ,");
             sb.AppendLine("		            xmid ,");
+            sb.AppendLine(" '" + bpid + "',");
             sb.AppendLine("		           (SELECT BP_Name  FROM dbo.Budge_BasicPart WHERE id='" + bpid + "')  ,");
             sb.AppendLine("		            Cname ,");
             sb.AppendLine("		            unit ,");

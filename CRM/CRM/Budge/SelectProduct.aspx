@@ -238,7 +238,7 @@
             //  alert(getparastr("pid"));
             $.ajax({
                 type: 'post',
-                url:  "../../data/Budge.ashx?Action=savedetailadd&bid=" + getparastr("bid") + "&compname=" + getparastr("compname") + "&xmlist=" + prouductid + '&rdm=' + Math.random(),
+                url: "../../data/Budge.ashx?Action=savedetailadd&bid=" + getparastr("bid") + "&compname=" + getparastr("compname") + + "&compid=" + getparastr("compid") + "&xmlist=" + prouductid + '&rdm=' + Math.random(),
                 success: function (data) {
 
                     f_sucess();
