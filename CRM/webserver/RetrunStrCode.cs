@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -161,7 +161,7 @@ namespace XHD.CRM.webserver
         sb.Clear();
         sb.AppendLine("SELECT top 10 * FROM (");
         sb.AppendLine("SELECT  row_number() OVER (ORDER BY Follow_date DESC ) n ,");
-        sb.AppendLine("CONVERT(VARCHAR(16),Follow_date,120) AS Follow_date,A.id,a.Customer_id,a.Customer_name,a.Follow,employee_name,a.Follow_Type");
+        sb.AppendLine("CONVERT(VARCHAR(16),Follow_date,120) AS Follow_date,A.id,a.Customer_id,c.Customer+'【'+c.address+'】' AS Customer_name,a.Follow,employee_name,a.Follow_Type");
         sb.AppendLine(" ,CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
         sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar");
         sb.AppendLine(",C.employee_id,C.privatecustomer,C.Create_id,C.Department_id ,Emp_id_sg,Emp_id_sj,Dpt_id_sg");

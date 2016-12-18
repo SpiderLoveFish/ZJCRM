@@ -48,6 +48,14 @@ namespace XHD.BLL
         }
 
         /// <summary>
+        /// 高级修改
+        /// </summary>
+        public bool Update_GJXG(int id, string tel, DateTime Create_date)
+        {
+            return dal.Update_GJXG(id,tel,Create_date);
+        }
+
+        /// <summary>
         /// 批量转客源
         /// </summary>
         /// <param name="model"></param>

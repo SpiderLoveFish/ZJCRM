@@ -398,6 +398,39 @@ namespace XHD.DAL
         }
 
         /// <summary>
+        /// 高级修改
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool Update_GJXG(int id, string tel, DateTime Create_date)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update CRM_Customer set ");
+            strSql.Append("tel=@tel,");
+            strSql.Append("Create_date=@Create_date");
+            strSql.Append(" where id=@id");
+            SqlParameter[] parameters = {
+					new SqlParameter("@tel", SqlDbType.VarChar,250),				  
+                    new SqlParameter("@Create_date", SqlDbType.DateTime),
+                    new SqlParameter("@id", SqlDbType.Int,4)
+                                        };
+
+            parameters[0].Value = tel;
+            parameters[1].Value = Create_date;
+            parameters[2].Value = id;
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 批量转客户
         /// </summary>
         public bool Update_batch(XHD.Model.CRM_Customer model, string strWhere)
@@ -796,7 +829,7 @@ namespace XHD.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select id,Serialnumber,Customer,address,tel,fax,site,industry_id,industry,Provinces_id,Provinces,City_id,City,Towns_id,Towns,Community_id,Community,BNo,DyNo,RNo,Gender,CustomerType_id,CustomerType,CustomerLevel_id,CustomerLevel,CustomerSource_id,CustomerSource,DesCripe,Remarks,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_id,Create_name,Create_date,isDelete,Delete_time,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,WXZT_ID,WXZT_NAME,QQ,JKDZ,hxt,jgqjt ");
+            strSql.Append("select id,Serialnumber,Customer,address,tel,fax,site,industry_id,industry,Provinces_id,Provinces,City_id,City,Towns_id,Towns,Community_id,Community,BNo,DyNo,RNo,Gender,CustomerType_id,CustomerType,CustomerLevel_id,CustomerLevel,CustomerSource_id,CustomerSource,DesCripe,Remarks,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_id,Create_name,Create_date,isDelete,Delete_time,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,WXZT_ID,WXZT_NAME,QQ,JKDZ,hxt,jgqjt,CONVERT(VARCHAR(50),Create_date,23) AS Create_date1 ");
             strSql.Append(" FROM CRM_Customer a  ");
             if (strWhere.Trim() != "")
             {

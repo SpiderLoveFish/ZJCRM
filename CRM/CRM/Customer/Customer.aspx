@@ -241,8 +241,14 @@
             toolbar();
         });
 
+        var mid;
+        if (getparastr("type") == "GJXG")
+            mid = 194;
+        else
+            mid = 4;
+
         function toolbar() {
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=4&rnd=" + Math.random(), function (data, textStatus) {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid="+mid+"&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
                 var items = [];
                 var arr = data.Items;
@@ -544,7 +550,10 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('CRM/Customer/Customer_add.aspx?cid=' + row.id, "修改客户", 660, 550);
+                if (getparastr("type") == "GJXG")
+                    f_openWindow('CRM/Customer/Customer_add_GJXG.aspx?cid=' + row.id, "客户高级修改", 400, 400);
+                else
+                    f_openWindow('CRM/Customer/Customer_add.aspx?cid=' + row.id, "修改客户", 660, 550);
             }
             else {
                 $.ligerDialog.warn('请选择行！');

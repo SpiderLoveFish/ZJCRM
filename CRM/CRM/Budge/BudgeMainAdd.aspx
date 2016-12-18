@@ -590,8 +590,8 @@
                 zindex: 9003,
                 title: '选择项目', width: 850, height: 400,
                 url: "CRM/Budge/SelectProduct.aspx?bid=" + $("#T_budgeid").val() + '&compname=' + escape(compname) + '&compid=' + notes.data.id, buttons: [
-                    { text: '确定(F2)', onclick: f_selectProductOK },
-                    { text: '取消', onclick: f_selectContactCancel }
+                    { text: ‘提交(F2)', onclick: f_selectProductOK },
+                    { text: ‘完成’, onclick: f_selectContactCancel }
                 ]
             });
             return false;
