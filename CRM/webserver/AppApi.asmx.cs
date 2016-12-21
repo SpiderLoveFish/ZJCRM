@@ -372,7 +372,7 @@ namespace XHD.CRM.webserver
                   sb.Clear();
                   sb.AppendLine(" ");
                   sb.AppendLine("SELECT	DISTINCT Create_id	AS	cid,Create_name	CustomerType	 FROM dbo.CRM_Customer a");
-                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sj=B.ID 	WHERE	ISNULL(B.isDelete,0)=0 AND Emp_id_sj IS	NOT		NULL AND Emp_id_sj>0 order  by Emp_sj ");
+                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sj=B.ID 	WHERE	ISNULL(B.isDelete,0)=0 AND Emp_id_sj IS	NOT		NULL AND Create_id>0 order  by Create_name ");
                   sb.AppendLine(" ");
               }
               if (url == "follow_llr")//录入人
@@ -506,7 +506,6 @@ namespace XHD.CRM.webserver
                               sbt.AppendLine("  and  A.id in (select customer_id  from  Crm_Customer_Favorite where userid=" + ID + ")");
 
                           }
-
                           sbt.AppendLine(" and address    like    '%" + str[0] + "%' ");
                           if (str[1] != "")
                               sbt.AppendLine(" and Emp_id_sg   = '" + str[1] + "' ");
@@ -516,7 +515,7 @@ namespace XHD.CRM.webserver
                               sbt.AppendLine(" and Create_id    =    '" + str[10] + "' ");
                           sbt.AppendLine(" and A.CustomerType_id    like    '%" + str[3] + "%' ");
                           sbt.AppendLine(" and tel    like    '%" + str[4] + "%' ");
-                          sbt.AppendLine(" and Customer    like    '%" + str[6] + "%' ");//姓名
+                          sbt.AppendLine(" and A.Create_name    like    '%" + str[6] + "%' ");//姓名
                           if (str[7] != "")
                               sbt.AppendLine(" and a.Create_date >= '" + str[7] + " 00:00' ");//开始时间
                           if (str[8] != "")
@@ -599,9 +598,8 @@ namespace XHD.CRM.webserver
                   mcp.Department_id = int.Parse(lsds.Tables[0].Rows[0]["d_id"].ToString());
                   mcp.Department = lsds.Tables[0].Rows[0]["dname"].ToString();  
               }
-              mcp.privatecustomer = str[11];//公私客
-              //mcp.Remarks = str[9];//
-              //mcp.privatecustomer = str[10];
+             // mcp.privatecustomer = str[11];//公私客
+            
               mcp.Create_date = DateTime.Now;//客户名称
               if (bcp.Add(mcp) > 0)
               { 

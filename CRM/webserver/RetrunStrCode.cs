@@ -147,7 +147,7 @@ namespace XHD.CRM.webserver
                 sb.AppendLine(" and Create_id    =    '" + str[10] + "' ");
             sb.AppendLine(" and c.CustomerType_id    like    '%" + str[3] + "%' ");
             sb.AppendLine(" and c.tel    like    '%" + str[4] + "%' ");
-            sb.AppendLine(" and c.Customer    like    '%" + str[6] + "%' ");//姓名
+            sb.AppendLine(" and a.employee_name    like    '%" + str[6] + "%' ");//录入人
             if (str[7] != "")
                 sb.AppendLine(" and a.Follow_date >= '" + str[7] + " 00:00' ");//开始时间
             if (str[8] != "")
