@@ -124,7 +124,7 @@ namespace XHD.CRM.webserver
 
 
 
-        public string GetLastListFollow(string nowindex, string strwhere, string url, string serchtxt, string userid)
+        public string GetLastListFollow(string nowindex, string strwhere, string url, string serchtxt, string userid,string IsTotal)
         {
         var sb = new System.Text.StringBuilder();
         int startindex = int.Parse(nowindex) - 10;
@@ -143,13 +143,15 @@ namespace XHD.CRM.webserver
                 sb.AppendLine(" and Emp_id_sg   = '" + str[1] + "' ");
             if (str[2] != "")
                 sb.AppendLine(" and Emp_id_sj    =    '" + str[2] + "' ");
+            if (str[10] != "")
+                sb.AppendLine(" and Create_id    =    '" + str[10] + "' ");
             sb.AppendLine(" and c.CustomerType_id    like    '%" + str[3] + "%' ");
             sb.AppendLine(" and c.tel    like    '%" + str[4] + "%' ");
             sb.AppendLine(" and c.Customer    like    '%" + str[6] + "%' ");//姓名
             if (str[7] != "")
-                sb.AppendLine(" and c.Create_date >= '" + str[7] + " 00:00' ");//开始时间
+                sb.AppendLine(" and a.Follow_date >= '" + str[7] + " 00:00' ");//开始时间
             if (str[8] != "")
-                sb.AppendLine(" and c.Create_date  <=  '" + str[8] + " 23:59' ");//
+                sb.AppendLine(" and a.Follow_date  <=  '" + str[8] + " 23:59' ");//
             if (str[9] != "")
             {
                 //sb.AppendLine(" and Customer    like    '%" + str[9] + "%' ");//姓名
@@ -159,19 +161,29 @@ namespace XHD.CRM.webserver
         }
         strwhere = sb.ToString();
         sb.Clear();
+        if (IsTotal=="N")
+        { 
         sb.AppendLine("SELECT top 10 * FROM (");
         sb.AppendLine("SELECT  row_number() OVER (ORDER BY Follow_date DESC ) n ,");
         sb.AppendLine("CONVERT(VARCHAR(16),Follow_date,120) AS Follow_date,A.id,a.Customer_id,c.Customer+'【'+c.address+'】' AS Customer_name,a.Follow,employee_name,a.Follow_Type");
         sb.AppendLine(" ,CASE WHEN ISNULL(title,'')='' THEN '" + url + "'+'images/icons/function_icon_set/user_48.png'");
         sb.AppendLine("ELSE '" + url + "'+'images/upload/portrait/'+title  END AS Avatar");
         sb.AppendLine(",C.employee_id,C.privatecustomer,C.Create_id,C.Department_id ,Emp_id_sg,Emp_id_sj,Dpt_id_sg");
+        }
+        else if (IsTotal == "Y")
+        {
+            sb.AppendLine("SELECT COUNT(1) AS Total");
+        }
         sb.AppendLine("FROM dbo.CRM_Follow A");
         sb.AppendLine("INNER JOIN dbo.hr_employee B ON A.employee_id=B.ID");
         sb.AppendLine("INNER JOIN  CRM_Customer C ON A.Customer_id=C.id");
         sb.AppendLine(" where ISNULL(A.isDelete,0)='0' ");
         sb.AppendLine(strwhere );
-        sb.AppendLine(" )a");
-        sb.AppendLine(" WHERE n>" + startindex);
+        if (IsTotal == "N")
+        {
+            sb.AppendLine(" )a");
+            sb.AppendLine(" WHERE n>" + startindex);
+        }
         sb.AppendLine(serchtxt);
             return sb.ToString();
         }

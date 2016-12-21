@@ -828,9 +828,26 @@ namespace XHD.DAL
                 sb.AppendLine("          '" + o["obsPlanId"].Value<string>() + "' ,"); // obsPlanId - varchar(20)
                 sb.AppendLine("          '" + o["planCity"].Value<string>() + "' ,"); // planCity - varchar(300)
                 sb.AppendLine("         '" + o["commName"].Value<string>() + "'  ,"); // commName - varchar(300)
-                sb.AppendLine("           " + o["area"].Value<string>() + " ,"); // area - decimal
-                sb.AppendLine("          '" + o["name"].Value<string>() + "' ,"); // name - varchar(300)
-                sb.AppendLine("          " + o["srcArea"].Value<string>() + " ,"); // srcArea - float
+                try
+                {
+                    if (o["area"].Value<string>() == null)
+                        sb.AppendLine("           " + 0 + " ,");
+                    else
+                        sb.AppendLine("           " + o["area"].Value<string>() + " ,"); // area - decimal
+                    if (o["name"].Value<string>() == null)
+                        sb.AppendLine("           '' ,");
+                    else
+                        sb.AppendLine("          '" + o["name"].Value<string>() + "' ,"); // name - varchar(300)
+                    if (o["srcArea"].Value<string>() == null)
+                        sb.AppendLine("           " + 0 + " ,");
+                    else
+                        sb.AppendLine("          " + o["srcArea"].Value<string>() + " ,"); // srcArea - float
+                }
+                catch {
+                    sb.AppendLine("           " + 0 + " ,");
+                    sb.AppendLine("           '' ,");
+                    sb.AppendLine("           " + 0 + " ,");
+                }
                 sb.AppendLine("          '" + GetTime(o["modifiedTime"].ToString()) + "' ,"); // modifiedTime - datetime
                 sb.AppendLine("          '" + o["pics"].Value<string>() + "' ,"); // pics - varchar(300)
                 sb.AppendLine("          '" + o["smallPics"].Value<string>() + "' ,"); // smallPics - varchar(300)

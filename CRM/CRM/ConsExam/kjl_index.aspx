@@ -1,355 +1,193 @@
-<%@ Page Language="C#" AutoEventWireup="true" %>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+Ôªø<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
- <link href='http//fonts.googleapis.com/css?family=Economica:700' rel='stylesheet' type='text/css'>
-    <link href="../../CSS/kjl/css/style.css" rel="stylesheet" />
-      <script src="../../jlui3.2/lib/jquery/jquery-1.9.0.min.js" type="text/javascript"></script>
-    <script src="../../jlui3.2/lib/json2.js" type="text/javascript"></script>
- <script src="../../JS/XHD.js" type="text/javascript"></script>
-     <script src="../../CSS/kjl/js/jquery.js"></script>
-		<script src="../../CSS/kjl/js/jquery-migrate-1.1.1.js"></script>
-		<script src="../../CSS/kjl/js/script.js"></script>
-		<script src="../../CSS/kjl/js/jquery.ui.totop.js"></script>
-		<script src="../../CSS/kjl/js/superfish.js"></script>
-		<script src="../../CSS/kjl/js/jquery.equalheights.js"></script>
-		<script src="../../CSS/kjl/js/jquery.mobilemenu.js"></script>
-		<script src="../../CSS/kjl/js/jquery.easing.1.3.js"></script>
-    <script type="text/javascript">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>„ÄêÂº†‰ºü„ÄëÊñ∞ÂüéÂüü22Âπ¢15ÂàóË°®</title>
+<meta name="keywords" content="Á©∫Èó¥ËÆæËÆ°,ÂÆ∂È•∞Ë£Ö‰øÆ,Êà∑Âûã" />
+<meta name="description" content="Êî∂ÈõÜÂêÑÁßçÂÆ∂Â±ÖËÆæËÆ°ÂõæÈõÜ" />
+<link href="../../JS/templates/main/css/pagination.css" rel="stylesheet" />
+<link href="../../JS/templates/main/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="../../JS/templates/main/js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../JS/templates/main/js/common.js"></script>
+     <script src="../../JS/XHD.js" type="text/javascript"></script>
+ <script type="text/javascript">
       
-        var manager = "";
-        $(function () {
-           
-          //  alert(decodeURI(getparastr("name")));
-            $('#id_name').html(decodeURI(getparastr("name")))
-            $.ajax({
-                url: "../../data/SingleSignOn.ashx", type: "POST",
-                data: { Action: "getlistapi", cid: getparastr("cid"), rnd: Math.random() },
-                //contentType: "application/json; charset=utf-8",
-                //dataType: "json",
-                success: function (data) {
-                    // alert(JSON.stringify(data));
-                    // alert(data);
-                    var obj = eval(data);
-                    //alert(obj.obsDesignId + obj.obsPlan.name);
-                    //names = obj.obsPlan.name
-                    //fid = obj.obsPlan.obsPlanId
-                    var html = ""; var hxturl = "";
-                    
-                    for (var n in obj) {
-                        if (obj[n] == "null" || obj[n] == null)
-                            obj[n] = "";
-                       // alert(obj[n].simg);
-                        //html = "" + obj[n].simg;
-                        ajaxhxt(obj[n].fpId, obj[n].desid)
-                      //  alert(hxturl);
-                        html += '<div id=div' + obj[n].desid + ' class="p1_box left cl1">' +
-                           //'<div class="type"></div>' +
-                           '                         <table width=100% border="0"><tr><td width="9%"><strong>√˚≥∆</strong>£∫</td><td width="45%"><span id=td' + obj[n].desid + '>' + obj[n].DyGraphicsName + '</span></td><td width="16%" align="right"><strong>∏¸–¬ ±º‰£∫</strong></td><td width="30%">' + formatTimebytype(obj[n].dotime, 'yyyy-MM-dd') + '</td></tr></table>' +
-                           '<a  href="javascript:window.scrollTo( 0, 0 );"style="cursor:pointer;" onclick="list(\'' + obj[n].desid + '\')" ><img id=img' + obj[n].fpId + ' src=#  ></a>';
-                        if (obj[n].ismy == 1)//»Áπ˚ «±æ»Àµƒ£¨‘Úœ‘ æ≤Ÿ◊˜£¨∑Ò‘Ú≤ªœ‘ æ
-                        {
-                            html += '<a onclick="edit(\'' + obj[n].fpId + '\')" class="btn">–ﬁ∏ƒ∑Ω∞∏</a>' +
-                           '<a onclick="edit3d(\'' + obj[n].desid + '\')" class="btn">»•◊∞–ﬁ</a>' +
+     var manager = "";
+  
+     $(function () {
+         $('#id_name').html(decodeURI(getparastr("name")))
+         $.ajax({
+             url: "../../data/SingleSignOn.ashx", type: "POST",
+             data: { Action: "getlistapi", cid: getparastr("cid"), rnd: Math.random() },
+             //contentType: "application/json; charset=utf-8",
+             //dataType: "json",
+             success: function (data) {
+                 // alert(JSON.stringify(data));
+                 // alert(data);
+                 var obj = eval(data);
+                 //alert(obj.obsDesignId + obj.obsPlan.name);
+                 //names = obj.obsPlan.name
+                 //fid = obj.obsPlan.obsPlanId
+                 var html = ""; var hxturl = "";
 
-                        '<a onclick="del(\'' + obj[n].fpId + '\',\'' + obj[n].desid + '\')" class="btn">…æ≥˝</a>&nbsp;&nbsp;&nbsp;&nbsp;'+
-                            '<a onclick="editname(\'' + obj[n].fpId + '\',\'' + obj[n].desid + '\')" class="btn">∏ƒ√˚</a>&nbsp;';
-                             
-                        }
-                        html +=  '<a  class="btn2" ><label class="name"><input id="' + obj[n].fpId + '"  ltype="text"type="text" value=' + obj[n].DyGraphicsName + '></input></label></a>' +
-                           
-                       '</div>';
-                        if (obj[0].desid != null && obj[0].desid != undefined && obj[0].desid!="")
-                             getlist3d(obj[0].desid);
-                    }
-                    $('#idleft').html(html)
-                    if(html.length>0)
-                        $('#idlist').html( obj[0].DyGraphicsName + "∑Ω∞∏¡–±Ì")
-                    else $('#idlist').html("Œﬁ ˝æ›£¨«Îœ»–¬‘ˆ")
-                    //alert(obj[n].obsPlan.obsPlanId + fid);
-                    // f_save(savedata, obj[n].obsPlan.obsPlanId);
-                     
-                },
-                error: function () {
-                    alert("ªÒ»° ß∞‹");
-                     }
-            });
-        });
-     
-        function getlist3d(desid) {
-            $.ajax({
-                url: "../../data/SingleSignOn.ashx", type: "POST",
-                data: { Action: "Getlist", desid: desid, rnd: Math.random() },
-                //contentType: "application/json; charset=utf-8",
-                //dataType: "json",
-                success: function (data) {
-                    // alert(JSON.stringify(data));
-                    // alert(data);
-                    var obj = eval(data);
-                    //alert(obj.obsDesignId + obj.obsPlan.name);
-                    //names = obj.obsPlan.name
-                    //fid = obj.obsPlan.obsPlanId
-                    var html = ""; var typename = "";
-                    $('#3dlist').html(html)
-                    for (var n in obj) {
-                        if (obj[n] == "null" || obj[n] == null)
-                            obj[n] = "";
-                        // alert(obj[n].simg);
-                        //html = "" + obj[n].simg;
-                        if (obj[n].picType == 0)
-                            typename = "∆’Õ®‰÷»æÕº";
-                        else if (obj[n].picType == 1)
-                            typename = "»´æ∞Õº";
-                        else if (obj[n].picType == 2)
-                            typename = "∏© ”Õº";
-                        html += '<div class="p1_box left cl1">';
-                        //'<div class="type"></div>' +
-                        if (obj[n].panoLink == null || obj[n].panoLink == "undefined" || obj[n].panoLink == "")
-                        { html += '<a href="javascript:void(0)" onclick="view3d(\'' + obj[n].img + '\')"  style="cursor:pointer;"><img src=' + obj[n].img + ' alt=' + obj[n].panoLink + '  ></a>' }
-                        else
-                        html += '<a href="javascript:void(0)" onclick="view3d(\'' + obj[n].panoLink + '\')"  style="cursor:pointer;"><img src=' + obj[n].img + ' alt=' + obj[n].panoLink + '  ></a>';
-
-                        //if (obj[n].picType == 1)
-                        //{
-                        //       html += '<a onclick="edit3d(\'' + obj[n].picId + '\')" class="btn">–ﬁ∏ƒ∑Ω∞∏</a>' +
-                        //       '<a onclick="editname3d(\'' + obj[n].picId + ' \')" class="btn">–ﬁ∏ƒ√˚≥∆</a>' +
-                        //       '<a onclick="del3d(\'' + obj[n].picId + '\')" class="btn">…æ≥˝</a>&nbsp;&nbsp;&nbsp;&nbsp;';          
-                        //    }
-                        html +='<a  class="btn2" >°æ' + typename + '°ø'+ obj[n].roomTypeName +'</a>'+
-                       '</div>';
-                        if (html.length > 0)
-                            $('#idlist').html($('#td' + desid).html() + "∑Ω∞∏¡–±Ì")
-                        else $('#idlist').html("Œﬁ ˝æ›£¨«Îœ»–¬‘ˆ")
-
-                    }
-                    $('#3dlist').html(html)
-                     //alert(obj[n].obsPlan.obsPlanId + fid);
-                    // f_save(savedata, obj[n].obsPlan.obsPlanId);
-
-                },
-                error: function () {
-                    alert('ªÒ»° ß∞‹£°');
-                 }
-            });
-        }
-
-        function ajaxdelte(action,fpid,desid)
-        {
-            if (desid == "" || desid == null || desid == 'null' || desid == undefined)
-                action = "deleteHXT";
-            else action = "delete";
-            $.ajax({
-                url: "../../data/SingleSignOn.ashx", type: "POST",
-                data: { Action: action, fid: fpid, desid: desid, cid: getparastr("cid"), rnd: Math.random() },
-                success: function (responseText) { 
-                    if (responseText == "success") {
-                        if (fpid != "")//ªß–ÕÕº
-                        $.ajax({
-                            url: "../../data/SingleSignOn.ashx", type: "POST",
-                            data: { Action: "deleteAPI", fid: fpid, desid: desid, cid: getparastr("cid"), rnd: Math.random() },
-                            success: function (responseText) {
-                                if (responseText == "true") {
-                                   // fload();
-                                    alert("…æ≥˝≥…π¶");
-                                }
-
-                                else {
-                                    alert('…æ≥˝ ß∞‹£°' + responseText);
-                                 }
-
-                            },
-                            error: function () {
-                                alert('…æ≥˝ ß∞‹£°' );
-                            }
-                        });
-
-                    }
-
-                    else {
-                        alert('…æ≥˝ ß∞‹£°' + responseText);
-                    }
-
-                },
-                error: function () {
-                    alert('…æ≥˝ ß∞‹£°');
-                }
-            });
-        }
-
-        function ajaxupdate(action, fpid, desid,newname) {
-            $.ajax({
-                url: "../../data/SingleSignOn.ashx", type: "POST",
-                data: { Action: action, fid: fpid, desid: desid, T_name: newname, cid: getparastr("cid"), rnd: Math.random() },
-                success: function (responseText) {
-                    if (responseText == "success") {
+                 for (var n in obj) {
+                     if (obj[n] == "null" || obj[n] == null)
+                         obj[n] = "";
+                     // alert(obj[n].simg);
+                     //html = "" + obj[n].simg;
+                     ajaxhxt(obj[n].fpId, obj[n].desid)
+                     //  alert(hxturl);
+                     html += '<li> <a id=a' + obj[n].desid + '  onclick="list(\'' + obj[n].desid + '\',\'' + obj[n].fpId + '\')" >' +
+                        '';
+                     if (obj[n].ismy == 1)//Â¶ÇÊûúÊòØÊú¨‰∫∫ÁöÑÔºåÂàôÊòæÁ§∫Êìç‰ΩúÔºåÂê¶Âàô‰∏çÊòæÁ§∫
+                     {
                         
-                        alert('∏¸–¬≥…π¶£°');
-                    }
 
-                    else {
-                        alert('∏¸–¬ ß∞‹£°' + responseText);
-                    }
-
-                },
-                error: function () {
-                    alert('∏¸–¬ ß∞‹£°');
-                }
-            });
-        }
-
-        function ajaxhxt( fid, desid) {
-            $.ajax({
-                url: "../../data/SingleSignOn.ashx", type: "POST",
-                data: { Action: "Gethxt",  desid: desid, rnd: Math.random() },
-                success: function (responseText) {
-                    //  alert(responseText);
-                    $('#img' + fid).attr("src",responseText);
-                    //ajaxhxt(obj[n].desid)
-                    //return responseText;
-
-                },
-                error: function () {
-                   // return "";
-                }
-            });
-        }
-     
-
-        function add()
-        {
-            
-            viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=4', "–¬‘ˆ∑Ω∞∏");
-
-        }
-
-        function add_lf() {
-
-            viewkjl('../../CRM/ConsExam/kjl_search.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=4', "–¬‘ˆ∑Ω∞∏");
-
-        }
-        function view3d(strurl)
-        {
-            if (strurl == null || strurl == "undefined" || strurl == "")
-            {
-                alert("√ª”–œ‡πÿ◊ ¡œ£¨Œﬁ∑®≤Èø¥£°");
-                return;
-            }
-            //alert(strurl);
-            viewkjl('../../CRM/ConsExam/kjl_view.aspx?strurl=' + strurl, "≤Èø¥");
-
-           // viewkjl(strurl, "≤Èø¥3DÕº");
-        }
-        function list(desid)
-        {
-            getlist3d(desid)
-           
-            //$('div[name^=div]').each(function () {
-            $("div[id]").each(function () {
-           
-                $(this).removeClass("cl2");
-                $(this).addClass("cl1");
-                
-            });
-            $('#div' + desid + '').removeClass("cl1");
-            $('#div' + desid + '').addClass("cl2");
- 
-           // alert(fpId);
-        }
-        function edit(fpId) {
-            viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=Edit' + '&dest=2' + "&fid=" + fpId, "–ﬁ∏ƒ∑Ω∞∏");
-
-        }
-        function edit3d(desid) {
-
-            viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=Edit' + '&dest=1' + '&desid=' + desid, "–ﬁ∏ƒ3DÕº");
-
-        }
-        function editname(fpId,desid) {
-            var newname = $('#' + fpId + '').val();
-            if (newname == "") { alert("«ÎÃÓ–¥“ª∏ˆ”––ß√˚≥∆£°"); return; }
-            if (desid == "" || desid == null || desid == 'null' || desid==undefined)
-                ajaxupdate("updatehxtname", fpId, desid, newname);//»Áπ˚√ª”–3D∑Ω∞∏Õº£¨‘Ú∏¸–¬ªß–ÕÕº√˚≥∆
-            else 
-                ajaxupdate("update3dname", fpId, desid, newname);
-        }
-        function editname3d(desid) {
-            var newname = $('#' + desid + '').val();
-            if (newname == "") { alert("«ÎÃÓ–¥“ª∏ˆ”––ß√˚≥∆£°");return}
-            ajaxupdate("update3dname", "", desid, newname);
-        }
-        function del(fpId,desid) {
-            ajaxdelte("deleteHXT", fpId, desid);
-        }
-        function del3d(desid) {
-            ajaxdelte("delete", "", desid);
-        }
-        function viewkjl(url, newname) {
-            window.open(url + "&width=" + screen.width +
-                                "&height=" + (screen.height - 70), newname,
-                                "top=0,left=0,toolbar=no, menubar=no, scrollbars=yes,resizable=no,location=no,status=no,width=" +
-                                screen.width + ",height=" +
-                                (screen.height - 70));
-        }
-        $(document).ready(function () {
-            $().UItoTop({ easingType: 'easeOutQuart' });
-        })
-    </script>
-    
-</head>
-<body class="page1" id="top">
-
- 
-		<div class="menu_block">
-			<div class="container_12">
-				<div class="grid_12">
-					<nav class="horizontal-nav full-width horizontalNav-notprocessed">
-						<ul class="sf-menu">
-                              <li><input name='sx' type='button' onclick='javascript: history.go(0)' value='À¢–¬' /></li>
-							<li class="current">
-                            <a>  <span id="id_name"></span>
-                                </a> 
-							</li>
-							<li><a onclick="add()">–¬‘ˆ</a></li>
-                            <li><a onclick="add_lf()">¡ø∑ø</a></li>
-                          
-
-						</ul>
-					</nav>
-					<div class="clear"></div>
-				</div>
-				<div class="clear"></div>
-			</div>
-		</div>
-		<div class="main">
-<!--==============================Content=================================-->
-			<div class="content">
-                <div class="ic"></div>
-				<div class="container_12">
-					<div id="idleft" class="grid_6">
-						
-             
-					</div>
-					<div class="grid_6">
-						
-				<a  class="btn3" >
-                  <span id="idlist"></span> </a>
-                        <div id="3dlist"></div>
-						
+                     }
+                     html += '<span class="abs-bg"></span>' + 
+                            ' <span class="txt1">'+ obj[n].DyGraphicsName + '</span>'+
+                            ' <span class="txt2">'+
+                            '<p>' + formatTimebytype(obj[n].dotime, 'yyyy-MM-dd') + '</p>' +
+                            '</span>'+
+                            ' <img id=img' + obj[n].fpId + ' src=#  />' +
+                            '</a>'+
+                            '</li>';
                     
-					</div>
-					<div class="clear"></div>
-					<div class="grid_12">
-						<a href="#" class="round"> ªÿµΩ<br>∂•∂À</a>
-					</div>
-				</div>
-			</div>
-<!--==============================footer=================================-->
-			
-		</div>
+                 }
+                 $('#idleft').html(html)
+                 //if (html.length > 0)
+                 //    $('#idlist').html(obj[0].DyGraphicsName + "ÊñπÊ°àÂàóË°®")
+                 //else $('#idlist').html("Êó†Êï∞ÊçÆÔºåËØ∑ÂÖàÊñ∞Â¢û")
+                 //alert(obj[n].obsPlan.obsPlanId + fid);
+                 // f_save(savedata, obj[n].obsPlan.obsPlanId);
+
+             },
+             error: function () {
+                 alert("Ëé∑ÂèñÂ§±Ë¥•");
+             }
+         });
+
+         function ajaxhxt(fid, desid) {
+             $.ajax({
+                 url: "../../data/SingleSignOn.ashx", type: "POST",
+                 data: { Action: "Gethxt", desid: desid, rnd: Math.random() },
+                 success: function (responseText) {
+                     //  alert(responseText);
+                     $('#img' + fid).attr("src", responseText);
+                     //ajaxhxt(obj[n].desid)
+                     //return responseText;
+
+                 },
+                 error: function () {
+                     // return "";
+                 }
+             });
+         }
+
+     });
+
+     function list(desid, fpId) {
+         // getlist3d(desid)
+         viewkjl('../../CRM/ConsExam/kjl_index_3DLIST.aspx?desid=' + desid + '&fpId=' + fpId + '&cid=' + getparastr("cid") + "&name=" + getparastr("name"), "Êü•Áúã");
+         //$('div[name^=div]').each(function () {
+         //$("div[id]").each(function () {
+
+         //    $(this).removeClass("cl2");
+         //    $(this).addClass("cl1");
+
+         //});
+         //$('#div' + desid + '').removeClass("cl1");
+         //$('#div' + desid + '').addClass("cl2");
+
+         // alert(fpId);
+     }
+     function add() {
+
+         viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=insert' + '&dest=4', "Êñ∞Â¢ûÊñπÊ°à");
+
+     }
+     function viewkjl(url, newname) {
+         window.open(url + "&width=" + screen.width +
+                             "&height=" + (screen.height - 70), newname,
+                             "top=0,left=0,toolbar=no, menubar=no, scrollbars=yes,resizable=no,location=no,status=no,width=" +
+                             screen.width + ",height=" +
+                             (screen.height - 70));
+     }
+     function herf(type)
+     {
+         if (type==1)
+             window.location.href = "/CRM/ConsExam/kjl_search_my.aspx?cid=" + getparastr("cid") + "&name=" + getparastr("name");
+         else if (type == 2)
+             window.location.href = "/CRM/ConsExam/kjl_search_lf.aspx?cid=" + getparastr("cid") + "&name=" + getparastr("name");
+     }
+      </script>
+         </head>
+
+<body>
+<!--Header-->
+<div class="header">
+  <div class="header-wrap">
+    <div class="section">
+      <div class="left-box">
+        
+        <p class="nav">
+          <a onclick="add()">Êñ∞Â¢ûÊñπÊ°à</a>
+          <a onclick="herf(1)"  >ÊàëÁöÑÊñπÊ°à‰∏≠ÊêúÁ¥¢</a>
+          <a onclick="herf(2)" >ÊàëÁöÑÈáèÊàø‰∏≠ÊêúÁ¥¢</a>
+        </p>
+      </div>
+     
+     
+    </div>
+  </div>
+</div>
+<!--/Header-->
+
+<div class="section clearfix">
+  
+  <div class="ntitle">
+    <h2>
+      <a  id="id_name"  > <em></em></a>
+    </h2>
+    <p>
+      <!--Â∞èÁ±ª-->
+      
+    ÊñπÊ°àÂàóË°®&nbsp;&nbsp;(ÁÇπÂáª‰∏ãÂàóÊà∑ÂûãÂõæÂèØÁºñËæë)  <button class="btn-gray" onclick='javascript: history.go(0)'>Âà∑Êñ∞</button>
+      
+      <!--Â∞èÁ±ª-->
+    </p>
     
+   
+  </div>
+  
+  <div class="wrapper auto clearfix">
+    <ul  id="idleft" class="img-list high ilist">
+      <!--ÂèñÂæó‰∏Ä‰∏™ÂàÜÈ°µDataTable-->
+      
+      
+      
+      
+    <%-- <li>
+        <a title="Ê∏ÖÊñ∞ÊúâÊ¥ªÂäõÁöÑÂÖ¨ÂØìËÆæËÆ° Áî®Ëâ≤ÂΩ©ÁÑïÁÑ∂‰∏ÄÊñ∞" href="/photo_show.aspx?id=43">
+          <span class="abs-bg"></span>
+          <span class="txt1">‰∏≠Êµ∑Áã¨Â¢Ö9Ê†ã90.00„é°225„ÄÅ226Ê†ãA</span>
+          <span class="txt2">
+            <!--<i>ÈòÖËØªÔºö4Ê¨°</i>-->
+            <p>2016-10-10</p>
+          </span>
+          <img src="/upload/201504/18/thumb_201504181258575445.jpg" />
+        </a>
+      </li>
+      --%>
+      
+    </ul>
+    <!--È°µÁ†ÅÂàóË°®-->
+    <div class="page-box">
+      <div class="digg"></div>
+    </div>
+    <!--/È°µÁ†ÅÂàóË°®-->
+  </div>
+</div>
 
 </body>
 </html>

@@ -142,7 +142,7 @@ namespace XHD.CRM.Data
             {
 
                 string keystr = request["keystr"];
-               
+                string islf = request["islf"];//是否量房
                 string serchtxt = null;
 
                
@@ -150,6 +150,11 @@ namespace XHD.CRM.Data
 
                     if (!string.IsNullOrEmpty(keystr))
                         serchtxt += " AND  name  LIKE '%" + keystr + "%' ";
+                        if (islf == "Y")
+                            serchtxt += " AND  name  LIKE '%量房%'";
+                                else
+                            serchtxt += " AND  name  not LIKE '%量房%'";
+                
                 BLL.CE_Para cp = new BLL.CE_Para();
                 DataSet ds = cp.GetDS_kjl_account_list(serchtxt);
 

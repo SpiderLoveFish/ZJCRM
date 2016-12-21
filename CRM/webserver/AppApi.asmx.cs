@@ -204,28 +204,65 @@ namespace XHD.CRM.webserver
              if(aa=="200")
              { 
 
-                 if (type == "3")//
-                 {
-                     Model.hr_employee hrm = new Model.hr_employee();
-                     BLL.hr_employee hrb = new BLL.hr_employee();
-                  Newtonsoft.Json.Linq.JObject jo = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject(para);
-                  string password = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(jo["passw"].ToString(), "MD5");
+                 //if (type == "3")//
+                 //{
+                 //    Model.hr_employee hrm = new Model.hr_employee();
+                 //    BLL.hr_employee hrb = new BLL.hr_employee();
+                 // Newtonsoft.Json.Linq.JObject jo = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject(para);
+                 // string password = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(jo["passw"].ToString(), "MD5");
          
-                  hrm.uid = jo["userid"].ToString();
-                  hrm.pwd = password;
-                  hrm.level = "99";//试用账户
-                  hrm.tel = jo["userid"].ToString();
-                  hrm.name = "试用" + jo["passw"].ToString();
-                  hrb.DeleteUID(jo["userid"].ToString());
-                  hrb.Add(hrm);
-                 }
+                 // hrm.uid = jo["userid"].ToString();
+                 // hrm.pwd = password;
+                 // hrm.level = "99";//试用账户
+                 // hrm.tel = jo["userid"].ToString();
+                 // hrm.name = "试用" + jo["passw"].ToString();
+                 // hrb.DeleteUID(jo["userid"].ToString());
+                 // hrb.Add(hrm);
+                 //}
                  ReturnStr(true, aa);
              }
             
              else ReturnStr(false, aa);
          }
+        /// <summary>
+        /// 新增试用客户
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="context"></param>
+        /// <param name="ImageList"></param>
+        /// <param name="IsHostPic"></param>
+        /// <param name="type"></param>
+        /// <param name="userid"></param>
+        /// <param name="url"></param>
+         [WebMethod]
+         public void addtrialcustomer(string tel, string compname,
+              string username, string userid, string pwd )
+          {
+               SqlParameter[] parameters = { };
+               Model.hr_employee hrm = new Model.hr_employee();
+                     BLL.hr_employee hrb = new BLL.hr_employee();
+                     string sql = "select count(1) from hr_employee where tel='" + tel + "'";
+                     if (DbHelperSQL.Exists(sql, parameters))
+                     {
+                         ReturnStr(true, "\"tel\"");
+                         return;
+                     }
+                     hrm.uid = userid;
+                     hrm.pwd = pwd;
+                      hrm.level = "99";//试用账户
+                      hrm.tel = tel;
+                      hrm.name = "试用" + username;
+               
+                if(hrb.Add(hrm) >0)
+              ReturnStr(true, "\"success\"");
+               
+              else ReturnStr(false, "\"faile\"");
+             
 
+
+          }
         
+
         /// <summary>
           /// 个人信息
           /// </summary>
@@ -330,12 +367,26 @@ namespace XHD.CRM.webserver
                   sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sj=B.ID 	WHERE	ISNULL(B.isDelete,0)=0 AND Emp_id_sj IS	NOT		NULL AND Emp_id_sj>0 order  by Emp_sj ");
                   sb.AppendLine(" ");
               }
+              if (url == "ywy")
+              {
+                  sb.Clear();
+                  sb.AppendLine(" ");
+                  sb.AppendLine("SELECT	DISTINCT Create_id	AS	cid,Create_name	CustomerType	 FROM dbo.CRM_Customer a");
+                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sj=B.ID 	WHERE	ISNULL(B.isDelete,0)=0 AND Emp_id_sj IS	NOT		NULL AND Emp_id_sj>0 order  by Emp_sj ");
+                  sb.AppendLine(" ");
+              }
+              if (url == "follow_llr")//录入人
+              {
+                  sb.Clear();
+                  sb.AppendLine(" ");
+                  sb.AppendLine("SELECT	DISTINCT Create_id	AS	cid,Create_name	CustomerType	 FROM dbo.CRM_Customer a");
+                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sj=B.ID 	WHERE	ISNULL(B.isDelete,0)=0 AND Emp_id_sj IS	NOT		NULL AND Emp_id_sj>0 order  by Emp_sj ");
+                  sb.AppendLine(" ");
+              }
               if (url == "jplx")//精品类型
               {
                   sb.Clear();
-                  sb.AppendLine("SELECT id ,params_name  FROM Param_SysParam WHERE parentid IN(");
-                  sb.AppendLine("SELECT id FROM dbo.Param_SysParam_Type  WHERE	params_name='精品类型'");
-                  sb.AppendLine(")");
+                  sb.AppendLine("SELECT DISTINCT employee_id,employee_name FROM  dbo.CRM_Follow WHERE employee_id>0 AND ISNULL(employee_name,'')!=''");
               }
               else
               {
@@ -461,6 +512,8 @@ namespace XHD.CRM.webserver
                               sbt.AppendLine(" and Emp_id_sg   = '" + str[1] + "' ");
                           if (str[2] != "")
                               sbt.AppendLine(" and Emp_id_sj    =    '" + str[2] + "' ");
+                          if (str[10] != "")//业务员
+                              sbt.AppendLine(" and Create_id    =    '" + str[10] + "' ");
                           sbt.AppendLine(" and A.CustomerType_id    like    '%" + str[3] + "%' ");
                           sbt.AppendLine(" and tel    like    '%" + str[4] + "%' ");
                           sbt.AppendLine(" and Customer    like    '%" + str[6] + "%' ");//姓名
@@ -515,8 +568,15 @@ namespace XHD.CRM.webserver
           [WebMethod]
           public void AddCustomer( string data )
           {
-              SqlParameter[] parameters = { };
               string[] str = data.Split(';');
+              string sqlIsExistPhone = "SELECT 1 FROM dbo.CRM_Customer WHERE tel='" + str[2] + "'";
+              SqlParameter[] parameters = { };
+              if (DbHelperSQL.Exists(sqlIsExistPhone, parameters))
+              { 
+                 ReturnStr(false, "\"faile:phone\"");
+                 return;
+              }
+           
               BLL.CRM_Customer bcp = new BLL.CRM_Customer();
               Model.CRM_Customer mcp = new Model.CRM_Customer();
               mcp.Customer=str[0];//客户名称
@@ -529,6 +589,19 @@ namespace XHD.CRM.webserver
               mcp.Emp_id_sj = int.Parse(str[7]);//设计师
               mcp.Emp_sj =  str[8] ;
               mcp.Remarks = str[9];
+              //str[10]用户ID
+              string sqlemplooye = "SELECT * FROM  dbo.hr_employee WHERE ID='" + str[10] + "'	";
+              DataSet lsds = DbHelperSQL.Query(sqlemplooye);
+              if (lsds.Tables[0].Rows.Count > 0)
+              {
+                  mcp.Create_id = int.Parse(str[10]);
+                  mcp.Create_name = lsds.Tables[0].Rows[0]["name"].ToString();
+                  mcp.Department_id = int.Parse(lsds.Tables[0].Rows[0]["d_id"].ToString());
+                  mcp.Department = lsds.Tables[0].Rows[0]["dname"].ToString();  
+              }
+              mcp.privatecustomer = str[11];//公私客
+              //mcp.Remarks = str[9];//
+              //mcp.privatecustomer = str[10];
               mcp.Create_date = DateTime.Now;//客户名称
               if (bcp.Add(mcp) > 0)
               { 
@@ -1113,9 +1186,10 @@ namespace XHD.CRM.webserver
           {
               SqlParameter[] parameters = { };
               string serchtxt = DataAuth(userid);
-              string sql = rsc.GetLastListFollow(nowindex, strwhere, url, serchtxt, userid);
+              string sql = rsc.GetLastListFollow(nowindex, strwhere, url, serchtxt,userid,"N");
               DataSet ds = DbHelperSQL.Query(sql, parameters);
-              string cout = ds.Tables[0].Rows.Count.ToString();
+              string strTotal = rsc.GetLastListFollow(nowindex, strwhere, url, serchtxt, userid, "Y");
+              string cout = DbHelperSQL.Query(strTotal, parameters).Tables[0].Rows[0][0].ToString();
               if (ds == null)
               {
                   ReturnStr(true, "[[],{\"Total\":0} ]");
