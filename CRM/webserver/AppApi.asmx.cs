@@ -540,7 +540,7 @@ namespace XHD.CRM.webserver
 
               DataSet ds = DbHelperSQL.Query(strsql, parameters);
 
-              string strcount = "  select count(1) count   FROM dbo.CRM_Customer A  INNER JOIN Param_SysParam C on C.id=A.CustomerType_id and parentid=1  where   1=1 " + sbt.ToString();
+              string strcount = "  select count(1) count   FROM dbo.CRM_Customer A  INNER JOIN Param_SysParam C on C.id=A.CustomerType_id and parentid=1  where  ISNULL(isDelete,0)='0' AND 1=1 " + sbt.ToString();
               DataSet dsc = DbHelperSQL.Query(strcount, parameters);
               string cout=dsc.Tables[0].Rows[0][0].ToString();
               if (ds == null)
