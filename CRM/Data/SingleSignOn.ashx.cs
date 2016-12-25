@@ -1038,6 +1038,78 @@ namespace XHD.CRM.Data
                     }
                
             }
+             //由户型图生成一个3D方案
+            if (request["Action"] == "roomlists")
+            {
+
+                string[] arr = para("4",uid);
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    string desId = "3FO4JOMIUHXP";
+                    desId = Common.PageValidate.InputText(request["desId"], 50);
+                    string start = Common.PageValidate.InputText(request["strstart"], 50);
+                    string num = Common.PageValidate.InputText(request["num"], 50);
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); ;//2分钟
+                    // 签名加密
+                    string aa = "sdfaadsasdasd";
+                    string md5aa = MD5(aa).ToLower();
+                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api + "/" + desId + "/itemlist")
+                          .Append("?appkey=").Append(appKey)
+                        .Append("&timestamp=").Append(timestamp)
+                        .Append("&sign=").Append(sign)
+                    .Append("&start=").Append(start)
+                    .Append("&num=").Append(num);
+
+
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+            //
+            if (request["Action"] == "floorplanlists")
+            {
+
+                string[] arr = para("12", uid);
+                string appKey = arr[(int)paraenum.appKey];
+                string appSecret = arr[(int)paraenum.appSecret];
+                string userId = arr[(int)paraenum.userId];
+                if (appKey == null) context.Response.Write("请先配置参数！");
+                else
+                {
+                    string fpId = "3FO4IXC5MB7Q";
+                    fpId = Common.PageValidate.InputText(request["fpId"], 50);
+                    string start = Common.PageValidate.InputText(request["strstart"], 50);
+                    string num = Common.PageValidate.InputText(request["num"], 50);
+                    object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    string timestamp = currenttimemillis.ToString(); ;//2分钟
+                    // 签名加密
+                    string aa = "sdfaadsasdasd";
+                    string md5aa = MD5(aa).ToLower();
+                    string sign = MD5(appSecret + appKey + timestamp).ToLower();
+                    string api = arr[(int)paraenum.api];
+                    StringBuilder apiBuilder = new StringBuilder();
+                    apiBuilder.Append(api + "/" + fpId + "/roominfo")
+                          .Append("?appkey=").Append(appKey)
+                        .Append("&timestamp=").Append(timestamp)
+                        .Append("&sign=").Append(sign);
+
+                    string result = "";
+                    result = HttpGet(apiBuilder.ToString());
+                    context.Response.Write(result);
+                }
+
+            }
+
             //由户型图生成一个3D方案
             if (request["Action"] == "Design3D")
             {

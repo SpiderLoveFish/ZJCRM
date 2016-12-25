@@ -28,7 +28,9 @@
                    });
             });
           
-            $(function () {
+             $(function () {
+                 ajax_romminfos('3FO4IXC5MB7Q');
+                 //ajax_lists('3FO4JOMIUHXP');
                 if (getCookie("website_uid") == null || getCookie("website_uid") == 'null' || getCookie("website_uid") == "" || getCookie("website_uid") == undefined)
                 { }
                 else
@@ -38,7 +40,32 @@
           
              });
 
-       
+             function ajax_romminfos(fpId) {
+                 $.ajax({
+                     url: "../data/SingleSignOn.ashx", type: "POST",
+                     data: { Action: "floorplanlists", fpId: fpId, strstart: 0, num: 999, rnd: Math.random() },
+                     success: function (responseText) {
+                         alert(JSON.stringify(responseText));
+                     },
+                     error: function (XMLHttpRequest, textStatus, errorThrown) {
+                         alert(XMLHttpRequest.status);
+
+                     }
+                 });
+             }
+            function ajax_lists(desId) {
+                $.ajax({
+                    url: "../data/SingleSignOn.ashx", type: "POST",
+                    data: { Action: "roomlists", desId: desId, strstart: 0, num: 999, rnd: Math.random() },
+                    success: function (responseText) {
+                        alert(JSON.stringify(responseText));
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status);
+
+                    }
+                });
+            }
             
 
         //搜索户型图接口
