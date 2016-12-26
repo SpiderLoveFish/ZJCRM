@@ -86,7 +86,7 @@
                 "          <span class='abs-bg'></span>" +
                 "          <span class='txt1'>" + obj[n].name + obj[n].srcArea + "㎡</span>" +
                 "          <span class='txt2'>" +
-                "            <p>2015-04-18</p>" +
+                "            <p>" + formatTimebytype(obj[n].modifiedTime, 'yyyy-MM-dd') + "</p>" +
                 "          </span>" +
                 "          <img src=" + obj[n].pics + " />" +
                 "        </a>" +
