@@ -14,9 +14,18 @@
     <script type="text/javascript">
       
         var manager = "";
+        var sfqjt = "N";
+        var picId = "";
+        var ismy = "0";
         $(function () {
             $('#txtUserName').val(decodeURI(getparastr("name")));
             $('#id_name').html(decodeURI(getparastr("name")));
+            ismy = getparastr("ismy");
+           
+            if (ismy == "1")
+                $("button.btn").each(function () {
+                    $(this).hide();
+                });
             getlist3d(getparastr("desid"));
         });
         function herf()
@@ -46,7 +55,11 @@
                         if (obj[n].picType == 0)
                             typename = "普通渲染图";
                         else if (obj[n].picType == 1)
-                            typename = "全景图";
+                        {
+                            picId=  picId + ',' + obj[n].picId;
+                            sfqjt = "Y"; typename = "全景图";
+                        }
+                          
                         else if (obj[n].picType == 2)
                             typename = "俯视图";
                         html += ' <li>';
@@ -184,6 +197,37 @@
                 }
             });
         }
+        //全屋漫游
+        function get3d()
+        {
+          
+   
+            //var desid = getparastr("desid");
+            if (picId == ""  )
+            {
+                alert('没有全景图,生成漫游图失败！！！');
+                return;
+            }
+            $.ajax({
+                url: "../../data/SingleSignOn.ashx", type: "POST",
+                data: { Action: "GETAPI", desid: picId.substr(1), rnd: Math.random() },
+                success: function (responseText) {
+                  
+                   alert(responseText);
+                    var fdStart = responseText.indexOf("http://");
+                  
+                    if (fdStart == 0) {
+                        window.open(responseText);// viewkjl(responseText, "漫游图");
+                        
+                    }   //ajaxhxt(obj[n].desid)
+                    //return responseText;
+
+                },
+                error: function () {
+                    alert(' 生成漫游图失败！！！');     return  ;
+                }
+            });
+        }
         function viewkjl(url, newname) {
             window.open(url + "&width=" + screen.width +
                                 "&height=" + (screen.height - 70), newname,
@@ -210,12 +254,12 @@
         <p class="nav">
            <a onclick="herf(2)" >返回户型图列表</a>
         <input id="txtUserName" name="txtUserName" type="text" class="input txt"   placeholder="" datatype="s3-50" nullmsg="请输入名称" sucmsg=" " ajaxurl="/tools/submit_ajax.ashx?action=validate_username" /> 
-     
       <button class="btn btn-success"  onclick="editname()">修改名称</button> 
       <button class="btn btn-error" onclick="edit();">修改方案</button>
             <button class="btn btn-error" onclick="edit3d()">去装修</button>
                  <button class="btn" onclick="del()">删除方案</button>  
-        </p>
+       <button  onclick="get3d()">全屋漫游</button>  
+           </p>
             
       </div>
     </div>

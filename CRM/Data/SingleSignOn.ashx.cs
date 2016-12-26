@@ -637,34 +637,28 @@ namespace XHD.CRM.Data
                 }
 
             }
-           // 全屋漫游图生成接口(未完成)
+           // 全屋漫游图生成接口 
             if (request["Action"] == "GETAPI")
             {
 
-                string[] arr = para("10", uid);
+                 string[] arr = para("10", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
                 string userId = arr[(int)paraenum.userId];
+                
                 if (appKey == null) context.Response.Write("请先配置参数！");
                 else
                 {
                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     string timestamp = currenttimemillis.ToString(); ;//2分钟
                     // 签名加密
-                    string aa = "sdfaadsasdasd";
-                    string md5aa = MD5(aa).ToLower();
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string picids = Common.PageValidate.InputText(request["desid"], 500);
+                    //string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
                     IDictionary<string, string> postdata = new Dictionary<string, string>();
                     postdata.Add("appkey", appKey);
                     postdata.Add("timestamp", timestamp);
-                    postdata.Add("appuid", userId);
-                    postdata.Add("sign", sign);
-                    postdata.Add("appuname", arr[(int)paraenum.userName]);
-                    postdata.Add("appuemail", arr[(int)paraenum.email]);
-                    postdata.Add("appuphone", arr[(int)paraenum.phone]);
-                    postdata.Add("appussn", arr[(int)paraenum.ssn]);
-                    postdata.Add("appuaddr", arr[(int)paraenum.address]);
-                    postdata.Add("appuavatar", arr[(int)paraenum.avatar]);
+                    postdata.Add("picids", picids);
+                    postdata.Add("override","false"); 
 
                     //发送POST数据  
                     StringBuilder buffer = new StringBuilder();
@@ -697,6 +691,7 @@ namespace XHD.CRM.Data
                     result = HttpHelper_GetStr(api, "POST", buffer.ToString());
                     context.Response.Write(result);
                 }
+       
 
             }
             //更新3D渲染方案的名字put

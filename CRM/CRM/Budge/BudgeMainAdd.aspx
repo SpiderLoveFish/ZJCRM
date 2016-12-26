@@ -590,8 +590,8 @@
                 zindex: 9003,
                 title: '选择项目', width: 850, height: 400,
                 url: "CRM/Budge/SelectProduct.aspx?bid=" + $("#T_budgeid").val() + '&compname=' + escape(compname) + '&compid=' + notes.data.id, buttons: [
-                    { text: ‘提交(F2)', onclick: f_selectProductOK },
-                    { text: ‘完成’, onclick: f_selectContactCancel }
+                    { text: '提交(F2)', onclick: f_selectProductOK },
+                    { text: '完成', onclick: f_selectContactCancel }
                 ]
             });
             return false;
@@ -713,7 +713,7 @@
                     pid = pid + ',' + rows[i].product_id;
 
                 }
-if(pid==‘’) {alert(‘请选择至少一个有效数据！！’);return;}
+            if(pid=='') {alert('请选择至少一个有效数据！！');return;}
                 var url = '../../data/Budge.ashx?Action=savedetailadd&bid=' + $("#T_budgeid").val() + "&xmlist=" + pid + '&compname=' + escape(compname) + '&compid=' + notes.data.id + '&rdm=' + Math.random();
                 dosave(url, dialog);
             }

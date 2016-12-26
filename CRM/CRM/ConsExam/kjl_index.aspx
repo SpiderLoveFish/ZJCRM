@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>【张伟】新城域22幢15列表</title>
+<title></title>
 <meta name="keywords" content="空间设计,家饰装修,户型" />
 <meta name="description" content="收集各种家居设计图集" />
 <link href="../../JS/templates/main/css/pagination.css" rel="stylesheet" />
@@ -16,6 +16,7 @@
   
      $(function () {
          $('#id_name').html(decodeURI(getparastr("name")))
+         this.title = decodeURI(getparastr("name"));
          $.ajax({
              url: "../../data/SingleSignOn.ashx", type: "POST",
              data: { Action: "getlistapi", cid: getparastr("cid"), rnd: Math.random() },
@@ -37,7 +38,7 @@
                      //html = "" + obj[n].simg;
                      ajaxhxt(obj[n].fpId, obj[n].desid)
                      //  alert(hxturl);
-                     html += '<li> <a id=a' + obj[n].desid + '  onclick="list(\'' + obj[n].desid + '\',\'' + obj[n].fpId + '\')" >' +
+                     html += '<li> <a id=a' + obj[n].desid + '  onclick="list(\'' + obj[n].desid + '\',\'' + obj[n].fpId + '\',\'' + obj[n].ismy + '\',\'' + obj[n].DyGraphicsName + '\')" >' +
                         '';
                      if (obj[n].ismy == 1)//如果是本人的，则显示操作，否则不显示
                      {
@@ -68,27 +69,48 @@
          });
 
          function ajaxhxt(fid, desid) {
-             $.ajax({
-                 url: "../../data/SingleSignOn.ashx", type: "POST",
-                 data: { Action: "Gethxt", desid: desid, rnd: Math.random() },
-                 success: function (responseText) {
-                     //  alert(responseText);
-                     $('#img' + fid).attr("src", responseText);
-                     //ajaxhxt(obj[n].desid)
-                     //return responseText;
+            // alert(desid+';'+fid)
+             if (desid != "") {
+                 $.ajax({
+                     url: "../../data/SingleSignOn.ashx", type: "POST",
+                     data: { Action: "Gethxt", desid: desid, rnd: Math.random() },
+                     success: function (responseText) {
+                         $('#img' + fid).attr("src", responseText);
+                       //ajaxhxt(obj[n].desid)
+                         //return responseText;
 
-                 },
-                 error: function () {
-                     // return "";
-                 }
-             });
+                     },
+                     error: function () {
+                         // return "";
+                     }
+                 });
+             }
+             else
+             {  //当户型图ID存在的时候
+                 $.ajax({
+                     url: "../../data/SingleSignOn.ashx", type: "POST",
+                     data: { Action: "getthebasicdata", fid: fid, rnd: Math.random() },
+                     success: function (responseText) {
+                       
+                         var obj = eval(responseText);
+                         for (var n in obj) {
+                             $('#img' + fid).attr("src", obj[n].smallPics);
+                         }   //ajaxhxt(obj[n].desid)
+                         //return responseText;
+
+                     },
+                     error: function () {
+                         // return "";
+                     }
+                 });
+             }
          }
 
      });
 
-     function list(desid, fpId) {
+     function list(desid, fpId, ismy, DyGraphicsName) {
          // getlist3d(desid)
-         viewkjl('../../CRM/ConsExam/kjl_index_3DLIST.aspx?desid=' + desid + '&fpId=' + fpId + '&cid=' + getparastr("cid") + "&name=" + getparastr("name"), "查看");
+         viewkjl('../../CRM/ConsExam/kjl_index_3DLIST.aspx?desid=' + desid + '&fpId=' + fpId + '&ismy=' + ismy + '&cid=' + getparastr("cid") + "&name=" + DyGraphicsName, "查看");
          //$('div[name^=div]').each(function () {
          //$("div[id]").each(function () {
 

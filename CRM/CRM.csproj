@@ -159,12 +159,15 @@
     <Content Include="CRM\ConsExam\CEStage_ViewDetail.aspx" />
     <Content Include="CRM\ConsExam\CEStage_follow_add.aspx" />
     <Content Include="CRM\ConsExam\CEStage_follow.aspx" />
+    <Content Include="CRM\ConsExam\kjl_index_3DLIST.aspx" />
     <Content Include="CRM\ConsExam\kjl_search.aspx" />
     <Content Include="CRM\ConsExam\kjl_index.aspx" />
     <Content Include="CRM\ConsExam\kjl_edit.aspx" />
     <Content Include="CRM\ConsExam\Getemp.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST_DEL.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST_DEL_Add.aspx" />
+    <Content Include="CRM\ConsExam\kjl_search_lf.aspx" />
+    <Content Include="CRM\ConsExam\kjl_search_my.aspx" />
     <Content Include="CRM\ConsExam\kjl_view.aspx" />
     <Content Include="CRM\ConsExam\SelectMaterials_add.aspx" />
     <Content Include="CRM\ConsExam\SelectMaterials.aspx" />
@@ -804,6 +807,7 @@
     <Content Include="JS\spectrum.js" />
     <Content Include="JS\templates\main\css\flexslider.css" />
     <Content Include="JS\templates\main\css\lightbox.css" />
+    <Content Include="JS\templates\main\css\pagination.css" />
     <Content Include="JS\templates\main\css\style.css" />
     <Content Include="JS\templates\main\images\avatar-bg.png" />
     <Content Include="JS\templates\main\images\cart-arrow.gif" />
@@ -826,6 +830,7 @@
     <Content Include="JS\templates\main\js\avatar.js" />
     <Content Include="JS\templates\main\js\cart.js" />
     <Content Include="JS\templates\main\js\common.js" />
+    <Content Include="JS\templates\main\js\jquery-1.11.2.min.js" />
     <Content Include="JS\templates\main\js\jquery.flexslider-min.js" />
     <Content Include="JS\templates\main\js\lightbox.min.js" />
     <Content Include="JS\templates\main\js\login-validate.js" />

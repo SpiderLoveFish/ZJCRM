@@ -43,7 +43,7 @@ input::-moz-focus-inner,button::-moz-focus-inner{ border:0;padding:0;outline:0; 
 
 /*文本框样式*/
 input.wide{ width:250px; }
-input.txt{ width:500px; }
+input.txt{ width:300px; }
 input.small{ width:50px; }
 .input{ display:inline; margin-right:5px; padding:7px; height:20px; line-height:20px; vertical-align:middle; background:#fff; color:#999px; border:1px solid #e8e8e8; border-radius:2px; }
 .select{ padding:7px; border:1px solid #e8e8e8; line-height:20px; }
