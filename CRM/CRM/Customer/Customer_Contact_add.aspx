@@ -69,7 +69,13 @@
         })
         function f_save() {
             if ($(form1).valid()) {
-                var sendtxt = "&Action=save&contact_id=" + getparastr("cid");
+                if (getparastr("Customer_id")) {
+                    var sendtxt = "&Action=saveContact&contact_id=" + getparastr("cid");
+                }
+                else {
+                    var sendtxt = "&Action=save&contact_id=" + getparastr("cid");
+                }
+                //alert($("form :input").fieldSerialize() +"@"+ sendtxt);
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }

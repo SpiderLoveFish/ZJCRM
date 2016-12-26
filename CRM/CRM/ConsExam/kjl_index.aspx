@@ -38,7 +38,8 @@
                      //html = "" + obj[n].simg;
                      ajaxhxt(obj[n].fpId, obj[n].desid)
                      //  alert(hxturl);
-                     html += '<li> <a id=a' + obj[n].desid + '  onclick="list(\'' + obj[n].desid + '\',\'' + obj[n].fpId + '\',\'' + obj[n].ismy + '\',\'' + obj[n].DyGraphicsName + '\')" >' +
+                     html += '<li> <a title="' + obj[n].DyGraphicsName + '" id=a' + obj[n].desid + '  onclick="list(\'' + obj[n].desid + '\',\'' + obj[n].fpId + '\',\'' + obj[n].ismy + '\',\'' + obj[n].DyGraphicsName + '\')" >' +
+                    
                         '';
                      if (obj[n].ismy == 1)//如果是本人的，则显示操作，否则不显示
                      {

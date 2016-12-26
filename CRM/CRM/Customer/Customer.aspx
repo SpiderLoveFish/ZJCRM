@@ -256,7 +256,7 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-              
+
                 items.push({
                     type: 'textbox',
                     id: 'stype',
@@ -265,10 +265,17 @@
                 });
                 items.push({
                     type: 'textbox',
+                    id: 'sbq',
+                    name: 'sbq',
+                    text: '标签'
+                });
+                items.push({
+                    type: 'textbox',
                     id: 'keyword1',
                     name: 'keyword1',
                     text: ''
                 });
+                items.push({ line: true });
                 items.push({
                     type: 'button',
                     text: '搜索',
@@ -277,8 +284,7 @@
                     click: function () {
                         doserch()
                     }
-                });
-               
+                });                              
                 items.push({
                     type: 'serchbtn',
                     text: '高级搜索',
@@ -315,7 +321,12 @@
                     isMultiSelect: true,
                     url: "../../data/param_sysparam.ashx?Action=combo&parentid=1&rnd=" + Math.random()
                 })
-                $("#keyword1").ligerTextBox({ width: 200, nullText: "输入关键词搜索" })
+                $("#sbq").ligerComboBox({
+                    width: 100,
+                    isMultiSelect: true,
+                    url: "../../data/param_sysparam.ashx?Action=combo&parentid=18&rnd=" + Math.random()
+                })
+                $("#keyword1").ligerTextBox({ width: 100, nullText: "输入关键词搜索" })
                 $("#maingrid4").ligerGetGridManager().onResize();
                 $("#maingrid5").ligerGetGridManager().onResize();
 
@@ -546,6 +557,17 @@
             f_openWindow("CRM/Customer/Customer_add.aspx", "新增客户", 660, 550);
         }
 
+        function addContact() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow("CRM/Customer/Customer_Contact_add.aspx?Customer_id=" + row.id, "新增联系人", 730, 450);
+            }
+            else {
+                $.ligerDialog.warn('请选择要添加其他联系人的客户行！');
+            }
+        }
+
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
@@ -643,6 +665,7 @@
                 $.ligerDialog.warn('请选择行！');
             }
         }
+
         function f_selectContactCancel(item, dialog) {
             dialog.close();
             //fload();
