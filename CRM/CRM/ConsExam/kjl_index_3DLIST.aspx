@@ -23,6 +23,7 @@
             $('#id_name').html(decodeURI(getparastr("cname")));
             ismy = getparastr("ismy");
            
+            if (ismy == "0")//不是隐藏
                 $("button.btn").each(function () {
                     $(this).hide();
                 });
