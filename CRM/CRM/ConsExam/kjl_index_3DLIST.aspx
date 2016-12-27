@@ -24,9 +24,15 @@
             ismy = getparastr("ismy");
            
             if (ismy == "0")//不是隐藏
+            {
                 $("button.btn").each(function () {
                     $(this).hide();
                 });
+
+                $("#wxx").text("不是您制作的户型图，只有查看权限！");
+                
+            }
+            
             ajaxhxt(getparastr("fpId"), getparastr("desid"));
           
         });
@@ -308,7 +314,7 @@
       <button class="btn btn-error" onclick="edit();">修改方案</button>
             <button class="btn btn-error" onclick="edit3d()">去装修</button>
                  <button class="btn" onclick="del()">删除方案</button>  
-      
+      <span id="wxx"  style="font-size:15px; color:#fff"></span>
            </p>
             
       </div>
@@ -331,8 +337,8 @@
 <%--        <span class="comm">建筑面积：125㎡</span>
           <span class="comm">套内面积：98㎡</span>
         <span class="view">创建人：张君</span>--%>
-         <button class="btn-gray" onclick='javascript: history.go(0)'>刷新</button>
-       <button class="btn-success"  onclick="get3d()">全屋漫游</button>  
+         <button class="btn-gray" onclick='javascript: history.go(0)'>&nbsp;&nbsp;刷新&nbsp;&nbsp;</button>
+       <button class="btn-success" style="color:#fff"  onclick="get3d()">&nbsp;&nbsp;全屋漫游&nbsp;&nbsp;</button>  
       </p>
     </div>
 
