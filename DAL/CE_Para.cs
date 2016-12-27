@@ -700,6 +700,7 @@ namespace XHD.DAL
             {
                 strSql.Append(" where " + strWhere);
             }
+            strSql.Append(" ORDER BY  dotime DESC");
             return DbHelperSQL.Query(strSql.ToString());
         }
         /// <summary>
