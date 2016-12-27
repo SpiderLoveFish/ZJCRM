@@ -17,17 +17,70 @@
         var sfqjt = "N";
         var picId = "";
         var ismy = "0";
+        var html = "";
         $(function () {
             $('#txtUserName').val(decodeURI(getparastr("name")));
-            $('#id_name').html(decodeURI(getparastr("name")));
+            $('#id_name').html(decodeURI(getparastr("cname")));
             ismy = getparastr("ismy");
            
             if (ismy == "1")
                 $("button.btn").each(function () {
                     $(this).hide();
                 });
-            getlist3d(getparastr("desid"));
+            ajaxhxt(getparastr("fpId"), getparastr("desid"));
+          
         });
+
+
+        function ajaxhxt(fid, desid) {
+            // alert(desid+';'+fid)
+            if (desid != "") {
+                $.ajax({
+                    url: "../../data/SingleSignOn.ashx", type: "POST",
+                    data: { Action: "Gethxt", desid: desid, rnd: Math.random() },
+                    success: function (responseText) {
+                        //$('#img' + fid).attr("src", responseText);
+                     
+                        html += ' <li>';
+                        //'<div class="type"></div>' +
+
+                        html += ' <a href=\'' + responseText + '\'  data-lightbox="album" data-title=""> <img src=' + responseText + ' /> </a>';
+
+                        html += '<a  class="btn2" >【户型图】' + decodeURI(getparastr("name")) + '</a>' +
+                       ' </li>';
+                        $('#3dlist').append(html); getlist3d(getparastr("desid"));
+                    },
+                    error: function () {
+                        // return "";
+                    }
+                });
+            }
+            else {  //当户型图ID存在的时候
+                $.ajax({
+                    url: "../../data/SingleSignOn.ashx", type: "POST",
+                    data: { Action: "getthebasicdata", fid: fid, rnd: Math.random() },
+                    success: function (responseText) {
+
+                        var obj = eval(responseText);
+                        for (var n in obj) {
+                            //$('#img' + fid).attr("src", obj[n].smallPics);
+                           
+                            html += ' <li>';
+                            //'<div class="type"></div>' +
+
+                            html += ' <a href=\'' + obj[n].smallPics + '\'  data-lightbox="album" data-title=""> <img src=' + obj[n].smallPics + ' /> </a>';
+
+                            html += '<a  class="btn2" >【户型图】' + decodeURI(getparastr("name")) + '</a>' +
+                           ' </li>';
+                            $('#3dlist').append(html);//   getlist3d(getparastr("desid"));
+                        }   
+                    },
+                    error: function () {
+                        // return "";
+                    }
+                });
+            }
+        }
         function herf()
         {
 
@@ -45,13 +98,12 @@
                     //alert(obj.obsDesignId + obj.obsPlan.name);
                     //names = obj.obsPlan.name
                     //fid = obj.obsPlan.obsPlanId
-                    var html = ""; var typename = "";
-                    $('#3dlist').html(html)
+                 var typename = "";
+             
                     for (var n in obj) {
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
-                        // alert(obj[n].simg);
-                        //html = "" + obj[n].simg;
+                     
                         if (obj[n].picType == 0)
                             typename = "普通渲染图";
                         else if (obj[n].picType == 1)
@@ -212,8 +264,6 @@
                 url: "../../data/SingleSignOn.ashx", type: "POST",
                 data: { Action: "GETAPI", desid: picId.substr(1), rnd: Math.random() },
                 success: function (responseText) {
-                  
-                   alert(responseText);
                     var fdStart = responseText.indexOf("http://");
                   
                     if (fdStart == 0) {
@@ -237,9 +287,9 @@
         }
         function herf(type) {
             if (type == 1)
-                window.location.href = "/CRM/ConsExam/kjl_search_my.aspx?cid=" + getparastr("cid") + "&name=" + getparastr("name");
+                window.location.href = "/CRM/ConsExam/kjl_search_my.aspx?cid=" + getparastr("cid") + "&name=" + getparastr("cname");
             else if (type == 2)
-                window.location.href = "/CRM/ConsExam/kjl_index.aspx?cid=" + getparastr("cid") + "&name=" + getparastr("name");
+                window.location.href = "/CRM/ConsExam/kjl_index.aspx?cid=" + getparastr("cid") + "&name=" + getparastr("cname");
         }
     </script>
 </head>
@@ -258,7 +308,7 @@
       <button class="btn btn-error" onclick="edit();">修改方案</button>
             <button class="btn btn-error" onclick="edit3d()">去装修</button>
                  <button class="btn" onclick="del()">删除方案</button>  
-       <button  onclick="get3d()">全屋漫游</button>  
+      
            </p>
             
       </div>
@@ -282,7 +332,7 @@
           <span class="comm">套内面积：98㎡</span>
         <span class="view">创建人：张君</span>--%>
          <button class="btn-gray" onclick='javascript: history.go(0)'>刷新</button>
-      
+       <button class="btn-success"  onclick="get3d()">全屋漫游</button>  
       </p>
     </div>
 
