@@ -111,7 +111,7 @@
 
      function list(desid, fpId, ismy, DyGraphicsName) {
          // getlist3d(desid)
-         viewkjl('../../CRM/ConsExam/kjl_index_3DLIST.aspx?desid=' + desid + '&fpId=' + fpId + '&ismy=' + ismy + '&cid=' + getparastr("cid") + "&name=" + DyGraphicsName, "查看");
+         window.location.href ='/CRM/ConsExam/kjl_index_3DLIST.aspx?desid=' + desid + '&fpId=' + fpId + '&ismy=' + ismy + '&cid=' + getparastr("cid") + "&name=" + DyGraphicsName + "&cname=" + decodeURI(getparastr("name"));
          //$('div[name^=div]').each(function () {
          //$("div[id]").each(function () {
 
