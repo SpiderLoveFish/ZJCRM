@@ -19,6 +19,7 @@
         var ismy = "0";
         var html = "";
         $(function () {
+            this.title = decodeURI(getparastr("name"));
             $('#txtUserName').val(decodeURI(getparastr("name")));
             $('#id_name').html(decodeURI(getparastr("cname")));
             ismy = getparastr("ismy");
@@ -166,7 +167,11 @@
         }
         //去装修
         function edit3d() {
-
+            if (getparastr("desid") == "")
+            {
+                alert("没有装修方案，请先修改方案进行装修！！");
+                return;
+            }
             viewkjl('../../CRM/ConsExam/kjl_edit.aspx?cid=' + getparastr("cid") + '&style=Edit' + '&dest=1' + '&desid=' + getparastr("desid"), "修改3D图");
 
         }
