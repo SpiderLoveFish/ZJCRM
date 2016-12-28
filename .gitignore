@@ -33,3 +33,7 @@ CRM/webserver/testapi.asmx.cs
 *.jpg
 .svn/entries
 .svn
+DAL/Tools/小黄豆CRM加密解密工具.exe
+*.ini
+DAL/Tools/小黄豆CRM启动器.exe
+说明.txt
