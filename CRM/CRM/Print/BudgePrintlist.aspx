@@ -62,6 +62,7 @@
                dataType: "json",
                success: function (result) {
                    var obj = result.Rows;
+                 //  alert(JSON.stringify(result.Rows))
                    var item = ""; var len = 0;//4格换一行
                    $.each(obj, function (i, data) {
 
@@ -79,7 +80,7 @@
                   
 
                        len++;
-                       if (len == 3) {
+                       if (len == 1) {
 
                            item += " </tr>";
                            len = 0;
