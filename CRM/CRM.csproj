@@ -319,6 +319,10 @@
     <Content Include="FakesAssemblies\XHD.BLL.Fakes.dll" />
     <Content Include="FakesAssemblies\XHD.BLL.Fakes.xml" />
     <Content Include="GetRegNum.aspx" />
+    <Content Include="HR\hr_changepwd.aspx" />
+    <Content Include="HR\hr_socialWorker.aspx" />
+    <Content Include="HR\hr_socialWorker_add.aspx" />
+    <Content Include="HR\hr_socialWorker_changpwd.aspx" />
     <Content Include="HR\Sys_Role_authorized.aspx" />
     <Content Include="Images\big_bgcolor.jpg" />
     <Content Include="Images\bt_92X120.png" />
@@ -939,6 +943,7 @@
     <Content Include="Data\CRM_Classic_case.ashx" />
     <Content Include="Data\ScoreShop.ashx" />
     <Content Include="Data\CRM_CEStage_Follow.ashx" />
+    <Content Include="Data\hr_socialWorker.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -4252,7 +4257,6 @@
     <Content Include="lib\ligerUI\skins\ext-purple\image\flexigrid_blue\indicator_waitanim.gif.bak" />
     <Content Include="lib\ligerUI\skins\ext-purple\image\flexigrid_blue\vssver2.scc" />
     <Content Include="lib\ligerUI\skins\icons\1.bat" />
-    <Content Include="WebSite\images\Thumbs.db" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\Caches.cs" />
@@ -4532,6 +4536,9 @@
     </Compile>
     <Compile Include="Data\CRM_CEStage_Follow.ashx.cs">
       <DependentUpon>CRM_CEStage_Follow.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\hr_socialWorker.ashx.cs">
+      <DependentUpon>hr_socialWorker.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\ScoreShop.ashx.cs">
       <DependentUpon>ScoreShop.ashx</DependentUpon>
@@ -4868,8 +4875,6 @@
     <Content Include="Data\Sys_role_emp.ashx" />
     <Content Include="Data\toolbar.ashx" />
     <Content Include="Data\upload.ashx" />
-    <Content Include="Images\fancybox\img\Thumbs.db" />
-    <Content Include="Images\xgcalendar\Thumbs.db" />
     <Content Include="ueditor1_2_5_1-utf8-net\build\merge.bat" />
     <Content Include="ueditor1_2_5_1-utf8-net\net\fileUp.ashx" />
     <Content Include="ueditor1_2_5_1-utf8-net\net\getContent.ashx" />
