@@ -16,6 +16,12 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
         $.ligerui.Managers[dom.id] = manager;
         dom.applyligerui = true;
     };
+    $.ligerui.removeManager = function (dom, manager) {
+
+        $.ligerui.ManagerCount--;
+        delete $.ligerui.Managers[dom.id]
+        dom.applyligerui = false;
+    }
     $.ligerui.getManager = function (domArr) {
         if (domArr.length == 0) return null;
         return $.ligerui.Managers[domArr[0].id];
@@ -48,7 +54,8 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
         isHidden: false,        //关闭对话框时是否只是隐藏，还是销毁对话框
         zindex: 9000,
         showToggle: false,                          //是否显示收缩窗口按钮
-        slide:true
+        showMax: false,
+        slide: true
     };
     $.ligerDefaults.DialogString = {
         titleMessage: '提示',                     //提示文本标题
@@ -81,28 +88,40 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
         },
         close: function () {
             var g = this; var po = this.po, p = this.options;
-            if (g.frame) {
-                $(g.frame.document).ready(function () {                    
-                    g.dialog.remove();
-                });
-            }
-            else {
 
-                g.dialog.remove();
+            $.ligerui.removeManager(g.dialog[0], g);
+
+            if (g.frame) {
+                var jframe = $('iframe', g.dialog);
+                if (jframe.length) {
+                    var frame = jframe[0];
+                    frame.src = "about:blank";
+                    if (frame.contentWindow && frame.contentWindow.document) {
+                        try {
+                            frame.contentWindow.document.write('');
+                        } catch (e) {
+                        }
+                    }
+                    $.browser.msie && CollectGarbage();
+                    jframe.remove();
+
+                }
+
             }
+            g.dialog.remove();
             if (g.windowMask) {
                 if (p.isHidden) g.windowMask.hide();
                 else g.windowMask.remove();
             }
-            
-                $('body').unbind('keydown.dialog');
+
+            $('body').unbind('keydown.dialog');
         },
         hidden: function () {
             var g = this; var po = this.po;
 
-                    if (g.windowMask) g.windowMask.hide();
-                       // po.removeWindowMask();
-                    g.dialog.hide();               
+            if (g.windowMask) g.windowMask.hide();
+            // po.removeWindowMask();
+            g.dialog.hide();
         },
         show: function () {
             var g = this, po = this.po, p = this.options;
@@ -158,19 +177,19 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
             if (value) {
                 if (!g.wintoggle) {
                     g.wintoggle = $('<div class="l-dialog-winbtn l-dialog-collapse"></div>').appendTo(g.dialog.winbtns)
-                   .hover(function () {                  
+                   .hover(function () {
                        if ($(this).hasClass("l-dialog-extend"))
                            $(this).addClass("l-dialog-extend-over");
                        else
                            $(this).addClass("l-dialog-collapse-over");
                    }, function () {
                        $(this).removeClass("l-dialog-extend-over l-dialog-collapse-over");
-                   }).click(function () {                      
-                       if (g.wintoggle.hasClass("l-dialog-extend")) {                       
+                   }).click(function () {
+                       if (g.wintoggle.hasClass("l-dialog-extend")) {
                            g.wintoggle.removeClass("l-dialog-extend");
                            g.extend();
                        }
-                       else {                 
+                       else {
                            g.wintoggle.addClass("l-dialog-extend");
                            g.collapse();
                        }
@@ -180,6 +199,53 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
             else if (g.wintoggle) {
                 g.wintoggle.remove();
                 g.wintoggle = null;
+            }
+        },
+        setShowMax: function (value) {
+            var g = this, p = this.options;
+            if (value) {
+                if (!g.winmax) {
+                    g.winmax = $('<div class="l-dialog-winbtn l-dialog-max"></div>').appendTo(g.dialog.winbtns)
+                   .hover(function () {
+                       if ($(this).hasClass("l-dialog-regain"))
+                           $(this).addClass("l-dialog-regain-over");
+                       else
+                           $(this).addClass("l-dialog-max-over");
+                   }, function () {
+                       $(this).removeClass("l-dialog-regain-over l-dialog-max-over");
+                   }).click(function () {
+                       if (g.winmax.hasClass("l-dialog-regain")) {
+                           g.winmax.removeClass("l-dialog-regain");
+                           if (p.onRegain && p.onRegain() == false) return false;
+                           g.dialog.width(g.lastWindowWidth).height(g.lastWindowHeight).css({ left: g.lastWindowLeft, top: g.lastWindowTop });
+                           g.dialog.body.css({
+                               width: g.lastBodyWidth,
+                               height: g.lastBodyHeight
+                           });
+                           $(".l-dialog-content", g.dialog.body).height(g.lastWindowHeight - 52 - $(".l-dialog-buttons", g.dialog).height());
+                       }
+                       else {
+                           g.winmax.addClass("l-dialog-regain");
+                           if (p.onMax && p.onMax() == false) return false;
+                           g.lastWindowWidth = g.dialog.width();
+                           g.lastWindowHeight = g.dialog.height();
+                           g.lastWindowLeft = g.dialog.css('left');
+                           g.lastWindowTop = g.dialog.css('top');
+                           g.lastBodyWidth = g.dialog.body.width();
+                           g.lastBodyHeight = g.dialog.body.height();
+                           g.dialog.body.css({
+                               width: $(window).width() - 26,
+                               height: $(window).height() - 50
+                           });
+                           $(".l-dialog-content", g.dialog.body).height($(window).height() - 53 - $(".l-dialog-buttons", g.dialog).height());
+                           g.dialog.width($(window).width()).height($(window).height()).css({ left: 0, top: 0 });
+                       }
+                   });
+                }
+            }
+            else if (g.winmax) {
+                g.winmax.remove();
+                g.winmax = null;
             }
         },
         updateBtnsWidth: function () {
@@ -210,7 +276,7 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
             },
             applyDrag: function () {
                 if ($.fn.ligerDrag)
-                    g.dialog.ligerDrag({ handler: '.l-dialog-title',breakout:true });
+                    g.dialog.ligerDrag({ handler: '.l-dialog-title', breakout: true });
             },
             applyResize: function () {
                 if ($.fn.ligerResizable) {
@@ -242,7 +308,7 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
                 if (p.type) {
                     if (p.type == 'success' || p.type == 'donne' || p.type == 'ok') {
                         $(".l-dialog-image", g.dialog).addClass("l-dialog-image-donne").show();
-                        $(".l-dialog-content", g.dialog).css({ paddingLeft: 64, paddingBottom: 30,paddingRight: 5 });
+                        $(".l-dialog-content", g.dialog).css({ paddingLeft: 64, paddingBottom: 30, paddingRight: 5 });
                     }
                     else if (p.type == 'error') {
                         $(".l-dialog-image", g.dialog).addClass("l-dialog-image-error").show();
@@ -277,8 +343,10 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
         if (p.target || p.url || p.type == "none") p.type = null;
         if (p.cls) g.dialog.addClass(p.cls);
         if (p.id) g.dialog.attr("id", p.id);
+        if (p.showMax) g.setShowMax(true);
         if (p.showToggle) g.setShowToggle(true);
 
+        g.updateBtnsWidth();
 
         //设置锁定屏幕、拖动支持 和设置图片
         if (p.modal)
@@ -310,6 +378,7 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
             $(".l-dialog-content", g.dialog.body).addClass("l-dialog-content-nopadding");
             setTimeout(function () {
                 g.jiframe.attr("src", p.url);
+                g.jiframe[0].dialog = g;//增加窗口对dialog对象的引用
                 g.frame = window.frames[g.jiframe.attr("name")];
             }, 0);
         }
@@ -335,7 +404,7 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
         p.width && g.dialog.body.width(p.width - 26);
         if (p.height) {
             $(".l-dialog-content", g.dialog.body).height(p.height - 46 - $(".l-dialog-buttons", g.dialog).height());
-            g.dialog.content.currentheight = p.height - 46 - $(".l-dialog-buttons", g.dialog).height();            
+            g.dialog.content.currentheight = p.height - 46 - $(".l-dialog-buttons", g.dialog).height();
         }
         p.title = p.title || p.titleMessage;
         p.title && $(".l-dialog-title", g.dialog).html(p.title);
@@ -359,7 +428,7 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
                 g.close();
         });
 
-       
+
         //位置初始化
         var left = 0;
         var top = 0;
@@ -373,7 +442,7 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
         g.dialog.css({ left: left, top: top });
         g.dialog.css({ zIndex: Math.abs(p.zindex) + 1 });
         g.dialog.show();
-        g.updateBtnsWidth();
+
 
         $('body').bind('keydown.dialog', function (e) {
             var key = e.which;
@@ -388,7 +457,8 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
         return g;
     };
     $.ligerDialog.close = function () {
-        $(".l-dialog,.l-window-mask").remove();
+        var manager = $.ligerui.getManager(this);
+        manager.close();
     };
     $.ligerDialog.show = function (p) {
         if ($(".l-dialog").length > 0) {
@@ -416,6 +486,7 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
         };
         p = {
             content: content,
+            showMax: false,
             buttons: [{ text: '确定', onclick: btnclick }]
         };
         if (typeof (title) == "string" && title != "") p.title = title;
@@ -438,6 +509,7 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
         p = {
             type: 'question',
             content: content,
+            showMax: false,
             buttons: [{ text: '是', onclick: btnclick, type: 'ok' }, { text: '否', onclick: btnclick, type: 'no' }]
         };
         if (typeof (title) == "string" && title != "") p.title = title;
@@ -457,6 +529,7 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
         p = {
             type: 'question',
             content: content,
+            showMax: false,
             buttons: [{ text: '是', onclick: btnclick, type: 'yes' }, { text: '否', onclick: btnclick, type: 'no' }, { text: '取消', onclick: btnclick, type: 'cancel' }]
         };
         if (typeof (title) == "string" && title != "") p.title = title;
@@ -466,7 +539,7 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
     $.ligerDialog.waitting = function (title, zindex) {
         title = title || $.ligerDefaults.Dialog.waittingMessage;
         zindex = zindex || 9000;
-        $.ligerDialog.open({ cls: 'l-dialog-waittingdialog', title:  title, type: 'waitting', content: '<div style="padding:4px"></div>', allowClose: false, zindex: zindex });
+        $.ligerDialog.open({ cls: 'l-dialog-waittingdialog', title: title, type: 'waitting', content: '<div style="padding:4px"></div>', allowClose: false, showMax: false, zindex: zindex });
     };
     $.ligerDialog.closeWaitting = function () {
         $(".l-dialog-waittingdialog,.l-window-mask").remove();
@@ -512,6 +585,7 @@ var ligerDialogImagePath = "../../lib/ligerUI/skins/ext/images/dialog/";
             title: title,
             target: target,
             width: 320,
+            showMax: false,
             buttons: [{ text: '确定', onclick: btnclick, type: 'yes' }, { text: '取消', onclick: btnclick, type: 'cancel' }]
         };
         return $.ligerDialog.open(p);

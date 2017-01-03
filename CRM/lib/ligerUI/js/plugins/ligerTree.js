@@ -46,9 +46,10 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
         onAppend: function () { },             //加载数据时事件，对数据进行预处理以后
         onAfterAppend: function () { },         //加载数据完事件
         slide: true,           //是否以动画的形式显示
-        itemopen:false, //是否点击节点打开
+        itemopen: false, //是否点击节点打开
         tabid: null,
-        usericon:null
+        usericon: null,
+        iconpath: ''
 
     };
 
@@ -71,8 +72,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     if (p.isLeaf) return p.isLeaf(treenodedata);
                     return treenodedata.children ? true : false;
                 },
-                isChildren:function(node)
-                {
+                isChildren: function (node) {
                     return node.data.children
                 },
                 //获取父节点
@@ -191,9 +191,9 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         success: function (data) {
                             g.loading.hide();
                             if (p.onSuccess) p.onSuccess(data);
-                            
+
                             for (var a in data) {
-                                $("li", g.tree).each(function () {                                    
+                                $("li", g.tree).each(function () {
                                     //alert($("> .l-body >img", $(this)).attr("src"));
                                     if (data[a].id == $(this).attr("id"))
                                         $("> .l-body >img", $(this)).attr("src", data[a].d_icon);
@@ -202,7 +202,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                                 //alert(nodedata[attr].id + "," + data[attr].d_icon);
                                 //$("> .l-body >img", nodedata[attr]).attr("src", data[attr].d_icon);
                                 //alert($("> .l-body >img", nodedata[attr]).attr("src"));
-                                
+
 
                             }
                         },
@@ -389,6 +389,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                             treeitembody.addClass("l-selected");
 
                         p.onSelect && p.onSelect({ data: treenodedata, target: treeitem[0] });
+                        p.onBeforeSelect && p.onBeforeSelect({ data: treenodedata, target: treeitem[0] });
                         return;
                     }
                     else {
@@ -404,10 +405,11 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         if (clause(treenodedata, treedataindex)) {
                             g.selectNode(this);
                         }
-//                        else {
-//                            g.cancelSelect(this);
-//                        }
+                        //                        else {
+                        //                            g.cancelSelect(this);
+                        //                        }
                     });
+
                 },
                 getTextByID: function (id) {
                     var data = g.getDataByID(id);
@@ -516,13 +518,13 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     treeWidth += p.nodeWidth;
                     g.tree.width(treeWidth);
                 },
-                getChildNodeClassName: function () {                    
-                        return 'l-tree-icon-' + p.childIcon;                   
+                getChildNodeClassName: function () {
+                    return 'l-tree-icon-' + p.childIcon;
                 },
-                getParentNodeClassName: function (isOpen) {                    
-                        var nodeclassname = 'l-tree-icon-' + p.parentIcon;
-                        if (isOpen) nodeclassname += '-open';
-                        return nodeclassname;                   
+                getParentNodeClassName: function (isOpen) {
+                    var nodeclassname = 'l-tree-icon-' + p.parentIcon;
+                    if (isOpen) nodeclassname += '-open';
+                    return nodeclassname;
                 },
                 //根据data生成最终完整的tree html
                 getTreeHTMLByData: function (data, outlineLevel, isLast, isExpand) {
@@ -551,11 +553,11 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                                 data[dataindex][g.sysAttribute[j]] = $(this).attr(g.sysAttribute[j]);
                         }
                         for (var j = 0; j < p.attribute.length; j++) {
-                            if (data[i][p.attribute[j]]!=null)
+                            if (data[i][p.attribute[j]] != null)
                                 treehtmlarr.push(p.attribute[j] + '="' + data[i][p.attribute[j]] + '" ');
                         }
 
-                        treehtmlarr.push(' tabid="' + data[i][p.tabid]+ '" ');
+                        treehtmlarr.push(' tabid="' + data[i][p.tabid] + '" ');
 
                         //css class
                         treehtmlarr.push('class="');
@@ -582,7 +584,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                                 p.parentIcon && !isExpandCurrent && treehtmlarr.push('<div class="l-box ' + po.getParentNodeClassName() + '"></div>');
                                 p.parentIcon && isExpandCurrent && treehtmlarr.push('<div class="l-box ' + po.getParentNodeClassName(true) + '"></div>');
                             } else {
-                                treehtmlarr.push('<img style="height:16px;width:16px" src="' + data[i][p.usericon] + '"/>');
+                                treehtmlarr.push('<img style="height:16px;width:16px" src="' + p.iconpath + data[i][p.usericon] + '"/>');
                             }
                         }
                         else {
@@ -597,7 +599,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                             if (p.usericon == null) {
                                 p.childIcon && treehtmlarr.push('<div class="l-box ' + po.getChildNodeClassName() + '"></div>');
                             } else {
-                                treehtmlarr.push('<img style="height:16px;width:16px" src="' + data[i][p.usericon] + '"/>');
+                                treehtmlarr.push('<img style="height:16px;width:16px" src="' + p.iconpath + data[i][p.usericon] + '"/>');
                             }
                         }
 
@@ -659,135 +661,121 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         $(this).removeClass("l-over");
                     });
                 },
-                setTreeEven : function()
-                {
-                    p.onContextmenu && g.tree.bind("contextmenu",function(e){ 
+                setTreeEven: function () {
+                    p.onContextmenu && g.tree.bind("contextmenu", function (e) {
                         var obj = (e.target || e.srcElement);
                         var treeitem = null;
-                        if(obj.tagName.toLowerCase() == "a" || obj.tagName.toLowerCase()=="span" || $(obj).hasClass("l-box"))
-                            treeitem = $(obj).parent().parent();  
-                        else if($(obj).hasClass("l-body"))
+                        if (obj.tagName.toLowerCase() == "a" || obj.tagName.toLowerCase() == "span" || $(obj).hasClass("l-box"))
+                            treeitem = $(obj).parent().parent();
+                        else if ($(obj).hasClass("l-body"))
                             treeitem = $(obj).parent();
-                        else if(obj.tagName.toLowerCase() == "li")
+                        else if (obj.tagName.toLowerCase() == "li")
                             treeitem = $(obj);
-                        if(!treeitem) return;
+                        if (!treeitem) return;
                         var treedataindex = parseInt(treeitem.attr("treedataindex"));
-                        var treenodedata = po.getDataNodeByTreeDataIndex(g.data,treedataindex); 
-                        return p.onContextmenu({data:treenodedata,target:treeitem[0]},e);
+                        var treenodedata = po.getDataNodeByTreeDataIndex(g.data, treedataindex);
+                        return p.onContextmenu({ data: treenodedata, target: treeitem[0] }, e);
                     });
-                    g.tree.click(function (e)
-                    { 
+                    g.tree.click(function (e) {
                         var obj = (e.target || e.srcElement);
                         var treeitem = null;
                         if (obj.tagName.toLowerCase() == "a" || obj.tagName.toLowerCase() == "span" || $(obj).hasClass("l-box") || obj.tagName.toLowerCase() == "img")
-                            treeitem = $(obj).parent().parent();  
-                        else if($(obj).hasClass("l-body"))
+                            treeitem = $(obj).parent().parent();
+                        else if ($(obj).hasClass("l-body"))
                             treeitem = $(obj).parent();
                         else
                             treeitem = $(obj);
-                        if(!treeitem) return;
+                        if (!treeitem) return;
                         var treedataindex = parseInt(treeitem.attr("treedataindex"));
-                        var treenodedata = po.getDataNodeByTreeDataIndex(g.data,treedataindex);                                
-                        var treeitembtn = $(".l-body:first .l-expandable-open:first,.l-body:first .l-expandable-close:first",treeitem); 
-                       if(!$(obj).hasClass("l-checkbox"))
-                       {
-                           if ($(">div:first",treeitem).hasClass("l-selected"))
-                            {
-                                if(p.onBeforeCancelSelect 
-                                && p.onBeforeCancelSelect({data:treenodedata,target:treeitem[0]}) == false)
+                        var treenodedata = po.getDataNodeByTreeDataIndex(g.data, treedataindex);
+                        var treeitembtn = $(".l-body:first .l-expandable-open:first,.l-body:first .l-expandable-close:first", treeitem);
+                        if (!$(obj).hasClass("l-checkbox")) {
+                            if ($(">div:first", treeitem).hasClass("l-selected")) {
+                                if (p.onBeforeCancelSelect
+                                && p.onBeforeCancelSelect({ data: treenodedata, target: treeitem[0] }) == false)
                                     return false;
-                                $(">div:first",treeitem).removeClass("l-selected");
-                                p.onCancelSelect && p.onCancelSelect({data:treenodedata,target:treeitem[0]});
+                                $(">div:first", treeitem).removeClass("l-selected");
+                                p.onCancelSelect && p.onCancelSelect({ data: treenodedata, target: treeitem[0] });
                             }
-                            else
-                            { 
-                                if(p.onBeforeSelect 
-                                && p.onBeforeSelect({data:treenodedata,target:treeitem[0]}) == false)
+                            else {
+                                if (p.onBeforeSelect
+                                && p.onBeforeSelect({ data: treenodedata, target: treeitem[0] }) == false)
                                     return false;
                                 $(".l-body", g.tree).removeClass("l-selected");
-                                $(">div:first",treeitem).addClass("l-selected");
-                                    p.onSelect && p.onSelect({data:treenodedata,target:treeitem[0]});
-                            } 
-                       }
-                       var itemopen; 
-                       if(p.itemopen)
-                       {
-                            itemopen=treeitembtn;
-                       }
-                       else
-                       {
-                            itemopen=$(obj);
-                       }
+                                $(">div:first", treeitem).addClass("l-selected");
+                                p.onSelect && p.onSelect({ data: treenodedata, target: treeitem[0] });
+                            }
+                        }
+                        var itemopen;
+                        if (p.itemopen) {
+                            itemopen = treeitembtn;
+                        }
+                        else {
+                            itemopen = $(obj);
+                        }
                         //chekcbox even
-                        if ($(obj).hasClass("l-checkbox"))
-                        {
-                            if(p.autoCheckboxEven)
-                            {
+                        if ($(obj).hasClass("l-checkbox")) {
+                            if (p.autoCheckboxEven) {
                                 //状态：未选中
-                                if ($(obj).hasClass("l-checkbox-unchecked"))
-                                {
+                                if ($(obj).hasClass("l-checkbox-unchecked")) {
                                     $(obj).removeClass("l-checkbox-unchecked").addClass("l-checkbox-checked");
                                     $(".l-children .l-checkbox", treeitem)
                                     .removeClass("l-checkbox-incomplete l-checkbox-unchecked")
                                     .addClass("l-checkbox-checked");
-                                    p.onCheck && p.onCheck({data:treenodedata,target:treeitem[0]},true);
+                                    p.onCheck && p.onCheck({ data: treenodedata, target: treeitem[0] }, true);
                                 }
-                                //状态：选中
-                                else if ($(obj).hasClass("l-checkbox-checked"))
-                                {
+                                    //状态：选中
+                                else if ($(obj).hasClass("l-checkbox-checked")) {
                                     $(obj).removeClass("l-checkbox-checked").addClass("l-checkbox-unchecked");
                                     $(".l-children .l-checkbox", treeitem)
                                     .removeClass("l-checkbox-incomplete l-checkbox-checked")
                                     .addClass("l-checkbox-unchecked");
-                                    p.onCheck && p.onCheck({data:treenodedata,target:treeitem[0]},false);
+                                    p.onCheck && p.onCheck({ data: treenodedata, target: treeitem[0] }, false);
                                 }
-                                //状态：未完全选中
-                                else if ($(obj).hasClass("l-checkbox-incomplete"))
-                                {
+                                    //状态：未完全选中
+                                else if ($(obj).hasClass("l-checkbox-incomplete")) {
                                     $(obj).removeClass("l-checkbox-incomplete").addClass("l-checkbox-checked");
                                     $(".l-children .l-checkbox", treeitem)
                                     .removeClass("l-checkbox-incomplete l-checkbox-unchecked")
                                     .addClass("l-checkbox-checked");
-                                    p.onCheck && p.onCheck({data:treenodedata,target:treeitem[0]},true);
+                                    p.onCheck && p.onCheck({ data: treenodedata, target: treeitem[0] }, true);
                                 }
                                 po.setParentCheckboxStatus(treeitem);
                             }
                         }
-                        //判断是否点击图标打开  
-                        //状态：已经张开
-                        else if (itemopen.hasClass("l-expandable-open"))
-                            {
-                                if(p.onBeforeCollapse 
-                                && p.onBeforeCollapse({data:treenodedata,target:treeitem[0]}) == false)
-                                    return false;
-                                itemopen
-                                .removeClass("l-expandable-open")
-                                .addClass("l-expandable-close");
-                                $("> .l-children", treeitem).slideToggle('fast');
-                                $("> div ." + po.getParentNodeClassName(true), treeitem)
-                                .removeClass(po.getParentNodeClassName(true))
-                                .addClass(po.getParentNodeClassName());
-                                p.onCollapse && p.onCollapse({data:treenodedata,target:treeitem[0]});
-                            }
+                            //判断是否点击图标打开  
+                            //状态：已经张开
+                        else if (itemopen.hasClass("l-expandable-open")) {
+                            if (p.onBeforeCollapse
+                            && p.onBeforeCollapse({ data: treenodedata, target: treeitem[0] }) == false)
+                                return false;
+                            itemopen
+                            .removeClass("l-expandable-open")
+                            .addClass("l-expandable-close");
+                            $("> .l-children", treeitem).slideToggle('fast');
+                            $("> div ." + po.getParentNodeClassName(true), treeitem)
+                            .removeClass(po.getParentNodeClassName(true))
+                            .addClass(po.getParentNodeClassName());
+                            p.onCollapse && p.onCollapse({ data: treenodedata, target: treeitem[0] });
+                        }
                             //状态：没有张开
-                            else if (itemopen.hasClass("l-expandable-close"))
-                            { 
-                                if(p.onBeforeExpand 
-                                && p.onBeforeExpand({data:treenodedata,target:treeitem[0]}) == false)
-                                    return false;
-                                itemopen
-                                .removeClass("l-expandable-close")
-                                .addClass("l-expandable-open");
-                                $("> .l-children", treeitem).slideToggle('fast',function(){
-                                    p.onExpand && p.onExpand({data:treenodedata,target:treeitem[0]});
-                                });
-                                $("> div ." + po.getParentNodeClassName(), treeitem)
-                                .removeClass(po.getParentNodeClassName())
-                                .addClass(po.getParentNodeClassName(true)); 
-                            }
+                        else if (itemopen.hasClass("l-expandable-close")) {
+                            if (p.onBeforeExpand
+                            && p.onBeforeExpand({ data: treenodedata, target: treeitem[0] }) == false)
+                                return false;
+                            itemopen
+                            .removeClass("l-expandable-close")
+                            .addClass("l-expandable-open");
+                            $("> .l-children", treeitem).slideToggle('fast', function () {
+                                p.onExpand && p.onExpand({ data: treenodedata, target: treeitem[0] });
+                            });
+                            $("> div ." + po.getParentNodeClassName(), treeitem)
+                            .removeClass(po.getParentNodeClassName())
+                            .addClass(po.getParentNodeClassName(true));
+                        }
 
-                        p.onClick && p.onClick({data:treenodedata,target:treeitem[0]});
-                    });   
+                        p.onClick && p.onClick({ data: treenodedata, target: treeitem[0] });
+                    });
                 },
                 //递归设置父节点的状态
                 setParentCheckboxStatus: function (treeitem) {
@@ -875,7 +863,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
             if (!$(this).hasClass('l-tree')) $(this).addClass('l-tree');
             g.tree = $(this);
             if (!p.treeLine) g.tree.addClass("l-tree-noline");
-            g.sysAttribute = ['isexpand', 'ischecked', 'href', 'style','tabid'];
+            g.sysAttribute = ['isexpand', 'ischecked', 'href', 'style', 'tabid'];
             g.loading = $("<div class='l-tree-loading'></div>");
             g.tree.after(g.loading);
             g.data = [];

@@ -48,6 +48,26 @@
                     g.toolBar.append('<div class="l-toolbar-item  l-panel-label">' + item.text + '</div>');
                 return;
             }
+            else if (item.type == "filter") {
+                var ditem = $('<div class="l-toolbar-filter"><span></span><div class="l-panel-btn-l"></div><div class="l-panel-btn-r"></div></div>');
+                if (item.icon) {
+                    ditem.append("<div class='l-icon'></div>");
+                    //ditem.css("background", "url(" + item.icon + ") no-repeat 3px 3px");
+                    $(".l-icon", ditem).css({ "background": "url(" + item.icon + ") no-repeat 1px 3px", width: "18px", height: "18px" });
+                }
+
+                ditem.hover(function () {
+                    $(this).addClass("l-panel-btn-over");
+                    $(this).attr("title", item.title)
+                }, function () {
+                    $(this).removeClass("l-panel-btn-over");
+                });
+
+                g.toolBar.filter.append(ditem);
+                item.click && ditem.click(function () { item.click(item); });
+
+                return;
+            }
             var ditem = $('<div class="l-toolbar-item l-panel-btn"><span></span><div class="l-panel-btn-l"></div><div class="l-panel-btn-r"></div></div>');
             g.toolBar.append(ditem);
             item.id && ditem.attr("toolbarid", item.id);
@@ -58,6 +78,7 @@
                 ditem.addClass("l-toolbar-item-hasicon");
             }
             item.text && $("span:first", ditem).html(item.text);
+            item.expid && $("span:first", ditem).attr("id",item.expid);
 
             if (!item.disable) {
                 ditem.addClass("l-toolbar-item-disable");
@@ -94,7 +115,7 @@
                         $(this).removeClass("l-panel-btn-selected");
                         serchpanel.fadeOut(100)
                     }
-                    this.click;
+                    //this.click;
                 })
             }
         }
@@ -107,7 +128,10 @@
             var po = {};
             var g = new $.ligerManagers.ToolBar(p, po);
             g.toolBar = $(this);
-
+            
+            g.toolBar.append('<div class="l-toolbar-filters" ></div>');
+            g.toolBar.filter = $(".l-toolbar-filters", g.toolBar);
+            
             if (!g.toolBar.hasClass("l-toolbar")) g.toolBar.addClass("l-toolbar");
             if (p.background == false) g.toolBar.removeClass("l-toolbar");
             if (p.items) {
@@ -117,6 +141,7 @@
                 });
             }
             $.ligerui.addManager(this, g);
+            this.applyligerui = true;
         });
         return $.ligerui.getManager(this);
     };

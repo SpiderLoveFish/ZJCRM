@@ -472,7 +472,7 @@ namespace XHD.DAL
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("INSERT dbo.CRM_CEStage( CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,Jh_date)");
-            sb.AppendLine("SELECT id,tel,Customer,Emp_sg,Emp_id_sg,Emp_sj,Emp_id_sj,Employee,Employee_id,0,0,'正在施工' ,Remarks,0,Jhrq2 FROM dbo.CRM_Customer WHERE id="+id);
+            sb.AppendLine("SELECT id,tel,Customer,Emp_sg,Emp_id_sg,Emp_sj,Emp_id_sj,Employee,Employee_id,0,0,'正在施工' ,'',0,Jhrq2 FROM dbo.CRM_Customer WHERE id="+id);
             sb.AppendLine("");
             sb.Append(";select @@IDENTITY");
             SqlParameter[] parameters = { };

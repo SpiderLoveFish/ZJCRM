@@ -1,13 +1,29 @@
 ﻿/**
-* jQuery ligerUI  1.1.0
+* jQuery ligerUI  1.1.1
 * 
 * Author leoxie [ gd_star@163.com ] 
 * 
 */
-if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
+
 (function ($) {
+    //manager base
+    $.ligerui = $.ligerui || {};
+    $.ligerui.addManager = function (dom, manager) {
+        if (dom.id == undefined || dom.id == "")
+            dom.id = "ligerui" + (1000 + $.ligerui.ManagerCount);
+        $.ligerui.ManagerCount++;
+        $.ligerui.Managers[dom.id] = manager;
+        dom.applyligerui = true;
+    };
+    $.ligerui.getManager = function (domArr) {
+        if (domArr.length == 0) return null;
+        return $.ligerui.Managers[domArr[0].id];
+    };
+    $.ligerui.Managers = $.ligerui.Managers || {};
+    $.ligerui.ManagerCount = $.ligerui.ManagerCount || 0;
+
     $.fn.ligerGetGridManager = function () {
-        return LigerUIManagers[this[0].id + "_Grid"];
+        return $.ligerui.getManager(this);
     };
 
     $.ligerDefaults = $.ligerDefaults || {};
@@ -84,15 +100,17 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
         onBeforeSubmitEdit: null,               //验证编辑器结果是否通过
         onAfterEdit: null,                       //结束编辑后事件
         onLoading: null,                        //加载时函数
+        onbeforeLoaded:null,
         onLoaded: null,                          //加载完函数
         onContextmenu: null,                   //右击事件
         onRClickToSelect: false,                //右击行时是否选中
         contentType: null,                     //Ajax contentType参数
         checkboxColWidth: 27,                  //复选框列宽度
         detailColWidth: 29,                     //明细列宽度
-
+        defaultCloseGroup:false,
         rowid: null,
         rowtype: null,
+        onHideCol: null,
         /*
         treeGrid模式
         例子:tree:{
@@ -130,16 +148,1082 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
     };
     $.ligerDefaults.GridString = {
         errorMessage: '发生错误',
-        pageStatMessage: '显示记录从{from}到{to}，总数 {total} 条 。每页显示记录数：{pagesize}',
+        pageStatMessage: '显示从{from}到{to}，总 {total} 条 。每页显示：{pagesize}',
         pageTextMessage: 'Page',
         loadingMessage: '加载中...',
         findTextMessage: '查找',
         noRecordMessage: '没有符合条件的记录存在',
         isContinueByDataChanged: '数据已经改变,如果继续将丢失数据,是否继续?'
     };
-    ///	<param name="$" type="jQuery"></param>
+
+    //Grid manager design
+    $.ligerManagers = $.ligerManagers || {};
+    $.ligerManagers.Grid = function (options, po) {
+        this.options = options;
+        this.po = po;
+    };
+    $.ligerManagers.Grid.prototype = {
+        //刷新数据
+        loadData: function (loadDataParm) {
+            var po = this.po, g = this, p = this.options;
+            g.loading = true;
+            var clause = null;
+            var loadServer = true;
+            if (typeof (loadDataParm) == "function") {
+                clause = loadDataParm;
+                loadServer = false;
+            }
+            else if (typeof (loadDataParm) == "boolean") {
+                loadServer = loadDataParm;
+            }
+            else if (typeof (loadDataParm) == "object" && loadDataParm) {
+                loadServer = false;
+                p.dataType = "local";
+                p.data = loadDataParm;
+            }
+            //参数初始化
+            if (!p.newPage) p.newPage = 1;
+            if (p.dataAction == "server") {
+                if (!p.sortOrder) p.sortOrder = "asc";
+            }
+            var param = [];
+            if (p.parms && p.parms.length) {
+                $(p.parms).each(function () {
+                    param.push({ name: this.name, value: this.value });
+                });
+            }
+            if (p.dataAction == "server") {
+                if (p.usePager) {
+                    param.push({ name: p.pageParmName, value: p.newPage });
+                    param.push({ name: p.pagesizeParmName, value: p.pageSize });
+                }
+                if (p.sortName) {
+                    param.push({ name: p.sortnameParmName, value: p.sortName });
+                    param.push({ name: p.sortorderParmName, value: p.sortOrder });
+                }
+                if (p.HttpContext) {
+                    param.push({ name: "HttpContext", value: true });
+                }
+            };
+            $(".l-bar-btnload span", g.toolbar).addClass("l-disabled");
+            if (p.dataType == "local") {
+                g.data = $.extend({}, p.data);
+                g.filteredData = $.extend({}, g.data);
+                if (clause)
+                    g.filteredData[p.root] = po.searchData(g.filteredData[p.root], clause);
+                if (p.usePager)
+                    g.currentData = po.getCurrentPageData(g.filteredData);
+                else {
+                    g.currentData = $.extend({}, g.filteredData);
+                }
+                po.showData(g.currentData);
+            }
+            else if (p.dataAction == "local" && !loadServer) {
+                if (g.data && g.data[p.root]) {
+                    g.filteredData = $.extend({}, g.data);
+                    if (clause)
+                        g.filteredData[p.root] = po.searchData(g.filteredData[p.root], clause);
+                    g.currentData = po.getCurrentPageData(g.filteredData);
+                    po.showData(g.currentData);
+                }
+            }
+            else {
+                if (p.onLoading) p.onLoading(g);
+                else g.gridloading.show();
+                setTimeout(function () {
+                    g.loadServerData(param, clause);
+                }, 10);
+            }
+            g.loading = false;
+        },
+        loadServerData: function (param, clause) {
+            var po = this.po, g = this, p = this.options;
+            var ajaxOptions = {
+                type: p.method,
+                url: p.url,
+                data: param,
+                async: false,
+                dataType: 'json',
+                beforeSend: function () {
+                    p.onbeforeLoaded && p.onbeforeLoaded();
+                },
+                success: function (data) {
+                    if (p.onSuccess) p.onSuccess(data, g);
+                    if (!data || !data[p.root] || !data[p.root].length) {
+                        g.currentData = g.data = { Rows: [], Total: 0 };
+                        g.currentData[p.root] = g.data[p.root] = [];
+                        g.currentData[p.record] = g.data[p.record] = 0;
+                        po.showData(g.currentData);
+                        return;
+                    }
+                    g.data = $.extend({}, data);
+                    for (var rowindex in g.data[p.root]) {
+                        if (g.data[p.root][rowindex][p.statusName] == undefined)
+                            g.data[p.root][rowindex][p.statusName] = '';
+                    }
+                    if (p.dataAction == "server") {
+                        g.currentData = g.data;
+                    }
+                    else {
+                        g.filteredData = $.extend({}, g.data);
+                        if (clause) g.filteredData[p.root] = po.searchData(g.filteredData[p.root], clause);
+                        g.currentData = po.getCurrentPageData(g.filteredData);
+                    }
+                    setTimeout(function () { po.showData(g.currentData); }, 10);
+                },
+                complete: function () {
+                    if (p.onLoaded) {
+                        p.onLoaded(g);
+                    }
+                    else {
+                        setTimeout(function () {
+                            g.gridloading.hide();
+                        }, 10);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    g.currentData = g.data = {};
+                    g.currentData[p.root] = g.data[p.root] = [];
+                    g.currentData[p.record] = g.data[p.record] = 0;
+                    g.gridloading.hide();
+                    $(".l-bar-btnload span", g.toolbar).removeClass("l-disabled");
+                    try { if (p.onError) p.onError(XMLHttpRequest, textStatus, errorThrown); } catch (e) { }
+                }
+            };
+            if (p.contentType) ajaxOptions.contentType = p.contentType;
+            $.ajax(ajaxOptions);
+        },
+        //add function()
+        setURL: function (linkurl) {
+            var po = this.po, g = this, p = this.options;
+            p.newPage = 1;
+            p.url = linkurl;
+        },
+        //add function()
+        GetDataByURL: function (linkurl) {
+            var po = this.po, g = this, p = this.options;
+
+            p.newPage = 1;
+            p.url = linkurl;
+            g.loadData(true);
+        },
+        test: function () {
+            var po = this.po, g = this, p = this.options;
+            var rows = g.getRow(g.currentData[p.root]);
+            for (var row in rows) {
+                g.deleteRow(row);
+            }
+        },
+        //add function
+        setCheck: function (rowParm) {
+            var po = this.po, g = this, p = this.options;
+            var row = $("tbody:first > tr[growid=" + rowParm + "]", g.gridbody);
+            row.addClass("l-checked");
+        },
+        //add function
+        setUnCheck: function (rowParm) {
+            var po = this.po, g = this, p = this.options;
+            var row = $("tbody:first > tr[growid=" + rowParm + "]", g.gridbody);
+            row.removeClass("l-checked");
+        },
+        //add function
+        collapseleaf: function (rowParm) {
+            var po = this.po, g = this, p = this.options;
+            var row = $("tbody:first > tr[treelevel=" + rowParm + "]", g.gridbody);
+            for (var j = 0; j < row.length; j++) {
+                g.collapse(row[j]);
+            }
+        },
+        //add function
+        expandleaf: function (rowParm) {
+            var po = this.po, g = this, p = this.options;
+            var row = $("tbody:first > tr[treelevel=" + rowParm + "]", g.gridbody);
+            for (var j = 0; j < row.length; j++) {
+                g.expand(row[j]);
+            }
+        },
+        //add function
+        collapseAll: function () {
+            var po = this.po, g = this, p = this.options;
+            $(".l-grid-tree-link-open", g.gridbody).click();
+        },
+        //add function
+        expandAll: function () {
+            var po = this.po, g = this, p = this.options;
+            $(".l-grid-tree-link-close", g.gridbody).click();
+        },
+        //addfunction()
+        getColumnDateByType: function (columnName, type) {
+            var po = this.po, g = this, p = this.options;
+
+            var totalsummaryArr = [];
+
+            var data = g.getCurrentData();
+            var sum = 0, count = 0, avg = 0;
+            var max = parseFloat(g.getColumn(columnName));
+            var min = parseFloat(g.getColumn(columnName));
+            for (var i = 0; i < data.length; i++) {
+                var value;
+                //alert(JSON.stringify(data[i]));
+                if (typeof (data[i][columnName]) == 'number')
+                    value = parseFloat(data[i][columnName]);
+                else {
+                    //alert(data.length)                    
+                    value = parseFloat(data[i][columnName].replace(/\$|\,/g, ''));
+                }
+                if (!value) continue;
+                sum += value;
+                count += 1;
+                if (value > max) max = value;
+                if (value < min) min = value;
+            }
+            avg = sum * 1.0 / data.length;
+
+            switch (type) {
+                case "sum": return sum;
+                    break;
+                case "max": return max;
+                    break;
+                case "min": return min;
+                    break;
+                case "count": return count;
+                    break;
+                case "avg": return avg;
+                    break;
+                default: return sum;
+            }
+
+
+        },
+        //add function
+        showData: function (data) {
+            var po = this.po, g = this, p = this.options;
+            po.showData(data);
+        },
+        //add function
+        onResize: function () {
+            var po = this.po, g = this, p = this.options;
+            po.onResize();
+        },
+        //add function
+        getCurrentData: function () {
+            var po = this.po, g = this, p = this.options;
+
+            var rows = $("tbody:first > l-grid-row", g.gridbody);
+            var rowdata = [];
+            $("tbody > .l-grid-row", g.gridbody).each(function (i, row) {
+                var rowid = $(row).attr("rowid");
+                rowdata.push(g.getRow(rowid));
+            });
+
+            return rowdata;
+        },
+
+        setOptions: function (parms) {
+            var po = this.po, g = this, p = this.options;
+            $.extend(p, parms);
+            if (parms.data) {
+                g.data = parms.data;
+                p.dataType = "local";
+            }
+        },
+        reColumns: function (columns) {
+            var po = this.po, g = this, p = this.options;
+            g.columns = [];
+            //$("div:first", g.gridheader).empty();
+            $(".l-grid-hd-cell").each(function () {
+                $(this).remove();
+            });
+
+            g.setOptions({ columns: columns });
+            po.init();
+        },
+        stringToDate: function (obj) {
+            var po = this.po, g = this, p = this.options;
+            if (obj instanceof Date) return obj;
+            var myDate = new Date();
+            try {
+                myDate.setYear(parseInt(obj.substring(0, 4), 10));
+                myDate.setMonth(parseInt(obj.substring(5, 7) - 1, 10));
+                myDate.setDate(parseInt(obj.substring(8, 10), 10));
+                if (obj.length > 10) {
+                    myDate.setHours(parseInt(obj.substring(11, 13), 10));
+                    myDate.setMinutes(parseInt(obj.substring(14, 16), 10));
+                }
+                if (obj.length > 16) {
+                    myDate.setSeconds(parseInt(obj.substring(17, 19), 10));
+                }
+            }
+            catch (e) {
+            }
+            return myDate;
+        },
+        getFormatDate: function (date, dateformat) {
+            var po = this.po, g = this, p = this.options;
+            if (isNaN(date)) return null;
+            var format = dateformat;
+            var o = {
+                "M+": date.getMonth() + 1,
+                "d+": date.getDate(),
+                "h+": date.getHours(),
+                "m+": date.getMinutes(),
+                "s+": date.getSeconds(),
+                "q+": Math.floor((date.getMonth() + 3) / 3),
+                "S": date.getMilliseconds()
+            }
+            if (/(y+)/.test(format)) {
+                format = format.replace(RegExp.$1, (date.getFullYear() + "")
+            .substr(4 - RegExp.$1.length));
+            }
+            for (var k in o) {
+                if (new RegExp("(" + k + ")").test(format)) {
+                    format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k]
+                : ("00" + o[k]).substr(("" + o[k]).length));
+                }
+            }
+            return format;
+        },
+        endEdit: function () {
+            var po = this.po, g = this, p = this.options;
+            if (!g.grideditor.editingCell) return;
+            var cell = g.grideditor.editingCell;
+            var value = g.grideditor.editingValue;
+            g.grideditor.html("").hide();
+            var row = $(cell).parent();
+            var rowindex = row.attr("rowindex");
+            var rowid = row.attr("rowid");
+            var columnindex = $(cell).attr("columnindex");
+            var columnname = $(cell).attr("columnname");
+            var column = g.columns[columnindex];
+            var rowdata = g.getRow(rowid);
+            var editParm = {
+                record: rowdata,
+                value: value,
+                column: column,
+                columnname: columnname,
+                columnindex: columnindex,
+                rowindex: rowindex,
+                rowObj: row[0],
+                cellObj: cell
+            };
+            if (p.onAfterEdit) p.onAfterEdit(editParm);
+            g.grideditor.editingCell = null;
+            g.grideditor.editingValue = null;
+        },
+        setWidth: function (w) {
+
+        },
+        setHeight: function (h) {
+            var po = this.po, g = this, p = this.options;
+            if (p.title) h -= 24;
+            if (p.usePager) h -= 32;
+            if (p.totalRender) h -= 25;
+            h -= 23 * (g.getMulHeaderLevel() - 1);
+            h -= 22;
+            h > 0 && g.gridbody.height(h);
+        },
+        //是否启用明细模式
+        enabledDetail: function () {
+            if (this.options.detail && this.options.detail.onShowDetail) return true;
+            return false;
+        },
+        deleteSelectedRow: function () {
+            var po = this.po, g = this, p = this.options;
+            if (p.checkbox) {
+                $("tbody:first > tr.l-checked", g.gridbody).each(function () {
+                    g.deleteRow(this);
+                });
+            }
+            else {
+                var row = $("tbody:first > tr.l-selected", g.gridbody);
+                if (row.length == 0) return;
+                g.deleteRow(row[0]);
+            }
+        },
+        deleteRow: function (rowParm) {
+            var po = this.po, g = this, p = this.options;
+            var rowObj = g.getRowObj(rowParm);
+            if (!rowObj) return;
+            g.popup.hide();
+            g.endEdit();
+            var rowid = $(rowObj).attr("rowid");
+            if (p.tree && g.hasChildren(rowObj)) {
+                $("tbody:first > tr[parentrowid=" + rowid + "]", g.gridbody).each(function () {
+                    g.deleteRow(this);
+                });
+            }
+
+            $(rowObj).remove();
+            //alert(JSON.stringify(g.data.Rows));
+            g.deleteData(rowid);
+            g.isDataChanged = true;
+        },
+        deleteData: function (rowid) {
+            var po = this.po, g = this, p = this.options;
+            g.records[rowid][p.statusName] = 'delete';
+            //alert(JSON.stringify(g.records));
+        },
+        //add function
+        updateCelldata: function (rowid, columindex, value) {
+            var po = this.po, g = this, p = this.options;
+
+            var rowdata = g.getRow(rowid);
+            var column = g.columns[columindex];
+            if (!column) return;
+            var columnname = column.name;
+            if (!columnname) return;
+
+            //alert(column.type);
+
+            if (column.type == 'int')
+                rowdata[columnname] = parseInt(value);
+            else if (column.type == 'float')
+                rowdata[columnname] = parseFloat(value);
+            else if (column.type == 'date') {
+                var dv = p.renderDate(value);
+                if (!dv || isNaN(dv))
+                    dv = g.stringToDate(value);
+                rowdata[columnname] = dv;
+            }
+            else {
+                rowdata[columnname] = value;
+            }
+
+            if (rowdata[p.statusName] != 'add')
+                rowdata[p.statusName] = 'update';
+            g.isDataChanged = true;
+        },
+        //add function
+        updateCelldataByColumname: function (rowid, columname, value) {
+            var po = this.po, g = this, p = this.options;
+
+            var rowdata = g.getRow(rowid);
+            if (!rowdata) return;
+
+            rowdata[columname] = value;
+
+            if (rowdata[p.statusName] != 'add')
+                rowdata[p.statusName] = 'update';
+            g.isDataChanged = true;
+        },
+        //add function
+        getAllRows: function () {
+            var po = this.po, g = this, p = this.options;
+            var rows = $("tbody:first > .l-grid-row", g.gridbody);
+            var rowdata = [];
+            $("tbody:first > .l-grid-row", g.gridbody).each(function (i, row) {
+                var rowid = $(row).attr("rowid");
+                rowdata.push(g.getRow(rowid));
+            });
+            return rowdata;
+        },
+        updateCell: function (cell, value, rowParm) {
+            var po = this.po, g = this, p = this.options;
+            var columnindex;
+            var column;
+            var cellObj;
+            if (typeof (cell) == "number") {
+                columnindex = cell;
+                column = g.columns[columnindex];
+                cellObj = $("td[columnindex=" + columnindex + "]", rowObj)[0];
+            }
+            else if (typeof (cell) == "string") {
+                var rowObj = g.getRowObj(rowParm);
+                cellObj = $("td[columnname=" + cell + "]", rowObj)[0];
+                columnindex = $(cellObj).attr("columnindex");
+                column = g.columns[columnindex];
+            }
+            else {
+                cellObj = cell;
+                columnindex = $(cellObj).attr("columnindex");
+                column = g.columns[columnindex];
+            }
+
+            var row = $(cellObj).parent();
+            var rowindex = row.attr("rowindex");
+            var rowid = row.attr("rowid");
+            var rowData = g.getRow(rowid);
+            g.updateData(cellObj, value);
+            var cellContent = po.getCellContent(rowData, rowindex, value, column, p.tree, row.attr("treelevel"), rowid);
+            $(".l-grid-row-cell-inner:first", cellObj).html(cellContent); //alert(cellContent);
+        },
+        updateData: function (cell, value, rowObj) {
+            var po = this.po, g = this, p = this.options;
+            if (typeof (cell) == "string") {
+                var rowindex = $(rowObj).attr("rowindex");
+                var rowid = $(rowObj).attr("rowid");
+                var rowdata = g.getRow(rowid);
+                rowdata[cell] = value;
+                if (rowdata[p.statusName] != 'add')
+                    rowdata[p.statusName] = 'update';
+                g.isDataChanged = true;
+                return;
+            }
+            var columnindex = $(cell).attr("columnindex");
+            var column = g.columns[columnindex];
+            if (!column) return;
+            var columnname = column.name;
+            if (!columnname) return;
+            var row = $(cell).parents(".l-grid-row:eq(0)");
+            var rowindex = row.attr("rowindex");
+            var rowid = row.attr("rowid");
+            var rowdata = g.getRow(rowid);
+            if (column.type == 'int')
+                rowdata[columnname] = parseInt(value);
+            else if (column.type == 'float')
+                rowdata[columnname] = parseFloat(value);
+            else if (column.type == 'date') {
+                var dv = p.renderDate(value);
+                if (!dv || isNaN(dv))
+                    dv = g.stringToDate(value);
+                rowdata[columnname] = dv;
+            }
+            else
+                rowdata[columnname] = value;
+            if (rowdata[p.statusName] != 'add')
+                rowdata[p.statusName] = 'update';
+            g.isDataChanged = true;
+        },
+        addRows: function (rowdataArr) {
+            var g = this;
+            $(rowdataArr).each(function () {
+                g.addRow(this);
+            });
+        },
+        addRow: function (rowdata, rowParm, isBefore, parentRow) {
+            var po = this.po, g = this, p = this.options;
+            if (!rowdata) rowdata = {};
+            var treelevel, parentrowid, parentRowObj, parentRowData, parentRowIsOpened;
+            if (parentRow) {
+                parentRowObj = g.getRowObj(parentRow);
+                treelevel = parseInt($(parentRowObj).attr("treelevel")) + 1;
+                parentrowid = $(parentRowObj).attr("rowid");
+                parentRowData = g.getRow(parentrowid);
+                parentRowIsOpened = $(".l-grid-tree-link:first", parentRowObj).hasClass("l-grid-tree-link-open");
+            }
+
+            var olddatanumber = parentRowData ? parentRowData[p.tree.childrenName].length : g.currentData[p.root].length;
+            var rowObj = g.getRowObj(rowParm);
+            var rowindex = rowObj
+                ? (parseInt($(rowObj).attr("rowindex")) + (isBefore ? 0 : 1))
+                : olddatanumber;
+            var rowHTML = po.getHtmlFromData([rowdata], p.tree, treelevel ? treelevel : 1, parentrowid);
+            var row = $(rowHTML);
+            po.recordRow(row[0]);
+            row.attr("rowindex", rowindex).removeClass("l-grid-row-last");
+            if (parentRow && !parentRowIsOpened) row.hide();
+            if (rowindex == olddatanumber) {
+                if (parentRowData)
+                    parentRowData[p.tree.childrenName][rowindex] = rowdata;
+                else
+                    g.currentData[p.root][rowindex] = rowdata;
+                if (!p.usePager && !g.isTotalSummary()) {
+                    $("tbody:first > .l-grid-row:last", g.gridbody).removeClass("l-grid-row-last");
+                    row.addClass("l-grid-row-last");
+                }
+            }
+            else {
+                if (parentRowData)
+                    parentRowData[p.tree.childrenName].splice(rowindex, 0, rowdata);
+                else
+                    g.currentData[p.root].splice(rowindex, 0, rowdata);
+                var selectexpr = p.tree ? "tr[parentrowid=" + parentrowid + "][treelevel=" + treelevel + "]" : "tr";
+                $(rowObj).nextAll(selectexpr).add(rowObj).each(function () {
+                    var ri = $(this).attr("rowindex");
+                    if (ri >= rowindex)
+                        $(this).attr("rowindex", parseInt(ri) + 1);
+                });
+            }
+            if ($("tbody", g.gridbody).length == 0) {
+                g.gridbody.html('<div class="l-grid-body-inner"><table class="l-grid-body-table" cellpadding=0 cellspacing=0><tbody></tbody></table></div>');
+            }
+            if (rowObj != undefined) {
+                if (isBefore)
+                    $(rowObj).before(row);
+                else
+                    $(rowObj).after(row);
+            }
+            else {
+                $("tbody:first", g.gridbody).append(row);
+            }
+            rowdata[p.statusName] = 'add';
+            //添加事件
+            po.setRowEven(row[0]);
+            //标识状态
+            g.isDataChanged = true;
+
+            p.total = p.total ? (p.total + 1) : 1;
+            p.pageCount = Math.ceil(p.total / p.pageSize);
+            po.buildPager();
+            if (p.onAfterAddRow) p.onAfterAddRow(row, rowdata);
+            return row;
+        },
+        updateRow: function (rowDom, newRowData) {
+            var po = this.po, g = this, p = this.options;
+            var rowdata = g.getRow(rowDom);
+            var rowObj = g.getRowObj(rowDom);
+            //标识状态
+            g.isDataChanged = true;
+            if (newRowData) {
+                for (var columnname in newRowData) { //alert(columnname);
+                    if (columnname == p.statusName) continue;
+                    rowdata[columnname] = newRowData[columnname];
+                    var cellobj = $("> .l-grid-row-cell[columnname=" + columnname + "]", rowObj); //alert(JSON.stringify( cellobj));
+                    //if (cellobj.length == 0) continue;
+                    var columnindex = cellobj.attr("columnindex");
+                    var column = g.columns[columnindex];
+                    g.updateCell(cellobj, newRowData[columnname]);
+                }
+                rowdata[p.statusName] = 'update';
+            }
+            return rowdata;
+        },
+        getData: function () {
+            var po = this.po, g = this, p = this.options;
+            if (g.currentData == null) return null;
+            return g.currentData[p.root];
+        },
+        getColumn: function (columnname) {
+            var po = this.po, g = this, p = this.options;
+            for (i = 0; i < g.columns.length; i++) {
+                if (g.columns[i].name == columnname) {
+                    return g.columns[i];
+                }
+            }
+            return null;
+        },
+        getColumnType: function (columnname) {
+            var po = this.po, g = this, p = this.options;
+            for (i = 0; i < g.columns.length; i++) {
+                if (g.columns[i].name == columnname) {
+                    if (g.columns[i].type) return g.columns[i].type;
+                    return "string";
+                }
+            }
+            return null;
+        },
+        //是否包含汇总
+        isTotalSummary: function () {
+            var po = this.po, g = this, p = this.options;
+            for (var i = 0; i < g.columns.length; i++) {
+                if (g.columns[i].totalSummary) return true;
+            }
+            return false;
+        },
+        getMulHeaderLevel: function () {
+            var po = this.po, g = this, p = this.options;
+            if (!p.columns.length) return 1;
+            var level = 0;
+            var currentColumn = p.columns[0];
+            while (currentColumn) {
+                level++;
+                if (!currentColumn.columns || !currentColumn.columns.length) break;
+                currentColumn = currentColumn.columns[0];
+            }
+            return level;
+        },
+        getColumns: function (columnLevel) {
+            var po = this.po, g = this, p = this.options;
+            if (columnLevel <= 1) return p.columns;
+            return g.getLevelColumns({ columns: p.columns }, 0, columnLevel);
+        },
+        getLevelColumns: function (column, level, columnLevel) {
+            var po = this.po, g = this, p = this.options;
+            if (level == columnLevel) return [column];
+            var columns = [];
+            for (var i = 0; column.columns && i < column.columns.length; i++) {
+                var currentColumns = g.getLevelColumns(column.columns[i], level + 1, columnLevel);
+                $(currentColumns).each(function () {
+                    columns.push(this);
+                });
+            }
+            return columns;
+        },
+        getMulHeaders: function (columnLevel) {
+            var po = this.po, g = this, p = this.options;
+            var getColumnNumber = function (column) {
+                //if (!column) return 1;
+                if (!column.columns || !column.columns.length) return 1;
+                var number = 0;
+                for (var i = 0; i < column.columns.length; i++) {
+                    number += getColumnNumber(column.columns[i]);
+                }
+                return number;
+            };
+            var currentLevelColumns = g.getColumns(columnLevel);
+            var mulHeaders = [];
+            for (var i = 0; i < currentLevelColumns.length; i++) {
+                mulHeaders.push({
+                    display: currentLevelColumns[i]['display'],
+                    number: getColumnNumber(currentLevelColumns[i])
+                });
+            }
+            return mulHeaders;
+        },
+        //改变排序
+        changeSort: function (columnName, sortOrder) {
+            var po = this.po, g = this, p = this.options;
+            if (g.loading) return true;
+            if (p.dataAction == "local") {
+                var columnType = g.getColumnType(columnName);
+                if (!g.sortedData)
+                    g.sortedData = $.extend({}, g.filteredData);
+                if (p.sortName == columnName) {
+                    g.sortedData[p.root].reverse();
+                } else {
+                    g.sortedData[p.root].sort(function (data1, data2) {
+                        return po.compareData(data1, data2, columnName, columnType);
+                    });
+                }
+                if (p.usePager)
+                    g.currentData = po.getCurrentPageData(g.sortedData);
+                else
+                    g.currentData = g.sortedData;
+                po.showData(g.currentData);
+            }
+            p.sortName = columnName;
+            p.sortOrder = sortOrder;
+            if (p.dataAction == "server") {
+                g.loadData(p.where);
+            }
+        },
+        //改变分页
+        changePage: function (ctype) {
+            var po = this.po, g = this, p = this.options;
+            if (g.loading) return true;
+            if (g.isDataChanged && !confirm(p.isContinueByDataChanged))
+                return false;
+            //计算新page
+            switch (ctype) {
+                case 'first': if (p.page == 1) return; p.newPage = 1; break;
+                case 'prev': if (p.page == 1) return; if (p.page > 1) p.newPage = parseInt(p.page) - 1; break;
+                case 'next': if (p.page >= p.pageCount) return; p.newPage = parseInt(p.page) + 1; break;
+                case 'last': if (p.page >= p.pageCount) return; p.newPage = p.pageCount; break;
+                case 'input':
+                    var nv = parseInt($('.pcontrol input', g.toolbar).val());
+                    if (isNaN(nv)) nv = 1;
+                    if (nv < 1) nv = 1;
+                    else if (nv > p.pageCount) nv = p.pageCount;
+                    $('.pcontrol input', g.toolbar).val(nv);
+                    p.newPage = nv;
+                    break;
+            }
+            if (p.newPage == p.page) return false;
+            if (p.newPage == 1) {
+                $(".l-bar-btnfirst span", g.toolbar).addClass("l-disabled");
+                $(".l-bar-btnprev span", g.toolbar).addClass("l-disabled");
+            }
+            else {
+                $(".l-bar-btnfirst span", g.toolbar).removeClass("l-disabled");
+                $(".l-bar-btnprev span", g.toolbar).removeClass("l-disabled");
+            }
+            if (p.newPage == p.pageCount) {
+                $(".l-bar-btnlast span", g.toolbar).addClass("l-disabled");
+                $(".l-bar-btnnext span", g.toolbar).addClass("l-disabled");
+            }
+            else {
+                $(".l-bar-btnlast span", g.toolbar).removeClass("l-disabled");
+                $(".l-bar-btnnext span", g.toolbar).removeClass("l-disabled");
+            }
+            if (p.onChangePage)
+                p.onChangePage(p.newPage);
+            if (p.dataAction == "server") {
+                g.loadData(p.where);
+            }
+            else {
+                g.currentData = po.getCurrentPageData(g.filteredData);
+                po.showData(g.currentData);
+            }
+        },
+        getCheckedRows: function () {
+            var po = this.po, g = this, p = this.options;
+            var rows = $("tbody:first > .l-checked", g.gridbody);
+            var rowdata = [];
+            $("tbody:first > .l-checked", g.gridbody).each(function (i, row) {
+                var rowid = $(row).attr("rowid");
+                rowdata.push(g.getRow(rowid));
+            });
+            return rowdata;
+        },
+
+        getSelectedRow: function () {
+            var po = this.po, g = this, p = this.options;
+            var row = $("tbody:first > .l-selected", g.gridbody);
+            var rowid = row.attr("rowid");
+            return g.getRow(rowid);
+        },
+        getCheckedRowObjs: function () {
+            var po = this.po, g = this, p = this.options;
+            return $("tbody:first > .l-checked", g.gridbody).get();
+        },
+        getSelectedRowObj: function () {
+            var po = this.po, g = this, p = this.options;
+            var row = $("tbody:first > .l-selected", g.gridbody);
+            if (row.length == 0) return null;
+            return row[0];
+        },
+        getRowObj: function (rowParm) {
+            var po = this.po, g = this, p = this.options;
+            if (typeof (rowParm) == "string" || typeof (rowParm) == "number") {
+                return $("tbody:first > .l-grid-row[rowid=" + rowParm + "]", g.gridbody).get(0);
+            }
+            else if (typeof (rowParm) == "object") {
+                if (!rowParm) return null;
+                if (typeof (rowParm.nodeType) != "undefined" && rowParm.nodeType == 1)
+                    return rowParm;
+                else {
+                    for (var p in g.records) {
+                        if (g.records[p] == rowParm)
+                            return $("tbody:first > .l-grid-row[rowid=" + p + "]", g.gridbody).get(0);
+                    }
+                }
+            }
+            return null;
+        },
+        getRow: function (rowParm) {
+            var po = this.po, g = this, p = this.options;
+            if (typeof (rowParm) == "string" || typeof (rowParm) == "number") {
+                return g.records[parseInt(rowParm)];
+            }
+            else if (typeof (rowParm) == "object") {
+                if (!rowParm) return null;
+                if (typeof (rowParm.nodeType) != "undefined" && rowParm.nodeType == 1)
+                    return g.records[$(rowParm).attr("rowid")];
+                else
+                    return rowParm;
+            }
+            return null;
+        },
+        
+        changeHeaderText: function (columnparm, headerText) {
+            var po = this.po, g = this, p = this.options;
+            var headercell = null;
+            var columnindex = -1;
+            if (typeof (columnparm) == "number") {
+                columnindex = columnparm;
+                headercell = $(".l-grid-hd-cell[columnindex='" + columnparm + "']", g.gridheader);
+            }
+            else if (typeof (columnparm) == "string") {
+                headercell = $(".l-grid-hd-cell[columnname='" + columnparm + "']", g.gridheader);
+                if (!headercell) return;
+                columnindex = headercell.attr("columnindex");
+            }
+            if (!headercell) return;
+            $(".l-grid-hd-cell-text", headercell).html(headerText);
+            if (p.allowHideColumn) {
+                $(':checkbox[columnindex=' + columnindex + "]", g.popup).parent().next().html(headerText);
+            }
+        },
+        getParent: function (rowParm) {
+            var po = this.po, g = this, p = this.options;
+            var rowObj = g.getRowObj(rowParm);
+            if (!rowObj) return;
+            var parentrowid = $(rowObj).attr("parentrowid");
+            if (parentrowid == undefined) return null;
+            return g.getRow(parentrowid);
+        },
+        getChidren: function (rowParm) {
+            var po = this.po, g = this, p = this.options;
+            if (!p.tree) return null;
+            var rowData = g.getRow(rowParm);
+            if (!rowData) return null;
+            return rowData[p.tree.childrenName];
+        },
+        isLeaf: function (rowParm) {
+            var po = this.po, g = this, p = this.options;
+            var rowObj = g.getRowObj(rowParm);
+            if (!rowObj) return;
+            return !$("> td > div > .l-grid-tree-space:last", rowObj).hasClass("l-grid-tree-link");
+        },
+        hasChildren: function (rowParm) {
+            var po = this.po, g = this, p = this.options;
+            var rowObj = g.getRowObj(rowParm);
+            if (!rowObj) return;
+            var treelevel = $(rowObj).attr("treelevel");
+            var nextRow = $(rowObj).next(".l-grid-row");
+            if (nextRow.length == 0) return false;
+            var nextRowTreelevel = nextRow.attr("treelevel");
+            return parseInt(treelevel) < parseInt(nextRowTreelevel);
+        },
+        appendRow: function (rowData, targetRow, nearRow, isBefore) {
+            var po = this.po, g = this, p = this.options;
+            var targetRowObj = g.getRowObj(targetRow);
+            if (!targetRow) {
+                g.addRow(rowData);
+                return;
+            }
+            if (nearRow) {
+                g.addRow(rowData, nearRow, isBefore ? true : false, targetRowObj);
+                return;
+            }
+            var rowid = $(targetRowObj).attr("rowid");
+            var children = $(targetRowObj).nextAll("tr[parentrowid=" + rowid + "]").get();
+            if (!children) return;
+            if (children.length == 0)
+                g.addRow(rowData, targetRowObj, false, targetRowObj);
+            else
+                g.addRow(rowData, children[children.length - 1], false, targetRowObj);
+        },
+        upgrade: function (targetRow) {
+            var po = this.po, g = this, p = this.options;
+            if (!targetRow || !p.tree) return;
+            var targetRowData = g.getRow(targetRow);
+            var targetRowObj = g.getRowObj(targetRow);
+            if (!targetRowData[p.tree.childrenName])
+                targetRowData[p.tree.childrenName] = [];
+            $("> td > div > .l-grid-tree-space:last", targetRow).addClass("l-grid-tree-link l-grid-tree-link-open");
+        },
+        demotion: function (targetRow) {
+            var po = this.po, g = this, p = this.options;
+            if (!targetRow || !p.tree) return;
+            var targetRowData = g.getRow(targetRow);
+            var targetRowObj = g.getRowObj(targetRow);
+            var rowid = $(targetRowObj).attr("rowid");
+            $("> td > div > .l-grid-tree-space:last", targetRow).removeClass("l-grid-tree-link l-grid-tree-link-open l-grid-tree-link-close");
+            if (g.hasChildren(targetRowObj)) {
+                $("tbody:first > tr[parentrowid=" + rowid + "]", g.gridbody).each(function () {
+                    g.deleteRow(this);
+                });
+            }
+        },
+        collapse: function (targetRow) {
+            var po = this.po, g = this, p = this.options;
+            var targetRowObj = g.getRowObj(targetRow);
+            var linkbtn = $(".l-grid-tree-link", targetRowObj);
+            if (linkbtn.hasClass("l-grid-tree-link-close")) return;
+            g.toggle(targetRow);
+        },
+        expand: function (targetRow) {
+            var po = this.po, g = this, p = this.options;
+            var targetRowObj = g.getRowObj(targetRow);
+            var linkbtn = $(".l-grid-tree-link", targetRowObj);
+            if (linkbtn.hasClass("l-grid-tree-link-open")) return;
+            g.toggle(targetRow);
+        },
+        toggle: function (targetRow) {
+            var po = this.po, g = this, p = this.options;
+            var targetRowObj = g.getRowObj(targetRow);
+            var treerow = $(targetRowObj);
+            var level = treerow.attr("treelevel");
+            var linkbtn = $(".l-grid-tree-link", treerow);
+            var opening = true;
+            if (linkbtn.hasClass("l-grid-tree-link-close")) {
+                linkbtn.removeClass("l-grid-tree-link-close").addClass("l-grid-tree-link-open");
+            }
+            else {
+                opening = false;
+                linkbtn.addClass("l-grid-tree-link-close").removeClass("l-grid-tree-link-open");
+            }
+            var currentRow = treerow.next(".l-grid-treerow");
+            while (true) {
+                if (currentRow.length == 0) break;
+                var treelevel = currentRow.attr("treelevel");
+                if (treelevel <= level) break;
+                if (opening) {
+                    $(".l-grid-tree-link", currentRow).removeClass("l-grid-tree-link-close").addClass("l-grid-tree-link-open");
+                    currentRow.show();
+                }
+                else {
+                    $(".l-grid-tree-link", currentRow).removeClass("l-grid-tree-link-open").addClass("l-grid-tree-link-close");
+                    currentRow.hide();
+                }
+                currentRow = currentRow.next(".l-grid-treerow");
+            }
+        },
+        reSetColumn: function (newData) {
+            var po = this.po, g = this, p = this.options;
+            if (newData.lenth == 0) return;
+
+            for (var i = 0; i < newData.length; i++) {
+                if (newData[i].isHide != 0) continue;
+                g.toggleCol(newData[i].column_id, newData[i].isHide, false);
+
+                if (!newData[i].column_width) continue;
+                g.reColumnWidth(newData[i].column_id, newData[i].column_width);
+
+                
+            }           
+        },
+        toggleCol: function (columnparm, visible, toggleByPopup) {
+            var po = this.po, g = this, p = this.options;
+            var headercell = null;
+            var columnindex = -1;
+            if (typeof (columnparm) == "number") {
+                columnindex = columnparm;
+                headercell = $(".l-grid-hd-cell[columnindex='" + columnparm + "']", g.gridheader);
+            }
+            else if (typeof (columnparm) == "string") {
+                headercell = $(".l-grid-hd-cell[columnname='" + columnparm + "']", g.gridheader);
+                if (!headercell) return;
+                columnindex = headercell.attr("columnindex");
+            }
+            if (!headercell) return;
+            var cellWidth = headercell.width();
+            var cellVisible = $(headercell).is(":visible");
+            if (visible) {
+                if (!cellVisible)
+                    g.gridtablewidth += cellWidth + 1;
+                headercell.show();
+                g.columns[columnindex].hide = false;
+                if (g.columnCells[columnindex])
+                    $(g.columnCells[columnindex]).show();
+                $("td[columnindex=" + columnindex + "]", g.totalRows).show();
+            } else {
+                if (cellVisible)
+                    g.gridtablewidth -= cellWidth + 1;
+                headercell.hide();
+                g.columns[columnindex].hide = true;
+                if (g.columnCells[columnindex])
+                    $(g.columnCells[columnindex]).hide();
+                $("td[columnindex=" + columnindex + "]", g.totalRows).hide();
+            }
+            $("div:first", g.gridheader).width(g.gridtablewidth + 40);
+            $(".l-grid-body-inner", g.gridbody).width(g.gridtablewidth); 
+            if (!toggleByPopup) {
+                $(':checkbox[columnindex=' + columnindex + "]", g.popup).each(function () {
+                    this.checked = visible;
+                    if ($.fn.ligerCheckBox) {
+                        var checkboxmanager = $(this).ligerGetCheckBoxManager();
+                        if (checkboxmanager) checkboxmanager.updateStyle();
+                    }
+                });
+            }
+            //alert(columnindex + ":" + visible + ":" + toggleByPopup);
+            //p.onHideCol && p.onHideCol(columnindex, visible);
+        },
+        reColumnWidth: function (columnindex, width) {
+            var po = this.po, g = this, p = this.options;
+            var headercell = null;
+
+            headercell = $(".l-grid-hd-cell[columnindex='" + columnindex + "']", g.gridheader);
+
+            var column = g.columns[columnindex];
+            if (!column) return;
+            var headerInfo = (function () {
+                for (var i = 0; i < g.headers.length; i++)
+                    if (g.headers[i].columnindex == columnindex)
+                        return g.headers[i];
+                return null;
+            })();
+            if (!headerInfo) return;
+            var mincolumnwidth = 40;
+            if (column.minWidth) mincolumnwidth = column.minWidth;
+            newwidth = width < mincolumnwidth ? mincolumnwidth : width;
+            var diff = newwidth - headerInfo.width;
+            headerInfo.width = newwidth;
+            g.gridtablewidth += diff;
+            $("div:first", g.gridheader).width(g.gridtablewidth + 40);
+            $("div:first", g.gridbody).width(g.gridtablewidth); //alert(g.gridtablewidth);
+            $('td[columnindex=' + columnindex + ']', g.gridheader).css('width', newwidth);
+            if (g.recordNumber > 0) {
+                $('td[columnindex=' + columnindex + ']', g.totalRows).add(g.columnCells[columnindex]).css('width', newwidth).find("div:first").css('width', newwidth - 8);
+            }
+        }
+    };
+
+
     $.ligerAddGrid = function (grid, p) {
-        if (grid.usedGrid) return;
+        if (grid.applyligerui) return;
         /*----------------------------------
         -------- liger grid 初始化------------
         ----------------------------------*/
@@ -187,891 +1271,6 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
         gridhtmlarr.push("            </div>");
         gridhtmlarr.push("         </div>");
         $(grid).html(gridhtmlarr.join(''));
-        /*----------------------------------
-        ------ liger grid maanger 初始化------
-        ----------------------------------*/
-        var g = {
-            //刷新数据
-            loadData: function (loadDataParm) {
-                var clause = null;
-                var loadServer = true;
-                if (typeof (loadDataParm) == "function") {
-                    clause = loadDataParm;
-                    loadServer = false;
-                }
-                else if (typeof (loadDataParm) == "boolean") {
-                    loadServer = loadDataParm;
-                }
-                else if (typeof (loadDataParm) == "object" && loadDataParm) {
-                    loadServer = false;
-                    p.dataType = "local";
-                    p.data = loadDataParm;
-                }
-                //参数初始化
-                if (!p.newPage) p.newPage = 1;
-                if (p.dataAction == "server") {
-                    if (!p.sortOrder) p.sortOrder = "asc";
-                }
-                var param = [];
-                if (p.parms && p.parms.length) {
-                    $(p.parms).each(function () {
-                        param.push({ name: this.name, value: this.value });
-                    });
-                }
-                if (p.dataAction == "server") {
-                    if (p.usePager) {
-                        param.push({ name: p.pageParmName, value: p.newPage });
-                        param.push({ name: p.pagesizeParmName, value: p.pageSize });
-                    }
-                    if (p.sortName) {
-                        param.push({ name: p.sortnameParmName, value: p.sortName });
-                        param.push({ name: p.sortorderParmName, value: p.sortOrder });
-                    }
-                };
-                $(".l-bar-btnload span", g.toolbar).addClass("l-disabled");
-                g.loading = true;
-                if (p.dataType == "local") {
-                    g.data = $.extend({}, p.data);
-                    g.filteredData = $.extend({}, g.data);
-                    if (clause)
-                        g.filteredData[p.root] = po.searchData(g.filteredData[p.root], clause);
-                    if (p.usePager)
-                        g.currentData = po.getCurrentPageData(g.filteredData);
-                    else {
-                        g.currentData = $.extend({}, g.filteredData);
-                    }
-                    po.showData(g.currentData);
-                }
-                else if (p.dataAction == "local" && !loadServer) {
-                    if (g.data && g.data[p.root]) {
-                        g.filteredData = $.extend({}, g.data);
-                        if (clause)
-                            g.filteredData[p.root] = po.searchData(g.filteredData[p.root], clause);
-                        g.currentData = po.getCurrentPageData(g.filteredData);
-                        po.showData(g.currentData);
-                    }
-                }
-                else {
-                    if (p.onLoading) p.onLoading(g);
-                    else g.gridloading.show();
-                    setTimeout(function () {
-                        g.loadServerData(param, clause);
-                    }, 10);
-                }
-            },
-            loadServerData: function (param, clause) {
-                $.ajax({
-                    type: p.method,
-                    url: p.url,
-                    data: param,
-                    async: false,
-                    dataType: 'json',
-                    beforeSend: function () {
-                    },
-                    success: function (data) {
-                        if (p.onSuccess) p.onSuccess(data, g);
-                        if (!data || !data[p.root] || !data[p.root].length) {
-                            g.currentData = g.data = {};
-                            g.currentData[p.root] = g.data[p.root] = [];
-                            g.currentData[p.record] = g.data[p.record] = 0;
-                            return;
-                        }
-                        g.data = $.extend({}, data);
-                        for (var rowindex in g.data[p.root]) {
-                            if (g.data[p.root][rowindex][p.statusName] == undefined)
-                                g.data[p.root][rowindex][p.statusName] = '';
-                        }
-                        if (p.dataAction == "server") {
-                            g.currentData = g.data;
-                        }
-                        else {
-                            g.filteredData = $.extend({}, g.data);
-                            if (clause) g.filteredData[p.root] = po.searchData(g.filteredData[p.root], clause);
-                            g.currentData = po.getCurrentPageData(g.filteredData);
-                        }
-                        setTimeout(function () { po.showData(g.currentData); }, 10);
-                    },
-                    complete: function () {
-                        if (p.onLoaded) {
-                            p.onLoaded(g);
-                        }
-                        else {
-                            setTimeout(function () {
-                                g.gridloading.hide();
-                            }, 10);
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        g.currentData = g.data = {};
-                        g.currentData[p.root] = g.data[p.root] = [];
-                        g.currentData[p.record] = g.data[p.record] = 0;
-                        g.gridloading.hide();
-                        $(".l-bar-btnload span", g.toolbar).removeClass("l-disabled");
-                        try { if (p.onError) p.onError(XMLHttpRequest, textStatus, errorThrown); } catch (e) { }
-                    }
-                });
-            },
-            //add function()
-            setURL: function (linkurl) {
-                p.newPage = 1;
-                p.url = linkurl;
-            },
-            //add function()
-            GetDataByURL: function (linkurl) {
-                p.newPage = 1;
-                p.url = linkurl;
-                po.showData({ Rows: [], Total: 0 });
-                g.loadData(true);
-            },
-            test: function () {
-                var rows = g.getRow(g.currentData[p.root]);
-                for (var row in rows) {
-                    g.deleteRow(row);
-                }
-            },
-            //add function
-            setCheck: function (rowParm) {
-                var row = $("tbody:first > tr[growid=" + rowParm + "]", g.gridbody);
-                row.addClass("l-checked");
-            },
-            //add function
-            setUnCheck: function (rowParm) {
-                var row = $("tbody:first > tr[growid=" + rowParm + "]", g.gridbody);
-                row.removeClass("l-checked");
-            },
-            //add function
-            collapseleaf: function (rowParm) {
-                var row = $("tbody:first > tr[treelevel=" + rowParm + "]", g.gridbody);
-                for (var j = 0; j < row.length; j++) {
-                    g.collapse(row[j]);
-                }
-            },
-            //add function
-            expandleaf: function (rowParm) {
-                var row = $("tbody:first > tr[treelevel=" + rowParm + "]", g.gridbody);
-                for (var j = 0; j < row.length; j++) {
-                    g.expand(row[j]);
-                }
-            },
-            //add function
-            collapseAll: function () {
-                $(".l-grid-tree-link-open", g.gridbody).click();
-            },
-            //add function
-            expandAll: function () {
-                var po = this.po, g = this, p = this.options;
-                $(".l-grid-tree-link-close", g.gridbody).click();
-            },
-            //addfunction()
-            getColumnDateByType: function (columnName, type) {
-                var totalsummaryArr = [];
-
-                var data = g.getCurrentData();
-                var sum = 0, count = 0, avg = 0;
-                var max = parseFloat(g.getColumn(columnName));
-                var min = parseFloat(g.getColumn(columnName));
-                for (var i = 0; i < data.length; i++) {
-                    var value;
-                    //alert(JSON.stringify(data[i]));
-                    if (typeof (data[i][columnName]) == 'number')
-                        value = parseFloat(data[i][columnName]);
-                    else {
-                        //alert(data.length)                    
-                        value = parseFloat(data[i][columnName].replace(/\$|\,/g, ''));
-                    }
-                    if (!value) continue;
-                    sum += value;
-                    count += 1;
-                    if (value > max) max = value;
-                    if (value < min) min = value;
-                }
-                avg = sum * 1.0 / data.length;
-
-                switch (type) {
-                    case "sum": return sum;
-                        break;
-                    case "max": return max;
-                        break;
-                    case "min": return min;
-                        break;
-                    case "count": return count;
-                        break;
-                    case "avg": return avg;
-                        break;
-                    default: return sum;
-                }
-
-
-            },
-            //add function
-            showData: function (data) {
-                po.showData(data);
-            },
-            //add function
-            onResize: function () {
-                po.onResize();
-            },
-            //add function
-            getCurrentData: function () {
-                var rows = $("tbody:first > l-grid-row", g.gridbody);
-                var rowdata = [];
-                $("tbody > .l-grid-row", g.gridbody).each(function (i, row) {
-                    var rowid = $(row).attr("rowid");
-                    rowdata.push(g.getRow(rowid));
-                });
-
-                return rowdata;
-            },
-            //add function
-            updateCelldata: function (rowid, columindex, value) {
-                var rowdata = g.getRow(rowid);
-                var column = g.columns[columindex];
-                if (!column) return;
-                var columnname = column.name;
-                if (!columnname) return;
-
-                //alert(column.type);
-
-                if (column.type == 'int')
-                    rowdata[columnname] = parseInt(value);
-                else if (column.type == 'float')
-                    rowdata[columnname] = parseFloat(value);
-                else if (column.type == 'date') {
-                    var dv = p.renderDate(value);
-                    if (!dv || isNaN(dv))
-                        dv = g.stringToDate(value);
-                    rowdata[columnname] = dv;
-                }
-                else {
-                    rowdata[columnname] = value;
-                }
-
-                if (rowdata[p.statusName] != 'add')
-                    rowdata[p.statusName] = 'update';
-                g.isDataChanged = true;
-            },
-            //add function
-            updateCelldataByColumname: function (rowid, columname, value) {
-                var po = this.po, g = this, p = this.options;
-
-                var rowdata = g.getRow(rowid);
-                if (!rowdata) return;
-
-                rowdata[columname] = value;
-
-                if (rowdata[p.statusName] != 'add')
-                    rowdata[p.statusName] = 'update';
-                g.isDataChanged = true;
-            },
-            //add function
-            getAllRows: function () {
-                var po = this.po, g = this, p = this.options;
-                var rows = $("tbody:first > .l-grid-row", g.gridbody);
-                var rowdata = [];
-                $("tbody:first > .l-grid-row", g.gridbody).each(function (i, row) {
-                    var rowid = $(row).attr("rowid");
-                    rowdata.push(g.getRow(rowid));
-                });
-                return rowdata;
-            },
-            setOptions: function (parms) {
-                $.extend(p, parms);
-                if (parms.data) {
-                    g.data = parms.data;
-                    p.dataType = "local";
-                }
-            },
-            stringToDate: function (obj) {
-                if (obj instanceof Date) return obj;
-                var myDate = new Date();
-                try {
-                    myDate.setYear(parseInt(obj.substring(0, 4), 10));
-                    myDate.setMonth(parseInt(obj.substring(5, 7) - 1, 10));
-                    myDate.setDate(parseInt(obj.substring(8, 10), 10));
-                    if (obj.length > 10) {
-                        myDate.setHours(parseInt(obj.substring(11, 13), 10));
-                        myDate.setMinutes(parseInt(obj.substring(14, 16), 10));
-                    }
-                    if (obj.length > 16) {
-                        myDate.setSeconds(parseInt(obj.substring(17, 19), 10));
-                    }
-                }
-                catch (e) {
-                }
-                return myDate;
-            },
-            getFormatDate: function (date, dateformat) {
-                if (isNaN(date)) return null;
-                var format = dateformat;
-                var o = {
-                    "M+": date.getMonth() + 1,
-                    "d+": date.getDate(),
-                    "h+": date.getHours(),
-                    "m+": date.getMinutes(),
-                    "s+": date.getSeconds(),
-                    "q+": Math.floor((date.getMonth() + 3) / 3),
-                    "S": date.getMilliseconds()
-                }
-                if (/(y+)/.test(format)) {
-                    format = format.replace(RegExp.$1, (date.getFullYear() + "")
-            .substr(4 - RegExp.$1.length));
-                }
-                for (var k in o) {
-                    if (new RegExp("(" + k + ")").test(format)) {
-                        format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k]
-                : ("00" + o[k]).substr(("" + o[k]).length));
-                    }
-                }
-                return format;
-            },
-            endEdit: function () {
-                if (!g.grideditor.editingCell) return;
-                var cell = g.grideditor.editingCell;
-                var value = g.grideditor.editingValue;
-                g.grideditor.html("").hide();
-                var row = $(cell).parent();
-                var rowindex = row.attr("rowindex");
-                var rowid = row.attr("rowid");
-                var columnindex = $(cell).attr("columnindex");
-                var columnname = $(cell).attr("columnname");
-                var column = g.columns[columnindex];
-                var rowdata = g.getRow(rowid);
-                var editParm = {
-                    record: rowdata,
-                    value: value,
-                    column: column,
-                    columnname: columnname,
-                    columnindex: columnindex,
-                    rowindex: rowindex,
-                    rowObj: row[0],
-                    cellObj: cell
-                };
-                if (p.onAfterEdit) p.onAfterEdit(editParm);
-                g.grideditor.editingCell = null;
-                g.grideditor.editingValue = null;
-            },
-            deleteSelectedRow: function () {
-                if (p.checkbox) {
-                    $("tbody:first > tr.l-checked", g.gridbody).each(function () {
-                        g.deleteRow(this);
-                    });
-                }
-                else {
-                    var row = $("tbody:first > tr.l-selected", g.gridbody);
-                    if (row.length == 0) return;
-                    g.deleteRow(row[0]);
-                }
-            },
-            deleteRow: function (rowParm) {
-                var rowObj = g.getRowObj(rowParm);
-                if (!rowObj) return;
-                g.popup.hide();
-                g.endEdit();
-                var rowid = $(rowObj).attr("rowid");
-                if (p.tree && g.hasChildren(rowObj)) {
-                    $("tbody:first > tr[parentrowid=" + rowid + "]", g.gridbody).each(function () {
-                        g.deleteRow(this);
-                    });
-                }
-                $(rowObj).remove();
-                g.deleteData(rowid);
-                g.isDataChanged = true;
-            },
-            deleteData: function (rowid) {
-                g.records[rowid][p.statusName] = 'delete';
-            },
-            updateCell: function (cell, value, rowParm) {
-                var columnindex;
-                var column;
-                var cellObj;
-                if (typeof (cell) == "number") {
-                    columnindex = cell;
-                    column = g.columns[columnindex];
-                    cellObj = $("td[columnindex=" + columnindex + "]", rowObj)[0];
-                }
-                else if (typeof (cell) == "string") {
-                    var rowObj = g.getRowObj(rowParm);
-                    cellObj = $("td[columnname=" + cell + "]", rowObj)[0];
-                    columnindex = $(cellObj).attr("columnindex");
-                    column = g.columns[columnindex];
-                }
-                else {
-                    cellObj = cell;
-                    columnindex = $(cellObj).attr("columnindex");
-                    column = g.columns[columnindex];
-                }
-                var row = $(cellObj).parent();
-                var rowindex = row.attr("rowindex");
-                var rowid = row.attr("rowid");
-                var rowData = g.getRow(rowid);
-                g.updateData(cellObj, value);
-                var cellContent = po.getCellContent(rowData, rowindex, value, column, p.tree, row.attr("treelevel"));
-                $(".l-grid-row-cell-inner:first", cellObj).html(cellContent);
-            },
-            updateData: function (cell, value, rowObj) {
-                if (typeof (cell) == "string") {
-                    var rowindex = $(rowObj).attr("rowindex");
-                    var rowid = $(rowObj).attr("rowid");
-                    var rowdata = g.getRow(rowid);
-                    rowdata[cell] = value;
-                    if (rowdata[p.statusName] != 'add')
-                        rowdata[p.statusName] = 'update';
-                    g.isDataChanged = true;
-                    return;
-                }
-                var columnindex = $(cell).attr("columnindex");
-                var column = g.columns[columnindex];
-                if (!column) return;
-                var columnname = column.name;
-                if (!columnname) return;
-                var row = $(cell).parents(".l-grid-row:eq(0)");
-                var rowindex = row.attr("rowindex");
-                var rowdata = g.currentData[p.root][rowindex];
-                if (column.type == 'int')
-                    rowdata[columnname] = parseInt(value);
-                else if (column.type == 'float')
-                    rowdata[columnname] = parseFloat(value);
-                else if (column.type == 'date') {
-                    var dv = p.renderDate(value);
-                    if (!dv || isNaN(dv))
-                        dv = g.stringToDate(value);
-                    rowdata[columnname] = dv;
-                }
-                else
-                    rowdata[columnname] = value;
-                if (rowdata[p.statusName] != 'add')
-                    rowdata[p.statusName] = 'update';
-                g.isDataChanged = true;
-            },
-            addRow: function (rowdata, rowParm, isBefore, parentRow) {
-                if (!rowdata) rowdata = {};
-                var treelevel, parentrowid, parentRowObj, parentRowData, parentRowIsOpened;
-                if (parentRow) {
-                    parentRowObj = g.getRowObj(parentRow);
-                    treelevel = parseInt($(parentRowObj).attr("treelevel")) + 1;
-                    parentrowid = $(parentRowObj).attr("rowid");
-                    parentRowData = g.getRow(parentrowid);
-                    parentRowIsOpened = $(".l-grid-tree-link:first", parentRowObj).hasClass("l-grid-tree-link-open");
-                }
-
-                var olddatanumber = parentRowData ? parentRowData[p.tree.childrenName].length : g.currentData[p.root].length;
-                var rowObj = g.getRowObj(rowParm);
-                var rowindex = rowObj
-                ? (parseInt($(rowObj).attr("rowindex")) + (isBefore ? 0 : 1))
-                : olddatanumber;
-                var rowHTML = po.getHtmlFromData([rowdata], p.tree, treelevel ? treelevel : 1, parentrowid);
-                var row = $(rowHTML);
-                row.attr("rowindex", rowindex).removeClass("l-grid-row-last");
-                if (parentRow && !parentRowIsOpened) row.hide();
-                if (rowindex == olddatanumber) {
-                    if (parentRowData)
-                        parentRowData[p.tree.childrenName][rowindex] = rowdata;
-                    else
-                        g.currentData[p.root][rowindex] = rowdata;
-                    if (!p.usePager && !g.isTotalSummary()) {
-                        $("tbody:first > .l-grid-row:last", g.gridbody).removeClass("l-grid-row-last");
-                        row.addClass("l-grid-row-last");
-                    }
-                }
-                else {
-                    if (parentRowData)
-                        parentRowData[p.tree.childrenName].splice(rowindex, 0, rowdata);
-                    else
-                        g.currentData[p.root].splice(rowindex, 0, rowdata);
-                    var selectexpr = p.tree ? "tr[parentrowid=" + parentrowid + "][treelevel=" + treelevel + "]" : "tr";
-                    $(rowObj).nextAll(selectexpr).add(rowObj).each(function () {
-                        var ri = $(this).attr("rowindex");
-                        if (ri >= rowindex)
-                            $(this).attr("rowindex", parseInt(ri) + 1);
-                    });
-                }
-                if ($("tbody", g.gridbody).length == 0) {
-                    g.gridbody.html('<div class="l-grid-body-inner"><table class="l-grid-body-table" cellpadding=0 cellspacing=0><tbody></tbody></table></div>');
-                }
-                if (rowObj != undefined) {
-                    if (isBefore)
-                        $(rowObj).before(row);
-                    else
-                        $(rowObj).after(row);
-                }
-                else {
-                    $("tbody:first", g.gridbody).append(row);
-                }
-                rowdata[p.statusName] = 'add';
-                //添加事件
-                po.setRowEven(row[0]);
-                //标识状态
-                g.isDataChanged = true;
-
-                p.total = p.total ? (p.total + 1) : 1;
-                p.pageCount = Math.ceil(p.total / p.pageSize);
-                po.buildPager();
-                if (p.onAfterAddRow) p.onAfterAddRow(row, rowdata);
-                return row;
-            },
-            updateRow: function (rowDom, newRowData) {
-                var rowdata = g.getRow(rowDom);
-                //标识状态
-                g.isDataChanged = true;
-                if (newRowData) {
-                    for (var columnname in newRowData) {
-                        if (columnname == p.statusName) continue;
-                        rowdata[columnname] = newRowData[columnname];
-                        var cellobj = $("> .l-grid-row-cell[columnname=" + columnname + "]", rowDom);
-                        if (cellobj.length == 0) continue;
-                        var columnindex = cellobj.attr("columnindex");
-                        var column = g.columns[columnindex];
-                        g.updateCell(cellobj, newRowData[columnname]);
-                    }
-                    rowdata[p.statusName] = 'update';
-                }
-                return rowdata;
-            },
-            getData: function () {
-                if (g.currentData == null) return null;
-                return g.currentData[p.root];
-            },
-            getColumn: function (columnname) {
-                for (i = 0; i < g.columns.length; i++) {
-                    if (g.columns[i].name == columnname) {
-                        return g.columns[i];
-                    }
-                }
-                return null;
-            },
-            getColumnType: function (columnname) {
-                for (i = 0; i < g.columns.length; i++) {
-                    if (g.columns[i].name == columnname) {
-                        if (g.columns[i].type) return g.columns[i].type;
-                        return "string";
-                    }
-                }
-                return null;
-            },
-            //是否包含汇总
-            isTotalSummary: function () {
-                for (var i = 0; i < g.columns.length; i++) {
-                    if (g.columns[i].totalSummary) return true;
-                }
-                return false;
-            },
-            getMulHeaderLevel: function () {
-                if (!p.columns.length) return 1;
-                var level = 0;
-                var currentColumn = p.columns[0];
-                while (currentColumn) {
-                    level++;
-                    if (!currentColumn.columns || !currentColumn.columns.length) break;
-                    currentColumn = currentColumn.columns[0];
-                }
-                return level;
-            },
-            getColumns: function (columnLevel) {
-                if (columnLevel <= 1) return p.columns;
-                return g.getLevelColumns({ columns: p.columns }, 0, columnLevel);
-            },
-            getLevelColumns: function (column, level, columnLevel) {
-                if (level == columnLevel) return [column];
-                var columns = [];
-                for (var i = 0; column.columns && i < column.columns.length; i++) {
-                    var currentColumns = g.getLevelColumns(column.columns[i], level + 1, columnLevel);
-                    $(currentColumns).each(function () {
-                        columns.push(this);
-                    });
-                }
-                return columns;
-            },
-            getMulHeaders: function (columnLevel) {
-                var getColumnNumber = function (column) {
-                    if (!column.columns || !column.columns.length) return 1;
-                    var number = 0;
-                    for (var i = 0; i < column.columns.length; i++) {
-                        number += getColumnNumber(column.columns[i]);
-                    }
-                    return number;
-                };
-                var currentLevelColumns = g.getColumns(columnLevel);
-                var mulHeaders = [];
-                for (var i = 0; i < currentLevelColumns.length; i++) {
-                    mulHeaders.push({
-                        display: currentLevelColumns[i]['display'],
-                        number: getColumnNumber(currentLevelColumns[i])
-                    });
-                }
-                return mulHeaders;
-            },
-            //改变排序
-            changeSort: function (columnName, sortOrder) {
-
-                if (g.loading) return true;
-                if (p.dataAction == "local") {
-                    var columnType = g.getColumnType(columnName);
-                    if (!g.sortedData)
-                        g.sortedData = $.extend({}, g.filteredData);
-                    if (p.sortName == columnName) {
-                        g.sortedData[p.root].reverse();
-                    } else {
-                        g.sortedData[p.root].sort(function (data1, data2) {
-                            return po.compareData(data1, data2, columnName, columnType);
-                        });
-                    }
-                    if (p.usePager)
-                        g.currentData = po.getCurrentPageData(g.sortedData);
-                    else
-                        g.currentData = g.sortedData;
-                    po.showData(g.currentData);
-                }
-                p.sortName = columnName;
-                p.sortOrder = sortOrder;
-                if (p.dataAction == "server") {
-                    g.loadData(p.where);
-                }
-            },
-            //改变分页
-            changePage: function (ctype) {
-                if (g.loading) return true;
-                if (g.isDataChanged && !confirm(p.isContinueByDataChanged))
-                    return false;
-                //计算新page
-                switch (ctype) {
-                    case 'first': if (p.page == 1) return; p.newPage = 1; break;
-                    case 'prev': if (p.page == 1) return; if (p.page > 1) p.newPage = parseInt(p.page) - 1; break;
-                    case 'next': if (p.page >= p.pageCount) return; p.newPage = parseInt(p.page) + 1; break;
-                    case 'last': if (p.page >= p.pageCount) return; p.newPage = p.pageCount; break;
-                    case 'input':
-                        var nv = parseInt($('.pcontrol input', g.toolbar).val());
-                        if (isNaN(nv)) nv = 1;
-                        if (nv < 1) nv = 1;
-                        else if (nv > p.pageCount) nv = p.pageCount;
-                        $('.pcontrol input', g.toolbar).val(nv);
-                        p.newPage = nv;
-                        break;
-                }
-                if (p.newPage == p.page) return false;
-                if (p.newPage == 1) {
-                    $(".l-bar-btnfirst span", g.toolbar).addClass("l-disabled");
-                    $(".l-bar-btnprev span", g.toolbar).addClass("l-disabled");
-                }
-                else {
-                    $(".l-bar-btnfirst span", g.toolbar).removeClass("l-disabled");
-                    $(".l-bar-btnprev span", g.toolbar).removeClass("l-disabled");
-                }
-                if (p.newPage == p.pageCount) {
-                    $(".l-bar-btnlast span", g.toolbar).addClass("l-disabled");
-                    $(".l-bar-btnnext span", g.toolbar).addClass("l-disabled");
-                }
-                else {
-                    $(".l-bar-btnlast span", g.toolbar).removeClass("l-disabled");
-                    $(".l-bar-btnnext span", g.toolbar).removeClass("l-disabled");
-                }
-                if (p.onChangePage)
-                    p.onChangePage(p.newPage);
-                if (p.dataAction == "server") {
-                    g.loadData(p.where);
-                }
-                else {
-                    g.currentData = po.getCurrentPageData(g.filteredData);
-                    po.showData(g.currentData);
-                }
-            },
-            getCheckedRows: function () {
-                var rows = $("tbody:first > .l-checked", g.gridbody);
-                var rowdata = [];
-                $("tbody:first > .l-checked", g.gridbody).each(function (i, row) {
-                    var rowid = $(row).attr("rowid");
-                    rowdata.push(g.getRow(rowid));
-                });
-                return rowdata;
-            },
-            getSelectedRow: function () {
-                var row = $("tbody:first > .l-selected", g.gridbody);
-                var rowid = row.attr("rowid");
-                return g.getRow(rowid);
-            },
-            getCheckedRowObjs: function () {
-                return $("tbody:first > .l-checked", g.gridbody).get();
-            },
-            getSelectedRowObj: function () {
-                var row = $("tbody:first > .l-selected", g.gridbody);
-                if (row.length == 0) return null;
-                return row[0];
-            },
-            getRowObj: function (rowParm) {
-                if (typeof (rowParm) == "string" || typeof (rowParm) == "number") {
-                    return $("tbody:first > .l-grid-row[rowid=" + rowParm + "]", g.gridbody).get(0);
-                }
-                else if (typeof (rowParm) == "object") {
-                    if (!rowParm) return null;
-                    if (typeof (rowParm.nodeType) != "undefined" && rowParm.nodeType == 1)
-                        return rowParm;
-                    else {
-                        for (var p in g.records) {
-                            if (g.records[p] == rowParm)
-                                return $("tbody:first > .l-grid-row[rowid=" + p + "]", g.gridbody).get(0);
-                        }
-                    }
-                }
-                return null;
-            },
-            getRow: function (rowParm) {
-                if (typeof (rowParm) == "string" || typeof (rowParm) == "number") {
-                    return g.records[parseInt(rowParm)];
-                }
-                else if (typeof (rowParm) == "object") {
-                    if (!rowParm) return null;
-                    if (typeof (rowParm.nodeType) != "undefined" && rowParm.nodeType == 1)
-                        return g.records[$(rowParm).attr("rowid")];
-                    else
-                        return rowParm;
-                }
-                return null;
-            },
-            toggleCol: function (columnparm, visible) {
-                var headercell = null;
-                var columnindex = -1;
-                if (typeof (columnparm) == "number") {
-                    columnindex = columnparm;
-                    headercell = $(".l-grid-hd-cell[columnindex='" + columnparm + "']", g.gridheader);
-                }
-                else if (typeof (columnparm) == "string") {
-                    headercell = $(".l-grid-hd-cell[columnname='" + columnparm + "']", g.gridheader);
-                    if (!headercell) return;
-                    columnindex = headercell.attr("columnindex");
-                }
-                if (!headercell) return;
-                if (visible) {
-                    headercell.show();
-                    $(".l-grid-row-cell[columnindex='" + columnindex + "']", g.gridbody).show();
-                } else {
-                    headercell.hide();
-                    $(".l-grid-row-cell[columnindex='" + columnindex + "']", g.gridbody).hide();
-                }
-            },
-            changeHeaderText: function (columnparm, headerText) {
-                var headercell = null;
-                var columnindex = -1;
-                if (typeof (columnparm) == "number") {
-                    columnindex = columnparm;
-                    headercell = $(".l-grid-hd-cell[columnindex='" + columnparm + "']", g.gridheader);
-                }
-                else if (typeof (columnparm) == "string") {
-                    headercell = $(".l-grid-hd-cell[columnname='" + columnparm + "']", g.gridheader);
-                    if (!headercell) return;
-                    columnindex = headercell.attr("columnindex");
-                }
-                if (!headercell) return;
-                $(".l-grid-hd-cell-text", headercell).html(headerText);
-                if (p.allowHideColumn) {
-                    $(':checkbox[columnindex=' + columnindex + "]", g.popup).parent().next().html(headerText);
-                }
-            },
-            getParent: function (rowParm) {
-                var rowObj = g.getRowObj(rowParm);
-                if (!rowObj) return;
-                var parentrowid = $(rowObj).attr("parentrowid");
-                if (parentrowid == undefined) return null;
-                return g.getRow(parentrowid);
-            },
-            getChidren: function (rowParm) {
-                if (!p.tree) return null;
-                var rowData = g.getRow(rowParm);
-                if (!rowData) return null;
-                return rowData[p.tree.childrenName];
-            },
-            isLeaf: function (rowParm) {
-                var rowObj = g.getRowObj(rowParm);
-                if (!rowObj) return;
-                return !$("> td > div > .l-grid-tree-space:last", rowObj).hasClass("l-grid-tree-link");
-            },
-            hasChildren: function (rowParm) {
-                var rowObj = g.getRowObj(rowParm);
-                if (!rowObj) return;
-                var treelevel = $(rowObj).attr("treelevel");
-                var nextRow = $(rowObj).next(".l-grid-row");
-                if (nextRow.length == 0) return false;
-                var nextRowTreelevel = nextRow.attr("treelevel");
-                return parseInt(treelevel) < parseInt(nextRowTreelevel);
-            },
-            appendRow: function (rowData, targetRow, nearRow, isBefore) {
-                var targetRowObj = g.getRowObj(targetRow);
-                if (!targetRow) {
-                    g.addRow(rowData);
-                    return;
-                }
-                if (nearRow) {
-                    g.addRow(rowData, nearRow, isBefore ? true : false, targetRowObj);
-                    return;
-                }
-                var rowid = $(targetRowObj).attr("rowid");
-                var children = $(targetRowObj).nextAll("tr[parentrowid=" + rowid + "]").get();
-                if (!children) return;
-                if (children.length == 0)
-                    g.addRow(rowData, targetRowObj, false, targetRowObj);
-                else
-                    g.addRow(rowData, children[children.length - 1], false, targetRowObj);
-            },
-            upgrade: function (targetRow) {
-                if (!targetRow || !p.tree) return;
-                var targetRowData = g.getRow(targetRow);
-                var targetRowObj = g.getRowObj(targetRow);
-                if (!targetRowData[p.tree.childrenName])
-                    targetRowData[p.tree.childrenName] = [];
-                $("> td > div > .l-grid-tree-space:last", targetRow).addClass("l-grid-tree-link l-grid-tree-link-open");
-            },
-            demotion: function (targetRow) {
-                if (!targetRow || !p.tree) return;
-                var targetRowData = g.getRow(targetRow);
-                var targetRowObj = g.getRowObj(targetRow);
-                var rowid = $(targetRowObj).attr("rowid");
-                $("> td > div > .l-grid-tree-space:last", targetRow).removeClass("l-grid-tree-link l-grid-tree-link-open l-grid-tree-link-close");
-                if (g.hasChildren(targetRowObj)) {
-                    $("tbody:first > tr[parentrowid=" + rowid + "]", g.gridbody).each(function () {
-                        g.deleteRow(this);
-                    });
-                }
-            },
-            collapse: function (targetRow) {
-                var targetRowObj = g.getRowObj(targetRow);
-                var linkbtn = $(".l-grid-tree-link", targetRowObj);
-                if (linkbtn.hasClass("l-grid-tree-link-close")) return;
-                g.toggle(targetRow);
-            },
-            expand: function (targetRow) {
-                var targetRowObj = g.getRowObj(targetRow);
-                var linkbtn = $(".l-grid-tree-link", targetRowObj);
-                if (linkbtn.hasClass("l-grid-tree-link-open")) return;
-                g.toggle(targetRow);
-            },
-            toggle: function (targetRow) {
-                var targetRowObj = g.getRowObj(targetRow);
-                var treerow = $(targetRowObj);
-                var level = treerow.attr("treelevel");
-                var linkbtn = $(".l-grid-tree-link", treerow);
-                var opening = true;
-                if (linkbtn.hasClass("l-grid-tree-link-close")) {
-                    linkbtn.removeClass("l-grid-tree-link-close").addClass("l-grid-tree-link-open");
-                }
-                else {
-                    opening = false;
-                    linkbtn.addClass("l-grid-tree-link-close").removeClass("l-grid-tree-link-open");
-                }
-                var currentRow = treerow.next(".l-grid-treerow");
-                while (true) {
-                    if (currentRow.length == 0) break;
-                    var treelevel = currentRow.attr("treelevel");
-                    if (treelevel <= level) break;
-                    if (opening) {
-                        $(".l-grid-tree-link", currentRow).removeClass("l-grid-tree-link-close").addClass("l-grid-tree-link-open");
-                        currentRow.show();
-                    }
-                    else {
-                        $(".l-grid-tree-link", currentRow).removeClass("l-grid-tree-link-open").addClass("l-grid-tree-link-close");
-                        currentRow.hide();
-                    }
-                    currentRow = currentRow.next(".l-grid-treerow");
-                }
-            }
-        };
         var po = {
             init: function () {
                 po.clearGrid();
@@ -1112,7 +1311,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         tr.append(headerCell);
                     }
                     //如果有明细，创建列
-                    if (p.detail && p.detail.onShowDetail) {
+                    if (g.enabledDetail()) {
                         var detailHeaderCell = $("<td class='l-grid-hd-cell l-grid-hd-cell-detail l-grid-hd-cell-mul'></td>");
                         tr.append(detailHeaderCell);
                     }
@@ -1132,24 +1331,24 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                 //如果有复选框列 
                 if (p.checkbox) {
                     var headerCell = $("<td class='l-grid-hd-cell l-grid-hd-cell-checkbox'><div class='l-grid-hd-cell-inner'><div class='l-grid-hd-cell-text l-grid-hd-cell-btn-checkbox'></div></div></td>");
-                    headerCell.css({ width: 27 });
+                    headerCell.css({ width: p.checkboxColWidth });
                     $("tr:last", g.gridheader).append(headerCell);
                     g.headers.push({
-                        width: 27,
+                        width: p.checkboxColWidth,
                         ischeckbox: true
                     });
-                    g.gridtablewidth += 28;
+                    g.gridtablewidth += p.checkboxColWidth + 1;
                 }
                 //如果有明细，创建列
-                if (p.detail && p.detail.onShowDetail) {
+                if (g.enabledDetail()) {
                     var detailHeaderCell = $("<td class='l-grid-hd-cell l-grid-hd-cell-detail'><div class='l-grid-hd-cell-inner'><div class='l-grid-hd-cell-text'></div></div></td>");
                     detailHeaderCell.css({ width: 29 });
                     $("tr:last", g.gridheader).append(detailHeaderCell);
                     g.headers.push({
-                        width: 29,
+                        width: p.detailColWidth,
                         isdetail: true
                     });
-                    g.gridtablewidth += 30;
+                    g.gridtablewidth += p.detailColWidth + 1;
                 }
                 $(g.columns).each(function (i, item) {
                     var $headerCell = $("<td class='l-grid-hd-cell' columnindex='" + i + "'><div class='l-grid-hd-cell-inner'><span class='l-grid-hd-cell-text'> </span></div></td>");
@@ -1185,7 +1384,12 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     else if (p.columnWidth) {
                         colwidth = p.columnWidth;
                     }
-                    if (!colwidth) colwidth = 120;
+                    if (!colwidth) {
+                        var lwidth = 4;
+                        if (p.checkbox) lwidth += p.checkboxColWidth;
+                        if (g.enabledDetail()) lwidth += p.detailColWidth;
+                        colwidth = parseInt((g.gridbody.width() - lwidth) / g.columns.length);
+                    }
                     if (typeof (colwidth) == "string" && colwidth.indexOf('%') > 0) {
                         item.width = colwidth = parseInt(parseInt(colwidth) * 0.01 * (g.gridbody.width() - g.columns.length));
                     }
@@ -1230,7 +1434,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     var columnindex = $(this).attr("columnindex");
                     if (columnindex == undefined) return true;
                     var left = (e.pageX - g.body.offset().left + parseInt(g.body[0].scrollLeft));
-                    if (columnindex == g.columns.length - 1) left -= 80;
+                    if (columnindex == g.columns.length - 1) left -= 50;
                     g.popup.css({ left: left, top: g.gridheader.height() + 1 });
                     g.popup.toggle();
                     return false;
@@ -1281,12 +1485,6 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     g.popup.hide();
                     g.endEdit();
                 });
-                //表头 - 经过和点击事件
-                $(".l-grid-hd-cell", g.gridheader).hover(function () {
-                }, function () {
-                }).mousedown(function (e) {
-                    if (g.colresize) return false; //如果正在调整列宽
-                });
                 $(".l-grid-hd-cell-text", g.gridheader).click(function (e) {
                     var obj = (e.target || e.srcElement);
                     var row = $(this).parent().parent();
@@ -1319,6 +1517,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     return false;
                 });
                 g.gridheader.click(function () {
+                    g.popup.hide();
                     g.endEdit();
                 });
                 //调整列宽
@@ -1328,8 +1527,14 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         var posLeft = e.pageX - $(grid).offset().left; //当前鼠标位置
                         var currentLeft = 0;
                         for (var i = 0; i < g.headers.length; i++) {
-                            if (g.headers[i].width) currentLeft += g.headers[i].width + 1;
-                            if (g.headers[i].isdetail || g.headers[i].ischeckbox) continue;
+                            var hide = false;
+                            if (g.headers[i].columnindex != undefined) {
+                                hide = g.columns[g.headers[i].columnindex].hide ? true : false;
+
+                            }
+                            if (!hide && g.headers[i].width) currentLeft += g.headers[i].width + 1;
+                            if (g.headers[i].isdetail || g.headers[i].ischeckbox || hide) continue;
+
                             if (posLeft >= currentLeft - 2 - g.gridbody[0].scrollLeft && posLeft <= currentLeft + 2 - g.gridbody[0].scrollLeft) {
                                 $('body').css({ cursor: 'e-resize' });
                                 g.toDragHeaderIndex = i;
@@ -1342,6 +1547,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         if (g.colresize) return; //如果正在调整列宽
                         $('body').css({ cursor: 'default' });
                     }).mousedown(function (e) {
+                        if (e.button == 2) return;
                         if (g.colresize) return; //如果正在调整列宽
                         if (g.toDragHeaderIndex == null) return; //如果不在位置上
                         po.dragStart('colresize', e, g.toDragHeaderIndex);
@@ -1357,7 +1563,10 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         if ($('input:checked', g.popup).length + 1 <= p.minColToggle) {
                             return false;
                         }
-                        g.toggleCol(parseInt($(this).attr("columnindex")), this.checked);
+                        var checked = this.checked ? 1 : 0;
+                        var columnindex = parseInt($(this).attr("columnindex"));
+                        g.toggleCol(columnindex, checked, true);
+                        p.onHideCol && p.onHideCol(columnindex, checked);
                     };
                     if ($.fn.ligerCheckBox)
                         $(':checkbox', g.popup).change(onPopupCheckboxChange);
@@ -1490,7 +1699,10 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                 });
 
                 //全局事件
-                $(document).mousemove(function (e) { po.dragMove(e) }).mouseup(function (e) { po.dragEnd() }).hover(function () { }, function () { po.dragEnd() }).click(function (e) { po.onClick(e) });
+                $(document)
+                .mousemove(function (e) { po.dragMove(e) })
+                .mouseup(function (e) { po.dragEnd() })
+                .click(function (e) { po.onClick(e) });
 
                 $(window).resize(po.onResize);
             },
@@ -1502,6 +1714,28 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     }
                 }
                 return newData;
+            },
+            recordRow: function (rowDom) {
+                if (!$(rowDom).hasClass("l-grid-row")) {
+                    if ($(rowDom).hasClass("l-grid-totalsummary")) {
+                        g.totalRows.push(rowDom);
+                    }
+                    else if ($(rowDom).hasClass("l-grid-grouprow")) {
+                        g.groupRows.push(rowDom);
+                    }
+                    return;
+                }
+                var rowid = $(rowDom).attr("rowid");
+                g.rows[rowid] = rowDom;
+                g.cells[rowid] = {};
+                $(" > td", rowDom).each(function () {
+                    var columnindex = $(this).attr("columnindex");
+                    if (columnindex) {
+                        g.columnCells[columnindex] = g.columnCells[columnindex] || [];
+                        g.columnCells[columnindex].push(this);
+                        g.cells[rowid][columnindex] = this;
+                    }
+                });
             },
             clearGrid: function () {
                 //清空数据
@@ -1515,6 +1749,21 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                 g.groupRows = [];
             },
             showData: function (data) {
+                if (p.usePager) {
+                    if (data) {
+                        //更新分页
+                        if (data[p.record])
+                            p.total = data[p.record];
+                        else
+                            p.total = data.length;
+                    }
+                    p.page = p.newPage;
+                    if (!p.total) p.total = 0;
+                    if (!p.page) p.page = 1;
+                    p.pageCount = Math.ceil(p.total / p.pageSize);
+                    if (!p.pageCount) p.pageCount = 1;
+                    po.buildPager();
+                }
                 //加载中
                 $('.l-bar-btnloading:first', g.toolbar).removeClass('l-bar-btnloading');
                 if (!data || !data[p.root]) return;
@@ -1523,16 +1772,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                 }
                 g.isDataChanged = false;
                 $(".l-bar-btnload:first span", g.toolbar).removeClass("l-disabled");
-                g.loading = false;
-                if (p.usePager) {
-                    //更新分页
-                    p.total = data[p.record];
-                    p.page = p.newPage;
-                    p.pageCount = Math.ceil(p.total / p.pageSize);
-                    po.buildPager();
-                }
-                //清空数据
-                g.gridbody.html("");
+                po.clearGrid();
                 //$(".l-grid-row,.l-grid-detailpanel,.l-grid-totalsummary", g.gridbody).remove();
                 //加载数据 
                 var gridhtmlarr = ['<div class="l-grid-body-inner"><table class="l-grid-body-table" cellpadding=0 cellspacing=0><tbody>'];
@@ -1551,10 +1791,32 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         groupsdata[valueIndex].push(item);
                     });
                     $(groupsdata).each(function (i, item) {
-                        gridhtmlarr.push('<tr class="l-grid-grouprow" rowcount="' + item.length + '">');
+                        if (groupsdata.length == 1)
+                            gridhtmlarr.push('<tr class="l-grid-grouprow l-grid-grouprow-last l-grid-grouprow-first"');
+                        if (i == groupsdata.length - 1)
+                            gridhtmlarr.push('<tr class="l-grid-grouprow l-grid-grouprow-last"');
+                        else if (i == 0)
+                            gridhtmlarr.push('<tr class="l-grid-grouprow l-grid-grouprow-first"');
+                        else
+                            gridhtmlarr.push('<tr class="l-grid-grouprow"');
+                        gridhtmlarr.push(' groupindex"=' + i + '" >');
                         gridhtmlarr.push('<td colSpan="' + g.headers.length + '" class="l-grid-grouprow-cell">');
-                        gridhtmlarr.push('<span class="l-grid-group-togglebtn">&nbsp;&nbsp;&nbsp;&nbsp;</span>');
-                        gridhtmlarr.push(p.groupColumnDisplay + ':' + groups[i]);
+
+                        //modify
+                        gridhtmlarr.push('<span class="l-grid-group-togglebtn ');
+                        if (p.defaultCloseGroup)
+                            gridhtmlarr.push(' l-grid-group-togglebtn-close');
+                        gridhtmlarr.push('      ">&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+
+
+                        if (p.groupRender) {
+                            gridhtmlarr.push(p.groupRender(groups[i], p.groupColumnDisplay, groupsdata[i]));
+                        }
+                        else {
+                            gridhtmlarr.push(p.groupColumnDisplay + ':' + groups[i]);
+                        }
+
+
                         gridhtmlarr.push('</td>');
                         gridhtmlarr.push('</tr>');
 
@@ -1578,12 +1840,20 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         return true;
                     };
                     gridhtmlarr.push(po.getHtmlFromData(data[p.root], p.tree, 1));
+                    //alert(JSON.stringify( p.tree));
                 }
                 else {
                     gridhtmlarr.push(po.getHtmlFromData(data[p.root]));
                 }
                 gridhtmlarr.push('</tbody></table></div>');
-                g.gridbody.html(gridhtmlarr.join(''));
+                var jgridbody = $(gridhtmlarr.join(''));
+                $("tbody:first > tr", jgridbody).each(function () {
+                    po.recordRow(this);
+                });
+                g.gridbody.append(jgridbody);
+
+                g.currentData = data;
+                //分组时不需要
                 if (!p.groupColumnName) {
                     //创建汇总行
                     po.bulidTotalSummary();
@@ -1596,19 +1866,34 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     var grouprow = $(this);
                     $(".l-grid-group-togglebtn", grouprow).click(function () {
                         var opening = true;
-                        if ($(this).hasClass("l-grid-group-togglebtn-close")) $(this).removeClass("l-grid-group-togglebtn-close");
+                        if ($(this).hasClass("l-grid-group-togglebtn-close")) {
+                            $(this).removeClass("l-grid-group-togglebtn-close");
+
+                            if (grouprow.hasClass("l-grid-grouprow-last")) {
+                                $("td:first", grouprow).width('auto');
+                            }
+                        }
                         else {
                             opening = false;
                             $(this).addClass("l-grid-group-togglebtn-close");
+                            if (grouprow.hasClass("l-grid-grouprow-last")) {
+                                $("td:first", grouprow).width(g.gridtablewidth);
+                            }
                         }
-                        var currentRow = grouprow.next(".l-grid-row,.l-grid-totalsummary-group");
+                        var currentRow = grouprow.next(".l-grid-row,.l-grid-totalsummary-group,.l-grid-detailpanel");
                         while (true) {
                             if (currentRow.length == 0) break;
-                            if (opening)
+                            if (opening) {
                                 currentRow.show();
-                            else
+                                //如果是明细展开的行，并且之前的状态已经是关闭的，隐藏之
+                                if (currentRow.hasClass("l-grid-detailpanel") && !currentRow.prev().find("td.l-grid-row-cell-detail:first span.l-grid-row-cell-detailbtn:first").hasClass("l-open")) {
+                                    currentRow.hide();
+                                }
+                            }
+                            else {
                                 currentRow.hide();
-                            currentRow = currentRow.next(".l-grid-row,.l-grid-totalsummary-group");
+                            }
+                            currentRow = currentRow.next(".l-grid-row,.l-grid-totalsummary-group,.l-grid-detailpanel");
                         }
                     });
                 });
@@ -1631,7 +1916,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     }
                 }
                 if (p.allowHideColumn) {
-                    if (tagName == 'html' || tagName == 'body' || $(obj).hasClass("l-grid-body") || $(obj).hasClass("l-grid-row") || $(obj).hasClass("l-grid-row-cell-inner") || $(obj).hasClass("l-grid-header")) {
+                    if (tagName == 'html' || tagName == 'body' || $(obj).hasClass("l-grid-body") || $(obj).hasClass("l-grid-row") || $(obj).hasClass("l-grid-row-cell-inner") || $(obj).hasClass("l-grid-header") || $(obj).hasClass("l-grid-grouprow-cell") || $(obj).hasClass("l-grid-totalsummary-cell") || $(obj).hasClass("l-grid-totalsummary-cell-inner")) {
                         g.popup.hide();
                     }
                 }
@@ -1646,6 +1931,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         gridhtmlarr.push('<tr class="l-grid-row l-grid-row-last');
                     else
                         gridhtmlarr.push('<tr class="l-grid-row');
+                    
                     if (tree) {
                         gridhtmlarr.push(' l-grid-treerow');
                     }
@@ -1655,6 +1941,9 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     if (i % 2 == 1 && p.alternatingRow)
                         gridhtmlarr.push(' l-grid-row-alt');
                     gridhtmlarr.push('" ');
+
+                    if (p.defaultCloseGroup) gridhtmlarr.push(' style="display: none;"');//modify
+
                     if (tree) gridhtmlarr.push(" treelevel= " + level);
                     if (p.rowAttrRender) gridhtmlarr.push(p.rowAttrRender(item, i));
                     var rowid = g.recordNumber;
@@ -1665,6 +1954,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     if (p.rowtype) {
                         gridhtmlarr.push(" rowtype='" + item[p.rowtype] + "'");
                     }
+
                     gridhtmlarr.push(" rowid= " + rowid);
                     g.records[g.recordNumber] = item;
                     g.recordNumber++;
@@ -1745,46 +2035,51 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
             },
             getCellContent: function (rowData, rowindex, value, column, tree, level, rowid) {
                 var content = "";
+                if (!rowData || !column) return "";
                 if (column.render) {
                     if (!p.page) p.page = 1;
+                    //if (!p.pagesize) p.page = 1;
                     var page = p.page;
                     var pagesize = p.pageSize;
                     content = column.render(rowData, rowindex, value, column, rowid, page, pagesize);
                 }
                 else if (column.type == 'date') {
-                    content = value.toString();
+                    if (value != null) content = value.toString();
                     if (value instanceof Date) {
                         if (column.format) content = g.getFormatDate(value, column.format);
                         else content = g.getFormatDate(value, p.dateFormat);
                     }
                 }
                 else {
-                    if (value != null && value != undefined) content = value.toString();
+                    if (value != null) content = value.toString();
                 }
                 if (tree && tree.columnName == column.name) {
                     content = po.getTreeCellHtml(tree, content, rowData, level);
                 }
-                if (!content) content = "";
+                if (content == null || content == undefined) content = "";
                 return content;
             },
             setRowEven: function (rowobj) {
-                $(rowobj).bind("contextmenu", function (e) {
-                    var obj = (e.target || e.srcElement);
-                    if (p.onRClickToSelect)
-                        $(this).addClass("l-selected").siblings(".l-selected").removeClass("l-selected");
-                    if (p.onContextmenu) {
-                        var rowid = $(this).attr("rowid");
-                        var rowindex = $(this).attr("rowindex");
-                        var rowdata = g.getRow(rowid);
-                        return p.onContextmenu({ data: rowdata, rowindex: rowindex, row: this }, e);
-                    }
-                });
+                if (p.onRClickToSelect || p.onContextmenu) {
+                    $(rowobj).bind("contextmenu", function (e) {
+                        var obj = (e.target || e.srcElement);
+                        if (p.onRClickToSelect)
+                            $(this).addClass("l-selected").siblings(".l-selected").removeClass("l-selected");
+                        if (p.onContextmenu) {
+                            var rowid = $(this).attr("rowid");
+                            var rowindex = $(this).attr("rowindex");
+                            var rowdata = g.getRow(rowid);
+                            return p.onContextmenu({ data: rowdata, rowindex: rowindex, row: this }, e);
+                        }
+                        return true;
+                    });
+                }
                 $(rowobj).hover(function (e) {
-                    if (!p.mouseoverRowCssClass)
+                    if (p.mouseoverRowCssClass)
                         $(this).addClass(p.mouseoverRowCssClass);
 
                 }, function (e) {
-                    if (!p.mouseoverRowCssClass)
+                    if (p.mouseoverRowCssClass)
                         $(this).removeClass(p.mouseoverRowCssClass);
                 }).click(function (e) {
                     if (p.checkbox) {
@@ -1852,7 +2147,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                 var columnindex = $(rowcell).attr("columnindex");
                 var columnname = $(rowcell).attr("columnname");
                 var column = g.columns[columnindex];
-                if (!column) return;
+                if (!column || !column.editor) return;
                 var left = $(rowcell).offset().left - g.body.offset().left;
                 var top = $(rowcell).offset().top - $(grid).offset().top;
                 var rowdata = g.getRow(rowid);
@@ -1872,8 +2167,8 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         return false;
                 }
                 g.grideditor.css({ left: left, top: top, width: $(rowcell).css('width'), height: $(rowcell).css('height') }).html("");
-                g.grideditor.editingCell = null;
-                if (column.editor && column.editor.type == 'date') {
+                g.grideditor.editingCell = rowcell;
+                if (column.editor.type == 'date') {
                     if ("" == currentdata || null == currentdata || isNaN(currentdata)) {
                         currentdata = new Date();
                     } else {
@@ -1897,10 +2192,8 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     if (column.editor.p)
                         options = $.expend({}, typeof (column.editor.p) == 'function' ? column.editor.p(rowdata, rowindex, currentdata, column) : column.editor.p, options);
                     $inputText.ligerDateEditor(options);
-                    g.grideditor.editingCell = rowcell;
-                    g.grideditor.show();
                 }
-                else if (column.editor && column.editor.type == 'select') {
+                else if (column.editor.type == 'select') {
                     var $inputText = $("<input type='text'/>");
                     g.grideditor.append($inputText);
                     //$inputText.val(currentdata);
@@ -1925,9 +2218,9 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     if (column.editor.dataDisplayField) options.displayField = options.textField = column.editor.dataDisplayField;
                     else if (column.editor.displayColumnName) options.displayField = options.textField = column.editor.displayColumnName;
                     if (column.editor.valueColumnName)
-                        options.initValue = g.currentData[p.root][rowindex][column.editor.valueColumnName];
+                        options.initValue = rowdata[column.editor.valueColumnName];
                     else if (column.editor.dataDisplayField)
-                        options.initText = g.currentData[p.root][rowindex][column.editor.dataDisplayField];
+                        options.initText = rowdata[column.editor.dataDisplayField];
                     if (column.editor.p) {
                         var tmp = typeof (column.editor.p) == 'function'
                         ? column.editor.p(rowdata, rowindex, currentdata, column)
@@ -1935,10 +2228,8 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         options = $.extend({}, options, tmp);
                     }
                     $inputText.ligerComboBox(options);
-                    g.grideditor.editingCell = rowcell;
-                    g.grideditor.show();
                 }
-                else if (column.editor && (column.editor.type == 'int' || column.editor.type == 'float' || column.editor.type == 'spinner')) {
+                else if (column.editor.type == 'int' || column.editor.type == 'float' || column.editor.type == 'spinner') {
                     var $inputText = $("<input type='text'/>");
                     g.grideditor.append($inputText);
                     $inputText.attr({ style: 'border:#6E90BE' }).val(currentdata);
@@ -1946,6 +2237,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         width: $(rowcell).width(),
                         height: $(rowcell).height(),
                         type: column.editor.type == 'float' ? 'float' : 'int',
+                        isNegative: column.editor.isNegative,
                         onChangeValue: function (newValue) {
                             $(rowcell).addClass("l-grid-row-cell-edited");
                             if (column.editor.onChange) column.editor.onChange(rowcell, newValue);
@@ -1958,27 +2250,27 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     if (column.editor.minValue != undefined) options.minValue = column.editor.minValue;
                     if (column.editor.maxValue != undefined) options.maxValue = column.editor.maxValue;
                     $inputText.ligerSpinner(options);
-                    g.grideditor.editingCell = rowcell;
-                    g.grideditor.show();
                 }
-                else if (column.editor && (column.editor.type == 'string' || column.editor.type == 'text')) {
+                else if (column.editor.type == 'string' || column.editor.type == 'text') {
                     var $inputText = $("<input type='text' class='l-text-editing'/>");
+
                     g.grideditor.append($inputText);
                     $inputText.val(currentdata);
-                    $inputText.ligerTextBox(
-                            {
-                                width: $(rowcell).width() - 1,
-                                height: $(rowcell).height(),
-                                onChangeValue: function (newValue) {
-                                    $(rowcell).addClass("l-grid-row-cell-edited");
-                                    if (column.editor.onChange) column.editor.onChange(rowcell, newValue);
-                                    editParm.value = newValue;
-                                    if (po.checkEditAndUpdateCell(editParm)) {
-                                        if (column.editor.onChanged) column.editor.onChanged(rowcell, newValue);
-                                    }
-                                }
+
+                    var options = {
+                        width: $(rowcell).width() - 1,
+                        height: $(rowcell).height(),
+                        onChangeValue: function (newValue) {
+                            $(rowcell).addClass("l-grid-row-cell-edited");
+                            if (column.editor.onChange) column.editor.onChange(rowcell, newValue);
+                            editParm.value = newValue;
+                            if (po.checkEditAndUpdateCell(editParm)) {
+                                if (column.editor.onChanged) column.editor.onChanged(rowcell, newValue);
                             }
-                    ).bind('keydown', function (e) {
+                        }
+                    };
+                    $inputText.ligerTextBox(options);
+                    $inputText.bind('keydown', function (e) {
                         var key = e.which;
                         if (key == 13) {
                             $inputText.trigger("change");
@@ -1986,10 +2278,8 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         }
                     });
                     $inputText.parent().addClass("l-text-editing");
-                    g.grideditor.editingCell = rowcell;
-                    g.grideditor.show();
                 }
-                else if (column.editor && (column.editor.type == 'chk' || column.editor.type == 'checkbox')) {
+                else if (column.editor.type == 'chk' || column.editor.type == 'checkbox') {
                     var $input = $("<input type='checkbox'/>");
                     g.grideditor.append($input);
                     $input[0].checked = currentdata == 1 ? true : false;
@@ -2001,8 +2291,14 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                             if (column.editor.onChanged) column.editor.onChanged(rowcell, this.checked);
                         }
                     });
-                    g.grideditor.editingCell = rowcell;
-                    g.grideditor.show();
+                }
+                g.grideditor.show();
+                //$(":input", g.grideditor).focus();//add
+                try {
+                    if (typeof (eval(moveEnd)) == "function") {
+                        moveEnd($(":input", g.grideditor));
+                    }
+                } catch (e) { //alert(e);
                 }
             },
             checkEditAndUpdateCell: function (editParm) {
@@ -2051,10 +2347,23 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
             getTotalSummaryHtml: function (data, classCssName) {
                 var totalsummaryArr = [];
                 if (classCssName)
-                    totalsummaryArr.push('<tr class="l-grid-totalsummary ' + classCssName + '">');
+                    totalsummaryArr.push('<tr class="l-grid-totalsummary ' + classCssName + '"');
                 else
-                    totalsummaryArr.push('<tr class="l-grid-totalsummary">');
-                $(g.headers).each(function () {
+                    totalsummaryArr.push('<tr class="l-grid-totalsummary"');
+                if (p.defaultCloseGroup) totalsummaryArr.push(' style="display: none;"');//modify
+                totalsummaryArr.push(' >');//modify
+
+                $(g.headers).each(function (headerCellIndex, headerInfor) {
+                    //如果是复选框(系统列)
+                    if (this.ischeckbox) {
+                        totalsummaryArr.push('<td class="l-grid-totalsummary-cell l-grid-totalsummary-cell-checkbox" style="width:' + this.width + 'px"></td>');
+                        return;
+                    }
+                        //如果是明细列(系统列)
+                    else if (this.isdetail) {
+                        totalsummaryArr.push('<td class="l-grid-totalsummary-cell l-grid-totalsummary-cell-detail" style="width:' + this.width + 'px"></td>');
+                        return;
+                    }
                     totalsummaryArr.push('<td class="l-grid-totalsummary-cell');
                     if (this.islast)
                         totalsummaryArr.push(" l-grid-totalsummary-cell-last");
@@ -2069,7 +2378,6 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     totalsummaryArr.push('><div class="l-grid-totalsummary-cell-inner"');
 
                     var column = g.columns[columnindex];
-                    if (!column) return;
                     if (column.align)
                         totalsummaryArr.push(' textAlign="' + column.align + '"');
                     totalsummaryArr.push('>');
@@ -2084,10 +2392,10 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         var max = parseFloat(data[0][column.name]);
                         var min = parseFloat(data[0][column.name]);
                         for (var i = 0; i < data.length; i++) {
+                            count += 1;
                             var value = parseFloat(data[i][column.name]);
                             if (!value) continue;
                             sum += value;
-                            count += 1;
                             if (value > max) max = value;
                             if (value < min) min = value;
                         }
@@ -2105,7 +2413,8 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         else if (column.totalSummary.type) {
                             var types = column.totalSummary.type.split(',');
                             if (isExist('sum'))
-                                totalsummaryArr.push("<div>Sum=" + sum.toFixed(2) + "</div>");
+                                //totalsummaryArr.push("<div>Sum=" + sum.toFixed(2) + "</div>");
+                                totalsummaryArr.push("<div>" + sum.toFixed(0) + "</div>");
                             if (isExist('count'))
                                 totalsummaryArr.push("<div>Count=" + count + "</div>");
                             if (isExist('max'))
@@ -2114,6 +2423,11 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                                 totalsummaryArr.push("<div>Min=" + min.toFixed(2) + "</div>");
                             if (isExist('avg'))
                                 totalsummaryArr.push("<div>Avg=" + avg.toFixed(2) + "</div>");
+                            if (isExist('total'))
+                                totalsummaryArr.push("<div style='text-align:right;'>总计：</div>");
+                            if (isExist('sum_money'))
+                                //totalsummaryArr.push("<div>Sum=" + sum.toFixed(2) + "</div>");
+                                totalsummaryArr.push("<div style='text-align:right;'>￥" + toMoney(sum.toFixed(0)) + "</div>");
                         }
                         totalsummaryArr.push('</div></td>');
                     }
@@ -2124,14 +2438,22 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
             bulidTotalSummary: function () {
                 if (!g.isTotalSummary()) return false;
                 if (!g.currentData || g.currentData[p.root].length == 0) return false;
-                $("tbody:first", g.gridbody).append(po.getTotalSummaryHtml(g.currentData[p.root]));
+                var totalRow = $(po.getTotalSummaryHtml(g.currentData[p.root]));
+                po.recordRow(totalRow[0]);
+                $("tbody:first", g.gridbody).append(totalRow);
             },
             buildPager: function () {
                 $('.pcontrol input', g.toolbar).val(p.page);
+                //$.fn.ligerTextBox && $('.pcontrol input', g.toolbar).ligerTextBox({ width: 30 });
+                if (!p.pageCount) p.pageCount = 1;
                 $('.pcontrol span', g.toolbar).html(p.pageCount);
                 var r1 = parseInt((p.page - 1) * p.pageSize) + 1.0;
                 var r2 = parseInt(r1) + parseInt(p.pageSize) - 1;
+                if (!p.total) p.total = 0;
                 if (p.total < r2) r2 = p.total;
+                if (!p.total) r1 = r2 = 0;
+                if (r1 < 0) r1 = 0;
+                if (r2 < 0) r2 = 0;
                 var stat = p.pageStatMessage;
                 stat = stat.replace(/{from}/, r1);
                 stat = stat.replace(/{to}/, r2);
@@ -2200,6 +2522,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
             dragStart: function (dragtype, e, toDragHeaderIndex) {
                 if (dragtype == 'colresize') //列宽调整
                 {
+                    g.popup.hide();
                     var columnindex = g.headers[g.toDragHeaderIndex].columnindex;
                     var width = g.headers[g.toDragHeaderIndex].width;
                     if (columnindex == undefined) return;
@@ -2229,7 +2552,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         $('body').css('cursor', 'default');
                         return false;
                     }
-                    var mincolumnwidth = 80;
+                    var mincolumnwidth = 40;
                     var columnindex = g.colresize.columnindex;
                     var column = g.columns[columnindex];
                     if (column && column.minWidth) mincolumnwidth = column.minWidth;
@@ -2238,22 +2561,31 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                     var diff = newwidth - g.colresize.width;
                     g.headers[g.toDragHeaderIndex].width += diff;
                     g.gridtablewidth += diff;
+
+
                     $("div:first", g.gridheader).width(g.gridtablewidth + 40);
                     $("div:first", g.gridbody).width(g.gridtablewidth);
-                    $('.l-grid-hd-cell[columnindex=' + columnindex + ']', g.gridheader).css('width', newwidth);
-                    $('tbody:first > .l-grid-row > td[columnindex=' + columnindex + '],tbody:first > .l-grid-totalsummary > td[columnindex=' + columnindex + ']', g.gridbody).each(function () {
-                        $(this).css('width', newwidth);
-                        $("div:first", this).css('width', newwidth - 8);
-                    });
+                    $('td[columnindex=' + columnindex + ']', g.gridheader).css('width', newwidth);
+                    if (g.recordNumber > 0) {
+                        $('td[columnindex=' + columnindex + ']', g.totalRows).add(g.columnCells[columnindex]).each(function () {
+                            $(this).css('width', newwidth);
+                            $("div:first", this).css('width', newwidth - 8);
+                        });
+
+                    }
                     po.onResize();
                     g.draggingline.hide();
+
                     g.colresize = false;
+
+                    p.onDragCol && p.onDragCol(columnindex, newwidth);
                 }
 
                 $('body').css('cursor', 'default');
                 $.fn.ligerNoSelect && $('body').ligerNoSelect(false);
             }
         };
+        var g = new $.ligerManagers.Grid(p, po);
         //头部
         g.header = $(".l-grid-panel-header:first", grid);
         //主体
@@ -2273,17 +2605,16 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
         //表主体     
         g.gridbody = $(".l-grid-body:first", grid);
         g.currentData = null;
-        g.recordNumber = 0;
-        g.records = {};
+
+
 
         po.init();
 
-        if (grid.id == undefined) grid.id = "LigerUI_" + new Date().getTime();
-        LigerUIManagers[grid.id + "_Grid"] = g;
-        grid.usedGrid = true;
+        $.ligerui.addManager(grid, g);
     };
-    $.ligerGridSetParms = function (p, fixedP) {
-        p = $.extend({}, $.ligerDefaults.Grid, $.ligerDefaults.GridString, p || {});
+
+    var ligerGridSetParms = function (options, fixedP) {
+        var p = $.extend({}, $.ligerDefaults.Grid, $.ligerDefaults.GridString, options || {});
         if (p.url && p.data) {
             p.dataType = "local";
         }
@@ -2300,26 +2631,18 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
         if (p.dataType == "local")
             p.dataAction = "local";
         if (fixedP) {
-            p = $.extend(p, fixedP);
+            $.extend(p, fixedP);
         }
         return p;
     };
 
-    $.fn.ligerGrid = function (p) {
-
+    $.fn.ligerGrid = function (options) {
         var fixedP = {};
-        p = p || {};
-        p = $.ligerGridSetParms(p, fixedP);
         this.each(function () {
+            var p = ligerGridSetParms(options, fixedP);
             $.ligerAddGrid(this, p);
         });
-        if (this.length == 0) return null;
-        if (this.length == 1) return $(this[0]).ligerGetGridManager();
-        var managers = [];
-        this.each(function () {
-            managers.push($(this).ligerGetGridManager());
-        });
-        return managers;
+        return $.ligerui.getManager(this);
     };
 
 })(jQuery);

@@ -338,6 +338,7 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         if (p.initValue!=null) value = p.initValue;
                         else if (g.valueField.val() != "") value = g.valueField.val();
                         g.selectValueByTree(value);
+                        
                     };
                     g.tree = $("<ul></ul>");
                     $("div:first", g.selectBox).append(g.tree);

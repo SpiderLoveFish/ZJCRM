@@ -39,7 +39,168 @@
             $(window).resize(function () {
                 initLayout();
             });
-            $("#maingrid4").ligerGrid({
+            if (getparastr("type") == "GJXG")
+                $("#maingrid4").ligerGrid(
+
+               {
+
+                   columns: [
+                       {
+                           display: '序号', width: 30, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                           { return (page - 1) * pagesize + rowindex + 1; }
+                       },
+
+                       {
+                           display: '姓名', name: 'Customer', width: 50, align: 'left', render: function (item) {
+                               var html = "<a href='javascript:void(0)' onclick=view(1," + item.id + ")>";
+                               if (item.Customer)
+                                   html += item.Customer;
+                               html += "</a>";
+                               return html;
+                           }
+                       },
+                       { display: '性别', name: 'Gender', width: 40 },
+                        {
+                            display: '电话', name: 'tel', align: 'left', width: 40, render: function (item) {
+                                var html = "<div class='abc'>";
+                                if (item.tel)
+                                    html += item.tel;
+                                html += "</div>";
+                                return html;
+                            }
+                        },
+                      {
+                          display: '地址', name: 'address', align: 'left', width: 120, render: function (item) {
+                              var html = "<div class='abc'>";
+                              if (item.address)
+                                  html += item.address;
+                              html += "</div>";
+                              return html;
+                          }
+                      },
+                       { display: '小区', name: 'Community', width: 60 },
+
+
+                       {
+                           display: '客户类型', name: 'CustomerType', width: 60, align: 'right', render: function (item) {
+                               return "<span><div  style='background:#" + item.setcolor + "'>" + item.CustomerType + "</div></span>";
+                           }
+                       },
+                           {
+                               display: '客户状态', name: 'industry', width: 60, align: 'right', render: function (item) {
+                                   return "<span><div style='color:#" + item.indcolor + "'>" + item.industry + "</div></span>";
+                               }
+                           },
+                                // { display: '客户状态', name: 'industry', width: 80 },
+                     
+                       //{ display: '省份', name: 'Provinces', width: 80 },
+                       //{ display: '城市', name: 'City', width: 80 },
+                       //{ display: '区镇', name: 'Towns', width: 80 },
+                       //{ display: '楼号', name: 'BNo', width: 80 },
+                       //{ display: '房号', name: 'RNo', width: 80 },
+
+                      // { display: '部门', name: 'Department', width: 80 },
+                       { display: '业务员', name: 'Employee', width: 50 },
+                       { display: '设计师', name: 'Emp_sj', width: 50 },
+                       { display: '施工监理', name: 'Emp_sg', width: 60 },
+                        {
+                            display: '进度', name: 'Stage_icon', width: 60, render: function (item) {
+
+                                var html;
+                                if (item.Stage_icon == "正在施工") {
+                                    html = "<div style='color:#FF0000'>";
+                                    html += item.Stage_icon;
+                                    html += "</div>";
+                                }
+                                else if (item.Stage_icon == "施工完成") {
+                                    html = "<div style='color:#339900'>";
+                                    html += item.Stage_icon;
+                                    html += "</div>";
+                                }
+                                else {
+                                    html = item.Stage_icon;
+                                }
+                                return html;
+                            }
+                        },
+
+                       { display: '性质', name: 'privatecustomer', width: 40 },
+
+
+
+
+
+
+                      
+                       {
+                           display: '创建时间', name: 'Create_date', width: 90, render: function (item) {
+                               var Create_date = formatTimebytype(item.Create_date, 'yyyy-MM-dd');
+                               return Create_date;
+                           }
+                       }
+
+
+                   ],
+
+                   onBeforeShowData: function (grid, data) {
+                       startTime = new Date();
+                   },
+                   //fixedCellHeight:false,
+                   onSelectRow: function (data, rowindex, rowobj) {
+                       var manager = $("#maingrid5").ligerGetGridManager();
+                       manager.showData({ Rows: [], Total: 0 });
+                       var url = "../../data/CRM_Follow.ashx?Action=grid&customer_id=" + data.id;
+                       manager.GetDataByURL(url);
+                   },
+                   rowtype: "CustomerType",
+                   dataAction: 'server', pageSize: 30, pageSizeOptions: [20, 30, 50, 100],
+                   url: "../../data/crm_customer.ashx?Action=grid&rnd=" + Math.random(),
+                   width: '100%', height: '65%',
+                   heightDiff: -1,
+                   onRClickToSelect: true,
+                   onContextmenu: function (parm, e) {
+                       actionCustomerID = parm.data.id;
+                       menu.show({ top: e.pageY, left: e.pageX });
+                       return false;
+                   },
+                   onAfterShowData: function (grid) {
+                       $("tr[rowtype='已成交']").addClass("l-treeleve1").removeClass("l-grid-row-alt");
+                       var nowTime = new Date();
+                       //alert('加载数据耗时：' + (nowTime - startTime));
+                   },
+                   detail: {
+                       onShowDetail: function (r, p) {
+                           for (var n in r) {
+                               if (r[n] == null) r[n] = "";
+                           }
+                           var grid = document.createElement('div');
+                           $(p).append(grid);
+                           $(grid).css('margin', 3).ligerGrid({
+                               columns: [
+                               { display: '行号', width: 50, render: function (item, i) { return i + 1; } },
+                               { display: '联系人', name: 'C_name', width: 100 },
+                               { display: '职业', name: 'C_position', width: 100 },
+                               { display: '性别', name: 'C_sex', width: 50 },
+                               //{ display: '客户姓名', name: 'C_companyname', width: 180 },
+                               { display: '手机', name: 'C_mob', width: 120 },
+                               { display: 'QQ', name: 'C_QQ', width: 100 },
+                               { display: 'Email', name: 'C_email', width: 180 }
+                               ],
+                               usePager: false,
+                               checkbox: false,
+                               url: "../../data/CRM_Contact.ashx?Action=grid&customerid=" + r.id,
+                               width: '1022px', height: '100px',
+                               heightDiff: 0
+                           })
+
+                       }
+                   }
+               });
+            else
+            $("#maingrid4").ligerGrid(
+
+                {
+
                 columns: [
                     {
                         display: '序号', width: 30, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
@@ -101,7 +262,7 @@
                     { display: '设计师', name: 'Emp_sj', width: 50 },
                     { display: '施工监理', name: 'Emp_sg', width: 60 },
                      {
-                         display: '施工状态', name: 'Stage_icon', width: 60, render: function (item) {
+                         display: '进度', name: 'Stage_icon', width: 60, render: function (item) {
 
                              var html;
                              if (item.Stage_icon == "正在施工") {
@@ -120,7 +281,13 @@
                              return html;
                          }
                      },
+
                     { display: '性质', name: 'privatecustomer', width: 40 },
+
+                   
+          
+         
+
      
                     {
                         display: '最后跟进', name: 'lastfollow', width: 90, render: function (item) {
@@ -136,7 +303,10 @@
                             return Create_date;
                         }
                     }
+
+
                 ],
+
                 onBeforeShowData: function (grid, data) {
                     startTime = new Date();
                 },
@@ -261,7 +431,7 @@
                     type: 'textbox',
                     id: 'stype',
                     name: 'stype',
-                    text: '统计项'
+                    text: '类型'
                 });
                 items.push({
                     type: 'textbox',
@@ -572,10 +742,20 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                if (getparastr("type") == "GJXG")
-                    f_openWindow('CRM/Customer/Customer_add_GJXG.aspx?cid=' + row.id, "客户高级修改", 400, 400);
-                else
+               
                     f_openWindow('CRM/Customer/Customer_add.aspx?cid=' + row.id, "修改客户", 660, 550);
+            }
+            else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+        function sedit() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+              
+                    f_openWindow('CRM/Customer/Customer_add_GJXG.aspx?cid=' + row.id, "客户高级修改", 400, 400);
+              
             }
             else {
                 $.ligerDialog.warn('请选择行！');

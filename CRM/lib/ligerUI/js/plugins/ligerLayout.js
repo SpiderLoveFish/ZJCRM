@@ -35,7 +35,8 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
         allowRightResize: true,     //是否允许 右边可以调整大小
         allowTopResize: true,      //是否允许 头部可以调整大小
         allowBottomResize: true,     //是否允许 底部可以调整大小
-        space: 3 //间隔
+        space: 3, //间隔,
+        onHeightChange:null
     };
     $.fn.ligerLayout = function (p) {
         this.each(function () {
@@ -200,13 +201,14 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                         g.topDropHandle.css({ top: g.top.height() + parseInt(g.top.css('top')), width: g.top.width() });
                     }
                     if (g.bottomDropHandle) {
-                        g.bottomDropHandle.css({ top: parseInt(g.bottom.css('top')) - p.space, width: g.bottom.width() });
+                        g.bottomDropHandle.css({ top: parseInt(g.bottom.css('top')) - p.space, width: g.bottom.width() });                       
                     }
+                    p.onHeightChange && p.onHeightChange();                   
                 },
                 onResize: function () {
                     var oldheight = g.layout.height();
                     //set layout height 
-                    var h = 0;
+                    var h = 0; 
                     var windowHeight = $(window).height();
                     var parentHeight = null;
                     if (typeof (p.height) == "string" && p.height.indexOf('%') > 0) {
@@ -427,11 +429,14 @@ if (typeof (LigerUIManagers) == "undefined") LigerUIManagers = {};
                                 g.left.height(g.middleHeight);
                                 g.leftCollapse.height(g.middleHeight);
                             }
-                            if (g.center) g.center.height(g.middleHeight);
+                            if (g.center) {
+                                g.center.height(g.middleHeight);
+                                g.center.content.height(g.middleHeight);
+                            }
                             if (g.right) {
                                 g.right.height(g.middleHeight);
                                 g.rightCollapse.height(g.middleHeight);
-                            }
+                            }                            
                         }
                     }
                     g.setDropHandlePosition();

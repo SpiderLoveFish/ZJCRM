@@ -152,6 +152,7 @@
     <Compile Include="hr_employee.cs" />
     <Compile Include="hr_position.cs" />
     <Compile Include="hr_post.cs" />
+    <Compile Include="hr_socialWorker.cs" />
     <Compile Include="InStock_Detail.cs" />
     <Compile Include="INStock_Main.cs" />
     <Compile Include="KHJD_LIST_VIEW_LIST.cs" />
@@ -218,6 +219,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model.csproj.vspscc" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

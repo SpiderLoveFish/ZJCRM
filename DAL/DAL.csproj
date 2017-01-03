@@ -158,6 +158,7 @@
     <Compile Include="Crm_Classic_case.cs" />
     <Compile Include="CRM_Cope.cs" />
     <Compile Include="CRM_Cope_invoice.cs" />
+    <Compile Include="hr_socialWorker.cs" />
     <Compile Include="InStock_Detail.cs" />
     <Compile Include="INStock_Main.cs" />
     <Compile Include="MasterStock.cs" />

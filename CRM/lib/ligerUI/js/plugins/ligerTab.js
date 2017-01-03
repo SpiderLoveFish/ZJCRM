@@ -476,7 +476,20 @@
                 $(".l-tab-content-item[tabid=" + tabid + "]", g.tab.content).prev().show();
                 $("li[tabid=" + tabid + "]", g.tab.links.ul).prev().addClass("l-selected").siblings().removeClass("l-selected");
             }
-            $(".l-tab-content-item[tabid=" + tabid + "]", g.tab.content).remove();
+            var contentItem = $(".l-tab-content-item[tabid=" + tabid + "]", g.tab.content);
+            var jframe = $('iframe', contentItem);
+            if (jframe.length) {
+                var frame = jframe[0];
+                frame.src = "about:blank";
+                try {
+                    frame.contentWindow.document.write('');
+                } catch (e) {
+                }
+                $.browser.msie && CollectGarbage();
+                jframe.remove();
+            }
+            contentItem.remove();
+
             $("li[tabid=" + tabid + "]", g.tab.links.ul).remove();
             g.setTabButton();
             p.onAfterRemoveTabItem && p.onAfterRemoveTabItem(tabid);
@@ -541,16 +554,16 @@
             });
         },
         //add function
-        flushiframegrid: function (tabid) {
-            var po = this.po, g = this, p = this.options;
-            $(".l-tab-content-item[tabid=" + tabid + "] iframe", g.tab.content).each(function (i, iframe) {
-                if (g.isTabItemExist(tabid))
-                {
-                    //alert($(iframe));
-                    window.frames[tabid].f_reload();
-                } 
-            });
-        },
+        //flushiframegrid: function (tabid) {
+        //    var po = this.po, g = this, p = this.options;
+        //    $(".l-tab-content-item[tabid=" + tabid + "] iframe", g.tab.content).each(function (i, iframe) {
+        //        if (g.isTabItemExist(tabid))
+        //        {
+        //            //alert($(iframe));
+        //            window.frames[tabid].f_reload();
+        //        } 
+        //    });
+        //},
         removeAll: function (compel)
         {
             var po = this.po, g = this, p = this.options;

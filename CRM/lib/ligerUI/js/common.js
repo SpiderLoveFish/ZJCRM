@@ -109,7 +109,7 @@ var SetButtons = function (toolbar ,url)
 {
     if (!url)
     { 
-        url = '../service/SystemData.ashx?Action=GetButton';
+        url = '../service/SystemData&type=GetButton';
         url += '&MenuNo=' + GetUrlParam('MenuNo');
     }
     url += "&rnd" + Math.random(); 

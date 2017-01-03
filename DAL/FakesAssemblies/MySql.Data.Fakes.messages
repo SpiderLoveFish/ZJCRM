@@ -1,0 +1,229 @@
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.Tree: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.InfTree: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.Driver: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.IDriver: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.SSPI: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.SecBufferDesc: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.SecBufferType: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.SecHandle: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.SecBuffer: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.SECURITY_INTEGER: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.SECURITY_HANDLE: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.SecPkgContext_Sizes: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.zlibConst: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.ClientFlags: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.ServerStatusFlags: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.DBCmd: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlDbType: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.Field_Type: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlConnectionProtocol: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlSslMode: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlDriverType: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlCertificateStoreLocation: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.Platform: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlPacket: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.StaticTree: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.IMySqlValue: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlInt16: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlErrorCode: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlUInt32: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MetaData: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.Statement: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.PreparableStatement: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlParameter: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlParameterConverter: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.NativeMethods: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.ContextString: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlTokenizer: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.ZOutputStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlUInt64: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlConnection: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlInfoMessageEventHandler: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.CommandTimer: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.TimedStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.Properties.Resources: type is compiler generated.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlGuid: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.SupportClass: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.Adler32: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.PropertyDefaultValue: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.ValidKeywordsAttribute: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.NamedPipeStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MyNetworkStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlHelper: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.ColumnFlags: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlField: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.SharedMemory: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.SharedMemoryStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlCommandBuilder: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.CharSetMap: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.CharacterSet: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlDecimal: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.SchemaProvider: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlPoolManager: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.Cache`2: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.ZStreamException: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlInt32: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlByte: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlBit: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlDataAdapter: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlRowUpdatingEventHandler: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlRowUpdatedEventHandler: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlRowUpdatingEventArgs: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlRowUpdatedEventArgs: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlTraceEventType: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.UsageAdvisorWarningFlags: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlInt64: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlDouble: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlTransaction: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.NativeDriver: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.QueryNormalizer: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.Token: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.TokenType: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlStatementExecutedEventHandler: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlScriptErrorEventHandler: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.ScriptStatement: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.Inflate: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlDateTime: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.StoredProcedure: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlException: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlDataReader: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.InfCodes: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.ProcedureCache: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlParameterCollection: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.CompressedStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.TracingDriver: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlTimeSpan: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlString: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlSingle: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlBinary: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlTransactionScope: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlPromotableTransaction: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.DriverTransactionManager: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.ZInputStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlUByte: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlClientFactory: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.Crypt: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlCommand: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Types.MySqlUInt16: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.ISSchemaProvider: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.DBVersion: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.LowResolutionStopwatch: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.ResultSet: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.InfBlocks: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.StreamCreator: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.TableCache: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlBulkLoaderPriority: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlBulkLoaderConflictOption: type is a value type.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.ZStream: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for zlib.Deflate: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.PerformanceMonitor: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.MySqlClient.MySqlPool: type is sealed.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for MySql.Data.Common.SHA1Hash: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate stub for <PrivateImplementationDetails>{E818763D-D03A-4B73-8822-02724C848B3C}: type is not supported because of internal limitations.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.Tree: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.InfTree: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.Driver: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.IDriver: type is an interface.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.SSPI: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.SecBufferDesc: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.SecBufferType: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.zlibConst: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.ClientFlags: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.ServerStatusFlags: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.DBCmd: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlDbType: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.Field_Type: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlConnectionProtocol: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlSslMode: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlDriverType: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlCertificateStoreLocation: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.Platform: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlPacket: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.StaticTree: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.IMySqlValue: type is an interface.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlInt16: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlErrorCode: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlUInt32: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MetaData: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.Statement: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.PreparableStatement: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlParameterConverter: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.NativeMethods: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.ContextString: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlTokenizer: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.ZOutputStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlUInt64: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlInfoMessageEventHandler: type is a delegate.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.CommandTimer: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.TimedStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.Properties.Resources: type is compiler generated.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlGuid: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.SupportClass: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.Adler32: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.PropertyDefaultValue: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.ValidKeywordsAttribute: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.NamedPipeStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MyNetworkStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlHelper+CharClass: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.ColumnFlags: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlField: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.SharedMemory: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.SharedMemoryStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.CharSetMap: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.CharacterSet: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.SchemaProvider: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlPoolManager: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.Cache`2: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.ZStreamException: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlInt32: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlByte: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlBit: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlRowUpdatingEventHandler: type is a delegate.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlRowUpdatedEventHandler: type is a delegate.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlTraceEventType: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.UsageAdvisorWarningFlags: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlInt64: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlDouble: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.NativeDriver: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.QueryNormalizer: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.Token: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.TokenType: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlStatementExecutedEventHandler: type is a delegate.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlScriptErrorEventHandler: type is a delegate.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.ScriptStatement: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.Inflate: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.StoredProcedure: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.InfCodes: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.ProcedureCache: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.CompressedStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.TracingDriver: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlTimeSpan: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlString: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlSingle: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlBinary: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlTransactionScope: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlPromotableTransaction: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.DriverTransactionManager: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.ZInputStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlUByte: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.Crypt: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlCommand+AsyncDelegate: type is a delegate.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Types.MySqlUInt16: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.ISSchemaProvider: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.DBVersion: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.LowResolutionStopwatch: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.ResultSet: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.InfBlocks: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.StreamCreator: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.TableCache: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.BaseTableCache+CacheEntry: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlBulkLoaderPriority: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlBulkLoaderConflictOption: type is an enum.
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.ZStream: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for zlib.Deflate: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.PerformanceMonitor: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.MySqlClient.MySqlPool: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for MySql.Data.Common.SHA1Hash: type is not visible to exported or assembly(MySql.Data.Fakes).
+D:\Source\GitHub\ZJCRM\DAL\Fakes\MySql.Data.fakes : warning : Cannot generate shim for <PrivateImplementationDetails>{E818763D-D03A-4B73-8822-02724C848B3C}: type is not supported because of internal limitations.

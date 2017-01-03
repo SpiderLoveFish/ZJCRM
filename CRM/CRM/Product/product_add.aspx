@@ -48,12 +48,14 @@
                 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
                 'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
                 'directionalityltr', 'directionalityrtl', 'indent', '|',
-                'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+                'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify',
+               // '|', 'touppercase', 'tolowercase', '|',
+                '|', 'link', 'unlink', '|',
                 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
                 'insertimage', 'emotion', '|',
                 'horizontal', 'date', 'time', 'spechars']
                 ],
-                autoHeightEnabled: true
+                autoHeightEnabled:  false
             });
             $("#T_product_unit").ligerComboBox({ width: 150, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random()})
 

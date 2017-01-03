@@ -2,26 +2,45 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-    <link href="../../CSS/input.css" rel="stylesheet" />
-      <link href="../../CSS/styles.css" rel="stylesheet" />
-     <link href="../../CSS/Toolbar.css" rel="stylesheet" type="text/css" />
-    <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
-    
-    
+   <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
 
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-     <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
-         <script src="../../lib/ligerUI/js/ligerui.all.js" type="text/javascript"></script>
-      <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-   <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+
+    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-     <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
-   <script src="../../JS/XHD.js" type="text/javascript"></script>
+
+    <script src="../../lib/jquery-validation/jquery.validate.js" type="text/javascript"></script>
+    <script src="../../lib/jquery-validation/jquery.metadata.js" type="text/javascript"></script>
+    <script src="../../lib/jquery-validation/messages_cn.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/common.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
+    <script src="../../lib/jquery.form.js" type="text/javascript"></script>
+
+    <script src="../../JS/XHD.js" type="text/javascript"></script>
+   
    <script type="text/javascript">
        var g;
        $(function () {
+           g = $("#select2").ligerComboBox({
+               width: 196,
+               selectBoxWidth: 240,
+               selectBoxHeight: 200,
+               valueField: 'id',
+               textField: 'text',
+               url: "../../data/Budge.ashx?Action=comboprintdescr&rnd=" + Math.random(), emptyText: '（空）' 
+                , onSelected: function (value, newvalue) {
+                    $("#selectvalue").val(value)
+                }
+           });
            loadForm("YS");
            
          
@@ -79,17 +98,7 @@
                    });
 
 
-               g=    $("#select2").ligerComboBox({
-                       width: 196,
-                       selectBoxWidth: 240,
-                       selectBoxHeight: 200,
-                       valueField: 'id',
-                       textField: 'text',
-                       url: "../../data/Budge.ashx?Action=comboprintdescr&rnd=" + Math.random(), emptyText: '（空）', initValue: obj.Zxfg_id
-                   , onSelected: function (value, newvalue) {
-                       $("#selectvalue").val(value)
-                   }
-               });
+            
                },
                error: function (XMLHttpRequest, textStatus, errorThrown) {
                    alert(textStatus);
@@ -115,7 +124,8 @@
 </head>
 <body style="padding: 0px;overflow:hidden;">
     <form id="form1" onsubmit="return false">
-       选择一个预算备注说明：   <input  type='text' id='select2' name='select2'></input >
+       选择一个预算备注说明： 
+          <input  type='text' ltype='text'ligerui="{width:150 }" id='select2' name='select2'/> 
    <table class="table" align="left" border="0" cellpadding="3" cellspacing="1">
           </table>
         <br />

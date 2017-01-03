@@ -322,6 +322,14 @@ namespace XHD.CRM.Data
                 sb.AppendLine("TotalPrice=" + T_price + ",");
                 sb.AppendLine("Remarks='" + remaks + "'");
                 sb.AppendLine("WHERE budge_id='" + bid + "' AND id='"+id+"'");
+
+                sb.AppendLine("UPDATE Budge_BasicDetail SET");
+                sb.AppendLine("Remarks='" + remaks + "'");
+                sb.AppendLine("  WHERE budge_id LIKE 'M%'");
+                sb.AppendLine("AND xmid =(");
+                sb.AppendLine("SELECT xmid FROM");
+                sb.AppendLine("Budge_BasicDetail WHERE budge_id='" + bid + "' AND id='"+id+"'");
+                sb.AppendLine(")");
                 if ( DbHelperSQL.ExecuteSql(sb.ToString()) > 0)
                     context.Response.Write("true");//特殊处理
                 else context.Response.Write("false");
