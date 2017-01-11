@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>诚信合作单位智能装修报价器,在线装修报价,装修报价软件,装修预算软件,由一键一家认证授权使用</title>
 <meta name="keywords" content="诚信合作单位智能装修报价器,在线装修报价,装修报价软件,装修预算软件" />
-<meta name="description" content="一键一家装修报价器是由广州尚好家家居科技有限公司旗下一键一家装修网研制，任何人只需选择户型、厨房、阳台、卫生间、面积、档次与风格几个条件，便可自动计算出当地装修报价，获得准确的装修报价清单" />
+<meta name="description" content="几个条件，便可自动计算出当地装修报价，获得准确的装修报价清单" />
 <style>
 
 #msgTitle{ background: url(images/title.gif) repeat-x; width:350px; height:36px;}
@@ -147,7 +147,8 @@
 
     function subm() {
  
-        if(document.getElementById("useryzm").value == document.getElementById("rdm").value) {
+        if (document.getElementById("useryzm").value == document.getElementById("rdm").value) {
+            savecustromer();
             document.form1.submit();
             settimeclose();
         } else {

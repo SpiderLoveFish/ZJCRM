@@ -41,7 +41,32 @@ namespace XHD.CRM.Data
             string host = si.GetList(" sys_key='sys_host'").Tables[0].Rows[0]["sys_value"].ToString();
             //dsemp.Tables[0].Rows[0]["uid"].ToString();
 
+            if (request["Action"] == "SaveCustomer")
+            {
+                
+                string tel = PageValidate.InputText(request["tel"], 50);
+                string c = PageValidate.InputText(request["c"], 50);
+                 string customer = PageValidate.InputText(request["custmer"], 50);
+                Model.CRM_Customer mcc = new Model.CRM_Customer();
+                BLL.CRM_Customer bcc = new BLL.CRM_Customer();
+               DataSet isexistphone=  bcc.GetList(" tel='" + tel + "' ");
+                //and id!=" + PageValidate.InputText(request["cid"], 50) + " ");
+               if (isexistphone.Tables[0].Rows.Count > 0)
+                {
+                    context.Response.Write("true");  
 
+                }else
+               {
+                   mcc.tel = tel;
+                   mcc.Customer = "1分钟用户-" + c;
+                   mcc.fax = "1";//登录次数
+                   mcc.site = customer;//客户编号
+                   if (bcc.Add(mcc) > 0)
+                       context.Response.Write("true");
+                   else context.Response.Write("false");
+               }
+                
+            }
             if (request["Action"] == "login")
             {
                 string tel = PageValidate.InputText(request["uid"], 50);

@@ -418,7 +418,8 @@
     }
 
     function subm(){
-        if(document.getElementById("useryzm").value == document.getElementById("rdm").value) {
+        if (document.getElementById("useryzm").value == document.getElementById("rdm").value) {
+            savecustromer();
             document.form1.submit();
             settimeclose();
         } else {
