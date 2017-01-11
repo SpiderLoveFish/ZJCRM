@@ -224,6 +224,8 @@
                     $("#T_pp").val(obj.Brand);
                     $("#C_code").val(obj.C_code);
                     //emptyText: '£¨¿Õ£©',
+                    $("#T_product_unit").ligerComboBox({ width: 150, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random() })
+
                     $("#T_product_unit").val(obj.unit);
                     //$("#T_product_unit").ligerComboBox({ width: 150, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random(), initValue: obj.unit })
                     // $("#T_gys").ligerComboBox({ width: 280, url: "../../data/Crm_product.ashx?Action=combogys&rnd=" + Math.random(), initValue: obj.Suppliers });

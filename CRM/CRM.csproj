@@ -2943,6 +2943,12 @@
     <Content Include="webserver\sms.asmx" />
     <Content Include="webserver\WebService1.asmx" />
     <Content Include="WebSite\about.html" />
+    <Content Include="WebSite\bj\css\baojia.css" />
+    <Content Include="WebSite\bj\index1.aspx" />
+    <Content Include="WebSite\bj\index.aspx" />
+    <Content Include="WebSite\bj\js\bj.js" />
+    <Content Include="WebSite\bj\js\bjqd.js" />
+    <Content Include="WebSite\bj\js\checkform.js" />
     <Content Include="WebSite\bootstrap\css\bootstrap-datetimepicker.css" />
     <Content Include="WebSite\bootstrap\css\bootstrap.min.css" />
     <Content Include="WebSite\bootstrap\js\bootstrap-datetimepicker.js" />
@@ -4838,6 +4844,7 @@
     <Folder Include="Images\upload\portrait\" />
     <Folder Include="Images\upload\temp\" />
     <Folder Include="ueditor1_2_5_1-utf8-net\net\upload\" />
+    <Folder Include="WebSite\bj\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Browsers\IE10.browser">

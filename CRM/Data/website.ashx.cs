@@ -92,6 +92,37 @@ namespace XHD.CRM.Data
 
                 }
             }
+            if (request["Action"] == "aliyunSendSMS")
+            {
+                XHD.CRM.Data.sms sms = new Data.sms();
+                string tel = PageValidate.InputText(request["tel"], 50);
+                string type = "2";//SMS_Config
+                string para = PageValidate.InputText(request["yzm"], 50);
+                string a = " {'code':'" + para + "'}";
+                string aa = sms.aliyunSendSMS(tel, type, a);
+                if (aa == "200")
+                {
+
+                //if (type == "3")//
+                //{
+                //    Model.hr_employee hrm = new Model.hr_employee();
+                //    BLL.hr_employee hrb = new BLL.hr_employee();
+                // Newtonsoft.Json.Linq.JObject jo = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject(para);
+                // string password = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(jo["passw"].ToString(), "MD5");
+
+                // hrm.uid = jo["userid"].ToString();
+                // hrm.pwd = password;
+                // hrm.level = "99";//试用账户
+                // hrm.tel = jo["userid"].ToString();
+                // hrm.name = "试用" + jo["passw"].ToString();
+                // hrb.DeleteUID(jo["userid"].ToString());
+                // hrb.Add(hrm);
+                //}
+                    context.Response.Write(aa);
+            }
+
+                else context.Response.Write(aa);
+        }
             if (request["Action"] == "GetMessage")
             {
                 sms sms = new Data.sms();
