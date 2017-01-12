@@ -149,6 +149,7 @@
  
         if (document.getElementById("useryzm").value == document.getElementById("rdm").value) {
             savecustromer();
+            document.form1.action = "../../CRM/ConsExam/kjl_search_bj.aspx?jmid=" + document.getElementById("jmid").value + "&keyword=" + document.getElementById("keyword").value + "&cityid=166" + "&tel=" + tel;
             document.form1.submit();
             settimeclose();
         } else {
@@ -172,6 +173,7 @@
         document.getElementById("xing").value="";
 	
     }
+  
 </script>
 </head>
 <body onload="full_city();selectedValue();" style = "">
@@ -186,7 +188,7 @@
    		
    	  <div class="bjq_tab_r_text"><span><img src="images/top_tip.png"  /></span>简单填写您的房屋信息，一分钟为您提供装修报价清单！</div>
    </div>
-   
+   <%--  --%>
    <form id = "form1" name = "form1" action="../../CRM/ConsExam/kjl_search_my.aspx" accept-charset="UTF-8" method="post"  target="_blank">
    <div class="jzmjbj" >
    		<div class="line_one">
@@ -325,7 +327,7 @@
 			<input type="hidden" id = "rdm" name="rdm" value="" />
 			<input type="hidden" id = "hadpho" name="hadpho" value="N" />
 			<input type="hidden" id = "xingshi" name="xingshi" value="" /><!-- 姓氏 -->
-			
+			   <input type="hidden" id = "keyword" name="keyword" value="" />
 			<input type="hidden" id = "jmid" name="jmid" value="ksxczs" /><!-- 用于标释，区分此处为百度推广报价之用 -->
 			<input type="hidden" id = "findman3" name="findman3" value="0" />
 			<input type="hidden" name="flag" value ="true"/>

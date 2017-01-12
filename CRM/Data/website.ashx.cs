@@ -41,6 +41,111 @@ namespace XHD.CRM.Data
             string host = si.GetList(" sys_key='sys_host'").Tables[0].Rows[0]["sys_value"].ToString();
             //dsemp.Tables[0].Rows[0]["uid"].ToString();
 
+            if (request["Action"] == "savebj")
+            {
+                //唯一可能，2个FID全部为空，只有3D
+               // int Customer_id = int.Parse(request["cid"]);
+                  string tel = Common.PageValidate.InputText(request["tel"], 50);  
+                string uuid = Common.PageValidate.InputText(request["jmid"], 50);
+                if (uuid != "") uid = uuid;//主要是报价防止没有数据
+                string fpId = PageValidate.InputText(request["fid"], 50);
+                string desid = PageValidate.InputText(request["desid"], 50);
+                string imgtype = PageValidate.InputText(request["imgtype"], 255);
+                string simg = PageValidate.InputText(request["simg"], 255);
+                string img = PageValidate.InputText(request["img"], 255);
+                string style = PageValidate.InputText(request["style"], 255);
+                string pano = PageValidate.InputText(request["pano"], 255);
+                string DyGraphicsName = PageValidate.InputText(request["name"], 255);
+                if (fpId == "null" || fpId == null) fpId = "";
+                if (desid == "null" || desid == null) desid = "";
+                if (style == "Edit")
+                {
+                    if (cp.Updatekjl_api(desid, 0, fpId, DyGraphicsName, imgtype, simg, img, pano))
+                    {
+                        context.Response.Write("true");
+                    }
+                    else context.Response.Write("false");
+
+                }
+                else if (style == "insert")
+                {
+                    if (cp.Addkjl_api(desid, 0, fpId, DyGraphicsName, imgtype, simg, img, pano, uid, emp_id,tel))
+                    {
+                        context.Response.Write("true");
+                    }
+                    else context.Response.Write("false");
+
+
+                }
+                if (desid != "")
+                {
+                    string[] arr = para("4", uid);
+                    string appKey = arr[(int)paraenum.appKey];
+                    string appSecret = arr[(int)paraenum.appSecret];
+                    string userId = uuid + "@xczs.com";
+                    if (uuid == "")
+                        userId = arr[(int)paraenum.userId];
+                    if (appKey == null) context.Response.Write("请先配置参数！");
+                    else
+                    {
+                      
+                        // Common.PageValidate.InputText(request["designId"], 50)
+                        int start = 0; int num = 999;
+                        //int.Parse(Common.PageValidate.InputText(request["start"], 50));
+                        object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                        string timestamp = currenttimemillis.ToString(); //2分钟
+                        // 签名加密
+                        string aa = "sdfaadsasdasd";
+                        string md5aa = MD5(aa).ToLower();
+                        string sign = MD5(appSecret + appKey  + timestamp).ToLower();
+                        string api = arr[(int)paraenum.api];
+                        StringBuilder apiBuilder = new StringBuilder();
+                        apiBuilder.Append(api)
+                             .Append("/" + desid)
+                            .Append("/itemlist")//?starttime=
+                            // .Append((int.Parse(timestamp) - (300 * 24 * 3600 * 1000)).ToString())
+                             .Append("?start=").Append(start)
+                            .Append("&num=").Append(num)
+                            .Append("&appkey=").Append(appKey)
+                        .Append("&timestamp=").Append(timestamp)
+                        .Append("&sign=").Append(sign);
+
+
+
+                        string result = "";
+                        result = HttpGet(apiBuilder.ToString());
+                        // context.Response.Write(result);
+                        cp.Addkjl_api_list(uid, tel, desid, 0, userId, result, "");
+                    }
+                }
+            }
+            if (request["Action"] == "griddetail")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "999" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " ISNULL(BPOrderby,0) ,ComponentName,ISNULL(OrderBy, 0)   ";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " ASC";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+              
+                string dt = "";
+                string tel = request["tel"];
+                string jmid = request["jmid"];
+                string desid = request["desid"];
+                DataSet ds = cp.GetDS_kjl_api_list("  tel='" + tel + "' AND obsPlanId='" + desid + "'");
+                Total = ds.Tables[0].Rows.Count.ToString();
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+            
             if (request["Action"] == "SaveCustomer")
             {
                 
@@ -231,11 +336,14 @@ namespace XHD.CRM.Data
                         */
             if (request["Action"] == "GetMD5")
             {
-
+                string uuid = Common.PageValidate.InputText(request["jmid"], 50);
+                if (uuid != "") uid = uuid;//主要是报价防止没有数据
                 string[] arr = para("1", uid);
                     string appKey =arr[(int)paraenum.appKey];
                     string appSecret =arr[(int)paraenum.appSecret];
-                    string userId = arr[(int)paraenum.userId];
+                    string userId = uuid + "@xczs.com";
+                    if (uuid == "")
+                        userId = arr[(int)paraenum.userId];
                     string dest = Common.PageValidate.InputText(request["dest"], 50);
                     string planid = Common.PageValidate.InputText(request["fid"], 50);
                     string designid = Common.PageValidate.InputText(request["desid"], 50);
@@ -605,11 +713,14 @@ namespace XHD.CRM.Data
             //获取指定户型图的副本
             if (request["Action"] == "getuserhxdatafb")
             {
-
-                string[] arr = para("14", uid);
+                string uuid = Common.PageValidate.InputText(request["jmid"], 50);
+                if (uuid != "") uid = uuid;//主要是报价防止没有数据
+                string[] arr = para("14", uuid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
-                string userId = arr[(int)paraenum.userId];
+                string userId = uuid + "@xczs.com";
+                if(uuid=="")
+                    userId=arr[(int)paraenum.userId];
  
                 if (appKey == null) context.Response.Write("请先配置参数！");
                 else
@@ -775,11 +886,15 @@ namespace XHD.CRM.Data
             //获取指定户型的基本数据
             if (request["Action"] == "getthebasicdata")
             {
+                string uuid = Common.PageValidate.InputText(request["jmid"], 50);
+                if (uuid != "") uid = uuid;//主要是报价防止没有数据
 
                 string[] arr = para("11", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
-                string userId = arr[(int)paraenum.userId];
+                string userId = uuid + "@xczs.com";
+                if (uuid == "")
+                    userId = arr[(int)paraenum.userId];
                 if (appKey == null) context.Response.Write("请先配置参数！");
                 else
                 {
@@ -995,7 +1110,8 @@ namespace XHD.CRM.Data
             //获取指定3D渲染方案的基本数据
             if (request["Action"] == "get3dfabasicdata")
             {
-
+                string uuid = Common.PageValidate.InputText(request["jmid"], 50);
+                if (uuid != "") uid = uuid;//主要是报价防止没有数据
                 string[] arr = para("8", uid);
                 string appKey = arr[(int)paraenum.appKey];
                 string appSecret = arr[(int)paraenum.appSecret];
@@ -1206,16 +1322,16 @@ namespace XHD.CRM.Data
                 if (appKey == null) context.Response.Write("请先配置参数！");
                 else
                 {
-                    string designId = "FO4K7MS4H8M";
+                    string designId = "3FO4JGPB07QO";
                     // Common.PageValidate.InputText(request["designId"], 50)
-                    int start = 0; int num = 5;
+                    int start = 0; int num = 999;
                     //int.Parse(Common.PageValidate.InputText(request["start"], 50));
                     object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                     string timestamp = currenttimemillis.ToString(); //2分钟
                     // 签名加密
                     string aa = "sdfaadsasdasd";
                     string md5aa = MD5(aa).ToLower();
-                    string sign = MD5(appSecret + appKey + userId + timestamp).ToLower();
+                    string sign = MD5(appSecret + appKey  + timestamp).ToLower();
                     string api = arr[(int)paraenum.api];
                     StringBuilder apiBuilder = new StringBuilder();
                     apiBuilder.Append(api)
@@ -1232,7 +1348,7 @@ namespace XHD.CRM.Data
 
                     string result = "";
                     result = HttpGet(apiBuilder.ToString());
-                    context.Response.Write(result);
+                    cp.Addkjl_api_list(uid, "11111", designId, 0, userId, result, "");
                 }
 
             }

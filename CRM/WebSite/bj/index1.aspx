@@ -420,6 +420,7 @@
     function subm(){
         if (document.getElementById("useryzm").value == document.getElementById("rdm").value) {
             savecustromer();
+            document.form1.action = "../../CRM/ConsExam/kjl_search_bj.aspx?jmid=" + document.getElementById("jmid").value + "&keyword=" + document.getElementById("keyword").value + "&cityid=166" + "&tel=" + tel;
             document.form1.submit();
             settimeclose();
         } else {
@@ -591,7 +592,7 @@
        		<input type="hidden" id = "hadpho" name="hadpho" value="N" />
 		    <input type="hidden" id = "rdm" name="rdm" value="" />
        		<input type="hidden" id = "jmid" name="jmid" value="ksxczs" /> <!-- 加盟商ID号，用于区分游客信息来源 -->
-       		
+       		  <input type="hidden" id = "keyword" name="keyword" value="" />
               <li style="width:139px; border-right:none;">
               <a  class="a1"><img src="images/ksbj_but.png" width="96" height="25" border="0" onclick= "checkgshxbj();clearxing();"/></a>
               </li>

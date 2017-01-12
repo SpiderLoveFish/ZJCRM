@@ -1,4 +1,5 @@
 ﻿//公司按面积报价专用
+var tel;
 function check() {
     var hx = document.getElementById("hx").value;
     var zmj = document.getElementById("zmj").value;
@@ -23,6 +24,7 @@ function check() {
 
 
     var phone = checkPone(document.getElementById("phone").value);
+      tel =  document.getElementById("phone").value ;
     if (!phone) {
         return false;
     } else {
@@ -168,9 +170,10 @@ function check() {
         return;
     }
     //document.getElementById("hadpho").value = "Y";
-    //           document.form1.submit();
-    fxyzm();
-    op();
+    document.form1.action = "../../CRM/ConsExam/kjl_search_bj.aspx?jmid=" + document.getElementById("jmid").value + "&keyword=" + document.getElementById("keyword").value + "&cityid=166" + "&tel=" + tel;
+    document.form1.submit();
+    //fxyzm();
+    //op();
   
     //url = "pho=" + pho;
     //var action = "checkpho.action";
@@ -240,6 +243,7 @@ function checkgshxbj() {
     var bomarea6 = document.getElementById("bomarea6").value;
     document.getElementById("jmid").value = getQueryString("jmid");//参数
     document.getElementById("xingshi").value = document.getElementById("xing").value;
+      tel = document.getElementById("phone").value;
     var bomareazong = Number(bomarea1) + Number(bomarea2) + Number(bomarea3) + Number(bomarea4) + Number(bomarea5) + Number(bomarea6);
     if (bomareazong == "" || bomareazong == null || bomareazong < 11) {
         alert("请完善各房间面积，房屋总面积必须大于10平方米");

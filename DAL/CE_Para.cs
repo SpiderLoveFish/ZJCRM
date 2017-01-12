@@ -873,6 +873,172 @@ namespace XHD.DAL
         }
 
 
+        public bool Addkjl_api_list(string uid,string tel, string desid, int style, string userid, string text, string remarks)
+        {
+            JObject json1 = (JObject)JsonConvert.DeserializeObject(text);
+            JArray ja = (JArray)json1["data"];
+            string count = "0";
+            try
+            {
+                if (json1["count"].Value<string>() == null)
+                    count = "0";
+                else count = json1["count"].Value<string>();
+            }
+            catch {  }
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("");
+            sb.AppendLine("DELETE	dbo.kjl_api_list WHERE tel='" + tel + "' AND obsPlanId='" + desid + "'");
+            foreach (var ja1 in ja)
+            {
+                JObject o = (JObject)ja1;
+                sb.AppendLine("INSERT INTO dbo.kjl_api_list");
+                sb.AppendLine("        ( userid ,");
+                sb.AppendLine("          uid ,");
+                sb.AppendLine("          tel ,");
+                sb.AppendLine("          count ,");
+                sb.AppendLine("          obsPlanId ,");
+                sb.AppendLine("          position ,");
+                sb.AppendLine("          quantity ,");
+                sb.AppendLine("          price ,");
+                sb.AppendLine("          roomId ,");
+                sb.AppendLine("          room ,");
+                sb.AppendLine("          name ,");
+                sb.AppendLine("          type ,");
+                sb.AppendLine("          brandGoodCode ,");
+                sb.AppendLine("          brandName ,");
+                sb.AppendLine("          modifiedTime ,");
+                sb.AppendLine("          imgUrl ,");
+                sb.AppendLine("          largeImgUrl ,");
+                sb.AppendLine("          created ,");
+                sb.AppendLine("          dotime ,");
+                sb.AppendLine("          DoStyle ");
+            
+                sb.AppendLine("        )");
+
+                sb.AppendLine("VALUES  ( '" + userid + "' ,"); // userid - varchar(50)
+                sb.AppendLine("         '" + uid + "' ,"); // uid - varchar(20)
+                sb.AppendLine("         '" + tel + "' ,"); // uid - varchar(20)
+                sb.AppendLine("         '" + count + "' ,"); // uid - va 
+              // obsPlanId - varchar(20)
+                sb.AppendLine("          '" + desid + "' ,"); // obsPlanId - varchar(20)
+                sb.AppendLine("          '" + o["position"].Value<string>() + "' ,"); // planCity - varchar(300)
+                sb.AppendLine("         '" + o["quantity"].Value<string>() + "'  ,"); // commName - varchar(300)
+                try
+                {
+                    if (o["unitPrice"].Value<string>() == null)
+                        sb.AppendLine("           '" + 0 + "' ,");
+                    else    sb.AppendLine("           '" + o["unitPrice"].Value<string>() + "' ,");
+                }catch{  sb.AppendLine("          '' ,");}
+                try
+                {
+                    if (o["roomId"].Value<string>() == null)
+                        sb.AppendLine("           '" + 0 + "' ,");
+                    else sb.AppendLine("           '" + o["roomId"].Value<string>() + "' ,");
+                }
+                catch { sb.AppendLine("          '' ,"); }
+                try
+                {
+                    if (o["room"].Value<string>() == null)
+                        sb.AppendLine("           '" + 0 + "' ,");
+                      else sb.AppendLine("           '" + o["room"].Value<string>() + "' ,");
+                 }catch{  sb.AppendLine("          '' ,");}
+                try
+                {
+                    if (o["name"].Value<string>() == null)
+                        sb.AppendLine("          '' ,"); // area - decimal
+                           else sb.AppendLine("           '" + o["name"].Value<string>() + "' ,");
+               }catch{  sb.AppendLine("          '' ,");}
+                try
+                {  
+                if (o["type"].Value<string>() == null)
+                        sb.AppendLine("           '' ,");
+                      else
+                        sb.AppendLine("          '" + o["type"].Value<string>() + "' ,"); // name - varchar(300)            
+                   }catch{  sb.AppendLine("          '' ,");}
+                try
+                {    
+                if (o["brandGoodCode"].Value<string>() == null)
+                       sb.AppendLine("          '' ,"); // srcArea - float
+                     else
+                         sb.AppendLine("          '" + o["brandGoodCode"].Value<string>() + "' ,"); // srcArea - float
+                }catch{  sb.AppendLine("          '' ,");}
+                try
+                {   
+                if (o["brandName"].Value<string>() == null)
+                        sb.AppendLine("           '' ,");
+                    else
+                         sb.AppendLine("          '" + o["brandName"].Value<string>() + "' ,"); // srcArea - float
+               
+                }
+                catch
+                {
+                  
+                    sb.AppendLine("           '' ,");
+                } try
+                {
+                    if (o["modifiedTime"].Value<string>() == null)
+                        sb.AppendLine("           '' ,");
+                    sb.AppendLine("          '" + GetTime(o["modifiedTime"].ToString()) + "' ,");
+                }
+                catch
+                {
+                    sb.AppendLine("          '' ,");
+                }
+                // modifiedTime - datetime
+                try
+                {
+                    if (o["imgUrl"].Value<string>() == null)
+                        sb.AppendLine("           '' ,");
+                    else sb.AppendLine("           '" + o["imgUrl"].Value<string>() + "' ,");
+                   
+                 
+                }
+                catch
+                {
+              
+                    sb.AppendLine("           '' ,");
+                } 
+                try
+                {
+                    if (o["largeImgUrl"].Value<string>() == null)
+                        sb.AppendLine("           '' ,");
+                    else sb.AppendLine("           '" + o["largeImgUrl"].Value<string>() + "' ,");
+                }
+                catch
+                {
+                    sb.AppendLine("          '' ,");
+                }
+                try
+                {
+                    if (o["created"].Value<string>() == null)
+                        sb.AppendLine("           '' ,");
+                   sb.AppendLine("          '" + GetTime(o["created"].ToString()) + "' ,");  
+                }
+                catch
+                {
+                    sb.AppendLine("          '' ,");
+                }
+           
+                sb.AppendLine("          getdate() ,"); // dotime - datetime
+                sb.AppendLine("          " + style + ""); // DoStyle - int
+                sb.AppendLine("        )");
+            }
+
+
+            SqlParameter[] parameters = {
+                                       };
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        
         /// <summary>
         /// 获得数据列表
         /// </summary>
@@ -887,6 +1053,29 @@ namespace XHD.DAL
                 sb.AppendLine(" where " + strWhere);
             }
  		sb.AppendLine(" order by modifiedtime desc");
+            return DbHelperSQL.Query(sb.ToString());
+        }
+
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetDS_kjl_api_list(string strWhere)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("SELECT  ");
+            sb.AppendLine("(SELECT   SUM(ISNULL(cast(price as float),1) *ISNULL(CONVERT(FLOAT,quantity),1))");
+            sb.AppendLine("FROM dbo.kjl_api_list");
+            sb.AppendLine("  WHERE obsPlanId=a.obsPlanId AND	 uid=a.uid	 AND a.roomId=roomId ) AS hj");
+            sb.AppendLine(" ,");
+            sb.AppendLine(" a.* FROM ");
+            sb.AppendLine("dbo.kjl_api_list a");
+            //sb.AppendLine("where B.uid='admin'");
+            if (strWhere.Trim() != "")
+            {
+                sb.AppendLine(" where " + strWhere);
+            }
+            sb.AppendLine(" order by roomId desc");
             return DbHelperSQL.Query(sb.ToString());
         }
 

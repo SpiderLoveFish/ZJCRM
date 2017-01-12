@@ -159,6 +159,7 @@
     <Content Include="CRM\ConsExam\CEStage_ViewDetail.aspx" />
     <Content Include="CRM\ConsExam\CEStage_follow_add.aspx" />
     <Content Include="CRM\ConsExam\CEStage_follow.aspx" />
+    <Content Include="CRM\ConsExam\kjl_edit_bj.aspx" />
     <Content Include="CRM\ConsExam\kjl_index_3DLIST.aspx" />
     <Content Include="CRM\ConsExam\kjl_search.aspx" />
     <Content Include="CRM\ConsExam\kjl_index.aspx" />
@@ -167,6 +168,7 @@
     <Content Include="CRM\ConsExam\JD_LIST_DEL.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST_DEL_Add.aspx" />
     <Content Include="CRM\ConsExam\kjl_search_lf.aspx" />
+    <Content Include="CRM\ConsExam\kjl_search_bj.aspx" />
     <Content Include="CRM\ConsExam\kjl_search_my.aspx" />
     <Content Include="CRM\ConsExam\kjl_view.aspx" />
     <Content Include="CRM\ConsExam\SelectMaterials_add.aspx" />
@@ -2943,7 +2945,9 @@
     <Content Include="webserver\sms.asmx" />
     <Content Include="webserver\WebService1.asmx" />
     <Content Include="WebSite\about.html" />
+    <Content Include="WebSite\bj\list_1.aspx" />
     <Content Include="WebSite\bj\css\baojia.css" />
+    <Content Include="WebSite\bj\list.aspx" />
     <Content Include="WebSite\bj\index1.aspx" />
     <Content Include="WebSite\bj\index.aspx" />
     <Content Include="WebSite\bj\js\bj.js" />
