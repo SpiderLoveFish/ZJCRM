@@ -1,359 +1,121 @@
-<%@ Page Language="C#" AutoEventWireup="true" %>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+ï»¿<%@ Page Language="C#" AutoEventWireup="true" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
-   
-   <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>å®¶è£…DIYæŠ¥ä»·å•</title>
+
+<link rel="stylesheet" type="text/css" media="screen" href="css/css-table.css" />
+
+<script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
+<script type="text/javascript" src="js/style-table.js"></script>
+       <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     
    
     <script src="../../JS/XHD.js" type="text/javascript"></script>
-   <script>
-       var jmid = "";
-       var tel = "";
-       var desid = "";
-       $(function () {
+    <script>
+        var jmid = "";
+        var tel = "";
+        var desid = "";
+        $(function () {
+          
+            jmid = getparastr("jmid");
+            tel = getparastr("tel");
+            desid = getparastr("desid");
+            getqrcode(document.URL)
+            loadBody(jmid, tel, desid);
+        });
 
-           jmid=getparastr("jmid");
-           tel = getparastr("tel");
-           desid = getparastr("desid");
-           loadBody(jmid, tel, desid);
-       });
-
+        function getqrcode(url) {
+            $.ajax({
+                type: "GET",
+                url: "../../data/website.ashx", /* æ³¨æ„åé¢çš„åå­—å¯¹åº”CSçš„æ–¹æ³•åç§° */
+                data: { Action: 'getqrcode', url: url, rnd: Math.random() }, /* æ³¨æ„å‚æ•°çš„æ ¼å¼å’Œåç§° */
+                success: function (result) {
+                    qrcode.src = result;
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(textStatus);
+                }
+            })
+        }
 
      
-       function loadfjf(oaid) {
-           $.ajax({
-               type: "GET",
-               url: "../../data/Budge.ashx", /* ×¢ÒâºóÃæµÄÃû×Ö¶ÔÓ¦CSµÄ·½·¨Ãû³Æ */
-               data: { Action: 'gridrate', bid: oaid, rnd: Math.random() }, /* ×¢Òâ²ÎÊıµÄ¸ñÊ½ºÍÃû³Æ */
-               contentType: "application/json; charset=utf-8",
-               dataType: "json",
-               success: function (result) {
-                   var obj = result.Rows;
-                   var item = "";
-                   $.each(obj, function (i, data) {
+ 
+        function loadBody(jmid, tel, desid) {
+            $.ajax({
+                type: "GET",
+                url: "../../data/website.ashx", /* æ³¨æ„åé¢çš„åå­—å¯¹åº”CSçš„æ–¹æ³•åç§° */
+                data: { Action: 'griddetail', jmid: jmid, tel: tel, desid: desid, rnd: Math.random() }, /* æ³¨æ„å‚æ•°çš„æ ¼å¼å’Œåç§° */
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var obj = result.Rows;
+                    //  alert(JSON.stringify(result))
+                    var item = ""; var cn = ""; var sum = 0;
+                    var sfck = "";
+                    $.each(obj, function (i, data) {
 
-                       item = "<tr><td>" + data['RateName'] + "</td> "
-                           + " <td  align='right'>" + (data['rate']*100).toFixed(2)+"%" + "</td> <td  align='right'>" +toMoney( data['RateAmount']) + "</td>"
-                           + " </tr>";
-                       $('.table3').append(item);
+                        if (data['hj'] == null) sum = 0;
+                        else sum = data['hj'];
+                        var imgurl = data['largeImgUrl'];
+                        if (imgurl == "") sfck = "";
+                        else {
+                            sfck = "æŸ¥çœ‹";
+                        }
+                        var remarks = "";
+                        if (data['remarks'] == null) remarks = "";
+                        if (data['room'] != cn) {
+                            //alert(JSON.stringify(data))
 
-                                    
+                            item = "<tr><th colspan='2' scope='col'><strong style='font-size:20px'>" + data['room'] + "</strong></th><th colspan='6' align='left' scope='col'>é¢ç§¯ï¼š<span style='color:#309'>" + toMoney(data['mj']) + "m2</span> æ€»ä»·ï¼š<span style='color:#309'>Â¥" + data['hj'].toFixed(2) + "</span></th></tr> <tr><th scope='col'>ç±» åˆ«</th><th scope='col'>åç§°</th><th scope='col'>æ•°é‡</th><th scope='col'>å•ä½</th><th scope='col'>å•ä»·</th><th scope='col'>é‡‘é¢</th> <th scope='col'>å›¾ç‰‡</th> <th scope='col'>å¤‡æ³¨</th></tr>"
+                                + "<tr><td>" + data['type'] + "</td><td>" + data['name'] + "</td><td>" + data['quantity'] + "</td><td>" + data['unit'] + "</td><td>" + toMoney(data['price']) + "</td><td>" + toMoney(data['price'] * data['quantity']) + "</td><td><a href='" + imgurl + "' target='_blank'>" + sfck + "<a></td><td>" + remarks + "</td></tr> ";
+                        }
+                        else {
+                            item = "<tr><td>" + data['type'] + "</td><td>" + data['name'] + "</td><td>" + data['quantity'] + "</td><td>" + data['unit'] + "</td><td>" + toMoney(data['price']) + "</td><td>" + toMoney(data['price'] * data['quantity']) + "</td><td><a href='" + imgurl + "' target='_blank'>" + sfck + "<a></td><td>" + remarks + "</td></tr>";
+                                
+                        }
 
-                   });
-                   $.each(obj, function (i, data) {
-
-                       item =  data['RateName']+":·ÑÂÊ"+ (data['rate']*100)+"% ·ÑÓÃ£º" + data['RateAmount'].toFixed(2) +";"
-                   
-                       $('#T_table3').append(item);
-
-
-
-                   });
-                  
-               },
-               error: function (XMLHttpRequest, textStatus, errorThrown) {
-                   alert(textStatus);
-               }
-           })
-       }
-
-       function loadlogo() {
-           $.ajax({
-               type: "GET",
-               url: "../../data/sys_info.ashx", /* ×¢ÒâºóÃæµÄÃû×Ö¶ÔÓ¦CSµÄ·½·¨Ãû³Æ */
-               data: { Action: 'grid', rnd: Math.random() }, /* ×¢Òâ²ÎÊıµÄ¸ñÊ½ºÍÃû³Æ */
-               contentType: "application/json; charset=utf-8",
-               dataType: "json",
-               success: function (result) {
-                   var obj = eval(result);
-                   var rows = obj.Rows;
-
-                   //alert(obj.constructor); //String ¹¹Ôìº¯Êı
-                   $("#T_logo").html(rows[1].sys_value);
-                   $("#T_logo_2").html(rows[1].sys_value);
-                   $("#T_logo_3").html(rows[1].sys_value);
-                   $("#logo").attr("src", "../../" + rows[2].sys_value);
-               }
-           });
-       }
-
-
-       function loadHead(oaid) {
-           $.ajax({
-               type: "GET",
-               url: "../../data/Budge.ashx", /* ×¢ÒâºóÃæµÄÃû×Ö¶ÔÓ¦CSµÄ·½·¨Ãû³Æ */
-               data: { Action: 'form', bid: oaid, rnd: Math.random() }, /* ×¢Òâ²ÎÊıµÄ¸ñÊ½ºÍÃû³Æ */
-               contentType: "application/json; charset=utf-8",
-               dataType: "json",
-               success: function (result) {
-                   var obj = eval(result);
-                   for (var n in obj) {
-                       if (obj[n] == "null" || obj[n] == null)
-                           obj[n] = "";
-                   }
-
-                   $("#T_kh").html(obj.CustomerName);
-                   $("#T_kh_2").html(obj.CustomerName);
-                   $("#T_address").html(obj.address);
-                   $("#T_address_2").html(obj.address);
-                   $("#T_tel").html(obj.tel);
-                   $("#T_tel_2").html(obj.tel);
-                   $("#T_sjs").html(obj.sjs);
-                   $("#T_sjs_2").html(obj.sjs);
-                   $("#T_zje").html(toMoney((obj.BudgetAmount + obj.FJAmount)));
-                   $("#T_clje").html(toMoney((obj.BudgetAmount)));
-                   $("#T_fjje").html(toMoney((obj.FJAmount)));
-                   $("#T_zcje").html(obj.ZCAmount.toFixed(2));
-                   $("#T_jjje").html(obj.JJAmount.toFixed(2));
-                   $("#T_bzr").html();
-                   $("#T_shr").html();
-                   $("#T_sxrq").html(formatTimebytype(obj.ConfirmDate, 'yyyy-MM-dd'));
-                   $("#T_Remarks").html(obj.Remarks);
-                   $("#T_BudgetName").html(obj.BudgetName);
-                   $("#T_sjstel").html(obj.sjstel);
-                   $("#T_sjstel_2").html(obj.sjstel);
-                   $("T_newdata").html(new Date());
-                   var itemgender = "";
-                   if (obj.gender =='ÄĞ') { itemgender = "ÏÈÉú" }
-                   else { itemgender = "Å®Ê¿"; }
-                   $("#T_gender").append(itemgender);
-
-                   var itemDetailDiscount="";
-                   if (obj.DetailDiscount < 1) { itemDetailDiscount = "ÕÛ¿Û£º" + obj.DetailDiscount*10+"ÕÛ" }
-                   else { itemDetailDiscount = ""; }
-                   $("#T_DetailDiscount").append(itemDetailDiscount);
-                   var itemDiscountAmount = "";
-                   if (obj.DetailDiscount < 1) { itemDiscountAmount = "ÕÛºó½ğ¶î£º" + ((obj.BudgetAmount + obj.FJAmount) * obj.DetailDiscount).toFixed(2) }
-                   else { itemDiscountAmount = ""; }
-                   $("#T_DiscountAmount").append(itemDiscountAmount);
-                   
-
-               },
-               error: function (XMLHttpRequest, textStatus, errorThrown) {
-                   alert(textStatus);
-               }
-           });
-       }
-
-       function loadBody(jmid, tel, desid) {
-           $.ajax({
-               type: "GET",
-               url: "../../data/website.ashx", /* ×¢ÒâºóÃæµÄÃû×Ö¶ÔÓ¦CSµÄ·½·¨Ãû³Æ */
-               data: { Action: 'griddetail', jmid: jmid, tel: tel,desid:desid, rnd: Math.random() }, /* ×¢Òâ²ÎÊıµÄ¸ñÊ½ºÍÃû³Æ */
-               contentType: "application/json; charset=utf-8",
-               dataType: "json",
-               success: function (result) {
-                   var obj = result.Rows;
-                //  alert(JSON.stringify(result))
-                   var item = ""; var cn = ""; var sum = 0;
-                   $.each(obj, function (i, data) {
-                      
-                       if (data['hj'] == null) sum = 0;
-                       else sum = data['hj'];
-                       if (data['room'] != cn) {
-                           //alert(JSON.stringify(data))
-                           item = "<tr><td align='left' colspan='9' ><font size='3' ><b>&nbsp;&nbsp;" + data['room'] + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ºÏ¼Æ£º" + data['hj'].toFixed(2) + ")</b></font></td></tr>"
-                           + "<tr><td >" + data['name'] + "</td><td align='right'>" + data['price'] + "</td><td align='right'>" + toMoney(data['price']) + "</td><td align='right'>" + toMoney(data['price']) + "</td><td align='right'>" + data['price'] + "</td><td align='right'>" + toMoney(data['quantity'])   + "</td> "
-                               + " <td align='right'>" + toMoney(data['price'] * data['quantity']) + "</td><td  align=center>" + data['type'] + "</td> <td>" + data['brandName'] + "</td>"
-                               //.replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>")
-                               + " </tr>";
-                       }
-                       else {
-                           item = "<tr><td>" + data['name'] + "</td><td align='right'>" + data['price'] + "</td><td align='right'>" + toMoney(data['price']) + "</td><td align='right'>" + toMoney(data['price']) + "</td><td align='right'>" + data['price'] + "</td><td align='right'>" + toMoney(data['quantity']) + "</td> "
-                               + " <td align='right'>" + toMoney(data['price'] * data['quantity']) + "</td><td  align=center>" + data['type'] + "</td> <td>" + data['brandName'] + "</td>"
-                               + " </tr>";
-                       }
-                       $('.table1').append(item);
-                       cn = data['room'];
-                   });
-               },
-               error: function (XMLHttpRequest, textStatus, errorThrown) {
-                   alert(textStatus);
-               }
-           })
-       }
-
-       function loadFormPrint(oaid) {
-           $.ajax({
-               type: "GET",
-               url: "../../data/Budge.ashx", /* ×¢ÒâºóÃæµÄÃû×Ö¶ÔÓ¦CSµÄ·½·¨Ãû³Æ */
-               data: { Action: 'formprint', bid: oaid, rnd: Math.random() }, /* ×¢Òâ²ÎÊıµÄ¸ñÊ½ºÍÃû³Æ */
-               contentType: "application/json; charset=utf-8",
-               dataType: "json",
-               success: function (result) {
-                   var obj = result.Rows;
-                   var item; var zcje = 0;
-                   $.each(obj, function (i, data) {
-                       if (data['zcje'] == null) zcje = 0;
-                       else zcje = data['zcje'];
-                       item = "<tr><td>" + data['ComponentName'] + "</td> "
-                           + " <td  align='right'>" + toMoney(data['zc_zje']) + "</td><td  align='right'>" + toMoney(data['fc_zje']) + "</td> <td  align='right'>" + toMoney(data['rg_zje']) + "</td> <td  align='right'>" + toMoney(data['zje']) + "</td>"
-                           + " </tr>";
-                       $('.table2').append(item);
-
-                   });
-               },
-               error: function (XMLHttpRequest, textStatus, errorThrown) {
-                   alert(textStatus);
-               }
-           })
-       }
-
-
-       function loadbz(oaid) {
-   
-           $.ajax({
-               type: "GET",
-               url: "../../data/Budge.ashx", /* ×¢ÒâºóÃæµÄÃû×Ö¶ÔÓ¦CSµÄ·½·¨Ãû³Æ */
-               data: { Action: 'formprintdescr', id: oaid, rnd: Math.random() }, /* ×¢Òâ²ÎÊıµÄ¸ñÊ½ºÍÃû³Æ */
-               contentType: "application/json; charset=utf-8",
-               dataType: "json",
-               success: function (result) {
-                   var obj = eval(result);
-                   for (var n in obj) {
-                       if (obj[n] == "null" || obj[n] == null)
-                           obj[n] = "";
-                   }
-               
-                   $("#T_bzsm").html(obj.DescribeName);
-
-               },
-               error: function (XMLHttpRequest, textStatus, errorThrown) {
-                   alert(textStatus);
-               }
-           });
-       }
-    </script>
-     <title id="T_id"></title>
+                        //    item = "<tr><td align='left' colspan='9' ><font size='3' ><b>&nbsp;&nbsp;" + data['room'] + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(åˆè®¡ï¼š" + data['hj'].toFixed(2) + ")</b></font></td></tr>"
+                        //    + "<tr><td >" + data['name'] + "</td><td align='right'>" + data['price'] + "</td><td align='right'>" + toMoney(data['price']) + "</td><td align='right'>" + toMoney(data['price']) + "</td><td align='right'>" + data['price'] + "</td><td align='right'>" + toMoney(data['quantity']) + "</td> "
+                        //        + " <td align='right'>" + toMoney(data['price'] * data['quantity']) + "</td><td  align=center>" + data['type'] + "</td> <td>" + data['brandName'] + "</td>"
+                        //        //.replace(/\n|\r|(\r\n)|(\u0085)|(\u2028)|(\u2029)/g, "<br>")
+                        //        + " </tr>";
+                        //}
+                        //else {
+                        //    item = "<tr><td>" + data['name'] + "</td><td align='right'>" + data['price'] + "</td><td align='right'>" + toMoney(data['price']) + "</td><td align='right'>" + toMoney(data['price']) + "</td><td align='right'>" + data['price'] + "</td><td align='right'>" + toMoney(data['quantity']) + "</td> "
+                        //        + " <td align='right'>" + toMoney(data['price'] * data['quantity']) + "</td><td  align=center>" + data['type'] + "</td> <td>" + data['brandName'] + "</td>"
+                        //        + " </tr>";
+                       // }
+                        $('.table1').append(item);
+                        cn = data['room'];
+                    });
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(textStatus);
+                }
+            })
+        }
+ 
+  </script>
 </head>
-<body style="padding: 0px;overflow:hidden;">
-    <form id="form1" onsubmit="return false">
- <p><a href="javascript:PreviewMytable();">´òÓ¡</a>
-</p>
 
-         <div id="div1">
-<DIV style="LINE-HEIGHT: 30px"  align="center">  <table width="100%"  border=0 cellSpacing=0 cellPadding=0>
-    <tr>
-      <td  width="20%" align="left"><img id="logo" alt="" style="height: 42px; margin-left: 5px; margin-top: 2px;" /></td>
-      <td width="60%" align="center"><STRONG><font size="5" ><span id="T_BudgetName"></span></font></STRONG>
+<body>
 
-  <!--<STRONG><font size="6" >Ô¤ËãÇåµ¥ </font></STRONG>-->
+<p><img src="images/bjd.png" width="305" height="128" /><img id="qrcode" src="images/untitled.png" alt="" width="130" height="121" /></p>
+    <div id="div3">
+<table id="travel"  class="table1">
 
-      </td>
-      <td  width="20%"  align="right"><strong><font size="2"><span id="T_logo"></span>£¨<SPAN id="T_pid" ></SPAN> £©</font></strong></td>
-    </tr>
-    <tr>
-      <td colspan="3" align="left"><hr /></td>
-      </tr>
-  </table>
-</DIV>  
-
+	
     
-<TABLE  border=0 cellSpacing=0 cellPadding=0 width="100%">
-<%--  <TBODY>
-  
-  <TR>
-     <TD width="35%" colspan="2"  ><font >¿Í»§:<SPAN id="T_kh" ></SPAN></font></TD>
-    <TD  width="30%"><font >µç»°£º <SPAN id="T_tel" ></SPAN></font></TD>
-    <TD width="35%" ><font >Éè¼ÆÊ¦£º<SPAN id="T_sjs"></SPAN></font></TD></TR>
-   
-      </TR>
-      <TR>
-    <TD width="25%"  ><font >×Ü½ğ¶î:<SPAN id="T_zje" ></SPAN></font></TD>
-          <TD  width="25%"></TD>
-    <TD  width="25%"><font > <SPAN id="T_DetailDiscount" ></SPAN></font></TD>
-    <TD width="25%" ><font ><SPAN id="T_DiscountAmount"></SPAN></font></TD>
-  
-      </TR>
-      </TBODY>--%></TABLE>
-</div>
- 
-       
-<%--<p>----------------------div3:---------------------------------------------------------------------------------font-size:12px---</p>--%>
-<div id="div3">
-  <TABLE   class="table1 table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse;font-size:12px" bordercolor="#333333">
-<thead>
-  <TR>
-  
-    <TD width="20%">
-      <DIV align=center><b>ÏîÄ¿Ãû³Æ</b></DIV></TD>
-  
-       <TD width="5%">
-      <DIV align=center><b>Ö÷²Ä£¤</b></DIV></TD>
-             <TD width="5%">
-      <DIV align=center><b>¸¨²Ä£¤</b></DIV></TD>
-             <TD width="5%">
-      <DIV align=center><b>ÈË¹¤£¤</b></DIV></TD>
-             <TD width="5%">
-      <DIV align=center><b>Ğ¡¼Æ£¤</b></DIV></TD>
-    <TD width="5%">
-      <DIV align=center><b>ÊıÁ¿</b></DIV></TD>
+        
     
-    <TD width="5%">
-      <DIV align=center><b>½ğ¶î£¤</b></DIV></TD>
-      <TD width="5%">
-
-      <DIV align=center><b>µ¥Î»</b></DIV></TD>
-       <TD width="45%">
-      <DIV align=center><b>²ÄÁÏ¼°¹¤ÒÕËµÃ÷</b></DIV></TD>
-     </TR>
-</thead>      
-  <TBODY>      
- 
-  <tfoot>
   
-      
-  </tfoot>
-</TABLE>
-</div>
-   <%--<p>----------------------div4:------------------------------------------------------------------------------------</p>--%>
-  <div id="div4">
+    	
+        
+    
 
-  <TABLE  border=0 cellSpacing=0 cellPadding=0 width="100%">
-  <TBODY>
-      <tr>
-          <td >±àÖÆÈË£º	</td> <td><SPAN id="T_bzr" ></SPAN>	</td>
-           <td>ÉóºËÈË£º	</td> <td><SPAN id="T_shr" ></SPAN>	</td>
-           <td colspan="2">ÉúĞ§ÈÕÆÚ£º<SPAN id="T_sxrq" ></SPAN>	</td>
-<td></td>
-      </tr>
-      </TBODY>
-  </TABLE>
-      </div>
-
-          <%--<p>----------------------div5:------------------------------------------------------------------------------------</p>--%>
-  <div id="div5">
-
-  <TABLE  border=0 cellSpacing=0 cellPadding=0 width="100%">
-  <TBODY>
-      <tr style="max-height:400px">
-            
-<td colspan="3">  <DIV align=center><b>±¸×¢ËµÃ÷</b></DIV> 
-        <DIV>
-            <SPAN id="T_bzsm" name="T_bzsm" ></SPAN>	
-
-        </DIV>
-
-
-</td>
-      </tr>
-      <tr>
-        <td width="26%">¿Í»§Ç©×Ö£º</td>
-        <td width="31%">ÖÆ×÷ÈË£º</td>
-        <td width="43%">ÉóºËÈË£º</td>
-      </tr>
-      <tr>
-        <td align="right">&nbsp;</td>
-        <td align="right">&nbsp;</td>
-        <td align="right">Äê &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ÔÂ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ÈÕ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-      </tr>
-
-      </TBODY>
-  </TABLE>
-      </div>
-       
-    </form>
+</table>
+        </div >
 </body>
 </html>

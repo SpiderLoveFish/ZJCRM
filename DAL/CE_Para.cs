@@ -1068,6 +1068,11 @@ namespace XHD.DAL
             sb.AppendLine("FROM dbo.kjl_api_list");
             sb.AppendLine("  WHERE obsPlanId=a.obsPlanId AND	 uid=a.uid	 AND a.roomId=roomId ) AS hj");
             sb.AppendLine(" ,");
+            sb.AppendLine(" (SELECT   SUM(ISNULL(cast(quantity as float),1))");
+            sb.AppendLine("             FROM dbo.kjl_api_list");
+            sb.AppendLine("               WHERE obsPlanId=a.obsPlanId AND	 uid=a.uid	 AND a.roomId=roomId AND type='硬装' ) AS mj");
+            sb.AppendLine("			   ,");
+            sb.AppendLine(" case type when '硬装' THEN '平方米' when '软装' then '个' else '' end as unit,");
             sb.AppendLine(" a.* FROM ");
             sb.AppendLine("dbo.kjl_api_list a");
             //sb.AppendLine("where B.uid='admin'");

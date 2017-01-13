@@ -145,7 +145,12 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
-            
+            if (request["Action"] == "getqrcode")
+            {
+                string url = PageValidate.InputText(request["url"], 250);
+                string ImageUrl = "../../View/QrCodeHandler.ashx?e=M&q=Two&s=8&t=" + HttpUtility.UrlEncode(url);
+                context.Response.Write(ImageUrl);
+            }
             if (request["Action"] == "SaveCustomer")
             {
                 
