@@ -69,7 +69,7 @@
                         if (data['room'] != cn) {
                             //alert(JSON.stringify(data))
 
-                            item = "<tr><th colspan='2' scope='col'><strong style='font-size:20px'>" + data['room'] + "</strong></th><th colspan='6' align='left' scope='col'>面积：<span style='color:#309'>" + toMoney(data['mj']) + "m2</span> 总价：<span style='color:#309'>¥" + data['hj'].toFixed(2) + "</span></th></tr> <tr><th scope='col'>类 别</th><th scope='col'>名称</th><th scope='col'>数量</th><th scope='col'>单位</th><th scope='col'>单价</th><th scope='col'>金额</th> <th scope='col'>图片</th> <th scope='col'>备注</th></tr>"
+                            item = "<tr><th colspan='2' scope='col'><strong style='font-size:20px'>" + data['room'] + "</strong></th><th colspan='6' align='left' scope='col'>面积：<span style='color:#309'>" + toMoney(data['area']) + "m2</span> 总价：<span style='color:#309'>¥" + data['hj'].toFixed(2) + "</span></th></tr> <tr><th scope='col'>类 别</th><th scope='col'>名称</th><th scope='col'>数量</th><th scope='col'>单位</th><th scope='col'>单价</th><th scope='col'>金额</th> <th scope='col'>图片</th> <th scope='col'>备注</th></tr>"
                                 + "<tr><td>" + data['type'] + "</td><td>" + data['name'] + "</td><td>" + data['quantity'] + "</td><td>" + data['unit'] + "</td><td>" + toMoney(data['price']) + "</td><td>" + toMoney(data['price'] * data['quantity']) + "</td><td><a href='" + imgurl + "' target='_blank'>" + sfck + "<a></td><td>" + remarks + "</td></tr> ";
                         }
                         else {
