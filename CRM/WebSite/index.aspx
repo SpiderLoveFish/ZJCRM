@@ -29,17 +29,44 @@
             });
           
              $(function () {
-                 ajax_romminfos('3FO4IXC5MB7Q');
+                 ajax_tesstfpId();
                  //ajax_lists('3FO4JOMIUHXP');
-                if (getCookie("website_uid") == null || getCookie("website_uid") == 'null' || getCookie("website_uid") == "" || getCookie("website_uid") == undefined)
-                { }
-                else
-                    loginin(getCookie("website_nickname"))
+              //  if (getCookie("website_uid") == null || getCookie("website_uid") == 'null' || getCookie("website_uid") == "" || getCookie("website_uid") == undefined)
+              //  { }
+              //  else
+              //      loginin(getCookie("website_nickname"))
 
-              ajaxhxtapi($('#keyword1').val());
+              //ajaxhxtapi($('#keyword1').val());
           
              });
 
+             function ajax_tesstfpId() {
+                 $.ajax({
+                     url: "../data/website.ashx", type: "POST",
+                     data: { Action: "test", fpId: '3FO4J1G598MG', strstart: 0, num: 999, rnd: Math.random() },
+                     success: function (responseText) {
+                         alert(JSON.stringify(responseText));
+                     },
+                     error: function (XMLHttpRequest, textStatus, errorThrown) {
+                         alert(XMLHttpRequest.status);
+
+                     }
+                 });
+             }
+
+             function ajax_romminfos(fpId) {
+                 $.ajax({
+                     url: "../data/SingleSignOn.ashx", type: "POST",
+                     data: { Action: "floorplanlists", fpId: fpId, strstart: 0, num: 999, rnd: Math.random() },
+                     success: function (responseText) {
+                         alert(JSON.stringify(responseText));
+                     },
+                     error: function (XMLHttpRequest, textStatus, errorThrown) {
+                         alert(XMLHttpRequest.status);
+
+                     }
+                 });
+             }
              function ajax_romminfos(fpId) {
                  $.ajax({
                      url: "../data/SingleSignOn.ashx", type: "POST",

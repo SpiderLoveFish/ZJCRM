@@ -269,10 +269,17 @@ namespace XHD.BLL
         {
             return dal.Addkjl_account_list(uid, style, userid, text, remarks);
         }
-        public bool Addkjl_api_list(string uid, string tel, string desid, int style, string userid, string text, string remarks)
+        public bool Addkjl_api_list(string uid, string tel,string fid, string desid, int style, string userid, string text, string remarks)
         {
-            return dal.Addkjl_api_list(uid,tel,desid, style, userid, text, remarks);
+            return dal.Addkjl_api_list(uid,tel,fid,desid, style, userid, text, remarks);
         }
+
+        public bool Addkjl_api_roomlist(string uid, string tel, string fid, string desid, string userid, string text, string remarks)
+        {
+
+            return dal.Addkjl_api_roomlist(uid, tel,fid, desid,  userid, text, remarks);
+        }
+
         public DataSet GetDS_kjl_account_list(string strWhere)
         {
             return dal.GetDS_kjl_account_list(strWhere);

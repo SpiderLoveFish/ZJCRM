@@ -873,7 +873,7 @@ namespace XHD.DAL
         }
 
 
-        public bool Addkjl_api_list(string uid,string tel, string desid, int style, string userid, string text, string remarks)
+        public bool Addkjl_api_list(string uid, string tel, string fid, string desid, int style, string userid, string text, string remarks)
         {
             JObject json1 = (JObject)JsonConvert.DeserializeObject(text);
             JArray ja = (JArray)json1["data"];
@@ -887,7 +887,7 @@ namespace XHD.DAL
             catch {  }
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("");
-            sb.AppendLine("DELETE	dbo.kjl_api_list WHERE tel='" + tel + "' AND obsPlanId='" + desid + "'");
+            sb.AppendLine("DELETE	dbo.kjl_api_list WHERE tel='" + tel + "' AND desid='" + desid + "'");
             foreach (var ja1 in ja)
             {
                 JObject o = (JObject)ja1;
@@ -896,7 +896,8 @@ namespace XHD.DAL
                 sb.AppendLine("          uid ,");
                 sb.AppendLine("          tel ,");
                 sb.AppendLine("          count ,");
-                sb.AppendLine("          obsPlanId ,");
+                sb.AppendLine("          fid ,");
+                sb.AppendLine("          desid ,");
                 sb.AppendLine("          position ,");
                 sb.AppendLine("          quantity ,");
                 sb.AppendLine("          price ,");
@@ -911,15 +912,15 @@ namespace XHD.DAL
                 sb.AppendLine("          largeImgUrl ,");
                 sb.AppendLine("          created ,");
                 sb.AppendLine("          dotime ,");
-                sb.AppendLine("          DoStyle ");
-            
+                sb.AppendLine("          DoStyle ,");
+                sb.AppendLine("          remarks ");
                 sb.AppendLine("        )");
 
                 sb.AppendLine("VALUES  ( '" + userid + "' ,"); // userid - varchar(50)
                 sb.AppendLine("         '" + uid + "' ,"); // uid - varchar(20)
                 sb.AppendLine("         '" + tel + "' ,"); // uid - varchar(20)
                 sb.AppendLine("         '" + count + "' ,"); // uid - va 
-              // obsPlanId - varchar(20)
+                sb.AppendLine("         '" + fid + "' ,"); // uid - va 
                 sb.AppendLine("          '" + desid + "' ,"); // obsPlanId - varchar(20)
                 sb.AppendLine("          '" + o["position"].Value<string>() + "' ,"); // planCity - varchar(300)
                 sb.AppendLine("         '" + o["quantity"].Value<string>() + "'  ,"); // commName - varchar(300)
@@ -962,19 +963,19 @@ namespace XHD.DAL
                      else
                          sb.AppendLine("          '" + o["brandGoodCode"].Value<string>() + "' ,"); // srcArea - float
                 }catch{  sb.AppendLine("          '' ,");}
+
+          
                 try
-                {   
-                if (o["brandName"].Value<string>() == null)
+                {
+                    if (o["brandName"].Value<string>() == null)
                         sb.AppendLine("           '' ,");
-                    else
-                         sb.AppendLine("          '" + o["brandName"].Value<string>() + "' ,"); // srcArea - float
-               
+                    sb.AppendLine("          '" + GetTime(o["brandName"].ToString()) + "' ,");
                 }
                 catch
                 {
-                  
-                    sb.AppendLine("           '' ,");
-                } try
+                    sb.AppendLine("          '' ,");
+                }    
+                 try
                 {
                     if (o["modifiedTime"].Value<string>() == null)
                         sb.AppendLine("           '' ,");
@@ -1020,7 +1021,113 @@ namespace XHD.DAL
                 }
            
                 sb.AppendLine("          getdate() ,"); // dotime - datetime
-                sb.AppendLine("          " + style + ""); // DoStyle - int
+                sb.AppendLine("          " + style + ","); // DoStyle - int
+                try
+                {
+                    if (o["size"].ToString()== null)
+                        sb.AppendLine("           '' ,");
+                    sb.AppendLine("          '" + o["size"].ToString().Replace("{", "").Replace("}", "").Replace("\"x\":", " ").Replace("\"y\":", "").Replace("\"z\":", "").Replace(",", "*").Trim() + "'  ");
+                }
+                catch
+                {
+                    sb.AppendLine("          '' ");
+                }
+                sb.AppendLine("        )");
+            }
+
+
+            SqlParameter[] parameters = {
+                                       };
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool Addkjl_api_roomlist(string uid, string tel,string fid, string desid,   string userid, string text, string remarks)
+        {
+            JObject json1 = (JObject)JsonConvert.DeserializeObject(text);
+            JArray ja = (JArray)json1["rooms"];
+            string count = "0";
+            try
+            {
+                if (json1["height"].Value<string>() == null)
+                    count = "0";
+                else count = json1["height"].Value<string>();//层高
+            }
+            catch { }
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("");
+            sb.AppendLine("DELETE	dbo.kjl_api_roomlist WHERE tel='" + tel + "' AND fid='" + fid + "'");
+            foreach (var ja1 in ja)
+            {
+                JObject o = (JObject)ja1;    
+                sb.AppendLine("INSERT [dbo].[kjl_api_roomlist]");
+                sb.AppendLine("        ( [userid] ,");
+                sb.AppendLine("          [uid] ,");
+                sb.AppendLine("          [tel] ,");
+                sb.AppendLine("          count ,");
+                sb.AppendLine("          [fid] ,");
+                sb.AppendLine("          [desid] ,");
+                sb.AppendLine("          [area] ,");
+                sb.AppendLine("          [perimeter] ,");
+                sb.AppendLine("          [roomId] ,");
+                sb.AppendLine("          [room] ,");
+                sb.AppendLine("          [modifiedTime] ,");
+                sb.AppendLine("          [created] ,");
+                sb.AppendLine("          [dotime] ,");
+                sb.AppendLine("          [remarks]");
+                sb.AppendLine("        )");
+                sb.AppendLine("VALUES  ( '" + userid + "' ,"); // userid - varchar(50)
+                sb.AppendLine("         '" + uid + "' ,"); // uid - varchar(20)
+                sb.AppendLine("         '" + tel + "' ,"); // uid - varchar(20)
+                sb.AppendLine("         '" + count + "' ,"); // uid - varchar(20)
+                sb.AppendLine("          '" + fid + "' ,"); // obsPlanId - varchar(20)
+                sb.AppendLine("          '" + desid + "' ,"); // obsPlanId - varchar(20)
+                sb.AppendLine("          '" + o["area"].Value<string>() + "' ,"); // planCity - varchar(300)
+                sb.AppendLine("         '" + o["perimeter"].Value<string>() + "'  ,"); // commName - varchar(300)
+                try
+                {
+                    if (o["roomId"].Value<string>() == null)
+                        sb.AppendLine("           '" + 0 + "' ,");
+                    else sb.AppendLine("           '" + o["roomId"].Value<string>() + "' ,");
+                }
+                catch { sb.AppendLine("          '' ,"); }
+                try
+                {
+                    if (o["roomName"].Value<string>() == null)
+                        sb.AppendLine("           '" + 0 + "' ,");
+                    else sb.AppendLine("           '" + o["roomName"].Value<string>() + "' ,");
+                }
+                catch { sb.AppendLine("          '' ,"); } try
+                {
+                    if (o["modifiedTime"].Value<string>() == null)
+                        sb.AppendLine("           '' ,");
+                    sb.AppendLine("          '" + GetTime(o["modifiedTime"].ToString()) + "' ,");
+                }
+                catch
+                {
+                    sb.AppendLine("          '' ,");
+                }
+               
+                try
+                {
+                    if (o["created"].Value<string>() == null)
+                        sb.AppendLine("           '' ,");
+                    sb.AppendLine("          '" + GetTime(o["created"].ToString()) + "' ,");
+                }
+                catch
+                {
+                    sb.AppendLine("          '' ,");
+                }
+
+                sb.AppendLine("          getdate() ,''"); // dotime - datetime
+           
                 sb.AppendLine("        )");
             }
 
@@ -1063,24 +1170,25 @@ namespace XHD.DAL
         public DataSet GetDS_kjl_api_list(string strWhere)
         {
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine("SELECT  ");
+            sb.AppendLine("SELECT");
             sb.AppendLine("(SELECT   SUM(ISNULL(cast(price as float),1) *ISNULL(CONVERT(FLOAT,quantity),1))");
             sb.AppendLine("FROM dbo.kjl_api_list");
-            sb.AppendLine("  WHERE obsPlanId=a.obsPlanId AND	 uid=a.uid	 AND a.roomId=roomId ) AS hj");
+            sb.AppendLine("  WHERE desid=a.desid AND	 uid=a.uid	 AND a.roomId=roomId ) AS hj");
             sb.AppendLine(" ,");
             sb.AppendLine(" (SELECT   SUM(ISNULL(cast(quantity as float),1))");
             sb.AppendLine("             FROM dbo.kjl_api_list");
-            sb.AppendLine("               WHERE obsPlanId=a.obsPlanId AND	 uid=a.uid	 AND a.roomId=roomId AND type='硬装' ) AS mj");
+            sb.AppendLine("               WHERE desid=a.desid AND	 uid=a.uid	 AND a.roomId=roomId AND type='硬装' ) AS mj");
             sb.AppendLine("			   ,");
             sb.AppendLine(" case type when '硬装' THEN '平方米' when '软装' then '个' else '' end as unit,");
-            sb.AppendLine(" a.* FROM ");
+            sb.AppendLine(" a.*,b.area,b.perimeter,b.count AS height  FROM");
             sb.AppendLine("dbo.kjl_api_list a");
-            //sb.AppendLine("where B.uid='admin'");
+            sb.AppendLine("LEFT JOIN dbo.kjl_api_roomlist b ON a.fid=b.fid AND a.desid=b.desid AND a.roomId=b.roomId");
+            //sb.AppendLine("WHERE a.desid='3FO4JFXAJL67'");
             if (strWhere.Trim() != "")
             {
                 sb.AppendLine(" where " + strWhere);
             }
-            sb.AppendLine(" order by roomId desc");
+            sb.AppendLine(" order by a.roomId desc");
             return DbHelperSQL.Query(sb.ToString());
         }
 

@@ -55,7 +55,7 @@
                     var item = ""; var cn = ""; var sum = 0;
                     var sfck = "";
                     $.each(obj, function (i, data) {
-
+                        
                         if (data['hj'] == null) sum = 0;
                         else sum = data['hj'];
                         var imgurl = data['largeImgUrl'];
@@ -65,6 +65,7 @@
                         }
                         var remarks = "";
                         if (data['remarks'] == null) remarks = "";
+                        else remarks = data['remarks'];
                         if (data['room'] != cn) {
                             //alert(JSON.stringify(data))
 

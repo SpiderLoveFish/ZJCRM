@@ -40,7 +40,46 @@ namespace XHD.CRM.Data
             BLL.sys_info si = new BLL.sys_info();
             string host = si.GetList(" sys_key='sys_host'").Tables[0].Rows[0]["sys_value"].ToString();
             //dsemp.Tables[0].Rows[0]["uid"].ToString();
+            if (request["Action"] == "test")
+            {
+                string fpId = "3FO4J1G598MG";
+                string desid = "3FO4JFXBLNIA";
+                string uuid = "ksxczs";
+                string tel ="15906266305";
+                string[] arr_rooom = para("4", uid);
+                    string appKey = arr_rooom[(int)paraenum.appKey];
+                    string appSecret = arr_rooom[(int)paraenum.appSecret];
+                    string userId = uuid + "@xczs.com";
+                    if (uuid == "")
+                        userId = arr_rooom[(int)paraenum.userId];
+                    if (appKey == null) context.Response.Write("请先配置参数！");
+                    else
+                    {
 
+                        string planid = fpId;
+                        // Common.PageValidate.InputText(request["designId"], 50)
+
+                        object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                        string timestamp = currenttimemillis.ToString(); //2分钟
+                        string sign = MD5(appSecret + appKey + timestamp).ToLower();
+                        string api = arr_rooom[(int)paraenum.api];
+                        StringBuilder apiBuilder = new StringBuilder();
+                        apiBuilder.Append(api)
+                             .Append("/" + desid)
+                            .Append("/itemlist")//?starttime=
+                            // .Append((int.Parse(timestamp) - (300 * 24 * 3600 * 1000)).ToString())
+                             .Append("?start=").Append("0")
+                            .Append("&num=").Append("999")
+                            .Append("&appkey=").Append(appKey)
+                        .Append("&timestamp=").Append(timestamp)
+                        .Append("&sign=").Append(sign);
+                        string result = "";
+                        result = HttpGet(apiBuilder.ToString());
+                        cp.Addkjl_api_list(uid, tel, fpId, desid, 0, userId, result, "");
+                    }
+                
+            }
+            
             if (request["Action"] == "savebj")
             {
                 //唯一可能，2个FID全部为空，只有3D
@@ -79,6 +118,7 @@ namespace XHD.CRM.Data
                 }
                 if (desid != "")
                 {
+                    //装修清单
                     string[] arr = para("4", uid);
                     string appKey = arr[(int)paraenum.appKey];
                     string appSecret = arr[(int)paraenum.appSecret];
@@ -88,7 +128,7 @@ namespace XHD.CRM.Data
                     if (appKey == null) context.Response.Write("请先配置参数！");
                     else
                     {
-                      
+
                         // Common.PageValidate.InputText(request["designId"], 50)
                         int start = 0; int num = 999;
                         //int.Parse(Common.PageValidate.InputText(request["start"], 50));
@@ -97,7 +137,7 @@ namespace XHD.CRM.Data
                         // 签名加密
                         string aa = "sdfaadsasdasd";
                         string md5aa = MD5(aa).ToLower();
-                        string sign = MD5(appSecret + appKey  + timestamp).ToLower();
+                        string sign = MD5(appSecret + appKey + timestamp).ToLower();
                         string api = arr[(int)paraenum.api];
                         StringBuilder apiBuilder = new StringBuilder();
                         apiBuilder.Append(api)
@@ -115,7 +155,33 @@ namespace XHD.CRM.Data
                         string result = "";
                         result = HttpGet(apiBuilder.ToString());
                         // context.Response.Write(result);
-                        cp.Addkjl_api_list(uid, tel, desid, 0, userId, result, "");
+                        cp.Addkjl_api_list(uid, tel, fpId, desid, 0, userId, result, "");
+                    }
+
+                    //房间数据
+                    string[] arr_rooom = para("12", uid);
+
+                    if (appKey == null) context.Response.Write("请先配置参数！");
+                    else
+                    {
+
+                        string planid = fpId;
+                        // Common.PageValidate.InputText(request["designId"], 50)
+
+                        object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                        string timestamp = currenttimemillis.ToString(); //2分钟
+                        string sign = MD5(appSecret + appKey + timestamp).ToLower();
+                        string api = arr_rooom[(int)paraenum.api];
+                        StringBuilder apiBuilder = new StringBuilder();
+                        apiBuilder.Append(api)
+                        .Append("/" + planid + "/roominfo")
+                        .Append("?appkey=").Append(appKey)
+                        .Append("&timestamp=").Append(timestamp)
+                        .Append("&sign=").Append(sign);
+                        string result = "";
+                        result = HttpGet(apiBuilder.ToString());
+                        cp.Addkjl_api_roomlist(uid, tel,fpId, desid, userId, result, "");
+                        // context.Response.Write(result);
                     }
                 }
             }
@@ -139,7 +205,7 @@ namespace XHD.CRM.Data
                 string tel = request["tel"];
                 string jmid = request["jmid"];
                 string desid = request["desid"];
-                DataSet ds = cp.GetDS_kjl_api_list("  tel='" + tel + "' AND obsPlanId='" + desid + "'");
+                DataSet ds = cp.GetDS_kjl_api_list("  a.tel='" + tel + "' AND a.desid='" + desid + "'");
                 Total = ds.Tables[0].Rows.Count.ToString();
                 dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
 
@@ -1353,7 +1419,7 @@ namespace XHD.CRM.Data
 
                     string result = "";
                     result = HttpGet(apiBuilder.ToString());
-                    cp.Addkjl_api_list(uid, "11111", designId, 0, userId, result, "");
+                    context.Response.Write(result);
                 }
 
             }

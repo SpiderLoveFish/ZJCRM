@@ -170,10 +170,10 @@ function check() {
         return;
     }
     //document.getElementById("hadpho").value = "Y";
-    document.form1.action = "../../CRM/ConsExam/kjl_search_bj.aspx?jmid=" + document.getElementById("jmid").value + "&keyword=" + document.getElementById("keyword").value + "&cityid=166" + "&tel=" + tel;
-    document.form1.submit();
-    //fxyzm();
-    //op();
+    //document.form1.action = "../../CRM/ConsExam/kjl_search_bj.aspx?jmid=" + document.getElementById("jmid").value + "&keyword=" + document.getElementById("keyword").value + "&cityid=166" + "&tel=" + tel;
+    //document.form1.submit();
+    fxyzm();
+    op();
   
     //url = "pho=" + pho;
     //var action = "checkpho.action";
