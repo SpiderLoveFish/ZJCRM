@@ -3,18 +3,31 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>诚信合作单位智能装修报价器,在线装修报价,装修报价软件,装修预算软件,由一键一家认证授权使用</title>
-<meta name="keywords" content="诚信合作单位智能装修报价器,在线装修报价,装修报价软件,装修预算软件" />
-<meta name="description" content="几个条件，便可自动计算出当地装修报价，获得准确的装修报价清单" />
+<title>客户自助报价</title>
+ 
 <style>
-.formbox{text-align:center;width:100%;margin:0 auto;height:351px;margin-top:0px;background-image:url('bj_files/bg.png');background-repeat:no-repeat;border-top:1px solid black;border-bottom:1px solid black;}
+
 #msgTitle{ background: url(images/title.gif) repeat-x; width:350px; height:36px;}
 #img1{ margin-top:5px; margin-right:7px;}
 #msgDiv{ background:#fff;}
 .texta{ width:202px; height:31px; background:url(images/inputbg.gif) no-repeat; border:none; line-height:31px;}
 .texta1{width:204px; height:32px; background:url(images/hqyzmxx.gif) no-repeat; border:none; line-height:32px;}
 .btttn{ width:96px; height:38px; background:url(images/anbtton.gif) no-repeat; border:none;}
+*{margin:0;padding:0;list-style-type:none;}
 
+.formbox{text-align:center;width:100%;margin:0 auto;height:351px;margin-top:0px;background-image:url('bj_files/bg.png');background-repeat:no-repeat;border-top:1px solid black;border-bottom:1px solid black;}
+.formbox .con{text-align:center;height:340px;width:304px;float:right;border:1px solid black}
+.coolbg{
+	font-size:18px;
+	line-height:30px;
+	background-color:rgb(10,114,189);
+	border:1px solid #bdc5ca;
+	height:45px;
+	width:100%;
+	color:rgb(255,255,255);
+	margin:0 auto;
+}
+td{padding:7px 10px;text-align:right;}
 </style>
 <link href="css/baojia.css" type="text/css" rel="stylesheet" />
 
@@ -22,14 +35,18 @@
     <script src="../js/jquery-1.8.2.min.js"></script>
     <script src="js/checkform.js"></script>
     <script src="js/bj.js"></script>
-  <script src="../js/lazyload-min.js"></script>
-
+ 
+    <script src="../js/lazyload-min.js"></script>
 <script type="text/javascript">
+
+
     LazyLoad.css(["../css/cityStyle.css"], function () {
         LazyLoad.js(["../js/cityScript.js"], function () {
             var test = new citySelector.cityInit("inputcity");
         });
     });
+
+
     function sAlert(str){
 
         var msgw,msgh,bordercolor;
@@ -127,7 +144,7 @@
  
         if (document.getElementById("useryzm").value == document.getElementById("rdm").value) {
             savecustromer();
-            document.form1.action = "../../CRM/ConsExam/kjl_search_bj.aspx?jmid=" + document.getElementById("jmid").value + "&keyword=" + document.getElementById("xq").value + "&cityid=" + document.getElementById("cityid").value + "&tel=" + tel;
+            document.form1.action = "../../CRM/ConsExam/kjl_search_bj.aspx?jmid=" + document.getElementById("jmid").value + "&keyword=" + document.getElementById("keyword").value + "&cityid=166" + "&tel=" + tel;
             document.form1.submit();
             settimeclose();
         } else {
@@ -148,7 +165,7 @@
     }
 
     function clearxing(){
-        document.getElementById("xing").value="";
+        //document.getElementById("xing").value="";
 	
     }
   
@@ -157,90 +174,53 @@
 <body   style = "">
 
 
-<div class="bj_kuang" >
-  	<div class="big_k">
-  
-  	<div class="bj_top">
-          <img src="bj_files/yy_top.png">
-      </div>
-   <%--  --%>
+<div  style='position:fixed; z-index:999; top:0;' class="formbox">
+  	<div class="con">
+  <img src="bj_files/yy_top.png">
+  	 
    <form id = "form1" name = "form1" action="../../CRM/ConsExam/kjl_search_my.aspx" accept-charset="UTF-8" method="post"  target="_blank">
-   <div class="jzmjbj" >
-   		<div  class="formbox">
-   	     
-        </div>
-        
-         
-       <div class="line_two"  style="text-align: center;">
-       
-        	<ul >
-             <li style="width:170px; padding-left:10px;">
-              地区  
-            	  <INPUT id="inputcity"  class="baojia_input" padding:4px; font-size:14px;" type="text" readonly value="苏州"> 
-     <INPUT name="cityid" id="cityid" type="hidden" value="166">
- 
-              <li style="width:170px; padding-left:10px;">
-              电话号码 <input type="text" id="phone" name="phone" value="" class="baojia_input" onkeyup="javascript:formatForInd(this,15);" /></li>
-              
-               <li style="width:200px; padding-left:10px;">
-              业主称呼 
-              <input id="xing" name="xing" type="text" maxlength="10" class="baojia_input01" /> <select id="chengfu" name="chengfu" >
-                  <option value="0" selected="selected">男</option>
-                  <option value="1">女</option>
-                </select></li>
-                <li style="width:170px; padding-left:10px;">
-              小区 <input type="text" id="xq" name="xq" value="" class="baojia_input"   /></li>
-              
-              <li style="width:139px; border-right:none;">
-              <a style="cursor: pointer;" onclick="check();clearxing();" class="a1"><img src="images/ksbj_but.png" width="96" height="25" border="0" /></a>
-              </li>
-              
-               </ul>
+  <table width="101%" cellpadding="0" cellspacing="1" style="width:100%;">
+				<tr>
+					<td width="60px">地&nbsp;&nbsp;区</td>
+					<td > <INPUT id="inputcity" style="width: 95%; border:1px  solid rgb(191, 209, 245); padding:4px; font-size:14px;" type="text" readonly value="苏州"> 
+     <INPUT name="cityid" id="cityid" type="hidden" value="166"> 
+					</td>
+				</tr>
+				<tr>
+					<td>姓&nbsp;&nbsp;名</td>
+					<td style="text-align:left;"><input type='text' name='xing' id='xing'  style="width:35%;  border:1px  solid rgb(191, 209, 245); padding:4px; font-size:14px;"   value='' /> 
+					
+					性别<input type='radio' name='sex' class='np' value='男' checked>男  <input type='radio' name='sex' class='np' value='女'>女 </td>
+				</tr>
+				<tr>
+					<td>小&nbsp;&nbsp;区</td>
+					<td><input type='text' name='xq' id='xq' style="width:95%;  border:1px  solid rgb(191, 209, 245); padding:4px; font-size:14px;"   value=''  />
+					</td>
+				</tr>
+				<tr>
+					<td>电&nbsp;&nbsp;话</td>
+					<td><input type='text' name='phone' id='phone' style="width:95%; border:1px  solid rgb(191, 209, 245); padding:4px; font-size:14px;"  value='' />
+					</td>
+				</tr>
+				<tr>
+					<td>面&nbsp;&nbsp;积</td>
+					<td style="text-align:left;"><input type='text' name='hx' id='hx' style="width:95%; border:1px  solid rgb(191, 209, 245); padding:4px; font-size:14px;"   value='' /></td>
+				</tr>
                
-              <div style="display: none">
-	        <input  type="text" id="bomarea2" name = "bomarea2" value="0"  readonly="readonly"  />
-	        <input  type="text" id="bomarea3" name = "bomarea3" value="0" readonly="readonly"/>
-	        <input  type="text" id="bomarea1" name = "bomarea1" value="0" readonly="readonly"  />
-	        <input  type="text" id="bomarea4" name = "bomarea4" value="0" readonly="readonly"  />
-	        <input  type="text" id="bomarea6" name = "bomarea6" value="0" readonly="readonly"  />
-	        <input  type="text" id="bomarea5" name = "bomarea5" value="0" readonly="readonly"   />
-	        
-	        <input type="text"  name = "bom2" id="bom2" value="0" readonly="readonly"  />
-            <input type="text" id="bom3" name = "bom3"  value="0" readonly="readonly"   />
-            <input type="text" id="bom1" name = "bom1" value="0" readonly="readonly"  />
-            <input type="text" id="bom4" name = "bom4" value="1" readonly="readonly"  />
-            <input type="text" id="bom6" name = "bom6" value="0" readonly="readonly"  />
-            <input type="text" id="bom5" name = "bom5" value="0" readonly="readonly"  />
-            
-            <input type="hidden" id = "kongzhi" name="kongzhi" value ="tijiao"/>
-            
-<!-- 
-	        <input type="hidden" id = "cit1" name="cit1" value="" />
-			<input type="hidden" id = "cit2" name="cit2" value="" />
-			<input type="hidden" id = "cit3" name="cit3" value="" /> 
- -->
-			<input type="hidden" id = "sumcityname" name = "sumcityname" value = "" />
-			<input type="hidden" id = "pho" name="pho" value="" />
-			<input type="hidden" id = "rdm" name="rdm" value="1" />
-			<input type="hidden" id = "hadpho" name="hadpho" value="N" />
-			<input type="hidden" id = "xingshi" name="xingshi" value="" /><!-- 姓氏 -->
+				</table>
+		 	<input type="hidden" id = "pho" name="pho" value="" />
+			<input type="hidden" id = "rdm" name="rdm" value="" />
+		 	<input type="hidden" id = "xingshi" name="xingshi" value="" /><!-- 姓氏 -->
 			   <input type="hidden" id = "keyword" name="keyword" value="" />
 			<input type="hidden" id = "jmid" name="jmid" value="ksxczs" /><!-- 用于标释，区分此处为百度推广报价之用 -->
-			<input type="hidden" id = "findman3" name="findman3" value="0" />
-			<input type="hidden" name="flag" value ="true"/>
-        </div>
-           
-        </div> 
-      
+		 <a style="cursor: pointer;" onclick="check();clearxing();" class='coolbg' >
+       开始报价 </a>
+         
+  </form>
+   
    </div>
-
-   </form>
-   
-   
-   
 </div>
-</div>
-
+ 
 
  </body>
  </html> 

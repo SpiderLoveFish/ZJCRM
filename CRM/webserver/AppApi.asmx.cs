@@ -313,7 +313,7 @@ namespace XHD.CRM.webserver
                   }
               }
           }
-
+        
           [WebMethod]
           public void GetAppVersions(string ver, string type)
           {
@@ -1355,7 +1355,7 @@ namespace XHD.CRM.webserver
               sb.AppendLine("FROM");
               sb.AppendLine("(");
               sb.AppendLine("SELECT CASE WHEN rqlx='阳历' THEN birthday ELSE");
-              sb.AppendLine("LEFT(birthday,4)+RIGHT( (SELECT lunar FROM dbo.Lunar_Solar_List WHERE solar=CONVERT(VARCHAR(4),GETDATE(),120)+RIGHT(birthday,6)),6) ");
+              sb.AppendLine("LEFT(birthday,4)+RIGHT( (SELECT TOP 1 lunar FROM dbo.Lunar_Solar_List WHERE solar=CONVERT(VARCHAR(4),GETDATE(),120)+RIGHT(birthday,6)),6) ");
               sb.AppendLine("END AS bir,");
               sb.AppendLine(" *    FROM  dbo.hr_employee");
               sb.AppendLine("WHERE uid NOT IN('NoVerer','admin')");

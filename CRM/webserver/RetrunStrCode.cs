@@ -145,7 +145,7 @@ namespace XHD.CRM.webserver
                 sb.AppendLine("        ISNULL(b.Jf, 0) AS Jf ,");
                 sb.AppendLine("        a.Provinces + a.City + a.Towns + a.Community AS Khdz");
                 sb.AppendLine("FROM    dbo.CRM_Customer a");
-                sb.AppendLine("( SELECT SUM(Jf) AS jf,id FROM CRM_Jifen");
+                sb.AppendLine("LEFT OUTER JOIN  ( SELECT SUM(Jf) AS jf,id FROM CRM_Jifen");
                 sb.AppendLine(" WHERE	 Jflx=1   AND IsDel = 'N' AND  Sfkh = 'Y'");
                 sb.AppendLine(strtype);
                 sb.AppendLine("  GROUP BY  ID) b ON a.ID = b.ID");

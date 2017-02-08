@@ -712,7 +712,7 @@ namespace XHD.DAL
 
            //修改类型
             sb.AppendLine("UPDATE Budge_BasicMain SET ModelStyle=( SELECT  SUBSTRING(ISNULL(ModelStyle,'常规预算'),0,3)+'预算' FROM dbo.Budge_BasicMain	");
-            sb.AppendLine(" WHERE	 id='" + modelid + "')");
+            sb.AppendLine(" WHERE	 id='" + modelid + "'),OldBudgeID='" + modelid + "'");
             sb.AppendLine(" WHERE	 id='" + bid + "'");
 
             sb.AppendLine(" UPDATE	Budge_BasicMain	SET	FromTimes=ISNULL(FromTimes,0)+1");

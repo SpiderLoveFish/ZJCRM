@@ -2945,11 +2945,29 @@
     <Content Include="webserver\sms.asmx" />
     <Content Include="webserver\WebService1.asmx" />
     <Content Include="WebSite\about.html" />
+    <Content Include="WebSite\bj\bj1.aspx" />
+    <Content Include="WebSite\bj\bj_files\bg.png" />
+    <Content Include="WebSite\bj\bj_files\bg.psd" />
+    <Content Include="WebSite\bj\bj_files\yy_top.png" />
+    <Content Include="WebSite\bj\css\css-table.css" />
+    <Content Include="WebSite\bj\images\anbtton.gif" />
+    <Content Include="WebSite\bj\images\bjd.png" />
+    <Content Include="WebSite\bj\images\close.gif" />
+    <Content Include="WebSite\bj\images\inputbg.gif" />
+    <Content Include="WebSite\bj\images\ksbj_but.png" />
+    <Content Include="WebSite\bj\images\renzheng.png" />
+    <Content Include="WebSite\bj\images\renzheng1.png" />
+    <Content Include="WebSite\bj\images\title.gif" />
+    <Content Include="WebSite\bj\images\top_tip.png" />
+    <Content Include="WebSite\bj\images\untitled.png" />
+    <Content Include="WebSite\bj\index.aspx" />
+    <Content Include="WebSite\bj\js\jquery-1.2.6.min.js" />
+    <Content Include="WebSite\bj\js\style-table.js" />
     <Content Include="WebSite\bj\list_1.aspx" />
     <Content Include="WebSite\bj\css\baojia.css" />
     <Content Include="WebSite\bj\list.aspx" />
     <Content Include="WebSite\bj\index1.aspx" />
-    <Content Include="WebSite\bj\index.aspx" />
+    <Content Include="WebSite\bj\index_2.aspx" />
     <Content Include="WebSite\bj\js\bj.js" />
     <Content Include="WebSite\bj\js\bjqd.js" />
     <Content Include="WebSite\bj\js\checkform.js" />
@@ -2959,6 +2977,8 @@
     <Content Include="WebSite\bootstrap\js\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="WebSite\bootstrap\js\bootstrap.min.js" />
     <Content Include="WebSite\contact.html" />
+    <Content Include="WebSite\css\cityselect.css" />
+    <Content Include="WebSite\js\lazyload-min.js" />
     <Content Include="WebSite\memberEdit.aspx" />
     <Content Include="WebSite\member.aspx" />
     <Content Include="WebSite\css\about.css" />
@@ -4848,7 +4868,6 @@
     <Folder Include="Images\upload\portrait\" />
     <Folder Include="Images\upload\temp\" />
     <Folder Include="ueditor1_2_5_1-utf8-net\net\upload\" />
-    <Folder Include="WebSite\bj\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Browsers\IE10.browser">

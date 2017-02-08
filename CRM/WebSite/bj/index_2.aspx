@@ -7,7 +7,7 @@
 <meta name="keywords" content="诚信合作单位智能装修报价器,在线装修报价,装修报价软件,装修预算软件" />
 <meta name="description" content="几个条件，便可自动计算出当地装修报价，获得准确的装修报价清单" />
 <style>
-.formbox{text-align:center;width:100%;margin:0 auto;height:351px;margin-top:0px;background-image:url('bj_files/bg.png');background-repeat:no-repeat;border-top:1px solid black;border-bottom:1px solid black;}
+
 #msgTitle{ background: url(images/title.gif) repeat-x; width:350px; height:36px;}
 #img1{ margin-top:5px; margin-right:7px;}
 #msgDiv{ background:#fff;}
@@ -22,14 +22,9 @@
     <script src="../js/jquery-1.8.2.min.js"></script>
     <script src="js/checkform.js"></script>
     <script src="js/bj.js"></script>
-  <script src="../js/lazyload-min.js"></script>
+    <script src="js/bjqd.js"></script>  
 
 <script type="text/javascript">
-    LazyLoad.css(["../css/cityStyle.css"], function () {
-        LazyLoad.js(["../js/cityScript.js"], function () {
-            var test = new citySelector.cityInit("inputcity");
-        });
-    });
     function sAlert(str){
 
         var msgw,msgh,bordercolor;
@@ -118,7 +113,34 @@
 
 
     }
- 
+
+    function tip(){
+        if(document.getElementById("hadpho").value != "Y") {
+            var rand = document.getElementById("rdm").value;
+            //alert("验证码："+rand);
+            var len = document.getElementById("yzm").value.length;
+            if(len != 6) {
+                alert("请输入您手机收到的6位数字验证码！");
+            } else {
+                var yzm = document.getElementById("yzm").value;
+                if(yzm == rand) {
+                    //cleanpho();
+                    document.form1.submit();
+				
+                    document.getElementById("xing").value=""
+                    settimeclose();
+                } else {
+                    alert("验证码错误，请重新输入！");
+                }
+                //document.ckyzm.submit();
+            }
+        } else {
+            document.form1.submit();
+            document.getElementById("xing").value=""
+            settimeclose();
+        }
+    }
+
     function op(){
         sAlert('<table width="350" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;"><tr><td height="40" colspan="3" align="center" valign="middle" style="font-weight:bolder; color:#3aa7e8; font-size:16px;">请输入手机验证码</tr><tr><td height="40" align="center" valign="middle">输入验证码：</td><td height="40" align="left" valign="middle"><input type="text" name="useryzm" id="useryzm"  class="texta" /></td><td height="40" align="center" valign="middle">&nbsp;</td></tr><tr><td height="30" align="center" valign="middle">&nbsp;</td><td height="40" align="left" valign="middle"><input type="button" name="button" id="button" onclick="subm()" class="btttn"/></td><td height="40" align="center" valign="middle">&nbsp;</td></tr></table>');
     }
@@ -127,7 +149,7 @@
  
         if (document.getElementById("useryzm").value == document.getElementById("rdm").value) {
             savecustromer();
-            document.form1.action = "../../CRM/ConsExam/kjl_search_bj.aspx?jmid=" + document.getElementById("jmid").value + "&keyword=" + document.getElementById("xq").value + "&cityid=" + document.getElementById("cityid").value + "&tel=" + tel;
+            document.form1.action = "../../CRM/ConsExam/kjl_search_bj.aspx?jmid=" + document.getElementById("jmid").value + "&keyword=" + document.getElementById("keyword").value + "&cityid=166" + "&tel=" + tel;
             document.form1.submit();
             settimeclose();
         } else {
@@ -154,31 +176,114 @@
   
 </script>
 </head>
-<body   style = "">
+<body onload="full_city();selectedValue();" style = "">
 
 
 <div class="bj_kuang" >
   	<div class="big_k">
   
   	<div class="bj_top">
-          <img src="bj_files/yy_top.png">
-      </div>
+    <div class="bjq_tab01 active"   >家装按面积报价</div>
+    	<div class="bjq_tab " onclick="javascript:window.location.href='index1.aspx?jmid=ksxczs'">家装按户型报价</div>
+   		
+   	  <div class="bjq_tab_r_text"><span><img src="images/top_tip.png"  /></span>简单填写您的房屋信息，一分钟为您提供装修报价清单！</div>
+   </div>
    <%--  --%>
    <form id = "form1" name = "form1" action="../../CRM/ConsExam/kjl_search_my.aspx" accept-charset="UTF-8" method="post"  target="_blank">
    <div class="jzmjbj" >
-   		<div  class="formbox">
-   	     
+   		<div class="line_one">
+   	    <ul>
+                <li>户型 <select name="hx" id="hx" style="width:140px;">
+                
+                <option  value="0">选几房几厅</option>
+	            
+                <option  value="1">一房一厅</option>
+	            
+                <option  value="2">二房一厅</option>
+	            
+                <option  value="3">三房一厅</option>
+	            
+                <option  value="12">二房二厅</option>
+	            
+                <option  value="13">三房二厅</option>
+	            
+                <option  value="14">四房二厅</option>
+	            
+                <option  value="15">五房二厅</option>
+	            
+              </select></li>
+              
+          <li>卫生间 <select name="xxj" id="xxj"  style="width:140px;">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select></li>
+              
+        <li>阳台 <select name="yt" id="yt"  style="width:140px;">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select></li>
+              
+        <li style="border-right:none;">装修风格 
+        
+        
+          <select id="fengge" name = "fengge" style="width:140px;">
+                
+                <option value="1">现代简约</option>
+                
+                <option value="2">中式怀旧</option>
+                
+                <option value="3">欧式古典</option>
+                
+                <option value="4">西式田园</option>
+                
+                <option value="5">中西合璧</option>
+                
+              </select></li>
+            </ul>
         </div>
         
-         
+        <div class="line_two">
+        	<ul>
+             
+              <li style="width:228px; padding-left:10px;">
+              装修档次 <select id = "dc" name="dc" style="width:140px; margin-left:10px;">
+                <option value="低档">简单装修</option>
+                <option value="中档">中档装修</option>
+                <option value="高档">精装修</option>
+              </select>
+              </li>
+           	  <li style="width:228px; padding-left:10px;">房间总面积
+       	      <input type="text" name="zmj" id="zmj" class="bj_inputtext1"  onkeyup="javascript:formatnums(this);" onblur="if(this.value==''){this.value='输入房屋面积';this.style.color='#aaa'}" onfocus="if(this.value=='输入房屋面积'){this.value='';this.style.color='#333'}" value="输入房屋面积"/>
+       	      </li>
+        		
+              
+              
+            </ul>
+            <div style="width:340px; height:39px;line-height:39px;float:left;text-align:center;">诚信合作单位</div>
+        <img src="images/renzheng.png" style="float:right;margin-right:20px;"/>
+            
+        </div>
+        
        <div class="line_two"  style="text-align: center;">
        
         	<ul >
-             <li style="width:170px; padding-left:10px;">
-              地区  
-            	  <INPUT id="inputcity"  class="baojia_input" padding:4px; font-size:14px;" type="text" readonly value="苏州"> 
-     <INPUT name="cityid" id="cityid" type="hidden" value="166">
- 
+            	<li style="width:415px; padding-left:10px;">业主所在地 <select id="city1" onchange="eval('city_1('+this.value+')');eval('city_2('+document.all.city2.value+')');getCityValue();getCityvaluename();" value = ""  name="cit1" style="width:110px;">
+                  <option value="" selected>请选择</option>
+                </select>
+              <select id="city2" onchange="eval('city_2('+this.value+')');getCityValue();getCityvaluename();" name="cit2" value = "" style="width:86px;">
+                  <option value="" selected>请选择</option>
+                </select>
+              <select id="city3" name="cit3" value = "" onchange="getCityValue();getCityvaluename();"  style="width:86px;">
+                  <option value="" selected>请选择</option>
+                </select></li>
+              <input type=hidden name="city_values" id="city_value" value=""/>
+              
               <li style="width:170px; padding-left:10px;">
               电话号码 <input type="text" id="phone" name="phone" value="" class="baojia_input" onkeyup="javascript:formatForInd(this,15);" /></li>
               
@@ -188,8 +293,6 @@
                   <option value="0" selected="selected">男</option>
                   <option value="1">女</option>
                 </select></li>
-                <li style="width:170px; padding-left:10px;">
-              小区 <input type="text" id="xq" name="xq" value="" class="baojia_input"   /></li>
               
               <li style="width:139px; border-right:none;">
               <a style="cursor: pointer;" onclick="check();clearxing();" class="a1"><img src="images/ksbj_but.png" width="96" height="25" border="0" /></a>
@@ -221,7 +324,7 @@
  -->
 			<input type="hidden" id = "sumcityname" name = "sumcityname" value = "" />
 			<input type="hidden" id = "pho" name="pho" value="" />
-			<input type="hidden" id = "rdm" name="rdm" value="1" />
+			<input type="hidden" id = "rdm" name="rdm" value="" />
 			<input type="hidden" id = "hadpho" name="hadpho" value="N" />
 			<input type="hidden" id = "xingshi" name="xingshi" value="" /><!-- 姓氏 -->
 			   <input type="hidden" id = "keyword" name="keyword" value="" />
