@@ -204,7 +204,7 @@ namespace XHD.DAL
             //strSql.Append("Remarks=@Remarks,");
             //strSql.Append("Mmaterial=@Mmaterial,");
             //strSql.Append("MmaterialDiscount=@MmaterialDiscount,");
-            //strSql.Append("fbAmount=@fbAmount,");
+            strSql.Append("fbAmount=@fbAmount,");
             strSql.Append("versions=@versions");
 			strSql.Append(" where id=@id ");
 			SqlParameter[] parameters = {

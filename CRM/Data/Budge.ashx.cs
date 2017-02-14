@@ -77,18 +77,19 @@ namespace XHD.CRM.Data
                 string bid = PageValidate.InputText(request["T_budgeid"], 50);
                 string sl = PageValidate.InputText(request["T_sl"], 50);
                 string zk = PageValidate.InputText(request["T_zk"], 50);
-
+                string mj = PageValidate.InputText(request["T_mj"], 50);
                 string bname = PageValidate.InputText(request["T_budge_name"], 250);
                 string submit = PageValidate.InputText(request["style"], 50);
                 string mblx = PageValidate.InputText(request["T_mblx"], 50);
               
-             
+                  
                 if (bd.updateAll(bid, StringToDecimal(zk), StringToDecimal(sl)) > 0)
                 {
                     mbb.id = bid;
                     mbb.DoTime = DateTime.Now;
                     mbb.DoPerson = emp_id;
                     mbb.BudgetName = bname;
+                    mbb.fbAmount = StringToDecimal(mj);
                     bbb.Update(mbb, mblx);
 
                     if (submit == "submit")//提交要改下状态
@@ -209,6 +210,7 @@ namespace XHD.CRM.Data
             {
                 string bid = PageValidate.InputText(request["bid"], 250);
                   //bbb.GetMaxId();
+                string mj = PageValidate.InputText(request["T_mj"], 50);
               string remarks = PageValidate.InputText(request["remark"], 250);
               string bname = PageValidate.InputText(request["bname"], 250);
               int cid = StringToInt(request["cid"]);
@@ -217,6 +219,7 @@ namespace XHD.CRM.Data
               mbb.DoPerson = emp_id;
               mbb.id = bid;
               mbb.BudgetName = bname;
+              mbb.fbAmount = StringToDecimal(mj);//面积
               mbb.IsStatus = 0;
               mbb.ModelStyle = "常规预算";
                 //防止多人操作，单据重复

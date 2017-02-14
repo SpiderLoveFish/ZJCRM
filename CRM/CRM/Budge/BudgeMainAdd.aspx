@@ -85,7 +85,7 @@
                 urlstr = '../../data/Budge.ashx?Action=tree&rnd=' + Math.random();
                 var myDate = new Date();
 
-                gcomb = $('#T_company').ligerComboBox({ width: 180, onBeforeOpen: f_selectContact });
+                gcomb = $('#T_company').ligerComboBox({ width: 245, onBeforeOpen: f_selectContact });
                 toolbar();
             }
 
@@ -799,6 +799,7 @@
                     $("#T_employee2").val(obj.sjs);
                     $("#T_zjezk").val(obj.zkzje);
                     $("#T_mblx").val(obj.ModelStyle);
+                    $("#T_mj").val(obj.fbAmount);//面积
                     var zk = obj.DetailDiscount;
                     if (zk == "") zk = 1;
                     if (zk != 1) {
@@ -841,7 +842,7 @@
             }
             fillemp(data.CustomerID, data.tel, data.CustomerName,
                 data.sgjl, data.sjs
-                , data.ywy, data.sjsid, data.sgjlid, data.ywyid, data.jhdate);
+                , data.ywy, data.sjsid, data.sgjlid, data.ywyid, data.jhdate, data.Fwmj);
             getmaxid();
             dialog.close();
         }
@@ -874,12 +875,12 @@
             dialog.close();
             fload();
         }
-        function fillemp(id, tel, emp, sgjl, sjs, ywy, sjsid, sgjlid, ywyid, jhdate) {
+        function fillemp(id, tel, emp, sgjl, sjs, ywy, sjsid, sgjlid, ywyid, jhdate, Fwmj) {
             $("#T_companyid").val(id);
             $("#T_company").val(emp);
             $("#T_budge_name").val("预算" + emp);
 
-
+            $("#T_mj").val(Fwmj);
             $("#T_remarks").val("");
 
 
@@ -894,7 +895,7 @@
             }
             $.ajax({
                 type: 'post',
-                url: "../../data/Budge.ashx?Action=saveadd&bid=" + $("#T_budgeid").val() + "&cid=" + $("#T_companyid").val() + "&remark=" + $("#T_remarks").val() + '&bname=' + $("#T_budge_name").val() + '&rdm=' + Math.random(),
+                url: "../../data/Budge.ashx?Action=saveadd&mj=" + $("#T_mj").val() + "&bid=" + $("#T_budgeid").val() + "&cid=" + $("#T_companyid").val() + "&remark=" + $("#T_remarks").val() + '&bname=' + $("#T_budge_name").val() + '&rdm=' + Math.random(),
                 success: function (data) {
                     if (data == 'false') {
                         getmaxid();
@@ -1355,7 +1356,10 @@
                  </tr>
                <tr>
                  <td   class="table_title1"><div style="width: 70px; text-align: right; float: right">备注：</div></td>
-                 <td colspan="7"   class="table_title1"><input id="T_remarks" name="T_remarks" type="text" ltype="text"  ligerui="{width:550}" /></td>
+
+                 <td colspan="5"   class="table_title1"><input id="T_remarks" name="T_remarks" type="text" ltype="text"  ligerui="{width:430}" /></td>
+                    <td   class="table_title1"><span style="width: 60px; text-align: right; float: right">面积：</span></td>
+                 <td   class="table_title1"><input id="T_mj" name="T_mj" validate="{required:false}"  ltype="text" ligerui="{width:60}"  /></td>
                  <td   class="table_title1"><span style="width: 60px; text-align: right; float: right">业务员：</span></td>
                  <td   class="table_title1"><input id="T_employee" name="T_employee" validate="{required:false}"  ltype="text" ligerui="{width:60,disabled:true}"  /></td>
                  <td   class="table_title1"><span style="width: 60px; text-align: right; float: right">设计师：</span></td>
