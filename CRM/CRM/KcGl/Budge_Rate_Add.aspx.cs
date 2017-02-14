@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Security;
 using XHD.Common;
+using System.Text;
 
 namespace Budge_Rate
 {
@@ -23,8 +24,8 @@ namespace Budge_Rate
                     {
                         var sb = new System.Text.StringBuilder();
                         sb.AppendLine("SELECT * ");
-                        sb.AppendLine("FROM dbo.Budge_Rate ");
-                        sb.AppendLine("WHERE ID='" + Request["cid"] + "'");
+                        sb.AppendLine("FROM dbo.Budge_Rate A LEFT JOIN Budge_Rate_CalculationFormula B ON A.formulaId=B.id ");
+                        sb.AppendLine("WHERE A.ID='" + Request["cid"] + "'");
                         DataRow[] dr = SqlDB.ExecuteDataTable(sb.ToString()).Output1.Select("");
                         string jdata = Tools.DataRowToJson(dr, Types.JosnType.Form);
                         Response.ContentType = "application/json";
@@ -45,6 +46,69 @@ namespace Budge_Rate
                     Response.End();
                 }
             }
+            if (cmd == "getBz")
+            {
+                if (!string.IsNullOrEmpty(Request["formula"]))
+                {
+                    try
+                    {
+                        string strFormula = Request["formula"];
+                        strFormula = Convert.ToString(System.Web.HttpUtility.UrlDecode(strFormula));
+
+                        //string strFormula = PageValidate.InputText(Request["formula"], 255);
+                        var sb = new System.Text.StringBuilder();
+                        sb.AppendLine("SELECT bz ");
+                        sb.AppendLine("FROM dbo.Budge_Rate_CalculationFormula ");
+                        sb.AppendLine("WHERE formula='" + strFormula + "'");
+                        DataRow[] dr = SqlDB.ExecuteDataTable(sb.ToString()).Output1.Select("");
+                        string jdata = Tools.DataRowToJson(dr, Types.JosnType.Form);
+                        Response.ContentType = "application/json";
+                        Response.Write(jdata);
+                    }
+                    catch (Exception ex)
+                    {
+                        Response.Write(ex.Message);
+                    }
+                    finally
+                    {
+                        Response.End();
+                    }
+                }
+                else
+                {
+                    Response.Write("{}");
+                    Response.End();
+                }
+            }
+            if (cmd == "getCalculationFormula")    //获取计算公式
+            {
+                try
+                {
+                    var sb = new System.Text.StringBuilder();
+                    sb.AppendLine("SELECT * ");
+                    sb.AppendLine("FROM dbo.Budge_Rate_CalculationFormula ");
+                    DataTable dt = SqlDB.ExecuteDataTable(sb.ToString()).Output1;
+                    StringBuilder str = new StringBuilder();
+                    str.Append("[");
+                    //str.Append("{id:0,text:'无'},");
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        str.Append("{id:" + dt.Rows[i]["id"].ToString() + ",text:'" + dt.Rows[i]["formula"] + "'},");
+                    }
+                    str.Replace(",", "", str.Length - 1, 1);
+                    str.Append("]");
+
+                    Response.Write(str);
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.Message);
+                }
+                finally
+                {
+                    Response.End();
+                }
+            }
             else if (cmd == "save")
             {
                 try
@@ -55,19 +119,21 @@ namespace Budge_Rate
                     var sb = new System.Text.StringBuilder();
                     if (string.IsNullOrWhiteSpace(ID) || ID == "null")
                     {
-                        sb.AppendLine("INSERT INTO dbo.Budge_Rate (RateName,measure,rate,Remarks) ");
+                        sb.AppendLine("INSERT INTO dbo.Budge_Rate (RateName,measure,rate,Remarks,formulaId) ");
                         sb.AppendLine("VALUES  ('" + Request["RateName"] + "', ");
                         sb.AppendLine("         '按工程直接费用百分比计算', ");
                         sb.AppendLine(" " + Request["rate"] + ", ");
                      //   sb.AppendLine("         '" + Request["lxrid"] + "', ");
-                        sb.AppendLine("         '" + Request["Remarks"] + "') ");
+                        sb.AppendLine("         '" + Request["Remarks"] + "', ");
+                        sb.AppendLine("         '" + Request["formula_val"] + "') ");
                     }
                     else
                     {
                         sb.AppendLine("UPDATE dbo.Budge_Rate SET ");
                         sb.AppendLine("         RateName='" + Request["RateName"] + "', ");
                         sb.AppendLine("         rate='" + Request["rate"] + "', ");
-                        sb.AppendLine("         Remarks='" + Request["Remarks"] + "' ");
+                        sb.AppendLine("         Remarks='" + Request["Remarks"] + "', ");
+                        sb.AppendLine("         formulaId='" + Request["formula_val"] + "' ");
                         sb.AppendLine("WHERE ID='" + ID + "' ");
 
                     }

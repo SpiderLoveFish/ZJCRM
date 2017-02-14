@@ -130,6 +130,13 @@ namespace XHD.CRM.Data
                 model.idcard = PageValidate.InputText(request["T_idcard"], 255);
                 model.tel = PageValidate.InputText(request["T_tel"], 255);
                 model.status = PageValidate.InputText(request["T_status"], 255);
+
+                string strZhiwuid = PageValidate.InputText(request["T_zhiwu_val"], 255);
+                if (string.IsNullOrEmpty(strZhiwuid))
+                    strZhiwuid = "0";
+                model.zhiwuid = int.Parse(strZhiwuid);
+
+                model.zhiwu = PageValidate.InputText(request["T_zhiwu"], 255);
                 model.EntryDate = PageValidate.InputText(request["T_entryDate"], 255);
                 model.address = PageValidate.InputText(request["T_Adress"], 255);
                 model.schools = PageValidate.InputText(request["T_school"], 255);
@@ -173,6 +180,9 @@ namespace XHD.CRM.Data
 
                     if (dr["status"].ToString() != request["T_status"])
                         log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "状态", dr["status"].ToString(), request["T_status"]);
+
+                    if (dr["zhiwu"].ToString() != request["T_zhiwu"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "类型", dr["zhiwu"].ToString(), request["T_zhiwu"]);
 
                     if (dr["idcard"].ToString() != request["T_idcard"])
                         log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "身份证", dr["idcard"].ToString(), request["T_idcard"]);

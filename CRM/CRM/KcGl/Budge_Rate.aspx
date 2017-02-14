@@ -51,9 +51,11 @@
                         }
                     },
                     { display: '附加费名称', name: 'RateName', width: 150, align: 'left' },
-                    { display: '附加费说明', name: 'measure', width: 200, align: 'left' },
-                    { display: '附加费率', name: 'rate', width: 60, align: 'right' },
-                    { display: '备注', name: 'Remarks', width: 200, align: 'left' }
+                    
+                    { display: '费率 / 单价', name: 'rate', width: 80, align: 'right' },
+                    { display: '公式', name: 'formula', width: 100, align: 'left' },
+                    { display: '说明', name: 'bz', width: 200, align: 'left' },
+                    { display: '备注', name: 'Remarks', width: 500, align: 'left' }
                    // { display: '登记人', name: 'InEmpID', width: 80 },
                    // { display: '登记日期', name: 'InDate', width: 150 }
                     //{ display: '售楼电话', name: 'Sldh', width: 80 },
@@ -111,13 +113,13 @@
             manager.GetDataByURL("Budge_Rate.aspx?" + serchtxt);
         }
         function add() {
-            f_openWindow("CRM/KcGl/Budge_Rate_Add.aspx", "新增附加费", 600, 220);
+            f_openWindow("CRM/KcGl/Budge_Rate_Add.aspx", "新增附加费", 600, 300);
         }
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("CRM/KcGl/Budge_Rate_Add.aspx?cid=" + row.id, "附加费维护", 600, 220);
+                f_openWindow("CRM/KcGl/Budge_Rate_Add.aspx?cid=" + row.id, "附加费维护", 600, 300);
             }
             else {
                 $.ligerDialog.warn('请选择行！');

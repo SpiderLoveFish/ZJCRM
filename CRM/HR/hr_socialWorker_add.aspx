@@ -55,7 +55,7 @@
                 }
             })
 
-
+            $('#T_zhiwu').ligerComboBox({ width: 97, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=17&rnd=" + Math.random() });
 
             if (getparastr("empid")) {
                 loadForm(getparastr("empid"));
@@ -98,8 +98,6 @@
             }, function (e) {
                 $(this).ligerHideTip(e);
             });
-
-
 
         });
 
@@ -174,7 +172,7 @@
                     //$("#T_dep").ligerGetComboBoxManager().selectValue(obj.d_id);
                     //$("#T_Position").ligerGetComboBoxManager().selectValue(obj.zhiwuid);
                     $("#T_status").ligerGetComboBoxManager().selectValue(obj.status);
-
+                    $("#T_zhiwu").ligerGetComboBoxManager().selectValue(obj.zhiwuid);
                     // $("#T_uid").ligerGetTextBoxManager().setDisabled();
                     // $("#T_uid").attr("validate", "{required:true}");
                     $("input[type=radio][value=" + obj.canlogin + "]").attr("checked", 'checked');
@@ -406,9 +404,10 @@
                         <div align="right" style="width: 61px">
                             ¿‡–Õ£∫
                         </div>
-                    </td>
+                    </td>              
                     <td>
-                      </td>
+                            <input id="T_zhiwu" name="T_zhiwu" type="text" style="width: 196px" />
+                    </td>
                 </tr>
                 <tr>
                     <td>

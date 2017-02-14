@@ -33,8 +33,30 @@
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
             $("form").ligerForm();
+            $('#formula').ligerComboBox({ width: 150, url: "Budge_Rate_Add.aspx?cmd=getCalculationFormula" });
             loadForm(getparastr("cid"));
-          
+            $('#formula').bind("change", function () {
+                var formula = $(this).val();
+                //alert("formula:" + formula);
+                $.ajax({
+                    type: "GET",
+                    url: "Budge_Rate_Add.aspx?cmd=getBz&formula=" + encodeURI(encodeURI(formula)) + "&rnd=" + Math.random(),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        var obj = eval(data);
+                        for (var n in obj) {
+                            if (obj[n] == "null" || obj[n] == null)
+                                obj[n] = "";
+                        }
+                        $('#bz').val(obj.bz);
+                    },
+                    error: function (ex) {
+                        top.$.ligerDialog.error('操作失败，错误信息：' + ex.responseText);
+                    }
+                });
+            }
+                              );
         })
         function loadForm(cid) {
             $.ajax({
@@ -53,7 +75,8 @@
                     $("#measure").val(obj.measure);
                     $("#rate").val(obj.rate);
                     $("#Remarks").val(obj.Remarks);
-
+                    $('#formula').val(obj.formula);
+                    $('#bz').val(obj.bz);
                    
                    
       
@@ -113,19 +136,34 @@
             --%>
             <tr>
                 <td>
-                    <div style="width: 100px; text-align: right; float: right">附加费率：</div>
+                    <div style="width: 100px; text-align: right; float: right">费率/单价：</div>
                 </td>
                 <td>
                   <input type="text" id="rate" name="rate" ltype="text" ligerui="{width:100}" validate="{required:true}" />
                    
                 </td>
-                                <td>
-                 说明：20% 请录入 0.2
+                                <td width="400">
+                 <strong style="color:red"> 说明：费率20% 请录入 0.2，单价请直接录入金额</strong>
                    
                 </td>
                 
             </tr>
-           
+           <tr>
+              <td>
+                    <div style="width: 100px; text-align: right; float: right">计算公式：</div>
+                </td>
+                <td colspan="2">
+                  <input type="text" id="formula" name="formula" ligerui="{width:100}" validate="{required:true}" />                 
+                </td>  
+           </tr>
+           <tr>
+              <td>
+                    <div style="width: 100px; text-align: right; float: right">公式说明：</div>
+                </td>
+                 <td colspan="2">
+                   <input type="text" id="bz" name="bz" ltype="text" ligerui="{width:420}" readonly="readonly" />  
+                </td>   
+           </tr>
            <tr>
                 <td>
                     <div style="width: 100px; text-align: right; float: right">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</div>

@@ -182,6 +182,7 @@
     <Content Include="CRM\ConsExam\XM_LIST.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST.aspx" />
     <Content Include="CRM\ConsExam\SelectCEStageCustomer.aspx" />
+    <Content Include="CRM\Customer\Customer_add_GJXG.aspx" />
     <Content Include="CRM\Customer\ScoreShop_add.aspx" />
     <Content Include="CRM\Customer\ScoreShop.aspx" />
     <Content Include="CRM\Customer\ClassicCase.aspx" />
@@ -325,6 +326,8 @@
     <Content Include="HR\hr_socialWorker.aspx" />
     <Content Include="HR\hr_socialWorker_add.aspx" />
     <Content Include="HR\hr_socialWorker_changpwd.aspx" />
+    <Content Include="HR\hr_socialWorker_Follow.aspx" />
+    <Content Include="HR\hr_socialWorker_Follow_add.aspx" />
     <Content Include="HR\Sys_Role_authorized.aspx" />
     <Content Include="Images\big_bgcolor.jpg" />
     <Content Include="Images\bt_92X120.png" />
@@ -946,6 +949,7 @@
     <Content Include="Data\ScoreShop.ashx" />
     <Content Include="Data\CRM_CEStage_Follow.ashx" />
     <Content Include="Data\hr_socialWorker.ashx" />
+    <Content Include="Data\hr_socialWorker_Follow.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -4569,6 +4573,9 @@
     </Compile>
     <Compile Include="Data\hr_socialWorker.ashx.cs">
       <DependentUpon>hr_socialWorker.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\hr_socialWorker_Follow.ashx.cs">
+      <DependentUpon>hr_socialWorker_Follow.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\ScoreShop.ashx.cs">
       <DependentUpon>ScoreShop.ashx</DependentUpon>

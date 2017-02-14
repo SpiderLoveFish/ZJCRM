@@ -91,8 +91,7 @@
                                    return "<span><div style='color:#" + item.indcolor + "'>" + item.industry + "</div></span>";
                                }
                            },
-                                // { display: '客户状态', name: 'industry', width: 80 },
-                     
+                                
                        //{ display: '省份', name: 'Provinces', width: 80 },
                        //{ display: '城市', name: 'City', width: 80 },
                        //{ display: '区镇', name: 'Towns', width: 80 },
@@ -104,7 +103,7 @@
                        { display: '设计师', name: 'Emp_sj', width: 50 },
                        { display: '施工监理', name: 'Emp_sg', width: 60 },
                         {
-                            display: '进度', name: 'Stage_icon', width: 60, render: function (item) {
+                            display: '当前阶段', name: 'Stage_icon', width: 60, render: function (item) {
 
                                 var html;
                                 if (item.Stage_icon == "正在施工") {
@@ -123,7 +122,71 @@
                                 return html;
                             }
                         },
+                         {
+                             display: '下个阶段', name: 'Stage_icon', width: 60, render: function (item) {
 
+                                 var html;
+
+                                
+                                 if (item.Stage_icon == "正在施工") {
+                                     html = "<div style='color:#339900'>";
+                                     html += "施工完成";
+                                     html += "</div>";
+                                 }
+                                 else if (item.Stage_icon == "施工完成") {
+                                     html = "<div style='color:#000'>";
+                                     html += "无";
+                                     html += "</div>";
+                                 }
+                                 else if (item.Stage_icon == "未签单") {
+                                     html = "<div style='color:#FF0000'>";
+                                     html += "已签单";
+                                     html += "</div>";
+                                 }
+                                 else {
+                                     html = item.Stage_icon;
+                                 }
+                                 return html;
+                             }
+                         },
+                         {
+                             display: '效果图', name: 'kjl', width: 60, render: function (item) {
+                                 var html;
+
+                                 if (item.kjl == "Y") {
+                                     html = "<div style='color:#FF0000'>";
+                                     html += "有";
+                                     html += "</div>";
+                                 }
+                                 else  {
+                                     html = "<div style='color:#000'>";
+                                     html += "无";
+                                     html += "</div>";
+                                 }
+                                 return html;
+                             }
+                         },
+
+                          {
+                              display: '应收金额', name: 'Order_amount', width: 80, align: 'right', render: function (item) {
+                                  return "<div style='color:#135294'>" + toMoney(item.Order_amount) + "</div>";
+                              }
+                          },
+                           {
+                               display: '已收定金', name: 'dj_amount', width: 80, align: 'right', render: function (item) {
+                                   return "<div style='color:#135294'>" + toMoney(item.dj_amount) + "</div>";
+                               }
+                           },
+                             {
+                                 display: '已付装修款', name: 'zx_amount', width: 80, align: 'right', render: function (item) {
+                                     return "<div style='color:#135294'>" + toMoney(item.zx_amount) + "</div>";
+                                 }
+                             },
+                               {
+                                   display: '未付金额', name: 'wx_amount', width: 80, align: 'right', render: function (item) {
+                                       return "<div style='color:#135294'>" + toMoney(item.Order_amount - item.dj_amount - item.zx_amount) + "</div>";
+                                   }
+                               },
                        { display: '性质', name: 'privatecustomer', width: 40 },
 
 
@@ -360,7 +423,69 @@
 
                     }
                 }
-            });
+                });
+            if (getparastr("type") == "GJXG")
+
+                $("#maingrid5").ligerGrid({
+                    columns: [
+                            { display: '序号', width: 40, render: function (item, i) { return i + 1; } },
+
+                            {
+                                display: '交易时间', name: 'Follow_date', width: 140, render: function (item) {
+                                    return formatTimebytype(item.Follow_date, 'yyyy-MM-dd hh:mm');
+                                }
+                            },
+                            { display: '交易类别', name: 'Follow_Type', width: 60 },
+                          
+                            {
+                                display: '交易金额', name: '', width: 100, render: function (item) {
+                                    return item.employee_name;
+                                }
+                            },
+                             {
+                                 display: '凭证号', name: '', width: 100, render: function (item) {
+                                     return item.employee_name;
+                                 }
+                             },
+                               {
+                                   display: '交易人', name: '', width: 80, render: function (item) {
+                                       return item.employee_name;
+                                   }
+                               },
+                              {
+                                  display: '录入人', name: '', width: 80, render: function (item) {
+                                      return item.employee_name;
+                                  }
+                              },
+                              {
+                                  display: '录入时间', name: '', width: 80, render: function (item) {
+                                      return item.employee_name;
+                                  }
+                              }
+
+
+                    ],
+                    onAfterShowData: function (grid) {
+                        $(".abc").hover(function (e) {
+                            $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                        }, function (e) {
+                            $(this).ligerHideTip(e);
+                        });
+                    },
+                    dataAction: 'server', pageSize: 30, pageSizeOptions: [20, 30, 50, 100],
+                    //checkbox:true,
+                    url: "../../data/CRM_Follow.ashx?Action=grid&customer_id=0",
+                    width: '100%', height: '100%',
+                    //title: "跟进信息",
+                    heightDiff: -1,
+                    onRClickToSelect: true,
+                    onContextmenu: function (parm, e) {
+                        actionCustomerID = parm.data.id;
+                        menu1.show({ top: e.pageY, left: e.pageX });
+                        return false;
+                    }
+                });
+            else
             $("#maingrid5").ligerGrid({
                 columns: [
                         { display: '序号', width: 40, render: function (item, i) { return i + 1; } },
@@ -410,13 +535,17 @@
             $('form').ligerForm();
             toolbar();
         });
+       
 
-        var mid;
-        if (getparastr("type") == "GJXG")
+        var mid,mid2;
+        if (getparastr("type") == "GJXG") {
             mid = 194;
-        else
+            mid2 = 196;
+        }
+        else {
             mid = 4;
-
+            mid2 = 6;
+        }
         function toolbar() {
             $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid="+mid+"&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
@@ -426,19 +555,36 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
+                if (getparastr("type") == "GJXG") {
+                    items.push({
+                        type: 'textbox',
+                        id: 'sectype',
+                        name: 'sectype',
+                        text: '筛选'
+                    });
+                    items.push({
+                        type: 'textbox',
+                        id: 'thtype',
+                        name: 'thtype',
+                        text: '阶段'
+                    });
+                }
+                else {
+                    items.push({
+                        type: 'textbox',
+                        id: 'stype',
+                        name: 'stype',
+                        text: '类型'
+                    });
 
-                items.push({
-                    type: 'textbox',
-                    id: 'stype',
-                    name: 'stype',
-                    text: '类型'
-                });
-                items.push({
-                    type: 'textbox',
-                    id: 'sbq',
-                    name: 'sbq',
-                    text: '标签'
-                });
+
+                    items.push({
+                        type: 'textbox',
+                        id: 'sbq',
+                        name: 'sbq',
+                        text: '标签'
+                    });
+                }
                 items.push({
                     type: 'textbox',
                     id: 'keyword1',
@@ -472,7 +618,7 @@
                 });
 
             });
-            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=6&rnd=" + Math.random(), function (data, textStatus) {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=" + mid2 + "&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
                 var items = [];
                 var arr = data.Items;
@@ -491,6 +637,48 @@
                     isMultiSelect: true,
                     url: "../../data/param_sysparam.ashx?Action=combo&parentid=1&rnd=" + Math.random()
                 })
+                $('#sectype').ligerComboBox({
+                    width: 80,
+                    isMultiSelect: true,
+                    selectBoxWidth: 120,
+                    selectBoxHeight: 120,
+                    valueField: 'id',
+                    textField: 'text',
+                    treeLeafOnly: true,
+                    tree: {
+                        data: [
+                   { text: '已付定金' },
+                   { text: '未付定金' },
+                   { text: '已结清' },
+                   { text: '未结清' },
+                   { text: '有效果图' },
+                   { text: '无效果图' }
+        
+
+                        ],
+                        checkbox: false
+                    }
+                });
+                $('#thtype').ligerComboBox({
+                    width: 80,
+                    isMultiSelect: true,
+                    selectBoxWidth: 120,
+                    selectBoxHeight: 120,
+                    valueField: 'id',
+                    textField: 'text',
+                    treeLeafOnly: true,
+                    tree: {
+                        data: [
+                   { text: '未签单' },
+                   { text: '已签单' },
+                   { text: '正在施工' },
+                   { text: '施工完成' }
+
+
+                        ],
+                        checkbox: false
+                    }
+                });
                 $("#sbq").ligerComboBox({
                     width: 100,
                     isMultiSelect: true,

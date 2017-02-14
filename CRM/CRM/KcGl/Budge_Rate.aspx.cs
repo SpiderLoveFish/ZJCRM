@@ -23,21 +23,23 @@ namespace Budge_Rate
                     string sortname = Request["sortname"];
                     string sortorder = Request["sortorder"];
                     if (string.IsNullOrEmpty(sortname))
-                        sortname = "ID";
+                        sortname = "A.ID";
                     if (string.IsNullOrEmpty(sortorder))
                         sortorder = "DESC";
                     string sorttext = sortname + " " + sortorder;
-                    string serchtxt = "ID is not null ";
+                    string serchtxt = "A.ID is not null ";
                     if (!string.IsNullOrEmpty(Request["stext"]))
-                        serchtxt += "AND RateName LIKE ''%" + Request["stext"] + "%'' ";
+                        serchtxt += "AND A.RateName LIKE ''%" + Request["stext"] + "%'' ";
 
                     var sb = new System.Text.StringBuilder();
                     sb.AppendLine("DECLARE @recordTotal INT ");
                     sb.AppendLine("EXEC dbo.usp_GetPagerData ");
                     sb.AppendLine("    @recordTotal OUT , -- int ");
-                    sb.AppendLine("    @viewName='Budge_Rate' , -- varchar(800) ");
-                    sb.AppendLine("    @fieldName='*' , -- varchar(800) ");
-                    sb.AppendLine("    @keyName='ID' , -- varchar(200) ");
+                    //sb.AppendLine("    @viewName='Budge_Rate' , -- varchar(800) ");
+                    sb.AppendLine("    @viewName='Budge_Rate A LEFT JOIN Budge_Rate_CalculationFormula B ON A.formulaId=B.id' , -- varchar(800) ");
+                    //sb.AppendLine("    @fieldName='*' , -- varchar(800) ");
+                    sb.AppendLine("    @fieldName='A.*,B.formula,B.bz' , -- varchar(800) ");
+                    sb.AppendLine("    @keyName='A.ID' , -- varchar(200) ");
                     sb.AppendLine("    @pageSize='" + pagesize + "' , -- int ");
                     sb.AppendLine("    @pageNo='" + pageno + "' , -- int ");
                     sb.AppendLine("    @orderString='" + sorttext + "' , -- varchar(200) ");
