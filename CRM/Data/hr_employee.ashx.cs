@@ -132,9 +132,10 @@ namespace XHD.CRM.Data
                 model.address = PageValidate.InputText(request["T_Adress"], 255);
                 model.schools = PageValidate.InputText(request["T_school"], 255);
                 model.education = PageValidate.InputText(request["T_edu"], 255);
-                model.professional = PageValidate.InputText(request["T_professional"], 255);
+                model.work_id = PageValidate.InputText(request["T_work_id"], 255);
+                //model.professional = PageValidate.InputText(request["T_professional"], 255);
                 model.remarks = PageValidate.InputText(request["T_remarks"], 255);
-                model.title = PageValidate.InputText(request["headurl"], 255);
+                //model.title = PageValidate.InputText(request["headurl"], 255);
                 model.canlogin = int.Parse(request["canlogin"]);
                 model.Delete_time = DateTime.Now;
                 int empid;

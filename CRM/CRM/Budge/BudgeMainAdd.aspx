@@ -1358,7 +1358,7 @@
                  <td   class="table_title1"><div style="width: 70px; text-align: right; float: right">备注：</div></td>
 
                  <td colspan="5"   class="table_title1"><input id="T_remarks" name="T_remarks" type="text" ltype="text"  ligerui="{width:430}" /></td>
-                    <td   class="table_title1"><span style="width: 60px; text-align: right; float: right">面积：</span></td>
+                    <td   class="table_title1"><span style="width: 60px; text-align: right; float: right">面积㎡：</span></td>
                  <td   class="table_title1"><input id="T_mj" name="T_mj" validate="{required:false}"  ltype="text" ligerui="{width:60}"  /></td>
                  <td   class="table_title1"><span style="width: 60px; text-align: right; float: right">业务员：</span></td>
                  <td   class="table_title1"><input id="T_employee" name="T_employee" validate="{required:false}"  ltype="text" ligerui="{width:60,disabled:true}"  /></td>

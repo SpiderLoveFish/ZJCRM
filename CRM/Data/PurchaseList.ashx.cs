@@ -148,7 +148,39 @@ namespace XHD.CRM.Data
                 string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "RefMaterialsListgrid")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string serchtxt = " 1=1 "; 
+                if (!string.IsNullOrEmpty(request["stext"]))
+                {
+                    serchtxt += " and (product_name like N'%" + PageValidate.InputText(request["stext"], 255) + "%'" +
+                        " or address  like N'%" + PageValidate.InputText(request["stext"], 255) + "%'" +
+                 "  or Customer  like N'%" + PageValidate.InputText(request["stext"], 255) + "%'" +
+                  "  or  tel  like N'%" + PageValidate.InputText(request["stext"], 255) + "%' )";
+                }
+                if (!string.IsNullOrEmpty(request["bgtxt"]))
+                {
+                    serchtxt += " and DoTime >= '" + PageValidate.InputText(request["bgtxt"], 255) + "'";
 
+                }
+                if (!string.IsNullOrEmpty(request["endtxt"]))
+                {
+                    serchtxt += " and DoTime <= '" + PageValidate.InputText(request["endtxt"], 255) + "'";
+
+                }
+                string sectype = PageValidate.InputText(context.Request["sectype_val"], 50);
+                if (!string.IsNullOrEmpty(sectype) && sectype != "null" && sectype != "99")
+                    serchtxt += string.Format(" and  Isstatus IN({0})", sectype.Replace(';', ','));
+
+               // serchtxt += " and DoPerson='" + emp_id + "'";
+                //权限
+                DataSet ds = ccp.GetRefMaterialsList(PageSize, PageIndex, serchtxt);
+
+                string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], ds.Tables[0].Rows.Count.ToString());
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "tempgrid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);

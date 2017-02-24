@@ -34,7 +34,7 @@
                 columns: [
                     //{ display: 'ID', name: 'ID', type: 'int', width: 50 },
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
-                     { display: '员工编号', name: 'ID' },
+                     { display: '员工编号', name: 'work_id' },
                    {
                         display: '名字', name: 'name', width: 120, render: function (item) {
                             var html = "<a href='javascript:void(0)' onclick=view(8," + item.ID + ")>";

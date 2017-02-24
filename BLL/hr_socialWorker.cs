@@ -343,6 +343,13 @@ namespace XHD.BLL
             return dal.UpdateDefaultCity(model);
         }
 
+        /// <summary>
+        /// 更新最后跟进
+        /// </summary>
+        public bool UpdateLastFollow(string id)
+        {
+            return dal.UpdateLastFollow(id);
+        }
 
         #endregion  Method
     }

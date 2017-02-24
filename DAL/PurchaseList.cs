@@ -493,6 +493,71 @@ namespace XHD.DAL
             return DbHelperSQL.Query(strSql.ToString());
         }
 
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        public DataSet GetRefMaterialsList(int PageSize, int PageIndex, string strWhere)
+        {
+            string sqlstr = " SELECT *" +
+                                "  FROM   ( SELECT  row_number() OVER (ORDER BY A.DoTime DESC ) n,  a.id ," +
+                                "        a.CustomerID ," +
+                                "        a.product_id ,A.DoTime,A.DoPerson," +
+                                "        c.product_name ," +
+                                "        a.amountsum sqsl ," +
+                                "        ISNULL(b.pursum, 0) cgsl ," +
+                                "        ISNULL(d.pursum, 0) llsl ," +
+                                "        CASE WHEN a.amountsum - ISNULL(d.pursum, 0) <= 0 THEN '5'" +//  -- 领料完成 申请减领料小于等于0
+                                "             WHEN a.amountsum - ISNULL(d.pursum, 0) > 0" +
+                                "                  AND ISNULL(d.pursum, 0) > 0" +
+                                "                  AND a.IsStatus <> 7 THEN '2'" +// -- 领料未完申请减领料大于0并状态不等于7
+                                "             WHEN a.amountsum - ISNULL(b.pursum, 0) <= 0 THEN '4'" +//  --采购完成 申请采购料小于等于0
+                                "             WHEN a.amountsum - ISNULL(b.pursum, 0) > 0" +
+                                "                  AND ISNULL(b.pursum, 0) > 0" +
+                                "                  AND a.IsStatus <> 7 THEN '1'" +// --采购未完申请减采购大于0并状态不等于7
+                                "             WHEN ISNULL(d.pursum, 0) + ISNULL(b.pursum, 0) = 0" +
+                                "                  AND a.IsStatus <> 7 THEN '3' " +//--未处理未发生过领料与采购的显示未处理
+                                "             WHEN a.IsStatus = 7 THEN '7'" +// --已结案以上不满足并状态是7的显示已结案
+                                "             ELSE '未知'" +//--有没考虑到的显示未知,发现后补充
+                                "        END AS IsStatus," +
+                                "		 C.category_name,C.specifications,C.status,C.unit,C.remarks,C.isDelete,C.Delete_time,  " +
+                                "                                 C.t_content,C.url,C.InternalPrice ,C.Suppliers ,C.ProModel ,C.ProSeries ,  " +
+                                "                                 C.Themes,C.Brand,C.C_code,C.C_style ,f.Customer ,e.name,f.address,f.tel   " +
+                                " FROM    dbo.PurchaseList a" +
+                                "        LEFT JOIN ( SELECT  b.customid ," +
+                                "                            a.material_id ," +
+                                "                            SUM(pursum) pursum" +
+                                "                    FROM    dbo.Purchase_Detail a" +
+                                "                            LEFT JOIN Purchase_Main b ON a.Purid = b.Purid" +
+                                "                    GROUP BY b.customid ," +
+                                "                            a.material_id" +
+                                "                  ) b ON a.customerid = b.customid" +
+                                "                         AND a.product_id = b.material_id" +
+                                "        LEFT JOIN ( SELECT  b.CustomerID ," +
+                                "                            a.material_id ," +
+                                "                            SUM(pursum) pursum" +
+                                "                    FROM    dbo.OutStock_Detail a" +
+                                "                            LEFT JOIN dbo.OutStock_Main b ON a.ckid = b.ckid" +
+                                "                    GROUP BY b.CustomerID ," +
+                                "                            a.material_id" +
+                                "                  ) d ON a.customerid = d.customerid" +
+                                "                         AND a.product_id = d.material_id" +
+                                "        LEFT JOIN dbo.CRM_product c ON a.product_id = c.product_id" +
+                                "		  LEFT JOIN dbo.hr_employee e ON a.DoPerson=e.ID    " +
+                                "        INNER JOIN dbo.CRM_Customer f ON A.CustomerID=f.id " +
+                                " WHERE   a.isstatus = 1" +
+                                "        AND c.product_id IS NOT NULL" +
+                                "   ) PurchaseList   " +
+
+                         "			  WHERE n>=" + (PageIndex - 1) * PageSize + "" +
+                         "			  AND n<" + PageSize * PageIndex + "";
+                        if (strWhere.Trim() != "")
+                    {
+                        sqlstr += " and " + strWhere;
+               
+                    }
+           
+            return DbHelperSQL.Query(sqlstr);
+        }
 
 
         /// <summary>
@@ -506,11 +571,11 @@ namespace XHD.DAL
             strSql.Append(" top " + PageSize + " * FROM (SELECT A.*, ");
             strSql.Append(" B.product_name,B.category_name,B.specifications,B.status,B.unit,B.remarks,B.isDelete,B.Delete_time,");
               strSql.Append(" B.t_content,B.url,B.InternalPrice ,B.Suppliers ,B.ProModel ,B.ProSeries ,");
-              strSql.Append(" B.Themes,B.Brand,B.C_code,B.C_style ");
+              strSql.Append(" B.Themes,B.Brand,B.C_code,B.C_style ,c.name");
               strSql.Append(" FROM dbo.PurchaseList A ");
              strSql.Append(" INNER JOIN dbo.CRM_product B ON  ");
              strSql.Append(" A.product_id=B.product_id AND A.category_id=B.category_id");
-             strSql.Append(" LEFT JOIN dbo.hr_employee c ON a.DoPerson=c.ID  ");
+             strSql.Append(" inner JOIN dbo.hr_employee c ON a.DoPerson=c.ID  ");
               
              strSql.Append(" )PurchaseList ");
             strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM PurchaseList ");

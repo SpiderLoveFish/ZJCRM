@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 
+
 namespace XHD.DAL
 {
 	/// <summary>
@@ -405,8 +406,10 @@ namespace XHD.DAL
 		}*/
 
 		#endregion  BasicMethod
+
 		#region  ExtensionMethod
         #endregion  BasicMethod
+
         #region  ExtensionMethod
         /// <summary>
         /// 分页获取数据列表

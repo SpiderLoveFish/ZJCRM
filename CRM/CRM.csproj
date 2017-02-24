@@ -145,6 +145,7 @@
     <Content Include="CRM\Cggl\Sgry.aspx" />
     <Content Include="CRM\Cggl\Sgry_Add.aspx" />
     <Content Include="CRM\Cggl\Sgry_Rq.aspx" />
+    <Content Include="CRM\ConsExam\CEReferenceMaterials.aspx" />
     <Content Include="CRM\ConsExam\CEStage.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category_add.aspx" />
@@ -160,6 +161,7 @@
     <Content Include="CRM\ConsExam\CEStage_follow_add.aspx" />
     <Content Include="CRM\ConsExam\CEStage_follow.aspx" />
     <Content Include="CRM\ConsExam\kjl_edit_bj.aspx" />
+    <Content Include="CRM\ConsExam\kjl_index_1.aspx" />
     <Content Include="CRM\ConsExam\kjl_index_3DLIST.aspx" />
     <Content Include="CRM\ConsExam\kjl_search.aspx" />
     <Content Include="CRM\ConsExam\kjl_index.aspx" />
@@ -167,8 +169,8 @@
     <Content Include="CRM\ConsExam\Getemp.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST_DEL.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST_DEL_Add.aspx" />
-    <Content Include="CRM\ConsExam\kjl_search_lf.aspx" />
     <Content Include="CRM\ConsExam\kjl_search_bj.aspx" />
+    <Content Include="CRM\ConsExam\kjl_search_lf.aspx" />
     <Content Include="CRM\ConsExam\kjl_search_my.aspx" />
     <Content Include="CRM\ConsExam\kjl_view.aspx" />
     <Content Include="CRM\ConsExam\SelectMaterials_add.aspx" />
@@ -325,6 +327,8 @@
     <Content Include="HR\hr_changepwd.aspx" />
     <Content Include="HR\hr_socialWorker.aspx" />
     <Content Include="HR\hr_socialWorker_add.aspx" />
+    <Content Include="HR\hr_socialWorker_Calendar.aspx" />
+    <Content Include="HR\hr_socialWorker_Calendar_add.aspx" />
     <Content Include="HR\hr_socialWorker_changpwd.aspx" />
     <Content Include="HR\hr_socialWorker_Follow.aspx" />
     <Content Include="HR\hr_socialWorker_Follow_add.aspx" />
@@ -950,6 +954,7 @@
     <Content Include="Data\CRM_CEStage_Follow.ashx" />
     <Content Include="Data\hr_socialWorker.ashx" />
     <Content Include="Data\hr_socialWorker_Follow.ashx" />
+    <Content Include="Data\hr_socialWorker_Calendar.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -2949,13 +2954,8 @@
     <Content Include="webserver\sms.asmx" />
     <Content Include="webserver\WebService1.asmx" />
     <Content Include="WebSite\about.html" />
-    <Content Include="WebSite\bj\bj1.aspx" />
-    <Content Include="WebSite\bj\bj_files\bg.png" />
-    <Content Include="WebSite\bj\bj_files\bg.psd" />
-    <Content Include="WebSite\bj\bj_files\yy_top.png" />
-    <Content Include="WebSite\bj\css\css-table.css" />
+    <Content Include="WebSite\bj\css\baojia.css" />
     <Content Include="WebSite\bj\images\anbtton.gif" />
-    <Content Include="WebSite\bj\images\bjd.png" />
     <Content Include="WebSite\bj\images\close.gif" />
     <Content Include="WebSite\bj\images\inputbg.gif" />
     <Content Include="WebSite\bj\images\ksbj_but.png" />
@@ -2963,26 +2963,19 @@
     <Content Include="WebSite\bj\images\renzheng1.png" />
     <Content Include="WebSite\bj\images\title.gif" />
     <Content Include="WebSite\bj\images\top_tip.png" />
-    <Content Include="WebSite\bj\images\untitled.png" />
     <Content Include="WebSite\bj\index.aspx" />
-    <Content Include="WebSite\bj\js\jquery-1.2.6.min.js" />
-    <Content Include="WebSite\bj\js\style-table.js" />
-    <Content Include="WebSite\bj\list_1.aspx" />
-    <Content Include="WebSite\bj\css\baojia.css" />
-    <Content Include="WebSite\bj\list.aspx" />
     <Content Include="WebSite\bj\index1.aspx" />
-    <Content Include="WebSite\bj\index_2.aspx" />
     <Content Include="WebSite\bj\js\bj.js" />
     <Content Include="WebSite\bj\js\bjqd.js" />
     <Content Include="WebSite\bj\js\checkform.js" />
+    <Content Include="WebSite\bj\list.aspx" />
+    <Content Include="WebSite\bj\list_1.aspx" />
     <Content Include="WebSite\bootstrap\css\bootstrap-datetimepicker.css" />
     <Content Include="WebSite\bootstrap\css\bootstrap.min.css" />
     <Content Include="WebSite\bootstrap\js\bootstrap-datetimepicker.js" />
     <Content Include="WebSite\bootstrap\js\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="WebSite\bootstrap\js\bootstrap.min.js" />
     <Content Include="WebSite\contact.html" />
-    <Content Include="WebSite\css\cityselect.css" />
-    <Content Include="WebSite\js\lazyload-min.js" />
     <Content Include="WebSite\memberEdit.aspx" />
     <Content Include="WebSite\member.aspx" />
     <Content Include="WebSite\css\about.css" />
@@ -4574,9 +4567,13 @@
     <Compile Include="Data\hr_socialWorker.ashx.cs">
       <DependentUpon>hr_socialWorker.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Data\hr_socialWorker_Calendar.ashx.cs">
+      <DependentUpon>hr_socialWorker_Calendar.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Data\hr_socialWorker_Follow.ashx.cs">
       <DependentUpon>hr_socialWorker_Follow.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Data\JsonSocialWorkerCalendarViewData.cs" />
     <Compile Include="Data\ScoreShop.ashx.cs">
       <DependentUpon>ScoreShop.ashx</DependentUpon>
     </Compile>

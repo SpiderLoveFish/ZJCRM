@@ -1,15 +1,27 @@
 ﻿//公司按面积报价专用
 var tel;
 function check() {
-    //var hx = document.getElementById("hx").value;  
+    var hx = document.getElementById("hx").value;
+    var zmj = document.getElementById("zmj").value;
+    var xxj = document.getElementById("xxj").value;
+    var yt = document.getElementById("yt").value;
+    document.getElementById("bom6").value = document.getElementById("xxj").value;
+    document.getElementById("bom5").value = document.getElementById("yt").value;
     document.getElementById("jmid").value = getQueryString("jmid");//参数
     document.getElementById("xingshi").value = document.getElementById("xing").value;
-    //if (hx == 0) {
-       
-    //    alert("请输入面积！");
-    //    return false;
-    //}
-   
+    if (hx == 0) {
+        document.getElementById("bom2").value = 0;
+        document.getElementById("bom3").value = 0;
+        document.getElementById("bom1").value = 0;
+        document.getElementById("findman3").value = 0;
+        alert("请选择户型！");
+        return false;
+    }
+    if (zmj == null || zmj == "" || zmj == "输入房屋面积") {
+        alert("请输入房屋的总面积！");
+        return false;
+    }
+
 
     var phone = checkPone(document.getElementById("phone").value);
       tel =  document.getElementById("phone").value ;
@@ -24,8 +36,118 @@ function check() {
     if (!xishi()) {
         return false;
     }
- 
-    
+
+    // 一房一厅
+    if (hx == 1) {
+        document.getElementById("bomarea2").value = zmj * 0.5 - yt * zmj * 0.04;// 客厅面积
+        document.getElementById("bomarea3").value = 0;// 餐厅面积
+        document.getElementById("bomarea1").value = zmj * 0.45 - xxj * zmj
+				* 0.03;// 卧室面积
+        document.getElementById("bomarea4").value = zmj * 0.05;// 厨房面积
+        document.getElementById("bomarea6").value = xxj * zmj * 0.03;// 洗手间面积
+        document.getElementById("bomarea5").value = yt * zmj * 0.04;// 阳台面积
+
+        document.getElementById("bom2").value = 1;
+        document.getElementById("bom3").value = 0;
+        document.getElementById("bom1").value = 1;
+        document.getElementById("findman3").value = hx;
+
+    }
+        // 二房一厅
+    else if (hx == 2) {
+        document.getElementById("bomarea2").value = zmj * 0.45 - yt * zmj
+				* 0.04;// 客厅面积
+        document.getElementById("bomarea3").value = 0;// 餐厅面积
+        document.getElementById("bomarea1").value = zmj * 0.5 - xxj * zmj
+				* 0.03;// 卧室面积
+        document.getElementById("bomarea4").value = zmj * 0.05;// 厨房面积
+        document.getElementById("bomarea6").value = xxj * zmj * 0.03;// 洗手间面积
+        document.getElementById("bomarea5").value = yt * zmj * 0.04;// 阳台面积
+
+        document.getElementById("bom2").value = 1;
+        document.getElementById("bom3").value = 0;
+        document.getElementById("bom1").value = 2;
+        document.getElementById("findman3").value = hx;
+    }
+        // 三房一厅
+    else if (hx == 3) {
+        document.getElementById("bomarea2").value = zmj * 0.4 - yt * zmj * 0.04;// 客厅面积
+        document.getElementById("bomarea3").value = 0;// 餐厅面积
+        document.getElementById("bomarea1").value = zmj * 0.55 - xxj * zmj
+				* 0.03;// 卧室面积
+        document.getElementById("bomarea4").value = zmj * 0.05;// 厨房面积
+        document.getElementById("bomarea6").value = xxj * zmj * 0.03;// 洗手间面积
+        document.getElementById("bomarea5").value = yt * zmj * 0.04;// 阳台面积
+        document.getElementById("bom2").value = 1;
+        document.getElementById("bom3").value = 0;
+        document.getElementById("bom1").value = 3;
+        document.getElementById("findman3").value = hx;
+    }
+        // 二房二厅
+    else if (hx == 12) {
+        document.getElementById("bomarea2").value = zmj * 0.45 - yt * zmj
+				* 0.04 - zmj * 0.15;// 客厅面积
+        document.getElementById("bomarea3").value = zmj * 0.15;// 餐厅面积
+        document.getElementById("bomarea1").value = zmj * 0.5 - xxj * zmj
+				* 0.03;// 卧室面积
+        document.getElementById("bomarea4").value = zmj * 0.05;// 厨房面积
+        document.getElementById("bomarea6").value = xxj * zmj * 0.03;// 洗手间面积
+        document.getElementById("bomarea5").value = yt * zmj * 0.04;// 阳台面积
+
+        document.getElementById("bom2").value = 1;
+        document.getElementById("bom3").value = 1;
+        document.getElementById("bom1").value = 2;
+        document.getElementById("findman3").value = hx;
+    }
+        // 三房二厅
+    else if (hx == 13) {
+        document.getElementById("bomarea2").value = zmj * 0.4 - yt * zmj * 0.04
+				- zmj * 0.15;// 客厅面积
+        document.getElementById("bomarea3").value = zmj * 0.15;// 餐厅面积
+        document.getElementById("bomarea1").value = zmj * 0.55 - xxj * zmj
+				* 0.03;// 卧室面积
+        document.getElementById("bomarea4").value = zmj * 0.05;// 厨房面积
+        document.getElementById("bomarea6").value = xxj * zmj * 0.03;// 洗手间面积
+        document.getElementById("bomarea5").value = yt * zmj * 0.04;// 阳台面积
+
+        document.getElementById("bom2").value = 1;
+        document.getElementById("bom3").value = 1;
+        document.getElementById("bom1").value = 3;
+        document.getElementById("findman3").value = hx;
+    }
+        // 四房二厅
+    else if (hx == 14) {
+        document.getElementById("bomarea2").value = zmj * 0.35 - yt * zmj
+				* 0.04 - zmj * 0.15;// 客厅面积
+        document.getElementById("bomarea3").value = zmj * 0.15;// 餐厅面积
+        document.getElementById("bomarea1").value = zmj * 0.6 - xxj * zmj
+				* 0.03;// 卧室面积
+        document.getElementById("bomarea4").value = zmj * 0.05;// 厨房面积
+        document.getElementById("bomarea6").value = xxj * zmj * 0.03;// 洗手间面积
+        document.getElementById("bomarea5").value = yt * zmj * 0.04;// 阳台面积
+
+        document.getElementById("bom2").value = 1;
+        document.getElementById("bom3").value = 1;
+        document.getElementById("bom1").value = 4;
+        document.getElementById("findman3").value = hx;
+    }
+        // 五房二厅
+    else if (hx == 15) {
+        document.getElementById("bomarea2").value = zmj * 0.3 - yt * zmj * 0.04
+				- zmj * 0.15;// 客厅面积
+        document.getElementById("bomarea3").value = zmj * 0.15;// 餐厅面积
+        document.getElementById("bomarea1").value = zmj * 0.65 - xxj * zmj
+				* 0.03;// 卧室面积
+        document.getElementById("bomarea4").value = zmj * 0.05;// 厨房面积
+        document.getElementById("bomarea6").value = xxj * zmj * 0.03;// 洗手间面积
+        document.getElementById("bomarea5").value = yt * zmj * 0.04;// 阳台面积
+
+        document.getElementById("bom2").value = 1;
+        document.getElementById("bom3").value = 1;
+        document.getElementById("bom1").value = 5;
+        document.getElementById("findman3").value = hx;
+    }
+
 
     //document.form1.submit();
     /* 验证手机 */
@@ -50,7 +172,7 @@ function check() {
     //document.getElementById("hadpho").value = "Y";
     //document.form1.action = "../../CRM/ConsExam/kjl_search_bj.aspx?jmid=" + document.getElementById("jmid").value + "&keyword=" + document.getElementById("keyword").value + "&cityid=166" + "&tel=" + tel;
     //document.form1.submit();
-     fxyzm();
+    fxyzm();
     op();
   
     //url = "pho=" + pho;
@@ -244,8 +366,9 @@ function yt() {
 function tijiao() {
     var city = "";
 
-    var c1 = document.getElementById("cityid").value;
-    var c2 = document.getElementById("inputcity").value; 
+    var c1 = document.getElementById("city1").value;
+    var c2 = document.getElementById("city2").value;
+    var c3 = document.getElementById("city3").value;
     if (c1 == "" || c2 == "") {
         alert("请选择对应城市！");
         return false;
@@ -308,8 +431,9 @@ function savecustromer()
    
         document.getElementById("pho").value = document.getElementById("phone").value;
         var pho = document.getElementById("pho").value;
-        var c1 = document.getElementById("cityid").value;
-        var c2 = document.getElementById("inputcity").value;
+        var c1 = document.getElementById("city1").value;
+        var c2 = document.getElementById("city2").value;
+        var c3 = document.getElementById("city3").value;
         // alert(c1+","+c2+","+c3);
         try {
             xmlreq = new ActiveXObject("Msxml2.XMLHTTP"); // 针对IE5或之后
@@ -356,7 +480,38 @@ function savecustromer()
                 alert("发送失败！~~");
             }
         });
+        //url = "pho=" + pho + "&cit1=" + c1 + "&cit2=" + c2 + "&cit3=" + c3;
+        //var action = "checkNum.action?bjtype=gsjm";
+        //xmlreq.open("POST", action, true);
+        //// 2. 指定监听器函数(用于在服务端处理完毕后,动态跟新页面的数据)
+        //xmlreq.onreadystatechange = function () {
+        //    // 一般在监听器方式中需要操作 对象状态 以及 数据包状态
+        //    // alert(xmlreq.readyState+","+xmlreq.status);
+        //    if (xmlreq.readyState == 4) { // 成功完成
+        //        if (xmlreq.status == 200) {
+        //            var responseText = xmlreq.responseText;
+        //            random = responseText;
+        //            document.getElementById("rdm").value = random;
+        //        }
+        //    }
 
+        //}
+        //xmlreq
+        //		.setRequestHeader("Content-Type",
+        //				"application/x-www-form-urlencoded");
+        //xmlreq.send(url);
+
+        /** **********************end********************************** */
+        /*
+         * document.getElementById("cf").disabled = true;
+         * document.getElementById("cf").style.backgroundImage
+         * ="url(bdxgt/images/hqyzmxxhs.gif)";
+         * window.setTimeout("document.getElementById('cf').disabled =
+         * false;document.getElementById('cf').style.backgroundImage
+         * ='url(bdxgt/images/hqyzmxx.gif)';",60000);
+         * document.getElementById("tsyzm").style.display = "";
+         * document.getElementById("tsxx").style.display ="none";
+         */
         alert("验证码已发送到您手机，若60秒后没收到验证码，请重新点击按钮。");
         document.getElementById("phone").value = "";
     }

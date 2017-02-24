@@ -264,6 +264,10 @@ namespace XHD.BLL
                     {
                         model.canlogin = int.Parse(dt.Rows[n]["canlogin"].ToString());
                     }
+                    if (dt.Rows[n]["work_id"] != null && dt.Rows[n]["work_id"].ToString() != "")
+                    {
+                        model.work_id = dt.Rows[n]["work_id"].ToString();
+                    }
                     modelList.Add(model);
                 }
             }

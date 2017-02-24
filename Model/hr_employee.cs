@@ -42,6 +42,7 @@ namespace XHD.Model
         private string _theme;
         private int? _canlogin;
         private string _default_city;
+        private string _workID;
         /// <summary>
         /// 
         /// </summary>
@@ -297,6 +298,14 @@ namespace XHD.Model
         {
             set { _default_city = value; }
             get { return _default_city; }
+        }
+        /// 
+        /// 
+        /// </summary>
+        public string work_id
+        {
+            set { _workID = value; }
+            get { return _workID; }
         }
         #endregion Model
 

@@ -783,7 +783,26 @@ namespace XHD.DAL
             return false;
         }
 
+        /// <summary>
+        /// 更新最后跟进
+        /// </summary>
+        public bool UpdateLastFollow(string id)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update hr_socialWorker set ");
+            strSql.Append("[lastfollow] = isnull((select max(Follow_date) as Followdate from dbo.hr_socialWorker_Follow where hr_socialWorker.id=hr_socialWorker_Follow.Customer_id),EntryDate)");
+            strSql.Append(" where hr_socialWorker.id=" + id);
 
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString());
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         #endregion  Method
     }

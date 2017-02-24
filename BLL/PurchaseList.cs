@@ -201,7 +201,10 @@ namespace XHD.BLL
         {
             return dal.GetTempList(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
-
+        public DataSet GetRefMaterialsList(int PageSize, int PageIndex, string strWhere)
+        {
+            return dal.GetRefMaterialsList(PageSize, PageIndex, strWhere);
+        }
         public DataSet GetysList(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
         {
             return dal.GetysList(PageSize, PageIndex, strWhere, filedOrder, out Total);

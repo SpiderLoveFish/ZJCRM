@@ -108,8 +108,9 @@
       <HintPath>..\Lib\MySql.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json.Net35">
-      <HintPath>..\CRM\bin\Newtonsoft.Json.Net35.dll</HintPath>
+    <Reference Include="Newtonsoft.Json.Net35, Version=4.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Newtonsoft.Json.Net35.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -154,6 +155,7 @@
     <Compile Include="CERep_Schedule.cs" />
     <Compile Include="CE_Para.cs" />
     <Compile Include="budge.cs" />
+    <Compile Include="hr_socialWorker_Follow.cs" />
     <Compile Include="CRM_CEstage_Follow.cs" />
     <Compile Include="Crm_Classic_case.cs" />
     <Compile Include="CRM_Cope.cs" />

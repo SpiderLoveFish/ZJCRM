@@ -167,7 +167,7 @@
                     $("#T_Adress").val(obj.address);
                     $("#T_school").val(obj.schools);
                     $("#T_edu").val(obj.education);
-                 
+                    $("#T_work_id").val(obj.work_id);
                     $("#T_remarks").val(obj.remarks);
 
                     $("#T_sex").ligerGetComboBoxManager().selectValue(obj.sex);
@@ -459,8 +459,17 @@
                         </div>
                     </td>
                     <td colspan="3">
-                        <input type="text" id="T_edu" name="T_edu" ltype="text" ligerui="{width:180}" /></td>
+                        <input type="text" id="T_edu" name="T_edu" ltype="text" ligerui="{width:180}" />
+                    </td>
                     <td>
+                        <div align="right" style="width: 61px">
+                            员工编号：
+                        </div>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" id="T_work_id" name="T_work_id" ltype="text" ligerui="{width:180}" />
+                    </td>
+                    <%--<td>
                         <div align="right" style="width: 62px">  
                              <input id="Button3" type="button" value="绑定酷家乐" style="height: 21px" onclick="bind()" />
                    
@@ -470,7 +479,7 @@
                         <input type="text" id="T_professional" name="T_professional" ltype="text" ligerui="{width:180}" /></td>
                     <td>
                         <input type="hidden" id="headurl" name="headurl" />
-                    </td>
+                    </td>--%>
                 </tr>
                 <tr>
                     <td>

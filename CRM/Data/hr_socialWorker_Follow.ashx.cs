@@ -6,6 +6,8 @@ using System.Data;
 using System.Text;
 using XHD.Common;
 using System.Web.Security;
+using XHD.BLL;
+using XHD.Model;
 
 namespace XHD.CRM.Data
 {
@@ -19,7 +21,7 @@ namespace XHD.CRM.Data
         {
             context.Response.ContentType = "text/plain";
             HttpRequest request = context.Request;
-
+ 
             BLL.hr_socialWorker_Follow follow = new BLL.hr_socialWorker_Follow();
             Model.hr_socialWorker_Follow model = new Model.hr_socialWorker_Follow();
 
