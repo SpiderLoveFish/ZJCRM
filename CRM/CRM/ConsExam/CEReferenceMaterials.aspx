@@ -338,17 +338,18 @@
         //生成采购单
         function addcgd()
         { var rowid = checkedID.join(',');
-        if (rowid.length > 0)  
-            alert(rowid);
+        if (rowid.length > 0)
+         //  alert(rowid);
+            f_openWindow('crm/purchase/SavePickList.aspx?rowid=' + rowid, "生成采购单", 600, 350);
             }
         //结案
         function close() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
-            if (row) {
+            if (row.length == 1) {
                 $.ajax({
                     type: 'post',
-                    url: "../../data/PurchaseList.ashx?Action=updatestatus&id=" + row.id + "&isstatus=5&rdm=" + Math.random(),
+                    url: "../../data/PurchaseList.ashx?Action=updatestatus&id=" + row.id + "&isstatus=7&rdm=" + Math.random(),
                     success: function (data) {
                         if (data == "false")
                             f_error("保存失败！");
@@ -360,7 +361,8 @@
                 });
                 // f_success();
                 f_load();
-            }
+            } else
+                $.ligerDialog.warn('请选择产品！');
         } 
          
        
@@ -384,11 +386,52 @@
             f_load();
             dialog.close();
         }
-        //
-        function f_save()
+        //保存信息
+        function f_save(item, dialog)
         {
-            //var sendtxt = "&Action=savetotal";
-            //return $("form :input").fieldSerialize() + sendtxt;
+            var issave = dialog.frame.f_save();
+            //alert(issave);
+            if (issave) {
+                $.ajax({
+                    type: 'post',
+                    url: "../../data/Purchase.ashx?Action=savetemp&" + issave,
+                    success: function (data) {
+                        if (data == 'false') {
+                            dialog.frame.getmaxid();
+                            $.ligerDialog.error("保存错误！！！重新保存！");
+                        }
+                        else {
+
+                            savedetail(dialog, issave);
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        top.$.ligerDialog.error("保存错误！！！");
+                    }
+                });
+               
+                 
+            }
+        }
+
+        function savedetail(dialog, issave) {
+
+            //var pidlist = "," + pidlist;
+            var url = '../../data/Purchase.ashx?Action=savedetail&'+issave;
+            $.ajax({
+                type: 'post',
+                url: url,
+                success: function (data) {
+                    dialog.close();
+                    dialog.closeWaitting('数据保存中,请稍候...');
+                   // top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    top.$.ligerDialog.error("保存错误！！！");
+                }
+            });
+
+
         }
 
          
@@ -399,7 +442,7 @@
                 width: width, height: height, title: title, url: url, buttons: [
                         {
                             text: '保存', onclick: function (item, dialog) {
-                                f_saveselect(item, dialog);
+                                f_save(item, dialog);
                             }
                         },
                         {
@@ -434,34 +477,34 @@
         function f_onCheckAllRow(checked) {
             for (var rowid in this.records) {
                 if (checked)
-                    addcheckedID(this.records[rowid]['id']);
+                    addcheckedID(this.records[rowid]['product_id']);
                 else
-                    removecheckedID(this.records[rowid]['id']);
+                    removecheckedID(this.records[rowid]['product_id']);
             }
         }
-        function findcheckedID(id) {
+        function findcheckedID(product_id) {
             for (var i = 0; i < checkedID.length; i++) {
-                if (checkedID[i] == id) return i;
+                if (checkedID[i] == product_id) return i;
             }
             return -1;
         }
-        function addcheckedID(id) {
-            if (findcheckedID(id) == -1)
-                checkedID.push(id);
+        function addcheckedID(product_id) {
+            if (findcheckedID(product_id) == -1)
+                checkedID.push(product_id);
         }
-        function removecheckedID(id) {
-            var i = findcheckedID(id);
+        function removecheckedID(product_id) {
+            var i = findcheckedID(product_id);
             if (i == -1) return;
             checkedID.splice(i, 1);
         }
         function f_isChecked(rowdata) {
-            if (findcheckedID(rowdata.id) == -1)
+            if (findcheckedID(rowdata.product_id) == -1)
                 return false;
             return true;
         }
         function f_onCheckRow(checked, data) {
-            if (checked) addcheckedID(data.id);
-            else removecheckedID(data.id);
+            if (checked) addcheckedID(data.product_id);
+            else removecheckedID(data.product_id);
         }
     </script>
     

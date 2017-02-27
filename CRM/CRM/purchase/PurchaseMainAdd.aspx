@@ -458,8 +458,8 @@
                     $("#T_remarks").val(obj.Remarks);
                     $("#T_employee2").val(obj.materialman);
                     $("#T_cgrq").val(formatTime( obj.purdate));
-                    $("#T_yfje").val(obj.paid_amount);
-                    $("#T_yfje2").val(obj.payable_amount);
+                    $("#T_yfje").val(obj.payable_amount);
+                    $("#T_yfje2").val(obj.paid_amount);
                     $("#T_qk").val(obj.arrears);
                     $("#T_employee").val(obj.Emp_sg);// ©π§º‡¿Ì
                    

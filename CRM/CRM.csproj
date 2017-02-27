@@ -267,6 +267,7 @@
     <Content Include="CRM\purchase\PurchaseMain.aspx" />
     <Content Include="CRM\purchase\PurchaseMainAdd.aspx" />
     <Content Include="CRM\purchase\PurchaseMainAdd_CK.aspx" />
+    <Content Include="CRM\purchase\SavePickList.aspx" />
     <Content Include="CRM\purchase\SelectProduct.aspx" />
     <Content Include="CRM\purchase\SelectSupplier.aspx" />
     <Content Include="CRM\purchase\StockView.aspx" />

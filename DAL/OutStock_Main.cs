@@ -352,6 +352,7 @@ namespace XHD.DAL
         public string GetMaxCKId()
         {
             string per = "CK";
+            per = per + DateTime.Now.ToString("yyMMdd-");
             string strsql = "select max(REPLACE(CKID,'" + per + "',''))+1 from OutStock_Main where CKID like '" + per + "%'";
             object obj = DbHelperSQL.GetSingle(strsql);
             if (obj == null)

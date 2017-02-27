@@ -14,9 +14,29 @@
            $("#T_pid").html(getparastr("pid"));
            loadHead(getparastr("pid"));
            loadBody(getparastr("pid"));
+           loadlogo();
        });
 
 
+       function loadlogo() {
+           $.ajax({
+               type: "GET",
+               url: "../../data/sys_info.ashx", /* 注意后面的名字对应CS的方法名称 */
+               data: { Action: 'grid', rnd: Math.random() }, /* 注意参数的格式和名称 */
+               contentType: "application/json; charset=utf-8",
+               dataType: "json",
+               success: function (result) {
+                   var obj = eval(result);
+                   var rows = obj.Rows;
+
+                   //alert(obj.constructor); //String 构造函数
+                   $("#T_logo").html(rows[1].sys_value);
+                   //$("#T_logo_2").html(rows[1].sys_value);
+                   //$("#T_logo_3").html(rows[1].sys_value);
+                   //$("#logo").attr("src", "../../" + rows[2].sys_value);
+               }
+           });
+       }
        function loadHead(oaid) {
            $.ajax({
                type: "GET",
@@ -41,8 +61,8 @@
                    $("#T_rq").html(formatTimebytype(obj.purdate, 'yyyy-MM-dd'));
                    $("#T_qdrq").html(formatTimebytype(obj.ConfirmDate, 'yyyy-MM-dd'));
                    if (obj.IsGD=="1")
-                       $("#T_shfs").html("送至公司");
-                   else $("#T_shfs").html("直送客户");
+                       $("#T_shfs").html("直送客户");
+                   else $("#T_shfs").html("送至公司");
                     
                },
                error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -125,7 +145,7 @@
 </p>
 
          <div id="div1">
-<DIV style="LINE-HEIGHT: 30px" class=size16 align=center><STRONG><font >心成装饰采购单 （<SPAN id="T_pid" ></SPAN> ）</font></STRONG></DIV>        
+<DIV style="LINE-HEIGHT: 30px" class=size16 align=center><STRONG><font ><span id="T_logo"></span>采购单 （<SPAN id="T_pid" ></SPAN> ）</font></STRONG></DIV>        
 <TABLE  border=0 cellSpacing=0 cellPadding=0 width="100%">
   <TBODY>
   <TR>
@@ -164,7 +184,7 @@
   <TBODY>      
  </TBODY>
   <tfoot>
-  <tr>
+  <%--<tr>
     <TD ><b> </b></TD>
     <TD ><b></b></TD>
     <TD ><b>&nbsp;</b></TD>
@@ -173,9 +193,9 @@
 	</TD>
 	<TD  align="left">
   	<p align="center"> </TD>    
-	<TD width="14%" align="right">　小计</TD>
-	<TD width="19%" tdata="subSum" format="#,##0.00" align="right"><font >￥###</font></TD>    
- </tr>
+	<%--<TD width="14%" align="right">　小计</TD>
+	<TD width="19%" tdata="subSum" format="#,##0.00" align="right"><font >￥###</font></TD>   
+ </tr>--%>
       <tr><td >备注：</td>
           <td colspan="7">
 
