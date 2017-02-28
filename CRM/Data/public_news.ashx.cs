@@ -126,7 +126,7 @@ namespace XHD.CRM.Data
                     if (request["stext"] != "输入关键词搜索")
                         serchtxt += " and news_title like N'%" + PageValidate.InputText(request["stext"], 500) + "%'";
                 }
-
+                serchtxt += " AND ISNULL(isDelete,0) not in(1,99)";
                 DataSet ds = news.GetList(PageSize, PageIndex, serchtxt, sorttext, out Total);
 
                 context.Response.Write(Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total));
@@ -199,7 +199,7 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "newsremind")
             {
-                DataSet ds = news.GetList(7, " ", " news_time desc");
+                DataSet ds = news.GetList(7, " ISNULL(isDelete,0) not in(1,99)", " news_time desc");
                 string dt = Common.GetGridJSON.DataTableToJSON(ds.Tables[0]);
                 context.Response.Write(dt);
             }

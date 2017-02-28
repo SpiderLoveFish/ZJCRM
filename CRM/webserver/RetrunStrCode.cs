@@ -335,7 +335,16 @@ namespace XHD.CRM.webserver
             sb.AppendLine(" * ");
             sb.AppendLine(" FROM  dbo.ScoreShop");
             sb.AppendLine(" WHERE 1=1 ");
-            sb.AppendLine(strwhere);
+            if (strwhere != "")
+            {
+                string[] str = strwhere.Split(';');
+                sb.AppendLine("  WHERE ScoreName LIKE '%" + str[0] + "%' AND ScoreDescribe LIKE '%" + str[1] + "%' ");
+                if (str[2]!="")
+                    sb.AppendLine(" AND NeedScore >=" + str[2] + " ");
+                if(str[3]!="")
+                    sb.AppendLine(" AND NeedScore <=" + str[3] + " ");   
+            }
+           // sb.AppendLine(strwhere);
             sb.AppendLine(")aa");
             sb.AppendLine(" WHERE n>" + startindex);
             return sb.ToString();

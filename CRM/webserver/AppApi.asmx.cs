@@ -341,7 +341,28 @@ namespace XHD.CRM.webserver
               }
           }
 
-        
+
+          [WebMethod]
+          public void GetComboxType(string parentid)
+          { 
+              SqlParameter[] parameters = { };
+              var sb = new System.Text.StringBuilder();
+              if (parentid == "city")
+              {  sb.Clear();
+              sb.AppendLine("SELECT  ID id,Name params_name FROM CRM_Building WHERE IsDel ='N'");
+              }
+              else
+              {
+                  sb.Clear();
+                  sb.AppendLine("  SELECT id,params_name FROM dbo.Param_SysParam");
+                  sb.AppendLine("  where parentid=" + int.Parse(parentid));
+                  sb.AppendLine("  ORDER BY params_order");
+              }
+                     
+                       DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+
+                       DSToJSON(ds);
+          }
        /// <summary>
        /// 客户类型
        /// </summary>
@@ -388,6 +409,7 @@ namespace XHD.CRM.webserver
                   sb.Clear();
                   sb.AppendLine("SELECT DISTINCT employee_id,employee_name FROM  dbo.CRM_Follow WHERE employee_id>0 AND ISNULL(employee_name,'')!=''");
               }
+             
               else
               {
                   sb.AppendLine(" SELECT  ");
@@ -575,21 +597,25 @@ namespace XHD.CRM.webserver
                  ReturnStr(false, "\"faile:phone\"");
                  return;
               }
-           
+              //khmc+';'+tel+';'+lhTitle+';'+adressTitle+';'+khlx+';'+khlxTitle+';'+ywy+';'+ywyTitle+';'+lp+';'+lpTitle+';'+hx+';'+hxTitle+';'+bzContent+';'+getUserInfo().ID;
               BLL.CRM_Customer bcp = new BLL.CRM_Customer();
               Model.CRM_Customer mcp = new Model.CRM_Customer();
               mcp.Customer=str[0];//客户名称
-              mcp.address = str[1];//地址
-              mcp.tel = str[2];//电话
-              mcp.CustomerType_id = int.Parse(str[3]);//客户类型
-              mcp.CustomerType = str[4]; 
-              mcp.Community = str[5];//小区
-              mcp.Fwhx = str[6];//户型
-              mcp.Emp_id_sj = int.Parse(str[7]);//设计师
-              mcp.Emp_sj =  str[8] ;
-              mcp.Remarks = str[9];
+              mcp.tel = str[1];//电话
+              mcp.address = str[2]+"栋"+str[3];//地址
+           
+              mcp.CustomerType_id = int.Parse(str[4]);//客户类型
+              mcp.CustomerType = str[5];
+              mcp.Employee_id = int.Parse(str[6]); //业务员
+              mcp.Employee = str[7]; //业务员
+              mcp.Community_id = int.Parse(str[8]);//楼盘
+              mcp.Community = str[9];// 
+              mcp.Fwhx_id = int.Parse(str[10]);//户型
+              mcp.Fwhx = str[11];//户型
+              mcp.privatecustomer = "公客";
+              mcp.Remarks = str[12];
               //str[10]用户ID
-              string sqlemplooye = "SELECT * FROM  dbo.hr_employee WHERE ID='" + str[10] + "'	";
+              string sqlemplooye = "SELECT * FROM  dbo.hr_employee WHERE ID='" + str[13] + "'	";
               DataSet lsds = DbHelperSQL.Query(sqlemplooye);
               if (lsds.Tables[0].Rows.Count > 0)
               {
@@ -600,7 +626,7 @@ namespace XHD.CRM.webserver
               }
              // mcp.privatecustomer = str[11];//公私客
             
-              mcp.Create_date = DateTime.Now;//客户名称
+              mcp.Create_date = DateTime.Now; 
               if (bcp.Add(mcp) > 0)
               { 
                   ReturnStr(true, "\"success\"");
@@ -713,7 +739,7 @@ namespace XHD.CRM.webserver
               string SPstr = "[]";
               //企业公告
               string GGstr = "";
-              DataSet dsGG = DbHelperSQL.Query("SELECT 1 FROM  dbo.public_news WHERE news_time>=GETDATE()-3 ", parameters);
+              DataSet dsGG = DbHelperSQL.Query("SELECT 1 FROM  dbo.public_news WHERE news_time>=GETDATE()-3 AND ISNULL(isDelete,0)=99", parameters);
               if (dsGG.Tables[0].Rows.Count <= 0)
                   GGstr = "[]";
               else
@@ -766,16 +792,16 @@ namespace XHD.CRM.webserver
               sb.AppendLine("          dep_id , ");
               sb.AppendLine("          dep_name , ");
               sb.AppendLine("          news_time,  ");
-              sb.AppendLine("          img ");
+              sb.AppendLine("          img,isDelete ");
               sb.AppendLine("        ) ");
-              sb.AppendLine("VALUES  ( '"+title+"' , -- news_title - varchar(250) ");
-              sb.AppendLine("          '" + imglist+context + "' , -- news_content - varchar(max) ");
-              sb.AppendLine("          "+userid+" , -- create_id - int ");
-              sb.AppendLine("          '' , -- create_name - varchar(250) ");
-              sb.AppendLine("          0 , -- dep_id - int ");
-              sb.AppendLine("          '' , -- dep_name - varchar(250) ");
+              sb.AppendLine("VALUES  ( '"+title+"' , ");
+              sb.AppendLine("          '" + imglist+context + "' ,  ");
+              sb.AppendLine("          "+userid+" ,   ");
+              sb.AppendLine("          '' ,  ");
+              sb.AppendLine("          0 ,  ");
+              sb.AppendLine("          '' ,   ");
               sb.AppendLine("          getdate(),  ");
-              sb.AppendLine("          '"+IsHostPic+"'  -- img - varchar(50) ");
+              sb.AppendLine("          '"+IsHostPic+"',99   ");
               sb.AppendLine("        ) ");
               var RV = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
               if (RV > 0)
