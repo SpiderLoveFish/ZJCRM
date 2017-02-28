@@ -36,8 +36,7 @@ namespace XHD.CRM.webserver
                 if (str[1] != "")
                     strtype += " AND   InDate<='" + str[1] + "'";
             }
-            else  //默认
-            {
+           
                 if (sfkh == "N")
                 {
                     sb.AppendLine(" SELECT top 10 * FROM ( ");
@@ -118,43 +117,12 @@ namespace XHD.CRM.webserver
                     sb.AppendLine("WHERE n >" + startindex);
                     sb.AppendLine("          ");
                 }
-            }
+            
             sb.AppendLine("");
 
-            if (sfkh == "N")
-            {
-                sb.AppendLine("SELECT * FROM (SELECT row_number() OVER (ORDER BY Jf DESC ) n ,");
-                sb.AppendLine(" a.ID,  a.Name ,  a.Tel ,  ISNULL(b.Jf, 0) AS Jf ,  a.Sex ,  a.title					");
-                sb.AppendLine("  FROM   hr_employee a LEFT OUTER JOIN");
-                sb.AppendLine("( SELECT SUM(Jf) AS jf,id FROM CRM_Jifen");
-                sb.AppendLine(" WHERE	 Jflx=1   AND IsDel = 'N' AND  Sfkh = 'N'");
-                sb.AppendLine(strtype);
-                sb.AppendLine("  GROUP BY  ID) b ON a.ID = b.ID");    
-                sb.AppendLine(")AA WHERE 	  n >" + startindex);
-                sb.AppendLine("");
-           
-              
-            }
-            else if (sfkh == "Y")
-            {
-                sb.AppendLine("SELECT * FROM (");
-                sb.AppendLine("SELECT  row_number() OVER (ORDER BY Jf DESC ) n , a.ID ,");
-                sb.AppendLine("        a.Customer AS Name ,");
-                sb.AppendLine("        a.Tel ,");
-                sb.AppendLine("        a.Gender AS Sex ,");
-                sb.AppendLine("        ISNULL(b.Jf, 0) AS Jf ,");
-                sb.AppendLine("        a.Provinces + a.City + a.Towns + a.Community AS Khdz");
-                sb.AppendLine("FROM    dbo.CRM_Customer a");
-                sb.AppendLine("LEFT OUTER JOIN  ( SELECT SUM(Jf) AS jf,id FROM CRM_Jifen");
-                sb.AppendLine(" WHERE	 Jflx=1   AND IsDel = 'N' AND  Sfkh = 'Y'");
-                sb.AppendLine(strtype);
-                sb.AppendLine("  GROUP BY  ID) b ON a.ID = b.ID");
-              
-                sb.AppendLine(")AA WHERE 	  n >" + startindex);
-                sb.AppendLine("");
+  
 
-              
-            }
+         
             return sb.ToString();
         }
 
@@ -338,7 +306,7 @@ namespace XHD.CRM.webserver
             if (strwhere != "")
             {
                 string[] str = strwhere.Split(';');
-                sb.AppendLine("  WHERE ScoreName LIKE '%" + str[0] + "%' AND ScoreDescribe LIKE '%" + str[1] + "%' ");
+                sb.AppendLine("  and ScoreName LIKE '%" + str[0] + "%' AND ScoreDescribe LIKE '%" + str[1] + "%' ");
                 if (str[2]!="")
                     sb.AppendLine(" AND NeedScore >=" + str[2] + " ");
                 if(str[3]!="")

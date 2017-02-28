@@ -41,3 +41,9 @@ DAL/Tools/小黄豆CRM启动器.exe
 *.sql
 UpgradeLog.htm
 UpgradeLog2.htm
+
+CRM/Cggl/*
+
+CRM/Cggl/Sgry_Rq.aspx
+
+CRM/Cggl/LJ_Ewm_Add.aspx

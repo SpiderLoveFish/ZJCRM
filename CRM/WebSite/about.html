@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+<base target="_blank">
 <meta charset="UTF-8">
 <title>关于亿金</title>
 <meta name="description" content="亿金汽车"/>
@@ -15,6 +16,22 @@
         DD_belatedPNG.fix('*');
     </script>
 <![endif]--> 
+<script>
+      
+
+function reinitIframe() {         
+   var iframe = document.getElementById("urlIframe");                 try 
+{                          
+                   var bHeight = iframe.contentWindow.document.body.scrollHeight;                
+/*       
+                   var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;                                 var height = Math.max(bHeight, dHeight);                          
+                    iframe.height = height;                */                         
+                   iframe.height = bHeight;                      
+} 
+          catch (ex) { }                 
+}
+  
+    </script>
 </head>                                        
 <body>
 <div id="header">
@@ -60,6 +77,8 @@
 			</div>
 		</div>
 		<div class="a-wb">
+		 <div class="bjbd"><iframe src="http://zxbj.33erp.com/WebSite/bj/index.aspx?jmid=ksxczs" width="1190" height="200" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="yes" name="i" id="urlIframe" onload="reinitIframe()"></iframe></div>
+       
 			<div class="wrap">
 				<h1>亿金简介</h1>
 				<div class="a-div">

@@ -108,9 +108,8 @@
       <HintPath>..\Lib\MySql.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json.Net35, Version=4.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Newtonsoft.Json.Net35.dll</HintPath>
+    <Reference Include="Newtonsoft.Json.Net35">
+      <HintPath>Y:\Documents\CodeSource\ZJCRM1\ZJCRM\DAL\bin\Debug\Newtonsoft.Json.Net35.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
