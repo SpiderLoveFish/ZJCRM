@@ -31,7 +31,7 @@
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script type="text/javascript">
-        var manager;
+        var manager; var gg;
         var manager1;
         $(function () {
 
@@ -39,8 +39,8 @@
             $(window).resize(function () {
                 initLayout();
             });
-            if (getparastr("type") == "GJXG")
-                $("#maingrid4").ligerGrid(
+            if (getparastr("type") == "GJXG") {
+                gg = $("#maingrid4").ligerGrid(
 
                {
 
@@ -91,7 +91,7 @@
                                    return "<span><div style='color:#" + item.indcolor + "'>" + item.industry + "</div></span>";
                                }
                            },
-                                
+
                        //{ display: '省份', name: 'Provinces', width: 80 },
                        //{ display: '城市', name: 'City', width: 80 },
                        //{ display: '区镇', name: 'Towns', width: 80 },
@@ -106,7 +106,17 @@
                             display: '当前阶段', name: 'Stage_icon', width: 60, render: function (item) {
 
                                 var html;
-                                if (item.Stage_icon == "正在施工") {
+                                if (item.Stage_icon == "未签单") {
+                                    html = "<div style='color:#FF0000'>";
+                                    html += item.Stage_icon;
+                                    html += "</div>";
+                                }
+                                else if (item.Stage_icon == "已签单") {
+                                    html = "<div style='color:#FF0000'>";
+                                    html += item.Stage_icon;
+                                    html += "</div>";
+                                }
+                                else if (item.Stage_icon == "正在施工") {
                                     html = "<div style='color:#FF0000'>";
                                     html += item.Stage_icon;
                                     html += "</div>";
@@ -127,8 +137,13 @@
 
                                  var html;
 
-                                
-                                 if (item.Stage_icon == "正在施工") {
+
+                                 if (item.Stage_icon == "已签单") {
+                                     html = "<div style='color:#FF0000'>";
+                                     html += "正在施工";
+                                     html += "</div>";
+                                 }
+                                 else if (item.Stage_icon == "正在施工") {
                                      html = "<div style='color:#339900'>";
                                      html += "施工完成";
                                      html += "</div>";
@@ -158,7 +173,7 @@
                                      html += "有";
                                      html += "</div>";
                                  }
-                                 else  {
+                                 else {
                                      html = "<div style='color:#000'>";
                                      html += "无";
                                      html += "</div>";
@@ -194,7 +209,7 @@
 
 
 
-                      
+
                        {
                            display: '创建时间', name: 'Create_date', width: 90, render: function (item) {
                                var Create_date = formatTimebytype(item.Create_date, 'yyyy-MM-dd');
@@ -259,171 +274,173 @@
                        }
                    }
                });
-            else
-            $("#maingrid4").ligerGrid(
+            }
+            else {
+                gg = $("#maingrid4").ligerGrid(
 
                 {
 
-                columns: [
-                    {
-                        display: '序号', width: 30, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
-                        { return (page - 1) * pagesize + rowindex + 1; }
-                    },
-                 
-                    {
-                        display: '姓名', name: 'Customer', width: 50, align: 'left', render: function (item) {
-                            var html = "<a href='javascript:void(0)' onclick=view(1," + item.id + ")>";
-                            if (item.Customer)
-                                html += item.Customer;
-                            html += "</a>";
-                            return html;
-                        }
-                    },
-                    { display: '性别', name: 'Gender', width: 40 },
-                     {
-                         display: '电话', name: 'tel', align: 'left', width: 40, render: function (item) {
-                             var html = "<div class='abc'>";
-                             if (item.tel)
-                                 html += item.tel;
-                             html += "</div>";
-                             return html;
-                         }
-                     },
-                   {
-                       display: '地址', name: 'address', align: 'left', width: 120, render: function (item) {
-                           var html = "<div class='abc'>";
-                           if (item.address)
-                               html += item.address;
-                           html += "</div>";
-                           return html;
-                       }
-                   },
-                    { display: '小区', name: 'Community', width: 60 },
-                  
-             
-                    {
-                        display: '客户类型', name: 'CustomerType', width: 60, align: 'right', render: function (item) {
-                            return "<span><div  style='background:#" + item.setcolor + "'>" + item.CustomerType + "</div></span>";
-                        }
-                    },
+                    columns: [
                         {
-                            display: '客户状态', name: 'industry', width: 60, align: 'right', render: function (item) {
-                                return "<span><div style='color:#" + item.indcolor + "'>" + item.industry + "</div></span>";
+                            display: '序号', width: 30, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                            { return (page - 1) * pagesize + rowindex + 1; }
+                        },
+
+                        {
+                            display: '姓名', name: 'Customer', width: 50, align: 'left', render: function (item) {
+                                var html = "<a href='javascript:void(0)' onclick=view(1," + item.id + ")>";
+                                if (item.Customer)
+                                    html += item.Customer;
+                                html += "</a>";
+                                return html;
                             }
                         },
-                             // { display: '客户状态', name: 'industry', width: 80 },
-                    { display: '预算价位', name: 'CustomerLevel', width: 60 },
-                    { display: '客户来源', name: 'CustomerSource', width: 60 },
-                    //{ display: '省份', name: 'Provinces', width: 80 },
-                    //{ display: '城市', name: 'City', width: 80 },
-                    //{ display: '区镇', name: 'Towns', width: 80 },
-                    //{ display: '楼号', name: 'BNo', width: 80 },
-                    //{ display: '房号', name: 'RNo', width: 80 },
-                   
-                   // { display: '部门', name: 'Department', width: 80 },
-                    { display: '业务员', name: 'Employee', width: 50 },
-                    { display: '设计师', name: 'Emp_sj', width: 50 },
-                    { display: '施工监理', name: 'Emp_sg', width: 60 },
-                     {
-                         display: '进度', name: 'Stage_icon', width: 60, render: function (item) {
-
-                             var html;
-                             if (item.Stage_icon == "正在施工") {
-                                 html = "<div style='color:#FF0000'>";
-                                 html += item.Stage_icon;
+                        { display: '性别', name: 'Gender', width: 40 },
+                         {
+                             display: '电话', name: 'tel', align: 'left', width: 40, render: function (item) {
+                                 var html = "<div class='abc'>";
+                                 if (item.tel)
+                                     html += item.tel;
                                  html += "</div>";
+                                 return html;
                              }
-                             else if (item.Stage_icon == "施工完成") {
-                                 html = "<div style='color:#339900'>";
-                                 html += item.Stage_icon;
-                                 html += "</div>";
+                         },
+                       {
+                           display: '地址', name: 'address', align: 'left', width: 120, render: function (item) {
+                               var html = "<div class='abc'>";
+                               if (item.address)
+                                   html += item.address;
+                               html += "</div>";
+                               return html;
+                           }
+                       },
+                        { display: '小区', name: 'Community', width: 60 },
+
+
+                        {
+                            display: '客户类型', name: 'CustomerType', width: 60, align: 'right', render: function (item) {
+                                return "<span><div  style='background:#" + item.setcolor + "'>" + item.CustomerType + "</div></span>";
+                            }
+                        },
+                            {
+                                display: '客户状态', name: 'industry', width: 60, align: 'right', render: function (item) {
+                                    return "<span><div style='color:#" + item.indcolor + "'>" + item.industry + "</div></span>";
+                                }
+                            },
+                                 // { display: '客户状态', name: 'industry', width: 80 },
+                        { display: '预算价位', name: 'CustomerLevel', width: 60 },
+                        { display: '客户来源', name: 'CustomerSource', width: 60 },
+                        //{ display: '省份', name: 'Provinces', width: 80 },
+                        //{ display: '城市', name: 'City', width: 80 },
+                        //{ display: '区镇', name: 'Towns', width: 80 },
+                        //{ display: '楼号', name: 'BNo', width: 80 },
+                        //{ display: '房号', name: 'RNo', width: 80 },
+
+                       // { display: '部门', name: 'Department', width: 80 },
+                        { display: '业务员', name: 'Employee', width: 50 },
+                        { display: '设计师', name: 'Emp_sj', width: 50 },
+                        { display: '施工监理', name: 'Emp_sg', width: 60 },
+                         {
+                             display: '进度', name: 'Stage_icon', width: 60, render: function (item) {
+
+                                 var html;
+                                 if (item.Stage_icon == "正在施工") {
+                                     html = "<div style='color:#FF0000'>";
+                                     html += item.Stage_icon;
+                                     html += "</div>";
+                                 }
+                                 else if (item.Stage_icon == "施工完成") {
+                                     html = "<div style='color:#339900'>";
+                                     html += item.Stage_icon;
+                                     html += "</div>";
+                                 }
+                                 else {
+                                     html = item.Stage_icon;
+                                 }
+                                 return html;
                              }
-                             else {
-                                 html = item.Stage_icon;
-                             }
-                             return html;
-                         }
-                     },
+                         },
 
-                    { display: '性质', name: 'privatecustomer', width: 40 },
+                        { display: '性质', name: 'privatecustomer', width: 40 },
 
-                   
-          
-         
 
-     
-                    {
-                        display: '最后跟进', name: 'lastfollow', width: 90, render: function (item) {
-                            var lastfollow = formatTimebytype(item.lastfollow, 'yyyy-MM-dd');
-                            if (lastfollow == "1900-01-01")
-                                lastfollow = "";
-                            return lastfollow;
+
+
+
+
+                        {
+                            display: '最后跟进', name: 'lastfollow', width: 90, render: function (item) {
+                                var lastfollow = formatTimebytype(item.lastfollow, 'yyyy-MM-dd');
+                                if (lastfollow == "1900-01-01")
+                                    lastfollow = "";
+                                return lastfollow;
+                            }
+                        },
+                        {
+                            display: '创建时间', name: 'Create_date', width: 90, render: function (item) {
+                                var Create_date = formatTimebytype(item.Create_date, 'yyyy-MM-dd');
+                                return Create_date;
+                            }
                         }
+
+
+                    ],
+
+                    onBeforeShowData: function (grid, data) {
+                        startTime = new Date();
                     },
-                    {
-                        display: '创建时间', name: 'Create_date', width: 90, render: function (item) {
-                            var Create_date = formatTimebytype(item.Create_date, 'yyyy-MM-dd');
-                            return Create_date;
+                    //fixedCellHeight:false,
+                    onSelectRow: function (data, rowindex, rowobj) {
+                        var manager = $("#maingrid5").ligerGetGridManager();
+                        manager.showData({ Rows: [], Total: 0 });
+                        var url = "../../data/CRM_Follow.ashx?Action=grid&customer_id=" + data.id;
+                        manager.GetDataByURL(url);
+                    },
+                    rowtype: "CustomerType",
+                    dataAction: 'server', pageSize: 30, pageSizeOptions: [20, 30, 50, 100],
+                    url: "../../data/crm_customer.ashx?Action=grid&rnd=" + Math.random(),
+                    width: '100%', height: '65%',
+                    heightDiff: -1,
+                    onRClickToSelect: true,
+                    onContextmenu: function (parm, e) {
+                        actionCustomerID = parm.data.id;
+                        menu.show({ top: e.pageY, left: e.pageX });
+                        return false;
+                    },
+                    onAfterShowData: function (grid) {
+                        $("tr[rowtype='已成交']").addClass("l-treeleve1").removeClass("l-grid-row-alt");
+                        var nowTime = new Date();
+                        //alert('加载数据耗时：' + (nowTime - startTime));
+                    },
+                    detail: {
+                        onShowDetail: function (r, p) {
+                            for (var n in r) {
+                                if (r[n] == null) r[n] = "";
+                            }
+                            var grid = document.createElement('div');
+                            $(p).append(grid);
+                            $(grid).css('margin', 3).ligerGrid({
+                                columns: [
+                                { display: '行号', width: 50, render: function (item, i) { return i + 1; } },
+                                { display: '联系人', name: 'C_name', width: 100 },
+                                { display: '职业', name: 'C_position', width: 100 },
+                                { display: '性别', name: 'C_sex', width: 50 },
+                                //{ display: '客户姓名', name: 'C_companyname', width: 180 },
+                                { display: '手机', name: 'C_mob', width: 120 },
+                                { display: 'QQ', name: 'C_QQ', width: 100 },
+                                { display: 'Email', name: 'C_email', width: 180 }
+                                ],
+                                usePager: false,
+                                checkbox: false,
+                                url: "../../data/CRM_Contact.ashx?Action=grid&customerid=" + r.id,
+                                width: '1022px', height: '100px',
+                                heightDiff: 0
+                            })
+
                         }
                     }
-
-
-                ],
-
-                onBeforeShowData: function (grid, data) {
-                    startTime = new Date();
-                },
-                //fixedCellHeight:false,
-                onSelectRow: function (data, rowindex, rowobj) {
-                    var manager = $("#maingrid5").ligerGetGridManager();
-                    manager.showData({ Rows: [], Total: 0 });
-                    var url = "../../data/CRM_Follow.ashx?Action=grid&customer_id=" + data.id;
-                    manager.GetDataByURL(url);
-                },
-                rowtype: "CustomerType",
-                dataAction: 'server', pageSize: 30, pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/crm_customer.ashx?Action=grid&rnd=" + Math.random(),
-                width: '100%', height: '65%',
-                heightDiff: -1,
-                onRClickToSelect: true,
-                onContextmenu: function (parm, e) {
-                    actionCustomerID = parm.data.id;
-                    menu.show({ top: e.pageY, left: e.pageX });
-                    return false;
-                },
-                onAfterShowData: function (grid) {
-                    $("tr[rowtype='已成交']").addClass("l-treeleve1").removeClass("l-grid-row-alt");
-                    var nowTime = new Date();
-                    //alert('加载数据耗时：' + (nowTime - startTime));
-                },
-                detail: {
-                    onShowDetail: function (r, p) {
-                        for (var n in r) {
-                            if (r[n] == null) r[n] = "";
-                        }
-                        var grid = document.createElement('div');
-                        $(p).append(grid);
-                        $(grid).css('margin', 3).ligerGrid({
-                            columns: [
-                            { display: '行号', width: 50, render: function (item, i) { return i + 1; } },
-                            { display: '联系人', name: 'C_name', width: 100 },
-                            { display: '职业', name: 'C_position', width: 100 },
-                            { display: '性别', name: 'C_sex', width: 50 },
-                            //{ display: '客户姓名', name: 'C_companyname', width: 180 },
-                            { display: '手机', name: 'C_mob', width: 120 },
-                            { display: 'QQ', name: 'C_QQ', width: 100 },
-                            { display: 'Email', name: 'C_email', width: 180 }
-                            ],
-                            usePager: false,
-                            checkbox: false,
-                            url: "../../data/CRM_Contact.ashx?Action=grid&customerid=" + r.id,
-                            width: '1022px', height: '100px',
-                            heightDiff: 0
-                        })
-
-                    }
-                }
                 });
+            }
             if (getparastr("type") == "GJXG")
 
                 $("#maingrid5").ligerGrid({
@@ -912,7 +929,8 @@
         }
 
         function add() {
-            f_openWindow("CRM/Customer/Customer_add.aspx", "新增客户", 660, 550);
+            
+             f_openWindow("CRM/Customer/Customer_add.aspx", "新增客户", 660, 550);
         }
 
         function addContact() {
@@ -950,6 +968,42 @@
             }
         }
 
+        var checkedID = [];
+        function sendsms()
+        { 
+            var data = gg.getData();
+            checkedID = [];
+            for (var rowid in data) {
+                addcheckedID(data[rowid]['tel']);
+            }
+            var rowid = checkedID.join(';');
+            top.$.ligerDialog.open({
+                zindex: 9003,
+                title: '发送短信', width: 850, height: 400,
+
+                //url: " hr/Getemp_Auth.aspx?auth=1", buttons: [
+                url: "CRM/Customer/SendSMS.aspx?tel=" + rowid, buttons: [
+                    { text: '发送', onclick: f_sendsmsOK },
+                    { text: '取消', onclick: f_selectContactCancel }
+                ]
+            });
+            return false;
+            //alert(JSON.stringify(rowid));
+        }
+        function f_sendsmsOK(item, dialog) {
+            dialog.frame.f_save();
+             
+        }
+        function addcheckedID(tel) {
+            if (findcheckedID(tel) == -1)
+                checkedID.push(tel);
+        }
+        function findcheckedID(tel) {
+            for (var i = 0; i < checkedID.length; i++) {
+                if (checkedID[i] == tel) return i;
+            }
+            return -1;
+        }
         //提交施工
         function subconstruct() {
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -970,6 +1024,9 @@
                         
                         else if (responseText == "false:exist") {
                             top.$.ligerDialog.error('提交失败！已经存在');
+                        }
+                        else if (responseText=="false:site is not 1"){
+                            top.$.ligerDialog.error('此客户未签单，提交失败！');
                         }
 
                     },
@@ -1028,6 +1085,33 @@
                 f_openWindow_view('CRM/Customer/Customer_DynamicGraphics.aspx?cid=' + row.id + '&name=' + encodeURI(row.Customer)
                         + '&tel=' + row.tel
                         + '&sjs=' + encodeURI(row.Emp_sj), "【"+row.address+"】全景图库", 660, 550);
+            }
+            else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+        //提交签单
+        function subok() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                $.ajax({
+                    url: "../../data/CRM_Customer.ashx", type: "POST",
+                    data: { Action: "subok", customerId: row.id, rnd: Math.random() },
+                    success: function (responseText) {
+                        if (responseText == "true") {
+                            top.$.ligerDialog.alert('提交签单成功！');
+                            //f_reload();
+                            //f_followreload();
+                        }
+                        else if (responseText == "false") {
+                            top.$.ligerDialog.error('操作失败，请联系系统管理员！');
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.error('提交签单失败！');
+                    }
+                });
             }
             else {
                 $.ligerDialog.warn('请选择行！');

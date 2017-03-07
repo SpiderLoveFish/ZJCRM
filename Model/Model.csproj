@@ -128,7 +128,6 @@
     <Compile Include="Budge_Model.cs" />
     <Compile Include="budge_modelMain.cs" />
     <Compile Include="Budge_Rate.cs" />
-    <Compile Include="hr_socialWorker_Follow.cs" />
     <Compile Include="CRM_CEstage_Follow.cs" />
     <Compile Include="Crm_Classic_case.cs" />
     <Compile Include="CRM_Cope_invoice.cs" />
@@ -151,9 +150,11 @@
     <Compile Include="CRM_receive.cs" />
     <Compile Include="hr_department.cs" />
     <Compile Include="hr_employee.cs" />
+    <Compile Include="hr_employee_accounts.cs" />
     <Compile Include="hr_position.cs" />
     <Compile Include="hr_post.cs" />
     <Compile Include="hr_socialWorker.cs" />
+    <Compile Include="hr_socialWorker_Follow.cs" />
     <Compile Include="InStock_Detail.cs" />
     <Compile Include="INStock_Main.cs" />
     <Compile Include="KHJD_LIST_VIEW_LIST.cs" />

@@ -93,6 +93,15 @@ namespace XHD.BLL
         }
 
         /// <summary>
+        /// 提交签单一条数据
+        /// </summary>
+        public bool subok(int id)
+        {
+
+            return dal.subok(id);
+        }
+
+        /// <summary>
         /// 得到一个对象实体
         /// </summary>
         public XHD.Model.CRM_Customer GetModel(int id)

@@ -129,12 +129,12 @@
     <Compile Include="CERep_Schedule.cs" />
     <Compile Include="CE_Para.cs" />
     <Compile Include="budge.cs" />
-    <Compile Include="hr_socialWorker_Follow.cs" />
     <Compile Include="CRM_CEstage_Follow.cs" />
     <Compile Include="Crm_Classic_case.cs" />
     <Compile Include="CRM_Cope.cs" />
     <Compile Include="CRM_Cope_invoice.cs" />
     <Compile Include="hr_socialWorker.cs" />
+    <Compile Include="hr_socialWorker_Follow.cs" />
     <Compile Include="InStock_Detail.cs" />
     <Compile Include="INStock_Main.cs" />
     <Compile Include="MasterStock.cs" />

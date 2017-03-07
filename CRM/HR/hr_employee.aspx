@@ -183,6 +183,18 @@
                 $.ligerDialog.warn('请选择行！');
             }
         }
+
+        //账号管理
+        function accountsManagement() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow('hr/hr_employee_accounts.aspx?empid=' + row.ID, "我的账号", 730, 490);
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+
         function authorized() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();

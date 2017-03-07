@@ -952,6 +952,23 @@ namespace XHD.CRM.Data
                     context.Response.Write("delfalse");
                 }
             }
+
+            if (request["Action"] == "Send_aliyunSendSMS")
+            {
+
+                string tel = PageValidate.InputText(request["tel"], int.MaxValue);
+                string type = PageValidate.InputText(request["type"], 50);
+                string para = PageValidate.InputText(request["para"], int.MaxValue); 
+             XHD.CRM.Data.sms sms = new Data.sms();
+             string aa = sms.aliyunSendSMS(tel,type,para);
+             if(aa=="200")
+             {
+                 context.Response.Write("true");
+             }
+
+             else context.Response.Write("false");
+            }
+
          if (request["Action"] == "getDefaultCity")
             {
                 Model.hr_employee employee = new Model.hr_employee();
@@ -1282,6 +1299,39 @@ namespace XHD.CRM.Data
                 }
             }
 
+            //提交签单
+            if (request.Params["Action"] == "subok")
+            {
+                string customerid = request["customerId"];
+                string EventType = "提交签单";
+                int success = 0, failure = 0;
+
+                //日志    
+                bool issubok = customer.subok(int.Parse(customerid));
+                if (issubok)
+                {
+                    success++;
+                    int UserID = emp_id;
+                    string UserName = empname;
+                    string IPStreet = request.UserHostAddress;
+                    int EventID = int.Parse(customerid);
+                    string EventTitle = customerid;
+                    string Original_txt = null;
+                    string Current_txt = null;
+
+                    C_Sys_log log = new C_Sys_log();
+
+                    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, null, Original_txt, Current_txt);
+                    context.Response.Write("true");
+                }
+                else
+                {
+                    failure++;
+                    context.Response.Write("false");
+                }
+                //context.Response.Write(string.Format("{0}条数据提交签单成功，{1}条失败。|{1}", success, failure));
+                Caches.CRM_Customer = null;
+            }
 
             //validate website
             if (request["Action"] == "validate")

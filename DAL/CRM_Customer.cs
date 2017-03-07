@@ -534,6 +534,32 @@ namespace XHD.DAL
             }
         }
 
+        /// <summary>
+        /// 提交签单一条数据
+        /// </summary>
+        public bool subok(int id)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("UPDATE CRM_Customer SET site='1' ");
+            strSql.Append(" where id=@id");
+            strSql.Append(";select @@IDENTITY");
+            SqlParameter[] parameters = {
+					new SqlParameter("@id", SqlDbType.Int,4)
+                };
+            parameters[0].Value = id;
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         /// <summary>
         /// 得到一个对象实体
@@ -542,7 +568,8 @@ namespace XHD.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select  top 1 id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces_id,Provinces,City_id,City,Towns_id,Towns,Community_id,Community,BNo,DyNo,RNo,Gender,CustomerType_id,CustomerType,CustomerLevel_id,CustomerLevel,CustomerSource_id,CustomerSource,DesCripe,Remarks,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_id,Create_name,Create_date,isDelete,Delete_time,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Emp_id_sg,Emp_sg,Emp_id_sj,Emp_sj,xy,WXZT_ID,WXZT_NAME,QQ,JKDZ,hxt,jgqjt from CRM_Customer ");
+            //strSql.Append("select  top 1 id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces_id,Provinces,City_id,City,Towns_id,Towns,Community_id,Community,BNo,DyNo,RNo,Gender,CustomerType_id,CustomerType,CustomerLevel_id,CustomerLevel,CustomerSource_id,CustomerSource,DesCripe,Remarks,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,Create_id,Create_name,Create_date,isDelete,Delete_time,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Emp_id_sg,Emp_sg,Emp_id_sj,Emp_sj,xy,WXZT_ID,WXZT_NAME,QQ,JKDZ,hxt,jgqjt from CRM_Customer ");
+            strSql.Append("select  top 1 * from CRM_Customer ");
             strSql.Append(" where id=@id");
             SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)
@@ -891,7 +918,7 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " a.id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces,City,Towns,Community,BNo,DyNo,RNo,Gender,CustomerType,CustomerLevel,CustomerSource,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,a.Create_date,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,DesCripe,WXZT_ID,WXZT_NAME,QQ,JKDZ,hxt,jgqjt,b.setcolor,c.setcolor as indcolor,ISNULL(d.Stage_icon,'未签单') AS Stage_icon,ISNULL(e.Order_amount,0) Order_amount,ISNULL(g.dj_amount,0)dj_amount,ISNULL(h.zx_amount,0)zx_amount,CASE WHEN f.curstomerid IS NOT NULL THEN 'Y' ELSE 'N' END kjl FROM CRM_Customer a LEFT JOIN dbo.Param_SysParam b ON a.CustomerType_id=b.id LEFT JOIN dbo.Param_SysParam c ON a.industry_id=c.id LEFT JOIN (SELECT CustomerID,Stage_icon FROM dbo.CRM_CEStage ) d ON d.CustomerID=a.id 	LEFT JOIN (SELECT Customer_id,SUM(Order_amount)Order_amount FROM  dbo.CRM_order GROUP BY Customer_id) e ON   e.Customer_id=a.id 	LEFT JOIN (	SELECT DISTINCT curstomerid FROM dbo.kjl_api) f ON f.curstomerid=a.id 	LEFT JOIN (SELECT Customer_id,SUM(Receive_amount) dj_amount FROM  CRM_receive WHERE receive_direction_name IN('收定金','退定金') GROUP BY Customer_id) g ON g.Customer_id=a.id LEFT JOIN (SELECT Customer_id,SUM(Receive_amount) zx_amount FROM  CRM_receive WHERE receive_direction_name IN('收装修款','退装修款') GROUP BY Customer_id ) h ON h.Customer_id=a.id ");
+            strSql.Append(" top " + PageSize + " a.id,Serialnumber,Customer,address,tel,fax,site,industry,Provinces,City,Towns,Community,BNo,DyNo,RNo,Gender,CustomerType,CustomerLevel,CustomerSource,Department_id,Department,Employee_id,Employee,privatecustomer,lastfollow,a.Create_date,Jfrq,Zxrq,Jhrq1,Jhrq2,Fwyt,Fwmj,Fwhx_id,Fwhx,Zxjd_id,Zxjd,Zxfg_id,Zxfg,Dpt_id_sg,Dpt_sg,Emp_id_sg,Emp_sg,Dpt_id_sj,Dpt_sj,Emp_id_sj,Emp_sj,xy,DesCripe,WXZT_ID,WXZT_NAME,QQ,JKDZ,hxt,jgqjt,b.setcolor,c.setcolor as indcolor,case ISNULL(d.Stage_icon,'') when '' then case isnull(a.site,'') when '1'then '已签单'else '未签单'end else d.Stage_icon end AS Stage_icon,ISNULL(e.Order_amount,0) Order_amount,ISNULL(g.dj_amount,0)dj_amount,ISNULL(h.zx_amount,0)zx_amount,CASE WHEN f.curstomerid IS NOT NULL THEN 'Y' ELSE 'N' END kjl FROM CRM_Customer a LEFT JOIN dbo.Param_SysParam b ON a.CustomerType_id=b.id LEFT JOIN dbo.Param_SysParam c ON a.industry_id=c.id LEFT JOIN (SELECT CustomerID,Stage_icon FROM dbo.CRM_CEStage ) d ON d.CustomerID=a.id 	LEFT JOIN (SELECT Customer_id,SUM(Order_amount)Order_amount FROM  dbo.CRM_order GROUP BY Customer_id) e ON   e.Customer_id=a.id 	LEFT JOIN (	SELECT DISTINCT curstomerid FROM dbo.kjl_api) f ON f.curstomerid=a.id 	LEFT JOIN (SELECT Customer_id,SUM(Receive_amount) dj_amount FROM  CRM_receive WHERE receive_direction_name IN('收定金','退定金') GROUP BY Customer_id) g ON g.Customer_id=a.id LEFT JOIN (SELECT Customer_id,SUM(Receive_amount) zx_amount FROM  CRM_receive WHERE receive_direction_name IN('收装修款','退装修款') GROUP BY Customer_id ) h ON h.Customer_id=a.id ");
             strSql.Append(" WHERE ( a.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_Customer ");
             if (filedOrder != "  id  desc")
             {
