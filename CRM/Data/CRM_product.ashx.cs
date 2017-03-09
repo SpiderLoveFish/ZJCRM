@@ -65,7 +65,8 @@ namespace XHD.CRM.Data
                 model.zt = PageValidate.InputText(request["T_zt"], 255);
                 model.pp = PageValidate.InputText(request["T_pp"], 255);
                // model.C_code = PageValidate.InputText(request["C_code"], 255);
-                string isupdateprice = PageValidate.InputText(request["T_private"], 50);
+                string isupdateprice = PageValidate.InputText(request["T_private_val"], 50);
+                string modelstyle = PageValidate.InputText(request["T_private"], 50);
                 
                 string c_code = "";
                 try
@@ -255,14 +256,14 @@ namespace XHD.CRM.Data
                     updateprice.AppendLine(" AND A.xmid=" + pid + " ");
                     DBUtility.DbHelperSQL.ExecuteSql(updateprice.ToString());
                 }
-                else if (isupdateprice == "3")//常规预算
+                //else if (isupdateprice == "3")//常规预算
+                //{
+                //    updateprice.AppendLine(" AND ModelStyle='常规模板' AND A.xmid=" + pid + " ");
+                //    DBUtility.DbHelperSQL.ExecuteSql(updateprice.ToString());
+                //}
+                else if (isupdateprice == "4" || isupdateprice == "3")//套餐模板//常规预算
                 {
-                    updateprice.AppendLine(" AND ModelStyle='常规模板' AND A.xmid=" + pid + " ");
-                    DBUtility.DbHelperSQL.ExecuteSql(updateprice.ToString());
-                }
-                else if (isupdateprice == "4")//套餐模板
-                {
-                    updateprice.AppendLine(" AND ModelStyle='套餐模板' AND A.xmid=" + pid + " ");
+                    updateprice.AppendLine(" AND ModelStyle='" + modelstyle + "' AND A.xmid=" + pid + " ");
                     DBUtility.DbHelperSQL.ExecuteSql(updateprice.ToString());
                 }
 
