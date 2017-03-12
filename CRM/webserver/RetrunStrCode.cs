@@ -80,7 +80,7 @@ namespace XHD.CRM.webserver
                 }
                 else if (sfkh == "Y")
                 {
-                    sb.AppendLine("SELECT * FROM (");
+                    sb.AppendLine("SELECT top 10 * FROM (");
                     sb.AppendLine("SELECT  row_number() OVER (ORDER BY Jf DESC ) n , a.ID ,");
                     sb.AppendLine("        a.Customer AS Name ,");
                     sb.AppendLine("        a.Tel ,");

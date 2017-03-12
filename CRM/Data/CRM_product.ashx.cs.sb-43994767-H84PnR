@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -248,7 +248,6 @@ namespace XHD.CRM.Data
                 var updateprice = new System.Text.StringBuilder();
                 updateprice.AppendLine("UPDATE A SET	TotalPrice=B.price,a.zc_price=b.zc_price,a.fc_price=b.fc_price,a.rg_price=b.rg_price ");
                 updateprice.AppendLine("FROM dbo.Budge_BasicDetail A");
- 		 updateprice.AppendLine(" INNER JOIN  Budge_BasicMain c on a.budge_id=c.id");
                 updateprice.AppendLine("INNER JOIN  dbo.CRM_product B ON A.xmid=B.product_id");
                 updateprice.AppendLine(" WHERE A.budge_id LIKE 'M%' ");
            
@@ -267,7 +266,6 @@ namespace XHD.CRM.Data
                     updateprice.AppendLine(" AND ModelStyle='" + modelstyle + "' AND A.xmid=" + pid + " ");
                     DBUtility.DbHelperSQL.ExecuteSql(updateprice.ToString());
                 }
-                else {}
 
             }
 

@@ -383,7 +383,7 @@
                       <td>更新預算</td>
                        <td>  
                            <input id="T_private" name="T_private" type="text" ltype="select"
-                                ligerui="{width:150,data:[{id:'1',text:'不更新'},{id:'2',text:'全部更新'},{id:'3',text:'常规预算'},{id:'4',text:'套餐模板'}]}"
+                                ligerui="{width:150,data:[{id:'1',text:'不更新'},{id:'2',text:'全部更新'},{id:'3',text:'常规模板'},{id:'4',text:'套餐模板'}]}"
                                 validate="{required:true}" /></td>
                
             </tr>     

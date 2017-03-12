@@ -349,7 +349,7 @@ namespace XHD.CRM.webserver
               var sb = new System.Text.StringBuilder();
               if (parentid == "city")
               {  sb.Clear();
-              sb.AppendLine("SELECT  ID id,Name params_name FROM CRM_Building WHERE IsDel ='N'");
+              sb.AppendLine("SELECT  ID id,Name params_name FROM CRM_Building WHERE IsDel ='N' order by params_name ");
               }
               else
               {
@@ -377,7 +377,7 @@ namespace XHD.CRM.webserver
                 
                   sb.AppendLine(" ");
                   sb.AppendLine("SELECT	DISTINCT	Emp_id_sg	AS	cid,Emp_sg	CustomerType	 FROM dbo.CRM_Customer  a");
-                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sg=B.ID WHERE	ISNULL(B.isDelete,0)=0  AND Emp_id_sg IS	NOT		NULL AND Emp_id_sg>0 order  by Emp_sg ");
+                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sg=B.ID WHERE	B.status='在职'  and ISNULL(B.isDelete,0)=0  AND Emp_id_sg IS	NOT		NULL AND Emp_id_sg>0 order  by Emp_sg ");
                   sb.AppendLine(" ");
               }
               if (url == "sjs")
@@ -385,7 +385,7 @@ namespace XHD.CRM.webserver
                   sb.Clear();
                   sb.AppendLine(" ");
                   sb.AppendLine("SELECT	DISTINCT Emp_id_sj	AS	cid,Emp_sj	CustomerType	 FROM dbo.CRM_Customer a");
-                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sj=B.ID 	WHERE	ISNULL(B.isDelete,0)=0 AND Emp_id_sj IS	NOT		NULL AND Emp_id_sj>0 order  by Emp_sj ");
+                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sj=B.ID 	WHERE	B.status='在职'  and ISNULL(B.isDelete,0)=0 AND Emp_id_sj IS	NOT		NULL AND Emp_id_sj>0 order  by Emp_sj ");
                   sb.AppendLine(" ");
               }
               if (url == "ywy")
@@ -393,7 +393,7 @@ namespace XHD.CRM.webserver
                   sb.Clear();
                   sb.AppendLine(" ");
                   sb.AppendLine("SELECT	DISTINCT Create_id	AS	cid,Create_name	CustomerType	 FROM dbo.CRM_Customer a");
-                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sj=B.ID 	WHERE	ISNULL(B.isDelete,0)=0 AND Emp_id_sj IS	NOT		NULL AND Create_id>0 order  by Create_name ");
+                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sj=B.ID 	WHERE	B.status='在职'  and ISNULL(B.isDelete,0)=0 AND Emp_id_sj IS	NOT		NULL AND Create_id>0 order  by Create_name ");
                   sb.AppendLine(" ");
               }
               if (url == "follow_llr")//录入人
@@ -401,7 +401,7 @@ namespace XHD.CRM.webserver
                   sb.Clear();
                   sb.AppendLine(" ");
                   sb.AppendLine("SELECT	DISTINCT Create_id	AS	cid,Create_name	CustomerType	 FROM dbo.CRM_Customer a");
-                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sj=B.ID 	WHERE	ISNULL(B.isDelete,0)=0 AND Emp_id_sj IS	NOT		NULL AND Emp_id_sj>0 order  by Emp_sj ");
+                  sb.AppendLine(" INNER JOIN dbo.hr_employee B ON A.Emp_id_sj=B.ID 	WHERE B.status='在职'  and	ISNULL(B.isDelete,0)=0 AND Emp_id_sj IS	NOT		NULL AND Emp_id_sj>0 order  by Emp_sj ");
                   sb.AppendLine(" ");
               }
               if (url == "jplx")//精品类型
@@ -409,6 +409,12 @@ namespace XHD.CRM.webserver
                   sb.Clear();
                   sb.AppendLine("SELECT DISTINCT employee_id,employee_name FROM  dbo.CRM_Follow WHERE employee_id>0 AND ISNULL(employee_name,'')!=''");
               }
+               if (url ==  "addry")//新增业务员，等
+              {
+                  sb.Clear();
+                  sb.AppendLine(" SELECT * FROM  hr_employee WHERE status='在职' ORDER BY name ");
+              }
+              
              
               else
               {
