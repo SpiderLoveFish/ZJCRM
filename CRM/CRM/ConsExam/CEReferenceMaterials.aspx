@@ -29,7 +29,7 @@
         var pushry = [];
         $(function () {
 
-            $("#maingrid4").ligerGrid({
+         g=   $("#maingrid4").ligerGrid({
                 columns: [
                    {
                        display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
@@ -337,10 +337,35 @@
         }
         //生成采购单
         function addcgd()
-        { var rowid = checkedID.join(',');
+        {
+            var rowid = checkedID.join(',');
+            var customer = checkedCustomerID.join(',');
+            
+            var customerid="";var customer="";
+            for (var k = 0; k < checkedCustomerID.length; k++)
+            {
+                if (k == 0)
+                { customerid = checkedCustomerID[k]; }
+                else {
+                    if (customerid != checkedCustomerID[k])
+                        f_error("所选材料必须为同一客户！"); return;
+                }
+               
+
+            }
+            var data = g.getData();
+            for (var d = 0; d < data.length; d++)
+            {
+                if (data[d]["CustomerID"] == customerid) {
+                   
+                    customer = data[d]["address"]; break;
+
+                }
+            }
+           
         if (rowid.length > 0)
          //  alert(rowid);
-            f_openWindow('crm/purchase/SavePickList.aspx?rowid=' + rowid, "生成采购单", 600, 350);
+            f_openWindow('crm/purchase/SavePickList.aspx?rowid=' + rowid + '&cid=' + customerid + '&cname=' + encodeURI(customer), "生成采购单", 600, 350);
             }
         //结案
         function close() {
@@ -390,7 +415,7 @@
         function f_save(item, dialog)
         {
             var issave = dialog.frame.f_save();
-            //alert(issave);
+          
             if (issave) {
                 $.ajax({
                     type: 'post',
@@ -415,13 +440,14 @@
         }
 
         function savedetail(dialog, issave) {
-
+       
             //var pidlist = "," + pidlist;
             var url = '../../data/Purchase.ashx?Action=savedetail&'+issave;
             $.ajax({
                 type: 'post',
                 url: url,
                 success: function (data) {
+                    dialog.frame.alertcgd();
                     dialog.close();
                     dialog.closeWaitting('数据保存中,请稍候...');
                    // top.$.ligerDialog.waitting('数据保存中,请稍候...');
@@ -473,29 +499,42 @@
         表单分页多选
         即利用onCheckRow将选中的行记忆下来，并利用isChecked将记忆下来的行初始化选中
         */
-        var checkedID = [];
+        var checkedID = []; var checkedCustomerID = [];
         function f_onCheckAllRow(checked) {
             for (var rowid in this.records) {
                 if (checked)
-                    addcheckedID(this.records[rowid]['product_id']);
+                    addcheckedID(this.records[rowid]['product_id'], this.records[rowid]['CustomerID']);
                 else
-                    removecheckedID(this.records[rowid]['product_id']);
+                    removecheckedID(this.records[rowid]['product_id'], this.records[rowid]['CustomerID']);
             }
         }
         function findcheckedID(product_id) {
             for (var i = 0; i < checkedID.length; i++) {
                 if (checkedID[i] == product_id) return i;
             }
+            
             return -1;
         }
-        function addcheckedID(product_id) {
+        function findcheckedCustomerID(customreid) {
+       
+            for (var i = 0; i < checkedCustomerID.length; i++) {
+                if (checkedCustomerID[i] == customreid) return i;
+            }
+            return -1;
+        }
+        function addcheckedID(product_id,customerid) {
             if (findcheckedID(product_id) == -1)
                 checkedID.push(product_id);
+            if (findcheckedCustomerID(customerid) == -1)
+                checkedCustomerID.push(customerid);
         }
-        function removecheckedID(product_id) {
+        function removecheckedID(product_id,customerid) {
             var i = findcheckedID(product_id);
             if (i == -1) return;
             checkedID.splice(i, 1);
+            var ii = findcheckedCustomerID(customerid);
+            if (ii == -1) return;
+            checkedCustomerID.splice(ii, 1);
         }
         function f_isChecked(rowdata) {
             if (findcheckedID(rowdata.product_id) == -1)
@@ -503,8 +542,8 @@
             return true;
         }
         function f_onCheckRow(checked, data) {
-            if (checked) addcheckedID(data.product_id);
-            else removecheckedID(data.product_id);
+            if (checked) addcheckedID(data.product_id, data.CustomerID);
+            else removecheckedID(data.product_id, data.CustomerID);
         }
     </script>
     

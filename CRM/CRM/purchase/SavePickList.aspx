@@ -38,7 +38,10 @@
             XHD.validate($(form1));
             ck = $("#ckisgd").ligerCheckBox();
             $("form").ligerForm();
-            gcombkh = $('#T_companyname').ligerComboBox({ width: 250, onBeforeOpen: f_selectContact });
+        
+            $('#T_companyname').val(decodeURI(getparastr("cname")));
+            $('#T_companyid').val(getparastr("cid"))
+            //gcombkh = $('#T_companyname').ligerComboBox({ width: 250, onBeforeOpen: f_selectContact });
             gcombgys = $('#T_gysname').ligerComboBox({ width: 250, onBeforeOpen: f_selectContactgys });
             var cur = new Date();
             var y = cur.getFullYear();
@@ -70,6 +73,10 @@
              
         }
     
+        function alertcgd()
+        {
+            alert('采购单' + $('#T_Pid').val() + '生成并提交！！');
+        }
 
         //选择客户
         function f_selectContact() {

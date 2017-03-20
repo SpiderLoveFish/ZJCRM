@@ -963,6 +963,22 @@ namespace XHD.CRM.Data
              string aa = sms.aliyunSendSMS(tel,type,para);
              if(aa=="200")
              {
+                 string sql = " INSERT INTO dbo.SMS_log" +
+                            "        ( sendcontent ," +
+                            "          DoTime ," +
+                            "          DoPerson ," +
+                            "          DoStyle ," +
+                            "          smsphone ," +
+                            "          smscount" +
+                            "        )" +
+                            " VALUES  ( '" + para + "' , -- sendcontent - varchar(1000)" +
+                            "          getdate() , -- DoTime - datetime" +
+                            "          '"+empname+"' , -- DoPerson - varchar(20)" +
+                            "          '群发短信' , -- DoStyle - varchar(50)" +
+                            "          '" + tel + "' , -- smsphone - varchar(max)" +
+                            "          " + tel.Split(';').Length + "  -- smscount - int" +
+                            "        )";
+                 DBUtility.DbHelperSQL.ExecuteSql(sql);
                  context.Response.Write("true");
              }
 

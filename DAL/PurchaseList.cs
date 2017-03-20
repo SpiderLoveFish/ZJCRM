@@ -500,7 +500,7 @@ namespace XHD.DAL
         {
             string sqlstr = " SELECT *" +
                                 "  FROM   ( SELECT  row_number() OVER (ORDER BY A.DoTime DESC ) n,  a.id ," +
-                                "        a.CustomerID ," +
+                                "        a.CustomerID ,  " +
                                 "        a.product_id ,A.DoTime,A.DoPerson," +
                                 "        c.product_name ," +
                                 "        a.amountsum sqsl ," +

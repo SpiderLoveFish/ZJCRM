@@ -204,7 +204,7 @@ namespace XHD.CRM.webserver
             sb.AppendLine("c_title,customer_name,img_style,'"+url+"'+thum_img AS thumimg,IsStatus");
             sb.AppendLine(" FROM  dbo.Crm_Classic_case A");
             sb.AppendLine(" INNER JOIN  Param_SysParam	B ON A.img_style=B.id ");
-            sb.AppendLine(" WHERE 1=1 ");
+            sb.AppendLine(" WHERE 1=1 AND IsStatus='2' ");
             sb.AppendLine(strwhere);
             sb.AppendLine(")aa");
             sb.AppendLine(" WHERE n>" + startindex);
