@@ -118,7 +118,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('crm/Budge/Budge_BasicPart_add.aspx?cid=' + row.id, "修改类别", 480, 320);
+                f_openWindow('crm/Budge/Budge_BasicPart_add.aspx?cid=' + row.id + '&cname=' + encodeURI(row.BP_Name), "修改类别", 480, 320);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }

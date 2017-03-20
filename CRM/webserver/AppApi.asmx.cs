@@ -408,6 +408,17 @@ namespace XHD.CRM.webserver
               {
                   sb.Clear();
                   sb.AppendLine("SELECT DISTINCT employee_id,employee_name FROM  dbo.CRM_Follow WHERE employee_id>0 AND ISNULL(employee_name,'')!=''");
+<<<<<<< .mine
+              }
+               if (url ==  "addy")//新增业务员，等
+              {
+                  sb.Clear();
+                  sb.AppendLine(" SELECT * FROM  hr_employee WHERE status='在职' ORDER BY name ");
+              }
+              
+||||||| .r145
+              }
+=======
               }
                if (url ==  "addry")//新增业务员，等
               {
@@ -415,6 +426,7 @@ namespace XHD.CRM.webserver
                   sb.AppendLine(" SELECT * FROM  hr_employee WHERE status='在职' ORDER BY name ");
               }
               
+>>>>>>> .r148
              
               else
               {

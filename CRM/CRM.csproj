@@ -206,6 +206,7 @@
     <Content Include="CRM\Customer\map_mark.aspx" />
     <Content Include="CRM\Customer\SelectCommunity.aspx" />
     <Content Include="CRM\Customer\Score_img_add.aspx" />
+    <Content Include="CRM\Customer\SendSMS.aspx" />
     <Content Include="CRM\DataShare\Favorites_View.aspx" />
     <Content Include="CRM\DataShare\public_data_share.aspx" />
     <Content Include="CRM\DataShare\public_data_view_share.aspx" />

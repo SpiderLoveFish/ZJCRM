@@ -48,10 +48,27 @@
         });
 
         function f_save() {
-            if ($(form1).valid()) {
-                var sendtxt = "&Action=save&bpid=" + getparastr("cid");
-                return $("form :input").fieldSerialize() + sendtxt;
-            }
+            $.ajax({
+                url: "../../data/budge.ashx", type: "get",
+                data: { Action: "isexistbpname", cid: getparastr("cid"), cname: decodeURI(getparastr("cname")), rnd: Math.random() },
+                contentType: "application/json; charset=utf-8",
+             
+                success: function (data) {
+                    if (data == "true") {
+                        if ($(form1).valid()) {
+                            var sendtxt = "&Action=save&bpid=" + getparastr("cid");
+                            return $("form :input").fieldSerialize() + sendtxt;
+                        }
+                    }
+                    else {
+                        alert("您录入的部位已存在！！！");
+                    }
+                }
+
+            });
+       
+
+            
         }
 
         function loadForm(oaid) {

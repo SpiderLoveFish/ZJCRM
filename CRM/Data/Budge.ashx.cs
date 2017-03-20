@@ -151,7 +151,17 @@ namespace XHD.CRM.Data
                 //{"status": 1, "sum": 9}
                 context.Response.Write(josnstr);
             }
-
+             //是否存在这个预算的模板
+             if (request["Action"] == "isexistbpname")
+             {
+                 string BP_Name = PageValidate.InputText(request["cname"], 250);
+                      string cid = PageValidate.InputText(request["cid"], 250);
+                 BLL.Budge_BasicPart bbpart = new BLL.Budge_BasicPart();
+                 DataSet ds = bbpart.GetList(" BP_Name='" + BP_Name + "' AND id!=" + cid);
+                if(ds.Tables[0].Rows.Count>0)
+                    context.Response.Write("false");
+                else context.Response.Write("true");
+             }
              if (request["Action"] == "saveallmb")
              {
                  //string bid = PageValidate.InputText(request["bid"], 50);
