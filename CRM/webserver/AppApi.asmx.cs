@@ -408,26 +408,16 @@ namespace XHD.CRM.webserver
               {
                   sb.Clear();
                   sb.AppendLine("SELECT DISTINCT employee_id,employee_name FROM  dbo.CRM_Follow WHERE employee_id>0 AND ISNULL(employee_name,'')!=''");
-<<<<<<< .mine
+ 
               }
-               if (url ==  "addy")//新增业务员，等
-              {
-                  sb.Clear();
-                  sb.AppendLine(" SELECT * FROM  hr_employee WHERE status='在职' ORDER BY name ");
-              }
-              
-||||||| .r145
-              }
-=======
-              }
+ 
                if (url ==  "addry")//新增业务员，等
               {
                   sb.Clear();
                   sb.AppendLine(" SELECT * FROM  hr_employee WHERE status='在职' ORDER BY name ");
               }
               
->>>>>>> .r148
-             
+ 
               else
               {
                   sb.AppendLine(" SELECT  ");
@@ -1632,11 +1622,11 @@ namespace XHD.CRM.webserver
         /// <param name="nowindex"></param>
         /// <param name="url"></param>
           [WebMethod]
-          public void GetLastListClassicCase(string strWhere, string nowindex, string url)
+          public void GetLastListClassicCase(string strWhere,string type, string nowindex, string url)
           {
 
               SqlParameter[] parameters = { };
-              string sql = rsc.GetLastListClassicCase(nowindex, strWhere, url);
+              string sql = rsc.GetLastListClassicCase(nowindex, strWhere,type, url);
               DataSet ds = DbHelperSQL.Query(sql, parameters);
               DSToJSON(ds);
           }
