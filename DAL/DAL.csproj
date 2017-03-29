@@ -145,6 +145,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppDal.cs" />
     <Compile Include="Budge_BasicDetail.cs" />
     <Compile Include="Budge_BasicMain.cs" />
     <Compile Include="Budge_BasicPart.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="CERep_Schedule.cs" />
     <Compile Include="CE_Para.cs" />
     <Compile Include="budge.cs" />
+    <Compile Include="hr_employee_accounts.cs" />
     <Compile Include="hr_socialWorker_Follow.cs" />
     <Compile Include="CRM_CEstage_Follow.cs" />
     <Compile Include="Crm_Classic_case.cs" />
@@ -262,6 +264,9 @@
   </ItemGroup>
   <ItemGroup>
     <Fakes Include="Fakes\MySql.Data.fakes" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DAL.csproj.vspscc" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
