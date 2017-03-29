@@ -536,16 +536,16 @@ namespace XHD.CRM.webserver
                               sbt.AppendLine("  and  A.id in (select customer_id  from  Crm_Customer_Favorite where userid=" + ID + ")");
 
                           }
-                          sbt.AppendLine(" and address    like    '%" + str[0] + "%' ");
+                          sbt.AppendLine(" and  ISNULL(address,'')    like    '%" + str[0] + "%' ");
                           if (str[1] != "")
-                              sbt.AppendLine(" and Emp_id_sg   = '" + str[1] + "' ");
+                              sbt.AppendLine(" and ISNULL(Emp_id_sg,'')   = '" + str[1] + "' ");
                           if (str[2] != "")
-                              sbt.AppendLine(" and Emp_id_sj    =    '" + str[2] + "' ");
+                              sbt.AppendLine(" and ISNULL(Emp_id_sj,'')     =    '" + str[2] + "' ");
                           if (str[10] != "")//业务员
                               sbt.AppendLine(" and Create_id    =    '" + str[10] + "' ");
                           sbt.AppendLine(" and A.CustomerType_id    like    '%" + str[3] + "%' ");
-                          sbt.AppendLine(" and tel    like    '%" + str[4] + "%' ");
-                          sbt.AppendLine(" and A.Create_name    like    '%" + str[6] + "%' ");//姓名
+                          sbt.AppendLine(" and  ISNULL(tel,'')      like    '%" + str[4] + "%' ");
+                          sbt.AppendLine(" and ISNULL(A.Create_name,'')    like    '%" + str[6] + "%' ");//姓名
                           if (str[7] != "")
                               sbt.AppendLine(" and a.Create_date >= '" + str[7] + " 00:00' ");//开始时间
                           if (str[8] != "")

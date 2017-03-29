@@ -13,7 +13,8 @@
 
    <script type="text/javascript">
        $(function () {
-           $('#id_name').html(decodeURI(getparastr("name")))
+           $('#id_name').html(decodeURI(getparastr("name")));
+           SiteSearch();
        });
        function viewkjl(url, newname) {
            window.open(url + "&width=" + screen.width +
