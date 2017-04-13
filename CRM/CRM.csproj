@@ -857,6 +857,9 @@
     <Content Include="NoVerified\NVRepairTelphone.aspx" />
     <Content Include="QQ_Login.aspx" />
     <Content Include="qq_rebind.aspx" />
+    <Content Include="System\sendsmsmodel.aspx" />
+    <Content Include="System\smsmodel_add.aspx" />
+    <Content Include="System\smsmodel.aspx" />
     <Content Include="System\push.aspx" />
     <Content Include="System\sms.aspx" />
     <Content Include="System\SingleSignOn.aspx" />
@@ -909,9 +912,9 @@
     <Content Include="Images\swfupload\upload.gif" />
     <Content Include="Images\swfupload\upload_normal.gif" />
     <Content Include="Images\swfupload\upload_waiting.gif" />
-    <Content Include="install\sql.sql" />
-    <Content Include="install\success.aspx" />
-    <Content Include="install\remind.aspx" />
+    <Content Include="JS\install\sql.sql" />
+    <Content Include="JS\install\success.aspx" />
+    <Content Include="JS\install\remind.aspx" />
     <Content Include="JS\DragFlow\DragFlow.Init.js" />
     <Content Include="JS\DragFlow\DragFlow.JQuery.js" />
     <Content Include="JS\DragFlow\DragFlow.Render.js" />
@@ -957,6 +960,7 @@
     <Content Include="Data\hr_socialWorker.ashx" />
     <Content Include="Data\hr_socialWorker_Follow.ashx" />
     <Content Include="Data\hr_socialWorker_Calendar.ashx" />
+    <Content Include="Data\smsmodel.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -2651,9 +2655,9 @@
     <Content Include="Images\xgcalendar\turnback.png" />
     <Content Include="Images\xgcalendar\us.gif" />
     <Content Include="Images\xgcalendar\view.png" />
-    <Content Include="install\index.aspx" />
-    <Content Include="install\step2.aspx" />
-    <Content Include="install\step3.aspx" />
+    <Content Include="JS\install\index.aspx" />
+    <Content Include="JS\install\step2.aspx" />
+    <Content Include="JS\install\step3.aspx" />
     <Content Include="Data\sys_log_err.ashx" />
     <Content Include="ReportForm\emp\customer_add_month.aspx" />
     <Content Include="ReportForm\funnel\CRM_Report_funnel.aspx" />
@@ -4565,6 +4569,9 @@
     </Compile>
     <Compile Include="Data\CRM_CEStage_Follow.ashx.cs">
       <DependentUpon>CRM_CEStage_Follow.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\smsmodel.ashx.cs">
+      <DependentUpon>smsmodel.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\hr_socialWorker.ashx.cs">
       <DependentUpon>hr_socialWorker.ashx</DependentUpon>

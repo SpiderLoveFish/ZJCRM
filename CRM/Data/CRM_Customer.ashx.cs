@@ -958,7 +958,7 @@ namespace XHD.CRM.Data
 
                 string tel = PageValidate.InputText(request["tel"], int.MaxValue);
                 string type = PageValidate.InputText(request["type"], 50);
-                string para = PageValidate.InputText(request["para"], int.MaxValue); 
+                string para = request["para"] ; 
              XHD.CRM.Data.sms sms = new Data.sms();
              string aa = sms.aliyunSendSMS(tel,type,para);
              if(aa=="200")
@@ -971,12 +971,12 @@ namespace XHD.CRM.Data
                             "          smsphone ," +
                             "          smscount" +
                             "        )" +
-                            " VALUES  ( '" + para + "' , -- sendcontent - varchar(1000)" +
-                            "          getdate() , -- DoTime - datetime" +
-                            "          '"+empname+"' , -- DoPerson - varchar(20)" +
-                            "          '群发短信' , -- DoStyle - varchar(50)" +
-                            "          '" + tel + "' , -- smsphone - varchar(max)" +
-                            "          " + tel.Split(';').Length + "  -- smscount - int" +
+                            " VALUES  ( '" + para + "' ,  " +
+                            "          getdate() ,  " +
+                            "          '"+empname+"' , " +
+                            "          '群发短信' , " +
+                            "          '" + tel + "' , " +
+                            "          " + tel.Split(';').Length + " " +
                             "        )";
                  DBUtility.DbHelperSQL.ExecuteSql(sql);
                  context.Response.Write("true");
