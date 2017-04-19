@@ -5,7 +5,7 @@
 <head>
     <title></title>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
- 
+     <link href="../../CSS/input.css" rel="stylesheet" />
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
@@ -71,6 +71,7 @@
                     $("#T_p5").val(obj.para5);
                     $("#T_p6").val(obj.para6);
                     $("#T_remarks").val(obj.remarks);
+                    $("#T_title").val(obj.title);
                     
 
 
@@ -105,97 +106,83 @@
     </style>
 
 </head>
+    
 <body style="padding: 0px">
-    <form id="form1" onsubmit="return false">
-        <table border="0" cellpadding="3" cellspacing="1" style="background: #fff; width: 400px;">
+    <form id="form1" onSubmit="return false">
+        <table border="0" cellpadding="3" cellspacing="1" style="background: #fff; width: 100%" class='bodytable1'>
+                <tr>
+         <td >
 
-            <tr>
-                <td height="43" style="width: 85px" colspan="2">
-
-                    <div align="left" style="width: 80px">名称：</div>
+                    <div align="right" style="width: 80px">使用说明：</div>
                 </td>
-                <td height="43">
-
-                   <textarea id="T_name" name="T_name" cols="50" rows="10" class="l-textarea" style="width:230px">尊敬的@p1您好：很感谢您参加我们的@p2活动，我们的价格优惠是@p3 
-                   </textarea>
-
-                </td>
+                <td height="20" colspan="5">
+                   <p><strong style="color:red">模板设置的内容中可以使用参数作为动态内容，使用时根据需要的内容快速替换。
+                   </br>最多可以设置六个参数：@p1,@p2,@p3,@p4,@p5,@p6</strong></br>如模板设置为：您好<strong style="color:red">@p1</strong>，我是<strong style="color:red">@p2</strong>，您家<strong style="color:red">@p3</strong>已完工。<strong style="color:red">（注意：p请用小写字母）</strong><br>
+                   使用时填写参数：@p1：张先生，@p2：设计师张三，@p3：水电<br>
+                   生成服务内容：您好张先生，我是设计师张三，您家水电已完工。</p>
+                   </td>
             </tr>
             <tr>
-                <td height="43" colspan="2">
+                <td colspan="7" class="table_title1">模板内容设置</td>
+            </tr>
+            <tr>
+                <td height="25">
 
-                    <div align="left" style="width: 80px">参数1描述：</div>
+                    <div align="right" style="width: 60px">标题：</div>
                 </td>
-                <td height="43">
-                    <input type="text" id="T_p1" name="T_p1" ltype="text" ligerui="{width:180}"   />
+                <td height="25" colspan="5">
+                    <input type="text" id="T_title" name="T_title" ltype="text" ligerui="{width:490}"   />
                 </td>
             </tr>
-               <tr>
-                <td height="43" colspan="2">
+            <tr>
+                <td height="43" style="width: 85px">
 
-                    <div align="left" style="width: 80px">参数2描述：</div>
+                    <div align="right" style="width: 60px">内容：</div>
                 </td>
-                <td height="43">
-                    <input type="text" id="T_p2" name="T_p2" ltype="text" ligerui="{width:180}"    />
+                <td height="43" colspan="5">
+
+                   <textarea id="T_name" name="T_name" cols="50" rows="5" class="l-textarea" style="width:490px"></textarea>
+
                 </td>
             </tr>
-               <tr>
-                <td height="43" colspan="2">
+             <tr>
+                <td colspan="7" class="table_title1">填写参数说明（将每个参数代表的含义进行说明）</td>
+            </tr>
+            <tr>
+                <td height="26">
 
-                    <div align="left" style="width: 80px">参数3描述：</div>
+                    <div align="left" style="width: 60px">@P1：</div>
                 </td>
-                <td height="43">
-                    <input type="text" id="T_p3" name="T_p3" ltype="text" ligerui="{width:180}"    />
+                <td width="178" height="26">
+                    <input type="text" id="T_p1" name="T_p1" ltype="text" ligerui="{width:100}"   />
                 </td>
+                <td width="113"><div align="left" style="width: 60px">@P2：</div></td>
+                <td width="96"><input type="text" id="T_p2" name="T_p2" ltype="text" ligerui="{width:100}"    /></td>
+                <td width="97"><div align="left" style="width: 60px">@P3：</div></td>
+                <td width="194"><input type="text" id="T_p3" name="T_p3" ltype="text" ligerui="{width:100}"    /></td>
             </tr>
                <tr>
-                <td height="43" colspan="2">
-
-                    <div align="left" style="width: 80px">参数4描述：</div>
-                </td>
-                <td height="43">
-                    <input type="text" id="T_p4" name="T_p4" ltype="text" ligerui="{width:180}"    />
-                </td>
-            </tr>
-               <tr>
-                <td height="43" colspan="2">
-
-                    <div align="left" style="width: 80px">参数5描述：</div>
-                </td>
-                <td height="43">
-                    <input type="text" id="T_p5" name="T_p5" ltype="text" ligerui="{width:180}"   />
-                </td>
-            </tr>
-               <tr>
-                <td height="43" colspan="2">
-
-                    <div align="left" style="width: 80px">参数6描述：</div>
-                </td>
-                <td height="43">
-                    <input type="text" id="T_p6" name="T_p6" ltype="text" ligerui="{width:180}"    />
-                </td>
+                <td height="25"><div align="left" style="width: 60px">@P4：</div></td>
+                <td height="25"><input type="text" id="T_p4" name="T_p4" ltype="text" ligerui="{width:100}"    /></td>
+                <td height="25"><div align="left" style="width: 60px">@P5：</div></td>
+                <td height="25"><input type="text" id="T_p5" name="T_p5" ltype="text" ligerui="{width:100}"   /></td>
+                <td height="25"><div align="left" style="width: 60px">@P6：</div></td>
+                <td height="25"><input type="text" id="T_p6" name="T_p6" ltype="text" ligerui="{width:100}"    /></td>
             </tr>
           
              <tr>
-                <td height="43" colspan="2">
-
-                    <div align="left" style="width: 80px">备注：</div>
-                </td>
                 <td height="43">
-                    <input type="text" id="T_remarks" name="T_remarks" ltype="text" ligerui="{width:180}"  />
+
+                    <div align="left" style="width: 60px">备注：</div>
+                </td>
+                <td height="43" colspan="5">
+                     <textarea id="T_remarks" name="T_remarks" cols="50" rows="3" class="l-textarea" style="width:490px">
+                   </textarea>
              
+                 
                 </td>
             </tr>
-             <tr>
-         <td height="43" colspan="2">
-
-                    <div align="left" style="width: 80px">解释：</div>
-                </td>
-                <td height="43">
-                   如：尊敬的@p1您好：很感谢您参加我们的@p2活动，我们的价格优惠是@p3
-                    </br>ps:@p1 客户 ；@p2 活动名称 ；@p3 活动介绍
-                </td>
-            </tr>
+         
         </table>
     </form>
 </body>

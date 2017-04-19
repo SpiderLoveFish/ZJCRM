@@ -120,6 +120,7 @@ namespace XHD.CRM.Data
                 string T_p5 = Common.PageValidate.InputText(request["T_p5"], 250);
                 string T_p6 = Common.PageValidate.InputText(request["T_p6"], 250);
                 string remarks = Common.PageValidate.InputText(request["T_remarks"], 250);
+                string title = Common.PageValidate.InputText(request["T_title"], 250);
                   string id = PageValidate.InputText(request["id"], 50);
                   string sql = "";
                   if (!string.IsNullOrEmpty(id) && id != "null")
@@ -134,6 +135,7 @@ namespace XHD.CRM.Data
                               " ,para5='" + T_p5 + "'" +
                               " ,para6='" + T_p6 + "'" +
                               " ,remarks='" + remarks + "'" +
+                              " ,title='" + title + "'" +
                               " WHERE id=" + int.Parse(id);
                       ;
 
@@ -148,6 +150,7 @@ namespace XHD.CRM.Data
                      "          para5 ," +
                      "          para6 ," +
                      "          remarks ," +
+                     "          title ," +
                      "          isDelete , " +
                      "          params_id " +
                      "        )" +
@@ -159,6 +162,7 @@ namespace XHD.CRM.Data
                      "         '" + T_p5 + "' ,  " +
                      "          '" + T_p6 + "' ,  " +
                      "         '" + remarks + "' ,  " +
+                      "         '" + title + "' ,  " +
                      "          0 ," + params_id + "  " +
                      "        )";
 

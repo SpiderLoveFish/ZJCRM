@@ -112,7 +112,7 @@
                                     html += "</div>";
                                 }
                                 else if (item.Stage_icon == "已签单") {
-                                    html = "<div style='color:#FF0000'>";
+                                    html = "<div style='color:#339900'>";
                                     html += item.Stage_icon;
                                     html += "</div>";
                                 }
@@ -154,7 +154,7 @@
                                      html += "</div>";
                                  }
                                  else if (item.Stage_icon == "未签单") {
-                                     html = "<div style='color:#FF0000'>";
+                                     html = "<div style='color:#339900'>";
                                      html += "已签单";
                                      html += "</div>";
                                  }
@@ -193,12 +193,12 @@
                                }
                            },
                              {
-                                 display: '已付装修款', name: 'zx_amount', width: 80, align: 'right', render: function (item) {
+                                 display: '已收装修款', name: 'zx_amount', width: 80, align: 'right', render: function (item) {
                                      return "<div style='color:#135294'>" + toMoney(item.zx_amount) + "</div>";
                                  }
                              },
                                {
-                                   display: '未付金额', name: 'wx_amount', width: 80, align: 'right', render: function (item) {
+                                   display: '未收金额', name: 'wx_amount', width: 80, align: 'right', render: function (item) {
                                        return "<div style='color:#135294'>" + toMoney(item.Order_amount - item.dj_amount - item.zx_amount) + "</div>";
                                    }
                                },
@@ -1009,13 +1009,20 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
+
+                if (row.Stage_icon != "已签单")
+                {
+                    top.$.ligerDialog.error('当前状态（' + row.Stage_icon + '）不能提交施工！');
+                    return;
+                }
+
                 $.ajax({
                     url: "../../data/CRM_CEStage.ashx", type: "POST",
                     data: { Action: "customersavecestage", id: row.id, rnd: Math.random() },
                     success: function (responseText) {
                         if (responseText == "true") {
                             top.$.ligerDialog.alert('提交成功！！！');
-                            //f_reload();
+                            f_reload();
                             //f_followreload();
                         }
                         else if (responseText == "false") {
@@ -1101,7 +1108,7 @@
                     success: function (responseText) {
                         if (responseText == "true") {
                             top.$.ligerDialog.alert('提交签单成功！');
-                            //f_reload();
+                            f_reload();
                             //f_followreload();
                         }
                         else if (responseText == "false") {

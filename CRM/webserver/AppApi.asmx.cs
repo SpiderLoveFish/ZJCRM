@@ -840,7 +840,37 @@ namespace XHD.CRM.webserver
 
  
           }
+          [WebMethod]
+          public void GetApp_Conifg_code(string Code)
+          {
+              SqlParameter[] parameters = { };
 
+              var sb = new System.Text.StringBuilder();
+
+              sb.AppendLine("SELECT  interfaceUrl FROM  dbo.App_Conifg where code='" + Code + "'  ");
+
+              DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+                string rstr=  ds.Tables[0].Rows[0][0].ToString();
+                Context.Response.Charset = "utf-8"; //设置字符集类型  
+                Context.Response.ContentEncoding = System.Text.Encoding.GetEncoding("utf-8");
+                Context.Response.Write(rstr);
+
+                Context.Response.End();
+
+          }
+          [WebMethod]
+          public void GetNoticeAlarm_Config(string style)
+          {
+              SqlParameter[] parameters = { };
+
+              var sb = new System.Text.StringBuilder();
+
+              sb.AppendLine("SELECT * FROM dbo.NoticeAlarm_Config where style='" + style + "'  ");
+
+              DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+              DSToJSON(ds);
+
+          }
 
 
           [WebMethod]
@@ -1674,6 +1704,30 @@ namespace XHD.CRM.webserver
               DataSet ds = DbHelperSQL.Query(sql, parameters);
               DSToJSON(ds);
           }
+
+          [WebMethod]
+          public void GetNoticeAlarm(string strwhere, string code,string hostname)
+          {
+
+              SqlParameter[] parameters = { };
+              string sql =" SELECT TOP 1 A.id,A.NoticeContent FROM dbo.NoticeAlarm A "+
+                            " LEFT JOIN  dbo.NoticeAlarm_Log B ON A.id=B.NoticeID  AND HostName='" + hostname + "' " +
+                            " WHERE B.id IS NULL";
+              DataSet ds = DbHelperSQL.Query(sql, parameters);
+             
+              var sb = new System.Text.StringBuilder();
+             
+              sb.AppendLine(" INSERT INTO dbo.NoticeAlarm_Log ");
+             sb.AppendLine("  ( NoticeID, HostName, DoTime ) ");
+             sb.AppendLine("  SELECT TOP 1 A.id,'" + hostname + "',GETDATE() FROM dbo.NoticeAlarm A   ");
+             sb.AppendLine("                LEFT JOIN  dbo.NoticeAlarm_Log B ON A.id=B.NoticeID  AND HostName='" + hostname + "' ");
+                        sb.AppendLine("            WHERE B.id IS NULL ");
+            
+              var RV = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+             
+              DSToJSON(ds);
+          }
+         
 
 
         /// <summary>

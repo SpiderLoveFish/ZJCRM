@@ -126,7 +126,7 @@
                     <input type="button" value="ÐÞ¸Ä" style="width:80px;height:22px;" id="btn_logo"/></td>
             </tr>
             <tr>
-                 <td height="23" class="table_label">APPKEY£º</td>
+                 <td height="23" class="table_label">APP CODE£º</td>
                 <td>
             <input type="text" name="T_KEY" id="T_KEY" />
                 </td>

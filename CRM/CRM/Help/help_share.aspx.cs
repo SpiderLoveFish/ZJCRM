@@ -29,7 +29,7 @@ namespace XHD.CRM.CRM.Help
                     string sorttext = sortname + " " + sortorder;
                     string serchtxt = "1=1 ";
                     if (!string.IsNullOrEmpty(Request["categoryid"]))
-                        serchtxt += "AND category_id LIKE ''%" + Request["categoryid"] + "%'' ";
+                        serchtxt += "AND category_id = ''" + Request["categoryid"] + "'' ";
                     if (!string.IsNullOrEmpty(Request["stext"]))
                         serchtxt += "AND title LIKE ''%" + Request["stext"] + "%'' ";
 

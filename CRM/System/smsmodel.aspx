@@ -50,8 +50,9 @@
             $("#maingrid4").ligerGrid({
                 columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
+                    { display: '标题', name: 'title', width: 150 },
                  {
-                     display: '名称', name: 'modelname', align: 'left', width: 350, render: function (item) {
+                     display: '内容', name: 'modelname', align: 'left', width: 250, render: function (item) {
                          var html = "<div class='abc'> ";
                          if (item.modelname)
                              html += item.modelname;
@@ -60,12 +61,12 @@
                      }
                  },
                 
-                    { display: '参数1', name: 'para1', width: 70 },
-                   { display: '参数2', name: 'para2', width: 70 },
-                      { display: '参数3', name: 'para3', width: 70 },
-                         { display: '参数4', name: 'para4', width: 70 },
-                            { display: '参数5', name: 'para5', width: 70 },
-                            { display: '参数6', name: 'para6', width: 70 },
+                    { display: '参数(@P1)', name: 'para1', width: 70 },
+                   { display: '参数(@P2)', name: 'para2', width: 70 },
+                      { display: '参数(@P3)', name: 'para3', width: 70 },
+                         { display: '参数(@P4)', name: 'para4', width: 70 },
+                            { display: '参数(@P5)', name: 'para5', width: 70 },
+                            { display: '参数(@P6)', name: 'para6', width: 70 },
                     
                     { display: '备注', name: 'remarks', width: 120 }
 
@@ -78,7 +79,7 @@
                 width: '100%',
                 height: '100%',
                 heightDiff: -1,
-                checkbox: true    , name:"ischecked", checkboxAll:false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
+                checkbox: false        , name:"ischecked", checkboxAll:false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
                 onContextmenu: function (parm, e) {
                     actionproduct_id = parm.data.id;
                     menu.show({ top: e.pageY, left: e.pageX });
@@ -163,9 +164,10 @@
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
-            var rows = manager.getCheckedRows();
-            if (rows.length == 1)
-                f_openWindow('system/smsmodel_add.aspx?id=' + rows[0].id, "修改模板", 500, 500);
+            var rows = manager.getSelectedRow();
+            //alert(JSON.stringify(rows))
+            if (rows)
+                f_openWindow('system/smsmodel_add.aspx?id=' + rows.id, "修改模板", 650, 500);
             else
                 $.ligerDialog.warn('请选择模板！');
         }
@@ -174,7 +176,7 @@
             var notes = $("#tree1").ligerGetTreeManager().getSelected();
 
             if (notes != null && notes != undefined) {
-                f_openWindow('system/smsmodel_add.aspx?params_id=' + notes.data.id, "新增模板", 500, 500);
+                f_openWindow('system/smsmodel_add.aspx?params_id=' + notes.data.id, "新增模板", 650, 500);
             }
             else {
                 $.ligerDialog.warn('请选择模板类别！');
@@ -183,13 +185,14 @@
 
         function del() {
             var manager = $("#maingrid4").ligerGetGridManager();
-            var rows = manager.getCheckedRows();
-            if (rows.length == 1) {
+            var rows = manager.getSelectedRow();
+            //alert(JSON.stringify(rows))
+            if (rows) {
                 $.ligerDialog.confirm("模板删除不能恢复，确定删除？", function (yes) {
                     if (yes) {
                         $.ajax({
                             url: "../../data/smsmodel.ashx", type: "POST",
-                            data: { Action: "del", id: rows[0].id, rnd: Math.random() },
+                            data: { Action: "del", id: rows.id, rnd: Math.random() },
                             success: function (responseText) {
                                 if (responseText == "true") {
                                     top.$.ligerDialog.closeWaitting();
@@ -215,17 +218,17 @@
 
         function sendsms() {
             var manager = $("#maingrid4").ligerGetGridManager();
-            var rows = manager.getCheckedRows();
-        
-            if (rows.length == 1) {
+            var rows = manager.getSelectedRow();
+           // alert(JSON.stringify(rows))
+            if (rows) {
                 top.$.ligerDialog.open({
                     zindex: 9003,
-                    title: '发送短信', width: 850, height: 400,
+                    title: '七星服务-' + rows.title, width: 650, height: 500,
 
                     //url: " hr/Getemp_Auth.aspx?auth=1", buttons: [
-                    url: "system/sendsmsmodel.aspx?name=" + encodeURI(rows[0].modelname), buttons: [
-                        { text: '发送', onclick: f_sendsmsOK },
-                        { text: '取消', onclick: f_selectContactCancel }
+                    url: "system/sendsmsmodel.aspx?id=" + rows.id+"&name=" + encodeURI(rows.modelname), buttons: [
+                        { text: '发送短信', onclick: f_sendsmsOK },
+                        { text: '关闭', onclick: f_selectContactCancel }
                     ]
                 });
             }

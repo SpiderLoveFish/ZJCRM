@@ -5,7 +5,7 @@
 <head>
     <title></title>
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
- 
+      <link href="../../CSS/input.css" rel="stylesheet" />
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
@@ -34,10 +34,10 @@
         $(function () {
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
-          
+          var  gcomb = $('#T_company').ligerComboBox({ width: 245, onBeforeOpen: f_selectContact });
             //$("#T_Contract_name").focus();
             $("form").ligerForm();
-        
+            loadForm(getparastr("id"));
             $("#T_name").val(decodeURI(getparastr("name")));
             $("#T_sms").val(decodeURI(getparastr("name")));
             
@@ -57,18 +57,78 @@
                  if ($("#T_p6").val() != "")
                      smsname = smsname.replace("@p6", $("#T_p6").val());
                  $("#T_sms").val(smsname);
+
             });
 
         });
 
+        function f_selectContact() {
+            top.$.ligerDialog.open({
+                zindex: 9003,
+                title: '选择客户', width: 850, height: 400,
+
+                //url: " hr/Getemp_Auth.aspx?auth=1", buttons: [
+                url: "CRM/Budge/SelectBudgeCustomer.aspx", buttons: [
+                    { text: '确定', onclick: f_selectContactOK },
+                    { text: '取消', onclick: f_selectContactCancel }
+                ]
+            });
+            return false;
+        }
+        function f_selectContactOK(item, dialog) {
+            //var data = dialog.frame.f_select();
+            var fn = dialog.frame.f_select;
+            var data = fn();
+            if (!data) {
+                alert('请选择一个有效客户!');
+                return;
+            }
+            $('#T_company').val("【" + data.CustomerName + "】" + data.address);
+            $('#T_tel').val(data.tel)
+           
+            dialog.close();
+        }
+        function f_selectContactCancel(item, dialog) {
+            dialog.close();
+         
+        }
+        function loadForm(oaid) {
+            $.ajax({
+                type: "GET",
+                url: "../../data/smsmodel.ashx", /* 注意后面的名字对应CS的方法名称 */
+                data: { Action: 'form', id: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var obj = eval(result);
+                    for (var n in obj) {
+
+                    }
+                    //alert(obj.constructor); //String 构造函数
+                   
+                    $("#l1").html(obj.para1);
+                    $("#l2").html(obj.para2);
+                    $("#l3").html(obj.para3);
+                    $("#l4").html(obj.para4);
+                    $("#l5").html(obj.para5);
+                    $("#l6").html(obj.para6);
+                   
+
+
+
+                }
+            });
+        }
+
+
         function f_save() {
             var tel = $("#T_tel").val();
-            if (!(/^1[34578]\d{9}$/.test(phone))) {
+            if (!(/^1[34578]\d{9}$/.test(tel))) {
                 alert("手机号码有误，请重填");
                 return;
             }
              
-            var paras =  {'name':'山山ERP','hdnr': $('#T_sms').val() };
+            var paras =  {'name':'山山ERP','fwnr': $('#T_sms').val() };
             $.ajax({
                 url: "../../data/crm_customer.ashx", type: "POST",
                 data: { Action: "Send_aliyunSendSMS", tel: $('#T_tel').val(), type: 4, para: JSON.stringify(paras), rnd: Math.random() },
@@ -89,96 +149,82 @@
         }
  
     </script>
- 
+ <script type="text/javascript">
+     function copyUrl2() {
+         var Url2 = document.getElementById("T_sms");
+         Url2.select(); // 选择对象
+         document.execCommand("Copy"); // 执行浏览器复制命令
+         alert("已复制好，可贴粘。");
+     }
+ </script>
 </head>
 <body style="padding: 0px">
     <form id="form1" onsubmit="return false">
-        <table border="0" cellpadding="3" cellspacing="1" style="background: #fff; width: 400px;">
-
+        <table border="0" cellpadding="3" cellspacing="1" style="background: #fff; width: 99%;">
             <tr>
-                <td height="33" style="width: 85px" colspan="2">
-
-                    <div align="left" style="width: 80px">名称：</div>
-                </td>
-                <td colspan="3" height="33">
-
-                   <textarea id="T_name" name="T_name" cols="50" rows="5" class="l-textarea" style="width:430px"> </textarea>
-
-                </td>
+                <td colspan="6" class="table_title1">模板信息</td>
             </tr>
             <tr>
-                <td height="33" colspan="2">
+                <td height="33" style="width: 60px">
 
-                    <div align="left" style="width: 80px">参数1 ：</div>
+                    <div align="right" style="width: 60px">模板内容：</div>
                 </td>
-                <td height="33">
-                    <input type="text" id="T_p1" name="T_p1" ltype="text" ligerui="{width:180}"   />
-                </td>
-             
-                <td height="33" colspan="2">
-
-                    <div align="left" style="width: 80px">参数2 ：</div>
-                </td>
-                <td height="33">
-                    <input type="text" id="T_p2" name="T_p2" ltype="text" ligerui="{width:180}"    />
-                </td>
-            </tr>
-               <tr>
-                <td height="33" colspan="2">
-
-                    <div align="left" style="width: 80px">参数3 ：</div>
-                </td>
-                <td height="33">
-                    <input type="text" id="T_p3" name="T_p3" ltype="text" ligerui="{width:180}"    />
-                </td>
-             
-                <td height="33" colspan="2">
-
-                    <div align="left" style="width: 80px">参数4 ：</div>
-                </td>
-                <td height="33">
-                    <input type="text" id="T_p4" name="T_p4" ltype="text" ligerui="{width:180}"    />
-                </td>
-            </tr>
-               <tr>
-                <td height="33" colspan="2">
-
-                    <div align="left" style="width: 80px">参数5 ：</div>
-                </td>
-                <td height="33">
-                    <input type="text" id="T_p5" name="T_p5" ltype="text" ligerui="{width:180}"   />
-                </td>
-            
-                <td height="33" colspan="2">
-
-                    <div align="left" style="width: 80px">参数6 ：</div>
-                </td>
-                <td height="33">
-                    <input type="text" id="T_p6" name="T_p6" ltype="text" ligerui="{width:180}"    />
-                </td>
-            </tr>
-          
-             <tr>
-                <td height="33" colspan="2">
-
-                    <div align="left" style="width: 80px">电话：</div>
-                </td>
-                <td colspan="3" height="33">
-                    <input type="text" id="T_tel" name="T_tel" ltype="text" ligerui="{width:380}"  />
-             
-                </td>
+                <td height="33" colspan="5" style="width: 60px">
+                  
+                  <textarea  id="T_name" name="T_name" cols="50" rows="5" class="l-textarea" style="width:520px" disabled="true" readonly> </textarea>                </td>
             </tr>
              <tr>
-         <td height="33" colspan="2">
-
-                    <div align="left" style="width: 80px">生成样式：</div>
-                </td>
-                <td colspan="3" height="33">
-                  <textarea id="T_sms" name="T_sms" cols="50" rows="5" class="l-textarea" style="width:430px"> </textarea>
-
-   
-                </td>
+                <td colspan="6" class="table_title1">录入参数</td>
             </tr>
+            <tr>
+                <td height="25">
+
+                    <div align="right" style="width: 60px">@P1：</div>
+                </td>
+                <td height="25"><input type="text" id="T_p1" name="T_p1" ltype="text" ligerui="{width:100}"   /></td>
+                <td height="25"><div align="right" style="width: 60px">@P2：</div></td>
+                <td height="25"><input type="text" id="T_p2" name="T_p2" ltype="text" ligerui="{width:100}"    /></td>
+             
+                <td><div align="right" style="width: 60px">@P3：</div></td>
+                <td height="25"><input type="text" id="T_p3" name="T_p3" ltype="text" ligerui="{width:100}"    /></td>
+            </tr>
+               <tr>
+                <td height="25"><div align="right" style="width: 60px">@P4：</div></td>
+                <td height="25"><input type="text" id="T_p4" name="T_p4" ltype="text" ligerui="{width:100}"    /></td>
+                <td height="25"><div align="right" style="width: 60px">@P5：</div></td>
+                <td height="25"><input type="text" id="T_p5" name="T_p5" ltype="text" ligerui="{width:100}"   /></td>
+             
+                <td height="25"><div align="right" style="width: 60px">@P6：</div></td>
+                <td height="25"><input type="text" id="T_p6" name="T_p6" ltype="text" ligerui="{width:100}"    /></td>
+            </tr>
+               <tr>
+                 <td height="25"><div align="right" style="width: 60px">说明 ：</div></td>
+                 <td height="25" colspan="5">@P1 ：<strong style="color:red"><label id="l1"></label></strong>，@P2 ：<strong style="color:red"><label id="l2"></label></strong>，@P3 ：<strong style="color:red"><label id="l3"></label></strong>，@P4 ：<strong style="color:red"><label id="l4"></label></strong>，@P5 ：<strong style="color:red"><label id="l5"></label></strong>，@P6 ：<strong style="color:red"><label id="l6"></label></strong></td>
+               </tr>
+           <tr>
+                <td colspan="6" class="table_title1">生成服内容</td>
+            </tr>
+             
+         <td height="33">
+
+                    <div align="right" style="width: 60px">生成内容：</div></br>
+              <input type="button" onClick="copyUrl2()" value="点击复制" />
+                </td>
+         <td height="33" colspan="5">
+           <textarea id="T_sms" name="T_sms" cols="50" rows="5" class="l-textarea" style="width:520px"> </textarea>         </td>
+            </tr>
+            <tr>
+                <td height="33">
+
+                    <div align="right" style="width: 60px">手机号码：</div>
+                </td>
+                <td height="33"><input type="text" id="T_tel" name="T_tel" ltype="text" ligerui="{width:120}"  /></td>
+                <td height="33"><div style="width: 70px; text-align: right; float: right">客户信息：</div></td>
+                <td height="33" colspan="3"><input type="text" id="T_company" name="T_company"    />
+                <input id="T_companyid" name="T_companyid" type="hidden" /></td>
+            </tr>
+            <tr>
+                <td colspan="6" ><strong style="color:red">如需发送短信，可以直接录入手机号码或选择客户带出手机号码后，点击下方发送短信。</strong></td>
         </table>
     </form>
 </body>
