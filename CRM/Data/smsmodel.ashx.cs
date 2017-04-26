@@ -60,6 +60,23 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "IsExistCode")
+            {
+                string id = PageValidate.InputText(request["id"], 50);
+                string code = PageValidate.InputText(request["code"], 50);
+                string sql = "SELECT   * FROM smsmodel WHERE SmsCode='" + code + "' AND id!=" + id;
+
+                DataSet codeds = DbHelperSQL.Query(sql);
+
+                 if (codeds.Tables[0].Rows.Count > 0)
+                {
+                    context.Response.Write("false:code");
+
+                }
+
+               
+            }
+            
             if (request["Action"] == "grid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
@@ -78,7 +95,11 @@ namespace XHD.CRM.Data
                 string serchtxt = "1=1 AND  isDelete!=1 ";
                 if (!string.IsNullOrEmpty(request["params_id"]))
                     serchtxt += " and params_id = " + PageValidate.InputText(request["params_id"], 50) + "";
-
+                string keyword1 = PageValidate.InputText(request["keyword1"], 500);
+                if (!string.IsNullOrEmpty(keyword1) && keyword1 != "输入关键词搜索")
+                {
+                    serchtxt += string.Format(" and ( SmsCode like N'%{0}%' or modelname  like N'%{0}%' or remarks like N'%{0}%' ) ", keyword1);
+                }
               
                 //权限
 
@@ -121,6 +142,7 @@ namespace XHD.CRM.Data
                 string T_p6 = Common.PageValidate.InputText(request["T_p6"], 250);
                 string remarks = Common.PageValidate.InputText(request["T_remarks"], 250);
                 string title = Common.PageValidate.InputText(request["T_title"], 250);
+                string code = Common.PageValidate.InputText(request["T_mbdm"], 250);
                   string id = PageValidate.InputText(request["id"], 50);
                   string sql = "";
                   if (!string.IsNullOrEmpty(id) && id != "null")
@@ -136,6 +158,7 @@ namespace XHD.CRM.Data
                               " ,para6='" + T_p6 + "'" +
                               " ,remarks='" + remarks + "'" +
                               " ,title='" + title + "'" +
+                              " ,SmsCode='" + code + "'" +
                               " WHERE id=" + int.Parse(id);
                       ;
 
@@ -152,7 +175,7 @@ namespace XHD.CRM.Data
                      "          remarks ," +
                      "          title ," +
                      "          isDelete , " +
-                     "          params_id " +
+                     "          params_id  ,SmsCode" +
                      "        )" +
                      "  VALUES  ( '" + name + "' ,  " +
                      "         '" + T_p1 + "' , " +
@@ -163,7 +186,7 @@ namespace XHD.CRM.Data
                      "          '" + T_p6 + "' ,  " +
                      "         '" + remarks + "' ,  " +
                       "         '" + title + "' ,  " +
-                     "          0 ," + params_id + "  " +
+                     "          0 ," + params_id + ",'" + code + "'  " +
                      "        )";
 
                   }

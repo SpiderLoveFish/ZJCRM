@@ -72,13 +72,29 @@
                     $("#T_p6").val(obj.para6);
                     $("#T_remarks").val(obj.remarks);
                     $("#T_title").val(obj.title);
-                    
+                    $("#T_mbdm").val(obj.SmsCode);
 
 
                 }
             });
         }
+        function getVal(id) {
+            $.ajax({
+                url: "../../data/smsmodel.ashx", type: "POST",
+                data: { Action: "IsExistCode", id: getparastr("id"), code: document.getElementById(id).value, rnd: Math.random() },
+                success: function (responseText) {
+                    if (responseText == "false:code") {
+                        top.$.ligerDialog.alert(document.getElementById(id).value + '这个编码已经存在！');
 
+                        $("#T_mbdm").val("");
+                    }
+                },
+                error: function () {
+
+                    // top.$.ligerDialog.error('操作失败！');
+                }
+            });
+        }
      
     </script>
     <style type="text/css">
@@ -130,8 +146,16 @@
 
                     <div align="right" style="width: 60px">标题：</div>
                 </td>
-                <td height="25" colspan="5">
-                    <input type="text" id="T_title" name="T_title" ltype="text" ligerui="{width:490}"   />
+                <td height="25" colspan="3">
+                    <input type="text" id="T_title" name="T_title" ltype="text" ligerui="{width:290}"   />
+                </td>
+                <td height="43" style="width: 85px">
+
+                    <div align="right" style="width: 60px">模板短码：</div>
+                </td>
+                <td height="43" style="width: 85px">
+
+                   <input type="text" id="T_mbdm" name="T_mbdm" ltype="text" ligerui="{width:100}"  onBlur="getVal(this.id)"  />
                 </td>
             </tr>
             <tr>

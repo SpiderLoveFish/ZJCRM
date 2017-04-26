@@ -414,7 +414,7 @@ namespace XHD.CRM.webserver
                if (url ==  "addry")//新增业务员，等
               {
                   sb.Clear();
-                  sb.AppendLine(" SELECT * FROM  hr_employee WHERE status='在职' ORDER BY name ");
+                  sb.AppendLine(" SELECT ID AS cid,name AS CustomerType FROM  hr_employee WHERE status='在职' ORDER BY name ");
               }
               
  
@@ -571,7 +571,7 @@ namespace XHD.CRM.webserver
               DataSet ds = DbHelperSQL.Query(strsql, parameters);
 
               string strcount = "  select count(1) count   FROM dbo.CRM_Customer A  INNER JOIN Param_SysParam C on C.id=A.CustomerType_id and parentid=1  where  ISNULL(isDelete,0)='0' AND 1=1 " + sbt.ToString();
-              DataSet dsc = DbHelperSQL.Query(strcount, parameters);
+              DataSet dsc = DbHelperSQL.Query(strcount + serchtxt, parameters);
               string cout=dsc.Tables[0].Rows[0][0].ToString();
               if (ds == null)
               {

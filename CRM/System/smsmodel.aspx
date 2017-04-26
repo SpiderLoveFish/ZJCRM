@@ -67,7 +67,7 @@
                          { display: '参数(@P4)', name: 'para4', width: 70 },
                             { display: '参数(@P5)', name: 'para5', width: 70 },
                             { display: '参数(@P6)', name: 'para6', width: 70 },
-                    
+                      { display: '模板短码', name: 'SmsCode', width: 70 },
                     { display: '备注', name: 'remarks', width: 120 }
 
                 ],
@@ -105,7 +105,22 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-             
+                items.push({
+                    type: 'textbox',
+                    id: 'keyword1',
+                    name: 'keyword1',
+                    text: ''
+                });
+                items.push({ line: true });
+                items.push({
+                    type: 'button',
+                    text: '搜索',
+                    icon: '../../images/search.gif',
+                    disable: true,
+                    click: function () {
+                        doserch()
+                    }
+                });
                 $("#toolbar").ligerToolBar({
                     items: items
 
@@ -113,7 +128,8 @@
                 menu = $.ligerMenu({
                     width: 120, items: getMenuItems(data)
                 });
-                $("#stext").ligerTextBox({ width: 200 });
+               
+                $("#keyword1").ligerTextBox({ width: 200, nullText: "输入关键词搜索" })
                 $("#maingrid4").ligerGetGridManager().onResize();
             });
         }
