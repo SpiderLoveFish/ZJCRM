@@ -2010,8 +2010,30 @@ namespace XHD.CRM.webserver
              return str.ToString();
          }
 
+        /// <summary>
+        /// 短信模板，金牌服务
+        /// </summary>
+        /// <param name="url"></param>
+
+         [WebMethod]
+         public void GetJPGL(string type,string strwhere)
+         {
+             SqlParameter[] parameters = { };
+             var sb = new System.Text.StringBuilder();
+             sb.AppendLine("SELECT  ");
+             if (type == "lx")
+                 sb.AppendLine(" DISTINCT params_id, B.params_name ");
+             else sb.AppendLine("  A.* ");
+             sb.AppendLine("   FROM dbo.smsmodel A");
+             sb.AppendLine("  INNER JOIN  dbo.Param_SysParam B ON A.params_id=B.id ");
+             if (strwhere != "")
+                 sb.AppendLine( strwhere);
+             DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+
+             DSToJSON(ds);
 
 
+         }
        
 
 
