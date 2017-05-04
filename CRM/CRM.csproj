@@ -173,6 +173,7 @@
     <Content Include="CRM\ConsExam\kjl_search_lf.aspx" />
     <Content Include="CRM\ConsExam\kjl_search_my.aspx" />
     <Content Include="CRM\ConsExam\kjl_view.aspx" />
+    <Content Include="CRM\ConsExam\SelectQxfw.aspx" />
     <Content Include="CRM\ConsExam\SelectMaterials_add.aspx" />
     <Content Include="CRM\ConsExam\SelectMaterials.aspx" />
     <Content Include="CRM\ConsExam\kjl.aspx" />

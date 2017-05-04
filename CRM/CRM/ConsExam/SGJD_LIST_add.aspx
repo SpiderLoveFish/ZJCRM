@@ -67,6 +67,10 @@
                 loadForm(getparastr("cid"));
 
             }
+            if (getparastr("style") == "JPGJ")//金牌管家
+            {
+                $("#sgry").css("display", "none")
+            }
             
             divchecksgxmInit();
               T_privateInit();
@@ -134,14 +138,31 @@
                 url: "../../data/XM_LIST.ashx?Action=formgrid&rdm=" + Math.random(),
                 success: function (result) {
                     var datar = eval(result);
-                    $("#divchecksgxm").ligerCheckBoxList({
-                        rowSize: 11,
-                        data: datar,
-                        valueField: 'XMID',
-                        textField: 'XMMC',
-                        //valueFieldCssClass: 'yellow',
-                        //css: 'yellow',
-                    });
+                    if (getparastr("style") == "JPGJ")//金牌管家
+                    {
+                        $("#divchecksgxm").ligerRadioList({
+                            rowSize: 11,
+                            data: datar,
+                            valueField: 'XMID',
+                            textField: 'XMMC',
+                       
+                            //valueFieldCssClass: 'yellow',
+                            //css: 'yellow',
+                        });
+                    }
+                    else
+                    {
+                        $("#divchecksgxm").ligerCheckBoxList({
+                            rowSize: 11,
+                            data: datar,
+                            valueField: 'XMID',
+                            textField: 'XMMC',
+                         
+                            //valueFieldCssClass: 'yellow',
+                            //css: 'yellow',
+                        });
+                    }
+                   
                     $.ajax({
                         type: "GET",
                         url: "../../data/SGJD_LIST.ashx", /* 注意后面的名字对应CS的方法名称 */
@@ -237,7 +258,19 @@
                 }
             });
         }
- 
+        function f_sgjd() {
+            var sgxmvalue = liger.get("divchecksgxm").getValue();
+            //f_error("必须选择一个有效的施工項目吧！" + sgxmvalue);
+           
+            //return;
+            if (sgxmvalue == null || sgxmvalue == "") {
+                f_error("必须选择一个有效的施工項目吧！" + sgxmvalue);
+                return;
+            }
+            var sendtxt =  getparastr("cid")
+                  + ";" + sgxmvalue ; 
+            return   sendtxt;
+        }
 
         function f_save() {
             
@@ -563,8 +596,8 @@ margin-right: 20px;
                     
                 </td>
             </tr>
-            <tr>
-                <td colspan="2" class="table_title1">施工人员</td>
+            <tr id="sgry">
+                <td colspan="2"   class="table_title1">施工人员</td>
                 <td   class="table_title1">
                     <a class="l-button" style="width:80px;" onclick="addNewRow()">添加人員</a>
                   </td>

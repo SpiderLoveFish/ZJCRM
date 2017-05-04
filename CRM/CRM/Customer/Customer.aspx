@@ -1125,6 +1125,17 @@
             }
         }
 
+        function addys() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow('CRM/sale/order_add_khjdgl.aspx?customerid=' + row.id, "新增订单", 770, 490);
+            }
+            else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+
         function f_selectContactCancel(item, dialog) {
             dialog.close();
             //fload();

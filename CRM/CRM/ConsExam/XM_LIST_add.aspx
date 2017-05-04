@@ -57,16 +57,90 @@
                 ],
                 autoHeightEnabled: false
             });
- 
+            var gCommunity = $('#T_qxmb').ligerComboBox({
+                width: 120,
+                onBeforeOpen: f_selectComm
 
+            });
+            $.ajax({
+                type: "GET",
+                url: "../../data/CE_Para.ashx", /* 注意后面的名字对应CS的方法名称 */
+                data: { Action: 'com_CRM_CE_CONFIG',strwhere:'LX001', rnd: Math.random() }, /* 注意参数的格式和名称 */
+                //url: "../../data/SGJD_LIST.ashx?Action=formgrid&cid=" + getparastr("cid") + "&rdm=" + Math.random(),
+
+                success: function (result) {
+                    var obj = eval(result);
+                    $("#T_p1").ligerComboBox({
+                        width: 120,
+                        data: obj
+                    });
+                    $("#T_p2").ligerComboBox({
+                        width: 120,
+                        data: obj
+                    });
+                    $("#T_p3").ligerComboBox({
+                        width: 120,
+                        data: obj
+                    });
+                    $("#T_p4").ligerComboBox({
+                        width: 120,
+                        data: obj
+                    });
+                    $("#T_p5").ligerComboBox({
+                        width: 120,
+                        data: obj
+                    });
+                    $("#T_p6").ligerComboBox({
+                        width: 120,
+                        data: obj
+                    });
+
+                },
+                error: function (e) {
+                    alert("Init2");
+                }
+            });
             
 
             if (getparastr("xmid")) {
-                $("#T_xmmc").val(getparastr("xmid"));
-            loadForm(getparastr("xmid"));
-             }
-        });
+                //$("#T_xmmc").val(getparastr("xmid"));
+                loadForm(getparastr("xmid"));
 
+            }
+            else {
+                $("#tr1").css("display", "none")
+                $("#tr2").css("display", "none")
+            }
+         
+            
+        });
+        function f_selectComm() {
+            top.$.ligerDialog.open({
+                zindex: 9003,
+                title: '选择模板', width: 850, height: 400,
+
+                //url: " hr/Getemp_Auth.aspx?auth=1", buttons: [
+                url: "CRM/ConsExam/SelectQxfw.aspx", buttons: [
+                    { text: '确定', onclick: f_selectCommOK },
+                    { text: '取消', onclick: f_selectContactCancel }
+                ]
+            });
+            return false;
+        }
+        function f_selectCommOK(item, dialog) {
+            var data = dialog.frame.f_select();
+            if (!data) {
+                alert('选择模板!');
+                return;
+            }
+            $("#T_qxmb_val").val(data.id);
+            $("#T_qxmb").val(data.title);
+            dialog.close();
+        }
+        function f_selectContactCancel(item, dialog) {
+            dialog.close();
+            //fload();
+        }
         function f_save() {
             if ($(form1).valid()) {
                 var arr = [];
@@ -89,9 +163,16 @@
                         if (obj[n] == "null" || obj[n] == null)
                             obj[n] = "";
                     }
-                    //alert(obj.constructor); //String 构造函数
+                   // alert (obj.params_id); //String 构造函数
                     $("#T_xmmc").val(obj.XMMC);
                     $("#T_xmpx").val(obj.XMPX);
+                    $("#T_p1_val").val(obj.p1.split(";")[0]); $("#T_p1").val(obj.p1.split(";")[1]);
+                    $("#T_p2_val").val(obj.p2.split(";")[0]); $("#T_p2").val(obj.p2.split(";")[1]);
+                    $("#T_p3_val").val(obj.p3.split(";")[0]); $("#T_p3").val(obj.p3.split(";")[1]);
+                    $("#T_p4_val").val(obj.p4.split(";")[0]); $("#T_p4").val(obj.p4.split(";")[1]);
+                    $("#T_p5_val").val(obj.p5.split(";")[0]); $("#T_p5").val(obj.p5.split(";")[1]);
+                    $("#T_p6_val").val(obj.p6.split(";")[0]); $("#T_p6").val(obj.p6.split(";")[1]);
+                    $("#T_qxmb_val").val(obj.params_id.split(";")[0]); $("#T_qxmb").val(obj.params_id.split(";")[1]);
                    // $("#T_CEStage_detail_id").val(obj.StageDetailID);
                     UE.getEditor('editor').setContent(myHTMLDeCode(obj.REMARK));
                    
@@ -114,18 +195,42 @@
                 <td>
                     <div align="left" style="width: 60px">项目名称：</div>
                 </td>
-                <td>
+                <td colspan="2">
                     <input type="text" id="T_xmmc" name="T_xmmc" validate="{required:true}" ltype='text' ligerui="{width:180}" /></td>
                    <input type="hidden" id="T_xmid" name="T_xmid" />
                 <td>
                     <div align="left" style="width: 90px">项目排序：</div>
                 </td>
-                <td>
+                <td colspan="2">
                     <input type='text' id="T_xmpx" name="T_xmpx" ltype='text' ligerui="{width:140}" /></td>
             </tr>
-  
+     <tr id="tr1">
+                <td height="26">
+
+                    <div align="left" style="width: 60px">@P1：</div>
+                </td>
+                <td width="178" height="26">
+                    <input type="text" id="T_p1" name="T_p1"      />
+                </td>
+                <td width="113"><div align="left" style="width: 60px">@P2：</div></td>
+                <td width="96"><input type="text" id="T_p2" name="T_p2"        /></td>
+                <td width="97"><div align="left" style="width: 60px">@P3：</div></td>
+                <td width="194"><input type="text" id="T_p3" name="T_p3"      /></td>
+            </tr>
+               <tr id="tr2">
+                <td height="25"><div align="left" style="width: 60px">@P4：</div></td>
+                <td height="25"><input type="text" id="T_p4" name="T_p4"       /></td>
+                <td height="25"><div align="left" style="width: 60px">@P5：</div></td>
+                <td height="25"><input type="text" id="T_p5" name="T_p5"      /></td>
+                <td height="25"><div align="left" style="width: 60px">@P6：</div></td>
+                <td height="25"><input type="text" id="T_p6" name="T_p6"       /></td>
+            </tr>
+            <tr id="tr3">
+                 <td height="25"><div align="left" style="width: 60px">选择七星模板：</div></td>
+                   <td height="25" colspan="5"><input type="text" id="T_qxmb" name="T_qxmb"       /></td>
+            </tr>
             <tr>
-                <td colspan="4">
+                <td colspan="6">
                     <textarea id="editor" style="width: 637px;"></textarea>
                 </td>
             </tr>

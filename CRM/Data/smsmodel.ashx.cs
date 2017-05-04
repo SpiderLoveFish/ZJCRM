@@ -60,6 +60,62 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "formJP")
+            {
+                string strwhere = PageValidate.InputText(request["id"], 50);
+                string sql = "SELECT * FROM dbo.smsmodel WHERE id= "+
+                "         (SELECT   SUBSTRING(params_id,0,charindex(';',params_id))    FROM  [dbo].[XM_LIST_CONFIG] WHERE XMID='" + strwhere + "'" +
+                "          )";
+          
+               
+                DataSet ds = DbHelperSQL.Query(sql);
+
+                string dt = Common.DataToJson.DataToJSON(ds);
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "formXM_LIST_CONFIG")
+            {
+                string strwhere = PageValidate.InputText(request["id"], 50);
+                string sql = "SELECT  * FROM [XM_LIST_CONFIG] WHERE XMID="+strwhere;
+
+
+                DataSet ds = DbHelperSQL.Query(sql);
+
+                string dt = Common.DataToJson.DataToJSON(ds);
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "formCRM_CE_CONFIG")
+            {
+                string strwhere = PageValidate.InputText(request["from"], 50);
+                string sql = "SELECT  * FROM CRM_CE_CONFIG WHERE id IN("+strwhere+") "   ;
+
+
+                DataSet ds = DbHelperSQL.Query(sql);
+
+                string dt = Common.GetGridJSON.DataTableToJSON(ds.Tables[0]);
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "formmx")
+            {
+                string strwhere = PageValidate.InputText(request["cid"], 50);
+                string from = PageValidate.InputText(request["from"], 200);
+                if (from == "") from = " *"; else from = from.Substring(0, from.Length - 1).Replace("0","'");
+                string sql = "SELECT " + from + " FROM  " +
+                                             "  (  " +
+                                            "    SELECT  A.CustomerName,CustomerID, Stage_icon,ywy,B.* FROM CRM_CEStage A   " +
+                                            "    INNER JOIN dbo.CRM_Customer B ON A.CustomerID=B.id    " +
+                                            "    WHERE CustomerID= "+strwhere+"   " +
+                                            "    )AA   ";
+
+                DataSet ds = DbHelperSQL.Query(sql);
+
+                string dt = Common.DataToJson.DataToJSON(ds);
+
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "IsExistCode")
             {
                 string id = PageValidate.InputText(request["id"], 50);
@@ -143,6 +199,7 @@ namespace XHD.CRM.Data
                 string remarks = Common.PageValidate.InputText(request["T_remarks"], 250);
                 string title = Common.PageValidate.InputText(request["T_title"], 250);
                 string code = Common.PageValidate.InputText(request["T_mbdm"], 250);
+                string orderby = Common.PageValidate.InputText(request["T_orderby"], 250);
                   string id = PageValidate.InputText(request["id"], 50);
                   string sql = "";
                   if (!string.IsNullOrEmpty(id) && id != "null")
@@ -159,6 +216,7 @@ namespace XHD.CRM.Data
                               " ,remarks='" + remarks + "'" +
                               " ,title='" + title + "'" +
                               " ,SmsCode='" + code + "'" +
+                              " ,orderby='" + orderby + "'" +
                               " WHERE id=" + int.Parse(id);
                       ;
 
@@ -175,7 +233,7 @@ namespace XHD.CRM.Data
                      "          remarks ," +
                      "          title ," +
                      "          isDelete , " +
-                     "          params_id  ,SmsCode" +
+                     "          params_id  ,SmsCode,orderby" +
                      "        )" +
                      "  VALUES  ( '" + name + "' ,  " +
                      "         '" + T_p1 + "' , " +
@@ -186,7 +244,7 @@ namespace XHD.CRM.Data
                      "          '" + T_p6 + "' ,  " +
                      "         '" + remarks + "' ,  " +
                       "         '" + title + "' ,  " +
-                     "          0 ," + params_id + ",'" + code + "'  " +
+                     "          0 ," + params_id + ",'" + code + "','"+orderby+"'  " +
                      "        )";
 
                   }

@@ -478,6 +478,127 @@ namespace XHD.CRM.Data
                 //int id = int.Parse(id);
                 customer.Update_GJXG(id,tel,Create_date);
             }
+
+            //订单保存
+            if (request["Action"] == "saveOrder")
+            {
+                Model.CRM_order modelOrder = new Model.CRM_order();
+                BLL.CRM_order bllOrder = new BLL.CRM_order();
+                DataRow dremp = dsemp.Tables[0].Rows[0];
+
+                modelOrder.Customer_id = int.Parse(request["T_Customer_val"]);
+                modelOrder.Customer_name = PageValidate.InputText(request["T_Customer"], 255);
+
+                modelOrder.Order_date = DateTime.Parse(request["T_date"]);
+                modelOrder.pay_type_id = int.Parse(request["T_paytype_val"]);
+                modelOrder.pay_type = PageValidate.InputText(request["T_paytype"], 255);
+                modelOrder.Order_details = PageValidate.InputText(request["T_details"].ToString(), 4000);
+                modelOrder.Order_status_id = int.Parse(request["T_status_val"]);
+                modelOrder.Order_status = PageValidate.InputText(request["T_status"], 255);
+                modelOrder.Order_amount = decimal.Parse(request["T_amount"]);
+
+                modelOrder.budget_money = decimal.Parse(request["T_ysje"]);
+                modelOrder.Total_Money = decimal.Parse(request["T_amount"]) + decimal.Parse(request["T_ysje"]);
+                modelOrder.budget_money = decimal.Parse(request["T_ysje"]);
+
+                modelOrder.budge_id = PageValidate.InputText(request["ysid"], 50);
+
+                modelOrder.create_id = emp_id;
+                modelOrder.create_date = DateTime.Now;
+
+                modelOrder.C_dep_id = int.Parse(request["c_dep_val"]);
+                modelOrder.C_dep_name = PageValidate.InputText(request["c_dep"], 255);
+                modelOrder.C_emp_id = int.Parse(request["c_emp_val"]);
+                modelOrder.C_emp_name = PageValidate.InputText(request["c_emp"], 255);
+
+                modelOrder.F_dep_id = int.Parse(request["f_dep_val"]);
+                modelOrder.F_dep_name = PageValidate.InputText(request["f_dep"], 255);
+                modelOrder.F_emp_id = int.Parse(request["f_emp_val"]);
+                modelOrder.F_emp_name = PageValidate.InputText(request["f_emp"], 255);
+
+                int orderid;
+                string pid = PageValidate.InputText(request["orderid"], 50);
+                if (!string.IsNullOrEmpty(pid) && pid != "null")
+                {
+                    modelOrder.id = int.Parse(PageValidate.IsNumber(pid) ? pid : "-1");
+                    DataSet ds = bllOrder.GetList("id=" + modelOrder.id);
+                    DataRow dr = ds.Tables[0].Rows[0];
+                    orderid = modelOrder.id;
+
+                    bllOrder.Update(modelOrder);
+                    //context.Response.Write(model.id );
+                    context.Response.Write("{success:success}");
+
+                    C_Sys_log log = new C_Sys_log();
+                    int UserID = emp_id;
+                    string UserName = empname;
+                    string IPStreet = request.UserHostAddress;
+                    string EventTitle = modelOrder.Customer_name;
+                    string EventType = "订单修改";
+                    int EventID = modelOrder.id;
+
+                    if (dr["Customer_name"].ToString() != request["T_Customer"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "客户", dr["Customer_name"].ToString(), request["T_Customer"]);
+
+                    if (dr["Order_details"].ToString() != request["T_details"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "订单详情", "原内容被修改", "原内容被修改");
+
+                    if (dr["Order_date"].ToString() != request["T_date"].ToString() + " 0:00:00")
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "成交时间", dr["Order_date"].ToString(), request["T_date"].ToString() + " 0:00:00");
+
+                    if (dr["Order_amount"].ToString() != request["T_amount"].Replace(",", "").Replace(".00", ""))
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "订单总额", dr["Order_amount"].ToString(), request["T_amount"].Replace(",", "").Replace(".00", ""));
+
+                    if (dr["Order_status"].ToString() != request["T_status"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "订单状态", dr["Order_status"].ToString(), request["T_status"]);
+
+                    if (dr["F_dep_name"].ToString() != request["f_dep"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "促成人员部门", dr["F_dep_name"].ToString(), request["f_dep"]);
+
+                    if (dr["F_emp_name"].ToString() != request["f_emp"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "促成人员", dr["F_emp_name"].ToString(), request["f_emp"]);
+
+                    if (dr["pay_type"].ToString() != request["T_paytype"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "支付方式", dr["pay_type"].ToString(), request["T_paytype"]);
+
+                }
+                else
+                {
+                    modelOrder.isDelete = 0;
+                    modelOrder.Serialnumber = DateTime.Now.AddMilliseconds(3).ToString("yyyyMMddHHmmssfff").Trim();
+                    //model.arrears_invoice = decimal.Parse(request["T_amount"]);
+                    orderid = bllOrder.Add(modelOrder);
+                    context.Response.Write("{success:success}");
+                }
+                //更新订单收款金额
+                bllOrder.UpdateReceive(orderid.ToString());
+                //更新订单发票金额
+                bllOrder.UpdateInvoice(orderid.ToString());
+
+                //string json = request["PostData"].ToLower();
+                //JavaScriptSerializer js = new JavaScriptSerializer();
+
+                //PostData[] postdata;
+                //postdata = js.Deserialize<PostData[]>(json);
+
+                //BLL.CRM_order_details cod = new BLL.CRM_order_details();
+                //Model.CRM_order_details modeldel = new Model.CRM_order_details();
+
+                //modeldel.order_id = orderid;
+                //cod.Delete(" order_id=" + modeldel.order_id);
+                //for (int i = 0; i < postdata.Length; i++)
+                //{
+                //    modeldel.product_id = postdata[i].Product_id;
+                //    modeldel.product_name = postdata[i].Product_name;
+                //    modeldel.quantity = postdata[i].Quantity;
+                //    modeldel.unit = postdata[i].Unit;
+                //    modeldel.price = postdata[i].Price;
+                //    modeldel.amount = postdata[i].Amount;
+
+                //    cod.Add(modeldel);
+                //}
+            }
+
             //其他联系人保存
             if (request["Action"] == "saveContact")
             {

@@ -6,6 +6,8 @@ using System.Data;
 using System.Text;
 using XHD.Common;
 using System.Web.Security;
+using XHD.DBUtility;
+using System.Data.SqlClient;
 
 namespace XHD.CRM.Data
 {
@@ -55,6 +57,26 @@ namespace XHD.CRM.Data
                  {
                      model.XMID = StringToInt(xmid);
                     ccpc.Update(model);
+                    string p1 = PageValidate.InputText(request["T_p1_val"], 50) + ";" + PageValidate.InputText(request["T_p1"], 50);
+                    string p2 = PageValidate.InputText(request["T_p2_val"], 50) + ";" + PageValidate.InputText(request["T_p2"], 50);
+                    string p3 = PageValidate.InputText(request["T_p3_val"], 50) + ";" + PageValidate.InputText(request["T_p3"], 50);
+                    string p4 = PageValidate.InputText(request["T_p4_val"], 50) + ";" + PageValidate.InputText(request["T_p4"], 50);
+                    string p5 = PageValidate.InputText(request["T_p5_val"], 50) + ";" + PageValidate.InputText(request["T_p5"], 50);
+                    string p6 = PageValidate.InputText(request["T_p6_val"], 50) + ";" + PageValidate.InputText(request["T_p6"], 50);
+                    string qxmb = PageValidate.InputText(request["T_qxmb_val"], 50) + ";" + PageValidate.InputText(request["T_qxmb"], 50);
+                    string sql = "                     DELETE	XM_LIST_CONFIG WHERE XMID=" + xmid +
+                                    "	INSERT INTO dbo.XM_LIST_CONFIG" +
+                                    "	        ( XMID, p1, p2, p3, p4, p5, p6,params_id )" +
+                                    "	VALUES  ( " + xmid + ",  " +
+                                    "	          '"+p1+"',  " +
+                                    "	           '" + p2 + "',  " +
+                                    "	           '" + p3 + "',  " +
+                                    "	           '" + p4 + "', " +
+                                    "	           '" + p5 + "', " +
+                                    "	           '" + p6 + "','" + qxmb + "'  " +
+                                    "	          )";
+                     	SqlParameter[] parameters = {};
+                    DbHelperSQL.ExecuteSql(sql, parameters);
                     
                  }
  
@@ -94,6 +116,24 @@ namespace XHD.CRM.Data
                  
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "combojd")
+            {
+
+                DataSet ds = ccpc.GetList("  1=1");
+
+                StringBuilder str = new StringBuilder();
+
+                str.Append("[");
+                //str.Append("{id:0,text:'无'},");
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    str.Append("{id:" + ds.Tables[0].Rows[i]["JDID"].ToString() + ",text:'" + ds.Tables[0].Rows[i]["JDMC"] + "',jdys:'" + ds.Tables[0].Rows[i]["JDYS"] + "'},");
+                }
+                str.Replace(",", "", str.Length - 1, 1);
+                str.Append("]");
+
+                context.Response.Write(str);
+            }
             if (request["Action"] == "formgrid")
             {
                 //string cid = PageValidate.InputText(request["xmid"], 50);
@@ -120,7 +160,7 @@ namespace XHD.CRM.Data
                 string dt;
                 if (PageValidate.IsNumber(cid))
                 {
-                    DataSet ds = ccpc.GetList("xmid=" + cid);
+                    DataSet ds = ccpc.GetList(" a.xmid=" + cid);
                     dt = Common.DataToJson.DataToJSON(ds);
                 }
                 else
@@ -137,7 +177,7 @@ namespace XHD.CRM.Data
                 //参数安全过滤
                 string c_id = PageValidate.InputText(request["xmid"], 50);
 
-                DataSet ds = ccpc.GetList(" xmid=" + int.Parse(c_id));
+                DataSet ds = ccpc.GetList(" a.xmid=" + int.Parse(c_id));
  
                     bool isdel = ccpc.Delete(int.Parse(c_id));
                     if (isdel)

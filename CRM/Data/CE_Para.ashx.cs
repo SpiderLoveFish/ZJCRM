@@ -92,7 +92,6 @@ namespace XHD.CRM.Data
 
             if (request["Action"] == "combojd")
             {
-                 
                 DataSet ds = ccpc.GetList("  1=1");
 
                 StringBuilder str = new StringBuilder();
@@ -102,6 +101,29 @@ namespace XHD.CRM.Data
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
                     str.Append("{id:" + ds.Tables[0].Rows[i]["JDID"].ToString() + ",text:'" + ds.Tables[0].Rows[i]["JDMC"] + "',jdys:'" + ds.Tables[0].Rows[i]["JDYS"] + "'},");
+                }
+                str.Replace(",", "", str.Length - 1, 1);
+                str.Append("]");
+
+                context.Response.Write(str);
+            }
+            if (request["Action"] == "com_CRM_CE_CONFIG")
+            {
+
+
+                string STRWHERE = request["strwhere"];
+                string where = "1=1";
+                if (STRWHERE != "") where += " AND C_style='" + STRWHERE + "'";
+                DataSet ds = ccpc.CRM_CE_CONFIG(where);
+
+
+                StringBuilder str = new StringBuilder();
+
+                str.Append("[");
+                //str.Append("{id:0,text:'无'},");
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    str.Append("{id:" + ds.Tables[0].Rows[i]["ID"].ToString() + ",text:'" + ds.Tables[0].Rows[i]["C_Name"] + "',C_Value:'" + ds.Tables[0].Rows[i]["C_Value"] + "'},");
                 }
                 str.Replace(",", "", str.Length - 1, 1);
                 str.Append("]");

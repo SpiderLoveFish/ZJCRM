@@ -214,8 +214,9 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select XMID,XMMC,XMPX,REMARK,CZR ");
-			strSql.Append(" FROM Xm_list ");
+            strSql.Append("select A.XMID,XMMC,XMPX,REMARK,CZR,B.p1,B.p2,B.p3,B.p4,B.p5,B.p6,B.params_id ");
+			strSql.Append(" FROM Xm_list A ");
+            strSql.Append(" left join XM_LIST_CONFIG B on a.xmid=b.xmid ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);

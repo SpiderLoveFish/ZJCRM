@@ -100,6 +100,7 @@ namespace Repair
                         sb.AppendLine("         '" + userid + "', ");
                         sb.AppendLine("         GETDATE()  ");
                         sb.AppendLine("         ) ");
+                        sb.AppendLine("  insert INTO NoticeAlarm (NoticeContent,remarks) values('有新消息：维修类：客户姓名：" + Request["Khmc"] + ",地址：" + Request["Khxq"] +",维修原因："+ Request["Wxyy"] + ",联系方式：" + Request["Khdh"] + "，请尽快处理！','" + userid + "') ");
                     }
                     else
                     {

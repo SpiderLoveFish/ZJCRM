@@ -252,6 +252,21 @@
             activeDialogs = parent.jQuery.ligerDialog.open(dialogOptions);
         }
 
+        var activeDialogs_jpgj = null;
+        function f_openWindow_jpgj(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+
+                        {
+                            text: '金牌管家', onclick: function (item, dialog) {
+                                f_jpgj(item, dialog);
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialogs_jpgj = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+
         function add() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
@@ -290,6 +305,45 @@
             //    "进度跟进", 800, 600);
         }
         
+        function jpgj() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow_jpgj("crm/ConsExam/SGJD_LIST_add.aspx?cid=" + row.CustomerID + "&style=JPGJ"
+                   ,
+                    "金牌管家", 800, 550);
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+        function f_jpgj(item, dialog) {
+            var issave = dialog.frame.f_sgjd();
+ 
+            if (issave) {
+                dialog.close();
+                var str = issave.split(";");
+                top.$.ligerDialog.open({
+                    zindex: 9003,
+                    title: '金牌管家-' + str[0], width: 650, height: 500,
+
+                    //url: " hr/Getemp_Auth.aspx?auth=1", buttons: [
+                    url: "system/sendsmsmodel.aspx?id=" + str[1] + "&cid=" + str[0] + "&style=JPGJ", buttons: [
+                        { text: '发送短信', onclick: f_sendsmsOK },
+                        { text: '关闭', onclick: f_selectContactCancel }
+                    ]
+                });
+                    
+            }
+        }
+                function f_sendsmsOK(item, dialog) {
+                    dialog.frame.f_save();
+
+                }
+                function f_selectContactCancel(item, dialog) {
+                    dialog.close();
+                    //fload();
+              
+            }
         
         function f_save(item, dialog) {
             

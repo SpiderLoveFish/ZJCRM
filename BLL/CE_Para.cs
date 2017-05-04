@@ -289,6 +289,13 @@ namespace XHD.BLL
         {
             return dal.GetDS_kjl_api_list(strWhere);
         }
+
+
+         public DataSet CRM_CE_CONFIG(string strWhere)
+         {
+             return dal.CRM_CE_CONFIG(strWhere);
+         }
+
         #endregion  ExtensionMethod
     }
 }

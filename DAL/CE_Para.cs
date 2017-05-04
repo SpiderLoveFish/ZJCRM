@@ -1209,6 +1209,21 @@ namespace XHD.DAL
             return dtStart.Add(toNow);
         }
 
+
+        public DataSet CRM_CE_CONFIG(string strWhere)
+		{
+			StringBuilder strSql=new StringBuilder();
+            strSql.Append("select * ");
+            strSql.Append(" FROM CRM_CE_CONFIG ");
+			if(strWhere.Trim()!="")
+			{
+				strSql.Append(" where "+strWhere);
+			}
+			return DbHelperSQL.Query(strSql.ToString());
+		}
+
+        
+
 		#endregion  ExtensionMethod
 	}
 }

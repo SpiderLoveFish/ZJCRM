@@ -30,20 +30,31 @@
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
         //图标
-    
+        var jpname = "";
         $(function () {
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
           var  gcomb = $('#T_company').ligerComboBox({ width: 245, onBeforeOpen: f_selectContact });
             //$("#T_Contract_name").focus();
             $("form").ligerForm();
-            loadForm(getparastr("id"));
+            
+            if (getparastr("style") == "JPGJ")//金牌管理
+            {
+                loadFormJP(getparastr("id"));
+            }
+            else {
+                loadForm(getparastr("id"));
+            }
             $("#T_name").val(decodeURI(getparastr("name")));
             $("#T_sms").val(decodeURI(getparastr("name")));
             
             $("#T_p1,#T_p2,#T_p3,#T_p4,#T_p5,#T_p6").change(function () {
-             
-                var smsname = decodeURI(getparastr("name"));
+
+                var smsname = "";
+                if (getparastr("style") == "JPGJ")//金牌管理
+                    smsname = jpname;
+                else 
+                smsname = decodeURI(getparastr("name"));
                 if ($("#T_p1").val() != "")
                     smsname = smsname.replace("@p1", $("#T_p1").val());
                  if ($("#T_p2").val() != "")
@@ -92,6 +103,122 @@
             dialog.close();
          
         }
+
+        function loadFormJP(oaid) {//金牌
+            $.ajax({
+                type: "GET",
+                url: "../../data/smsmodel.ashx", /* 注意后面的名字对应CS的方法名称 */
+                data: { Action: 'formJP', id: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var obj = eval(result);
+                    for (var n in obj) {
+
+                    }
+                    //alert(obj.modelname); //String 构造函数
+                   
+                    $("#l1").html(obj.para1);
+                    $("#l2").html(obj.para2);
+                    $("#l3").html(obj.para3);
+                    $("#l4").html(obj.para4);
+                    $("#l5").html(obj.para5);
+                    $("#l6").html(obj.para6);
+                    $("#T_name").val(obj.modelname  );
+                    $("#T_sms").val(obj.modelname);
+                    jpname = obj.modelname;
+
+                    $.ajax({
+                        type: "GET",
+                        url: "../../data/smsmodel.ashx", /* 注意后面的名字对应CS的方法名称 */
+                        data: { Action: 'formXM_LIST_CONFIG', id: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+                            var obj = eval(result);
+                            for (var n in obj) {
+
+                            }
+                            $("#l1").html(obj.p1);
+                            $("#l2").html(obj.p2);
+                            $("#l3").html(obj.p3);
+                            $("#l4").html(obj.p4);
+                            $("#l5").html(obj.p5);
+                            $("#l6").html(obj.p6);
+                            var from = obj.p1.split(";")[0] + ',' + obj.p2.split(";")[0] + ',' + obj.p3.split(";")[0] + ','
+                            + obj.p4.split(";")[0] + ',' + obj.p5.split(";")[0] + ',' + obj.p6.split(";")[0];
+                            //alert(from)
+                            ///
+
+                            $.ajax({
+                                type: "GET",
+                                url: "../../data/smsmodel.ashx", /* 注意后面的名字对应CS的方法名称 */
+                                data: { Action: 'formCRM_CE_CONFIG', from: from, from: from, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (result) {
+                                    var obj = eval( result );
+                                    // alert(JSON.stringify(obj));
+                                    var strfrom = ""; 
+                                    for (var n in obj.Rows) {
+                                        // alert(obj.Rows[n].C_Value);
+                                        if (obj.Rows[n].C_Value == '')
+                                            strfrom = strfrom +  "'',";
+                                        else 
+                                        strfrom= strfrom + obj.Rows[n].C_Value + "," ;
+                                    }
+                                    
+                                      //  alert(strfrom);
+                                    ///
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "../../data/smsmodel.ashx", /* 注意后面的名字对应CS的方法名称 */
+                                        data: { Action: 'formmx', cid: getparastr("cid"), from: strfrom.toString(), rnd: Math.random() }, /* 注意参数的格式和名称 */
+                                        contentType: "application/json; charset=utf-8",
+                                        dataType: "json",
+                                        success: function (result) {
+                                            var obj = eval(result);
+                                            //alert(JSON.stringify(obj));
+                                            var p = 1;
+                                            for (var n in obj) {
+                                                //alert(obj[n])
+                                                if(p==1)
+                                                    $("#T_p1").val(obj[n]);
+                                                if (p == 2)
+                                                    $("#T_p2").val(obj[n]);
+                                                if (p == 3)
+                                                    $("#T_p3").val(obj[n]);
+                                                if (p == 4)
+                                                    $("#T_p4").val(obj[n]);
+                                                if (p == 5)
+                                                    $("#T_p5").val(obj[n]);
+                                                if (p == 6)
+                                                    $("#T_p6").val(obj[n]);
+                                                p++;
+                                               
+                                            }
+                                           
+                                        }
+                                    });
+
+
+                                }
+                            });
+                            ///
+
+                        }
+                             
+                    });
+
+                    ///
+
+
+
+                    ///
+                }
+            });
+        }
+
         function loadForm(oaid) {
             $.ajax({
                 type: "GET",

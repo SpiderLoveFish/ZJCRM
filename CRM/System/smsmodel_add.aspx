@@ -73,6 +73,7 @@
                     $("#T_remarks").val(obj.remarks);
                     $("#T_title").val(obj.title);
                     $("#T_mbdm").val(obj.SmsCode);
+                    $("#T_orderby").val(obj.orderby);
 
 
                 }
@@ -146,9 +147,13 @@
 
                     <div align="right" style="width: 60px">标题：</div>
                 </td>
-                <td height="25" colspan="3">
-                    <input type="text" id="T_title" name="T_title" ltype="text" ligerui="{width:290}"   />
+                <td height="25">
+                    <input type="text" id="T_title" name="T_title" ltype="text" ligerui="{width:150}"   />
                 </td>
+                <td height="25"><div align="right" style="width: 60px">排序号：</div></td>
+                <td height="25"><span style="width: 85px">
+                  <input type="text" id="T_orderby" name="T_orderby" ltype="text" ligerui="{width:100}"  onBlur="getVal(this.id)"  />
+                </span></td>
                 <td height="43" style="width: 85px">
 
                     <div align="right" style="width: 60px">模板短码：</div>
@@ -200,8 +205,7 @@
                     <div align="left" style="width: 60px">备注：</div>
                 </td>
                 <td height="43" colspan="5">
-                     <textarea id="T_remarks" name="T_remarks" cols="50" rows="3" class="l-textarea" style="width:490px">
-                   </textarea>
+                     <textarea id="T_remarks" name="T_remarks" cols="50" rows="3" class="l-textarea" style="width:490px"></textarea>
              
                  
                 </td>
