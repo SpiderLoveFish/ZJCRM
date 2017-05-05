@@ -50,28 +50,33 @@
             
             $("#T_p1,#T_p2,#T_p3,#T_p4,#T_p5,#T_p6").change(function () {
 
-                var smsname = "";
-                if (getparastr("style") == "JPGJ")//金牌管理
-                    smsname = jpname;
-                else 
-                smsname = decodeURI(getparastr("name"));
-                if ($("#T_p1").val() != "")
-                    smsname = smsname.replace("@p1", $("#T_p1").val());
-                 if ($("#T_p2").val() != "")
-                     smsname = smsname.replace("@p2", $("#T_p2").val());
-                 if ($("#T_p3").val() != "")
-                     smsname = smsname.replace("@p3", $("#T_p3").val());
-                 if ($("#T_p4").val() != "")
-                     smsname = smsname.replace("@p4", $("#T_p4").val());
-                 if ($("#T_p5").val() != "")
-                     smsname = smsname.replace("@p5", $("#T_p5").val());
-                 if ($("#T_p6").val() != "")
-                     smsname = smsname.replace("@p6", $("#T_p6").val());
-                 $("#T_sms").val(smsname);
+                replace();
 
             });
 
         });
+
+        function replace()
+        {
+            var smsname = "";
+            if (getparastr("style") == "JPGJ")//金牌管理
+                smsname = jpname;
+            else
+                smsname = decodeURI(getparastr("name"));
+            if ($("#T_p1").val() != "")
+                smsname = smsname.replace("@p1", $("#T_p1").val());
+            if ($("#T_p2").val() != "")
+                smsname = smsname.replace("@p2", $("#T_p2").val());
+            if ($("#T_p3").val() != "")
+                smsname = smsname.replace("@p3", $("#T_p3").val());
+            if ($("#T_p4").val() != "")
+                smsname = smsname.replace("@p4", $("#T_p4").val());
+            if ($("#T_p5").val() != "")
+                smsname = smsname.replace("@p5", $("#T_p5").val());
+            if ($("#T_p6").val() != "")
+                smsname = smsname.replace("@p6", $("#T_p6").val());
+            $("#T_sms").val(smsname);
+        }
 
         function f_selectContact() {
             top.$.ligerDialog.open({
@@ -139,15 +144,15 @@
                             for (var n in obj) {
 
                             }
-                            $("#l1").html(obj.p1);
-                            $("#l2").html(obj.p2);
-                            $("#l3").html(obj.p3);
-                            $("#l4").html(obj.p4);
-                            $("#l5").html(obj.p5);
-                            $("#l6").html(obj.p6);
+                            //$("#l1").html(obj.p1);
+                            //$("#l2").html(obj.p2);
+                            //$("#l3").html(obj.p3);
+                            //$("#l4").html(obj.p4);
+                            //$("#l5").html(obj.p5);
+                            //$("#l6").html(obj.p6);
                             var from = obj.p1.split(";")[0] + ',' + obj.p2.split(";")[0] + ',' + obj.p3.split(";")[0] + ','
                             + obj.p4.split(";")[0] + ',' + obj.p5.split(";")[0] + ',' + obj.p6.split(";")[0];
-                            //alert(from)
+                             //alert(from)
                             ///
 
                             $.ajax({
@@ -168,7 +173,7 @@
                                         strfrom= strfrom + obj.Rows[n].C_Value + "," ;
                                     }
                                     
-                                      //  alert(strfrom);
+                                      // alert(strfrom);
                                     ///
                                     $.ajax({
                                         type: "GET",
@@ -195,8 +200,9 @@
                                                 if (p == 6)
                                                     $("#T_p6").val(obj[n]);
                                                 p++;
-                                               
+                                                
                                             }
+                                            replace();
                                            
                                         }
                                     });

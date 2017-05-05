@@ -63,12 +63,14 @@
             $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=140&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
                 var items = [];
+                
                 var arr = data.Items;
                 for (var i = 0; i < arr.length; i++) {
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-                 
+                items.push({ type: 'button', text: '金牌管理', icon: '../../images/icon/33.png', disable: true, click: function () { jpgl() } });
+
                 $("#toolbar").ligerToolBar({
                     items: items
 
@@ -119,6 +121,19 @@
                 $.ligerDialog.warn('请选择行！');
             }
         }
+
+        function jpgl()
+        {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+
+            if (row) {
+                f_openWindow("crm/ConsExam/XM_LIST_add.aspx?xmid=" + row.XMID+"&IsJP=Y", "金牌管理维护", 650, 400);
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+
 
         function del() {
             var manager = $("#maingrid4").ligerGetGridManager();

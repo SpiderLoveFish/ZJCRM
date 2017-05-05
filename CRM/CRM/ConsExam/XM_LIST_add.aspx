@@ -38,6 +38,18 @@
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
 
+           
+            if (getparastr("IsJP") == "Y")//金牌管理
+            {
+                $("#tr4").css("display", "none")
+            }
+            else {
+                $("#tr1").css("display", "none")
+                $("#tr2").css("display", "none")
+                $("#tr3").css("display", "none")
+            }
+
+
             //$("#T_Contract_name").focus();
             $("form").ligerForm();
 
@@ -107,10 +119,7 @@
                 loadForm(getparastr("xmid"));
 
             }
-            else {
-                $("#tr1").css("display", "none")
-                $("#tr2").css("display", "none")
-            }
+            
          
             
         });
@@ -229,7 +238,7 @@
                  <td height="25"><div align="left" style="width: 60px">选择七星模板：</div></td>
                    <td height="25" colspan="5"><input type="text" id="T_qxmb" name="T_qxmb"       /></td>
             </tr>
-            <tr>
+            <tr id="tr4">
                 <td colspan="6">
                     <textarea id="editor" style="width: 637px;"></textarea>
                 </td>

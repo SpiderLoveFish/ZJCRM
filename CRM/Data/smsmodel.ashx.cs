@@ -89,10 +89,23 @@ namespace XHD.CRM.Data
             if (request["Action"] == "formCRM_CE_CONFIG")
             {
                 string strwhere = PageValidate.InputText(request["from"], 50);
-                string sql = "SELECT  * FROM CRM_CE_CONFIG WHERE id IN("+strwhere+") "   ;
+                StringBuilder sb = new StringBuilder();
+                if (strwhere != "") {
+                    string[] str = strwhere.Split(',');
+                    int a = 0;
+                    foreach (var s in str)
+                    {
+                        if (a > 0)
+                        sb.AppendLine(" UNION ALL ");
+                        sb.AppendLine(" SELECT  * FROM CRM_CE_CONFIG WHERE id ='" + s + "'");
+                        
+                        a++;
+                    }
+                }
+               // string sql = "SELECT  * FROM CRM_CE_CONFIG WHERE id IN("+strwhere+") "   ;
 
 
-                DataSet ds = DbHelperSQL.Query(sql);
+                DataSet ds = DbHelperSQL.Query(sb.ToString());
 
                 string dt = Common.GetGridJSON.DataTableToJSON(ds.Tables[0]);
 

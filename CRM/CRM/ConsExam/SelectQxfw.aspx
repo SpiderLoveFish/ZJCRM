@@ -62,14 +62,14 @@
         });
         function toolbar() {
             var items = [];
-            items.push({ type: 'textbox', id: 'company', text: '姓名：' });
+            items.push({ type: 'textbox', id: 'keyword1', text: '关键字：' });
             items.push({ type: 'button', text: '搜索', icon: '../images/search.gif', disable: true, click: function () { doserch() } });
 
             $("#serchbar1").ligerToolBar({
                 items: items
 
             });
-            $("#company").ligerTextBox({ width: 200, nullText: "输入关键词智能搜索客户" });
+            $("#keyword1").ligerTextBox({ width: 200, nullText: "输入关键词搜索" });
             $("#maingrid4").ligerGetGridManager().onResize();
 
 
@@ -84,11 +84,11 @@
      
         //查询
         function doserch() {
-            var sendtxt = "&Action=getcustomer&rnd=" + Math.random();
+            var sendtxt = "&Action=grid&rnd=" + Math.random();
             var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
             //  alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL("../../data/Crm_CEStage.ashx?" + serchtxt);
+            manager.GetDataByURL("../../data/smsmodel.ashx?" + serchtxt);
         }
         
          
