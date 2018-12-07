@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -37,7 +37,7 @@
     </SccProvider>
     <OldToolsVersion>3.5</OldToolsVersion>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <PublishUrl>http://localhost/Maticsoft.DAL/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
@@ -52,6 +52,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -76,6 +77,7 @@
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -100,16 +102,23 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="MySql.Data, Version=5.1.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\MySql.Data.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="IBatisNet.Common">
+      <HintPath>..\..\..\..\..\..\E\OneDrive_datunzj\OneDrive\工作\三人行\ZJCRM20170707\DAL\bin\Debug\IBatisNet.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="IBatisNet.DataMapper">
+      <HintPath>..\..\..\..\..\..\E\OneDrive_datunzj\OneDrive\工作\三人行\ZJCRM20170707\DAL\bin\Debug\IBatisNet.DataMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\E\OneDrive_datunzj\OneDrive\工作\三人行\ZJCRM20170707\DAL\bin\Debug\Microsoft.QualityTools.Testing.Fakes.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\..\..\..\..\E\OneDrive_datunzj\OneDrive\工作\三人行\ZJCRM20170707\DAL\bin\Debug\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json.Net35">
-      <HintPath>Y:\Documents\CodeSource\ZJCRM1\ZJCRM\DAL\bin\Debug\Newtonsoft.Json.Net35.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\E\OneDrive_datunzj\OneDrive\工作\三人行\ZJCRM20170707\DAL\bin\Debug\Newtonsoft.Json.Net35.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -132,9 +141,8 @@
       <Project>{53995DBB-9836-4647-AD22-865884FDEB9E}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <Reference Include="XHD.Common, Version=3.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Common\bin\Debug\XHD.Common.dll</HintPath>
+    <Reference Include="XHD.DAL">
+      <HintPath>..\..\..\..\..\..\E\OneDrive_datunzj\OneDrive\工作\三人行\ZJCRM20170707\DAL\bin\Debug\XHD.DAL.dll</HintPath>
     </Reference>
     <Reference Include="XHD.DBUtility, Version=3.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -152,9 +160,19 @@
     <Compile Include="Budge_Model.cs" />
     <Compile Include="budge_modelMain.cs" />
     <Compile Include="Budge_Rate.cs" />
+    <Compile Include="Car_Basic.cs" />
+    <Compile Include="Car_Use.cs" />
+    <Compile Include="Car_Use_Log.cs" />
     <Compile Include="CERep_Schedule.cs" />
     <Compile Include="CE_Para.cs" />
     <Compile Include="budge.cs" />
+    <Compile Include="crm_customer_type.cs" />
+    <Compile Include="Financial_Change_Cost.cs" />
+    <Compile Include="Financial_Fixed_Cost.cs" />
+    <Compile Include="Financial_Labour_Cost.cs" />
+    <Compile Include="Financial_Labour_Cost_Recive.cs" />
+    <Compile Include="Financial_Profit.cs" />
+    <Compile Include="Financial_Reports_SingleCustomer.cs" />
     <Compile Include="hr_employee_accounts.cs" />
     <Compile Include="hr_socialWorker_Follow.cs" />
     <Compile Include="CRM_CEstage_Follow.cs" />
@@ -164,12 +182,17 @@
     <Compile Include="hr_socialWorker.cs" />
     <Compile Include="InStock_Detail.cs" />
     <Compile Include="INStock_Main.cs" />
+    <Compile Include="KcGl_Jcb_Cklb_KW.cs" />
     <Compile Include="MasterStock.cs" />
     <Compile Include="OutStock_Detail.cs" />
     <Compile Include="OutStock_Main.cs" />
+    <Compile Include="Purchase_CGLY.cs" />
+    <Compile Include="Purchase_CGLY_Detail.cs" />
     <Compile Include="Purchase_Detail.cs" />
     <Compile Include="Purchase_Main.cs" />
     <Compile Include="ScoreShop.cs" />
+    <Compile Include="tools_use.cs" />
+    <Compile Include="tools_use_mx.cs" />
     <Compile Include="webserver1.cs" />
     <Compile Include="f_bbs.cs" />
     <Compile Include="Crm_CEDetail.cs" />

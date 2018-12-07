@@ -120,6 +120,7 @@
                     $("#T_StageScore").val(obj.StageScore);
                     $("#T_remarks").val(obj.Remarks);
                     $("#T_jhrq").val(formatTimebytype(obj.Jh_date, "yyyy-MM-dd"));
+                    $("#T_kgrq").val(formatTimebytype(obj.BeginDate, "yyyy-MM-dd"));  
                     //状态 
                     $("#T_private").ligerGetComboBoxManager().selectValue(obj.Stage_icon);
                     
@@ -175,6 +176,7 @@
             $("#T_StageScore").val("0");
             $("#T_remarks").val("");
             $("#T_jhrq").val(jhdate);
+         
         //    $("#T_employee").val("【" + dep + "】" + emp);
         //    $("#T_employee1").val(emp);
         //    $("#T_employee_val").val(empid);
@@ -276,12 +278,12 @@
                 <td>
                     <input id="T_StageScore" name="T_StageScore" ltype="text" validate="{required:false}" ligerui="{width:180,disabled:true}"  />
                   </td>
-                          <td>
-                    <div style="width: 80px; text-align: right; float: right"> </div>
-                </td> 
-                 <td>
-                   
+                  <td>
+                    <div style="width: 80px; text-align: right; float: right">开工日期：</div>
                 </td>
+                <td>
+            <input id="T_kgrq" name="T_kgrq" type="text"  ltype="date" validate="{required:false}" style="width: 180px" />
+                  </td>
             </tr> <tr id="tr_contact4">
                 <td>
                     <div style="width: 80px; text-align: right; float: right">备注：</div>

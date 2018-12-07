@@ -55,12 +55,24 @@
                 }
             })
 
-            $('#T_zhiwu').ligerComboBox({ width: 97, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=17&rnd=" + Math.random() });
+            $('#T_zhiwu').ligerComboBox({ width: 180, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=17&rnd=" + Math.random() });
+            $('#T_zt').ligerComboBox({ width: 180, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=25&rnd=" + Math.random() });
+            $('#T_xj').ligerComboBox({ width: 180, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=26&rnd=" + Math.random() });
+
+            $('#T_sfzldj').ligerComboBox({ width: 180, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=32&rnd=" + Math.random() });
+            $('#T_sfxydj').ligerComboBox({ width: 180, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=34&rnd=" + Math.random() });
+            $('#T_sffwdj').ligerComboBox({ width: 180, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=35&rnd=" + Math.random() });
+            $('#T_sfjgdj').ligerComboBox({ width: 180, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=33&rnd=" + Math.random() });
+
 
             if (getparastr("empid")) {
                 loadForm(getparastr("empid"));
-            }
-            var empid = getparastr("empid") ? getparastr("empid") : 0;
+            }  
+                $('#T_employee_sg').ligerComboBox({ width: 180, onBeforeOpen: f_selectContact_sg });
+
+           
+          
+                 var empid = getparastr("empid") ? getparastr("empid") : 0;
 
             //$("#maingrid4").ligerGrid({
             //    columns: [
@@ -152,7 +164,7 @@
                         if (obj[n] == null || obj[n] == "null" || obj[n] == undefined)
                             obj[n] = "";
                     }
-                    //  alert(obj.professional); //String 构造函数
+                   //  alert(JSON.stringify(obj)); //String 构造函数
                     $("#T_uid").val(obj.uid);
                     $("#T_email").val(obj.email);
                     //$("#T_professional").val(obj.professional);
@@ -165,10 +177,31 @@
                     $("#T_Adress").val(obj.address);
                     $("#T_school").val(obj.schools);
                     $("#T_edu").val(obj.education);
-
+                    $("#T_edu").val(obj.education);
                     $("#T_remarks").val(obj.remarks);
+                    $("#T_zt").val(obj.zt);
+                    $("#T_xj").val(obj.xj);
 
+                    $("#T_sfzldj").val(obj.zldj);
+                    $("#T_sffwdj").val(obj.fwdj);
+                    $("#T_sfjgdj").val(obj.jgdj);
+                    $("#T_sfxydj").val(obj.xydj);
+                   
                     $("#T_sex").ligerGetComboBoxManager().selectValue(obj.sex);
+                    $("#T_private").ligerGetComboBoxManager().selectValue(obj.private_per);
+                    //bq = obj.Emp_sg;
+                    if (obj.Emp_sg != '' && obj.Emp_sg != null && obj.Emp_sg != 'null') {
+                        var str = obj.Emp_sg.split(";");
+                        for (var i = 1; i < str.length; i++) {
+                            var strtext = str[i].split(",");
+                            if (strtext[0] == "") break;
+                            else
+                                fillemp_sg("", "", strtext[1], strtext[0]);
+                            //onSelect(strtext[0], strtext[1])
+                        }
+                    }
+                   
+                    
                     //$("#T_dep").ligerGetComboBoxManager().selectValue(obj.d_id);
                     //$("#T_Position").ligerGetComboBoxManager().selectValue(obj.zhiwuid);
                     $("#T_status").ligerGetComboBoxManager().selectValue(obj.status);
@@ -176,13 +209,62 @@
                     // $("#T_uid").ligerGetTextBoxManager().setDisabled();
                     // $("#T_uid").attr("validate", "{required:true}");
                     $("input[type=radio][value=" + obj.canlogin + "]").attr("checked", 'checked');
+                    $("input[type=radio][value=" + obj.jbx + "]").attr("checked", 'checked');
                     $("#headurl").val(obj.title);
                     $("#userheadimg").attr("src", "../images/upload/portrait/" + obj.title);
                     searchCustomer();
                 }
             });
         }
+        function f_selectContact_sg() {
+            top.$.ligerDialog.open({
+                zindex: 9003,
+                title: '选择员工', width: 600, height: 400, url: "hr/Getemp.aspx?isvew=Y", buttons: [
+                    { text: '确定', onclick: f_selectContactOK_sg },
+                    { text: '取消', onclick: f_selectContactCancel }
+                ]
+            });
+            return false;
+        }
+        function f_selectContactCancel(item, dialog) {
+            dialog.close();
+        }
+        var bq = "";
+        function fillemp_sg(dep, depid, emp, empid) {
+            $("#T_employee_sg").val( emp);
+            $("#T_employee1_sg").val(emp);
+            $("#T_employee_sg_val").val(empid);
+            if (bq.indexOf(empid) > 0)
+                return false;
+            bq += ";" + empid + "," + emp;
+            $("#bqspan").append(" <input type='button' class='btn1' id='a" + empid + "' value='" + emp + "'>");
+            addBtnEventry(empid, emp);
+          
+        }
+        function addBtnEventry(id, text) {
+            $("#a" + id).bind("click", function () {
+                $.ligerDialog.confirm("是否确定删除", "是否确定删除，操作不可逆！", function (ok) {
+                    $.ligerDialog.closeWaitting();
+                    if (ok) {
+                        $("#a" + id).remove();
 
+                        bq = bq.replace(";" + id + "," + text, "");//取消
+
+                    }
+                    else { return; }
+                });
+
+            });
+        }
+        function f_selectContactOK_sg(item, dialog) {
+            var data = dialog.frame.f_select();
+            if (!data) {
+                alert('请选择员工!');
+                return;
+            }
+            fillemp_sg(data.dname, data.d_id, data.name, data.ID);
+            dialog.close();
+        }
         function remote() {
             var url = "../data/hr_socialWorker.ashx?Action=Exist&emp_id=" + getparastr("empid") + "&rnd=" + Math.random();
             return url;
@@ -277,7 +359,7 @@
         }
         function f_save() {
             if ($(form1).valid()) {
-                var sendtxt = "&Action=save&id=" + getparastr("empid");
+                var sendtxt = "&Action=save&id=" + getparastr("empid")+"&bq="+bq;
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }
@@ -399,7 +481,7 @@
                         <input type="text" id="T_sex" name="T_sex" style="width: 30px" ltype="select" ligerui="{width:50,data:[{id:'男',text:'男'},{id:'女',text:'女'}]}" validate="{required:true}" />
                     </td>
                     <td ><div align="right">属性：</div></td>
-                    <td colspan="2"><input type="text" id="T_status" name="T_status" style="width: 80px" ltype="select" ligerui="{width:75,data:[{id:'员工家人',text:'员工家人'},{id:'社会人员',text:'社会人员'},{id:'黑名单',text:'黑名单'}]}" validate="{required:true}" /></td>
+                    <td colspan="2"><input type="text" id="T_status" name="T_status" style="width: 80px" ltype="select" ligerui="{width:75,data:[{id:'工人师傅',text:'工人师傅'},{id:'员工家人',text:'员工家人'},{id:'社会人员',text:'社会人员'},{id:'黑名单',text:'黑名单'}]}" validate="{required:true}" /></td>
                     <td>
                         <div align="right" style="width: 61px">
                             类型：
@@ -454,6 +536,123 @@
                   <td><div align="right" style="width: 61px"> 学历： </div></td>
                   <td><input type="text" id="T_edu" name="T_edu" ltype="text" ligerui="{width:180}" /></td>
                   <td>&nbsp;</td>
+                </tr>
+                
+                 <tr>
+              <td>
+                        <div align="right" style="width: 61px">
+                            星级：
+                        </div>
+                    </td>              
+                    <td  colspan="4">
+                   <input id="T_xj" name="T_xj" type="text" style="width: 180px" />
+                    </td>
+                  
+                    <td >
+                        <div align="right" style="width: 61px">
+                            状态：
+                        </div>
+                    </td>              
+                    <td  colspan="4">
+                            <input id="T_zt" name="T_zt" type="text" style="width: 180px" />
+                    </td>
+                </tr>
+                  
+                 <tr>
+              <td>
+                        <div align="right" style="width: 61px">
+                            师傅质量等级：
+                        </div>
+                    </td>              
+                    <td  colspan="4">
+                   <input id="T_sfzldj" name="T_sfzldj" type="text" style="width: 180px" />
+                    </td>
+                  
+                    <td >
+                        <div align="right" style="width: 61px">
+                            师傅价格等级：
+                        </div>
+                    </td>              
+                    <td  colspan="4">
+                            <input id="T_sfjgdj" name="T_sfjgdj" type="text" style="width: 180px" />
+                    </td>
+                </tr>
+                  
+                 <tr>
+              <td>
+                        <div align="right" style="width: 61px">
+                            师傅信誉等级：
+                        </div>
+                    </td>              
+                    <td  colspan="4">
+                   <input id="T_sfxydj" name="T_sfxydj" type="text" style="width: 180px" />
+                    </td>
+                  
+                    <td >
+                        <div align="right" style="width: 61px">
+                            师傅服务等级：
+                        </div>
+                    </td>              
+                    <td  colspan="4">
+                            <input id="T_sffwdj" name="T_sffwdj" type="text" style="width: 180px" />
+                    </td>
+                </tr>
+
+                 <tr>
+                    <td>
+                        <div align="right" style="width: 61px">
+                            交保险：
+                        </div>
+                    </td>
+                    <td colspan="6">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="radio" value="1" name="jbx"  /></td>
+                                <td>交社保 </td>
+                                <td>
+                                    <input type="radio" value="2" name="jbx" /></td>
+                                <td>交意外保险 </td>
+                                <td>
+                                    <input type="radio" value="3" name="jbx"  /></td>
+                                <td>交社保&意外保险 </td>
+                                <td>
+                                    <input type="radio" value="0" name="jbx" checked="checked" /></td>
+                                <td>不交 </td>
+
+                            </tr>
+                        </table>
+                    </td>
+                   
+                  
+                </tr>
+                 <tr>
+                <td>
+                    <div align="right" style="width: 61px">共享性质：</div>
+                </td>
+                <td  colspan="4">
+                    <input id="T_private" name="T_private" type="text" ltype="select" ligerui="{width:180,data:[{id:'私有',text:'私有'},{id:'共有',text:'共有'}]}" validate="{required:true}" /></td>
+                <td>
+                    <%--<div align="right" style="width: 61px">归属人：</>--%>
+                </td>
+                <td  colspan="4">
+                  <%--  <input id="T_employee_sg" name="T_employee_sg" type="text" validate="{required:true}" style="width: 180px" />
+                    <input id="T_employee1_sg" name="T_employee1_sg" type="hidden" />
+                  --%>
+                </td>
+            </tr>
+                <tr>
+                    <td>
+                    <div align="right" style="width: 61px">归属人：</div>
+                </td>
+            <td  colspan="3">
+                    <input id="T_employee_sg" name="T_employee_sg" type="text" validate="{required:true}" style="width: 90px" />
+                    <input id="T_employee1_sg" name="T_employee1_sg" type="hidden" />
+                  
+                </td>
+                    <td  colspan="6">
+                         <div id="bqspan" style="margin: -1px;  overflow:auto; " ></div>
+                    </td>
                 </tr>
                 <tr>
                     <td rowspan="2">

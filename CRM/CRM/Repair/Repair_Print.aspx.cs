@@ -36,9 +36,9 @@ namespace XHD.CRM.CRM.Repair
                    
                 }
 
-                DataRow[] dr2 = Caches.CRM_Repair_Follow.Select("RepairID='" + Request["rid"].ToString() + "'");
+                DataRow[] dr2 = Caches.CRM_Repair_Follow.Select("RepairID='" + Request["rid"].ToString() + "'").OrderByDescending(x => x["InDate"]).ToArray();
                 for (int i = 0; i < dr2.Length; i++)
-                    lbGjxx.Text += (i + 1).ToString() + "、" + dr2[i]["FollowContent"].ToString() + "-" + dr2[i]["InEmpName"].ToString() + "<br/>";
+                    lbGjxx.Text += (i + 1).ToString() + "、" + dr2[i]["FollowContent"].ToString() + "-" + dr2[i]["InEmpName"].ToString() + "-" + dr2[i]["InDate"].ToString() + "<br/>";
             }
         }
     }

@@ -1,0 +1,71 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0067)http://www.17sucai.com/preview/13911/2016-01-06/forgetpwd/demo.html -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><HTML 
+xmlns="http://www.w3.org/1999/xhtml"><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+ <META http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<META name="Author"> <TITLE>忘记密码</TITLE> <LINK 
+href="images/favicon.ico" rel="shortcut icon">
+  <script src="../../JS/jquery.min.js"></script>
+       <script src="../../lib/jquery/jquery-1.3.2.min.js"></script>
+ <link href="css/css.css" type="text/css" rel="stylesheet" /> 
+<META name="GENERATOR" content="MSHTML 11.00.10570.1001">
+   <script type="text/javascript">
+       function ck()
+       {
+          
+           var zhm = $('#zhm').val();
+           if (zhm == "" || zhm == null)
+           {
+               alert("请填写你的账号!");
+               return false;
+           }
+             
+
+           location.href = "forgetPwd2.htm?zhm=" + zhm;
+       }
+        
+       function getKey() {
+           if (event.keyCode == 13) {
+               ck();
+           }
+       }   
+ </script>
+  
+</HEAD> 
+<BODY>
+<DIV class="content">
+<DIV class="web-width">
+<DIV class="for-liucheng">
+<DIV class="liulist for-cur"></DIV>
+<DIV class="liulist"></DIV>
+<DIV class="liulist"></DIV>
+<DIV class="liulist"></DIV>
+<DIV class="liutextbox">
+<DIV class="liutext for-cur"><EM>1</EM><BR><STRONG>填写账户名</STRONG></DIV>
+<DIV class="liutext"><EM>2</EM><BR><STRONG>验证身份</STRONG></DIV>
+<DIV class="liutext"><EM>3</EM><BR><STRONG>设置新密码</STRONG></DIV>
+<DIV class="liutext"><EM>4</EM><BR><STRONG>完成</STRONG></DIV></DIV></DIV><!--for-liucheng/--> 
+    
+        
+        <FORM id="form1" name="form1" class="forget-pwd"  >
+            <DL>
+                <DT>账户名：</DT>
+                <DD><INPUT id="zhm"  name="zhm" type="text" onkeypress="getKey();"/></DD>
+                <DIV class="clears"></DIV>
+            </DL>
+            <DL>
+                <DT>验证码：</DT>
+                <DD>
+                    <INPUT type="text">
+                    <DIV class="yanzma">
+                        <IMG src="css/yzm.gif"> <A href="javascript:;">换一换</A>
+                    </DIV>
+                </DD>
+                <DIV class="clears"></DIV>
+            </DL>
+            <DIV class="subtijiao">
+            <INPUT type="button" id="sub" name="sub" onclick="ck()" value="提交"></DIV>
+        </FORM>
+        <!--forget-pwd/-->
+</DIV><!--web-width/-->   </DIV><!--content/-->   </BODY></HTML>

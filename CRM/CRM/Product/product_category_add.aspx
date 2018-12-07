@@ -237,16 +237,16 @@
                 <label >4位，不足补0</label>
                 </td>
             </tr>
-            <tr>
+           <%-- <tr>
                 <td height="23" colspan="2">
 
-                    <div align="left" style="width: 62px">类别：</div>
+                    <div align="left" style="width: 62px">主要类型：</div>
                 </td>
-                <td height="23"> 
+                <td height="23"> --%>
                     <%--,data:[{id:'主材',text:'主材'},{id:'基建',text:'基建'}]  ltype="select"--%>
-                    <input id="T_style" name="T_style" type="text"  ligerui="{width:176}" validate="{required:true}" /></td>
+                   <%--  <input id="T_style" name="T_style" type="text"  ligerui="{width:176}" validate="{required:true}" /></td>
              
-            </tr>
+            </tr>--%>
         </table>
     </form>
 </body>

@@ -38,15 +38,23 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "text",
                 success: function (result) {
-                    
+
                     $.ajax({
                         url: "../../data/CRM_Customer.ashx", type: "POST",
-                        data: { Action:"import",file:result,rnd:Math.random() },
+                        data: { Action: "import", file: result, type: getparastr("type"), rnd: Math.random() },
                         success: function (responseText) {
-                            $.ligerDialog.closeWaitting();
-                            top.frames["tabid4"].f_reload();
-                            setTimeout(function () { top.$.ligerDialog.close() }, 100);
-                            
+                            //alert(responseText);
+                            if (responseText.substring(0, 2) == "µç»°") {
+                                $.ligerDialog.closeWaitting();
+                                $.ligerDialog.error('²Ù×÷Ê§°Ü£¡' + responseText);
+                            }
+                            else
+                            {
+                                $.ligerDialog.closeWaitting();
+                                top.frames["tabid4"].f_reload();
+                                setTimeout(function () { top.$.ligerDialog.close() }, 100);
+                            }
+                          
                         },
                         error: function () {
                             $.ligerDialog.closeWaitting();

@@ -334,6 +334,14 @@ namespace XHD.BLL
                     {
                         model.jgqjt = dt.Rows[n]["jgqjt"].ToString();
                     }
+                    if (dt.Rows[n]["birthday_lunar"] != null && dt.Rows[n]["birthday_lunar"].ToString() != "")
+                    {
+                        model.birthday_lunar = dt.Rows[n]["birthday_lunar"].ToString();
+                    }
+                    if (dt.Rows[n]["birthday"] != null && dt.Rows[n]["birthday"].ToString() != "")
+                    {
+                        model.birthday = dt.Rows[n]["birthday"].ToString();
+                    }
                     modelList.Add(model);
                 }
             }
@@ -421,9 +429,9 @@ namespace XHD.BLL
         /// <summary>
         /// µº»Î
         /// </summary>
-        public bool ToImport(int emp_id,string emp_name,DateTime create_time)
+        public bool ToImport(int emp_id,string emp_name,DateTime create_time,string type)
         {
-            return dal.ToImport(emp_id, emp_name, create_time);
+            return dal.ToImport(emp_id, emp_name, create_time, type);
         }
 
         /// <summary>
@@ -457,8 +465,11 @@ namespace XHD.BLL
         {
             return dal.GetListdy(strWhere);
         }
-
-        public bool Deletedy(int id, int cid)
+        public DataSet GetDSRep(string xtype, string ytype,string strWhere)
+        {
+            return dal.GetDSRep(xtype, ytype,strWhere);
+        }
+            public bool Deletedy(int id, int cid)
         {
             return dal.Deletedy(id,cid);
         }
@@ -479,6 +490,10 @@ namespace XHD.BLL
         public bool DeleteFavorite(string cid, string uid)
         {
             return dal.DeleteFavorite(cid, uid);
+        }
+        public bool UpdateIsDelete(int id, int iselete)
+        {
+            return dal.UpdateIsDelete(id, iselete);
         }
     }
 }

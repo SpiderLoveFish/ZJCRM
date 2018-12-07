@@ -24,10 +24,12 @@
     <script src="../JS/XHD.js" type="text/javascript"></script>
     <script src="../lib/jquery.form.js" type="text/javascript"></script>
     <script type="text/javascript">
+        var g, ck,cksf;
         $(function () {
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
-
+            ck = $("#ckisgd").ligerCheckBox();
+            cksf = $("#cksf").ligerCheckBox();
             //$("#T_Contract_name").focus();
             $("form").ligerForm();
 
@@ -55,6 +57,10 @@
                     for (var n in obj) {
 
                     }
+                    if (obj.IsCanViewTel == 1)
+                        ck.setValue(true);
+                      if (obj.IsCanViewSf == 1)
+                        cksf.setValue(true);
                     //alert(obj.constructor); //String 构造函数
                     $("#T_role").val(obj.RoleName);
                     $("#T_RoleOrder").val(obj.RoleSort);
@@ -114,8 +120,25 @@
                         <div align="left" style="width: 62px">角色描述：</div>
                     </td>
                     <td>
-                        <input type="text" id="T_Descript" name="T_Descript"
-                            ligerui="{width:250}" ltype="text" />
+                        <input type="text" id="T_Descript" name="T_Descript" ligerui="{width:250}" ltype="text" />
+                    </td>
+                </tr>
+                   <tr>
+                    <td style="vertical-align: top">
+
+                        <div align="left" style="width: 62px">可查电话：</div>
+                    </td>
+                    <td>
+                            <input type="checkbox" name="ckisgd" id="ckisgd"  ligeruiid="ckisgd"/>  
+                    </td>
+                </tr>
+                 <tr>
+                    <td style="vertical-align: top">
+
+                        <div align="left" style="width: 62px">可查师傅：</div>
+                    </td>
+                    <td>
+                            <input type="checkbox" name="cksf" id="cksf"  ligeruiid="cksf"/>  
                     </td>
                 </tr>
             </table>

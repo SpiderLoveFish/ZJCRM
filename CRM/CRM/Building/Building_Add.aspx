@@ -249,7 +249,7 @@
             </tr>
             <tr>
                 <td>
-                    <div style="width: 100px; text-align: right; float: right">交通状况：</div>
+                    <div style="width: 100px; text-align: right; float: right">全景网址：</div>
                 </td>
                 <td colspan="3">
                     <input type="text" id="Jtzk" name="Jtzk" ltype="text" ligerui="{width:410}" />

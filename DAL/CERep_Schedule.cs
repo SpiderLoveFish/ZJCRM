@@ -428,7 +428,7 @@ namespace XHD.DAL
         //    return ds;
         //}
 
-        public DataSet RunProcedureView_Schedule(out string Total)
+        public DataSet RunProcedureView_Schedule(string IsPlan,    out string Total)
         {
             SqlParameter[] parameters = {
 					new SqlParameter("@TName", SqlDbType.Text),
@@ -441,25 +441,84 @@ namespace XHD.DAL
             parameters[0].Value = "KHJD_LIST_VIEW_LIST";
              parameters[1].Value = "CID";
              parameters[2].Value = "XMMC";
-             parameters[3].Value = "Cpro as '小区名称',Cname as '具体地址'";
+             parameters[3].Value = "Cpro as '小区名称',Cname as '具体地址',Cmob as '电话'";
              parameters[4].Value = "(CONVERT(VARCHAR(20),lrrq,120)+';'+jdys+';项目:'+XMMC+';'+Cpro+Cname+';'+remark)";
              parameters[5].Value = "WHERE 1=1";
              string sql = "select  COUNT(1)  from (SELECT DISTINCT cid FROM  dbo.KHJD_LIST_VIEW_LIST)T	";
+            if (!string.IsNullOrEmpty(IsPlan))
+                sql += " where a.IsPlan='" + IsPlan + "'";
 
-            var sb = new System.Text.StringBuilder();
-            sb.AppendLine(" SELECT A.*,RIGHT(CAST(XMPX*10000+XMPX AS VARCHAR(10)),3)+B.XMMC  AS XM ");
-           sb.AppendLine("  INTO #TEMP  ");
-            sb.AppendLine(" FROM KHJD_LIST_VIEW_LIST A");
-            sb.AppendLine(" INNER JOIN	XM_LIST B ON	A.XMID=B.XMID ");
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("    SELECT   a.*    ");
+            sb.AppendLine("    INTO     #TEMP  ");
+            sb.AppendLine("    FROM     ( SELECT    a.* ,  ");
+            sb.AppendLine("                         RIGHT(CAST(XMPX * 10000 + XMPX AS VARCHAR(10)), 3)  ");
+            sb.AppendLine("                         + b.XMMC AS XM  ");
+            sb.AppendLine("               FROM      KHJD_LIST_VIEW_LIST a  ");
+            sb.AppendLine("                         INNER JOIN Xm_list b ON a.XMID = b.XMID  ");
+            if (!string.IsNullOrEmpty(IsPlan))
+                sb.AppendLine(" where a.IsPlan='"+ IsPlan + "'");
+            sb.AppendLine("               UNION ALL  ");
+            sb.AppendLine("               SELECT    0 ,  ");
+            sb.AppendLine("                         id ,  ");
+            sb.AppendLine("                         Community ,  ");
+            sb.AppendLine("                         BNo + '栋' + RNo + '室' ,  ");
+            sb.AppendLine("                         0 ,  ");
+            sb.AppendLine("                         '' ,  ");
+            sb.AppendLine("                         0 ,  ");
+            sb.AppendLine("                         '' ,  ");
+            sb.AppendLine("                         '' ,  ");
+            sb.AppendLine("                         '' ,  ");
+            sb.AppendLine("                         '' ,  ");
+            sb.AppendLine("                         BNo + '栋' + RNo + '室' ,  ");
+            sb.AppendLine("                         '' ,  ");
+            sb.AppendLine("                         tel ,  ");
+            sb.AppendLine("                         0 ,  ");
+            sb.AppendLine("                         0 ,'','','',   ");
+            sb.AppendLine("                         '无' ,'无' ");
+            sb.AppendLine("               FROM      dbo.CRM_Customer  ");
+            sb.AppendLine("               WHERE     id NOT IN ( SELECT  CID  ");
+            sb.AppendLine("                                     FROM    KHJD_LIST_VIEW_LIST   ");
+            if (!string.IsNullOrEmpty(IsPlan))
+                sb.AppendLine(" where  IsPlan='" + IsPlan + "'    ");
+            sb.AppendLine("   )");
+            sb.AppendLine("             ) a  ");
+            sb.AppendLine("             INNER JOIN ( SELECT CustomerID ,  ");
+            sb.AppendLine("                                 Jh_date  ");
+            sb.AppendLine("                          FROM   dbo.CRM_CEStage  ");
+            sb.AppendLine("                          WHERE  Stage_icon = '正在施工'  ");
+            sb.AppendLine("                        ) b ON a.cid = b.CustomerID  ");
+            sb.AppendLine("    UNION ALL  ");
+            sb.AppendLine("    SELECT   0 KHJDID ,  ");
+            sb.AppendLine("             0 CID ,  ");
+            sb.AppendLine("             '' Cpro ,  ");
+            sb.AppendLine("             '' Ccity ,  ");
+            sb.AppendLine("             '' JDID ,  ");
+            sb.AppendLine("             '' JDMC ,  ");
+            sb.AppendLine("             0 XMID ,  ");
+            sb.AppendLine("             XMMC ,  ");
+            sb.AppendLine("             '' REMARK ,  ");
+            sb.AppendLine("             '' LRRQ ,  ");
+            sb.AppendLine("             '' JDYS ,  ");
+            sb.AppendLine("             '' Cname ,  ");
+            sb.AppendLine("             '' CZR ,  ");
+            sb.AppendLine("             '' Cmob ,  ");
+            sb.AppendLine("             0 status ,  ");
+            sb.AppendLine("             0 ID ,'','',  ");
+            sb.AppendLine("             RIGHT('00' + CAST(XMPX AS VARCHAR(3)), 3) + XMMC XM ,  ");
+            sb.AppendLine("             NULL ,'无' ");
+            sb.AppendLine("    FROM     dbo.Xm_list;     ");
+            sb.AppendLine("    ");
+            sb.AppendLine("    EXEC dbo.USP_View_Schedule @TName = '#temp', -- varchar(20)   ");
+            sb.AppendLine("     @GColumn = 'CID', -- varchar(20)   ");
+            sb.AppendLine("     @RC = 'XM', -- varchar(20)   ");
+            sb.AppendLine("     @RCValue = 'left(Cpro,4) as ''小区名称'',left(Cname,4) as ''具体地址'',Cmob as ''电话''', -- varchar(20)   ");
+            sb.AppendLine("     @RCValues = '(CONVERT(VARCHAR(20),lrrq,120)+'';''+jdys+'';项目:''+XMMC+'';''+Cpro+Cname+'';''+remark)', -- varchar(20)   ");
+            sb.AppendLine("     @sql_where = N'WHERE 1=1', -- nvarchar(max)   ");
+            sb.AppendLine("     @orderby = 'jh_date'; -- nvarchar(max)   ");
+            sb.AppendLine("                 ");
+            sb.AppendLine("   ");
 
-            sb.AppendLine("  EXEC dbo.USP_View_Schedule @TName = '#temp', -- varchar(20)");
-           sb.AppendLine(" @GColumn = 'CID', -- varchar(20)");
-           sb.AppendLine(" @RC = 'XM', -- varchar(20)");
-	        sb.AppendLine("@RCValue = 'Cpro as ''小区名称'',Cname as ''具体地址''', -- varchar(20)");
-            sb.AppendLine(" @RCValues = '(CONVERT(VARCHAR(20),lrrq,120)+'';''+jdys+'';项目:''+XMMC+'';''+Cpro+Cname+'';''+remark)', -- varchar(20)");
-           sb.AppendLine(" @sql_where = N'WHERE 1=1' -- nvarchar(max)");
- 
-            sb.AppendLine(" ");
             DataSet ds = DbHelperSQL.Query(sb.ToString());
                 //DbHelperSQL.RunProcedure("dbo.USP_View_Schedule", 
                // parameters,

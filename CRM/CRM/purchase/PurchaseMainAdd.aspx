@@ -41,6 +41,7 @@
     <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
+       
         var manager = ""; var g,ck;
         var treemanager,gcombkh,gcombgys;
         $(function () {
@@ -49,11 +50,13 @@
             XHD.validate($(form1));
             ck = $("#ckisgd").ligerCheckBox();
            // $('input:checkbox').ligerCheckBox();
+             
             $("form").ligerForm();
             if (getparastr("pid") != null) {
                 $("#qdkh").attr("style", "display:none");
                 loadForm(getparastr("pid"));
-                if (getparastr("status") == "0")
+                //alert(getparastr("isauto"));
+                if (getparastr("status") == "0" && getparastr("isauto")!="0")//自动生成得不能编辑
                 toolbar();
             }
             else {
@@ -90,9 +93,14 @@
         
         //只允许编辑前3行
         function f_onBeforeEdit(e) {
-       
+           // alert(getparastr("status") + e.column.name )
             if (getparastr("status") != "0")  //非编辑状态，不能修改！
-            return false;
+            {
+                if (getparastr("status") == "3" && e.column.name == "purprice")//3，待回单 可以修改价格
+                    return true;
+                else return false;
+            }
+          
             return true;
         }
         //限制
@@ -125,7 +133,7 @@
                 if (row) {
                     $.ajax({
                         url: "../../data/Purchase.ashx", type: "POST",
-                        data: { Action: "saveupdatedetail", pid: $("#T_Pid").val(), mid: row.material_id, editsum: editsum,price:price,remaks:Remarks, rnd: Math.random() },
+                        data: { Action: "saveupdatedetail", pid: $("#T_Pid").val(), mid: row.material_id, editsum: editsum, price: price, remaks: Remarks, customid: row.Customer_id, rnd: Math.random() },
                         success: function (responseText) {
                          
                             if (responseText == "true") {
@@ -217,15 +225,17 @@
                     pidlist = pidlist + ',' + rows[i].product_id;
 
                 }
-                var url = '../../data/Purchase.ashx?Action=savedetail&pid=' + $("#T_Pid").val() + "&bjlist=" + pidlist + '&rdm=' + Math.random();
+                var url = '../../data/Purchase.ashx?Action=savedetail&isauto=' + $("#T_companyid").val()+'&pid=' + $("#T_Pid").val() + "&bjlist=" + pidlist + '&rdm=' + Math.random();
                 dosave(url,dialog);
             }
         }
 
         function f_save() {
+            
             var isAccept = ck.getValue();
             var isgd = 0;
             if (isAccept) isgd = 1;
+            if (getparastr("type") == "kccg") isgd=5;
             var sendtxt = "&Action=save&isgd=" + isgd;
             return $("form :input").fieldSerialize() + sendtxt;
         }
@@ -251,6 +261,8 @@
                 sta = 2;
             if (getparastr("style") == "apry")//确认
                 sta = 3;
+            if (getparastr("style") == "apryy")//确认
+                sta = 4;
             if (getparastr("style") == "cancel")//作废
                 sta = 99;
             if (getparastr("style") == "ret") sta = 0;//撤回
@@ -329,7 +341,7 @@
             dialog.close();
         }
         function addcl() {
-            f_openWindow("../../crm/product/product_add.aspx?type=Selectpur&id=" + getparastr("pid"), "新增材料档案", 800, 500);
+            f_openWindow("../../crm/product/product_add.aspx?type=Selectpur&isauto=" + $("#T_companyid").val()+"&id=" + getparastr("pid"), "新增材料档案", 800, 500);
 
 
         }
@@ -367,7 +379,25 @@
                     g = $("#maingrid4").ligerGrid({
                         columns: [
                             { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
+                       
+                            {
+                                display: '核对状态', width: 60, render: function (item) {
+                                    var html;
+                                    if (getparastr("status") == "3") {
+                                        if (item.ischeck == 0) {
+                                            html = "<span><div style='background:#e7e3e3'><a href='javascript:void(0)' onclick=submit111(1,'" + item.Purid +"',"+ item.material_id +","+ item.Customer_id + ") ><font color='#CC0000'>提交</font></a>";
+                                        }
+                                        else {
+                                            html = "<span><div style='background:#00ff21'><a href='javascript:void(0)' onclick=submit111(0,'" + item.Purid + "'," + item.material_id + "," + item.Customer_id + ")><font color='#AA5FFF'>撤回</font></a></div></span>"
 
+                                        }
+                                    }
+                                    else
+                                    { html = "不可用" }
+                                     return html;
+                                }
+
+                            },
                             { display: '材料名称', name: 'material_name', width: 120 },
                              { display: '规格', name: 'specifications', width: 80 },
                                { display: '料号', name: 'ProModel', width: 80 },
@@ -378,9 +408,8 @@
                                  display: '单价', name: 'purprice', type: 'float', width: 60, align: 'right'
                                  , editor: { type: 'float' }
                              },
-
                                 {
-                                    display: '数量', name: 'pursum', width: 120, align: 'left'
+                                    display: '数量', name: 'pursum', width: 60, align: 'right'
                                     , type: 'float', editor: { type: 'float' },
                                     totalSummary:
                                     {
@@ -389,18 +418,46 @@
 
                                 },
                                  {
-                                     display: '小计', name: 'subtotal', type: 'float', width: 100, align: 'right',
+                                     display: '小计', name: 'subtotal', type: 'float', width: 60, align: 'right',
                                      totalSummary:
                                      {
                                          type: 'sum'
                                      }
-                                 },
+                                },
+                                 { display: '单位', name: 'unit', width: 40 },
 
+                            {
+                                display: '监理', name: 'Emp_sg', align: 'left', width: 60, type: 'text'
+                                 },
+                            {
+                                display: '客户', name: 'customer', align: 'left', width: 150, type: 'text'
+                            },   
                                 {
-                                    display: '备注', name: 'Remarks', align: 'left', width: 200, type: 'text'
-                                    , editor: { type: 'text' }
-                                } 
-                              
+                                    display: '备注', name: 'b1', align: 'left', width: 200, type: 'text' 
+                            },
+                                
+                           
+                            {
+                                display: '更新定额', width: 60, render: function (item) {
+                                    var html;
+                                    html = "<a href='javascript:void(0)' onclick=updateprice(" + item.material_id + "," + item.purprice+") ><font color='#CC0000'>更新</font></a>";
+                                    return html;
+                                }
+                            },
+                                {
+                                    display: '图文', width: 40, render: function (item) {
+                                        var html = "<a href='javascript:void(0)' onclick=view(" + item.material_id + ")>查看</a>"
+                                        return html;
+                                    }
+                                }
+                            ,
+                                {
+                                    display: '辅助', width: 40, render: function (item) {
+                                        var html = "<a href='javascript:void(0)' onclick=views(" + item.Customer_id + "," + item.material_id + ",'" + item.Emp_sg+"')>查看</a>"
+                                        return html;
+                                    }
+                                }
+
                                
 
                         ],
@@ -434,6 +491,81 @@
                  
         }
 
+        //编辑
+        function views(cid,id,sgjl) {
+            var dialogOptions = {
+                width: 770, height: 510, title: "辅助介绍", url: "../../CRM/ConsExam/PurProductList_edit.aspx?cid=" +cid + "&id=" + id + "&sgjl=" + sgjl, buttons: [
+                    {
+                        text: '关闭', onclick: function (item, dialog) {
+                            dialog.close();
+                        }
+                    }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+            //var manager = $("#maingrid4").ligerGetGridManager();
+            //var row = manager.getSelectedRow();
+            //if (row) {
+                //f_openWindow_("../../CRM/ConsExam/PurProductList_edit.aspx?cid=" + getparastr("cid") + "&id=" + row.id + "&sgjl=" + getparastr("sgjl"), "辅助信息", 800, 500);
+            //} else {
+            //    $.ligerDialog.warn("请选择类别！");
+            //}
+
+        }
+        function view(id) {
+            var dialogOptions = {
+                width: 1000, height: 630, title: "材料档案图文介绍", url: '../view/product_view.aspx?id=' + id + '&rnd=' + Math.random(), buttons: [
+                    {
+                        text: '关闭', onclick: function (item, dialog) {
+                            dialog.close();
+                        }
+                    }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+        //更新价格
+        function updateprice(pid,price)
+        {
+            $.ajax({
+                type: 'post',
+                url: "../../data/Purchase.ashx?Action=updateprice&pid=" +pid+ "&price="+price+"&rdm=" + Math.random(),
+                success: function (data) {
+                    if (data == 'false') {
+                      
+                        $.ligerDialog.error("保存错误！！！重新保存！");
+                    }
+                    else {
+                   
+                        $.ligerDialog.success("产品内部价格保存成功！");
+
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $.ligerDialog.error("保存错误！！！");
+                }
+            });
+        }
+        //更新状态
+        function submit111(status,purid,pid,cid) {
+            $.ajax({
+                type: 'post',
+                url: "../../data/Purchase.ashx?Action=updatesfky&pid=" +pid + "&cid=" + cid+ "&status=" + status + '&purid=' + purid + '&rdm=' + Math.random(),
+                success: function (data) {
+                    if (data == 'false') {
+                        getmaxid();
+                        $.ligerDialog.error("保存错误！！！重新保存！");
+                    }
+                    else {
+                        fload();
+                        $.ligerDialog.success("保存成功！");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $.ligerDialog.error("保存错误！！！");
+                }
+            });
+        }
         function loadForm(oaid) {
              $.ajax({
                 type: "GET",
@@ -575,6 +707,7 @@
             }
             var isgd = 0;
             if (isAccept) isgd = 1;
+            if (getparastr("type") == "kccg") isgd = 5;
             $.ajax({
                 type: 'post',
                 url: "../../data/Purchase.ashx?Action=savetemp&pid=" + $("#T_Pid").val() + "&cid=" + $("#T_companyid").val() + "&remark=" + $("#T_remarks").val() + '&supid=' + $("#T_gysid").val() + '&isgd=' + isgd + '&rdm=' + Math.random(),
@@ -677,15 +810,14 @@
                  <td colspan="3"  ><input id="T_remarks" name="T_remarks" type="text" ltype="text"  ligerui="{width:550}" /></td>
                    <td> 
                   
-                    <div class="l-checkbox-wrapper">
+                    <div style="display:none" class="l-checkbox-wrapper">
                         <%--<a class="l-checkbox"></a>--%>
                         <input type="checkbox" name="ckisgd" id="ckisgd" 
                             class="l-hidden" 
-                        ligeruiid="ckisgd"/></div> 直送客户 
+                        ligeruiid="ckisgd" checked="checked"/></div> 
   
-                   </td>
-                <td>  <div style="width: 70px; text-align: right; float: right">采购单号：</div></td>
-                <td  colspan="2"><input type="text"  id="T_Pid" name="T_Pid"  ltype="text" ligerui="{width:150,disabled:true}"   /></td>
+              <div style="width: 70px; text-align: right; float: right">采购单号：</div></td>
+                <td  colspan="3"><input type="text"  id="T_Pid" name="T_Pid"  ltype="text" ligerui="{width:240,disabled:true}"   /></td>
              
                     </tr>
           

@@ -35,15 +35,24 @@ namespace XHD.Model
         private string _pp;
         private string _C_code;
         private string _c_style;
-
-		/// <summary>
-		/// 
-		/// </summary>
-		public int product_id
+         private string _KWID;
+       	private int? _CKID;
+        private string _clzt;
+        private int? _jbx;
+        private decimal? _fbj;
+        /// <summary>
+        /// 
+        /// </summary>
+        public int product_id
 		{
 			set{ _product_id=value;}
 			get{return _product_id;}
 		}
+        public int? CKID
+        {
+            set { _CKID = value; }
+            get { return _CKID; }
+        }
 		/// <summary>
 		/// 
 		/// </summary>
@@ -52,6 +61,11 @@ namespace XHD.Model
 			set{ _product_name=value;}
 			get{return _product_name;}
 		}
+        public string KWID
+        {
+            set { _KWID = value; }
+            get { return _KWID; }
+        }
 		/// <summary>
 		/// 
 		/// </summary>
@@ -216,8 +230,24 @@ namespace XHD.Model
             set { _c_style = value; }
             get { return _c_style; }
         }
-		#endregion Model
 
-	}
+        public string clzt
+        {
+            set { _clzt = value; }
+            get { return _clzt; }
+        }
+        public int? jbx
+        {
+            set { _jbx = value; }
+            get { return _jbx; }
+        }
+        public decimal? fbj
+        {
+            set { _fbj = value; }
+            get { return _fbj; }
+        }
+        #endregion Model
+
+    }
 }
 

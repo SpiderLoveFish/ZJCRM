@@ -20,8 +20,9 @@
     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
-        var manager = "";
+        var manager = "";  
         $(function () {
+        
             $("#maingrid4").ligerGrid({
                 columns: [
                    {

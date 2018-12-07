@@ -287,7 +287,7 @@ namespace XHD.DAL
 				strSql.Append(" top "+Top.ToString());
 			}
 			strSql.Append(" id,Customer_id,Customer_name,Follow,Follow_date,Follow_Type_id,Follow_Type,department_id,department_name,employee_id,employee_name,isDelete,Delete_time ");
-            strSql.Append(" FROM CRM_Follow left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj FROM  dbo.CRM_Customer) CRM_Customer on CRM_Follow.Customer_id=CRM_Customer.khid ");
+            strSql.Append(" FROM CRM_Follow left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj,emp_id_hh FROM  dbo.CRM_Customer) CRM_Customer on CRM_Follow.Customer_id=CRM_Customer.khid ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -304,10 +304,10 @@ namespace XHD.DAL
 			StringBuilder strSql = new StringBuilder();
 			StringBuilder strSql1 = new StringBuilder();
 			strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " * FROM CRM_Follow left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj FROM  dbo.CRM_Customer) CRM_Customer on CRM_Follow.Customer_id=CRM_Customer.khid   ");
-			strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_Follow ");
+            strSql.Append(" top " + PageSize + " * FROM CRM_Follow_view left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj,emp_id_hh FROM  dbo.CRM_Customer) CRM_Customer on CRM_Follow_view.Customer_id=CRM_Customer.khid   ");
+			strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_Follow_view ");
 			strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-            strSql1.Append(" select count(id) FROM CRM_Follow left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj FROM  dbo.CRM_Customer) CRM_Customer on CRM_Follow.Customer_id=CRM_Customer.khid ");
+            strSql1.Append(" select count(id) FROM CRM_Follow_view left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj,emp_id_hh FROM  dbo.CRM_Customer) CRM_Customer on CRM_Follow_view.Customer_id=CRM_Customer.khid ");
 			if (strWhere.Trim() != "")
 			{
 			    strSql.Append(" and " + strWhere);
@@ -409,7 +409,362 @@ namespace XHD.DAL
             return DbHelperSQL.Query(strSql.ToString());
         }
 
-		#endregion  Method
-	}
+
+        /// <summary>
+        /// 客户全景反过来
+        /// </summary>
+        /// <param name="serchtxt"></param>
+        /// <param name="Total"></param>
+        /// <returns></returns>
+        public DataSet RunProcedureView_Schedule(string serchtxt, out string Total)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("       SELECT  *  INTO      #temp FROM (        ");
+            sb.AppendLine("                             SELECT * FROM (        ");
+            sb.AppendLine("                             SELECT  employee_id id, '999;99;合计'AS params_name , employee_name ,         ");
+            sb.AppendLine("                                                       COUNT(*) QTY        ");
+            sb.AppendLine("                                               FROM    dbo.CRM_Follow         ");
+            sb.AppendLine("                                            ");
+            sb.AppendLine(" where ");
+            if (serchtxt != "")
+                sb.AppendLine(serchtxt);
+            sb.AppendLine("                           					--WHERE  CONVERT(varchar(100), Follow_date, 23) = CONVERT(varchar(100), GETDATE(), 23)--条件，默认当天，可选日期区间        ");
+            sb.AppendLine("                                               GROUP BY          ");
+            sb.AppendLine("                                                       employee_name ,employee_id        ");
+            sb.AppendLine("                           							)TT        ");
+            sb.AppendLine("                           		UNION ALL						        ");
+            sb.AppendLine("                           SELECT * FROM (        ");
+            sb.AppendLine("                             SELECT    B.id ,        ");
+            sb.AppendLine("                                      RIGHT('000000'+CAST(CEILING(ISNULL(CC.followhours,88888)) AS VARCHAR(20)),6)+';'+CONVERT(VARCHAR(10),AA.id) +';'+AA.params_name params_name,        ");
+            sb.AppendLine("                                       B.employee_name ,        ");
+            sb.AppendLine("                                       B.qty        ");
+            sb.AppendLine("                                   ");
+            sb.AppendLine("                             FROM             ( SELECT  *        ");
+            sb.AppendLine("                                                   FROM    dbo.Param_SysParam        ");
+            sb.AppendLine("                                                   WHERE   parentid = 1        ");
+            sb.AppendLine("                                                 ) AA   ");
+            sb.AppendLine(" 											INNER JOIN	  ( SELECT    AA.employee_id AS id ,        ");
+            sb.AppendLine("                                                   employee_name ,        ");
+            sb.AppendLine("                                                   AA.CustomerType_id ,        ");
+            sb.AppendLine("                                                   CustomerType ,        ");
+            sb.AppendLine("                                                   SUM(ISNULL(QTY, 0)) qty        ");
+            sb.AppendLine("                                         FROM      ( SELECT    A.CustomerType_id,A.CustomerType,B.*        ");
+            sb.AppendLine("                                                     FROM      dbo.CRM_Customer A        ");
+            sb.AppendLine("                                                               LEFT JOIN ( SELECT  Customer_id ,        ");
+            sb.AppendLine("                                                                                   employee_name ,        ");
+            sb.AppendLine("                                                                                   employee_id ,        ");
+            sb.AppendLine("                                                                                   COUNT(*) QTY        ");
+            sb.AppendLine("                                                                           FROM    dbo.CRM_Follow         ");
+            sb.AppendLine(" where ");
+            if (serchtxt != "")
+                sb.AppendLine(serchtxt);
+            sb.AppendLine("              --WHERE  CONVERT(varchar(100), Follow_date, 23) = CONVERT(varchar(100), GETDATE(), 23)--条件，默认当天，可选日期区间        ");
+            sb.AppendLine("                                                                           GROUP BY Customer_id ,        ");
+            sb.AppendLine("                                                                                   employee_name ,        ");
+            sb.AppendLine("                                                                                   employee_id        ");
+            sb.AppendLine("                                                                         ) B ON A.id = B.Customer_id        ");
+            sb.AppendLine("                                                   )AA     ");
+            sb.AppendLine("                                         WHERE     AA.employee_name IS NOT NULL        ");
+            sb.AppendLine("                                         GROUP BY  AA.employee_name ,        ");
+            sb.AppendLine("                                                   AA.CustomerType ,        ");
+            sb.AppendLine("                                                   CustomerType_id,employee_id        ");
+            sb.AppendLine("                                       ) B      ON AA.id = B.CustomerType_id    ");
+            sb.AppendLine("                                     ");
+            sb.AppendLine("              						 LEFT JOIN crm_customer_type CC ON	CC.typeid=AA.id         ");
+            sb.AppendLine("                           			  )MX       ");
+            sb.AppendLine("              						      ");
+            sb.AppendLine("                           					         ");
+            sb.AppendLine("                           		)TTMX     ");
+            sb.AppendLine("              					     ");
+            sb.AppendLine("              					 ORDER BY params_name DESC        ");
+            sb.AppendLine("                           	         ");
+            sb.AppendLine("                             EXEC dbo.[USP_View_Schedule_CustomerFollow] @TName = '#temp', -- varchar(20)         ");
+            sb.AppendLine("                               @GColumn = 'ID', -- varchar(20)         ");
+            sb.AppendLine("                               @RC = 'params_name', -- varchar(20)         ");
+            sb.AppendLine("                               @RCValue = ' employee_name as ''姓名''', -- varchar(20)         ");
+            sb.AppendLine("                               @RCValues = 'qty', -- varchar(20)         ");
+            sb.AppendLine("                               @sql_where = N'WHERE 1=1', -- nvarchar(max)         ");
+            sb.AppendLine("                               @orderby = 'employee_id'; -- nvarchar(max)         ");
+            sb.AppendLine("                   ");
+            sb.AppendLine("    ");
+
+            
+            
+           
+
+            DataSet ds = DbHelperSQL.Query(sb.ToString());
+            //DbHelperSQL.RunProcedure("dbo.USP_View_Schedule", 
+            // parameters,
+            // "schedule");
+            Total = ds.Tables[0].Rows.Count.ToString();
+
+            return ds;
+        }
+
+        /// <summary>
+        /// 客户全景反过来
+        /// </summary>
+        /// <param name="serchtxt"></param>
+        /// <param name="Total"></param>
+        /// <returns></returns>
+        public DataSet RunProcedureView_Schedule_(string serchtxt, out string Total)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("         SELECT  *  INTO      #temp FROM (           ");
+            sb.AppendLine("                                          SELECT * FROM (           ");
+            sb.AppendLine("                                          SELECT  CustomerType_id id, '999;99;合计'AS employee_name , params_name ,            ");
+            sb.AppendLine("                                                                    COUNT(*) QTY           ");
+            sb.AppendLine(" 												      FROM    dbo.CRM_Follow     A  ");
+            sb.AppendLine(" 													  INNER JOIN dbo.CRM_Customer B ON	A.Customer_id=B.id  ");
+            sb.AppendLine(" 													  INNER JOIN       ( SELECT  *           ");
+            sb.AppendLine("                                                                FROM    dbo.Param_SysParam           ");
+            sb.AppendLine("                                                                WHERE   parentid = 1           ");
+            sb.AppendLine("                                                              ) AA   ON	AA.id=B.CustomerType_id  ");
+            sb.AppendLine("                                                            ");
+            sb.AppendLine("                                            ");
+            sb.AppendLine(" where ");
+            if (serchtxt != "")
+                sb.AppendLine(serchtxt);
+            sb.AppendLine("                                        					--WHERE  CONVERT(varchar(100), Follow_date, 23) = CONVERT(varchar(100), GETDATE(), 23)--条件，默认当天，可选日期区间           ");
+            sb.AppendLine("                                                            GROUP BY             ");
+            sb.AppendLine("                                                                    AA.params_name ,CustomerType_id           ");
+            sb.AppendLine("                                        							)TT           ");
+            sb.AppendLine("                                        		UNION ALL						           ");
+            sb.AppendLine("                                        SELECT * FROM (           ");
+            sb.AppendLine("                                          SELECT    AA.id ,           ");
+            sb.AppendLine("                                                   RIGHT('000000'+CAST(CEILING(ISNULL(CC.followhours,88888)) AS VARCHAR(20)),6)+';'+CONVERT(VARCHAR(10),AA.id) +';'+B.employee_name   employee_name,           ");
+            sb.AppendLine("                                                   AA.params_name ,           ");
+            sb.AppendLine("                                                    B.qty           ");
+            sb.AppendLine("                                                   ");
+            sb.AppendLine("                                          FROM             ( SELECT  *           ");
+            sb.AppendLine("                                                                FROM    dbo.Param_SysParam           ");
+            sb.AppendLine("                                                                WHERE   parentid = 1           ");
+            sb.AppendLine("                                                              ) AA      ");
+            sb.AppendLine("              											INNER JOIN	  ( SELECT    AA.employee_id AS id ,           ");
+            sb.AppendLine("                                                                employee_name ,           ");
+            sb.AppendLine("                                                                AA.CustomerType_id ,           ");
+            sb.AppendLine("                                                                CustomerType ,           ");
+            sb.AppendLine("                                                                SUM(ISNULL(QTY, 0)) qty           ");
+            sb.AppendLine("                                                      FROM      ( SELECT    A.CustomerType_id,A.CustomerType,B.*           ");
+            sb.AppendLine("                                                                  FROM      dbo.CRM_Customer A           ");
+            sb.AppendLine("                                                                            LEFT JOIN ( SELECT  Customer_id ,           ");
+            sb.AppendLine("                                                                                                employee_name ,           ");
+            sb.AppendLine("                                                                                                employee_id ,           ");
+            sb.AppendLine("                                                                                                COUNT(*) QTY           ");
+            sb.AppendLine("                                                                                        FROM    dbo.CRM_Follow            ");
+            sb.AppendLine("                                            ");
+            sb.AppendLine(" where ");
+            if (serchtxt != "")
+                sb.AppendLine(serchtxt);
+            sb.AppendLine("                           --WHERE  CONVERT(varchar(100), Follow_date, 23) = CONVERT(varchar(100), GETDATE(), 23)--条件，默认当天，可选日期区间           ");
+            sb.AppendLine("                                                                                        GROUP BY Customer_id ,           ");
+            sb.AppendLine("                                                                                                employee_name ,           ");
+            sb.AppendLine("                                                                                                employee_id           ");
+            sb.AppendLine("                                                                                      ) B ON A.id = B.Customer_id           ");
+            sb.AppendLine("                                                                )AA        ");
+            sb.AppendLine("                                                      WHERE     AA.employee_name IS NOT NULL           ");
+            sb.AppendLine("                                                      GROUP BY  AA.employee_name ,           ");
+            sb.AppendLine("                                                                AA.CustomerType ,           ");
+            sb.AppendLine("                                                                CustomerType_id,employee_id           ");
+            sb.AppendLine("                                                    ) B      ON AA.id = B.CustomerType_id       ");
+            sb.AppendLine("                                                     ");
+            sb.AppendLine("                           						 LEFT JOIN crm_customer_type CC ON	CC.typeid=AA.id            ");
+            sb.AppendLine("                                        			  )MX          ");
+            sb.AppendLine("                           						         ");
+            sb.AppendLine("                                        					            ");
+            sb.AppendLine("                                        		)TTMX        ");
+            sb.AppendLine("                           					        ");
+            sb.AppendLine("                           					 ORDER BY params_name DESC           ");
+            sb.AppendLine("                                        	            ");
+            sb.AppendLine("                                          EXEC dbo.[USP_View_Schedule_CustomerFollow] @TName = '#temp', -- varchar(20)            ");
+            sb.AppendLine("                                            @GColumn = 'ID', -- varchar(20)            ");
+            sb.AppendLine("                                            @RC = 'employee_name', -- varchar(20)            ");
+            sb.AppendLine("                                            @RCValue = ' params_name as ''姓名''', -- varchar(20)            ");
+            sb.AppendLine("                                            @RCValues = 'qty', -- varchar(20)            ");
+            sb.AppendLine("                                            @sql_where = N'WHERE 1=1', -- nvarchar(max)            ");
+            sb.AppendLine("                                            @orderby = 'id'; -- nvarchar(max)            ");
+            sb.AppendLine("                                   ");
+            sb.AppendLine("                    ");
+            sb.AppendLine("    ");
+            sb.AppendLine("   ");
+
+
+
+
+
+            DataSet ds = DbHelperSQL.Query(sb.ToString());
+            //DbHelperSQL.RunProcedure("dbo.USP_View_Schedule", 
+            // parameters,
+            // "schedule");
+            Total = ds.Tables[0].Rows.Count.ToString();
+
+            return ds;
+        }
+
+
+        /// <summary>
+        /// 施工计划全景
+        /// </summary>
+        /// <param name="serchtxt"></param>
+        /// <param name="Total"></param>
+        /// <returns></returns>
+        public DataSet OView_Schedulejh(string serchtxt,string btime,string etime, out string Total)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(" DECLARE @btime VARCHAR(20) SET @btime=GETDATE()-14  ");
+            if(btime!="")
+                sb.AppendLine("   SET @btime ='"+btime+"'  ");
+            sb.AppendLine(" DECLARE @etime VARCHAR(20) SET @etime =GETDATE()+29  ");
+            if (etime != "")
+                sb.AppendLine("  SET @etime ='" + etime + "'  ");
+            sb.AppendLine("   "); 
+            sb.AppendLine("   ");
+            sb.AppendLine(" SELECT AB.CustomerID AS ID, A.wknum ,B.XMMC  AS jhXMMC,C.XMMC,'【'+kh.Customer+'】'+kh.address as Cpro ,kh.Emp_sg, B.sgrq, C.tq ,psp.JDMC AS jhstatus,psp2.JDMC AS status,b.remark as jhremark,c.remark,psp.jdys as jhjdys,psp2.jdys into #temp from(     ");
+            sb.AppendLine("              select convert(varchar(5),DATEADD(day,number,@btime) ,10) wknum     ");
+            sb.AppendLine("              from master.dbo.spt_values      ");
+            sb.AppendLine("              where type='p'      ");
+            sb.AppendLine("              AND number<=DATEDIFF(day,@btime,@etime)     ");
+            sb.AppendLine("              )A     ");
+            sb.AppendLine("LEFT JOIN(SELECT CustomerID FROM CRM_CEStage WHERE Stage_icon = '正在施工')  AB ON 1 = 1");
+            sb.AppendLine("              LEFT  JOIN   ");
+            sb.AppendLine(" 			 (  ");
+            sb.AppendLine(" 			SELECT aa.XMMC,aa.CID,aa.REMARK,aa.tq,aa.IsPlan  ");
+            sb.AppendLine(" ,MAX(sgrq)sgrq ,aa.status,aa.jhjdys ");
+            sb.AppendLine("  FROM (  ");
+            sb.AppendLine(" SELECT DISTINCT stuff((select '|'+XMMC from KHJD_LIST_VIEW_LIST   ");
+            sb.AppendLine(" WHERE A.cid=CID  AND	 A.REMARK=REMARK AND	 A.sgrq=sgrq  AND IsPlan='Y'   ");
+            sb.AppendLine("  for xml path ('')),1,1,'') AS XMMC  ");
+            sb.AppendLine(" ,CID,REMARK, sgrq ,A.tq,A.IsPlan ,A.status ,a.JDYS jhjdys");
+            sb.AppendLine(" FROM	KHJD_LIST_VIEW_LIST A  ");
+            sb.AppendLine("  WHERE A.IsPlan='Y'  AND IsNew='Y' ");
+            sb.AppendLine("  )aa  ");
+            sb.AppendLine("  GROUP BY CID,REMARK, tq, IsPlan,aa.XMMC,aa.status ,aa.jhjdys ");
+            sb.AppendLine(" ) B ON	  ");
+            sb.AppendLine(" 			 A.wknum=convert(varchar(5), B.sgrq,10)   AND ab.CustomerID=b.cid   ");
+            sb.AppendLine(" 			  LEFT  JOIN   ");
+            sb.AppendLine(" 			 (  ");
+            sb.AppendLine(" 			SELECT aa.XMMC,aa.CID,aa.REMARK,aa.tq,aa.IsPlan  ");
+            sb.AppendLine(" ,MAX(sgrq)sgrq,aa.status,aa.JDYS ");
+            sb.AppendLine("  FROM (  ");
+            sb.AppendLine(" SELECT DISTINCT stuff((select '|'+XMMC from KHJD_LIST_VIEW_LIST   ");
+            sb.AppendLine(" WHERE A.cid=CID   AND A.REMARK=REMARK AND	 A.sgrq=sgrq  AND IsPlan='N'     ");
+            sb.AppendLine("  for xml path ('')),1,1,'') AS XMMC  ");
+            sb.AppendLine(" ,CID,REMARK,  sgrq ,A.tq,A.IsPlan,a.status ,a.JDYS ");
+            sb.AppendLine(" FROM	KHJD_LIST_VIEW_LIST A  ");
+            sb.AppendLine("  WHERE A.IsPlan='N'  AND IsNew='Y' ");
+            sb.AppendLine("  )aa  ");
+            sb.AppendLine("  GROUP BY CID,REMARK, tq, IsPlan,aa.XMMC,aa.status ,aa.JDYS ");
+            sb.AppendLine(" ) C ON	  ");
+            sb.AppendLine(" 			 A.wknum=convert(varchar(5), C.sgrq,10) AND ab.CustomerID=c.cid    ");
+            sb.AppendLine("LEFT JOIN dbo.JD_list psp ON psp.jdid = b.status");
+            sb.AppendLine("LEFT JOIN dbo.JD_list psp2 ON psp2.jdid = c.status");
+            sb.AppendLine("LEFT JOIN dbo.CRM_Customer kh ON kh.id=ab.CustomerID");
+            sb.AppendLine("   ");
+
+            sb.AppendLine(" --SELECT * FROM dbo.CRM_Follow_view  ");
+            sb.AppendLine("    EXEC dbo.[USP_View_Schedule_CustomerFollow] @TName = '#temp', -- varchar(20)        ");
+            sb.AppendLine("                   @GColumn = 'ID', -- varchar(20)        ");
+            sb.AppendLine("                   @RC = 'wknum', -- varchar(20)        ");
+            sb.AppendLine("                   @RCValue = ' Emp_sg+''-''+Cpro as ''客户信息''', -- varchar(20)        ");
+            sb.AppendLine("                   @RCValues = 'isnull(jhjdys,jdys)+ case when (isnull(jhXMMC,'''')='''' and isnull(XMMC,'''')='''') then '''' else  Emp_sg+''-''+Cpro+''</br>''+(isnull(CONVERT(VARCHAR(20),sgrq,23),'''')+''   ;</br><font size=2 color=red>天气:''+isnull(tq,''未维护'')+''</font>   </br><font size=2 color=red>计划:</font>【<span style=''''background:#''+isnull(jhjdys,'''')+''''''>''+isnull(CONVERT(VARCHAR(100),jhstatus),''未维护'')+''</span>】</font></br>''+isnull(jhXMMC,'''')+''</br>内容：''+REPLACE(isnull(jhremark,''无''),CHAR(10),''</br>'')+''      </br><font size=2 color=blue>日记:</font>【<span style=''''background:#''+isnull(jdys,'''')+''''''>''+isnull(CONVERT(VARCHAR(100),status),''未维护'')+''</span>】</br>''+isnull(XMMC,'''')+''</br>内容：''+REPLACE(isnull(remark,''无''),CHAR(10),''</br>'') ) end ', ");
+            sb.AppendLine("                   @sql_where = N'WHERE 1=1', -- nvarchar(max)        ");
+            sb.AppendLine("                   @orderby = 'Cpro'; -- nvarchar(max)        ");
+            sb.AppendLine("      ");
+
+
+            DataSet ds = DbHelperSQL.Query(sb.ToString());
+            //DbHelperSQL.RunProcedure("dbo.USP_View_Schedule", 
+            // parameters,
+            // "schedule");
+            Total = ds.Tables[0].Rows.Count.ToString();
+
+            return ds;
+        }
+
+        /// <summary>
+        /// 施工时间全景
+        /// </summary>
+        /// <param name="serchtxt"></param>
+        /// <param name="Total"></param>
+        /// <returns></returns>
+        public DataSet OView_Schedulesj(string serchtxt, string btime, string etime, out string Total)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(" DECLARE @btime VARCHAR(20) SET @btime=GETDATE()-14  ");
+            if (btime != "")
+                sb.AppendLine("   SET @btime ='" + btime + "'  ");
+            sb.AppendLine(" DECLARE @etime VARCHAR(20) SET @etime =GETDATE()+29  ");
+            if (etime != "")
+                sb.AppendLine("  SET @etime ='" + etime + "'  ");
+            sb.AppendLine("   ");
+            sb.AppendLine("   ");
+            sb.AppendLine(" SELECT AB.CustomerID AS ID, A.wknum ,B.XMMC  AS jhXMMC,C.XMMC,'【'+kh.Customer+'】'+kh.address as Cpro ,kh.Emp_sg, B.sgrq, C.tq ,psp.JDMC AS jhstatus,psp2.JDMC AS status,b.remark as jhremark,c.remark,psp.jdys as jhjdys,psp2.jdys into #temp from(     ");
+            sb.AppendLine("              select convert(varchar(5),DATEADD(day,number,@btime) ,10) wknum     ");
+            sb.AppendLine("              from master.dbo.spt_values      ");
+            sb.AppendLine("              where type='p'      ");
+            sb.AppendLine("              AND number<=DATEDIFF(day,@btime,@etime)     ");
+            sb.AppendLine("              )A     ");
+            sb.AppendLine("LEFT JOIN(SELECT CustomerID FROM CRM_CEStage WHERE Stage_icon = '正在施工')  AB ON 1 = 1");
+            sb.AppendLine("              LEFT  JOIN   ");
+            sb.AppendLine(" 			 (  ");
+            sb.AppendLine(" 			SELECT aa.XMMC,aa.CID,aa.REMARK,aa.tq,aa.IsPlan  ");
+            sb.AppendLine(" ,MAX(sgrq)sgrq ,aa.status ,aa.jhjdys");
+            sb.AppendLine("  FROM (  ");
+            sb.AppendLine(" SELECT DISTINCT stuff((select '|'+XMMC from KHJD_LIST_VIEW_LIST   ");
+            sb.AppendLine(" WHERE A.cid=CID  AND	 A.REMARK=REMARK AND	 A.sgrq=sgrq  AND IsPlan='Y'   ");
+            sb.AppendLine("  for xml path ('')),1,1,'') AS XMMC  ");
+            sb.AppendLine(" ,CID,REMARK, sgrq ,A.tq,A.IsPlan ,A.status ,A.JDYS jhjdys");
+            sb.AppendLine(" FROM	KHJD_LIST_VIEW_LIST A  ");
+            sb.AppendLine("  WHERE A.IsPlan='Y'  AND IsNew='Y' ");
+            sb.AppendLine("  )aa  ");
+            sb.AppendLine("  GROUP BY CID,REMARK, tq, IsPlan,aa.XMMC,aa.status,aa.jhjdys  ");
+            sb.AppendLine(" ) B ON	  ");
+            sb.AppendLine(" 			 A.wknum=convert(varchar(5), B.sgrq,10)   AND ab.CustomerID=b.cid   ");
+            sb.AppendLine(" 			  LEFT  JOIN   ");
+            sb.AppendLine(" 			 (  ");
+            sb.AppendLine(" 			SELECT aa.XMMC,aa.CID,aa.REMARK,aa.tq,aa.IsPlan  ");
+            sb.AppendLine(" ,MAX(sgrq)sgrq,aa.status ,aa.JDYS");
+            sb.AppendLine("  FROM (  ");
+            sb.AppendLine(" SELECT DISTINCT stuff((select '|'+XMMC from KHJD_LIST_VIEW_LIST   ");
+            sb.AppendLine(" WHERE A.cid=CID   AND A.REMARK=REMARK AND	 A.sgrq=sgrq  AND IsPlan='N'     ");
+            sb.AppendLine("  for xml path ('')),1,1,'') AS XMMC  ");
+            sb.AppendLine(" ,CID,REMARK,  sgrq ,A.tq,A.IsPlan,a.status ,A.JDYS  ");
+            sb.AppendLine(" FROM	KHJD_LIST_VIEW_LIST A  ");
+            sb.AppendLine("  WHERE A.IsPlan='N'  AND IsNew='Y' ");
+            sb.AppendLine("  )aa  ");
+            sb.AppendLine("  GROUP BY CID,REMARK, tq, IsPlan,aa.XMMC,aa.status,aa.JDYS  ");
+            sb.AppendLine(" ) C ON	  ");
+            sb.AppendLine(" 			 A.wknum=convert(varchar(5), C.sgrq,10) AND ab.CustomerID=c.cid    ");
+            sb.AppendLine("LEFT JOIN dbo.JD_list psp ON psp.jdid = b.status");
+            sb.AppendLine("LEFT JOIN dbo.JD_list psp2 ON psp2.jdid = c.status");
+            sb.AppendLine("LEFT JOIN dbo.CRM_Customer kh ON kh.id=ab.CustomerID");
+            sb.AppendLine("   ");
+
+            sb.AppendLine(" --SELECT * FROM dbo.CRM_Follow_view  ");
+            sb.AppendLine("    EXEC dbo.[USP_View_Schedule_CustomerFollow] @TName = '#temp', -- varchar(20)        ");
+            sb.AppendLine("                   @GColumn = 'ID', -- varchar(20)        ");
+            sb.AppendLine("                   @RC = 'wknum', -- varchar(20)        ");
+            sb.AppendLine("                   @RCValue = ' Emp_sg+''-''+Cpro as ''客户信息''', -- varchar(20)        ");
+            sb.AppendLine("                   @RCValues = 'isnull(jdys,jhjdys)+ case when (isnull(jhXMMC,'''')='''' and isnull(XMMC,'''')='''') then '''' else  Emp_sg+''-''+Cpro+''</br>''+(isnull(CONVERT(VARCHAR(20),sgrq,23),'''')+''   ;</br><font size=2 color=red>天气:''+isnull(tq,''未维护'')+''</font>   </br><font size=2 color=red>计划:</font>【<span style=''''background:#''+isnull(jhjdys,'''')+''''''>''+isnull(CONVERT(VARCHAR(100),jhstatus),''未维护'')+''</span>】</font></br>''+isnull(jhXMMC,'''')+''</br>内容：''+REPLACE(isnull(jhremark,''无''),CHAR(10),''</br>'')+''      </br><font size=2 color=blue>日记:</font>【<span style=''''background:#''+isnull(jdys,'''')+''''''>''+isnull(CONVERT(VARCHAR(100),status),''未维护'')+''</span>】</br>''+isnull(XMMC,'''')+''</br>内容：''+REPLACE(isnull(remark,''无''),CHAR(10),''</br>'') ) end ', ");
+            sb.AppendLine("                   @sql_where = N'WHERE 1=1', -- nvarchar(max)        ");
+            sb.AppendLine("                   @orderby = 'Cpro'; -- nvarchar(max)        ");
+            sb.AppendLine("      ");
+
+
+            DataSet ds = DbHelperSQL.Query(sb.ToString());
+            //DbHelperSQL.RunProcedure("dbo.USP_View_Schedule", 
+            // parameters,
+            // "schedule");
+            Total = ds.Tables[0].Rows.Count.ToString();
+
+            return ds;
+        }
+
+
+
+        #endregion  Method
+    }
 }
 

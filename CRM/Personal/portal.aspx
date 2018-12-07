@@ -35,7 +35,7 @@
                                 width: '33%',
                                 panels: [
                                     {
-                                        title: '新闻',
+                                        title: '制度',
                                         width: '99%',
                                         height: 200,
                                         content_id: 'c_news'

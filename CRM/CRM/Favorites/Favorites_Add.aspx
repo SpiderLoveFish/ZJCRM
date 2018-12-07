@@ -132,7 +132,7 @@
                 </td>
                 <td>
                     <div style="width: 200px; text-align: left; float: left">
-                        <input type="text" id="Url" name="Url" ltype="text" ligerui="{width:150}" validate="{required:true,url:true}" />
+                        <input type="text" id="Url" name="Url" ltype="text" ligerui="{width:150}" validate="{required:true}" />
                     </div>
                 </td>
             </tr>

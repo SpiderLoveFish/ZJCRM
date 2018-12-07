@@ -45,9 +45,9 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into CRM_product(");
-            strSql.Append("product_name,category_id,category_name,specifications,status,unit,remarks,zc_price,fc_price,rg_price,price,isDelete,Delete_time,t_content,url,InternalPrice	 ,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand,C_code,C_style )");
+            strSql.Append("product_name,category_id,category_name,specifications,status,unit,remarks,zc_price,fc_price,rg_price,price,isDelete,Delete_time,t_content,url,InternalPrice	 ,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand,C_code,C_style,CKID,KWID,clzt,jbx,fbj )");
             strSql.Append(" values (");
-            strSql.Append("@product_name,@category_id,@category_name,@specifications,@status,@unit,@remarks,@zc_price,@fc_price,@rg_price,@price,@isDelete,@Delete_time,@t_content,@url,@nbj,@gys,@xh,@xl,@zt,@pp,@C_code,@C_style )");
+            strSql.Append("@product_name,@category_id,@category_name,@specifications,@status,@unit,@remarks,@zc_price,@fc_price,@rg_price,@price,@isDelete,@Delete_time,@t_content,@url,@nbj,@gys,@xh,@xl,@zt,@pp,@C_code,@C_style,@CKID,@KWID,@clzt,@jbx,@fbj )");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
 					new SqlParameter("@product_name", SqlDbType.VarChar,250),
@@ -72,7 +72,15 @@ namespace XHD.DAL
                     new SqlParameter("@pp", SqlDbType.VarChar,250),
                     new SqlParameter("@url", SqlDbType.VarChar,250),
                     new SqlParameter("@C_code", SqlDbType.VarChar,250),
-                   new SqlParameter("@C_style", SqlDbType.VarChar,250)};
+                   new SqlParameter("@C_style", SqlDbType.VarChar,250),
+                    new SqlParameter("@CKID",  SqlDbType.Int,4),
+                   new SqlParameter("@KWID", SqlDbType.VarChar,250),
+                  new SqlParameter("@clzt", SqlDbType.VarChar,250),
+                  new SqlParameter("@jbx", SqlDbType.Int,4),
+             new SqlParameter("@fbj", SqlDbType.Float,8)};
+
+                     
+
             parameters[0].Value = model.product_name;
             parameters[1].Value = model.category_id;
             parameters[2].Value = model.category_name;
@@ -96,6 +104,11 @@ namespace XHD.DAL
             parameters[20].Value = model.url;
             parameters[21].Value = model.C_code;
             parameters[22].Value = model.C_style;
+            parameters[23].Value = model.CKID;
+            parameters[24].Value = model.KWID;
+            parameters[25].Value = model.clzt;
+            parameters[26].Value = model.jbx;
+            parameters[27].Value = model.fbj;
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {
@@ -132,8 +145,13 @@ namespace XHD.DAL
             strSql.Append("Themes=@zt,");
             strSql.Append("Brand=@pp,");
             strSql.Append("url=@url,");
-            strSql.Append("C_code=@C_code");
-
+            strSql.Append("C_code=@C_code,");
+            strSql.Append("C_style=@C_style,");
+            strSql.Append("CKID=@CKID,");
+            strSql.Append("KWID=@KWID,");
+            strSql.Append("clzt=@clzt,");
+            strSql.Append("jbx=@jbx,");
+            strSql.Append("fbj=@fbj");
             strSql.Append(" where product_id=@product_id");
             SqlParameter[] parameters = {
 					new SqlParameter("@product_name", SqlDbType.VarChar,250),
@@ -156,7 +174,14 @@ namespace XHD.DAL
 					new SqlParameter("@zt", SqlDbType.VarChar,250),
                     new SqlParameter("@pp", SqlDbType.VarChar,250),
                     new SqlParameter("@url", SqlDbType.VarChar,250),
-                   new SqlParameter("@C_code", SqlDbType.VarChar,250)
+                   new SqlParameter("@C_code", SqlDbType.VarChar,250),
+                    new SqlParameter("@C_style", SqlDbType.VarChar,250),
+                      new SqlParameter("@CKID",  SqlDbType.Int,4),
+                    new SqlParameter("@KWID", SqlDbType.VarChar,250),
+                      new SqlParameter("@clzt", SqlDbType.VarChar,250),
+                      new SqlParameter("@jbx", SqlDbType.Int,4),
+                        new SqlParameter("@fbj", SqlDbType.Float,8)
+
                                         };
             parameters[0].Value = model.product_name;
             parameters[1].Value = model.category_id;
@@ -179,7 +204,12 @@ namespace XHD.DAL
             parameters[18].Value = model.pp;
             parameters[19].Value = model.url;
             parameters[20].Value = model.C_code;
-
+            parameters[21].Value = model.C_style;
+            parameters[22].Value = model.CKID;
+            parameters[23].Value = model.KWID;
+              parameters[24].Value = model.clzt;
+              parameters[25].Value = model.jbx;
+            parameters[26].Value = model.fbj;
             int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
             {
@@ -262,8 +292,8 @@ namespace XHD.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select top 1 product_id,product_name,category_id,category_name,specifications,status,unit,remarks,zc_price,fc_price,rg_price,price,isDelete,Delete_time,t_content,url,C_code,C_style ");
-            strSql.Append("  ,InternalPrice,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand  from CRM_product");
+            strSql.Append("select top 1 product_id,product_name,category_id,category_name,specifications,status,unit,remarks,zc_price,fc_price,rg_price,price,isDelete,Delete_time,t_content,url,C_code,C_style,CKID,KWID,clzt,jbx ");
+            strSql.Append("  ,InternalPrice,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand,fbj  from CRM_product");
             strSql.Append(" where product_id=@product_id");
             SqlParameter[] parameters = {
 					new SqlParameter("@product_id", SqlDbType.Int,4)};
@@ -370,6 +400,26 @@ namespace XHD.DAL
                 {
                     model.pp = ds.Tables[0].Rows[0]["C_style"].ToString();
                 }
+                if (ds.Tables[0].Rows[0]["CKID"] != null && ds.Tables[0].Rows[0]["CKID"].ToString() != "")
+                {
+                    model.isDelete = int.Parse(ds.Tables[0].Rows[0]["CKID"].ToString());
+                }
+                if (ds.Tables[0].Rows[0]["KWID"] != null && ds.Tables[0].Rows[0]["KWID"].ToString() != "")
+                {
+                    model.pp = ds.Tables[0].Rows[0]["KWID"].ToString();
+                }
+                if (ds.Tables[0].Rows[0]["clzt"] != null && ds.Tables[0].Rows[0]["clzt"].ToString() != "")
+                {
+                    model.clzt = ds.Tables[0].Rows[0]["clzt"].ToString();
+                }
+                if (ds.Tables[0].Rows[0]["jbx"] != null && ds.Tables[0].Rows[0]["jbx"].ToString() != "")
+                {
+                    model.isDelete = int.Parse(ds.Tables[0].Rows[0]["jbx"].ToString());
+                }
+                if (ds.Tables[0].Rows[0]["fbj"] != null && ds.Tables[0].Rows[0]["fbj"].ToString() != "")
+                {
+                    model.fbj = decimal.Parse(ds.Tables[0].Rows[0]["fbj"].ToString());
+                }
                 return model;
             }
             else
@@ -385,7 +435,7 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select product_id,product_name,category_id,category_name,specifications,status,unit,remarks,zc_price,fc_price,rg_price,price,isDelete,Delete_time,t_content,url ");
-            strSql.Append("  ,InternalPrice,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand,C_code,C_style ");
+            strSql.Append("  ,InternalPrice,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand,C_code,C_style,CKID,KWID,clzt,jbx,fbj ");
             strSql.Append(" FROM CRM_product ");
             if (strWhere.Trim() != "")
             {
@@ -406,7 +456,7 @@ namespace XHD.DAL
                 strSql.Append(" top " + Top.ToString());
             }
             strSql.Append(" product_id,product_name,category_id,category_name,specifications,status,unit,remarks,zc_price,fc_price,rg_price,price,isDelete,Delete_time,t_content,url ");
-            strSql.Append("  ,InternalPrice,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand,C_code,C_style ");
+            strSql.Append("  ,InternalPrice,Suppliers	 ,ProModel	 ,ProSeries	 ,Themes,Brand,C_code,C_style,CKID,KWID,clzt,jbx,fbj ");
             strSql.Append(" FROM CRM_product ");
             if (strWhere.Trim() != "")
             {
@@ -424,10 +474,10 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " *,0 as SUM FROM CRM_product ");
-            strSql.Append(" WHERE product_id not in ( SELECT top " + (PageIndex - 1) * PageSize + " product_id FROM CRM_product ");
+            strSql.Append(" top " + PageSize + " a.*,0 as SUM,B.C_CODE AS category_c_code,B.product_category FROM CRM_product a LEFT JOIN dbo.CRM_product_category B ON A.category_id=b.id  ");
+            strSql.Append(" WHERE product_id not in ( SELECT top " + (PageIndex - 1) * PageSize + " product_id FROM CRM_product a LEFT JOIN dbo.CRM_product_category B ON A.category_id=b.id ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-            strSql1.Append(" select count(product_id) FROM CRM_product ");
+            strSql1.Append(" select count(product_id) FROM CRM_product a LEFT JOIN dbo.CRM_product_category B ON A.category_id=b.id");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);
@@ -464,8 +514,8 @@ namespace XHD.DAL
             strSql.Append("SELECT B.C_code, ");
             strSql.Append("  CASE WHEN   ISNULL(MAX(A.C_code),'')='' then	 B.c_code+'0001' ELSE MAX(A.C_code) END AS code");
               strSql.Append(" FROM dbo.CRM_product A");
-             strSql.Append(" INNER JOIN dbo.CRM_product_category B ON A.category_id=B.ID");
-              strSql.Append(" WHERE category_id="+catid+"  ");
+             strSql.Append(" INNER JOIN dbo.CRM_product_category B ON A.category_id=B.ID and  id=" + catid + "");
+              strSql.Append(" WHERE   a.C_code like  B.C_CODE+'%'  ");
               strSql.Append(" GROUP BY B.c_code ");
            
             return DbHelperSQL.Query(strSql.ToString());
@@ -486,6 +536,16 @@ namespace XHD.DAL
             return DbHelperSQL.Query(strSql.ToString());
         }
 
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet Get_categorycode(int catid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("   SELECT C_CODE+'0001' FROM  dbo.CRM_product_category WHERE id="+catid+"");
+
+            return DbHelperSQL.Query(strSql.ToString());
+        }
 
         #endregion  Method
     }

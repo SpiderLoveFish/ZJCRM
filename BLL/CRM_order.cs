@@ -122,10 +122,17 @@ namespace XHD.BLL
 		{
 			return dal.GetList(strWhere);
 		}
-		/// <summary>
-		/// 获得前几行数据
+        /// <summary>
+		/// 获得数据列表（客户进度管理）
 		/// </summary>
-		public DataSet GetList(int Top,string strWhere,string filedOrder)
+		public DataSet GetList_khjdgl(string strWhere)
+        {
+            return dal.GetList_khjdgl(strWhere);
+        }
+        /// <summary>
+        /// 获得前几行数据
+        /// </summary>
+        public DataSet GetList(int Top,string strWhere,string filedOrder)
 		{
 			return dal.GetList(Top,strWhere,filedOrder);
 		}

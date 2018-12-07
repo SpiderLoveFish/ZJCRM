@@ -38,8 +38,193 @@ namespace XHD.CRM.Data
             //string empname = dsemp.Tables[0].Rows[0]["name"].ToString();
             string uid = "admin";
             BLL.sys_info si = new BLL.sys_info();
-            string host = si.GetList(" sys_key='sys_host'").Tables[0].Rows[0]["sys_value"].ToString();
-            //dsemp.Tables[0].Rows[0]["uid"].ToString();
+            string host = "";
+            //try
+            //{
+            //     host = si.GetList(" sys_key='sys_host'").Tables[0].Rows[0]["sys_value"].ToString();
+            //}
+            //catch { } //dsemp.Tables[0].Rows[0]["uid"].ToString();
+            if (request["Action"] == "updatepwd")
+            {
+                string zhm = PageValidate.InputText(request["zhm"], 255);
+                string tel = PageValidate.InputText(request["tel"], 255);
+                string newpwd = FormsAuthentication.HashPasswordForStoringInConfigFile(request["T_newpwd"], "MD5");
+                string sql = "update	 hr_employee set pwd='"+ newpwd + "' where uid='"+ zhm + "' and tel='"+tel+"'";
+               
+                if(DBUtility.DbHelperSQL.ExecuteSql(sql)>0)
+                    context.Response.Write("true");
+                else context.Response.Write("false");
+
+            }
+
+            //combo案例类型
+            if (request["Action"] == "combo_para")
+            {
+                string parentid = PageValidate.InputText(request["parentid"], 50);
+                BLL.Param_SysParam psp = new BLL.Param_SysParam();
+                DataSet ds = psp.GetList(0, " parentid=" + int.Parse(parentid), "params_order");
+
+                StringBuilder str = new StringBuilder();
+
+                str.Append("[");
+                //str.Append("{id:0,text:'无'},");
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    str.Append("{id:" + ds.Tables[0].Rows[i]["id"].ToString() + ",text:'" + ds.Tables[0].Rows[i]["params_name"] + "'},");
+                }
+                str.Replace(",", "", str.Length - 1, 1);
+                str.Append("]");
+
+                context.Response.Write(str);
+            }
+            //combo
+            if (request["Action"] == "combo_person")
+            {
+                string serchtxt = " 1=1 ";
+
+                string did = request["did"];
+                if (!string.IsNullOrEmpty(did) && did != null && did != "null")
+                    serchtxt += " and d_id=" + int.Parse(did);
+                  serchtxt += " and uid!='admin' and uid!='NoVerer' ";
+                string authtxt = request["auth"];
+                if (authtxt == "1")
+                {
+                    Data.GetDataAuth dataauth = new Data.GetDataAuth();
+                    string txt = dataauth.GetDataAuthByid("1", "Sys_add", emp_id.ToString());
+                    string[] arr = txt.Split(':');
+                    switch (arr[0])
+                    {
+                        case "my":
+                            serchtxt += " and ID=" + emp_id;
+                            break;
+                    }
+                }
+
+                DataSet ds = emp.GetList(serchtxt);
+
+                StringBuilder str = new StringBuilder();
+
+                str.Append("[");
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    str.Append("{id:" + ds.Tables[0].Rows[i]["id"].ToString() + ",text:'" + ds.Tables[0].Rows[i]["name"] + "'},");
+                }
+                str.Replace(",", "", str.Length - 1, 1);
+                str.Append("]");
+
+                context.Response.Write(str);
+
+            }
+            if (request["Action"] == "classiclist")
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(" SELECT * FROM dbo.Crm_Classic_case  A");
+
+                sb.AppendLine(" INNER JOIN Param_SysParam B ON	A.img_style=B.id  ");
+                sb.AppendLine("  where 1=1 ");
+
+                  string search = PageValidate.InputText(request["search"], 500);
+                if (!string.IsNullOrEmpty(search))
+                {
+                    string[] s = search.Split(';');
+
+                    //案例类型
+                    if (!string.IsNullOrEmpty(s[0]))
+                    {
+                        sb.AppendLine(" AND  B.params_name like '%" + s[0] + "%'");
+                    }
+                    //楼盘
+                    if (!string.IsNullOrEmpty(s[1]))
+                    {
+                        sb.AppendLine(" AND  Community like '%"+ s[1] + "%'");
+                    }
+                    //其实面积
+
+                    if (!string.IsNullOrEmpty(s[2]))
+                    {
+                        sb.AppendLine(" AND  housearea >='" + s[2] + "'");
+                    }
+                    //截至面积
+                         if (!string.IsNullOrEmpty(s[3]))
+                    {
+                        sb.AppendLine(" AND  housearea <='" + s[3] + "'");
+                    }
+                    //案例标题
+                     if (!string.IsNullOrEmpty(s[4]))
+                    {
+                        sb.AppendLine(" AND  c_title like '%"+ s[4] + "%'");
+                    }
+                    //户型
+                    if (!string.IsNullOrEmpty(s[5]))
+                    {
+                        sb.AppendLine(" AND  housetype like '%" + s[5] + "%'");
+                    }
+                    //装修风格
+                    if (!string.IsNullOrEmpty(s[6]))
+                    {
+                        sb.AppendLine(" AND  decorationtpye like '%" + s[6] + "%'");
+                    }
+                    //设计师
+                    if (!string.IsNullOrEmpty(s[7]))
+                    {
+                        sb.AppendLine(" AND  designer like '%" + s[7] + "%'");
+                    }
+
+                    
+                }
+                DataSet ds = DBUtility.DbHelperSQL.Query(sb.ToString());
+                string dt = Common.GetGridJSON.DataTableToJSON(ds.Tables[0]);
+                context.Response.Write(dt);
+            }
+
+
+            if (request["Action"] == "selecttel")
+            {
+                string zhm = PageValidate.InputText(request["zhm"], 255);
+                string sql = "select tel	 from hr_employee where uid='"+ zhm + "'";
+                DataSet ds = DBUtility.DbHelperSQL.Query(sql);
+                string tel = "";
+                if (ds.Tables[0].Rows.Count > 0)
+                    tel= ds.Tables[0].Rows[0][0].ToString();
+                context.Response.Write(tel);
+            }
+            if (request["Action"] == "Send_aliyunSendSMS")
+            {
+
+                string tel = PageValidate.InputText(request["tel"], int.MaxValue);
+                string type = PageValidate.InputText(request["type"], 50);
+                string para = request["para"];
+                if (tel == ""|| tel == null)
+                {
+                   string struid = PageValidate.InputText(request["uid"], 50);
+                    string sql = "SELECT tel FROM dbo.hr_employee WHERE uid='"+ struid + "'";
+                    tel = DBUtility.DbHelperSQL.Query(sql).Tables[0].Rows[0][0].ToString();
+                }
+                XHD.CRM.Data.sms sms = new Data.sms();
+                string aa = sms.aliyunSendSMS(tel, type, para);
+                if (aa == "OK")
+                {
+                    string sql = " INSERT INTO dbo.SMS_log" +
+                               "        ( sendcontent ," +
+                               "          DoTime ," +
+                               "          DoPerson ," +
+                               "          DoStyle ," +
+                               "          smsphone ," +
+                               "          smscount" +
+                               "        )" +
+                               " VALUES  ( '" + para + "' ,  " +
+                               "          getdate() ,  " +
+                               "          ' ' , " +
+                               "          '修改密码' , " +
+                               "          '" + tel + "' , " +
+                               "          " + tel.Split(';').Length + " " +
+                               "        )";
+                    DBUtility.DbHelperSQL.ExecuteSql(sql);
+                    context.Response.Write("true");
+                }
+
+                else context.Response.Write("false");
+            }
             if (request["Action"] == "test")
             {
                 string fpId = "3FO4J1G598MG";
@@ -1527,6 +1712,27 @@ namespace XHD.CRM.Data
                     context.Response.Write(result);
                 }
 
+            }
+
+            //全景API
+            if (request["Action"] == "getqjapi")
+            {
+                string openid = "5248c9be8592751a58b8eef6258e6578";
+
+                string tel = Common.PageValidate.InputText(request["tel"], 50);
+                // Common.PageValidate.InputText(request["designId"], 50)
+                string api = "https://www.33qjvr.com/api/case?act=casebyphone&";
+                //code=13451760505&openid=5248c9be8592751a58b8eef6258e6578
+                object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                string timestamp = currenttimemillis.ToString(); //2分钟
+
+                StringBuilder apiBuilder = new StringBuilder();
+                apiBuilder.Append(api)
+                .Append("&code=").Append(tel)
+                .Append("&openid=").Append(openid);
+                string result = "";
+                result = HttpGet(apiBuilder.ToString());
+                context.Response.Write(result);
             }
 
         }

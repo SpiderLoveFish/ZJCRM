@@ -35,6 +35,7 @@
         var tc = "复制";
         if (istc == "Y") tc = "套餐模板";
         else if (istc == "N") tc = "常规模板";
+        else if (istc == "M") tc = "面积模板";
         $(function () {
             
             $.metadata.setType("attr", "validate");

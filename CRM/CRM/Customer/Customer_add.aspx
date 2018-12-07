@@ -32,7 +32,7 @@
     <script type="text/javascript">
         var ci = false;
         var  bq = "";
-        
+        var type = 0;
         $(function () {
             
 
@@ -40,12 +40,15 @@
             XHD.validate($(form1));
 
             $("form").ligerForm();
-
+            if (getparastr("type") == "TEMP")//订单客户
+                type = 2;
+            else type = 0;
             loadForm(getparastr("cid"));
-
+            loadFormJF(getparastr("cid"));
             $('#T_employee').ligerComboBox({ width: 196, onBeforeOpen: f_selectContact });
             $('#T_employee_sg').ligerComboBox({ width: 196, onBeforeOpen: f_selectContact_sg });
             $('#T_employee_sj').ligerComboBox({ width: 196, onBeforeOpen: f_selectContact_sj });
+            $('#T_employee_hh').ligerComboBox({ width: 196, onBeforeOpen: f_selectContact_hh });
             $("#T_company").attr("validate", "{ required: true, remote: remote, messages: { required: '请输入客户姓名', remote: '此客户已存在!' } }");
             $('#T_bq').ligerComboBox({ width: 97, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=18&rnd=" + Math.random(), emptyText: '（空）', onSelected: function (newvalue, newtext) { onSelect(newvalue,newtext); } });
 
@@ -78,10 +81,17 @@
         function f_save() {
 
             if ($(form1).valid()) {
-                var sendtxt = "&Action=save&id=" + getparastr("cid") + "&bq=" + bq;
+                var sendtxt = "&Action=save&type=" + type + "&id=" + getparastr("cid") + "&bq=" + bq;
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }
+        function f_save_zz() {
+
+            if ($(form1).valid()) {
+                var sendtxt = "&Action=save&type=" + type + "&iszz=Y&id=" + getparastr("cid") + "&bq=" + bq;
+                return $("form :input").fieldSerialize() + sendtxt;
+            }
+        } 
         var a; var b; var c; var d; var e; var f; var g; var h; var i;
 
         function loadForm(oaid) {
@@ -129,7 +139,8 @@
                     $("#T_hxt").val(obj.hxt);
                     $("#T_ybqjt").val(obj.ybqjt);
                     $("#T_jgqjt").val(obj.jgqjt);
-
+                    $("#T_birthday").val(obj.birthday);
+                    $("#T_birthday_lunar").val(obj.birthday_lunar);
                     if (obj.DesCripe != '' && obj.DesCripe != null && obj.DesCripe != 'null') {
                         var str = obj.DesCripe.split(";");
                         for (var i = 1; i < str.length; i++) {
@@ -157,6 +168,8 @@
                         fillemp_sg(obj.Dpt_sg, obj.Dpt_id_sg, obj.Emp_sg, obj.Emp_id_sg);
                     if (obj.Dpt_sj && obj.Emp_sj)
                         fillemp_sj(obj.Dpt_sj, obj.Dpt_id_sj, obj.Emp_sj, obj.Emp_id_sj);
+                    if (obj.Emp_id_hh && obj.Emp_hh)
+                        fillemp_hh("", "", obj.Emp_hh, obj.Emp_id_hh);
                     //可会类型 下拉
                     $('#T_customertype').ligerComboBox({ width: 97, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=1&rnd=" + Math.random(), emptyText: '（空）', initValue: obj.CustomerType_id });
 
@@ -250,6 +263,26 @@
             });
         }
 
+        function loadFormJF(oaid) {
+            $.ajax({
+                type: "GET",
+                // url: "Jifen_kh_add.aspx?cmd=search&cid=" + getparastr("cid") + "&rnd=" + Math.random(),
+                url: "../../data/crm_customer.ashx",
+                data: { Action: 'formjf', cid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    //alert(JSON.stringify(result));
+                    var obj = eval(result);
+                    for (var n in obj) {
+                        if (obj[n] == "null" || obj[n] == null)
+                            obj[n] = "";
+                    }
+                    $("#T_jf").val(obj.Jf); 
+                }
+            });
+        }
+
         function f_selectComm() {
             top.$.ligerDialog.open({
                 zindex: 9003,
@@ -332,6 +365,16 @@
             });
             return false;
         }
+        function f_selectContact_hh() {
+            top.$.ligerDialog.open({
+                zindex: 9003,
+                title: '选择员工', width: 850, height: 400, url: "hr/Getemp.aspx?isvew=Y", buttons: [
+                    { text: '确定', onclick: f_selectContactOK_hh },
+                    { text: '取消', onclick: f_selectContactCancel }
+                ]
+            });
+            return false;
+        }
         function f_selectContactOK(item, dialog) {
             var data = dialog.frame.f_select();
             if (!data) {
@@ -359,6 +402,15 @@
             fillemp_sj(data.dname, data.d_id, data.name, data.ID);
             dialog.close();
         }
+        function f_selectContactOK_hh(item, dialog) {
+            var data = dialog.frame.f_select();
+            if (!data) {
+                alert('请选择员工!');
+                return;
+            }
+            fillemp_hh(data.dname, data.d_id, data.name, data.ID);
+            dialog.close();
+        }
         function fillemp(dep, depid, emp, empid) {
             $("#T_employee").val("【" + dep + "】" + emp);
             $("#T_employee1").val(emp);
@@ -380,7 +432,12 @@
             $("#T_dep_sj").val(dep);
             $("#T_dep_val_sj").val(depid);
         }
-
+        function fillemp_hh(dep, depid, emp, empid) {
+            $("#T_employee_hh").val( emp);
+            $("#T_employee1_hh").val(emp);
+            $("#T_employee_hh_val").val(empid);
+          
+        }
 
         function f_selectContactCancel(item, dialog) {
             dialog.close();
@@ -433,6 +490,13 @@
                        // top.$.ligerDialog.error('操作失败！');
                     }
                 });
+        }
+          function num(obj){
+            obj.value = obj.value.replace(/[^\d.]/g,""); //清除"数字"和"."以外的字符
+            obj.value = obj.value.replace(/^\./g,""); //验证第一个字符是数字
+            obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个, 清除多余的
+            obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+            obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3'); //只能输入两个小数
         }
     </script>
 </head>
@@ -651,7 +715,7 @@
                     <div style="width: 80px; text-align: right; float: right">房屋面积：</div>
                 </td>
                 <td>
-                    <input type="text" id="T_fwmj" name="T_fwmj" ltype="text" ligerui="{width:196}" /></td>
+                    <input type="text" id="T_fwmj" name="T_fwmj" ltype="text" ligerui="{width:196}" validate="{required:true}" onkeyup="num(this)"  /></td>
             </tr>
             <tr>
                 <td>
@@ -695,19 +759,27 @@
                 <td><div style="width: 80px; text-align: right; float: right">微信状态：</div></td>
                 <td><input id="T_WXZT_NAME" name="T_WXZT_NAME" type="text" /></td>
             </tr>
-             <tr style="display:none">
-                <td colspan="4"  class="table_title1">效果图网址</td>
-            </tr>
-            <tr style="display:none">
+            <tr>
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">效果图：</div>
+                    <div style="width: 80px; text-align: right; float: right">备&nbsp; 注：</div>
+                </td>
+                <td colspan="3">
+                      <textarea id="T_remarks" name="T_remarks" rows="4" class="l-textarea"  validate="{required:true}" style="width:490px" ></textarea >
+                   
+            </tr>
+             <tr >
+                <td colspan="4"  class="table_title1">会员信息</td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="width: 80px; text-align: right; float: right">积分：</div>
                 </td>
                 <td>
-                    <input id="T_descript" name="T_descript" type="text" ltype="text" ligerui="{width:196}" /></td>
-                <td><div style="width: 80px; text-align: right; float: right">户型图：</div></td>
+                    <input id="T_jf" name="T_jf" type="text" ltype="text" ligerui="{width:196}" /></td>
+                <td><div style="width: 80px; text-align: right; float: right">卡号：</div></td>
                 <td><input id="T_hxt" name="T_hxt" type="text" ltype="text" ligerui="{width:196}" /></td>
             </tr>
-             <tr style="display:none">
+             <tr style="display:none" >
                 <td>
                     <div style="width: 80px; text-align: right; float: right">隐蔽全景：</div>
                 </td>
@@ -716,12 +788,21 @@
                 <td><div style="width: 80px; text-align: right; float: right">竣工全景：</div></td>
                 <td><input id="T_jgqjt" name="T_jgqjt" type="text" ltype="text" ligerui="{width:196}" /></td>
             </tr>
-            <tr>
+              <tr>
                 <td>
-                    <div style="width: 80px; text-align: right; float: right">备&nbsp; 注：</div>
+                    <div style="width: 80px; text-align: right; float: right">生日：</div>
                 </td>
-                <td colspan="3">
-                    <input id="T_remarks" name="T_remarks" type="text" ltype="text" ligerui="{width:490}" /></td>
+                <td>
+                    <div style="width: 128px; float: left"  class='abc'>
+                            <input type="text" id="T_birthday" name="T_birthday" ltype="date" ligerui="{width:125}" />
+                        <input type="hidden" id="birthday"/>
+                        </div>
+                        <div style="width: 67px; float: left">
+                            <input type="text" id="T_birthday_lunar" name="T_birthday_lunar" style="width: 66px" 
+                                ltype="select" ligerui="{width:66,data:[{id:'阳历',text:'阳历'},{id:'阴历',text:'阴历'}]}"  />
+                        </div></td>
+                <td><div style="width: 80px; text-align: right; float: right"></div></td>
+                <td></td>
             </tr>
             <tr>
                 <td colspan="4" class="table_title1">归属信息</td>
@@ -761,6 +842,23 @@
                     <input id="T_dep_val_sj" name="T_dep_val_sj" type="hidden" />
                     <input id="T_dep_sj" name="T_dep_sj" type="hidden" />
                 </td>
+            </tr>
+             <tr>
+               
+                <td>
+                    <div style="width: 80px; text-align: right; float: right">售后客服：</div>
+                </td>
+                <td>
+                    <input id="T_employee_hh" name="T_employee_hh" type="text"  style="width: 196px" />
+                    <input id="T_employee1_hh" name="T_employee1_hh" type="hidden" />
+                   
+
+                </td>
+                  <td>
+                    <div style="width: 80px; text-align: right; float: right"></div>
+                </td>
+                <td>
+                   </td>
             </tr>
            <tr>
                 <td colspan="4" class="table_title1">标签信息</td>

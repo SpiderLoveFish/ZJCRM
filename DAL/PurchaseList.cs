@@ -125,6 +125,48 @@ namespace XHD.DAL
 			}
 		}
 
+
+
+        /// <summary>
+        /// 更新状态和数量
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="sum"></param>
+        /// <param name="empid"></param>
+        /// <param name="cid"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool UpdateRemarks(string SupplierName,string t_contents,   int cid, int id
+            , DateTime RequestDate, string Sender, string ShippingMethod, string Receiver, string b1, string b2, string b3)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update PurchaseList set ");
+
+            strSql.Append("SupplierName='" + SupplierName + "',");
+            strSql.Append("RequestDate='" + RequestDate + "',");
+            strSql.Append("Sender='" + Sender + "',");
+            strSql.Append("ShippingMethod='" + ShippingMethod + "',");
+            strSql.Append("Receiver='" + Receiver + "',");
+            strSql.Append("b1='" + b1 + "',");
+            strSql.Append("b2='" + b2 + "',");
+            strSql.Append("b3='" + b3 + "',");
+            strSql.Append("t_contents='" + t_contents + "'");
+            strSql.Append(" where id=" + id + "");
+            strSql.Append(" and CustomerID=" + cid + "");
+            // strSql.Append(" and DoPerson=" + empid + "");
+            SqlParameter[] parameters = { };
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
         /// <summary>
         /// 更新状态和数量
         /// </summary>
@@ -142,7 +184,7 @@ namespace XHD.DAL
             strSql.Append("AmountSum="+sum+"");
             strSql.Append(" where id="+id+"");
             strSql.Append(" and CustomerID=" + cid + "");
-            strSql.Append(" and DoPerson=" + empid + "");
+           // strSql.Append(" and DoPerson=" + empid + "");
             SqlParameter[] parameters = { };
             int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -166,12 +208,12 @@ namespace XHD.DAL
         public bool UpdateZT(int status, int empid, int cid, int id)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("update PurchaseList set ");
+            strSql.Append("update PurchaseList set DoTime=getdate(), ");
             strSql.Append("IsStatus=" + status + " ");
         
             strSql.Append(" where id=" + id + "");
             strSql.Append(" and CustomerID=" + cid + "");
-            strSql.Append(" and DoPerson=" + empid + "");
+          //  strSql.Append(" and DoPerson=" + empid + "");
             SqlParameter[] parameters = { };
             int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -193,22 +235,22 @@ namespace XHD.DAL
         public int InsertList(int cid, string pid, string emp_id,string style)
         {
             string strsql = " INSERT INTO dbo.PurchaseList "+
-                            " ( CustomerID ,  category_id ,  product_id ,DoTime , DoPerson , IsStatus , Price , AmountSum ) ";
+                            " ( CustomerID ,  category_id ,  product_id ,DoTime , DoPerson , IsStatus , Price , AmountSum,SupplierName ) ";
                          if(style=="ALL")
                          {
-                             strsql += " SELECT " + cid + ",category_id,product_id,GETDATE(),'" + emp_id + "',0,0,1 " +
+                             strsql += " SELECT " + cid + ",category_id,product_id,GETDATE(),'" + emp_id + "',0,0,1 ,Suppliers" +
                                " FROM CRM_product WHERE product_id IN(" + pid + ")";
                              }
                          else if (style == "YS")
                          {
-                             strsql += " SELECT " + cid + ",B.category_id,B.product_id,GETDATE(),'" + emp_id + "',0,A.totaldiscountprice,ISNULL(A.[SUM],1) AS [SUM] " +
+                             strsql += " SELECT " + cid + ",B.category_id,B.product_id,GETDATE(),'" + emp_id + "',0,A.totaldiscountprice,ISNULL(A.[SUM],1) AS [SUM],'' as Suppliers  " +
                                   " FROM budge_basicdetail A  INNER JOIN budge_basicmain c ON A.budge_id=c.ID inner join CRM_product B on A.xmid=B.product_id    WHERE product_id IN(" + pid + ") and C.customer_id=" + cid + "";
                            
                          }
                             
             SqlParameter[] parameters = { };
-            object obj = DbHelperSQL.GetSingle(strsql, parameters);
-            if (obj == null)
+            int obj = DbHelperSQL.ExecuteSql(strsql, parameters);
+            if (obj == 0)
             {
                 return 0;
             }
@@ -343,8 +385,9 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select id,CustomerID,category_id,product_id,DoTime,DoPerson,IsStatus,Price,AmountSum ");
-			strSql.Append(" FROM PurchaseList ");
+			strSql.Append("select *    ");
+			strSql.Append(" FROM PurchaseList A ");
+            strSql.Append(" INNER JOIN  dbo.CRM_product B ON	 A.product_id=B.product_id ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -496,14 +539,14 @@ namespace XHD.DAL
         /// <summary>
         /// 分页获取数据列表
         /// </summary>
-        public DataSet GetRefMaterialsList(int PageSize, int PageIndex, string strWhere)
+        public DataSet GetRefMaterialsList(int PageSize, int PageIndex, string strWhere,string strorder)
         {
             string sqlstr = " SELECT *" +
                                 "  FROM   ( SELECT  row_number() OVER (ORDER BY A.DoTime DESC ) n,  a.id ," +
                                 "        a.CustomerID ,  " +
                                 "        a.product_id ,A.DoTime,A.DoPerson," +
                                 "        c.product_name ," +
-                                "        a.amountsum sqsl ," +
+                                "        a.amountsum-ISNULL(d.pursum, 0) as sqsl ," +
                                 "        ISNULL(b.pursum, 0) cgsl ," +
                                 "        ISNULL(d.pursum, 0) llsl ," +
                                 "        CASE WHEN a.amountsum - ISNULL(d.pursum, 0) <= 0 THEN '5'" +//  -- 领料完成 申请减领料小于等于0
@@ -521,25 +564,25 @@ namespace XHD.DAL
                                 "        END AS IsStatus," +
                                 "		 C.category_name,C.specifications,C.status,C.unit,C.remarks,C.isDelete,C.Delete_time,  " +
                                 "                                 C.t_content,C.url,C.InternalPrice ,C.Suppliers ,C.ProModel ,C.ProSeries ,  " +
-                                "                                 C.Themes,C.Brand,C.C_code,C.C_style ,f.Customer ,e.name,f.address,f.tel   " +
+                                "                                 C.Themes,C.Brand,C.C_code,C.C_style ,f.Customer ,e.name,f.address,f.tel,a.SupplierName,a.b1   " +
                                 " FROM    dbo.PurchaseList a" +
-                                "        LEFT JOIN ( SELECT  b.customid ," +
-                                "                            a.material_id ," +
+                                "        LEFT JOIN ( SELECT  Customer_id ," +
+                                "                            material_id ," +
                                 "                            SUM(pursum) pursum" +
-                                "                    FROM    dbo.Purchase_Detail a" +
-                                "                            LEFT JOIN Purchase_Main b ON a.Purid = b.Purid" +
-                                "                    GROUP BY b.customid ," +
-                                "                            a.material_id" +
-                                "                  ) b ON a.customerid = b.customid" +
+                                "                    FROM    dbo.Purchase_Detail " +
+                                "                           " +
+                                "                    GROUP BY Customer_id ," +
+                                "                            material_id" +
+                                "                  ) b ON a.customerid = b.Customer_id" +
                                 "                         AND a.product_id = b.material_id" +
-                                "        LEFT JOIN ( SELECT  b.CustomerID ," +
+                                "        LEFT JOIN ( SELECT  a.Customer_id ," +
                                 "                            a.material_id ," +
                                 "                            SUM(pursum) pursum" +
                                 "                    FROM    dbo.OutStock_Detail a" +
                                 "                            LEFT JOIN dbo.OutStock_Main b ON a.ckid = b.ckid" +
-                                "                    GROUP BY b.CustomerID ," +
+                                "                    GROUP BY a.Customer_id ," +
                                 "                            a.material_id" +
-                                "                  ) d ON a.customerid = d.customerid" +
+                                "                  ) d ON a.customerid = d.Customer_id" +
                                 "                         AND a.product_id = d.material_id" +
                                 "        LEFT JOIN dbo.CRM_product c ON a.product_id = c.product_id" +
                                 "		  LEFT JOIN dbo.hr_employee e ON a.DoPerson=e.ID    " +
@@ -555,7 +598,15 @@ namespace XHD.DAL
                         sqlstr += " and " + strWhere;
                
                     }
-           
+            if (strorder.Trim() != "")
+            {
+                sqlstr += " ORDER BY " + strorder;
+
+            }
+
+
+
+
             return DbHelperSQL.Query(sqlstr);
         }
 
@@ -571,17 +622,26 @@ namespace XHD.DAL
             strSql.Append(" top " + PageSize + " * FROM (SELECT A.*, ");
             strSql.Append(" B.product_name,B.category_name,B.specifications,B.status,B.unit,B.remarks,B.isDelete,B.Delete_time,");
               strSql.Append(" B.t_content,B.url,B.InternalPrice ,B.Suppliers ,B.ProModel ,B.ProSeries ,");
-              strSql.Append(" B.Themes,B.Brand,B.C_code,B.C_style ,c.name");
+              strSql.Append(" B.Themes,B.Brand,B.C_code,B.C_style ,c.name,ISNULL(d.pursum, 0) AS wcsl,ISNULL(e.pursum, 0) AS ztsl");
               strSql.Append(" FROM dbo.PurchaseList A ");
              strSql.Append(" INNER JOIN dbo.CRM_product B ON  ");
              strSql.Append(" A.product_id=B.product_id AND A.category_id=B.category_id");
              strSql.Append(" inner JOIN dbo.hr_employee c ON a.DoPerson=c.ID  ");
+             strSql.Append("  LEFT JOIN ( SELECT a.Customer_id,a.material_id,SUM(a.pursum)pursum FROM  dbo.OutStock_Detail a");
+             strSql.Append("  LEFT JOIN dbo.OutStock_Main b ON a.CKID=b.CKID");
+             strSql.Append("  WHERE b.isNode=3");
+             strSql.Append(" GROUP BY a.Customer_id,a.material_id)d ON d.Customer_id=a.Customerid AND d.material_id=a.product_id");
+             strSql.Append(" LEFT JOIN ( SELECT a.Customer_id,a.material_id,SUM(a.pursum)pursum FROM  dbo.OutStock_Detail a");
+             strSql.Append(" LEFT JOIN dbo.OutStock_Main b ON a.CKID=b.CKID");
+             strSql.Append(" WHERE b.isNode IN (0,1,2)");
+             strSql.Append(" GROUP BY a.Customer_id,a.material_id)e ON e.Customer_id=a.Customerid AND e.material_id=a.product_id");
               
              strSql.Append(" )PurchaseList ");
             strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM PurchaseList ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(1) FROM PurchaseList A");
             strSql1.Append("  INNER JOIN dbo.CRM_product B ON A.product_id=B.product_id AND A.category_id=B.category_id ");
+          
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);
@@ -592,7 +652,58 @@ namespace XHD.DAL
             return DbHelperSQL.Query(strSql.ToString());
         }
 
-		#endregion  ExtensionMethod
-	}
+        public DataSet GetTempListDB(int PageSize, int PageIndex, string strWhere, string cid, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "   ");
+            strSql.AppendLine("  * FROM (  ");
+            strSql.AppendLine(" SELECT  ROW_NUMBER() OVER(ORDER BY  material_id) AS id,B.material_id,B.material_name,B.unit  ");
+            strSql.AppendLine(" ,MAX(B.purprice) price,SUM(  ");
+            strSql.AppendLine(" pursum	) subtotal  ");
+            strSql.AppendLine("  FROM dbo.OutStock_Main A  ");
+            strSql.AppendLine(" INNER JOIN dbo.OutStock_Detail B ON	B.CKID = A.CKID  ");
+            strSql.AppendLine("   WHERE isNode IN(3,4)  ");
+            if(cid!="")
+                strSql.AppendLine("   AND	B.Customer_id="+cid+"  ");
+            strSql.AppendLine("   GROUP BY B.material_id,B.material_name,B.unit  ");
+            strSql.AppendLine("   )AA  ");
+            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM ( ");
+            strSql.AppendLine(" SELECT ROW_NUMBER() OVER(ORDER BY  material_id) AS id, B.material_id,B.material_name,B.unit  ");
+            strSql.AppendLine(" ,MAX(B.purprice) price,SUM(  ");
+            strSql.AppendLine(" pursum	) subtotal  ");
+            strSql.AppendLine("  FROM dbo.OutStock_Main A  ");
+            strSql.AppendLine(" INNER JOIN dbo.OutStock_Detail B ON	B.CKID = A.CKID  ");
+            strSql.AppendLine("   WHERE isNode IN(3,4)  ");
+            if (cid != "")
+                strSql.AppendLine("   AND	B.Customer_id="+cid+"  ");
+            strSql.AppendLine("   GROUP BY B.material_id,B.material_name,B.unit  ");
+            strSql.AppendLine("   )AA  ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(1) FROM (  ");
+            strSql1.AppendLine(" SELECT ROW_NUMBER() OVER(ORDER BY  material_id) AS id, B.material_id,B.material_name,B.unit  ");
+            strSql1.AppendLine(" ,MAX(B.purprice) price,SUM(  ");
+            strSql1.AppendLine(" pursum ) subtotal  ");
+            strSql1.AppendLine("  FROM dbo.OutStock_Main A  ");
+            strSql1.AppendLine(" INNER JOIN dbo.OutStock_Detail B ON	B.CKID = A.CKID  ");
+            strSql1.AppendLine("   WHERE isNode IN(3,4)  ");
+            if (cid != "")
+                strSql1.AppendLine("   AND	B.Customer_id="+cid+"  ");
+            strSql1.AppendLine("   GROUP BY B.material_id,B.material_name,B.unit  ");
+            strSql1.AppendLine("   )AA  ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+
+        #endregion  ExtensionMethod
+    }
 }
 

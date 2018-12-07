@@ -34,6 +34,7 @@
     <link href="../../ueditor1_2_5_1-utf8-net/themes/default/css/ueditor.css" rel="stylesheet" />
 
     <script type="text/javascript">
+        var comkwg;
         $(function () {
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
@@ -57,12 +58,13 @@
                 ],
                 autoHeightEnabled:  false
             });
-            $("#T_product_unit").ligerComboBox({ width: 150, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random()})
+            $("#T_product_unit").ligerComboBox({ width: 150, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random() })
+            $("#T_clzt").ligerComboBox({ width: 150, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=27&rnd=" + Math.random() })
 
             $("#T_product_category").ligerComboBox({
                 width: 150,
-                selectBoxWidth: 150,
-                selectBoxHeight: 150,
+                selectBoxWidth: 200,
+                selectBoxHeight: 490,
                 valueField: 'id',
                 textField: 'text',
                 initValue: getparastr("categoryid"),
@@ -85,13 +87,26 @@
                     }
                 }
             });
-
+           
             if (getparastr("pid")) {
                 loadForm(getparastr("pid"));
+            }
+            else {
+                $('#T_CK').ligerComboBox({ width: 150, url: "../../data/CKKW.ashx?Action=combo&type=CK&rnd=" + Math.random(), emptyText: '（空）', onSelected: function (newvalue, newtext) { onSelect(newvalue, newtext); } });
+                comkwg = $("#T_KW").ligerComboBox({
+                    width: 150, url: "../../data/CKKW.ashx?Action=combo&type=0&rnd=" + Math.random()
+                });
+
             }
             $('#T_gys').ligerComboBox({ width: 150, onBeforeOpen: f_selectContact });
       
         });
+
+        function onSelect(newvalue, newtext) {
+            $.get("../../data/CKKW.ashx?Action=combo&type=" + newvalue + "&rnd=" + Math.random(), function (data, textStatus) {
+                comkwg.setData(eval(data));
+            });
+             }
         function f_selectContact() {
             top.$.ligerDialog.open({
                 zindex: 9003,
@@ -171,7 +186,7 @@
                 $("#C_code").val("");
                 var arr = [];//getparastr("id") 代表不同的ID，比如bid,pid,cid
                 arr.push(UE.getEditor('editor').getContent());
-                var sendtxt = "&Action=save&id=" + getparastr("id") + "&T_content=" + escape(arr); //compname预算用到的部件
+                var sendtxt = "&Action=save&isauto=" + getparastr("isauto") + "&id=" + getparastr("id") + "&T_content=" + escape(arr); //compname预算用到的部件
                 
                 var ret = $("form :input").fieldSerialize() + sendtxt + "&style=" + getparastr("style") + "&AddType=" + getparastr("type") + "&compname=" + getparastr("compname") + "&compid=" + getparastr("compid");
                return ret;
@@ -217,19 +232,31 @@
                     UE.getEditor('editor').setContent(myHTMLDeCode(obj.t_content));
                     $("#T_product_category").ligerGetComboBoxManager().selectValue(obj.category_id);
                     $("#T_nbj").val(toMoney(obj.InternalPrice));
+                     $("#T_fbj").val(toMoney(obj.fbj));
                     $("#T_xh").val(obj.ProModel);
                     $("#T_gys").val(obj.Suppliers);
                     $("#T_xl").val(obj.ProSeries);
                     $("#T_zt").val(obj.Themes);
                     $("#T_pp").val(obj.Brand);
                     $("#C_code").val(obj.C_code);
+                    $("#T_style").val(obj.C_style);
+                    $("input[type=radio][value=" + obj.jbx + "]").attr("checked", 'checked');
+                 
+         
                     //emptyText: '（空）',
                     $("#T_product_unit").ligerComboBox({ width: 150, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random() })
 
                     $("#T_product_unit").val(obj.unit);
+                    $("#T_clzt").ligerComboBox({ width: 150, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=27&rnd=" + Math.random() })
+                    $("#T_clzt").val(obj.clzt);
                     //$("#T_product_unit").ligerComboBox({ width: 150, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=16&rnd=" + Math.random(), initValue: obj.unit })
                     // $("#T_gys").ligerComboBox({ width: 280, url: "../../data/Crm_product.ashx?Action=combogys&rnd=" + Math.random(), initValue: obj.Suppliers });
-
+                    $("[T_private]").val("1");
+                    $('#T_CK').ligerComboBox({ width: 150, url: "../../data/CKKW.ashx?Action=combo&type=CK&rnd=" + Math.random(), emptyText: '（空）', initValue: obj.CKID, onSelected: function (newvalue, newtext) { onSelect(newvalue, newtext); } });
+                    comkwg = $("#T_KW").ligerComboBox({
+                        width: 150, url: "../../data/CKKW.ashx?Action=combo&type=" + obj.CKID + "&rnd=" + Math.random(), initValue: obj.KWID
+                    });
+       
                 }
             });
         }
@@ -256,6 +283,9 @@
         }
         function set_tomoney_nbj(value) {
             $("#T_nbj").val(toMoney(value));
+        }
+         function set_tomoney_fbj(value) {
+            $("#T_fbj").val(toMoney(value));
         }
 
         ///多音字默认第一个
@@ -291,8 +321,22 @@
 <body>
     <form id="form1" onsubmit="return false">     
         <table align="left" border="0" cellpadding="3" cellspacing="1">
-                        <tr>
-                <td colspan="8" class="table_title1">基本信息</td>
+                        <tr class="table_title1">
+                <td >基本信息</td> <td >请先选择材料类型：</td><td  colspan="2"><input id="T_style" name="T_style" type="text" ltype="select"
+                                ligerui="{width:150,data:[{id:'主材',text:'主材'},{id:'基建',text:'基建'}]}"
+                                validate="{required:true}" /></td><td colspan="5">
+                            <input type="radio" value="1" name="jbx" checked="checked"   />
+                                都可用 
+                                
+                                    <input type="radio" value="2" name="jbx" />
+                               报价可用
+                               
+                                    <input type="radio" value="3" name="jbx"  />
+                                选材可用
+                                       <input type="radio" value="4" name="jbx"  />
+                                都不可用
+                                  
+                                </td>
             </tr>
             <tr>
                
@@ -345,12 +389,42 @@
                 <td>  <div align="left" style="width:60px">供应商：</div></td>
                 <td>  <input type='text' id="T_gys" name="T_gys" ligerui="{width:150}"   /></td>
                  <td>
-                    <div align="left" style="width: 60px">内部价：</div>
+                    <div align="left" style="width: 60px">采购价：</div>
                 </td>
                 <td>
                     <input type="text" id="T_nbj" name="T_nbj" value="0.00" ltype='text' onchange="set_tomoney_nbj(this.value)" style="text-align:right" ligerui="{width:150,number:true}" validate="{required:true}" /></td>
                 
             </tr>
+            <tr>
+                 <td>
+                    <div align="left" style="width: 60px">仓库：</div>
+                </td>
+                <td>
+                   
+                        <input type="text" id="T_CK" name="T_CK" ligerui="{width:150}" validate="{required:true}"  />
+                         
+                
+                   
+                </td>
+                 <td>
+                    <div align="left" style="width: 60px">库位：</div>
+                </td>
+                <td>
+                   
+                      <input type="text" id="T_KW" name="T_KW" ligerui="{width:150}" />
+                        
+             
+                    
+                </td>
+                <td><div align="left" style="width: 60px">状态：</div></td>
+                <td> <input type='text' id="T_clzt" name="T_clzt" validate="{required:true}"  ligerui="{width:150}" /></td>
+               <td>
+                    <div align="left" style="width: 60px">发包价：</div>
+                </td>
+                <td>
+                    <input type="text" id="T_fbj" name="T_fbj" value="0.00" ltype='text' onchange="set_tomoney_fbj(this.value)" style="text-align:right" ligerui="{width:150,number:true}" validate="{required:true}" /></td>
+                
+            </tr> 
             <tr>
                 <td colspan="8" class="table_title1">预算价格信息</td>
             </tr>
@@ -382,11 +456,12 @@
                 <td colspan="6" class="table_title1">图文及工艺说明</td>
                       <td>更新預算</td>
                        <td>  
-                           <input id="T_private" name="T_private" type="text" ltype="select"
+                           <input id="T_private" name="T_private" type="text" ltype="select" 
                                 ligerui="{width:150,data:[{id:'1',text:'不更新'},{id:'2',text:'全部更新'},{id:'3',text:'常规模板'},{id:'4',text:'套餐模板'}]}"
-                                validate="{required:true}" /></td>
+                               /></td>
                
-            </tr>     
+            </tr>   
+             
             <tr>
                 <td colspan="6" rowspan="2">
                     <textarea id="editor" style="width: 700px;" cols="20"></textarea>

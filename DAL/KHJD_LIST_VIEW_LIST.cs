@@ -55,9 +55,9 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into KHJD_LIST_VIEW_LIST(");
-			strSql.Append("KHJDID,CID,Cpro,Ccity,JDID,JDMC,XMID,XMMC,REMARK,LRRQ,JDYS,Cname,CZR,Cmob,status)");
+			strSql.Append("KHJDID,CID,Cpro,Ccity,JDID,JDMC,XMID,XMMC,REMARK,LRRQ,JDYS,Cname,CZR,Cmob,status,sgrq,tq,IsPlan,IsNew)");
 			strSql.Append(" values (");
-			strSql.Append("@KHJDID,@CID,@Cpro,@Ccity,@JDID,@JDMC,@XMID,@XMMC,@REMARK,@LRRQ,@JDYS,@Cname,@CZR,@Cmob,@status)");
+			strSql.Append("@KHJDID,@CID,@Cpro,@Ccity,@JDID,@JDMC,@XMID,@XMMC,@REMARK,@LRRQ,@JDYS,@Cname,@CZR,@Cmob,@status,@sgrq,@tq,@IsPlan,@IsNew)");
 			SqlParameter[] parameters = {
 					new SqlParameter("@KHJDID", SqlDbType.Int,4),
 					new SqlParameter("@CID", SqlDbType.VarChar,50),
@@ -73,7 +73,11 @@ namespace XHD.DAL
 					new SqlParameter("@Cname", SqlDbType.VarChar,200),
 					new SqlParameter("@CZR", SqlDbType.VarChar,50),
 					new SqlParameter("@Cmob", SqlDbType.VarChar,100),
-					new SqlParameter("@status", SqlDbType.Int,4)};
+					new SqlParameter("@status", SqlDbType.Int,4),
+                    new SqlParameter("@sgrq", SqlDbType.DateTime),
+                    new SqlParameter("@tq", SqlDbType.VarChar,100),
+             new SqlParameter("@IsPlan", SqlDbType.VarChar,10),
+             new SqlParameter("@IsNew", SqlDbType.VarChar,10)};
 			parameters[0].Value = model.KHJDID;
 			parameters[1].Value = model.CID;
 			parameters[2].Value = model.Cpro;
@@ -89,8 +93,11 @@ namespace XHD.DAL
 			parameters[12].Value = model.CZR;
 			parameters[13].Value = model.Cmob;
 			parameters[14].Value = model.status;
-
-			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+            parameters[15].Value = model.SGRQ;
+            parameters[16].Value = model.TQ;
+            parameters[17].Value = model.IsPlan;
+            parameters[18].Value = model.IsNew;
+            int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
 			{
 				return true;
@@ -115,7 +122,11 @@ namespace XHD.DAL
 			strSql.Append("JDYS=@JDYS,");
 			strSql.Append("Cname=@Cname,");
 			strSql.Append("CZR=@CZR,");
-			strSql.Append("Cmob=@Cmob");
+            strSql.Append("sgrq=@sgrq,");
+            strSql.Append("IsPlan=@IsPlan,");
+            strSql.Append("IsNew=@IsNew,");
+            strSql.Append("tq=@tq,");
+            strSql.Append("Cmob=@Cmob");
 			strSql.Append(" where KHJDID=@KHJDID and CID=@CID and JDID=@JDID and XMID=@XMID and LRRQ=@LRRQ and status=@status ");
 			SqlParameter[] parameters = {
 					new SqlParameter("@Cpro", SqlDbType.VarChar,20),
@@ -132,7 +143,11 @@ namespace XHD.DAL
 					new SqlParameter("@JDID", SqlDbType.Int,4),
 					new SqlParameter("@XMID", SqlDbType.Int,4),
 					new SqlParameter("@LRRQ", SqlDbType.DateTime),
-					new SqlParameter("@status", SqlDbType.Int,4)};
+                    new SqlParameter("@tq",SqlDbType.VarChar,100),
+                   new SqlParameter("@IsPlan",SqlDbType.VarChar,10),
+                   new SqlParameter("@IsNew",SqlDbType.VarChar,10),
+                    new SqlParameter("@sgrq", SqlDbType.DateTime),
+                    new SqlParameter("@status", SqlDbType.Int,4)};
 			parameters[0].Value = model.Cpro;
 			parameters[1].Value = model.Ccity;
 			parameters[2].Value = model.JDMC;
@@ -147,9 +162,12 @@ namespace XHD.DAL
 			parameters[11].Value = model.JDID;
 			parameters[12].Value = model.XMID;
 			parameters[13].Value = model.LRRQ;
-			parameters[14].Value = model.status;
-
-			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+            parameters[14].Value = model.TQ;
+            parameters[15].Value = model.SGRQ;
+            parameters[16].Value = model.status;
+            parameters[17].Value = model.IsPlan;
+            parameters[18].Value = model.IsNew; 
+            int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
 			{
 				return true;
@@ -202,7 +220,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 KHJDID,CID,Cpro,Ccity,JDID,JDMC,XMID,XMMC,REMARK,LRRQ,JDYS,Cname,CZR,Cmob,status from KHJD_LIST_VIEW_LIST ");
+			strSql.Append("select  top 1 KHJDID,CID,Cpro,Ccity,JDID,JDMC,XMID,XMMC,REMARK,LRRQ,JDYS,Cname,CZR,Cmob,status,sgrq,tq,IsPlan,IsNew from KHJD_LIST_VIEW_LIST ");
 			strSql.Append(" where KHJDID=@KHJDID and CID=@CID and JDID=@JDID and XMID=@XMID and LRRQ=@LRRQ and status=@status ");
 			SqlParameter[] parameters = {
 					new SqlParameter("@KHJDID", SqlDbType.Int,4),
@@ -278,8 +296,16 @@ namespace XHD.DAL
 				if(row["LRRQ"]!=null && row["LRRQ"].ToString()!="")
 				{
 					model.LRRQ=DateTime.Parse(row["LRRQ"].ToString());
-				}
-				if(row["JDYS"]!=null)
+                }
+                if (row["sgrq"] != null && row["sgrq"].ToString() != "")
+                {
+                    model.SGRQ = DateTime.Parse(row["sgrq"].ToString());
+                } 
+               if (row["tq"] != null)
+                {
+                    model.TQ = row["tq"].ToString();
+                }
+                if (row["JDYS"]!=null)
 				{
 					model.JDYS=row["JDYS"].ToString();
 				}
@@ -299,7 +325,17 @@ namespace XHD.DAL
 				{
 					model.status=int.Parse(row["status"].ToString());
 				}
-			}
+                if (row["IsPlan"] != null)
+                {
+                    model.IsPlan = row["IsPlan"].ToString();
+                }
+
+                if (row["IsNew"] != null)
+                {
+                    model.IsNew = row["IsNew"].ToString();
+                }
+                
+            }
 			return model;
 		}
 
@@ -309,7 +345,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select KHJDID,CID,Cpro,Ccity,JDID,JDMC,XMID,XMMC,REMARK,LRRQ,JDYS,Cname,CZR,Cmob,status ");
+			strSql.Append("select KHJDID,CID,Cpro,Ccity,JDID,JDMC,XMID,XMMC,REMARK,LRRQ,JDYS,Cname,CZR,Cmob,status ,sgrq,tq,IsPlan ,IsNew");
 			strSql.Append(" FROM KHJD_LIST_VIEW_LIST ");
 			if(strWhere.Trim()!="")
 			{
@@ -329,7 +365,7 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" KHJDID,CID,Cpro,Ccity,JDID,JDMC,XMID,XMMC,REMARK,LRRQ,JDYS,Cname,CZR,Cmob,status ");
+			strSql.Append(" KHJDID,CID,Cpro,Ccity,JDID,JDMC,XMID,XMMC,REMARK,LRRQ,JDYS,Cname,CZR,Cmob,status ,sgrq,tq,IsPlan,IsNew");
 			strSql.Append(" FROM KHJD_LIST_VIEW_LIST ");
 			if(strWhere.Trim()!="")
 			{
@@ -447,7 +483,7 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             //strSql.Append("select KHJDID,CID,Cpro,Ccity,JDID,JDMC,XMID,XMMC,REMARK,LRRQ,JDYS,Cname,CZR,Cmob,status ");
             //strSql.Append(" FROM KHJD_LIST_VIEW_LIST ");
-            strSql.Append("  SELECT DISTINCT A.CID,A.KHJDID,A.LRRQ,A.REMARK,A.JDMC,");
+            strSql.Append("  SELECT DISTINCT A.CID,A.KHJDID,A.LRRQ,A.REMARK,A.JDMC,sgrq,tq,IsPlan,IsNew,");
             strSql.Append("  dbo.F_GetString(A.CID,'','A','" + ryname + "') AS zry ,");
             strSql.Append("  dbo.F_GetString(A.CID,A.KHJDID,'P','" + ryname + "') AS ry ,");
             strSql.Append("  dbo.F_GetString(A.CID,A.KHJDID,'M','" + ryname + "')  AS xmmc");

@@ -261,6 +261,43 @@ namespace XHD.BLL
                     {
                         model.canlogin = int.Parse(dt.Rows[n]["canlogin"].ToString());
                     }
+                    if (dt.Rows[n]["jbx"] != null && dt.Rows[n]["jbx"].ToString() != "")
+                    {
+                        model.jbx = int.Parse(dt.Rows[n]["jbx"].ToString());
+                    }
+                    if (dt.Rows[n]["Emp_id_sg"] != null && dt.Rows[n]["Emp_id_sg"].ToString() != "")
+                    {
+                        model.Emp_id_sg = int.Parse(dt.Rows[n]["Emp_id_sg"].ToString());
+                    }
+                    if (dt.Rows[n]["zt"] != null && dt.Rows[n]["zt"].ToString() != "")
+                    {
+                        model.zt = dt.Rows[n]["zt"].ToString();
+                    }
+                    if (dt.Rows[n]["xj"] != null && dt.Rows[n]["xj"].ToString() != "")
+                    {
+                        model.xj = dt.Rows[n]["xj"].ToString();
+                    }
+                    if (dt.Rows[n]["private_per"] != null && dt.Rows[n]["private_per"].ToString() != "")
+                    {
+                        model.private_per = dt.Rows[n]["private_per"].ToString();
+                    }
+                    if (dt.Rows[n]["Emp_sg"] != null && dt.Rows[n]["Emp_sg"].ToString() != "")
+                    {
+                        model.Emp_sg = dt.Rows[n]["Emp_sg"].ToString();
+                    }
+                    if (dt.Rows[n]["create_id"] != null && dt.Rows[n]["create_id"].ToString() != "")
+                    {
+                        model.create_id = int.Parse(dt.Rows[n]["create_id"].ToString());
+                    }
+                    if (dt.Rows[n]["create_name"] != null && dt.Rows[n]["create_name"].ToString() != "")
+                    {
+                        model.create_name = dt.Rows[n]["create_name"].ToString();
+                    }
+
+                    if (dt.Rows[n]["theme"] != null && dt.Rows[n]["theme"].ToString() != "")
+                    {
+                        model.theme = dt.Rows[n]["theme"].ToString();
+                    }
                     modelList.Add(model);
                 }
             }

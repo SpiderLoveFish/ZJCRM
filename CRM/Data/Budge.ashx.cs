@@ -75,23 +75,39 @@ namespace XHD.CRM.Data
             if (request["Action"] == "saveall")
             {
                 string bid = PageValidate.InputText(request["T_budgeid"], 50);
+                //税率
                 string sl = PageValidate.InputText(request["T_sl"], 50);
+                //折扣
                 string zk = PageValidate.InputText(request["T_zk"], 50);
                 string mj = PageValidate.InputText(request["T_mj"], 50);
-                string bname = PageValidate.InputText(request["T_budge_name"], 250);
+                string PerSquarePrice = PageValidate.InputText(request["T_PerSquarePrice"], 50);
+                 string bname = PageValidate.InputText(request["T_budge_name"], 250);
                 string submit = PageValidate.InputText(request["style"], 50);
                 string mblx = PageValidate.InputText(request["T_mblx"], 50);
-              
-                  
-                if (bd.updateAll(bid, StringToDecimal(zk), StringToDecimal(sl)) > 0)
-                {
+
+                //套餐价
+                string T_sAmount = PageValidate.InputText(request["T_sAmount"], 50);
+                //标准面积
+                string T_smj = PageValidate.InputText(request["T_smj"], 50);
+
+
                     mbb.id = bid;
                     mbb.DoTime = DateTime.Now;
                     mbb.DoPerson = emp_id;
                     mbb.BudgetName = bname;
-                    mbb.fbAmount = StringToDecimal(mj);
+                mbb.BudgetName = bname;
+                mbb.StandardArea= StringToDecimal(T_smj);//标准面积
+                mbb.StandardAmount= StringToDecimal(T_sAmount);//套餐价
+                mbb.PerSquarePrice = StringToDecimal(PerSquarePrice);//单位面积价格
+                decimal symj = 0;
+                if (StringToDecimal(mj) - StringToDecimal(T_smj) > 0) symj = StringToDecimal(mj) - StringToDecimal(T_smj);
+                mbb.SquareAmount = StringToDecimal(T_sAmount)+(symj) * StringToDecimal(PerSquarePrice);//总金额套餐价+（实际面积 – 套餐标准面积）*面积单价  
+                mbb.SquareMeter= StringToDecimal(mj);//总面积
                     bbb.Update(mbb, mblx);
-
+                //再算一遍，主要是面积在主表
+                if (bd.updateAll(bid, StringToDecimal(zk), StringToDecimal(sl)) > 0)
+                {
+                    bd.updateAll(bid, StringToDecimal(zk), StringToDecimal(sl));
                     if (submit == "submit")//提交要改下状态
                     {
                         if (bbb.updatestatus(1, bid))
@@ -102,6 +118,24 @@ namespace XHD.CRM.Data
                     }
                     else
                         context.Response.Write("true");
+                    //w微信  人员怎么取
+                    //WX wx = new WX();
+                    //string token = wx.Getaccess_token("7");
+                    //string userlist = "";
+                    //DataTable lsdt = wx.GetWXUserList(" where mobile='" + Request["Tel"] + "'");
+                    //if (lsdt.Rows.Count > 0)
+                    //{
+                    //    foreach (DataRow dr in lsdt.Rows)
+                    //    {
+                    //        userlist = userlist + "|" + dr["userid"].ToString();
+                    //    }
+                    //    if (userlist.Length > 0)
+                    //        userlist = userlist.Substring(1, userlist.Length - 1);
+                    //}
+                    //wx.PostMessage_textcard(token, userlist, "跟进通知"
+                    //     , request["T_content"].ToString()
+                    //     , request["T_content"].ToString(), "http://mb.xczs.co/CRM/shareto/jifen_share.html");
+                    //微信结束
                 }
                 else context.Response.Write("false");
                 log.add_trace(bid, "", "saveall", empname);
@@ -151,49 +185,69 @@ namespace XHD.CRM.Data
                 //{"status": 1, "sum": 9}
                 context.Response.Write(josnstr);
             }
-             //是否存在这个预算的模板
-             if (request["Action"] == "isexistbpname")
-             {
-                 string BP_Name = PageValidate.InputText(request["cname"], 250);
-                      string cid = PageValidate.InputText(request["cid"], 250);
-                 BLL.Budge_BasicPart bbpart = new BLL.Budge_BasicPart();
-                 DataSet ds = bbpart.GetList(" BP_Name='" + BP_Name + "' AND id!=" + cid);
-                if(ds.Tables[0].Rows.Count>0)
+            //是否存在这个预算的模板
+
+            if (request["Action"] == "isexistbpname")
+
+            {
+
+                string BP_Name = PageValidate.InputText(request["cname"], 250);
+
+                string cid = PageValidate.InputText(request["cid"], 250);
+
+                BLL.Budge_BasicPart bbpart = new BLL.Budge_BasicPart();
+
+                DataSet ds = bbpart.GetList(" BP_Name='" + BP_Name + "' AND id!=" + cid);
+
+                if (ds.Tables[0].Rows.Count > 0)
+
                     context.Response.Write("false");
+
                 else context.Response.Write("true");
-             }
-             if (request["Action"] == "saveallmb")
+
+            }
+            if (request["Action"] == "saveallmb")
              {
                  //string bid = PageValidate.InputText(request["bid"], 50);
-                // string remaks = PageValidate.InputText(request["T_remarks"], 250);
+                // string remaks = PageValidate.InputText(request["T_SquareMeter"], 250);
                  string modelname = PageValidate.InputText(request["T_compname"], 250);
                  string bid = bd.GetMaxModelId();
                  if(PageValidate.InputText(request["T_budgeid"], 50)==""||PageValidate.InputText(request["T_budgeid"], 50)=="null")
                      bid = bd.GetMaxModelId();
                  else bid = PageValidate.InputText(request["T_budgeid"], 50);
-                     //PageValidate.InputText(request["T_budgeid"], 50);
-                     //bd.GetMaxModelId();
+                //PageValidate.InputText(request["T_budgeid"], 50);
+                //bd.GetMaxModelId();
 
-                 //string bid = PageValidate.InputText(request["T_budgeid"], 50);
-               
-                 //bbb.GetMaxId();
-                 string remarks = PageValidate.InputText(request["T_remarks"], 250);
+                //string bid = PageValidate.InputText(request["T_budgeid"], 50);
+                string PerSquarePrice = PageValidate.InputText(request["T_PerSquarePrice"], 50);
+                //bbb.GetMaxId();
+                string remarks = PageValidate.InputText(request["T_remarks"], 250);
                  string bname = PageValidate.InputText(request["T_budge_name"], 250);
-               
-                 int cid = 0;
+                //套餐价
+                string T_sAmount = PageValidate.InputText(request["T_sAmount"], 50);
+                //标准面积
+                string T_smj = PageValidate.InputText(request["T_smj"], 50);
+
+
+                int cid = 0;
                  string mblx = PageValidate.InputText(request["T_mblx"], 50);
               
                  mbb.customer_id = cid;
                  mbb.DoTime = DateTime.Now;
                  mbb.DoPerson = emp_id;
                  mbb.id = bid;
-                 mbb.BudgetName = bname + modelname;
-                 mbb.IsStatus = 0;
+           
+                mbb.IsStatus = 0;
                  //防止多人操作，单据重复
                  DataSet IsExist = bbb.GetList(" id='" + bid + "'");
                  if (IsExist.Tables[0].Rows.Count > 0)
-                 {
-                     if (bbb.Update(mbb, mblx))
+                {
+                    mbb.PerSquarePrice = StringToDecimal(PerSquarePrice);
+                    mbb.BudgetName = bname + modelname;
+                    mbb.StandardAmount = StringToDecimal(T_sAmount);
+                    mbb.StandardArea = StringToDecimal(T_smj);
+
+                    if (bbb.Update(mbb, mblx))
                          context.Response.Write("true");
                      else 
                      context.Response.Write("false");
@@ -221,17 +275,31 @@ namespace XHD.CRM.Data
                 string bid = PageValidate.InputText(request["bid"], 250);
                   //bbb.GetMaxId();
                 string mj = PageValidate.InputText(request["T_mj"], 50);
-              string remarks = PageValidate.InputText(request["remark"], 250);
+                string PerSquarePrice = PageValidate.InputText(request["T_PerSquarePrice"], 50);
+                string remarks = PageValidate.InputText(request["remarks"], 250);
               string bname = PageValidate.InputText(request["bname"], 250);
-              int cid = StringToInt(request["cid"]);
+                string ISZB = PageValidate.InputText(request["ISZB"], 250); //getparastr("ISZB")
+               string type =   PageValidate.InputText(request["type"], 250);
+
+                int cid = StringToInt(request["cid"]);
               mbb.customer_id = cid;
               mbb.DoTime = DateTime.Now;
               mbb.DoPerson = emp_id;
               mbb.id = bid;
               mbb.BudgetName = bname;
-              mbb.fbAmount = StringToDecimal(mj);//面积
-              mbb.IsStatus = 0;
-              mbb.ModelStyle = "常规预算";
+                mbb.PerSquarePrice = StringToDecimal(PerSquarePrice);
+              //mbb.fbAmount = StringToDecimal(mj);//面积
+                mbb.SquareMeter = StringToDecimal(mj);//面积
+                mbb.IsStatus = 0;
+                if (ISZB == "Z")
+                    mbb.ModelStyle = "增补预算";
+                else
+                {
+                    if(type =="mj")
+                        mbb.ModelStyle = "面积预算";
+                    else
+                    mbb.ModelStyle = "常规预算";
+                }
                 //防止多人操作，单据重复
             DataSet IsExist=  bbb.GetList(" id='"+bid+"'");
             if (IsExist.Tables[0].Rows.Count > 0)
@@ -252,7 +320,8 @@ namespace XHD.CRM.Data
                 string compid = PageValidate.InputText(request["compid"], 50); 
                 if (xmlist.Length > 1) xmlist = xmlist.Substring(1);
                 bbdetail.insertlist(bid, xmlist, compname, compid);
-
+                C_Sys_log clog = new C_Sys_log();
+                clog.AddOneForProduct(xmlist, "budge_qty");
                 log.add_trace(bid, "", "savedetailadd", empname);  
             }
             //附加费用保存
@@ -307,10 +376,14 @@ namespace XHD.CRM.Data
             if (request["Action"] == "savemodel")
             {
                 string bid = PageValidate.InputText(request["bid"], 50);
-                string remaks = PageValidate.InputText(request["T_remarks"], 250);
+                string remarks = PageValidate.InputText(request["T_remarks"], 250);
+
+                string  SquareMeter = PageValidate.InputText(request["T_SquareMeter"], 50);
+
                 string modelname = PageValidate.InputText(request["T_compname"], 250);
                 string modelid = bd.GetMaxModelId();
-                if (bd.AddModel(bid,modelid, modelname,emp_id, remaks) > 0)
+                int sm = StringToInt(SquareMeter);
+                if(bd.AddModel(bid,modelid, modelname,sm.ToString() , emp_id, remarks) > 0)
                     context.Response.Write("true");//特殊处理
                 else context.Response.Write("false");
 
@@ -325,7 +398,7 @@ namespace XHD.CRM.Data
                 string  fc_price = PageValidate.InputText(request["T_fc_price"], 50);
                 string  rg_price = PageValidate.InputText(request["T_rg_price"], 50);
                 string T_price = PageValidate.InputText(request["T_price"], 50);
-                string remaks = PageValidate.InputText(request["T_remarks"], 250);
+                string remarks = PageValidate.InputText(request["T_remarks"], 250);
                 var sb = new System.Text.StringBuilder();
                 sb.AppendLine("");
                 sb.AppendLine("UPDATE Budge_BasicDetail SET");
@@ -333,11 +406,11 @@ namespace XHD.CRM.Data
                 sb.AppendLine("rg_price=" + rg_price + ",");
                 sb.AppendLine("fc_price=" + fc_price + ",");
                 sb.AppendLine("TotalPrice=" + T_price + ",");
-                sb.AppendLine("Remarks='" + remaks + "'");
+                sb.AppendLine("Remarks='" + remarks + "'");
                 sb.AppendLine("WHERE budge_id='" + bid + "' AND id='"+id+"'");
 
                 sb.AppendLine("UPDATE Budge_BasicDetail SET");
-                sb.AppendLine("Remarks='" + remaks + "'");
+                sb.AppendLine("Remarks='" + remarks + "'");
                 sb.AppendLine("  WHERE budge_id LIKE 'M%'");
                 sb.AppendLine("AND xmid =(");
                 sb.AppendLine("SELECT xmid FROM");
@@ -354,7 +427,8 @@ namespace XHD.CRM.Data
             {
                 string bid = PageValidate.InputText(request["bid"], 50);
                 string modelid = PageValidate.InputText(request["modelid"], 50);
-                if (bd.AddModelToBudge(bid, modelid) > 0)
+               string  PerSquarePrice = PageValidate.InputText(request["PerSquarePrice"], 50);
+                if (bd.AddModelToBudge(bid, modelid,StringToDecimal(PerSquarePrice)) > 0)
                     context.Response.Write("true");
                 else context.Response.Write("false");
                 log.add_trace(bid, "", "savemodeltobudge", empname);  
@@ -380,19 +454,30 @@ namespace XHD.CRM.Data
                 string id = PageValidate.InputText(request["id"], 50);
 
                 int orderby = StringToInt(request["editorderby"]);
-               
+                string iszb =  request["iszb"] ;
 
                 if (!string.IsNullOrEmpty(id) && id != "null")
                 {
-                    if (orderby<0)
+                    if (iszb == "Z")
+                    {
                         if (bbdetail.UpdateSum(sum, StringToInt(id), bid, -1))
-                        context.Response.Write("true");
-                    else context.Response.Write("false");
-
-                    if (sum<0)
-                        if (bbdetail.UpdateSum(-1, StringToInt(id), bid, orderby))
                             context.Response.Write("true");
                         else context.Response.Write("false");
+                    }
+                    else
+                    {
+                        //if (orderby<0)
+                        if (orderby == -1)
+                            if (bbdetail.UpdateSum(sum, StringToInt(id), bid, -1))
+                                context.Response.Write("true");
+                            else context.Response.Write("false");
+
+                        //if (sum<0)
+                        if (sum == -1)
+                            if (bbdetail.UpdateSum(-1, StringToInt(id), bid, orderby))
+                                context.Response.Write("true");
+                            else context.Response.Write("false");
+                    }
                 }
                 //log.add_trace(bid, "", "saveupdatesum", empname);  
             }
@@ -659,7 +744,7 @@ namespace XHD.CRM.Data
                     sortname = "IsStatus";
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = "  DoTime";
+                    sortname = "  id";
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " DESC";
 
@@ -709,11 +794,34 @@ namespace XHD.CRM.Data
                     string stextlx = "";
                     if (PageValidate.InputText(request["stextlx"], 255) == "Y") stextlx = "套餐";
                     else if (PageValidate.InputText(request["stextlx"], 255) == "N") stextlx = "常规";
+                    else if (PageValidate.InputText(request["stextlx"], 255) == "M") stextlx = "面积";
+                    
                     else stextlx = PageValidate.InputText(request["stextlx"].Substring(0, 2), 255);
                     if (request["stextlx"] != "")
                         serchtxt += " and ModelStyle like N'%" + stextlx + "%'";
 
                 }
+                //是否增补
+                string ISZB = PageValidate.InputText(request["ISZB"], 50);
+                if (!string.IsNullOrEmpty(ISZB))
+                {
+                    if (ISZB == "Z")
+                    {
+                        serchtxt += " and ModelStyle like N'增补预算'";
+                    }
+                }
+                string type = PageValidate.InputText(request["type"], 50);
+                if (!string.IsNullOrEmpty(type))
+                {
+                    if (type == "mj")//面积
+                    {
+                        serchtxt += " and  ModelStyle LIKE '面积%' ";
+                    }
+                    else {
+                        serchtxt += " and  ModelStyle NOT LIKE '面积%' ";
+                    }
+                }
+
                 //是否模板
                 string ISMODEL = PageValidate.InputText(request["IsModel"], 50);
                 if (string.IsNullOrEmpty(ISMODEL))
@@ -721,6 +829,18 @@ namespace XHD.CRM.Data
                     ISMODEL = "N";                    
                 }
                 serchtxt += " and isnull(IsModel,'N')='" + ISMODEL + "'";
+                string ismj = PageValidate.InputText(request["ismj"], 50);
+                if(ISMODEL=="Y")//当是模板的时候
+                {
+                    if (!string.IsNullOrEmpty(ismj))//是否只选面积模板
+                    {
+                        if(ismj=="Y")
+                        serchtxt += " and  ModelStyle='面积模板'";
+                        else serchtxt += " and  ModelStyle!='面积模板'";
+                    }
+                    serchtxt += " and  ModelStyle like '%模板%'";
+                }
+              
                 if (ISMODEL == "N")//如果不是模板下面生效
                 {
                     if (str_condition == "0")
@@ -935,9 +1055,27 @@ namespace XHD.CRM.Data
                 serchtxt += DataAuth(emp_id.ToString());
                 string dt = "";
                 BLL.CRM_CEStage ccpc = new BLL.CRM_CEStage();
+                string mugd = request["mugd"];
+
+                if (!string.IsNullOrEmpty(mugd))
+                {
+                    if(mugd=="N")
+                    {
+                        DataSet ds = ccpc.GetxzListCustomer(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                        dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                    }
+                    else if (mugd == "Y")
+                    {
+                        DataSet ds = ccpc.GetmbgdListCustomer(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                        dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                    }
+
+                }
+                else
+                {
                 DataSet ds = ccpc.GetListCustomer(PageSize, PageIndex, serchtxt, sorttext, out Total);
                 dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
-
+                }
                 context.Response.Write(dt);
 
             }
@@ -1091,13 +1229,13 @@ namespace XHD.CRM.Data
                         case "none": returntxt = " and 1=2 ";
                             break;
                         case "my":
-                            returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(arr[1]) + ")";
+                            returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(arr[1]) + "  or Emp_id_sg=" + int.Parse(arr[1]) + "  or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(arr[1]) + ")";
                             break;
                         case "dep":
                             if (string.IsNullOrEmpty(arr[1]))
-                                returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or Create_id=" + int.Parse(uid) + ")";
+                                returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + "  or Emp_id_sg=" + int.Parse(uid) + "  or Emp_id_sj=" + int.Parse(uid) + " or Create_id=" + int.Parse(uid) + ")";
                             else
-                                returntxt = " and ( privatecustomer='公客' or Department_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(uid) + ")";
+                                returntxt = " and ( privatecustomer='公客' or Department_id=" + int.Parse(arr[1]) + "  or Emp_id_sg=" + int.Parse(arr[1]) + "   or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(uid) + ")";
                             break;
                         case "depall":
                             BLL.hr_department dep = new BLL.hr_department();

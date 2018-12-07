@@ -417,6 +417,24 @@ function myHTMLDeCode(str) {
         }
 }
 
+///富文本转换为普通字符
+function myFWBtoString(str)
+{
+    var s = "";
+    if (str == null) return "";
+    else
+        if (str.length == 0) return "";
+        else {
+            s = s.replace(/(\n)/g, ""); 
+            s = s.replace(/(\t)/g, "");  
+            s = s.replace(/(\r)/g, "");  
+            s = s.replace(/<\/?[^>]*>/g, "");  
+            s = s.replace(/\s*/g, "");
+            return s;
+        }
+
+}
+
 function noheadimg() {
     var img = event.srcElement;
     img.src = "../../images/icons/function_icon_set/user_48.png";
@@ -550,12 +568,14 @@ function view(type, id, id1) {
         case 22: width = 530, height = 530, title = "查看跟进", url = "CRM/Repair/Repair_Follow_Add.aspx?fid=" + id; break;
         case 3: width = 730, height = 450, title = "查看联系人", url = "CRM/Customer/Customer_Contact_add.aspx?cid=" + id; break;
         case 4: width = 770, height = 490, title = "查看订单", url = "CRM/sale/order_add.aspx?orderid=" + id; break;
-        case 5: width = 867, height = 490, title = "查看合同", url = "CRM/sale/contract_view.aspx?cid=" + id; break;
+        case 5: width = 867, height = 520, title = "查看合同", url = "CRM/sale/contract_view.aspx?cid=" + id; break;
         case 6: width = 770, height = 490, title = "查看收款", url = 'CRM/finance/receive_add.aspx?orderid=' + id + "&receiveid=" + id1; break;
         case 7: width = 770, height = 490, title = "查看发票", url = 'CRM/finance/invoice_add.aspx?orderid=' + id + "&invoiceid=" + id1; break;
         case 8: width = 770, height = 490, title = "查看员工", url = 'HR/hr_employee_add.aspx?empid=' + id; break;
         case 9: width = 770, height = 360, title = "查看人员", url = 'HR/hr_socialWorker_add.aspx?empid=' + id; break;
         case 10: width = 530, height = 400, title = "查看人员跟进", url = "HR/hr_socialWorker_Follow_add.aspx?fid=" + id; break;
+        case 66: width = 800, height = 680, title = "查看收款", url = 'CRM/finance/receive_add_khjdgl.aspx?customerid=' + id + "&receiveid=" + id1; break;
+        case 44: width = 800, height = 680, title = "查看订单", url = "CRM/sale/order_add_khjdgl.aspx?customerid=" + id + "&orderid=" + id1; break;
     }
     top.$.ligerDialog.open({
         width: width,

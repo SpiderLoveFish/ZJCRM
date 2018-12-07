@@ -50,14 +50,15 @@
                             return (page - 1) * pagesize + rowindex + 1;
                         }
                     },
-                    { display: '供应商名称', name: 'Name', width: 150, align: 'left' },
-                    { display: '供应商地址', name: 'Address', width: 200, align: 'left' },
-                    { display: '供应商电话', name: 'Gsdh', width: 100, align: 'left' },
+                     { display: '分类', name: 'fl_name', width: 100, align: 'left' },
+                    { display: '名称', name: 'Name', width: 100, align: 'left' },
+                    { display: '地址', name: 'Address', width: 150, align: 'left' },
+                    { display: '电话', name: 'Gsdh', width: 100, align: 'left' },
                     { display: '联系人', name: 'Lxr', width: 60 },
-                    { display: '联系电话', name: 'Lxrdh', width: 150 },
-                    { display: '主营业务', name: 'Zyyw', width: 200, align: 'left' },
+                    { display: '联系电话', name: 'Lxrdh', width: 100 },
+                    { display: '主营业务', name: 'Zyyw', width: 150, align: 'left' },
                    // { display: '登记人', name: 'InEmpID', width: 80 },
-                    { display: '登记日期', name: 'InDate', width: 150 }
+                    { display: '登记日期', name: 'InDate', width: 100 }
                     //{ display: '售楼电话', name: 'Sldh', width: 80 },
                     //{ display: '开发商', name: 'Kfs', width: 100, align: 'left' },
                     //{ display: '交通状况', name: 'Jtzk', width: 200, align: 'left' },

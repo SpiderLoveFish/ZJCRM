@@ -55,7 +55,7 @@
                     $("#lxrdh").val(obj.Lxrdh);
                     $("#Zyyw").val(obj.Zyyw);
                     $("#Remark").val(obj.Remark);
-
+                    $("#fl").ligerComboBox({ width: 150, initValue: obj.fl_id, url: "../../data/Param_SysParam.ashx?Action=combo&parentid=24&rnd=" + Math.random() });
                     a = $('#Towns').ligerComboBox({
                         width: 150,
                         initValue: obj.TownsID,
@@ -119,11 +119,25 @@
                 <td>
                     <div style="width: 100px; text-align: right; float: right">供应商名称：</div>
                 </td>
-                <td colspan="3">
+                <td >
                    
                 
-                     <div style="float: left; width: 420px;">
-                       <input type="text" id="Name" name="Name" ltype="text" ligerui="{width:420}" /> 
+                     <div style="float: left; width: 150px;">
+                       <input type="text" id="Name" name="Name" ltype="text" ligerui="{width:150}" /> 
+                    </div>
+                   
+
+
+                </td>
+   
+                <td>
+                    <div style="width: 100px; text-align: right; float: right">供应商分类：</div>
+                </td>
+                <td >
+                   
+                
+                     <div style="float: left; width: 150px;">
+                       <input type="text" id="fl" name="fl" ligerui="{width:150}" /> 
                     </div>
                    
 

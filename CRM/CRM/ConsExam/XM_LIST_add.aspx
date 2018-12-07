@@ -47,6 +47,10 @@
                 $("#tr1").css("display", "none")
                 $("#tr2").css("display", "none")
                 $("#tr3").css("display", "none")
+                $("#tr5").css("display", "none")
+                $("#tr6").css("display", "none")
+                $("#tr7").css("display", "none")
+                $("#tr8").css("display", "none")
             }
 
 
@@ -70,7 +74,7 @@
                 autoHeightEnabled: false
             });
             var gCommunity = $('#T_qxmb').ligerComboBox({
-                width: 120,
+                width: 250,
                 onBeforeOpen: f_selectComm
 
             });
@@ -144,6 +148,13 @@
             }
             $("#T_qxmb_val").val(data.id);
             $("#T_qxmb").val(data.title);
+            $("#T_name").val(data.modelname);
+            $("#l1").val(data.para1);
+            $("#l2").val(data.para2);
+            $("#l3").val(data.para3);
+            $("#l4").val(data.para4);
+            $("#l5").val(data.para5);
+            $("#l6").val(data.para6);
             dialog.close();
         }
         function f_selectContactCancel(item, dialog) {
@@ -184,12 +195,42 @@
                     $("#T_qxmb_val").val(obj.params_id.split(";")[0]); $("#T_qxmb").val(obj.params_id.split(";")[1]);
                    // $("#T_CEStage_detail_id").val(obj.StageDetailID);
                     UE.getEditor('editor').setContent(myHTMLDeCode(obj.REMARK));
-                   
+                    if (obj.params_id.split(";")[0]!='')
+                    showmb(obj.params_id.split(";")[0])
                    
                 }
             });
         }
 
+        function showmb(oaid)
+        {
+            $.ajax({
+                type: "GET",
+                url: "../../data/smsmodel.ashx", /* 注意后面的名字对应CS的方法名称 */
+                data: { Action: 'form', id: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var obj = eval(result);
+                    for (var n in obj) {
+
+                    }
+                    //alert(obj.constructor); //String 构造函数
+
+                    $("#l1").html(obj.para1);
+                    $("#l2").html(obj.para2);
+                    $("#l3").html(obj.para3);
+                    $("#l4").html(obj.para4);
+                    $("#l5").html(obj.para5);
+                    $("#l6").html(obj.para6);
+                    $("#T_name").val(obj.modelname);
+
+
+
+                }
+            });
+
+        }
          
 
 
@@ -199,19 +240,25 @@
     <form id="form1" onsubmit="return false">     
         <table align="left" border="0" cellpadding="3" cellspacing="1">
            
-
+             <tr>
+                <td colspan="6" class="table_title1">项目内容</td>
+            </tr>
             <tr>
                 <td>
                     <div align="left" style="width: 60px">项目名称：</div>
                 </td>
                 <td colspan="2">
-                    <input type="text" id="T_xmmc" name="T_xmmc" validate="{required:true}" ltype='text' ligerui="{width:180}" /></td>
+                    <input type="text" id="T_xmmc" name="T_xmmc" validate="{required:true}" ltype='text' ligerui="{width:180}"   /></td>
                    <input type="hidden" id="T_xmid" name="T_xmid" />
                 <td>
                     <div align="left" style="width: 90px">项目排序：</div>
                 </td>
                 <td colspan="2">
-                    <input type='text' id="T_xmpx" name="T_xmpx" ltype='text' ligerui="{width:140}" /></td>
+                    <input type='text' id="T_xmpx" name="T_xmpx" ltype='text' ligerui="{width:140}"   /></td>
+            </tr>
+
+            <tr id="tr7">
+                <td colspan="6" class="table_title1">参数设置</td>
             </tr>
      <tr id="tr1">
                 <td height="26">
@@ -234,9 +281,26 @@
                 <td height="25"><div align="left" style="width: 60px">@P6：</div></td>
                 <td height="25"><input type="text" id="T_p6" name="T_p6"       /></td>
             </tr>
+             <tr id="tr5">
+                <td colspan="6" class="table_title1">金牌服务模板</td>
+            </tr>
             <tr id="tr3">
-                 <td height="25"><div align="left" style="width: 60px">选择七星模板：</div></td>
+                 <td height="25"><div align="left" style="width: 60px">选择模板：</div></td>
                    <td height="25" colspan="5"><input type="text" id="T_qxmb" name="T_qxmb"       /></td>
+            </tr>
+ 
+                           <tr  id="tr8">
+                 <td height="25"><div align="right" style="width: 60px">说明 ：</div></td>
+                 <td height="25" colspan="5">@P1 ：<strong style="color:red"><label id="l1"></label></strong>，@P2 ：<strong style="color:red"><label id="l2"></label></strong>，@P3 ：<strong style="color:red"><label id="l3"></label></strong>，@P4 ：<strong style="color:red"><label id="l4"></label></strong>，@P5 ：<strong style="color:red"><label id="l5"></label></strong>，@P6 ：<strong style="color:red"><label id="l6"></label></strong></td>
+               </tr>
+                      <tr id="tr6">
+                <td height="33" style="width: 60px">
+
+                    <div align="right" style="width: 60px">模板内容：</div>
+                </td>
+                <td height="33" colspan="5" style="width: 60px">
+                  
+                  <textarea  id="T_name" name="T_name" cols="50" rows="5" class="l-textarea" style="width:520px"  readonly ="true"> </textarea>                </td>
             </tr>
             <tr id="tr4">
                 <td colspan="6">

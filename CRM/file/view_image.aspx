@@ -10,6 +10,11 @@
     <script src="../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script src="../JS/XHD.js" type="text/javascript"></script>
     <script src="../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="js/jquery.min.js"></script>
+ 
+<script src="js/jquery.artZoom.js"></script>
+ <LINK href="js/jquery.artZoom.css" rel="stylesheet" type="text/css"> 
+
     <script type="text/javascript">
         $(function () {
             var realname = getparastr("realname");
@@ -37,8 +42,44 @@
             }
         })
     </script>
+    <script type="text/javascript">
+jQuery(function ($) {
+	$('.artZoom').artZoom({
+		path: '../arzoom/images',	// 设置artZoom图片文件夹路径
+		preload: true,		// 设置是否提前缓存视野内的大图片
+		blur: true,			// 设置加载大图是否有模糊变清晰的效果
+		
+		// 语言设置
+		left: '左旋转',		// 左旋转按钮文字
+		right: '右旋转',		// 右旋转按钮文字
+        zoomMax:'放大',
+        zoomMin:'缩小',
+		source: '看原图'		// 查看原图按钮文字
+	});
+});
+</script>
+    <style type="text/css">
+/*演示*/
+
+.artZoom {
+	padding:3px;
+	background:#FFF;
+    width: 450px;
+    height: 700px;
+	border:1px solid #EBEBEB;
+}
+body {
+	font-size: 75%;
+	font-family: '微软雅黑';
+	padding-bottom: 200px;
+	background-color: #292929;
+}
+img {
+	border:0 none;
+}
+</style>
 </head>
 <body style="overflow: scroll;">
-    <img id="view" />
+    <img  class="artZoom" id="view" width="200" height="200" src=""/>
 </body>
 </html>

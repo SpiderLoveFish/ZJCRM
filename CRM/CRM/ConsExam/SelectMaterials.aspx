@@ -236,11 +236,21 @@
                 $.ligerDialog.warn('请选择行！');
             }
         }
+        //工地配料
         function add() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow("crm/ConsExam/SelectMaterials_add.aspx?cid=" + row.CustomerID, "【" + row.CustomerName + "】" + row.address + " - 材料清单", 1100, 600);
+                f_openWindow("crm/ConsExam/SelectMaterials_add.aspx?cid=" + row.CustomerID + "&sgjl=" + encodeURI(row.sgjl), "【" + row.CustomerName + "】" + row.address + " - 材料清单", 1100, 600);
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+        function pro() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow("crm/ConsExam/SelectMaterials_pro.aspx?cid=" + row.CustomerID, "【" + row.CustomerName + "】" + row.address + " - 材料处理", 1100, 600);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
@@ -249,8 +259,9 @@
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
+           
             if (row) {
-                f_openWindow("crm/ConsExam/SelectMaterials_add.aspx?cid=" + row.CustomerID, "修改客户", 720, 500);
+                f_openWindow("crm/ConsExam/SelectMaterials_add.aspx?cid=" + row.CustomerID , "修改客户", 720, 500);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }

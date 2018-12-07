@@ -107,7 +107,8 @@ namespace XHD.DAL
 			strSql.Append("d_add=@d_add,");
 			strSql.Append("d_email=@d_email,");
 			strSql.Append("d_miaoshu=@d_miaoshu,");
-			strSql.Append("d_order=@d_order");
+            strSql.Append("isDelete=@isDelete,");
+            strSql.Append("d_order=@d_order");
 
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
@@ -122,7 +123,8 @@ namespace XHD.DAL
 					new SqlParameter("@d_add", SqlDbType.VarChar,255),
 					new SqlParameter("@d_email", SqlDbType.VarChar,50),
 					new SqlParameter("@d_miaoshu", SqlDbType.VarChar,255),
-					new SqlParameter("@d_order", SqlDbType.Int,4),  
+                    new SqlParameter("@isDelete", SqlDbType.VarChar,255),
+                    new SqlParameter("@d_order", SqlDbType.Int,4),  
 					new SqlParameter("@id", SqlDbType.Int,4)};
 			parameters[0].Value = model.d_name;
 			parameters[1].Value = model.parentid;
@@ -135,8 +137,9 @@ namespace XHD.DAL
 			parameters[8].Value = model.d_add;
 			parameters[9].Value = model.d_email;
 			parameters[10].Value = model.d_miaoshu;
-			parameters[11].Value = model.d_order;   
-			parameters[12].Value = model.id;
+            parameters[11].Value = model.isDelete;
+            parameters[12].Value = model.d_order;   
+			parameters[13].Value = model.id;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)

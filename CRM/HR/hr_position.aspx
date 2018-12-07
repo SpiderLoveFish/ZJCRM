@@ -105,13 +105,13 @@
         }
 
         function add() {
-            f_openWindow('hr/hr_position_add.aspx', "新建职务", 390, 200);
+            f_openWindow('hr/hr_position_add.aspx', "新建职务", 500, 300);
         }
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('hr/hr_position_add.aspx?pid=' + row.id, "修改职务", 390, 200);
+                f_openWindow('hr/hr_position_add.aspx?pid=' + row.id, "修改职务", 500, 300);
             } else {
                 $.ligerDialog.warn("请选择行");
             }

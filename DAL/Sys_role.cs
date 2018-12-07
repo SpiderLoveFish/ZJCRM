@@ -45,9 +45,9 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into Sys_role(");
-			strSql.Append("RoleName,RoleDscript,RoleSort,CreateID,CreateDate,UpdateID,UpdateDate)");
+			strSql.Append("RoleName,RoleDscript,RoleSort,CreateID,CreateDate,UpdateID,UpdateDate,IsCanViewTel,IsCanViewSf)");
 			strSql.Append(" values (");
-			strSql.Append("@RoleName,@RoleDscript,@RoleSort,@CreateID,@CreateDate,@UpdateID,@UpdateDate)");
+			strSql.Append("@RoleName,@RoleDscript,@RoleSort,@CreateID,@CreateDate,@UpdateID,@UpdateDate,@IsCanViewTel,@IsCanViewSf)");
 			strSql.Append(";select @@IDENTITY");
 			SqlParameter[] parameters = {
 					new SqlParameter("@RoleName", SqlDbType.VarChar,255),
@@ -56,14 +56,19 @@ namespace XHD.DAL
 					new SqlParameter("@CreateID", SqlDbType.Int,4),
 					new SqlParameter("@CreateDate", SqlDbType.DateTime),
 					new SqlParameter("@UpdateID", SqlDbType.Int,4),
-					new SqlParameter("@UpdateDate", SqlDbType.DateTime)};
+                    
+                    new SqlParameter("@IsCanViewTel", SqlDbType.Int,4),
+                        new SqlParameter("@IsCanViewSf", SqlDbType.Int,4),
+                    new SqlParameter("@UpdateDate", SqlDbType.DateTime)};
 			parameters[0].Value = model.RoleName;
 			parameters[1].Value = model.RoleDscript;
 			parameters[2].Value = model.RoleSort;
 			parameters[3].Value = model.CreateID;
 			parameters[4].Value = model.CreateDate;
 			parameters[5].Value = model.UpdateID;
-			parameters[6].Value = model.UpdateDate;
+            parameters[6].Value = model.IsCanViewTel;
+            parameters[7].Value = model.IsCanViewSf;
+            parameters[8].Value = model.UpdateDate;
 
 			object obj = DbHelperSQL.GetSingle(strSql.ToString(),parameters);
 			if (obj == null)
@@ -86,21 +91,27 @@ namespace XHD.DAL
 			strSql.Append("RoleDscript=@RoleDscript,");
 			strSql.Append("RoleSort=@RoleSort,");			
 			strSql.Append("UpdateID=@UpdateID,");
-			strSql.Append("UpdateDate=@UpdateDate");
+            strSql.Append("IsCanViewTel=@IsCanViewTel,");
+            strSql.Append("IsCanViewSf=@IsCanViewSf,");
+            strSql.Append("UpdateDate=@UpdateDate");
 			strSql.Append(" where RoleID=@RoleID");
 			SqlParameter[] parameters = {
 					new SqlParameter("@RoleName", SqlDbType.VarChar,255),
 					new SqlParameter("@RoleDscript", SqlDbType.VarChar,255),
 					new SqlParameter("@RoleSort", SqlDbType.Int,4),					
 					new SqlParameter("@UpdateID", SqlDbType.Int,4),
-					new SqlParameter("@UpdateDate", SqlDbType.DateTime),
+                      new SqlParameter("@IsCanViewTel", SqlDbType.Int,4),
+                       new SqlParameter("@IsCanViewSf", SqlDbType.Int,4),
+                    new SqlParameter("@UpdateDate", SqlDbType.DateTime),
 					new SqlParameter("@RoleID", SqlDbType.Int,4)};
 			parameters[0].Value = model.RoleName;
 			parameters[1].Value = model.RoleDscript;
 			parameters[2].Value = model.RoleSort;
 			parameters[3].Value = model.UpdateID;
-			parameters[4].Value = model.UpdateDate;
-			parameters[5].Value = model.RoleID;
+            parameters[4].Value = model.IsCanViewTel;
+            parameters[5].Value = model.IsCanViewSf;
+            parameters[6].Value = model.UpdateDate;
+			parameters[7].Value = model.RoleID;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -184,7 +195,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 RoleID,RoleName,RoleDscript,RoleSort,CreateID,CreateDate,UpdateID,UpdateDate from Sys_role ");
+			strSql.Append("select  top 1 RoleID,RoleName,RoleDscript,RoleSort,CreateID,CreateDate,UpdateID,UpdateDate,IsCanViewTel,IsCanViewSf from Sys_role ");
 			strSql.Append(" where RoleID=@RoleID");
 			SqlParameter[] parameters = {
 					new SqlParameter("@RoleID", SqlDbType.Int,4)
@@ -215,7 +226,17 @@ namespace XHD.DAL
 				{
 					model.CreateID=int.Parse(ds.Tables[0].Rows[0]["CreateID"].ToString());
 				}
-				if(ds.Tables[0].Rows[0]["CreateDate"]!=null && ds.Tables[0].Rows[0]["CreateDate"].ToString()!="")
+                if (ds.Tables[0].Rows[0]["IsCanViewTel"] != null && ds.Tables[0].Rows[0]["IsCanViewTel"].ToString() != "")
+                {
+                    model.IsCanViewTel = int.Parse(ds.Tables[0].Rows[0]["IsCanViewTel"].ToString());
+                }
+                if (ds.Tables[0].Rows[0]["IsCanViewSf"] != null && ds.Tables[0].Rows[0]["IsCanViewSf"].ToString() != "")
+                {
+                    model.IsCanViewSf = int.Parse(ds.Tables[0].Rows[0]["IsCanViewSf"].ToString());
+                }
+
+
+                if (ds.Tables[0].Rows[0]["CreateDate"]!=null && ds.Tables[0].Rows[0]["CreateDate"].ToString()!="")
 				{
 					model.CreateDate=DateTime.Parse(ds.Tables[0].Rows[0]["CreateDate"].ToString());
 				}
@@ -241,7 +262,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select RoleID,RoleName,RoleDscript,RoleSort,CreateID,CreateDate,UpdateID,UpdateDate ");
+			strSql.Append("select RoleID,RoleName,RoleDscript,RoleSort,CreateID,CreateDate,UpdateID,UpdateDate,IsCanViewTel,IsCanViewSf ");
 			strSql.Append(" FROM Sys_role ");
 			if(strWhere.Trim()!="")
 			{
@@ -261,7 +282,7 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" RoleID,RoleName,RoleDscript,RoleSort,CreateID,CreateDate,UpdateID,UpdateDate ");
+			strSql.Append(" RoleID,RoleName,RoleDscript,RoleSort,CreateID,CreateDate,UpdateID,UpdateDate ,IsCanViewTel,IsCanViewSf");
 			strSql.Append(" FROM Sys_role ");
 			if(strWhere.Trim()!="")
 			{
@@ -293,7 +314,24 @@ namespace XHD.DAL
 			return DbHelperSQL.Query(strSql.ToString());
 		}
 
-		#endregion  Method
-	}
+        public bool IsExistTelRight(int empid)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("  SELECT  count(1) FROM  dbo.sys_role_emp A  ");
+            sb.AppendLine(" INNER JOIN dbo.Sys_role B ON	B.RoleID = A.RoleID  ");
+            sb.AppendLine(" WHERE empID=@empID AND	 ISNULL(B.IsCanViewTel,0)=1  ");
+
+            SqlParameter[] parameters = {
+                new SqlParameter("@empID", SqlDbType.Int,4)    };
+            //
+             parameters[0].Value = empid;
+
+            return DbHelperSQL.Exists(sb.ToString(), parameters);
+        }
+
+
+
+        #endregion  Method
+    }
 }
 

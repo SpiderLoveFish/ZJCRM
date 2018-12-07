@@ -21,7 +21,7 @@
     <script type="text/javascript">
 
         $(function () {
-            $("#maingrid4").ligerGrid({
+           $("#maingrid4").ligerGrid({
                 columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                     { display: '标题', name: 'title', width: 150 },
@@ -34,7 +34,7 @@
                          return html;
                      }
                  },
-
+                
                     { display: '参数(@P1)', name: 'para1', width: 70 },
                    { display: '参数(@P2)', name: 'para2', width: 70 },
                       { display: '参数(@P3)', name: 'para3', width: 70 },
@@ -46,9 +46,8 @@
 
                 ],
                 dataAction: 'server',
-
-                url: "../../data/smsmodel.ashx?Action=grid&rnd=" + Math.random(),
-                width: '100%',
+              
+                url: "../../data/smsmodel.ashx?Action=grid&rnd=" + Math.random(),                width: '100%',
                 height: '100%',
                 //title: "员工列表",
                 heightDiff: 0
@@ -62,14 +61,14 @@
         });
         function toolbar() {
             var items = [];
-            items.push({ type: 'textbox', id: 'keyword1', text: '关键字：' });
+            items.push({ type: 'textbox', id: 'company', text: '姓名：' });
             items.push({ type: 'button', text: '搜索', icon: '../images/search.gif', disable: true, click: function () { doserch() } });
 
             $("#serchbar1").ligerToolBar({
                 items: items
 
             });
-            $("#keyword1").ligerTextBox({ width: 200, nullText: "输入关键词搜索" });
+            $("#company").ligerTextBox({ width: 200, nullText: "输入关键词智能搜索客户" });
             $("#maingrid4").ligerGetGridManager().onResize();
 
 
@@ -84,11 +83,11 @@
      
         //查询
         function doserch() {
-            var sendtxt = "&Action=grid&rnd=" + Math.random();
+            var sendtxt = "&Action=getcustomer&rnd=" + Math.random();
             var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
             //  alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL("../../data/smsmodel.ashx?" + serchtxt);
+            manager.GetDataByURL("../../data/Crm_CEStage.ashx?" + serchtxt);
         }
         
          

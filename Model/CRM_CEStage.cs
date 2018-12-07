@@ -26,6 +26,7 @@ namespace XHD.Model
         private string _remarks;
         private int? _iscolse = 0;
         private DateTime _Jh_date;
+        private DateTime _Begindate;
         /// <summary>
         /// 
         /// </summary>
@@ -154,6 +155,12 @@ namespace XHD.Model
             set { _Jh_date = value; }
             get { return _Jh_date; }
         }
+        public DateTime Begindate
+        {
+            set { _Begindate = value; }
+            get { return _Begindate; }
+        }
+        
         #endregion Model
 
     }

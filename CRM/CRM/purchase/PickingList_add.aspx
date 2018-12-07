@@ -49,6 +49,7 @@
             XHD.validate($(form1));
             ck = $("#ckisgd").ligerCheckBox();
            // $('input:checkbox').ligerCheckBox();
+            $('#T_usestyle').val("手工录入");
             $("form").ligerForm();
             if (getparastr("pid") != null) {
                 $("#qdkh").attr("style", "display:none");
@@ -85,28 +86,7 @@
                        { display: '料号', name: 'ProModel', width: 80 },
                                      { display: '品牌', name: 'Brand', width: 80 },
 
-                    { display: '型号', name: 'model', width: 120 },
-                     {
-                         display: '单价', name: 'purprice', type: 'float', width: 60, align: 'right'
-                         , editor: { type: 'float' }
-                     },
-                     
-                        {
-                            display: '数量', name: 'pursum', width: 120, align: 'left'
-                            , type: 'float', editor: { type: 'float' },
-                            totalSummary:
-                            {
-                                type: 'sum'
-                            }
-
-                        },
-                         {
-                             display: '小计', name: 'subtotal', type: 'float', width: 100, align: 'right',
-                             totalSummary:
-                             {
-                                 type: 'subtotal'
-                             }
-                         },
+                    
                   
                         {
                             display: '备注', name: 'Remarks', align: 'left', width: 400,type:'text'
@@ -331,7 +311,7 @@
 
         function f_save() {
            
-            var sendtxt = "&Action=save";
+            var sendtxt = "&Action=save&status=0";
             return $("form :input").fieldSerialize() + sendtxt;
         }
         //审核 ，作废
@@ -503,7 +483,7 @@
             }
             $.ajax({
                 type: 'post',
-                url: "../../data/PickingList.ashx?Action=savetemp&pid=" + $("#T_Pid").val() + "&cid=" + $("#T_companyid").val() + "&FYM=" + $("#T_cwny").val() + "&remark=" + $("#T_remarks").val() + '&rdm=' + Math.random(),
+                url: "../../data/PickingList.ashx?Action=savetemp&pid=" + $("#T_Pid").val() + "&cid=" + $("#T_companyid").val() + "&FYM=" + $("#T_cwny").val() + "&remark=" + $("#T_remarks").val() + "&UseStyle=" + encodeURI($("#T_usestyle").val()) + '&rdm=' + Math.random(),
                 success: function (data) {
                     if (data == 'false') {
                         getmaxid();
@@ -581,7 +561,7 @@
                <td><div style="width: 70px; text-align: right;   float: right">领料日期：</div></td>
                 <td><input type="text"  id="T_cgrq" name="T_cgrq"  ltype="date" ligerui="{width:120}"   /></td>
              <td   ><span style="width: 60px; text-align: right; float: right">领料类型：</span></td>
-                 <td   ><input id="T_usestyle" name="T_usestyle" validate="{required:false}"  ltype="text" ligerui="{width:80}"  /></td>
+                 <td   ><input id="T_usestyle" name="T_usestyle" validate="{required:false}"  ltype="text" ligerui="{width:80,disabled:true}"  /></td>
                  <td   ><span style="width: 60px; text-align: right; float: right">领料员：</span></td>
                  <td    ><input id="T_employee2" name="T_employee2" validate="{required:false}"  ltype="text" ligerui="{width:80,disabled:true}"  /></td>
                

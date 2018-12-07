@@ -102,7 +102,37 @@
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
 
+        function f_select() {
+            var notes = treemanager.getSelected();
+            var rows = {};
+            if (notes != null && notes != undefined) {
+                //$.get("../data/hr_department.ashx?Action=department&did=" + notes.data.id + '&rdm=' + Math.random(), function (data, textStatus) {
+                //    //alert(data);
+                //    var arrstr = new Array();
+                //    arrstr = data.split(",");
+                rows = { "id": notes.data.id, "name": notes.data.text  };
 
+                    //$("#Label1").text(arrstr[1]);
+                    //$("#Label2").text(arrstr[2]);
+                    //$("#Label3").text(arrstr[3]);
+                    //$("#Label4").text(arrstr[6]);
+                    //$("#Label5").text(arrstr[4]);
+                    //$("#Label6").text(arrstr[5]);
+                    //$("#Label7").text(arrstr[7]);
+                    //$("#Label8").text(arrstr[8]);
+                    return rows;
+               // });
+                //f_openWindow('hr/hr_department_add.aspx?depid=' + notes.data.id, "修改部门", 620, 280);
+            }
+            else {
+                $.ligerDialog.warn('请选择部门！');
+            }
+           
+           // var manager = $("#maingrid4").ligerGetGridManager();
+            //var rows = manager.getSelectedRow();
+            //alert(rows);
+           
+        }
         function edit() {
             var notes = treemanager.getSelected();
             if (notes != null && notes != undefined) {

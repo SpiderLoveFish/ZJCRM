@@ -47,6 +47,13 @@ namespace XHD.CRM.Data
                 //{"status": 1, "sum": 9}
                 context.Response.Write(josnstr);
             }
+            if (request["Action"] == "getmaxdbid")
+            {
+                string bid = bpm.GetMaxDBId();
+                string josnstr = "{ 'pid':'" + bid + "','cly':'" + empname + "'}";
+                //{"status": 1, "sum": 9}
+                context.Response.Write(josnstr);
+            }
             if (request["Action"] == "form")
             {
                 string pid = PageValidate.InputText(request["pid"], 50);
@@ -63,6 +70,41 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "formgsyp")//公司用品
+            {
+                string pid = PageValidate.InputText(request["pid"], 50);
+                string dt;
+                if (pid != "")
+                {
+                    DataSet ds = bpm.GetListdetail_GSYP(" Purid='" + pid + "'");
+                    dt = Common.DataToJson.DataToJSON(ds);
+                }
+                else
+                {
+                    dt = "{}";
+                }
+
+                context.Response.Write(dt);
+            }
+            //调拨
+            if (request["Action"] == "formdb")
+            {
+                string pid = PageValidate.InputText(request["pid"], 50);
+                string dt;
+                if (pid != "")
+                {
+                    DataSet ds = bpm.GetListdetailDB(" Purid='" + pid + "'");
+                    dt = Common.DataToJson.DataToJSON(ds);
+                }
+                else
+                {
+                    dt = "{}";
+                }
+
+                context.Response.Write(dt);
+            }
+            
+
             if (request["Action"] == "formmain")
             {
                 string pid = PageValidate.InputText(request["pid"], 50);
@@ -97,6 +139,11 @@ namespace XHD.CRM.Data
                 string Total;
                 string serchtxt = "1=1";
                 serchtxt += " and IsDel='N'";
+                if (!string.IsNullOrEmpty(request["company"])&& "输入关键词智能搜索客户"!= request["company"])
+                    serchtxt += " and (Name  like N'%" + PageValidate.InputText(request["company"], 255) + "%' "
+                        + " OR    Address  like N'%" + PageValidate.InputText(request["company"], 255) + "%' "
+                        + " OR Zyyw  like N'%" + PageValidate.InputText(request["company"], 255) + "%')";
+                 
 
 
                 string dt = "";
@@ -124,13 +171,13 @@ namespace XHD.CRM.Data
                 string Total;
                 string serchtxt = "1=1";
                 if (!string.IsNullOrEmpty(request["khstext"]))
-                    serchtxt += " and Customer like N'%" + PageValidate.InputText(request["khstext"], 255) + "%'";
+                    serchtxt += " and nr like '%" + PageValidate.InputText(request["khstext"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["dzstext"]))
-                    serchtxt += " and address like N'%" + PageValidate.InputText(request["dzstext"], 255) + "%'";
+                    serchtxt += " and sg like '%" + PageValidate.InputText(request["dzstext"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["dhstext"]))
-                    serchtxt += " and tel like N'%" + PageValidate.InputText(request["dhstext"], 255) + "%'";
+                    serchtxt += " and Purid like '%" + PageValidate.InputText(request["dhstext"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["gystext"]))
-                    serchtxt += " and supplier_name  like N'%" + PageValidate.InputText(request["gystext"], 255) + "%'";
+                    serchtxt += " and supplier_name  like '%" + PageValidate.InputText(request["gystext"], 255) + "%'";
           
 
                 string apr=PageValidate.InputText(request["Apr"], 50);
@@ -140,16 +187,106 @@ namespace XHD.CRM.Data
                     serchtxt += " AND isNode in(0,1)";
                 else if (apr == "YY")
                     serchtxt += " AND isNode=2";
-                else if (apr == "view")
+                else if (apr == "YYY")
                     serchtxt += " AND isNode=3";
+                else if (apr == "view")
+                    serchtxt += " AND isNode in(4,3)";
 
                 string issar = request["issarr"];
                 if (issar == "1")
                 {
                     serchtxt += " and isnull( arrears_money,0)>0";
                 }
+                string type = request["type"];
+                if (!string.IsNullOrEmpty(type)&&type!="null")
+                {
+                    if (type.ToUpper() == "GSYP")//公司用品
+                    {
+                        serchtxt += " and IsGD=4 "; //状态为4
+                    }
+                    else if (type.ToUpper() == "KCCG")//库存采购
+                    {
+                        serchtxt += " and IsGD=5 "; //状态为5
+                    }
+                    else serchtxt += " and IsGD=1 ";//否则为1
+                }
+                else serchtxt += " and IsGD=1 ";//否则为1
+                //权限控制只可以由明细客户对应的施工监理，单子的材料员，制单员以及admin才可以查看和处理对应的采购单
+                if (uid!="admin")
+                serchtxt += " and ((materialman='"+empname+ "' OR sg like '%"+empname+ "%') or (SELECT COUNT(1) FROM  dbo.sys_role_emp WHERE RoleID IN ( SELECT Role_id FROM  dbo.Sys_data_authority WHERE Sys_view=4 AND Sys_option='客户管理') AND empID="+emp_id+")>0)";
+                serchtxt += " and Purid LIKE 'P%'";
+                string dt = "";
+                if (!string.IsNullOrEmpty(type) && type != "null")
+                {
+                    if (type.ToUpper() == "GSYP")//公司用品
+                    {
+                        DataSet ds = bpm.GetPurchase_Main_gsyp(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                        dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                    }
+                    else
+                    {
+                        DataSet ds = bpm.GetPurchase_Main(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                        dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                    }
+                }
+                else
+                {
+                    DataSet ds = bpm.GetPurchase_Main(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                    dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                }
 
 
+                context.Response.Write(dt);
+            }
+            //调拨
+            if (request["Action"] == "griddb")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " isNode asc";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " ,purdate DESC ";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+                if (!string.IsNullOrEmpty(request["khstext"]))
+                    serchtxt += " and nr like '%" + PageValidate.InputText(request["khstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["dzstext"]))
+                    serchtxt += " and sg like '%" + PageValidate.InputText(request["dzstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["dhstext"]))
+                    serchtxt += " and Purid like '%" + PageValidate.InputText(request["dhstext"], 255) + "%'";
+                if (!string.IsNullOrEmpty(request["gystext"]))
+                    serchtxt += " and supplier_name  like '%" + PageValidate.InputText(request["gystext"], 255) + "%'";
+
+
+                string apr = PageValidate.InputText(request["Apr"], 50);
+                if (apr == "Y")
+                    serchtxt += " AND isNode=1";
+                else if (apr == "E")
+                    serchtxt += " AND isNode in(0,1)";
+                else if (apr == "YY")
+                    serchtxt += " AND isNode=2";
+                else if (apr == "YYY")
+                    serchtxt += " AND isNode=3";
+                else if (apr == "view")
+                    serchtxt += " AND isNode in(4,3)";
+
+                string issar = request["issarr"];
+                if (issar == "1")
+                {
+                    serchtxt += " and isnull( arrears_money,0)>0";
+                }
+                //权限控制只可以由明细客户对应的施工监理，单子的材料员，制单员以及admin才可以查看和处理对应的采购单
+                if (uid != "admin")
+                    serchtxt += " and ((materialman='" + empname + "' OR sg like '%" + empname + "%') or (SELECT COUNT(1) FROM  dbo.sys_role_emp WHERE RoleID IN ( SELECT Role_id FROM  dbo.Sys_data_authority WHERE Sys_view=4 AND Sys_option='客户管理') AND empID=" + emp_id + ")>0)";
+                serchtxt += " and Purid LIKE 'DB%'";
                 string dt = "";
 
                 DataSet ds = bpm.GetPurchase_Main(PageSize, PageIndex, serchtxt, sorttext, out Total);
@@ -160,13 +297,13 @@ namespace XHD.CRM.Data
             if (request["Action"] == "griddetail")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
-                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "1000" : request["pagesize"]);
                 string pid = PageValidate.InputText(request["pid"], 50);
                 string sortname = request["sortname"];
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " Purid";
+                    sortname = " b.customer";
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
 
@@ -182,6 +319,117 @@ namespace XHD.CRM.Data
 
                 DataSet ds = bpd.GetPurchase_Detail(PageSize, PageIndex, serchtxt, sorttext, out Total);
                  dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "gridview")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string cid = PageValidate.InputText(request["cid"], 50);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " Purid";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+                //if (string.IsNullOrEmpty(pid))
+                serchtxt += " and Customer_id='" + cid + "'";
+                string isNode = PageValidate.InputText(request["sectype_val"], 50);
+                if (!string.IsNullOrEmpty(isNode))
+                    serchtxt += " and isNode='" + isNode + "'";
+                string strwhere = PageValidate.InputText(request["strwhere"], 50);
+                if (!string.IsNullOrEmpty(strwhere))
+                    serchtxt += " and product_name like '%" + strwhere + "%'";
+
+
+                string dt = "";
+
+                DataSet ds = bpd.GetPur_ViewList(PageSize, PageIndex, serchtxt);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], "999");
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "gridspview")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string cid = PageValidate.InputText(request["cid"], 50);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " Purid";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+                //if (string.IsNullOrEmpty(pid))
+                //serchtxt += " and Customer_id='" + cid + "'";
+                string starttime = PageValidate.InputText(request["starttime"], 50);
+
+                string endtime = PageValidate.InputText(request["endtime"], 50);
+                //string ID = PageValidate.InputText(request["stext_val"], 50);
+                //if (!string.IsNullOrEmpty(ID))
+                //    serchtxt += " and ID='" + ID + "'";
+                string isNode = PageValidate.InputText(request["sectype_val"], 50);
+                if (!string.IsNullOrEmpty(isNode))
+                    serchtxt += " and isNode='" + isNode + "'";
+                string strwhere = PageValidate.InputText(request["strwhere"], 50);
+                if (!string.IsNullOrEmpty(strwhere))
+                    serchtxt += " and product_name like '%" + strwhere + "%'";
+                string dt = "";
+
+                DataSet ds = bpd.GetSuppPur_ViewList(PageSize, PageIndex, serchtxt,starttime,endtime);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], "999");
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "gridspdetail")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string cid = PageValidate.InputText(request["cid"], 50);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " Purid";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = " desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+                //if (string.IsNullOrEmpty(pid))
+                //serchtxt += " and Customer_id='" + cid + "'";
+                string starttime = PageValidate.InputText(request["starttime"], 50);
+
+                string endtime = PageValidate.InputText(request["endtime"], 50);
+                string ID = PageValidate.InputText(request["sid"], 50);
+                if (!string.IsNullOrEmpty(ID))
+                    serchtxt += " and supplier_id='" + ID + "'";
+                string pid = PageValidate.InputText(request["pid"], 50);
+                if (!string.IsNullOrEmpty(pid))
+                    serchtxt += " and product_id='" + pid + "'";
+                string isnode = PageValidate.InputText(request["isnode"], 50);
+                if (!string.IsNullOrEmpty(isnode))
+                    serchtxt += " and isNode='" + isnode + "'";
+
+                string dt = "";
+
+                DataSet ds = bpd.GetSuppPur_DetailList(PageSize, PageIndex, serchtxt, starttime, endtime);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], "999");
 
                 context.Response.Write(dt);
             }
@@ -225,6 +473,37 @@ namespace XHD.CRM.Data
                 string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "tempgriddb")
+            {
+                BLL.PurchaseList ccp = new BLL.PurchaseList();
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                string sortname = request["sortname"];
+                string sortorder = request["sortorder"];
+
+                if (string.IsNullOrEmpty(sortname))
+                    sortname = " id";
+                if (string.IsNullOrEmpty(sortorder))
+                    sortorder = "desc";
+
+                string sorttext = " " + sortname + " " + sortorder;
+
+                string Total;
+                string serchtxt = "1=1";
+                string cid = "";
+
+                if (!string.IsNullOrEmpty(request["stext"]))
+                    serchtxt += " and material_name like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
+                //if(uid!="admin")//非管理员
+                if (!string.IsNullOrEmpty(request["cid"]))
+                    cid= PageValidate.InputText(request["cid"], 50)  ;
+
+                //权限
+                DataSet ds = ccp.GetTempListDB(PageSize, PageIndex, serchtxt, cid,sorttext, out Total);
+
+                string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "save")
             {
 
@@ -244,7 +523,28 @@ namespace XHD.CRM.Data
                     context.Response.Write("false");
                 }
             }
+            ///保存表头，
             if (request["Action"] == "savetemp")
+            {
+
+                string customerid =  PageValidate.InputText(request["cid"], 50);
+                string pid = PageValidate.InputText(request["pid"], 50);
+                string supid = PageValidate.InputText(request["supid"], 50);
+                string remark = PageValidate.InputText(request["remark"], 255);
+                string isgd = PageValidate.InputText(request["isgd"], 50);//数据单据类型
+                string cgy = HttpUtility.UrlDecode(request["cgy"], Encoding.UTF8);//采购员
+                if (bpm.Add(pid, supid, empname, customerid, remark, isgd, cgy))
+                {
+                    log.add_trace(pid,"0","保存",empname);
+                    context.Response.Write("true");
+                }
+                else
+                {
+                    context.Response.Write("false");
+                }
+            }
+            ///保存表头，调拨单
+            if (request["Action"] == "savetempdb")
             {
 
                 string customerid = PageValidate.InputText(request["cid"], 50);
@@ -252,9 +552,9 @@ namespace XHD.CRM.Data
                 string supid = PageValidate.InputText(request["supid"], 50);
                 string remark = PageValidate.InputText(request["remark"], 255);
                 string isgd = PageValidate.InputText(request["isgd"], 50);
-                if (bpm.Add(pid, supid, empname, customerid, remark, isgd))
+                if (bpm.AddDB(pid, supid, empname, customerid, remark, isgd))
                 {
-                    log.add_trace(pid,"0","保存",empname);
+                    log.add_trace(pid, "0", "保存", empname);
                     context.Response.Write("true");
                 }
                 else
@@ -269,8 +569,8 @@ namespace XHD.CRM.Data
                   string status =  PageValidate.InputText(request["status"], 50) ;
                   if (bpm.Updatestatus(pid, status))
                   {
-                      if (StringToDecimal(status) == 3)//当确认的时候，重新计算下                     
-                      {
+                      if (StringToDecimal(status) == 3|| StringToDecimal(status)==4)//当确认/回单的时候，重新计算下                     
+                    {
                           if (bpm.updatetotal(pid, StringToDecimal(status)) > 0)
                           {
                               log.add_trace(pid, status, "", empname);
@@ -307,14 +607,89 @@ namespace XHD.CRM.Data
                     context.Response.Write("false");
                 }
             }
+            //更新，是否核定状态
+            if (request["Action"] == "updatesfky")
+            {
+
+                string pid = PageValidate.InputText(request["pid"], 50);
+                string cid = PageValidate.InputText(request["cid"], 50);
+                string status = PageValidate.InputText(request["status"], 50);
+                string purid = PageValidate.InputText(request["purid"], 50);
+                string sqls = "  UPDATE Purchase_Detail SET ischeck="+status+" WHERE Purid='"+purid+"' AND material_id='"+pid+"' AND Customer_id='"+cid+"'";
+
+                if (DBUtility.DbHelperSQL.ExecuteSql(sqls)>0)
+                {
+                    //log.add_trace(pid, status, "", empname);
+                    context.Response.Write("true");
+                }
+                else
+                {
+                    context.Response.Write("false");
+                }
+            }
+            //更新内部价格
+            if (request["Action"] == "updateprice")
+            {
+
+                string pid = PageValidate.InputText(request["pid"], 50);
+              
+                string price = PageValidate.InputText(request["price"], 50);
+                string sqls = "  UPDATE dbo.CRM_product SET InternalPrice="+price+"  WHERE product_id='"+pid+"'";
+
+                if (DBUtility.DbHelperSQL.ExecuteSql(sqls) > 0)
+                {
+                    //log.add_trace(pid, status, "", empname);
+                    context.Response.Write("true");
+                }
+                else
+                {
+                    context.Response.Write("false");
+                }
+            }
             if (request["Action"] == "savedetail")
             {
 
               
                 string pid = PageValidate.InputText(request["pid"], 50);
                 string bjlist = PageValidate.InputText(request["bjlist"], 255);
-                 if (bjlist.Length > 1) bjlist = bjlist.Substring(1);
-                 bpd.Addlist( pid, bjlist);
+                string isauto = PageValidate.InputText(request["isauto"], 50);
+                
+                if (bjlist.Length > 1) bjlist = bjlist.Substring(1);
+                 bpd.Addlist( pid, bjlist,isauto);
+                C_Sys_log clog = new C_Sys_log();
+                clog.AddOneForProduct(bjlist, "pur_qty");
+                 string sqls = "  UPDATE PurchaseList  SET IsStatus=7   WHERE id in (" + bjlist + ") EXEC [USP_ComputerPurScore]'"+ pid+"',0 ";
+                if (DBUtility.DbHelperSQL.ExecuteSql(sqls) > 0)
+                {
+                    context.Response.Write("true");
+                }
+                else
+                {
+                    context.Response.Write("false");
+                }
+            }
+            //保存调拨明细
+            if (request["Action"] == "savedetaildb")
+            {
+
+
+                string pid = PageValidate.InputText(request["pid"], 50);
+                string bjlist = PageValidate.InputText(request["bjlist"], 255);
+                string cid = PageValidate.InputText(request["cid"], 50);
+
+                if (bjlist.Length > 1) bjlist = bjlist.Substring(1);
+                bpd.AddlistDB(pid, bjlist, cid);
+                C_Sys_log clog = new C_Sys_log();
+                clog.AddOneForProduct(bjlist, "pur_qty_db");
+              //  string sqls = "  UPDATE PurchaseList  SET IsStatus=7   WHERE id in (" + bjlist + ") EXEC [USP_ComputerPurScore]'" + pid + "',0 ";
+                //if (DBUtility.DbHelperSQL.ExecuteSql(sqls) > 0)
+                //{
+                    context.Response.Write("true");
+                //}
+                //else
+                //{
+                //    context.Response.Write("false");
+                //}
             }
 
             if (request["Action"] == "saveupdatedetail")
@@ -326,7 +701,27 @@ namespace XHD.CRM.Data
                 decimal price = StringToDecimal(PageValidate.InputText(request["price"], 50) );
                 decimal editsum = StringToDecimal(PageValidate.InputText(request["editsum"], 50));
                 string remarks = PageValidate.InputText(request["remaks"], 255);
-                if (bpd.Updatedetail(pid, mid, price, editsum, remarks))
+                string customerid = PageValidate.InputText(request["customid"], 50);
+                if (bpd.Updatedetail(pid, mid, price, editsum, remarks, customerid))
+                    context.Response.Write("true");
+                else
+                {
+                    context.Response.Write("false");
+                }
+
+            }
+            //修改调拨数量，价格
+            if (request["Action"] == "saveupdatedetaildb")
+            {
+
+
+                string pid = PageValidate.InputText(request["pid"], 50);
+                string mid = PageValidate.InputText(request["mid"], 50);
+                decimal price = StringToDecimal(PageValidate.InputText(request["price"], 50));
+                decimal editsum = StringToDecimal(PageValidate.InputText(request["editsum"], 50));
+                string remarks = PageValidate.InputText(request["remaks"], 255);
+                string customerid = PageValidate.InputText(request["customid"], 50);
+                if (bpd.UpdatedetailDB(pid, mid, price, editsum, remarks, customerid))
                     context.Response.Write("true");
                 else
                 {

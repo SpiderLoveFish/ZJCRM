@@ -479,11 +479,25 @@ namespace XHD.DAL
 			}
 			return DbHelperSQL.Query(strSql.ToString());
 		}
+        
+        /// <summary>
+        /// 获得数据列表(客户进度管理)
+        /// </summary>
+        public DataSet GetList_khjdgl(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("SELECT A.Customer_id,A.Customer_name,isnull(A.Order_amount,0)Order_amount,isnull(B.dj_amount,0)dj_amount,isnull(C.zx_amount,0)zx_amount,(isnull(A.Order_amount,0)-isnull(B.dj_amount,0) - isnull(C.zx_amount,0))wf_amount FROM (SELECT Customer_id,Customer_name,SUM(Total_Money)Order_amount FROM  dbo.CRM_order GROUP BY Customer_id,Customer_name)A LEFT JOIN (SELECT Customer_id,SUM(Receive_amount) dj_amount FROM  CRM_receive WHERE receive_direction_name IN('收定金','退定金') AND isDelete=1 GROUP BY Customer_id)B ON A.Customer_id = B.Customer_id LEFT JOIN (SELECT Customer_id,SUM(Receive_amount) zx_amount FROM  CRM_receive WHERE receive_direction_name IN('收装修款','退装修款') and isDelete=1 GROUP BY Customer_id)C ON A.Customer_id = C.Customer_id ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
 
-		/// <summary>
-		/// 获得前几行数据
-		/// </summary>
-		public DataSet GetList(int Top,string strWhere,string filedOrder)
+        /// <summary>
+        /// 获得前几行数据
+        /// </summary>
+        public DataSet GetList(int Top,string strWhere,string filedOrder)
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("select ");

@@ -40,10 +40,19 @@ namespace XHD.CRM.Data
                 model.parentid = int.Parse(parentid);
                 model.product_category = Common.PageValidate.InputText(request["T_category_name"], 250);
                 model.product_icon = Common.PageValidate.InputText(request["T_category_icon"], 250);
-                model.c_code = Common.PageValidate.InputText(request["T_code"], 250);
+                string ccode= Common.PageValidate.InputText(request["T_code"], 250);
+                model.c_code = ccode.ToUpper();
                 model.c_style = Common.PageValidate.InputText(request["T_style"], 250);
                 string id = PageValidate.InputText( request["id"],50);
                 string pid = PageValidate.InputText( request["T_category_parent_val"],50);
+                string sql = "SELECT * FROM dbo.CRM_product_category WHERE C_CODE='"+ ccode.ToUpper() + "'";
+                 DataSet dss=    DBUtility.DbHelperSQL.Query(sql);
+
+                if (dss.Tables[0].Rows.Count > 0)
+                {
+                    context.Response.Write("false:ccode");
+                    return;
+                }
                 if (!string.IsNullOrEmpty(id) && id != "null")
                 {
                     model.id = int.Parse(id);
@@ -140,16 +149,16 @@ namespace XHD.CRM.Data
                 DataSet ds = null;
                 //还有地方crm_product.ashx  save
               string style=  PageValidate.InputText(request["style"],50);
-              if (!string.IsNullOrEmpty(style) && style != "null")
-              {
-                  if (style == "0") ds = ccpc.GetList(" c_style='主材'");
-                  else if (style == "1") ds = ccpc.GetList(" c_style='基建'");
-                  else   ds = ccpc.GetAllList();
-              }
-              else
-              {
+              //if (!string.IsNullOrEmpty(style) && style != "null")
+              //{
+              //    if (style == "0") ds = ccpc.GetList(" c_style='主材'");
+              //    else if (style == "1") ds = ccpc.GetList(" c_style='基建'");
+              //    else   ds = ccpc.GetAllList();
+              //}
+              //else
+              //{
                     ds = ccpc.GetAllList();
-              }
+              //}
                 StringBuilder str = new StringBuilder();
                 str.Append("[");
                 str.Append(GetTreeString(0, ds.Tables[0]));

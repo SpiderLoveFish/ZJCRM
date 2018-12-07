@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" %>
+ï»¿<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -21,15 +21,15 @@
        function loadlogo() {
            $.ajax({
                type: "GET",
-               url: "../../data/sys_info.ashx", /* ×¢ÒâºóÃæµÄÃû×Ö¶ÔÓ¦CSµÄ·½·¨Ãû³Æ */
-               data: { Action: 'grid', rnd: Math.random() }, /* ×¢Òâ²ÎÊıµÄ¸ñÊ½ºÍÃû³Æ */
+               url: "../../data/sys_info.ashx", /* æ³¨æ„åé¢çš„åå­—å¯¹åº”CSçš„æ–¹æ³•åç§° */
+               data: { Action: 'grid', rnd: Math.random() }, /* æ³¨æ„å‚æ•°çš„æ ¼å¼å’Œåç§° */
                contentType: "application/json; charset=utf-8",
                dataType: "json",
                success: function (result) {
                    var obj = eval(result);
                    var rows = obj.Rows;
 
-                   //alert(obj.constructor); //String ¹¹Ôìº¯Êı
+                   //alert(obj.constructor); //String æ„é€ å‡½æ•°
                    $("#T_logo").html(rows[1].sys_value);
                    //$("#T_logo_2").html(rows[1].sys_value);
                    //$("#T_logo_3").html(rows[1].sys_value);
@@ -40,8 +40,8 @@
        function loadHead(oaid) {
            $.ajax({
                type: "GET",
-               url: "../../data/Purchase.ashx", /* ×¢ÒâºóÃæµÄÃû×Ö¶ÔÓ¦CSµÄ·½·¨Ãû³Æ */
-               data: { Action: 'form', pid: oaid, rnd: Math.random() }, /* ×¢Òâ²ÎÊıµÄ¸ñÊ½ºÍÃû³Æ */
+               url: "../../data/Purchase.ashx", /* æ³¨æ„åé¢çš„åå­—å¯¹åº”CSçš„æ–¹æ³•åç§° */
+               data: { Action: 'form', pid: oaid, rnd: Math.random() }, /* æ³¨æ„å‚æ•°çš„æ ¼å¼å’Œåç§° */
                contentType: "application/json; charset=utf-8",
                dataType: "json",
                success: function (result) {
@@ -58,11 +58,12 @@
                    $("#T_gysdz").html(obj.gysdz);
                    $("#T_kh").html(obj.Customer + '(' + obj.tel + ')');
                    $("#T_khdz").html(obj.address);
+                     $("#T_remarks").html(obj.remarks);
                    $("#T_rq").html(formatTimebytype(obj.purdate, 'yyyy-MM-dd'));
                    $("#T_qdrq").html(formatTimebytype(obj.ConfirmDate, 'yyyy-MM-dd'));
                    if (obj.IsGD=="1")
-                       $("#T_shfs").html("Ö±ËÍ¿Í»§");
-                   else $("#T_shfs").html("ËÍÖÁ¹«Ë¾");
+                       $("#T_shfs").html("ç›´é€å®¢æˆ·");
+                   else $("#T_shfs").html("é€è‡³å…¬å¸");
                     
                },
                error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -74,21 +75,43 @@
        function loadBody(oaid) {
            $.ajax({
                type: "GET",
-               url: "../../data/Purchase.ashx", /* ×¢ÒâºóÃæµÄÃû×Ö¶ÔÓ¦CSµÄ·½·¨Ãû³Æ */
-               data: { Action: 'griddetail', pid: oaid, rnd: Math.random() }, /* ×¢Òâ²ÎÊıµÄ¸ñÊ½ºÍÃû³Æ */
+               url: "../../data/Purchase.ashx", /* æ³¨æ„åé¢çš„åå­—å¯¹åº”CSçš„æ–¹æ³•åç§° */
+               data: { Action: 'griddetail', pid: oaid, rnd: Math.random() }, /* æ³¨æ„å‚æ•°çš„æ ¼å¼å’Œåç§° */
                contentType: "application/json; charset=utf-8",
                dataType: "json",
                success: function (result) {
                    var obj = result.Rows;
-                   var item; 
+                   var item = ""; var cn = "";  
+  var snn=1;
                    $.each(obj, function (i, data) {
-                     
-                       item = "<tr><td>" + data['material_id'] + "</td><td>" + data['material_name'] + "</td><td>" + data['specifications'] + "</td><td>" + data['pursum'] + "</td> "
-                           + " <td>" + data['unit'] + "</td><td>" + data['purprice'] + "</td> <td>" + data['subtotal'] + "</td>"
-                           + " </tr>";
+                  
+                       if (data['customer'] != cn) {
+                          snn =1
+                            //alert(JSON.stringify(data))
+                           item = "<tr><td align='left' colspan='7' ><font size='3' ><b>&nbsp;&nbsp;" + data['customer'] +"   æ–½å·¥ç›‘ç†ï¼š"+ data['Emp_sg']+"</b></font></td></tr>"
+                               + "<tr><td>"+snn+"</td><td> " + data['c_code'] + "</td><td>" + data['material_name'] + "</td><td>" + data['specifications'] + "</td><td align=right>" + data['pursum'] + "</td> "
+                               + " <td align=center>" + data['unit'] + "</td><td>" + data['b1'] + "</td>"
+                               + " </tr>";
+                       }
+                       else {
+                    snn=snn+1;
+                           item = "<tr><td>"+snn+"</td><td>" + data['c_code'] + "</td><td>" + data['material_name'] + "</td><td>" + data['specifications'] + "</td><td align=right>" + data['pursum'] + "</td> "
+                               + " <td align=center>" + data['unit'] + "</td><td>" + data['b1'] + "</td>"
+                               + " </tr>";
+                       }
+                      //<td>" + data['purprice'] + "</td> <td>" + data['subtotal'] + "</td>
                        $('.table').append(item); 
-                   
+                     
+                       cn = data['customer'];
                    });
+                   //$.each(obj, function (i, data) {
+                     
+                   //    item = "<tr><td>" + data['material_id'] + "</td><td>" + data['material_name'] + "</td><td>" + data['specifications'] + "</td><td>" + data['pursum'] + "</td> "
+                   //        + " <td>" + data['unit'] + "</td><td>" + data['purprice'] + "</td> <td>" + data['subtotal'] + "</td>"
+                   //        + " </tr>";
+                   //    $('.table').append(item); 
+                   
+                   //});
                },
                error: function (XMLHttpRequest, textStatus, errorThrown) {
                    alert(textStatus);
@@ -99,8 +122,8 @@
 
        function PreviewMytable() {
 		var LODOP=getLodop();  
-		LODOP.PRINT_INIT("·ÖÒ³´òÓ¡×ÛºÏ±í¸ñ");
-		//LODOP.ADD_PRINT_TEXT(13, 22, 295, 110, "ĞÄ³Ï×°ÊÎ");
+		LODOP.PRINT_INIT("åˆ†é¡µæ‰“å°ç»¼åˆè¡¨æ ¼");
+		//LODOP.ADD_PRINT_TEXT(13, 22, 295, 110, "å¿ƒè¯šè£…é¥°");
 		//LODOP.SET_PRINT_STYLEA(0, "FontColor", "#808080");
 		//LODOP.SET_PRINT_STYLEA(0, "ItemType", 1);
 		//LODOP.SET_PRINT_STYLEA(0, "Angle", 45);
@@ -121,19 +144,19 @@
 		////LODOP.ADD_PRINT_HTM(26,"5%","90%",80,document.getElementById("div4").innerHTML);
 		//LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 		//LODOP.SET_PRINT_STYLEA(0,"LinkedItem",4);	
-		////LODOP.ADD_PRINT_TEXT(460,96,"76.25%",20," ×£ÄúºÃÔ¶£¡");
+		////LODOP.ADD_PRINT_TEXT(460,96,"76.25%",20," ç¥æ‚¨å¥½è¿œï¼");
 		//LODOP.SET_PRINT_STYLEA(0,"LinkedItem",4);
 		//LODOP.SET_PRINT_STYLEA(0,"FontSize",12);
 		//LODOP.SET_PRINT_STYLEA(0,"FontColor","#FF0000");
 		//LODOP.SET_PRINT_STYLEA(0,"Alignment",2);
 		//LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 		//LODOP.SET_PRINT_STYLEA(0,"Horient",3);	
-		LODOP.ADD_PRINT_HTM(1,600,300,100,"<font color='#0000ff' format='ChineseNum'><span tdata='pageNO'>µÚ##Ò³</span>/<span tdata='pageCount'>¹²##Ò³</span></font>");
+		LODOP.ADD_PRINT_HTM(1,600,300,100,"<font color='#0000ff' format='ChineseNum'><span tdata='pageNO'>ç¬¬##é¡µ</span>/<span tdata='pageCount'>å…±##é¡µ</span></font>");
 
 		LODOP.SET_PRINT_STYLEA(0,"ItemType",1);
 
 		LODOP.SET_PRINT_STYLEA(0,"Horient",1);	
-		//LODOP.ADD_PRINT_TEXT(3,34,196,20,"×ÜÒ³Ã¼£º¡¶Á½¸ö·¢»õµ¥µÄÑİÊ¾¡·");
+		//LODOP.ADD_PRINT_TEXT(3,34,196,20,"æ€»é¡µçœ‰ï¼šã€Šä¸¤ä¸ªå‘è´§å•çš„æ¼”ç¤ºã€‹");
 		LODOP.SET_PRINT_STYLEA(0,"ItemType",1);		
 		LODOP.PREVIEW();	
 	};	
@@ -141,21 +164,26 @@
 </head>
 <body style="padding: 0px;overflow:hidden;">
     <form id="form1" onsubmit="return false">
- <p><a href="javascript:PreviewMytable();">Ô¤ÀÀ´òÓ¡</a>
+ <p><a href="javascript:PreviewMytable();">é¢„è§ˆæ‰“å°</a>
 </p>
 
          <div id="div1">
-<DIV style="LINE-HEIGHT: 30px" class=size16 align=center><STRONG><font ><span id="T_logo"></span>²É¹ºµ¥ £¨<SPAN id="T_pid" ></SPAN> £©</font></STRONG></DIV>        
+<DIV style="LINE-HEIGHT: 30px" class=size16 align=center><STRONG><font ><span id="T_logo"></span>é‡‡è´­å• ï¼ˆ<SPAN id="T_pid" ></SPAN> ï¼‰</font></STRONG></DIV>        
 <TABLE  border=0 cellSpacing=0 cellPadding=0 width="100%">
   <TBODY>
   <TR>
-    <TD width="35%"  ><font >¹©»õÉÌ:<SPAN id="T_gys" ></SPAN></font></TD>
-    <TD  width="30%"><font >ÁªÏµÈË£º <SPAN id="T_lxr" ></SPAN></font></TD>
-    <TD width="35%" ><font >µØÖ·£º<SPAN id="T_gysdz"></SPAN></font></TD></TR>
-  <TR>
-     <TD width="35%"  ><font >¿Í»§:<SPAN id="T_kh" ></SPAN></font></TD>
-    <TD  width="30%"><font >µØÖ·£º <SPAN id="T_khdz" ></SPAN></font></TD>
-    <TD width="35%" ><font >¶©¹ºÈÕÆÚ£º<SPAN id="T_rq"></SPAN></font></TD></TR>
+    <TD width="35%"  ><font >ä¾›è´§å•†:<SPAN id="T_gys" ></SPAN></font></TD>
+    <TD  width="30%"><font >è”ç³»äººï¼š <SPAN id="T_lxr" ></SPAN></font></TD>
+    <TD width="35%" ><font >åœ°å€ï¼š<SPAN id="T_gysdz"></SPAN></font></TD></TR>
+  <%--<TR>
+     <TD width="35%"  ><font >å®¢æˆ·:<SPAN id="T_kh" ></SPAN></font></TD>
+    <TD  width="30%"><font >åœ°å€ï¼š <SPAN id="T_khdz" ></SPAN></font></TD>
+    <TD width="35%" ><font >è®¢è´­æ—¥æœŸï¼š<SPAN id="T_rq"></SPAN></font></TD></TR>
+   
+      </TR>--%>
+       <TR>
+     <TD  colspan="2"  ><font >å¤‡æ³¨:<SPAN id="T_remarks" ></SPAN></font></TD> <TD width="35%" ><font >è®¢è´­æ—¥æœŸï¼š<SPAN id="T_rq"></SPAN></font></TD>
+   </TR>
    
       </TR>
       </TBODY></TABLE>
@@ -166,20 +194,25 @@
 <TABLE   class="table table-striped table-bordered table-condensed"border=1 cellSpacing=0 cellPadding=1 width="100%" style="border-collapse:collapse" bordercolor="#333333">
 <thead>
   <TR>
+       <TD width="5%">
+      <DIV align=center><b>åºå·</b></DIV></TD>
      <TD width="10%">
-      <DIV align=center><b>²úÆ·´úÂë</b></DIV></TD>
+      <DIV align=center><b>äº§å“ä»£ç </b></DIV></TD>
     <TD width="20%">
-      <DIV align=center><b>²úÆ·Ãû³Æ</b></DIV></TD>
+      <DIV align=center><b>äº§å“åç§°</b></DIV></TD>
     <TD width="20%">
-      <DIV align=center><b>¹æ¸ñ/ĞÍºÅ/Æ·ÅÆ		</b></DIV></TD>
+      <DIV align=center><b>è§„æ ¼/å‹å·/å“ç‰Œ		</b></DIV></TD>
     <TD width="10%">
-      <DIV align=center><b>ÊıÁ¿</b></DIV></TD>
+      <DIV align=center><b>æ•°é‡</b></DIV></TD>
         <TD width="10%">
-      <DIV align=center><b>µ¥Î»</b></DIV></TD>
+      <DIV align=center><b>å•ä½</b></DIV></TD>
+<%--    <TD width="10%">
+      <DIV align=center><b>å•ä»·</b></DIV></TD>
     <TD width="10%">
-      <DIV align=center><b>µ¥¼Û</b></DIV></TD>
-    <TD width="10%">
-      <DIV align=center><b>½ğ¶î</b></DIV></TD></TR>
+      <DIV align=center><b>é‡‘é¢</b></DIV></TD>--%>
+      <TD width="30%">
+      <DIV align=center><b>å¤‡æ³¨</b></DIV></TD>
+  </TR>
 </thead>      
   <TBODY>      
  </TBODY>
@@ -193,21 +226,17 @@
 	</TD>
 	<TD  align="left">
   	<p align="center"> </TD>    
-	<%--<TD width="14%" align="right">¡¡Ğ¡¼Æ</TD>
-	<TD width="19%" tdata="subSum" format="#,##0.00" align="right"><font >£¤###</font></TD>   
+	<%--<TD width="14%" align="right">ã€€å°è®¡</TD>
+	<TD width="19%" tdata="subSum" format="#,##0.00" align="right"><font >ï¿¥###</font></TD>   
  </tr>--%>
-      <tr><td >±¸×¢£º</td>
-          <td colspan="7">
-
-          </td>
-
-      </tr>
-      <tr><td >½»»õÈÕÆÚ£º</td>
+      
+      <tr><td colspan="2">äº¤è´§æ—¥æœŸï¼š</td>
           <td><SPAN id="T_qdrq"></SPAN></td> 
-          <td>ËÍ»õ·½Ê½£º</td> 
-          <td><SPAN id="T_shfs"></SPAN></td>   
-          <td>ºÏ¼Æ½ğ¶î:</td>  
-          <td colspan="2" tdata="AllSum" format="#,##0.00" align="right"><font >£¤###</font></TD>    
+           
+          <td>åˆè®¡ï¼š</td> 
+          <td  tdata="AllSum" format="#,##0.00" align="right">####</td>   
+          <td ></td>  
+          <td ><font ></font></TD>    
 
       </tr>
       
@@ -217,7 +246,7 @@
 <%--<p>----------------------div3:------------------------------------------------------------------------------------</p>--%>
 <div id="div3">
   <DIV style="LINE-HEIGHT: 30px" 
-align=center><font >¸ĞĞ»Äú¶ÔÎÒÃÇµÄÖ§³Ö.</font></DIV>
+align=center><font >æ„Ÿè°¢æ‚¨å¯¹æˆ‘ä»¬çš„æ”¯æŒ.</font></DIV>
 </div>
     
     </form>

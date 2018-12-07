@@ -157,17 +157,16 @@
             g = $("#maingrid4").ligerGrid({
                 columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
-
-                 //   { display: '客户', name: 'Customer', width: 120 },
+                    { display: '云名称', name: 'name', width: 120 },
  
-                   { display: '名称', name: 'title', width: 160 },
+                   { display: '本地名称', name: 'title', width: 160 },
 
                       {
-                          display: '', width: 50, render: function (item) {
+                          display: '本地全景', width: 50, render: function (item) {
 
                                    
                                var html;
-                               if (item.DyUrl !== "") {
+                               if (item.DyUrl !== "" && item.DyUrl != "undefined") {
                                    var html = "<a href='javascript:void(0)' onclick=viewkjl('" + item.link + "','aa')>查看</a>"
 
                                  
@@ -175,21 +174,32 @@
                               else html = "暂无";
                               return html;
                           }
+                   },
+                      {
+                          display: '云全景', width: 50, render: function (item) {
+
+
+                              var html;
+                              if (item.view_uuid !== "" && item.view_uuid !="undefined") {
+                                  var html = "<a href='javascript:void(0)' onclick=viewQJT('" + item.view_uuid + "','" + item.name + "')>查看</a>"
+
+
+                              }
+                              else html = "暂无";
+                              return html;
+                          }
                       },
                           {
-                              display: '创建时间', name: 'DoTime', width: 90, render: function (item) {
-                                  var Create_date = getLocalTime(item.addtime);
+                              display: '创建时间', name: 'DoTime', width: 120, render: function (item) {
+                                  var Create_date = ""; 
+                                  if (item.addtime != '')
+                                      Create_date = getLocalTime(item.addtime);
+                                  else
+                                      Create_date =  formatTime(item.DoTime);
                                   return Create_date;
                               }
                           },
-                           //{
-                           //    display: '3D图', name: 'desid', width: 80, render: function (item) {
-                           //        var html;
-                           //        if (item.desid != "") html = "有";
-                           //        else html = "无";
-                           //        return html;
-                           //    }
-                           //},
+                         
                            //{
                            //    display: '预览图', name: 'img', width: 80, render: function (item) {
                            //        var html;
@@ -213,7 +223,7 @@
                            //    }
                            //},
                         {
-                            display: '备注', name: 'views', align: 'left', width: 250, type: 'text'
+                            display: '本地备注', name: 'views', align: 'left', width: 250, type: 'text'
                             
                         }
 
@@ -221,7 +231,7 @@
 
                 ],
                 dataAction: 'server',
-                url: "../../data/crm_customer.ashx?Action=griddyapi&cid=" + getparastr("cid")+'&keytel='+tel + "&rnd=" + Math.random(),
+                url: "../../data/crm_customer.ashx?Action=getqjapi&cid=" + getparastr("cid") +'&tel='+tel + "&rnd=" + Math.random(),
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
                 width: '100%',
@@ -235,9 +245,63 @@
                     return false;
                 }
             });
+            g.toggleCol(4, true);//显示
+            g.toggleCol(3, false);//显示
+            g.toggleCol(1, true);//显示
+            g.toggleCol(2, false);//显示
+            g.toggleCol(5, true);//显示
+            g.toggleCol(6, false);//显示
 
         }
-        
+
+
+        function viewdy() {
+            //url, newname
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            //alert(JSON.stringify(row));
+            if (row) {
+                $.ajax({
+                    url: "../../Data/website.ashx", type: "GET",
+                    data: { Action: "getqjapi", tel: row.电话, rnd: Math.random() },
+                    //data: { tel: row.tel},
+                    success: function (result) {
+
+                        var obj = eval("(" + result + ")");
+
+
+                        if (obj.status == 1) {
+                            $.each(obj.data, function (i, data) {
+                                if (data.project.length > 0) {
+                                    $.each(data.project, function (i, r) {
+                                        window.open(r["thumb_path"] + "?1=1&width=" + screen.width +
+                                            "&height=" + (screen.height - 70), r["name"],
+                                            "top=0,left=0,toolbar=no, menubar=no, scrollbars=yes,resizable=no,location=no,status=no,width=" +
+                                            screen.width + ",height=" +
+                                            (screen.height - 70));
+                                        //alert(r["name"]);
+                                    })
+                                } else {
+                                    alert("没有获取到有效得全景图！");
+                                }
+                            });
+                        } else {
+                            alert("获取失败！！");
+                        }
+
+
+                    },
+                    error: function () {
+
+                        alert("获取失败2！");
+
+                    }
+                });
+            }
+
+        }
+
+
         function loadForm(oaid) {
             $("#T_customerid").val(oaid);
             $("#T_customer").val(decodeURI(getparastr("name")));
@@ -253,6 +317,14 @@
 
         }
 
+        function viewQJT(url, newname) {
+
+            window.open("https://33qjvr.com/p/"+url + "?1=1&width=" + screen.width +
+                "&height=" + (screen.height - 70), newname,
+                "top=0,left=0,toolbar=no, menubar=no, scrollbars=yes,resizable=no,location=no,status=no,width=" +
+                screen.width + ",height=" +
+                (screen.height - 70));
+        }
         function viewkjl(url,newname)
         {
             
@@ -262,6 +334,7 @@
                                 screen.width + ",height=" +
                                 (screen.height - 70));
         }
+
 
         function kjl() {
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -502,9 +575,22 @@
                // alert(1)
                 manager.GetDataByURL("../../data/crm_customer.ashx?Action=griddy&cid=" + getparastr("cid") );
             
-            }else if ($("#stextlx_val").val() == "1")
+                manager.toggleCol(3, true);//显示
+                manager.toggleCol(4, false);//显示
+                manager.toggleCol(2, true);//显示
+                manager.toggleCol(1, false);//显示
+                manager.toggleCol(6, true);//显示
+                manager.toggleCol(5, false);//显示
+            } else if ($("#stextlx_val").val() == "1")
             {   
-                manager.GetDataByURL("../../data/crm_customer.ashx?Action=griddyapi&cid=" + getparastr("cid") + '&keytel=' + getparastr("tel") + "&rnd=" + Math.random());
+                manager.GetDataByURL("../../data/crm_customer.ashx?Action=getqjapi&cid=" + getparastr("cid") + '&tel=' + getparastr("tel") + "&rnd=" + Math.random());
+                manager.toggleCol(4, true);//显示
+                manager.toggleCol(3, false);//显示
+              
+                manager.toggleCol(1, true);//显示
+                manager.toggleCol(2, false);//显示
+                manager.toggleCol(5, true);//显示
+                manager.toggleCol(6, false);//显示
             }
         }
         function fload() {

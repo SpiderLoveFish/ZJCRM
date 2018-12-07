@@ -33,15 +33,26 @@
     <script type="text/javascript">
         var manager; var gg;
         var manager1;
+        var IsExistTelRight;
         $(function () {
-
+            var customerIdSelected; //记录当前选择操作的行的客户ID
             initLayout();
             $(window).resize(function () {
                 initLayout();
             });
+
+            IsExist_TelRight();
+            $("#ck").ligerCheckBox();
+            var gridurl = "../../data/crm_customer.ashx?Action=grid&type=0&rnd=" + Math.random();
+            if (getparastr("type") == "TEMP")//名单客户
+            { gridurl = "../../data/crm_customer.ashx?Action=grid&type=2&rnd=" + Math.random(); }
+           else  if (getparastr("type") == "CX")//查询客户
+            {
+                gridurl = "../../data/crm_customer.ashx?Action=grid&CType=" + encodeURI(decodeURI(getparastr("CType"))) + "&kh=" + encodeURI(decodeURI(getparastr("kh"))) + "&khtype=" + getparastr("sectype") + "&searchtype=" + getparastr("searchtype")+"&rnd=" + Math.random();
+            }
+            
             if (getparastr("type") == "GJXG") {
                 gg = $("#maingrid4").ligerGrid(
-
                {
 
                    columns: [
@@ -49,7 +60,7 @@
                            display: '序号', width: 30, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                            { return (page - 1) * pagesize + rowindex + 1; }
                        },
-
+                   { display: '编号', name: 'khbh', width: 60 },
                        {
                            display: '姓名', name: 'Customer', width: 50, align: 'left', render: function (item) {
                                var html = "<a href='javascript:void(0)' onclick=view(1," + item.id + ")>";
@@ -64,7 +75,13 @@
                             display: '电话', name: 'tel', align: 'left', width: 40, render: function (item) {
                                 var html = "<div class='abc'>";
                                 if (item.tel)
-                                    html += item.tel;
+                                {
+                                    if (IsExistTelRight == 1)
+                                        html += item.tel;
+                                    else { html = "*********"; }
+                                  //  else { html += item.tel; }
+                                }
+                                  
                                 html += "</div>";
                                 return html;
                             }
@@ -215,8 +232,15 @@
                                var Create_date = formatTimebytype(item.Create_date, 'yyyy-MM-dd');
                                return Create_date;
                            }
-                       }
+                       },
 
+                       {
+                           display: '修改日期', name: 'Delete_time', width: 90, render: function (item) {
+                               var Delete_time = formatTimebytype(item.Delete_time, 'yyyy-MM-dd');
+                               return Delete_time;
+                           }
+                       }
+                       
 
                    ],
 
@@ -225,15 +249,24 @@
                    },
                    //fixedCellHeight:false,
                    onSelectRow: function (data, rowindex, rowobj) {
+                       customerIdSelected = data.id;
                        var manager = $("#maingrid5").ligerGetGridManager();
                        manager.showData({ Rows: [], Total: 0 });
-                       var url = "../../data/CRM_Follow.ashx?Action=grid&customer_id=" + data.id;
+                       var url = "";
+                       if (getparastr("type") == "GJXG") //客户进度管理
+                       {
+                           url = "../../data/CRM_receive.ashx?Action=grid_khjdgl&customerid=" + data.id;
+                       }
+                       else
+                       {
+                           url = "../../data/CRM_Follow.ashx?Action=grid&customer_id=" + data.id;
+                       }
                        manager.GetDataByURL(url);
                    },
                    rowtype: "CustomerType",
                    dataAction: 'server', pageSize: 30, pageSizeOptions: [20, 30, 50, 100],
-                   url: "../../data/crm_customer.ashx?Action=grid&rnd=" + Math.random(),
-                   width: '100%', height: '65%',
+                   url: gridurl,
+                   width: '100%', height: '65%', 
                    heightDiff: -1,
                    onRClickToSelect: true,
                    onContextmenu: function (parm, e) {
@@ -285,7 +318,7 @@
                             display: '序号', width: 30, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                             { return (page - 1) * pagesize + rowindex + 1; }
                         },
-
+                     { display: '编号', name: 'khbh', width: 60 },
                         {
                             display: '姓名', name: 'Customer', width: 50, align: 'left', render: function (item) {
                                 var html = "<a href='javascript:void(0)' onclick=view(1," + item.id + ")>";
@@ -299,8 +332,12 @@
                          {
                              display: '电话', name: 'tel', align: 'left', width: 40, render: function (item) {
                                  var html = "<div class='abc'>";
-                                 if (item.tel)
-                                     html += item.tel;
+                                 if (item.tel) {
+                                     if (IsExistTelRight == 1)
+                                         html += item.tel;
+                                     else { html = "*********"; }
+                                     // else { html =  item.tel; }
+                                 }
                                  html += "</div>";
                                  return html;
                              }
@@ -369,17 +406,65 @@
 
 
                         {
-                            display: '最后跟进', name: 'lastfollow', width: 90, render: function (item) {
-                                var lastfollow = formatTimebytype(item.lastfollow, 'yyyy-MM-dd');
+                            display: '最后跟进', name: 'lastfollow', width: 150, render: function (item) {
+                                var lastfollow = formatTimebytype(item.lastfollow, 'yyyy-MM-dd hh:mm');
                                 if (lastfollow == "1900-01-01")
                                     lastfollow = "";
                                 return lastfollow;
                             }
                         },
+                       { display: '跟进标准', name: 'followhours', width: 60 }, 
+                        {
+                            display: '未跟时长', name: 'followtime', width: 90, render: function (item) {
+                                var html;
+
+                                  if (item.isfollowview == "0") {
+                                      html = "<div style='color:#FF3030'>";
+                                    html += item.followtime;
+                                    html += "</div>";
+                                }
+                                  else  
+                                  {
+                                      html = "<div style='color:#339900'>";
+                                html += item.followtime;
+                                html += "</div>";
+                                  }
+                                return html;
+                            }
+                                 
+                              
+                        },
+                        {
+                            display: '是否超时', name: 'isfollowview', width: 90, render: function (item) {
+                                var html;
+
+                                  if (item.isfollowview == "0") {
+                                      html = "<div style='color:#FF3030'>";
+                                    html += "已超时";
+                                    html += "</div>";
+                                }
+                                  else  
+                                  {
+                                      html = "<div style='color:#339900'>";
+                                html += "未超时";
+                                html += "</div>";
+                                  }
+                                return html;
+                            }
+                                 
+                              
+                        },
                         {
                             display: '创建时间', name: 'Create_date', width: 90, render: function (item) {
                                 var Create_date = formatTimebytype(item.Create_date, 'yyyy-MM-dd');
                                 return Create_date;
+                            }
+                        },
+
+                        {
+                            display: '修改日期', name: 'Delete_time', width: 90, render: function (item) {
+                                var Delete_time = formatTimebytype(item.Delete_time, 'yyyy-MM-dd');
+                                return Delete_time;
                             }
                         }
 
@@ -393,12 +478,12 @@
                     onSelectRow: function (data, rowindex, rowobj) {
                         var manager = $("#maingrid5").ligerGetGridManager();
                         manager.showData({ Rows: [], Total: 0 });
-                        var url = "../../data/CRM_Follow.ashx?Action=grid&customer_id=" + data.id;
+                        var url = "../../data/CRM_Follow.ashx?Action=grid&customer_id=" + data.id +"&sectype1=kh";
                         manager.GetDataByURL(url);
                     },
                     rowtype: "CustomerType",
                     dataAction: 'server', pageSize: 30, pageSizeOptions: [20, 30, 50, 100],
-                    url: "../../data/crm_customer.ashx?Action=grid&rnd=" + Math.random(),
+                    url: gridurl,
                     width: '100%', height: '65%',
                     heightDiff: -1,
                     onRClickToSelect: true,
@@ -441,59 +526,143 @@
                     }
                 });
             }
-            if (getparastr("type") == "GJXG")
-
+            if (getparastr("type") == "GJXG") //客户进度管理
+ 
                 $("#maingrid5").ligerGrid({
                     columns: [
-                            { display: '序号', width: 40, render: function (item, i) { return i + 1; } },
+                        { display: '序号', width: 50, render: function (item, i) { return i + 1; } },
 
-                            {
-                                display: '交易时间', name: 'Follow_date', width: 140, render: function (item) {
-                                    return formatTimebytype(item.Follow_date, 'yyyy-MM-dd hh:mm');
-                                }
-                            },
-                            { display: '交易类别', name: 'Follow_Type', width: 60 },
-                          
-                            {
-                                display: '交易金额', name: '', width: 100, render: function (item) {
-                                    return item.employee_name;
-                                }
-                            },
-                             {
-                                 display: '凭证号', name: '', width: 100, render: function (item) {
-                                     return item.employee_name;
+                       
+                       
+                         {
+                             display: '类型', name: 'receive_direction_name', width: 60, render: function (item) {
+
+                                 var html;
+
+
+                                 if (item.receive_direction_name == "收装修款") {
+                                     html = "<div style='color:#00f'>";
+                                     html += "收装修款";
+                                     html += "</div>";
                                  }
-                             },
-                               {
-                                   display: '交易人', name: '', width: 80, render: function (item) {
-                                       return item.employee_name;
-                                   }
-                               },
-                              {
-                                  display: '录入人', name: '', width: 80, render: function (item) {
-                                      return item.employee_name;
-                                  }
-                              },
-                              {
-                                  display: '录入时间', name: '', width: 80, render: function (item) {
-                                      return item.employee_name;
-                                  }
-                              }
+                                 else if (item.receive_direction_name == "退装修款") {
+                                     html = "<div style='color:#FF0000'>";
+                                     html += "退装修款";
+                                     html += "</div>";
+                                 }
+                                 else if (item.receive_direction_name == "收定金") {
+                                     html = "<div style='color:#00f'>";
+                                     html += "收定金";
+                                     html += "</div>";
+                                 }
+                                 else if (item.receive_direction_name == "退定金") {
+                                     html = "<div style='color:#FF0000'>";
+                                     html += "退定金";
+                                     html += "</div>";
+                                 }
+                                 else if (item.receive_direction_name == "应收") {
+                                     html = "<div style='color:#000'>";
+                                     html += "应收";
+                                     html += "</div>";
+                                 }
+                                 else {
+                                     html = item.receive_direction_name;
+                                 }
+                                 return html;
+                             }
+                         },
+                          {
+                              display: '金额（￥）', name: 'Receive_amount', width: 80, align: 'right', render: function (item) {
 
+                                  var html;
+
+
+                                  if (item.receive_direction_name == "应收") {
+                                      html = "<div style='color:#000'>";
+                                      html += toMoney(item.Receive_amount);
+                                      html += "</div>";
+                                  }
+                                  else if (item.Receive_amount >= 0) {
+                                      html = "<div style='color:#00f'>";
+                                      html += toMoney(item.Receive_amount);
+                                      html += "</div>";
+                                  }
+                                  else if (item.Receive_amount < 0) {
+                                      html = "<div style='color:#FF0000'>";
+                                      html += toMoney(item.Receive_amount);
+                                      html += "</div>";
+                                  }
+
+                                  else {
+                                      html = item.Receive_amount;
+                                  }
+                                  return html;
+                              }
+                          },
+                        { display: '方式', name: 'Pay_type', width: 100 },
+                         { display: '凭证号码', name: 'Receive_num', width: 140 },
+                       
+                        {
+                            display: '处理人', width: 100, render: function (item) {
+                                return item.C_depname + "." + item.C_empname;
+                            }
+                        },
+                        {
+                            display: '处理日期', name: 'Receive_date', width: 90, render: function (item) {
+                                return formatTimebytype(item.Receive_date, 'yyyy-MM-dd');
+                            }
+                        },
+                        { display: '录入人', name: 'create_name', width: 90 },
+                       
+                         {
+                             display: '状态', name: 'IsStatus', width: 60, render: function (item) {
+
+                                 var html;
+
+
+                                 if (item.IsStatus == "待确认") {
+                                     html = "<div style='color:#FF0000'>";
+                                     html += "待确认";
+                                     html += "</div>";
+                                 }
+                                 else if (item.IsStatus == "已确认") {
+                                     html = "<div style='color:#00f'>";
+                                     html += "已确认";
+                                     html += "</div>";
+                                 }
+                                 else if (item.IsStatus == "作废") {
+                                     html = "<div style='color:#999'>";
+                                     html += "作废";
+                                     html += "</div>";
+                                 }
+                                 
+                                 else {
+                                     html = item.IsStatus;
+                                 }
+                                 return html;
+                             }
+                         },
+                        {
+                            display: '查看', width: 60, render: function (item) {
+                                var html="";
+                                if (item.receive_direction_name == "收定金" || item.receive_direction_name == "退定金" || item.receive_direction_name == "收装修款" || item.receive_direction_name == "退装修款")
+                                {
+                                    html = "<a href='javascript:void(0)' onclick=view(66," + customerIdSelected + "," + item.id + ")>查看</a>";
+                                }
+                                else if (item.receive_direction_name == "定金" || item.receive_direction_name == "签单" )
+                                {
+                                    html = "<a href='javascript:void(0)' onclick=view(44," + customerIdSelected + "," + item.id + ")>查看</a>";
+                                }                           
+                                return html;
+                            }
+                        }
 
                     ],
-                    onAfterShowData: function (grid) {
-                        $(".abc").hover(function (e) {
-                            $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
-                        }, function (e) {
-                            $(this).ligerHideTip(e);
-                        });
-                    },
                     dataAction: 'server', pageSize: 30, pageSizeOptions: [20, 30, 50, 100],
                     //checkbox:true,
-                    url: "../../data/CRM_Follow.ashx?Action=grid&customer_id=0",
+                    url: "../../data/CRM_receive.ashx?Action=grid_khjdgl&orderid=0&rnd=" + Math.random(),
                     width: '100%', height: '100%',
-                    //title: "跟进信息",
+                    //title: "收款信息",
                     heightDiff: -1,
                     onRClickToSelect: true,
                     onContextmenu: function (parm, e) {
@@ -505,7 +674,32 @@
             else
             $("#maingrid5").ligerGrid({
                 columns: [
-                        { display: '序号', width: 40, render: function (item, i) { return i + 1; } },
+                    { display: '序号', width: 40, render: function (item, i) { return i + 1; } },
+                 {
+                             display: '来源', name: 'lx', width: 60, render: function (item) {
+                                 var html;
+                                 if (item.lx == "客户") {
+                                     html = "<div style='color:#339900'>";
+                                     html += item.lx;
+                                     html += "</div>";
+                                 }
+                                 else if (item.lx == "售后") {
+                                     html = "<div style='color:#FF0000'>";
+                                     html += item.lx;
+                                     html += "</div>";
+                                 }
+                                 else if (item.lx == "维修") {
+                                     html = "<div style='color:#CC0000'>";
+                                     html += item.lx;
+                                     html += "</div>";
+                                 }
+                               
+                                 else {
+                                     html = item.lx;
+                                 }
+                                 return html;
+                             }
+                         },
                         {
                             display: '跟进内容', name: 'Follow', align: 'left', width: 400, render: function (item) {
                                 var html = "<div class='abc'><a href='javascript:void(0)' onclick=view(2," + item.id + ")>";
@@ -536,7 +730,7 @@
                 },
                 dataAction: 'server', pageSize: 30, pageSizeOptions: [20, 30, 50, 100],
                 //checkbox:true,
-                url: "../../data/CRM_Follow.ashx?Action=grid&customer_id=0",
+                url: "../../data/CRM_Follow.ashx?Action=grid&customer_id=0" + "&sectype1=kh",
                 width: '100%', height: '100%',
                 //title: "跟进信息",
                 heightDiff: -1,
@@ -550,6 +744,7 @@
 
             $("#grid").height(document.documentElement.clientHeight - $(".toolbar").height());
             $('form').ligerForm();
+            if (getparastr("type") != "CX")//查询客户
             toolbar();
         });
        
@@ -557,12 +752,36 @@
         var mid,mid2;
         if (getparastr("type") == "GJXG") {
             mid = 194;
-            mid2 = 196;
+            mid2 = 203;
         }
+        
+    else if (getparastr("type") == "TEMP") {
+            mid = 205;
+            mid2 = 203;
+    }
         else {
             mid = 4;
             mid2 = 6;
         }
+
+        function IsExist_TelRight()
+        {
+           
+            $.ajax({
+                type: "GET",
+                url: "../../data/Sys_role.ashx", /* 注意后面的名字对应CS的方法名称 */
+                data: { Action: 'IsExistTelRight',  rnd: Math.random() }, /* 注意参数的格式和名称 */
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                  
+                    IsExistTelRight =  result;
+             
+
+                }
+            });
+        }
+
         function toolbar() {
             $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid="+mid+"&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
@@ -633,7 +852,8 @@
                 menu = $.ligerMenu({
                     width: 120, items: getMenuItems(data)
                 });
-
+                $("#keyword1").ligerTextBox({ width: 100, nullText: "输入关键词搜索" })
+                $("#maingrid4").ligerGetGridManager().onResize();
             });
             $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=" + mid2 + "&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
@@ -643,6 +863,29 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
+                items.push({ line: true });
+                items.push({
+                    type: 'textbox',
+                    id: 'sectype1',
+                    name: 'sectype1',
+                    text: '筛选'
+                });
+                items.push({
+                    type: 'textbox',
+                    id: 'T_smart',
+                    name: 'T_smart',
+                    text: ''
+                });
+                items.push({
+                    type: 'button',
+                    text: '搜索',
+                    icon: '../../images/search.gif',
+                    disable: true,
+                    click: function () {
+                        doserch1()
+                    }
+                }); 
+               
                 $("#toolbar1").ligerToolBar({
                     items: items
                 });
@@ -657,17 +900,17 @@
                 $('#sectype').ligerComboBox({
                     width: 80,
                     isMultiSelect: true,
-                    selectBoxWidth: 120,
-                    selectBoxHeight: 120,
+                    selectBoxWidth: 100,
+                    selectBoxHeight: 160,
                     valueField: 'id',
                     textField: 'text',
                     treeLeafOnly: true,
                     tree: {
                         data: [
-                   { text: '已付定金' },
-                   { text: '未付定金' },
-                   { text: '已结清' },
-                   { text: '未结清' },
+                            { text: '' },
+                   { text: '仅付定金' },
+                   { text: '需要退款' },
+                   { text: '应收未收' },
                    { text: '有效果图' },
                    { text: '无效果图' }
         
@@ -680,14 +923,15 @@
                     width: 80,
                     isMultiSelect: true,
                     selectBoxWidth: 120,
-                    selectBoxHeight: 120,
+                    selectBoxHeight: 160,
                     valueField: 'id',
                     textField: 'text',
                     treeLeafOnly: true,
                     tree: {
                         data: [
+                            { text: '' },
                    { text: '未签单' },
-                   { text: '已签单' },
+                   { text: '签单未施工' },
                    { text: '正在施工' },
                    { text: '施工完成' }
 
@@ -701,7 +945,31 @@
                     isMultiSelect: true,
                     url: "../../data/param_sysparam.ashx?Action=combo&parentid=18&rnd=" + Math.random()
                 })
+
+             var a=   $('#sectype1').ligerComboBox({
+                    width: 180,
+                    isMultiSelect: true,
+                    selectBoxWidth: 200,
+                    selectBoxHeight:100,
+                    valueField: 'id',
+                    textField: 'text',
+                    treeLeafOnly: true,                 
+                    tree: {
+                        data: [
+                            { id: '', text: '全部' },
+                            { id:'kh', text: '客户' },
+                            { id: 'sg',text: '施工' },
+                            { id: 'wx',text: '维修' },
+                            { id: 'sh', text: '售后' } 
+
+
+                        ],
+                        checkbox: false
+                    }
+                });
+             a.selectValue("kh");
                 $("#keyword1").ligerTextBox({ width: 100, nullText: "输入关键词搜索" })
+                $("#T_smart").ligerTextBox({ width: 100, nullText: "输入关键词智能搜索跟进内容" })
                 $("#maingrid4").ligerGetGridManager().onResize();
                 $("#maingrid5").ligerGetGridManager().onResize();
 
@@ -758,6 +1026,7 @@
                 }, emptyText: '（空）'
             });
             $('#customertype').ligerComboBox({ width: 97, emptyText: '（空）', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=1&rnd=" + Math.random() });
+            $('#industry').ligerComboBox({ width: 97, emptyText: '（空）', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=8&rnd=" + Math.random() });
             $('#WXZHT').ligerComboBox({ width: 97, emptyText: '（空）', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=15&rnd=" + Math.random() });
             $('#customerlevel').ligerComboBox({ width: 96, emptyText: '（空）', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=2&rnd=" + Math.random() });
             $('#cus_sourse').ligerComboBox({ width: 120, emptyText: '（空）', url: "../../data/Param_SysParam.ashx?Action=combo&parentid=3&rnd=" + Math.random() });
@@ -832,6 +1101,7 @@
                 }
             });
         }
+
         //楼盘
         function f_selectComm() {
             top.$.ligerDialog.open({
@@ -878,8 +1148,27 @@
                 doserch();
             }
         });
+        function doserch1()
+        {
+            var manager1 = $("#maingrid4").ligerGetGridManager();
+            var row = manager1.getSelectedRow();
+            if (row) {
+                var sendtxt = "&Action=grid&srnd=" + Math.random();
+                sendtxt = sendtxt + "&customer_id=" + row.id;
+                var serchtxt = $("#toolbar1 :input").fieldSerialize() +   sendtxt;
+                
+                var manager5 = $("#maingrid5").ligerGetGridManager();
+                manager5.GetDataByURL("../../data/CRM_Follow.ashx?" + serchtxt);
+            }
+            else {
+                $.ligerDialog.warn('请选择客户行！');
+            }
+        }
         function doserch() {
-            var sendtxt = "&Action=grid&rnd=" + Math.random();
+           
+            var sendtxt = "&Action=grid&type=0&rnd=" + Math.random();
+            if (getparastr("type") == "TEMP")//名单客户
+                sendtxt = "&Action=grid&type=2&rnd=" + Math.random();
             var stxt = $("#form1 :input").fieldSerialize();
 
             var serchtxt = $("#serchform :input").fieldSerialize() + "&" + stxt + sendtxt;
@@ -914,10 +1203,34 @@
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
-
-        function toimport() {
+        var activeDialogS = null;
+        function f_openWindow_ZZ(url, title, width, height) {
             var dialogOptions = {
-                width: 540, height: 295, title: '客户导入', url: 'crm/customer/customer_import.aspx', buttons: [
+                width: width, height: height, title: title, url: url, buttons: [
+                        {
+                            text: '转正', onclick: function (item, dialog) {
+                                f_save_zz(item, dialog);
+                            }
+                        },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialogS = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+        function toimport() {
+            //var url = "../../file/ht.docx";
+
+            //var $form = $('<form method="GET"></form>');
+            //$form.attr('action', url);
+            //$form.appendTo($('body'));
+            //$form.submit();
+
+            var dialogOptions = {
+                width: 540, height: 295, title: '合同导出', url: 'crm/customer/customer_import_ht.aspx?type=' + getparastr("type"), buttons: [
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();
@@ -927,10 +1240,22 @@
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
-
+        //转正
+        function change()
+        {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+           
+                f_openWindow_ZZ('CRM/Customer/Customer_add.aspx?cid=' + row.id + "&type=" + getparastr("type"), "修改客户", 660, 660);
+            }
+            else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
         function add() {
             
-             f_openWindow("CRM/Customer/Customer_add.aspx", "新增客户", 660, 550);
+            f_openWindow("CRM/Customer/Customer_add.aspx?type=" + getparastr("type"), "新增客户", 660, 660);
         }
 
         function addContact() {
@@ -949,7 +1274,7 @@
             var row = manager.getSelectedRow();
             if (row) {
                
-                    f_openWindow('CRM/Customer/Customer_add.aspx?cid=' + row.id, "修改客户", 660, 550);
+                f_openWindow('CRM/Customer/Customer_add.aspx?cid=' + row.id + "&type=" + getparastr("type"), "修改客户", 660, 660);
             }
             else {
                 $.ligerDialog.warn('请选择行！');
@@ -1009,13 +1334,16 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-
+               
                 if (row.Stage_icon != "已签单")
                 {
                     top.$.ligerDialog.error('当前状态（' + row.Stage_icon + '）不能提交施工！');
                     return;
                 }
-
+                if (row.Emp_sg == "" || row.Emp_sg == null) {
+                    top.$.ligerDialog.error('施工监理不能为空！');
+                    return;
+                }
                 $.ajax({
                     url: "../../data/CRM_CEStage.ashx", type: "POST",
                     data: { Action: "customersavecestage", id: row.id, rnd: Math.random() },
@@ -1084,6 +1412,51 @@
             }
            
         }
+
+        //function viewdy() {
+        //    //url, newname
+        //  var manager = $("#maingrid4").ligerGetGridManager();
+        //    var row = manager.getSelectedRow();
+        //    if (row) {
+        //        $.ajax({
+        //            url: "../../Data/website.ashx", type: "GET",
+        //            data: { Action: "getqjapi", tel: row.tel, rnd: Math.random() },
+        //            //data: { tel: row.tel},
+        //            success: function (result) {
+
+        //                var obj = eval("(" + result + ")");
+
+
+        //                if (obj.status == 1) {
+        //                    $.each(obj.data, function (i, data) {
+        //                        if (data.project.length > 0) {
+        //                            $.each(data.project, function (i, r) {
+        //                                window.open(r["thumb_path"] + "?1=1&width=" + screen.width +
+        //                                  "&height=" + (screen.height - 70), r["name"],
+        //                                    "top=0,left=0,toolbar=no, menubar=no, scrollbars=yes,resizable=no,location=no,status=no,width=" +
+        //                                    screen.width + ",height=" +
+        //                                    (screen.height - 70));  
+        //                                //alert(r["name"]);
+        //                            })
+        //                        } else {
+        //                            alert("没有获取到有效得全景图！");
+        //                        }
+        //                   });
+        //                } else {
+        //                    alert("获取失败！！");
+        //                }
+                        
+                         
+        //            },
+        //            error: function () {
+
+        //                alert("获取失败2！");
+                    
+        //            }
+        //        });
+        //    }
+            
+        //}
         function viewdy() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
@@ -1102,8 +1475,12 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
+                //if (row.Emp_sg == "" || row.Emp_sg == null) {
+                //    top.$.ligerDialog.error('施工监理不能为空！');
+                //    return;
+                //}
                 $.ajax({
-                    url: "../../data/CRM_Customer.ashx", type: "POST",
+                    url: "../../data/CRM_Customer.ashx?t_cus="+row.address, type: "POST",
                     data: { Action: "subok", customerId: row.id, rnd: Math.random() },
                     success: function (responseText) {
                         if (responseText == "true") {
@@ -1129,10 +1506,71 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('CRM/sale/order_add_khjdgl.aspx?customerid=' + row.id, "新增订单", 770, 490);
+                f_openWindow('CRM/sale/order_add_khjdgl.aspx?customerid=' + row.id, "新增应收", 650, 400);
             }
             else {
                 $.ligerDialog.warn('请选择行！');
+            }
+        }
+
+        function addDj() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow("CRM/finance/Receive_add_khjdgl.aspx?customerid=" + row.id + "&sklb=addDj", "收定金", 800, 680); //sklb收款类别
+            }
+            else {
+                $.ligerDialog.warn('请选择订单！');
+            }
+        }
+        function minusDj() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow("CRM/finance/Receive_add_khjdgl.aspx?customerid=" + row.id + "&sklb=minusDj", "退定金", 800, 680);
+            }
+            else {
+                $.ligerDialog.warn('请选择订单！');
+            }
+        }
+        function addZxk() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow("CRM/finance/Receive_add_khjdgl.aspx?customerid=" + row.id + "&sklb=addZxk", "收装修款", 800, 680);
+            }
+            else {
+                $.ligerDialog.warn('请选择订单！');
+            }
+        }
+        function minusZxk() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow("CRM/finance/Receive_add_khjdgl.aspx?customerid=" + row.id + "&sklb=minusZxk", "退装修款", 800, 680);
+            }
+            else {
+                $.ligerDialog.warn('请选择订单！');
+            }
+        }
+        function addQt() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow("CRM/finance/Receive_add_khjdgl.aspx?customerid=" + row.id + "&sklb=addQt", "收其他费用", 800, 680);
+            }
+            else {
+                $.ligerDialog.warn('请选择订单！');
+            }
+        }
+        function minusQt() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow("CRM/finance/Receive_add_khjdgl.aspx?customerid=" + row.id + "&sklb=minusQt", "退其他费用", 800, 680);
+            }
+            else {
+                $.ligerDialog.warn('请选择订单！');
             }
         }
 
@@ -1196,6 +1634,34 @@
                         top.$.ligerDialog.waitting('数据保存中,请稍候...');
                     },
                     success: function (responseText) {
+                        //alert(222)
+                        f_followreload();//刷新下半部分
+                        f_reload();//刷新上半部分
+                        top.flushiframegrid("tabid5");
+                    },
+                    error: function () {
+                        top.$.ligerDialog.error('操作失败！');
+                    },
+                    complete: function () {
+                        top.$.ligerDialog.closeWaitting();
+                    }
+                });
+
+            }
+        }
+        function f_save_zz(item, dialog) {
+            var issave = dialog.frame.f_save_zz();
+
+            if (issave) {
+                dialog.close();
+
+                $.ajax({
+                    url: "../../data/CRM_Customer.ashx", type: "POST",
+                    data: issave,
+                    beforesend: function () {
+                        top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                    },
+                    success: function (responseText) {
 
                         f_reload();
                         top.flushiframegrid("tabid5");
@@ -1213,6 +1679,7 @@
         function f_reload() {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);
+            //alert(1)
         };
 
         //follow
@@ -1303,10 +1770,70 @@
 
             }
         }
+        //报修
+        var activeDialog_repair = null;
+        function f_openWindow_repair(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+                    {
+                        text: '保存', onclick: function (item, dialog) {
+                            f_save_repair(item, dialog);
+                        }
+                    },
+                    {
+                        text: '关闭', onclick: function (item, dialog) {
+                            dialog.close();
+                        }
+                    }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+
+            activeDialog_repair = parent.jQuery.ligerDialog.open(dialogOptions);
+
+        }
+        function repair() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow_repair("CRM/Repair/Repair_add.aspx?tel=" + row.tel, "报修登记", 850, 590);
+
+            } else {
+                $.ligerDialog.warn('请选择客户！');
+            }
+        }
+        function f_save_repair(item, dialog) {
+            var issave = dialog.frame.f_save();
+            if (issave) {
+                dialog.close();
+
+                $.ajax({
+                    url: "../../CRM/Repair/Repair_Add.aspx", type: "POST",
+                    data: issave,
+                    beforesend: function () {
+                        top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                    },
+                    success: function (data) {
+                        f_reload();
+                        //f_followreload();
+                        if (data == "")
+                            top.$.ligerDialog.success('操作成功！');
+                        else
+                            top.$.ligerDialog.error('操作失败，错误信息：' + data);
+                    },
+                    error: function (ex) {
+                        top.$.ligerDialog.error('操作失败，错误信息：' + ex.responseText);
+                    },
+                    complete: function () {
+                        top.$.ligerDialog.closeWaitting();
+                    }
+                });
+            }
+        }
+
         function f_followreload() {
             var manager = $("#maingrid5").ligerGetGridManager();
             manager.loadData(true);
-            top.flushiframegrid("tabid6");
+            //top.flushiframegrid("tabid6");
         };
     </script>
     <style type="text/css">
@@ -1402,6 +1929,10 @@
                             <input type='text' id='endfollow' name='endfollow' ltype='date' ligerui='{width:96}' />
                         </div>
                     </td>
+                    
+                                        <td>
+                       <input id='emp_hh' name="emp_hh" type='text' ltype='text' ligerui='{width:196}' />
+                    </td>
 
                 </tr>
                 <tr>
@@ -1488,14 +2019,15 @@
                     
 
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'></div>
+                        <div style='width: 60px; text-align: right; float: right'>客户状态</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
-                           
+                            <input type='text' id='industry' name='industry' />
                         </div>
                         <div style='width: 98px; float: left'>
-                            
+                            跟进超时
+                         <input type="checkbox" name="ckisgd" id="ckisgd"  />  
                         </div>
                     </td>
                 </tr>

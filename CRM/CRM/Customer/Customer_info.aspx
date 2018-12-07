@@ -36,7 +36,7 @@
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
-        var g1, g2, g3, g4, g5;
+        var g1, g2, g3, g4, g5,g6;
         $(function () {
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
@@ -56,6 +56,8 @@
                             break;
                         case "nav_payment": grid(5);
                             break;
+                        case "nav_purchage": grid(6);
+                            break;
                     }
                 }
             });
@@ -66,6 +68,7 @@
         })
 
         function grid(id) {
+           // alert(id)
             switch (id) {
                 case 1:
                     $.getJSON("../../data/CRM_Contact.ashx?Action=grid&customerid=" + getparastr("cid")+"&r="+Math.random(), function (data) {
@@ -211,7 +214,15 @@
                         columns: [
                             { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                             { display: '合同编号', name: 'Serialnumber', width: 140, hide: true },
-                            { display: '合同名称', name: 'Contract_name', width: 200, align: 'left' },
+                            {
+                                display: '合同名称', name: 'Contract_name', width: 120, align: 'left', render: function (item) {
+                                    var html = "<a href='javascript:void(0)' onclick=view(5," + item.id + ")>";
+                                    if (item.Contract_name)
+                                        html += item.Contract_name;
+                                    html += "</a>";
+                                    return html;
+                                }
+                            },
                             { display: '客户姓名', name: 'Customer_name', width: 80 },
                             {
                                 display: '合同金额(￥)', name: 'Contract_amount', width: 120, align: 'right', render: function (item) {
@@ -288,6 +299,91 @@
                         width: '744', height: '450',
                         heightDiff: -1
                     });
+                    break;
+                case 6:
+                    g6 =   $("#maingrid38").ligerGrid({
+                        columns: [
+                            {
+                                display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                                { return (page - 1) * pagesize + rowindex + 1; }
+                            },
+                            { display: '预算编号', name: 'id', width: 100, align: 'left' },
+                            { display: '预算名称', name: 'BudgetName', width: 120, align: 'left' },
+                            { display: '姓名', name: 'CustomerName', width: 60, align: 'left' },
+
+
+                            {
+                                display: '电话', name: 'tel', align: 'left', width: 40, render: function (item) {
+                                    var html = "<div class='abc'>";
+                                    if (item.tel)
+                                        html += item.tel;
+                                    html += "</div>";
+                                    return html;
+                                }
+
+                            },
+                            { display: '客户地址', name: 'address', width: 200, align: 'left' },
+                            {
+                                display: '金额', name: 'BudgetAmount', width: 80, align: 'right', render: function (item) {
+                                    return "<div style='color:#135294'>" + toMoney((item.BudgetAmount + item.FJAmount)) + "</div>";
+                                }
+                            },
+                            {
+                                display: '状态', name: 'txtstatus', width: 60, align: 'left', render: function (item) {
+
+                                    var html;
+                                    if (item.txtstatus == "待审核") {
+                                        html = "<div style='color:#FF0000'>";
+                                        html += item.txtstatus;
+                                        html += "</div>";
+                                    }
+                                    else if (item.txtstatus == "待确认") {
+                                        html = "<div style='color:#CC0099'>";
+                                        html += item.txtstatus;
+                                        html += "</div>";
+                                    }
+                                    else {
+                                        html = item.txtstatus;
+                                    }
+                                    return html;
+                                }
+                            },
+                            { display: '创建人', name: 'name', width: 80, align: 'left' },
+                            {
+                                display: '最后更新', name: 'DoTime', width: 100, align: 'left', render: function (item) {
+                                    return formatTimebytype(item.DoTime, 'yyyy-MM-dd');
+                                }
+                            },
+                            { display: '设计师', name: 'sjs', width: 80, align: 'left' },
+                            { display: '备注', name: 'Remarks', width: 100, align: 'left' },
+                            { display: '类型', name: 'ModelStyle', width: 80, align: 'left' }
+                        ],
+                        onAfterShowData: function (grid) {
+                            $(".abc").hover(function (e) {
+                                $(this).ligerTip({ content: $(this).text(), width: 200, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                            }, function (e) {
+                                $(this).ligerHideTip(e);
+                            });
+
+                        },
+                        dataAction: 'server',
+                        pageSize: 30,
+                        pageSizeOptions: [20, 30, 50, 100],
+                        url: "../../data/Budge.ashx?Action=grid&str_condition=3&cid=" + getparastr("cid"),//增加选择条件 0 编辑 1 审核
+                        width: '100%',
+                        height: '100%',
+                        //tree: { columnName: 'StageDescription' },
+                        heightDiff: -1,
+                        onRClickToSelect: true,
+                        onContextmenu: function (parm, e) {
+                            actionCustomerID = parm.data.id;
+                            menu.show({ top: e.pageY, left: e.pageX });
+                            return false;
+                        }
+
+                    });
+
+
                     break;
             }
         }
@@ -594,6 +690,10 @@
             <div tabid="nav_payment" title="收款记录" style="height: 462px">
                 <div id="maingrid37" style="margin: -1px;"></div>
             </div>
+            <div tabid="nav_purchage" title="生效预算" style="height: 462px">
+                <div id="maingrid38" style="margin: -1px;"></div>
+            </div>
+           
         </div>
     </form>
 </body>

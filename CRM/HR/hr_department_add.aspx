@@ -27,10 +27,11 @@
     <script src="../lib/jquery.form.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+        var g, ck;
         $(function () {
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
-
+            ck = $("#ckisgd").ligerCheckBox();
             //$("#T_Contract_name").focus();
             $("form").ligerForm();
 
@@ -76,6 +77,7 @@
         function f_save() {
             if ($(form1).valid()) {
                 var sendtxt = "&Action=save&id=" + getparastr("depid");
+                //alert($("form :input").fieldSerialize() + sendtxt);
                 return $("form :input").fieldSerialize() + sendtxt;
             }
         }
@@ -102,7 +104,8 @@
                     $("#T_fax").val(obj.d_fax);
                     $("#T_add").val(obj.d_add);
                     $("#T_descript").val(obj.d_miaoshu);
-
+                    if (obj.isDelete == 1)
+                        ck.setValue(true);
                     $("#T_deptype").ligerGetComboBoxManager().selectValue(obj.d_type);
                     //$("#T_parent").ligerGetComboBoxManager().selectValue(obj.parentid);
                     $("#T_parent").ligerComboBox({
@@ -218,6 +221,18 @@
                 <td colspan="3">
                     <input type="text" id="T_descript" name="T_descript" ltype="text" ligerui="{width:390}" />
                 </td>
+            </tr>
+            <tr>
+               <td>
+                   ÐéÄâ²Ö¿â
+                   
+               </td>
+                <td>
+                        <%--<a class="l-checkbox"></a>--%>
+                        <input type="checkbox" name="ckisgd" id="ckisgd" 
+                            
+                        ligeruiid="ckisgd"/>  
+  </td>
             </tr>
         </table>
     </form>

@@ -36,9 +36,9 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into hr_employee(");
-            strSql.Append("uid,pwd,name,idcard,birthday,d_id,dname,postid,post,email,sex,tel,status,zhiwuid,zhiwu,sort,EntryDate,address,remarks,education,level,professional,schools,title,isDelete,Delete_time,portal,theme,canlogin,rqlx)");
+            strSql.Append("uid,pwd,name,idcard,birthday,d_id,dname,postid,post,email,sex,tel,status,zhiwuid,zhiwu,sort,EntryDate,address,remarks,education,level,professional,schools,title,isDelete,Delete_time,portal,theme,canlogin,rqlx,jbx)");
             strSql.Append(" values (");
-            strSql.Append("@uid,@pwd,@name,@idcard,@birthday,@d_id,@dname,@postid,@post,@email,@sex,@tel,@status,@zhiwuid,@zhiwu,@sort,@EntryDate,@address,@remarks,@education,@level,@professional,@schools,@title,@isDelete,@Delete_time,@portal,@theme,@canlogin,@rqlx)");
+            strSql.Append("@uid,@pwd,@name,@idcard,@birthday,@d_id,@dname,@postid,@post,@email,@sex,@tel,@status,@zhiwuid,@zhiwu,@sort,@EntryDate,@address,@remarks,@education,@level,@professional,@schools,@title,@isDelete,@Delete_time,@portal,@theme,@canlogin,@rqlx,@jbx)");
             strSql.Append(" update hr_employee SET work_id=@@IDENTITY WHERE ID=@@IDENTITY ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
@@ -64,14 +64,15 @@ namespace XHD.DAL
 					new SqlParameter("@education", SqlDbType.VarChar,50),
 					new SqlParameter("@level", SqlDbType.VarChar,50),
 					new SqlParameter("@professional", SqlDbType.VarChar,50),
-					new SqlParameter("@schools", SqlDbType.VarChar,50),
+					new SqlParameter("@schools", SqlDbType.VarChar,550),
 					new SqlParameter("@title", SqlDbType.VarChar,50),
 					new SqlParameter("@isDelete", SqlDbType.Int,4),
 					new SqlParameter("@Delete_time", SqlDbType.DateTime),
 					new SqlParameter("@portal", SqlDbType.VarChar,250),
 					new SqlParameter("@theme", SqlDbType.VarChar,250),
 					new SqlParameter("@canlogin", SqlDbType.Int,4),
-                    new SqlParameter("@rqlx", SqlDbType.VarChar,50)};
+                    new SqlParameter("@rqlx", SqlDbType.VarChar,50),
+                    new SqlParameter("@jbx", SqlDbType.Int, 4)};
             parameters[0].Value = model.uid;
             parameters[1].Value = model.pwd;
             parameters[2].Value = model.name;
@@ -102,6 +103,7 @@ namespace XHD.DAL
             parameters[27].Value = model.theme;
             parameters[28].Value = model.canlogin;
             parameters[29].Value = model.rqlx;
+            parameters[30].Value = model.jbx;
 
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
@@ -148,7 +150,8 @@ namespace XHD.DAL
             strSql.Append("canlogin=@canlogin,");
             strSql.Append("Delete_time=getdate() ,");
             strSql.Append("rqlx=@rqlx,");
-            strSql.Append("work_id=@work_id");
+            strSql.Append("work_id=@work_id,");
+            strSql.Append("jbx=@jbx");
             strSql.Append(" where ID=@ID");
             SqlParameter[] parameters = {
 					new SqlParameter("@uid", SqlDbType.VarChar,50),
@@ -172,14 +175,15 @@ namespace XHD.DAL
 					new SqlParameter("@education", SqlDbType.VarChar,50),
 					new SqlParameter("@level", SqlDbType.VarChar,50),
 					new SqlParameter("@professional", SqlDbType.VarChar,50),
-					new SqlParameter("@schools", SqlDbType.VarChar,50),
+					new SqlParameter("@schools", SqlDbType.VarChar,550),
 					new SqlParameter("@title", SqlDbType.VarChar,50),  
 					new SqlParameter("@portal", SqlDbType.VarChar,250),
 					new SqlParameter("@theme", SqlDbType.VarChar,250),
 					new SqlParameter("@canlogin", SqlDbType.Int,4),
                     new SqlParameter("@rqlx", SqlDbType.VarChar,50),
                     new SqlParameter("@work_id", SqlDbType.VarChar,50),                  
-					new SqlParameter("@ID", SqlDbType.Int,4)};
+					new SqlParameter("@ID", SqlDbType.Int,4),
+                    new SqlParameter("@jbx", SqlDbType.Int,4)};
             parameters[0].Value = model.uid;
             parameters[1].Value = model.name;
             parameters[2].Value = model.idcard;
@@ -209,6 +213,7 @@ namespace XHD.DAL
             parameters[26].Value = model.rqlx;
             parameters[27].Value = model.work_id;
             parameters[28].Value = model.ID;
+            parameters[29].Value = model.jbx;
 
             int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -340,7 +345,7 @@ namespace XHD.DAL
         {
 
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select  top 1 ID,uid,pwd,name,idcard,birthday,rqlx,d_id,dname,postid,post,email,sex,tel,status,zhiwuid,zhiwu,sort,EntryDate,address,remarks,education,level,professional,schools,title,isDelete,Delete_time,portal,theme,canlogin,QQID,QQTX,default_city,work_id from hr_employee ");
+            strSql.Append("select  top 1 ID,uid,pwd,name,idcard,birthday,rqlx,d_id,dname,postid,post,email,sex,tel,status,zhiwuid,zhiwu,sort,EntryDate,address,remarks,education,level,professional,schools,title,isDelete,Delete_time,portal,theme,canlogin,QQID,QQTX,default_city,work_id,jbx from hr_employee ");
             strSql.Append(" where ID=@ID");
             SqlParameter[] parameters = {
 					new SqlParameter("@ID", SqlDbType.Int,4)
@@ -474,6 +479,10 @@ namespace XHD.DAL
                 if (ds.Tables[0].Rows[0]["canlogin"] != null && ds.Tables[0].Rows[0]["canlogin"].ToString() != "")
                 {
                     model.canlogin = int.Parse(ds.Tables[0].Rows[0]["canlogin"].ToString());
+                }
+                if (ds.Tables[0].Rows[0]["jbx"] != null && ds.Tables[0].Rows[0]["jbx"].ToString() != "")
+                {
+                    model.jbx = int.Parse(ds.Tables[0].Rows[0]["jbx"].ToString());
                 } 
                 if (ds.Tables[0].Rows[0]["default_city"] != null && ds.Tables[0].Rows[0]["default_city"].ToString() != "")
                 {
@@ -497,7 +506,7 @@ namespace XHD.DAL
         public DataSet GetList(string strWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select ID,uid,name,idcard,birthday,rqlx,d_id,dname,postid,post,email,sex,tel,status,zhiwuid,zhiwu,sort,EntryDate,address,remarks,education,level,professional,schools,title,isDelete,Delete_time,portal,theme,canlogin,QQID,QQTX,default_city,work_id ");
+            strSql.Append("select ID,uid,name,idcard,birthday,rqlx,d_id,dname,postid,post,email,sex,tel,status,zhiwuid,zhiwu,sort,EntryDate,address,remarks,education,level,professional,schools,title,isDelete,Delete_time,portal,theme,canlogin,QQID,QQTX,default_city,work_id,jbx ");
             strSql.Append(" FROM hr_employee ");
             if (strWhere.Trim() != "")
             {
@@ -517,7 +526,7 @@ namespace XHD.DAL
             {
                 strSql.Append(" top " + Top.ToString());
             }
-            strSql.Append(" ID,uid,name,idcard,birthday,rqlx,d_id,dname,postid,post,email,sex,tel,status,zhiwuid,zhiwu,sort,EntryDate,address,remarks,education,level,professional,schools,title,isDelete,Delete_time,portal,theme,canlogin,QQID,QQTX,default_city,work_id ");
+            strSql.Append(" ID,uid,name,idcard,birthday,rqlx,d_id,dname,postid,post,email,sex,tel,status,zhiwuid,zhiwu,sort,EntryDate,address,remarks,education,level,professional,schools,title,isDelete,Delete_time,portal,theme,canlogin,QQID,QQTX,default_city,work_id,jbx ");
             strSql.Append(" FROM hr_employee ");
             if (strWhere.Trim() != "")
             {
@@ -535,7 +544,7 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " ID,uid,name,idcard,birthday,rqlx,d_id,dname,postid,post,email,sex,tel,status,zhiwuid,zhiwu,sort,EntryDate,address,remarks,education,level,professional,schools,title,isDelete,Delete_time,portal,theme,canlogin,QQID,QQTX,default_city,work_id FROM hr_employee ");
+            strSql.Append(" top " + PageSize + " ID,uid,name,idcard,birthday,rqlx,d_id,dname,postid,post,email,sex,tel,status,zhiwuid,zhiwu,sort,EntryDate,address,remarks,education,level,professional,schools,title,isDelete,Delete_time,portal,theme,canlogin,QQID,QQTX,default_city,work_id,jbx FROM hr_employee ");
             strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM hr_employee ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
             strSql1.Append(" select count(id) FROM hr_employee ");
@@ -675,7 +684,7 @@ namespace XHD.DAL
 					new SqlParameter("@education", SqlDbType.VarChar,50),
 					new SqlParameter("@level", SqlDbType.VarChar,50),
 					new SqlParameter("@professional", SqlDbType.VarChar,50),
-					new SqlParameter("@schools", SqlDbType.VarChar,50),
+					new SqlParameter("@schools", SqlDbType.VarChar,550),
 					new SqlParameter("@title", SqlDbType.VarChar,50),
                     new SqlParameter("@rqlx", SqlDbType.VarChar,50),
 					new SqlParameter("@ID", SqlDbType.Int,4)};

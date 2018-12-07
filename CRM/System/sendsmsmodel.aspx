@@ -41,6 +41,11 @@
             if (getparastr("style") == "JPGJ")//½ğÅÆ¹ÜÀí
             {
                 loadFormJP(getparastr("id"));
+ 
+                //alert(getparastr("tel"))
+                $("#T_tel").val(getparastr("tel"));
+ 
+ 
             }
             else {
                 loadForm(getparastr("id"));

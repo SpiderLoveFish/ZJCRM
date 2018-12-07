@@ -389,19 +389,19 @@
             window.open("http://www.kujiale.com/v/xczs/login");
         }
         function personalinfoupdate() {
-            var dialog = $.ligerDialog.open({
+            var dialogup = $.ligerDialog.open({
                 url: "hr/emp_personal_update.aspx", width: 760, height: 300, title: "个人信息", buttons: [
                         {
-                            text: '保存', onclick: function (item, dialog) {
-                                dialog.frame.f_save();
+                        text: '保存', onclick: function (item, dialogup) {
+                                dialogup.frame.f_saveupdate();
                             }
                         },
                         {
-                            text: '关闭', onclick: function (item, dialog) {
-                                dialog.close();
+                            text: '关闭', onclick: function (item, dialogup) {
+                                dialogup.close();
                             }
                         }
-                ], isResize: true, timeParmName: 'a'
+                ], isResize: true, timeParmName: 'abc'
             });
         }
         function flushiframegrid(tabid) {

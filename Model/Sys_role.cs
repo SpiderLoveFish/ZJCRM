@@ -18,10 +18,12 @@ namespace XHD.Model
 		private DateTime? _createdate;
 		private int? _updateid;
 		private DateTime? _updatedate;
-		/// <summary>
-		/// 
-		/// </summary>
-		public int RoleID
+        private int? _IsCanViewTel;
+        private int? _IsCanViewSf;
+        /// <summary>
+        /// 
+        /// </summary>
+        public int RoleID
 		{
 			set{ _roleid=value;}
 			get{return _roleid;}
@@ -58,10 +60,24 @@ namespace XHD.Model
 			set{ _createid=value;}
 			get{return _createid;}
 		}
-		/// <summary>
+        /// <summary>
 		/// 
 		/// </summary>
-		public DateTime? CreateDate
+		public int? IsCanViewTel
+        {
+            set { _IsCanViewTel = value; }
+            get { return _IsCanViewTel; }
+        }
+        public int? IsCanViewSf
+        {
+            set { _IsCanViewSf = value; }
+            get { return _IsCanViewSf; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public DateTime? CreateDate
 		{
 			set{ _createdate=value;}
 			get{return _createdate;}

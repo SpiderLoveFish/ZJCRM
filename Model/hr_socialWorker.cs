@@ -42,6 +42,19 @@ namespace XHD.Model
         private string _theme;
         private int? _canlogin;
         private string _default_city;
+        private int? _Emp_id_sg;
+        private int? _jbx;
+        private string _zt;
+        private string _xj;
+        private string _Emp_sg;
+        private string _private_per;
+        private int? _create_id;
+        private string _create_name;
+
+        private string _zldj;
+        private string _xydj;
+        private string _fwdj;
+        private string _jgdj;
         /// <summary>
         /// 
         /// </summary>
@@ -290,6 +303,46 @@ namespace XHD.Model
             set { _canlogin = value; }
             get { return _canlogin; }
         }
+        public int? jbx
+        {
+            set { _jbx = value; }
+            get { return _jbx; }
+        }
+        public int? Emp_id_sg
+        {
+            set { _Emp_id_sg = value; }
+            get { return _Emp_id_sg; }
+        }
+        public string zt
+        {
+            set { _zt = value; }
+            get { return _zt; }
+        }
+        public string xj
+        {
+            set { _xj = value; }
+            get { return _xj; }
+        }
+        public string private_per
+        {
+            set { _private_per = value; }
+            get { return _private_per; }
+        }
+        public string Emp_sg
+        {
+            set { _Emp_sg = value; }
+            get { return _Emp_sg; }
+        }
+        public int? create_id
+        {
+            set { _create_id = value; }
+            get { return _create_id; }
+        }
+        public string create_name
+        {
+            set { _create_name = value; }
+            get { return _create_name; }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -297,6 +350,28 @@ namespace XHD.Model
         {
             set { _default_city = value; }
             get { return _default_city; }
+        }
+
+
+        public string jgdj
+        {
+            set { _jgdj = value; }
+            get { return _jgdj; }
+        }
+        public string fwdj
+        {
+            set { _fwdj = value; }
+            get { return _fwdj; }
+        }
+        public string zldj
+        {
+            set { _zldj = value; }
+            get { return _zldj; }
+        }
+        public string xydj
+        {
+            set { _xydj = value; }
+            get { return _xydj; }
         }
         #endregion Model
 

@@ -76,6 +76,7 @@
         function alertcgd()
         {
             alert('采购单' + $('#T_Pid').val() + '生成并提交！！');
+
         }
 
         //选择客户
@@ -232,11 +233,11 @@
             <tr>
                  <td> 
                   
-                    <div class="l-checkbox-wrapper">
+                    <div class="l-checkbox-wrapper" style="display:none">
                         <%--<a class="l-checkbox"></a>--%>
                         <input type="checkbox" name="ckisgd" id="ckisgd" 
                             class="l-hidden" 
-                        ligeruiid="ckisgd"/></div> 直送客户 
+                        ligeruiid="ckisgd" checked="checked"/></div>  
   
                    </td>
                  <td    ><div style="width: 70px; text-align: right; float: right">备注：</div></td>

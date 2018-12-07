@@ -45,21 +45,75 @@
                 columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                     {
-                        display: '客户姓名', name: 'Customer_name', width: 80, render: function (item) {
+                        display: '客户姓名', name: 'khname', width: 200, render: function (item) {
                             var html = "<a href='javascript:void(0)' onclick=view(1," + item.Customer_id + ")>";
-                            if (item.Customer_name)
-                                html += item.Customer_name;
+                            if (item.khname)
+                                html += item.khname;
                             html += "</a>";
                             return html;
                         }
                     },
                     { display: '凭证号码', name: 'Receive_num', width: 140 },
-                    { display: '收款方式', name: 'Pay_type', width: 100 },
-                    {
-                        display: '收款金额(￥)', name: 'Receive_amount', width: 120, align: 'right', render: function (item) {
-                            return toMoney(item.Receive_amount);
-                        }
-                    },
+                    
+                       { display: '收款方式', name: 'Pay_type', width: 100 },
+                      {
+                          display: '类型', name: 'receive_direction_name', width: 60, render: function (item) {
+
+                              var html;
+
+
+                              if (item.receive_direction_name == "收装修款") {
+                                  html = "<div style='color:#00f'>";
+                                  html += "收装修款";
+                                  html += "</div>";
+                              }
+                              else if (item.receive_direction_name == "退装修款") {
+                                  html = "<div style='color:#FF0000'>";
+                                  html += "退装修款";
+                                  html += "</div>";
+                              }
+                              else if (item.receive_direction_name == "收定金") {
+                                  html = "<div style='color:#00f'>";
+                                  html += "收定金";
+                                  html += "</div>";
+                              }
+                              else if (item.receive_direction_name == "退定金") {
+                                  html = "<div style='color:#FF0000'>";
+                                  html += "退定金";
+                                  html += "</div>";
+                              }
+                              else {
+                                  html = item.receive_direction_name;
+                              }
+                              return html;
+                          }
+                      },
+                      
+                       {
+                           display: '收款金额（￥）', name: 'Receive_amount', width: 80,align: 'right', render: function (item) {
+
+                               var html;
+
+
+                               if (item.Receive_amount>=0) {
+                                   html = "<div style='color:#00f'>";
+                                   html += toMoney(item.Receive_amount);
+                                   html += "</div>";
+                               }
+                               else if (item.Receive_amount < 0) {
+                                   html = "<div style='color:#FF0000'>";
+                                   html += toMoney(item.Receive_amount);
+                                   html += "</div>";
+                               }
+                              
+                               else {
+                                   html = item.Receive_amount;
+                               }
+                               return html;
+                           }
+                       },
+                  
+                  
                     {
                         display: '收款人', width: 100, render: function (item) {
                             return item.C_depname + "." + item.C_empname;
@@ -73,7 +127,7 @@
                     { display: '录入人', name: 'create_name', width: 90 },
                     {
                         display: '查看', width: 60, render: function (item) {
-                            var html = "<a href='javascript:void(0)' onclick=view(6," + item.order_id + "," + item.id + ")>查看</a>";
+                            var html = "<a href='javascript:void(0)' onclick=view(66," + item.Customer_id + "," + item.id + ")>查看</a>";
                             return html;
                         }
                     }
@@ -233,7 +287,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>凭证号码：</div>
+                        <div style='width: 60px; text-align: right; float: right'>凭证收据：</div>
                     </td>
                     <td>
                         <input type='text' id='receive_num' name='receive_num' ltype='text' ligerui='{width:120}' />

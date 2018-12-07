@@ -45,8 +45,8 @@ namespace XHD.CRM.Data
                  
                     model.category_id = int.Parse(request["T_product_category_val"]);
                     model.category_name = PageValidate.InputText(request["T_product_category"], 255);
-               
-              
+                    model.CKID = int.Parse(request["T_CK_val"]);
+                    model.KWID = PageValidate.InputText(request["T_KW_val"], 50);
                  model.product_name = PageValidate.InputText(request["T_product_name"], 255);
               
                 model.specifications = PageValidate.InputText(request["T_specifications"], 255);
@@ -64,7 +64,12 @@ namespace XHD.CRM.Data
                 model.gys = PageValidate.InputText(request["T_gys"], 255);
                 model.zt = PageValidate.InputText(request["T_zt"], 255);
                 model.pp = PageValidate.InputText(request["T_pp"], 255);
-               // model.C_code = PageValidate.InputText(request["C_code"], 255);
+                model.C_style = PageValidate.InputText(request["T_style"], 255);
+                model.clzt = PageValidate.InputText(request["T_clzt"], 255);
+                model.jbx = int.Parse(request["jbx"]);
+                model.fbj = decimal.Parse(request["T_fbj"].ToString());
+
+                // model.C_code = PageValidate.InputText(request["C_code"], 255);
                 string isupdateprice = PageValidate.InputText(request["T_private_val"], 50);
                 string modelstyle = PageValidate.InputText(request["T_private"], 50);
                 
@@ -87,13 +92,19 @@ namespace XHD.CRM.Data
                             if (PageValidate.InputText(request["C_code"], 255) == "")
                             {
                                 int lsh = 1;
-                                try { 
-                                    string str=dscode.Tables[0].Rows[0][1].ToString();
-                                    lsh = int.Parse(str.Substring(str.Length - 4)) + 1; }
+                                try
+                                {
+                                    string str = dscode.Tables[0].Rows[0][1].ToString();
+                                    lsh = int.Parse(str.Substring(str.Length - 4)) + 1;
+                                }
                                 catch { }
                                 c_code = dscode.Tables[0].Rows[0][0].ToString() + lsh.ToString("0000");
                             }
                         }
+                    }
+                    else {
+                        DataSet first_code = ccp.Get_categorycode(int.Parse(request["T_product_category_val"]));
+                        c_code = first_code.Tables[0].Rows[0][0].ToString();
                     }
                 }
                 catch { c_code = PageValidate.InputText(request["C_code"], 255); }
@@ -101,17 +112,23 @@ namespace XHD.CRM.Data
                 if (PageValidate.InputText(request["C_code"], 255) != "")
                 {
                     // model.C_code = c_code;
-                    model.C_code = PageValidate.InputText(request["C_code"], 255);
+                    c_code = PageValidate.InputText(request["C_code"], 255);
+                    model.C_code = c_code;
                 }
                 else { model.C_code = c_code; }
 
-                //---
-                string style = PageValidate.InputText(request["style"], 50);
-                 if (!string.IsNullOrEmpty(style) && style != "null")
-                 {
-                     if (style == "0") model.C_style = "主材";
-                     else if (style == "1") model.C_style = "基建";
-                 }
+                if (c_code == "")
+                {
+                    context.Response.Write("false:ccode");
+                    return;
+                }
+                //---取消主材基建
+                //string style = PageValidate.InputText(request["style"], 50);
+                // if (!string.IsNullOrEmpty(style) && style != "null")
+                // {
+                //     if (style == "0") model.C_style = "主材";
+                //     else if (style == "1") model.C_style = "基建";
+                // }
                 string pid = PageValidate.InputText(request["pid"], 50);
                 if (!string.IsNullOrEmpty(pid) && pid != "null")
                 {
@@ -193,6 +210,10 @@ namespace XHD.CRM.Data
                     {
                         log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "物料代码", dr["C_code"].ToString(), request["C_code"]);
                     }
+                    if (dr["fbj"].ToString() != request["T_fbj"])
+                    {
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "发包价", dr["fbj"].ToString(), request["T_fbj"]);
+                    }
                 }
                 else
                 {
@@ -216,9 +237,10 @@ namespace XHD.CRM.Data
                             {
                                 BLL.Purchase_Detail pl = new BLL.Purchase_Detail();
                                 string bpid = PageValidate.InputText(request["id"], 50);
-                                string pro_id = ccp.GetList(" c_code='" + c_code + "'").Tables[0].Rows[0]["product_id"].ToString();
+                            string isauto = PageValidate.InputText(request["isauto"], 50);
+                            string pro_id = ccp.GetList(" c_code='" + c_code + "'").Tables[0].Rows[0]["product_id"].ToString();
                                 //  if (pid.Length > 1) pid = pid.Substring(1);
-                                pl.Addlist(bpid, pro_id);
+                                pl.Addlist(bpid, pro_id, isauto);
                             }
                         else if (AddType == "Selectbudge")//预算
                         {
@@ -247,6 +269,7 @@ namespace XHD.CRM.Data
                 }
                 var updateprice = new System.Text.StringBuilder();
                 updateprice.AppendLine("UPDATE A SET	TotalPrice=B.price,a.zc_price=b.zc_price,a.fc_price=b.fc_price,a.rg_price=b.rg_price ");
+                updateprice.AppendLine(" ,a.remarks=B.remarks ");
                 updateprice.AppendLine("FROM dbo.Budge_BasicDetail A");
  		 updateprice.AppendLine(" INNER JOIN  Budge_BasicMain c on a.budge_id=c.id");
                 updateprice.AppendLine("INNER JOIN  dbo.CRM_product B ON A.xmid=B.product_id");
@@ -268,7 +291,7 @@ namespace XHD.CRM.Data
                     DBUtility.DbHelperSQL.ExecuteSql(updateprice.ToString());
                 }
                 else {}
-
+               
             }
 
             if (request["Action"] == "IsExistCode")
@@ -323,7 +346,8 @@ namespace XHD.CRM.Data
                 if (!string.IsNullOrEmpty(request["stext"]))
                 {
                     serchtxt += " and ( product_name like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
-                    serchtxt += " or  C_code like N'%" + PageValidate.InputText(request["stext"], 255) + "%' )";
+                    serchtxt += " or  b.C_code like N'%" + PageValidate.InputText(request["stext"], 255) + "%' ";
+                    serchtxt += " or  a.C_code like N'%" + PageValidate.InputText(request["stext"], 255) + "%' )";
                 }
                 serchtxt += " and ISNULL(status,'')  NOT  LIKE '%Temp%' ";
                 //权限

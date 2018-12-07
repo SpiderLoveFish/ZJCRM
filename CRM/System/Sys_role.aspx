@@ -29,7 +29,37 @@
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
                     { display: '角色名', name: 'RoleName' },
                     { display: '角色描述', name: 'RoleDscript', width: 450 },
-                    { display: '排序', name: 'RoleSort', width: 50 }
+                    { display: '排序', name: 'RoleSort', width: 50 },
+                    {
+                        display: '可看电话', name: 'IsCanViewTel', width: 60, render: function (item) {
+
+                            var html;
+                            if (item.IsCanViewTel == "1") {
+                                html = "<div style='color:#339900'>可以"; 
+                                html += "</div>";
+                            }
+                            else {
+                                html = "<div style='color:#FF0000'>不可以"; 
+                                html += "</div>";
+                            } 
+                            return html;
+                        }
+                    },
+                    {
+                        display: '可查师傅', name: 'IsCanViewSf', width: 60, render: function (item) {
+
+                            var html;
+                            if (item.IsCanViewSf == "1") {
+                                html = "<div style='color:#339900'>可以"; 
+                                html += "</div>";
+                            }
+                            else {
+                                html = "<div style='color:#FF0000'>不可以"; 
+                                html += "</div>";
+                            } 
+                            return html;
+                        }
+                    }
                 ],
                 dataAction: 'server',
                 pageSize: 30,

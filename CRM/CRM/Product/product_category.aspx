@@ -29,9 +29,9 @@
                             return "<div style='margin-top:3px;'><img src='../../" + item.product_icon + "'/></div>";
                         }
                     },
-                     { display: '类别简称', name: 'c_code', width: 120, align: 'left' },
+                     { display: '类别简称', name: 'c_code', width: 120, align: 'left' }//,
 
-                      { display: '类型', name: 'c_style', width: 120, align: 'left' }
+                     // { display: '类型', name: 'c_style', width: 120, align: 'left' }
 
                 ],
                 dataAction: 'local',
@@ -47,7 +47,16 @@
                     actionCustomerID = parm.data.id;
                     menu.show({ top: e.pageY, left: e.pageX });
                     return false;
-                }
+                },
+                onAfterShowData: function () {
+
+                    var l = $(".l-grid-tree-link-open").length;
+
+                    for (var i = l - 1; i >= 0; i--)
+
+                        $(".l-grid-tree-link-open")[i].click();
+
+                },
 
             });
 
@@ -77,6 +86,7 @@
                 });
                 
                 $("#maingrid4").ligerGetGridManager().onResize();
+              
             });
         }
 
@@ -153,7 +163,7 @@
         function f_save(item, dialog) {
             var issave = dialog.frame.f_save();
             if (issave) {
-                dialog.close();
+                dialog.close();    
                 top.$.ligerDialog.waitting('数据保存中,请稍候...');
                 $.ajax({
                     url: "../../data/Crm_product_category.ashx", type: "POST",
@@ -164,8 +174,12 @@
                         {
                             top.$.ligerDialog.error('操作失败，上级类别不能是自己！');
                         }
-                        else
-                        {                              
+                        else if (responseText == "false:ccode") {
+                            top.$.ligerDialog.error('代码缩写简称重复，请重新输入！');
+                        }
+                        else 
+                        {
+                                                  
                             f_reload();
                         }
                     },

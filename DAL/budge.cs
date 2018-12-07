@@ -530,9 +530,11 @@ namespace XHD.DAL
 		}
 
        
-        public int AddModel(string bid,string modelid,string modelname,  int empid,string remaks)
+        public int AddModel(string bid,string modelid,string modelname,string mjprice,  int empid,string remaks)
         {
             var sb = new System.Text.StringBuilder();
+            sb.AppendLine(" INSERT Budge_Para_Ver(customer_id,budge_id,versions,b_Part_id,parentid,BP_Name)SELECT DISTINCT b.customer_id,a.budge_id,0,ComponentID,0,ComponentName FROM  dbo.Budge_BasicDetail a LEFT JOIN dbo.Budge_BasicMain b ON a.budge_id=b.id WHERE budge_id NOT IN (SELECT budge_id FROM Budge_Para_Ver)  ");
+
             sb.AppendLine("  INSERT INTO [dbo].[Budge_BasicMain] ");
             sb.AppendLine("  (id, ");
             sb.AppendLine("customer_id, ");
@@ -562,7 +564,7 @@ namespace XHD.DAL
             sb.AppendLine("IsModel, ");
             sb.AppendLine("ModelStyle, ");
             sb.AppendLine("OldBudgeID, ");
-            sb.AppendLine("FromTimes) ");
+            sb.AppendLine("FromTimes,PerSquarePrice) ");
             sb.AppendLine("  SELECT  '" + modelid + "' , ");
             sb.AppendLine("customer_id, ");
             sb.AppendLine("'" + modelname + "', ");
@@ -589,9 +591,9 @@ namespace XHD.DAL
             sb.AppendLine("versions, ");
             sb.AppendLine("getdate(), ");
             sb.AppendLine("'Y', ");
-            sb.AppendLine("ModelStyle, ");
+            sb.AppendLine(" LEFT(ModelStyle,2)+'模板' , ");
             sb.AppendLine("id, ");
-            sb.AppendLine("FromTimes  ");
+            sb.AppendLine("FromTimes,"+mjprice+"  ");
             sb.AppendLine(" from [dbo].[Budge_BasicMain] WHERE id='" + bid + "'  ");
 
             sb.AppendLine("  INSERT INTO [dbo].[Budge_BasicDetail]");
@@ -685,7 +687,9 @@ namespace XHD.DAL
             sb.AppendLine("b_zje, ");
             sb.AppendLine("remarks, ");
             sb.AppendLine("b_zkzje ");
-            sb.AppendLine(" FROM [dbo].[Budge_tax] WHERE budge_id='" + bid + "' ");
+            sb.AppendLine(" FROM [dbo].[Budge_tax] WHERE budge_id='" + bid + "'  ");
+           sb.AppendLine(" INSERT Budge_Para_Ver(customer_id,budge_id,versions,b_Part_id,parentid,BP_Name)SELECT DISTINCT b.customer_id,a.budge_id,0,ComponentID,0,ComponentName FROM  dbo.Budge_BasicDetail a LEFT JOIN dbo.Budge_BasicMain b ON a.budge_id=b.id WHERE budge_id NOT IN (SELECT budge_id FROM Budge_Para_Ver) ");
+
 
 
             //sb.AppendLine(";select @@IDENTITY");
@@ -702,7 +706,7 @@ namespace XHD.DAL
             }
         }
 
-        public int AddModelToBudge(string bid, string modelid)
+        public int AddModelToBudge(string bid, string modelid,decimal PerSquarePrice)
         {
             var sb = new System.Text.StringBuilder();
 
@@ -712,7 +716,7 @@ namespace XHD.DAL
 
            //修改类型
             sb.AppendLine("UPDATE Budge_BasicMain SET ModelStyle=( SELECT  SUBSTRING(ISNULL(ModelStyle,'常规预算'),0,3)+'预算' FROM dbo.Budge_BasicMain	");
-            sb.AppendLine(" WHERE	 id='" + modelid + "'),OldBudgeID='" + modelid + "'");
+            sb.AppendLine(" WHERE	 id='" + modelid + "'),OldBudgeID='" + modelid + "',PerSquarePrice=" + PerSquarePrice + "");
             sb.AppendLine(" WHERE	 id='" + bid + "'");
 
             sb.AppendLine(" UPDATE	Budge_BasicMain	SET	FromTimes=ISNULL(FromTimes,0)+1");

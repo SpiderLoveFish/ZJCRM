@@ -51,10 +51,14 @@
                         }
                     },
                     { display: '性别', name: 'Sex', width: 40 },
-                    //{ display: '电话', name: 'Tel', width: 120, align: 'right' },
-                    { display: '当前总积分', name: 'Jf', width: 80 },
-                    { display: '已发放积分', name: 'Jf1', width: 80 },
-                    { display: '已使用积分', name: 'Jf2', width: 80 }
+                    { display: '电话', name: 'Tel', width: 120, align: 'right' },
+                    { display: '年度总分', name: 'Jf1', width: 80 },
+                    { display: '处罚积分', name: 'Jf2', width: 80 },
+                   
+                     { display: '考核积分', name: 'Jf_z1', width: 80 },
+                    { display: '礼品兑换', name: 'Jf3', width: 80 },
+                    { display: '剩余积分', name: 'Jf', width: 80 }
+                   
                 ],
                 onBeforeShowData: function (grid, data) {
                     startTime = new Date();
@@ -81,7 +85,8 @@
                 columns: [
                         { display: '序号', width: 40, render: function (item, i) { return i + 1; } },
                         { display: '积分类型', name: 'Jflx', width: 80 },
-                        { display: '分值', name: 'Jf', width: 60 },
+                    { display: '分值', name: 'Jf', width: 60 },
+                        // { display: '类型', name: 'Jflx', width: 60 },
                         { display: '积分描述', name: 'Content', width: 200, align: 'left' },
                         { display: '操作人员', name: 'InEmpName', width: 60 },
                         { display: '操作时间', name: 'InDate', width: 145 }
@@ -111,6 +116,24 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
+                items.push({
+                    type: 'serchbtn',
+                    text: '周排名',
+                    icon: '../../images/edit.gif',
+                    disable: true,
+                    click: function () {
+                        pm("Z");
+                    }
+                });
+                items.push({
+                    type: 'serchbtn',
+                    text: '月排名',
+                    icon: '../../images/edit.gif',
+                    disable: true,
+                    click: function () {
+                        pm("Y");
+                    }
+                });
                 items.push({
                     type: 'serchbtn',
                     text: '高级搜索',
@@ -195,6 +218,15 @@
             var row = manager.getSelectedRow();
             if (row) {
                 f_openWindow("CRM/Jifen/Jifen_yg_add.aspx?cid=" + row.ID + "&jid=0&zjf=" + row.Jf + "&jlx=1", "使用积分", 580, 400);
+            } else {
+                $.ligerDialog.warn('操作失败，请选择行！');
+            }
+        }
+          function add2() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow("CRM/Jifen/Jifen_yg_add.aspx?cid=" + row.ID + "&jid=0&zjf=" + row.Jf + "&jlx=2", "使用积分", 580, 400);
             } else {
                 $.ligerDialog.warn('操作失败，请选择行！');
             }
@@ -288,6 +320,25 @@
                 ], isResize: true, showToggle: true, timeParmName: 'a'
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+        function pm(zory) {
+            var viewstyle = zory;
+            f_openWindow_view("CRM/Jifen/jifen_yg_view.aspx?viewstyle=" + viewstyle , "查看积分排名", 780, 600);
+         
+        }
+        var activeDialog_view = null;
+        function f_openWindow_view(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+                   
+                    {
+                        text: '关闭', onclick: function (item, dialog) {
+                            dialog.close();
+                        }
+                    }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialog_view = parent.jQuery.ligerDialog.open(dialogOptions);
         }
         function f_reload() {
             var manager = $("#maingrid4").ligerGetGridManager();

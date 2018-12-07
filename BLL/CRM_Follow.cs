@@ -260,7 +260,27 @@ namespace XHD.BLL
             return dal.report_empfollow(year, idlist);
         }
 
-		#endregion  Method
-	}
+
+        public DataSet RunProcedureView_Schedule(string serchtxt, out string Total)
+        {
+            return dal.RunProcedureView_Schedule(serchtxt, out Total);
+        }
+
+        public DataSet RunProcedureView_Schedule_(string serchtxt, out string Total)
+        {
+            return dal.RunProcedureView_Schedule_(serchtxt, out Total);
+        }
+
+
+        public DataSet OView_Schedulejh(string serchtxt, string btime, string etime, out string Total)
+        {
+            return dal.OView_Schedulejh(serchtxt,   btime,   etime, out   Total);
+        }
+        public DataSet OView_Schedulesj(string serchtxt, string btime, string etime, out string Total)
+        {
+            return dal.OView_Schedulesj(serchtxt, btime, etime, out Total);
+        }
+        #endregion  Method
+    }
 }
 

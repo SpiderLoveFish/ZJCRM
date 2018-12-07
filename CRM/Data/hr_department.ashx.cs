@@ -151,7 +151,9 @@ namespace XHD.CRM.Data
                 model.d_fax = PageValidate.InputText(request["T_fax"], 255);
                 model.d_add = PageValidate.InputText(request["T_add"], 255);
                 model.d_miaoshu = PageValidate.InputText(request["T_descript"], 255);
-
+                string ck = PageValidate.InputText(request["ckisgd"], 255);
+                if(ck=="on")
+                model.isDelete= 1;
                 if (model.d_type == "部门")
                     model.d_icon = "images/icon/88.png";
                 else

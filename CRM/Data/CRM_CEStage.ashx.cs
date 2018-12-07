@@ -66,6 +66,7 @@ namespace XHD.CRM.Data
                 model.ywyid = StringToInt(Common.PageValidate.InputText(request["T_employee1"], 50));
                 model.Stage_icon = Common.PageValidate.InputText(request["T_private"], 250);
                 model.Jh_date = DateTime.Parse(Common.PageValidate.InputText(request["T_jhrq"], 50));
+                model.Begindate = DateTime.Parse(Common.PageValidate.InputText(request["T_kgrq"], 50));
                 string comp = Common.PageValidate.InputText(request["T_comp"], 250);
                 string devip = Common.PageValidate.InputText(request["T_devip"], 250);
                 string id = PageValidate.InputText(request["id"], 50);
@@ -128,10 +129,17 @@ namespace XHD.CRM.Data
             {
                 string status = PageValidate.InputText(request["status"], 50);
                  string id = PageValidate.InputText(request["id"], 50);
-                string s_status="";
+                DateTime jgrq = DateTime.Now;
+                try
+                {
+                    jgrq = DateTime.Parse(PageValidate.InputText(request["jgrq"], 50));
+                }
+                catch { }
+                    string s_status="";
                 if (status == "1") s_status = "施工完成";
                 else if (status == "0") s_status = "正在施工";
-                if(ccpc.UpdateStatus(s_status,id))
+                
+                    if (ccpc.UpdateStatus(s_status,id, jgrq))
                     context.Response.Write("true");
                 else context.Response.Write("false:type");
 
@@ -183,6 +191,36 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            //插以下积分
+            if (request["Action"] == "ygjfgrid")
+            {
+                string starttime = request["starttime"];
+                string endtime = request["endtime"];
+                string serchtxt = " AND 1=1";
+                if (!string.IsNullOrEmpty(request["pid"]))
+                    serchtxt += " and projectid =" + PageValidate.InputText(request["pid"], 50);
+
+
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(" SELECT row_number() over(order by isnull(jf1,0)+isnull(jf2,0) desc) as ID,a.name,a.tel,isnull(b.jf1,0) jf1,isnull(c.jf2,0) jf2,isnull(jf1,0)+isnull(jf2,0) AS jf3 FROM  dbo.hr_employee a  ");
+                sb.AppendLine(" LEFT JOIN (  ");
+                sb.AppendLine(" SELECT id,SUM(jf) jf1 FROM  dbo.v_Jifen_Yg_Mx  ");
+                sb.AppendLine(" WHERE InDate>='"+ starttime + "' AND InDate<='"+ endtime + "' AND jflx='发放积分'  ");
+                sb.AppendLine(" GROUP BY id) b ON a.id=b.ID  ");
+                sb.AppendLine(" LEFT JOIN (  ");
+                sb.AppendLine(" SELECT id,SUM(jf) jf2 FROM  dbo.v_Jifen_Yg_Mx   ");
+                sb.AppendLine(" WHERE  InDate>='" + starttime + "' AND InDate<='" + endtime + "' AND jflx='处罚扣分'  ");
+                sb.AppendLine(" GROUP BY id) c ON a.id=c.ID  ");
+                sb.AppendLine(" WHERE  a.status='在职'  ");
+ 
+
+                string dt = "";
+                string Total;
+                DataSet ds = XHD.DBUtility.DbHelperSQL.Query(sb.ToString());
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], ds.Tables[0].Rows.Count.ToString());
+
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "grid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
@@ -191,7 +229,7 @@ namespace XHD.CRM.Data
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " id";
+                    sortname = " a.id";
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
 
@@ -199,29 +237,61 @@ namespace XHD.CRM.Data
 
                 string Total;
                 string serchtxt = "1=1";
-                 if (!string.IsNullOrEmpty(request["khstext"]))
+                if (!string.IsNullOrEmpty(request["keyword1"]))
+                {
+                    serchtxt += " and (CustomerName like N'%" + PageValidate.InputText(request["keyword1"], 255) + "%'  ";
+                    serchtxt += " or a.address like N'%" + PageValidate.InputText(request["keyword1"], 255) + "%'";
+                    serchtxt += " or a.tel like N'%" + PageValidate.InputText(request["keyword1"], 255) + "%'";
+                    serchtxt += " or a.sgjl like N'%" + PageValidate.InputText(request["keyword1"], 255) + "%' )";
+                }
+                if (!string.IsNullOrEmpty(request["khstext"]))
                     serchtxt += " and CustomerName like N'%" + PageValidate.InputText(request["khstext"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["dzstext"]))
-                    serchtxt += " and address like N'%" + PageValidate.InputText(request["dzstext"], 255) + "%'";
+                    serchtxt += " and a.address like N'%" + PageValidate.InputText(request["dzstext"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["dhstext"]))
-                    serchtxt += " and tel like N'%" + PageValidate.InputText(request["dhstext"], 255) + "%'";
+                    serchtxt += " and a.tel like N'%" + PageValidate.InputText(request["dhstext"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["sgjlstext"]))
-                    serchtxt += " and sgjl like N'%" + PageValidate.InputText(request["sgjlstext"], 255) + "%'";
+                    serchtxt += " and a.sgjl like N'%" + PageValidate.InputText(request["sgjlstext"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["ztstext"]))
-                    serchtxt += " and Stage_icon like N'%" + PageValidate.InputText(request["ztstext"], 255) + "%'";
+                    serchtxt += " and a.Stage_icon like N'%" + PageValidate.InputText(request["ztstext"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["dclbstext"]))
                     serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))>= " + StringToDecimal(PageValidate.InputText(request["dclbstext"], 50)) + "%";
                 if (!string.IsNullOrEmpty(request["dclestext"]))
                     serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))<= " + StringToDecimal(PageValidate.InputText(request["dclestext"], 50)) + "%";
-                   string status = PageValidate.InputText(request["status"], 50);
+
+                if (!string.IsNullOrEmpty(request["startdate"]))
+                    serchtxt += " and EndDate>='"+ request["startdate"]+"' ";
+                if (!string.IsNullOrEmpty(request["enddate"]))
+                    serchtxt += " and EndDate<='" + request["enddate"] + "' ";
+                
+                if (!string.IsNullOrEmpty(request["T_shq"]))
+                {
+                    var shq = request["T_shq_val"];
+                    if (shq == "1")
+                        serchtxt += " and  EndDate>=DATEADD(YEAR,-1,GETDATE())";
+                    if (shq == "2")
+                        serchtxt += " and  EndDate>=DATEADD(YEAR,-2,GETDATE())";
+                    if (shq == "5")
+                        serchtxt += " and  EndDate>=DATEADD(YEAR,-5,GETDATE())";
+                    if (shq == "0")//5年以上
+                        serchtxt += " and  EndDate<=DATEADD(YEAR,-5,GETDATE())";
+                }
+
+                    if (!string.IsNullOrEmpty(request["T_status"]))
+                    {
+                        if (request["T_status"] == "1") { }//正常
+                        if (request["T_status"] == "2") { }//售后中
+                    }
+
+                string status = PageValidate.InputText(request["status"], 50);
                 string s_status="";
                 if (status == "1") s_status = "施工完成";
                 else if (status == "0") s_status = "正在施工";
                 if (s_status!="")
                 serchtxt += " and Stage_icon='" + s_status + "' ";
                 string dt = "";
-               
-                    DataSet ds = ccpc.GetListDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
+                serchtxt += DataAuth(emp_id.ToString());
+                DataSet ds = ccpc.GetListDetail(PageSize, PageIndex, serchtxt, sorttext, out Total);
                     dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
                  
                 context.Response.Write(dt);
@@ -234,7 +304,7 @@ namespace XHD.CRM.Data
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " id";
+                    sortname = " a.id";
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
 
@@ -259,8 +329,8 @@ namespace XHD.CRM.Data
                 //    serchtxt += " and CONVERT(DECIMAL,REPLACE(Scoring,'%',''))<= " + StringToDecimal(PageValidate.InputText(request["dclestext"], 50)) + "%";
 
                 //权限
-                if (!string.IsNullOrEmpty(request["isview"]))
-                    if (request["isview"] == "Y")
+                //if (!string.IsNullOrEmpty(request["isview"]))
+                //    if (request["isview"] == "Y")
                         serchtxt += DataAuth(emp_id.ToString());
 
 

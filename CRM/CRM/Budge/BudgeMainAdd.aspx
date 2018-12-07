@@ -46,6 +46,7 @@
         var isshowzk = getparastr("isshowzk");
         var IsModel = getparastr("IsModel");
         var istc = getparastr("istc");
+        var ISZB = getparastr("ISZB");//Z是否增补
         var tc = "常规模板";
         if (istc == "Y") tc = "套餐模板";
         else if (istc == "N") tc = "常规模板";
@@ -272,6 +273,10 @@
                 $("#tbmb").attr("style", "display:none");
                 $("#T_mblx").val(tc);
             }
+            if (ISZB == "Z")
+            {
+                $("#T_mblx").val("增补预算");
+            }
 
         })
     
@@ -347,7 +352,7 @@
                 top.$.ligerDialog.open({
                     zindex: 9003,
                     title: '选择部件', width: 850, height: 400,
-                    url: "CRM/Budge/SelectBJSingle.aspx?bjmc=" + node.data.text, buttons: [
+                    url: "CRM/Budge/SelectBJSingle.aspx?bjmc=" + encodeURI(encodeURI(node.data.text)), buttons: [
                       { text: '确定', onclick: f_getbjsingle },
                       { text: '取消', onclick: f_selectContactCancel }
                     ]
@@ -424,6 +429,9 @@
         }
         //限制
         function f_onBeforeSubmitEdit(e) {
+            //alert(getparastr("ISZB"));
+            if (getparastr("ISZB") == "Z") { return true; }
+            else
             if (e.column.name == "SUM") {
                 if (e.value < 0) {
                     alert("数量不能为负数！");
@@ -442,7 +450,7 @@
                 if (row) {
                     $.ajax({
                         url: "../../data/Budge.ashx", type: "POST",
-                        data: { Action: "saveupdatesum", bid: $("#T_budgeid").val(), id: row.id,editorderby:-1, editsum: e.value, rnd: Math.random() },
+                        data: { Action: "saveupdatesum", bid: $("#T_budgeid").val(), id: row.id, editorderby: -1, editsum: e.value, iszb: getparastr("ISZB"), rnd: Math.random() },
                         success: function (responseText) {
 
                             if (responseText == "true") {
@@ -671,6 +679,10 @@
                             top.$.ligerDialog.error("物料代码重复，请重新填写！");
                             top.$.ligerDialog.closeWaitting();
                         }
+                       else if (responseText == "false:ccode") {
+                            top.$.ligerDialog.error("物料代码生产失败，请联系IT管理员！");
+                            top.$.ligerDialog.closeWaitting();
+                        }
                         else {
                             dialog.close();
                             top.$.ligerDialog.closeWaitting();
@@ -732,7 +744,7 @@
                     fload();
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    $.ligerDialog.error("保存错误！！！");
+                    $.ligerDialog.error("保存错误！！！请确定是否选中了重复材料！");
                     dialog.close();
                 }
             });
@@ -895,7 +907,7 @@
             }
             $.ajax({
                 type: 'post',
-                url: "../../data/Budge.ashx?Action=saveadd&mj=" + $("#T_mj").val() + "&bid=" + $("#T_budgeid").val() + "&cid=" + $("#T_companyid").val() + "&remark=" + $("#T_remarks").val() + '&bname=' + $("#T_budge_name").val() + '&rdm=' + Math.random(),
+                url: "../../data/Budge.ashx?Action=saveadd&ISZB=" + getparastr("ISZB")+"&mj=" + $("#T_mj").val() + "&bid=" + $("#T_budgeid").val() + "&cid=" + $("#T_companyid").val() + "&remark=" + $("#T_remarks").val() + '&bname=' + $("#T_budge_name").val() + '&rdm=' + Math.random(),
                 success: function (data) {
                     if (data == 'false') {
                         getmaxid();
@@ -943,7 +955,7 @@
             else {
                 var data = dialog.frame.f_select();
                 var bjid = data.id;
-                var copybj = dialog.frame.f_copybj();
+                var copybj =  (dialog.frame.f_copybj());
                 // alert(copybj)
                 //for (var i = 0; i < rows.length; i++) {
                 //    bjid = bjid + ',' + rows[i].id;
@@ -1096,7 +1108,7 @@
             top.$.ligerDialog.open({
                 zindex: 9003,
                 title: '选择模板', width: 850, height: 400,
-                url: "CRM/Budge/SelectModel.aspx",
+                url: "CRM/Budge/SelectModel.aspx?ismj=N",
                 buttons: [
                   { text: '确定', onclick: f_selectmodel },
                   { text: '取消', onclick: f_selectContactCancel }
@@ -1268,7 +1280,7 @@
 
         function view(id) {
             var dialogOptions = {
-                width: 770, height: 510, title: "材料档案图文介绍", url: '../view/product_view.aspx?pid=' + id + '&rnd=' + Math.random(), buttons: [
+                width: 770, height: 510, title: "材料档案图文介绍", url: '../view/product_view.aspx?id=' + id + '&rnd=' + Math.random(), buttons: [
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();

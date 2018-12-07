@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" %>
+ï»¿<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -21,6 +21,7 @@
     <script src="../../lib/json2.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+     <script src="../lib/jquery.form.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
    
 
@@ -28,93 +29,120 @@
         var manager, g;
         var pushry = [];
         $(function () {
-
+           
          g=   $("#maingrid4").ligerGrid({
                 columns: [
                    {
-                       display: 'ĞòºÅ', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                       display: 'åºå·', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                        { return (page - 1) * pagesize + rowindex + 1; }
-                   },
-                     { display: '²ÄÁÏ±àºÅ', name: 'C_code', width: 80, align: 'left' },
-                      { display: '²ÄÁÏÃû³Æ', name: 'product_name', width: 100, align: 'left' },
-                     { display: '²ÄÁÏĞÍºÅ', name: 'ProModel', width: 100, align: 'left' },
-                        { display: '²ÄÁÏ¹æ¸ñ', name: 'specifications', width: 100, align: 'left' },
-                         { display: 'ËùÊôÆ·ÅÆ', name: 'Brand', width: 100, align: 'left' },
-                          { display: 'Àà±ğ', name: 'category_name', width: 80, align: 'left' },
-                        { display: 'µ¥Î»', name: 'unit', width: 40, align: 'left' },
-                        {
-                            display: 'ÉêÇëÊıÁ¿', name: 'sqsl', width: 60, align: 'left'
-                            , type: 'float'
-                             
-                        },
-                        {
-                            display: '²É¹ºÊıÁ¿', name: 'cgsl', width: 60, align: 'left'
-                            , type: 'float' 
+                    },
+                 { display: 'ä¾›åº”å•†', name: 'SupplierName', width: 100, align: 'left' },
+                     { display: 'å®¢æˆ·åœ°å€', name: 'address', width: 120, align: 'left' },
+                   
+                      { display: 'ææ–™åç§°', name: 'product_name', width: 100, align: 'left' },
+                     { display: 'ææ–™å‹å·', name: 'ProModel', width: 100, align: 'left' },
+                        { display: 'ææ–™è§„æ ¼', name: 'specifications', width: 100, align: 'left' },
+                         { display: 'æ‰€å±å“ç‰Œ', name: 'Brand', width: 100, align: 'left' },
 
-                        },
+                        { display: 'å•ä½', name: 'unit', width: 40, align: 'left' },
+                        
+//                        {
+//                            display: 'ç”³è¯·æ•°é‡', name: 'sqsl', width: 60, align: 'right'
+//                            , type: 'float'
+
+//                        },
+                         {
+                             display: 'ç”³è¯·æ•°é‡', name: 'sqsl', width: 90, align: 'right', render: function(item) {
+                             
+                                 var html
+                                 if (item.sqsl < 0) {
+                                     html = "<font color='#CC0000'>" + item.sqsl + "</font>"
+                                 }
+                                 else
+                                     html = item.sqsl
+
+                                 return html;
+                             }
+                         },
+                        //{
+                        //    display: 'é‡‡è´­æ•°é‡', name: 'cgsl', width: 60, align: 'left'
+                        //    , type: 'float' 
+
+                        //},
                         {
-                            display: 'ÁìÁÏÊıÁ¿', name: 'llsl', width: 60, align: 'left'
+                            display: 'å·²é¢†æ•°é‡', name: 'llsl', width: 60, align: 'right'
                             , type: 'float' 
 
                         },
                     //{
-                    //    display: 'Ìá½»²É¹º', width: 60, render: function (item) {
+                    //    display: 'æäº¤ç”³è¯·', width: 60, render: function (item) {
                     //        var html;
                     //        if (item.IsStatus == 0) {
-                    //            html = "<a href='javascript:void(0)' onclick=Submit(" + item.id + ")>Ìá½»</a>"
+                    //            html = "<a href='javascript:void(0)' onclick=Submit(" + item.id + ")>æäº¤</a>"
  
                     //        }
-                    //        else html = "<a href='javascript:void(0)' onclick=Revoke(" + item.id + ") ><font color='CC0000'>³·»Ø</font></a>";
+                    //        else html = "<a href='javascript:void(0)' onclick=Revoke(" + item.id + ") ><font color='CC0000'>æ’¤å›</font></a>";
                            
 
                     //        return html;
                     //    }
 
                     //},
-                    {
-                        display: '×´Ì¬', width: 80, render: function (item) {
-                            var html;
-                            switch(item.IsStatus)
-                            { 
+                    //{
+                    //    display: 'çŠ¶æ€', width: 80, render: function (item) {
+                    //        var html;
+                    //        switch(item.IsStatus)
+                    //        { 
                                 
-                                case '1':
-                                    html = "<font color='AA0000'>²É¹ºÎ´Íê</font>";
-                                    break;
-                                case '2':
-                                    html = "<font color='BB0000'>ÁìÁÏÎ´Íê</font>";
-                                    break;
-                                case '3':
-                                    html = "<font color='CC0000'>Î´´¦Àí</font>";
-                                    break;
-                                case '4':
-                                    html = "<font color='DD0000'>²É¹ºÒÑÍê</font>";
-                                    break;
-                                case '5':
-                                    html = "<font color='EE0000'>ÁìÁÏÒÑÍê</font>";
-                                    break;
-                                case '7':
-                                    html = "<font color='FF0000'>ÒÑ½á°¸</font>";
-                                    break;
-                                default:
-                                    html = "Î´Öª" + item.IsStatus;
-                                    break;
-                            }
+                    //            case '1':
+                    //                html = "<font color='AA0000'>é‡‡è´­æœªå®Œ</font>";
+                    //                break;
+                    //            case '2':
+                    //                html = "<font color='BB0000'>é¢†æ–™æœªå®Œ</font>";
+                    //                break;
+                    //            case '3':
+                    //                html = "<font color='CC0000'>æœªå¤„ç†</font>";
+                    //                break;
+                    //            case '4':
+                    //                html = "<font color='DD0000'>é‡‡è´­å·²å®Œ</font>";
+                    //                break;
+                    //            case '5':
+                    //                html = "<font color='EE0000'>é¢†æ–™å·²å®Œ</font>";
+                    //                break;
+                    //            case '7':
+                    //                html = "<font color='FF0000'>å·²ç»“æ¡ˆ</font>";
+                    //                break;
+                    //            default:
+                    //                html = "æœªçŸ¥" + item.IsStatus;
+                    //                break;
+                    //        }
                          
-                            return html;
-                        }
+                        //    return html;
+                        //}
 
-                    },
-                        { display: 'Ìí¼ÓÈË', name: 'name', width: 60, align: 'left' },
+                    //},
+                      { display: 'ç±»åˆ«', name: 'category_name', width: 80, align: 'left' },
+                      { display: 'ææ–™ç¼–å·', name: 'C_code', width: 80, align: 'left' },
+                        { display: 'æ·»åŠ äºº', name: 'name', width: 60, align: 'left' },
                         {
-                            display: 'Ìí¼ÓÊ±¼ä', name: 'DoTime', width: 90, render: function (item) {
+                            display: 'æ·»åŠ æ—¶é—´', name: 'DoTime', width: 90, render: function (item) {
                                 var DoTime = formatTimebytype(item.DoTime, 'yyyy-MM-dd');
                                 return DoTime;
                             }
                         },
-                            { display: '¿Í»§µØÖ·', name: 'address', width: 120, align: 'left' },
+                   
+                        { display: 'å¤‡æ³¨', name: 'b1', width: 200, align: 'left' },
+
+                        {
+                            display: 'è¾…åŠ©æ˜ç»†', width: 60, render: function (item) {
+                                var html = "<a href='javascript:void(0)' onclick=viewfz(" + item.CustomerID + ","+item.id +","+item.sgjl+")>æŸ¥çœ‹</a>"
+                                return html;
+                            }
+                        },
+
                          {
-                             display: 'Í¼ÎÄ', width: 40, render: function (item) {
-                                 var html = "<a href='javascript:void(0)' onclick=view(" + item.product_id + ")>²é¿´</a>"
+                             display: 'å›¾æ–‡', width: 40, render: function (item) {
+                                 var html = "<a href='javascript:void(0)' onclick=view(" + item.product_id + ")>æŸ¥çœ‹</a>"
                                  return html;
                              }
                          }
@@ -133,7 +161,8 @@
                 onBeforeSubmitEdit: f_onBeforeSubmitEdit,
                 onAfterEdit: f_onAfterEdit,
                 heightDiff: -1,
-                checkbox: true, name: "ischecked", checkboxAll: false, isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
+                showToggle: true,
+                checkbox: true, name: "ischecked", isChecked: f_isChecked, onCheckRow: f_onCheckRow, onCheckAllRow: f_onCheckAllRow,
                 onContextmenu: function (parm, e) {
                     actionCustomerID = parm.data.id;
                     menu.show({ top: e.pageY, left: e.pageX });
@@ -141,7 +170,7 @@
                 }
 
             });
-            $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
+            //$("#maingrid4 .l-grid-hd-cell-btn-checkbox").show();
             initLayout();
             $(window).resize(function () {
                 initLayout();
@@ -151,23 +180,23 @@
         });
 
 
-        //Ö»ÔÊĞí±à¼­Ç°3ĞĞ
+        //åªå…è®¸ç¼–è¾‘å‰3è¡Œ
         function f_onBeforeEdit(e) {
             //if (e.rowindex <= 2) return true;
             //return false;
             return true;
         }
-        //ÏŞÖÆ
+        //é™åˆ¶
         function f_onBeforeSubmitEdit(e) {
             if (e.column.name == "AmountSum") {
                 if (e.value < 0) {
-                    alert("ÊıÁ¿²»ÄÜÎª¸ºÊı£¡");
+                    alert("æ•°é‡ä¸èƒ½ä¸ºè´Ÿæ•°ï¼");
                     return false;
                 }
             }
             return true;
         }
-        //±à¼­ºóÊÂ¼ş 
+        //ç¼–è¾‘åäº‹ä»¶ 
         function f_onAfterEdit(e) {
             if (e.column.name == "AmountSum") {
                 var manager = $("#maingrid4").ligerGetGridManager();
@@ -186,17 +215,17 @@
                         },
                         error: function () {
                             top.$.ligerDialog.closeWaitting();
-                            top.$.ligerDialog.error('ĞŞ¸ÄÊ§°Ü£¡', "", null, 9003);
+                            top.$.ligerDialog.error('ä¿®æ”¹å¤±è´¥ï¼', "", null, 9003);
                         }
                     });
                 }
                 else {
-                    $.ligerDialog.warn("ÇëÑ¡ÔñÒ»ÓĞĞ§ĞĞ£¡");
+                    $.ligerDialog.warn("è¯·é€‰æ‹©ä¸€æœ‰æ•ˆè¡Œï¼");
                 }
             }
         }
 
-        function toolbar() {
+            function toolbar() {
             $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=199&rnd=" + Math.random(), function (data, textStatus) {
                 //alert(data);
                 var items = [];
@@ -205,11 +234,13 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-                items.push({ type: 'textbox', id: 'stext', text: 'ËÑË÷ÄÚÈİ£º' });
-                items.push({ type: 'textbox', id: 'bgtxt', text: '¿ªÊ¼Ê±¼ä£º' });
-                items.push({ type: 'textbox', id: 'endtxt', text: '½áÊøÊ±¼ä£º' });
-                items.push({ type: 'textbox', id: 'sectype', text: 'É¸Ñ¡×´Ì¬£º' });
-                items.push({ type: 'button', text: 'ËÑË÷', icon: '../../images/search.gif', disable: true, click: function () { doserch() } });
+                items.push({ type: 'textbox', id: 'stext', text: 'æ¡ä»¶ä¸€ï¼š' });
+                items.push({ type: 'textbox', id: 'stextb', text: 'æ¡ä»¶äºŒï¼š' });
+                items.push({ type: 'textbox', id: 'stextc', text: 'æ¡ä»¶ä¸‰ï¼š' });
+              //  items.push({ type: 'textbox', id: 'bgtxt', text: 'å¼€å§‹æ—¶é—´ï¼š' });
+                //items.push({ type: 'textbox', id: 'endtxt', text: 'ç»“æŸæ—¶é—´ï¼š' });
+               // items.push({ type: 'textbox', id: 'sectype', text: 'ç­›é€‰çŠ¶æ€ï¼š' });
+                items.push({ type: 'button', text: 'æœç´¢', icon: '../../images/search.gif', disable: true, click: function () { doserch() } });
                 $("#toolbar").ligerToolBar({
                     items: items
 
@@ -218,35 +249,42 @@
                 menu = $.ligerMenu({
                     width: 120, items: getMenuItems(data)
                 });
-                $('#sectype').ligerComboBox({
-                    width: 120,
-                    //isMultiSelect: true,
-                    selectBoxWidth: 120,
-                    selectBoxHeight: 120,
-                    valueField: 'id',
-                    textField: 'text',
-                    treeLeafOnly: true,
-                    tree: {
-                        data: [
-                   { id: 99, text: 'È«²¿' },
-                   { id: 1, text: '²É¹ºÎ´Íê' },
-                   { id: 2, text: 'ÁìÁÏÎ´Íê' },
-                   { id: 3, text: 'Î´´¦Àí' },
-                   { id: 4, text: '²É¹ºÒÑÍê' },
-                   { id: 5, text: 'ÁìÁÏÒÑÍê' },
-                    { id: 7, text: 'ÒÑ½á°¸' }
+                //$('#sectype').ligerComboBox({
+                //    width: 120,
+                //    //isMultiSelect: true,
+                //    selectBoxWidth: 120,
+                //    selectBoxHeight: 120,
+                //    valueField: 'id',
+                //    textField: 'text',
+                //    treeLeafOnly: true,
+                //    tree: {
+                //        data: [
+                //   { id: 99, text: 'å…¨éƒ¨' },
+                //   { id: 1, text: 'é‡‡è´­æœªå®Œ' },
+                //   { id: 2, text: 'é¢†æ–™æœªå®Œ' },
+                //   { id: 3, text: 'æœªå¤„ç†' },
+                //   { id: 4, text: 'é‡‡è´­å·²å®Œ' },
+                //   { id: 5, text: 'é¢†æ–™å·²å®Œ' },
+                //    { id: 7, text: 'å·²ç»“æ¡ˆ' }
 
-                        ],
-                        checkbox: false
-                    }
-                });
-                $("#stext").ligerTextBox({ width: 200 });
+                //        ],
+                //        checkbox: false
+                //    }
+                //});
+                $("#stext").ligerTextBox({ width: 150 });
+                $("#stextb").ligerTextBox({ width: 150 });
+                $("#stextc").ligerTextBox({ width: 150 });
                 $("#bgtxt").ligerTextBox({ width: 100,ltype:'date',  nullText: "" })
                 $("#endtxt").ligerTextBox({ width: 100,ltype:'date', nullText: "" })
                 $("#maingrid4").ligerGetGridManager().onResize();
             });
         }
-       
+
+            function key()
+            {
+                if (event.keyCode == 13)Â  //å›è½¦é”®çš„é”®å€¼ä¸º13
+                    doserch(); //è°ƒç”¨æŸ¥è¯¢å‡½æ•°çš„äº‹ä»¶
+            }
             function doserch() {
             
                 var sendtxt = "&Action=RefMaterialsListgrid&rnd=" + Math.random();
@@ -256,7 +294,7 @@
                 manager.GetDataByURL("../../data/PurchaseList.ashx?" + serchtxt);
             }
         
-        //Ìá½»
+        //æäº¤
         function Submit(id)
         {
           
@@ -265,17 +303,17 @@
                 url: "../../data/PurchaseList.ashx?Action=updatestatus&id=" + id + "&isstatus=1&rdm=" + Math.random(),
                 success: function (data) {
                     if (data == "false")
-                        f_error("±£´æÊ§°Ü£¡");
+                        f_error("ä¿å­˜å¤±è´¥ï¼");
 
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    f_error("±£´æÊ§°Ü£¡");
+                    f_error("ä¿å­˜å¤±è´¥ï¼");
                 }
             });
             // f_success();
             f_load();
         }
-        //³·»Ø
+        //æ’¤å›
         function Revoke(id)
         {
             $.ajax({
@@ -283,11 +321,11 @@
                 url: "../../data/PurchaseList.ashx?Action=updatestatus&id=" + id + "&isstatus=0&rdm=" + Math.random(),
                 success: function (data) {
                     if (data == "false")
-                    f_error("±£´æÊ§°Ü£¡");
+                    f_error("ä¿å­˜å¤±è´¥ï¼");
 
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    f_error("±£´æÊ§°Ü£¡");
+                    f_error("ä¿å­˜å¤±è´¥ï¼");
                 }
             });
             // f_success();
@@ -299,7 +337,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                $.ligerDialog.confirm("É¾³ı²»ÄÜ»Ö¸´£¬È·¶¨É¾³ı£¿", function (yes) {
+                $.ligerDialog.confirm("åˆ é™¤ä¸èƒ½æ¢å¤ï¼Œç¡®å®šåˆ é™¤ï¼Ÿ", function (yes) {
                     if (yes) {
                         $.ajax({
                             url: "../../data/PurchaseList.ashx", type: "POST",
@@ -312,18 +350,18 @@
 
                                 else if (responseText == "false:order") {
                                     top.$.ligerDialog.closeWaitting();
-                                    top.$.ligerDialog.error('×´Ì¬ÒÑ¾­¸Ä±ä£¬ÎŞ·¨É¾³ı£¡');
+                                    top.$.ligerDialog.error('çŠ¶æ€å·²ç»æ”¹å˜ï¼Œæ— æ³•åˆ é™¤ï¼');
                                 }
                             },
                             error: function () {
                                 top.$.ligerDialog.closeWaitting();
-                                top.$.ligerDialog.error('É¾³ıÊ§°Ü£¡', "", null, 9003);
+                                top.$.ligerDialog.error('åˆ é™¤å¤±è´¥ï¼', "", null, 9003);
                             }
                         });
                     }
                 })
             } else {
-                $.ligerDialog.warn("ÇëÑ¡ÔñÀà±ğ£¡");
+                $.ligerDialog.warn("è¯·é€‰æ‹©ç±»åˆ«ï¼");
             }
         }
 
@@ -333,41 +371,45 @@
             });
         }
         function f_saving() {
-            $.ligerDialog.waitting("ÕıÔÚ±£´æÖĞ...");
+            $.ligerDialog.waitting("æ­£åœ¨ä¿å­˜ä¸­...");
         }
-        //Éú³É²É¹ºµ¥
+        //ç”Ÿæˆé‡‡è´­å•
         function addcgd()
         {
+          //  alert(1)
             var rowid = checkedID.join(',');
             var customer = checkedCustomerID.join(',');
             
-            var customerid="";var customer="";
-            for (var k = 0; k < checkedCustomerID.length; k++)
-            {
-                if (k == 0)
-                { customerid = checkedCustomerID[k]; }
-                else {
-                    if (customerid != checkedCustomerID[k])
-                        f_error("ËùÑ¡²ÄÁÏ±ØĞëÎªÍ¬Ò»¿Í»§£¡"); return;
-                }
+            var customerid = ""; var customer = "";
+           alert(checkedID)
+            //for (var k = 0; k < checkedCustomerID.length; k++)
+            //{
+            //    if (k == 0)
+            //    { customerid = checkedCustomerID[k]; }
+            //    else {
+            //        if (customerid != checkedCustomerID[k])
+            //            f_error("æ‰€é€‰ææ–™å¿…é¡»ä¸ºåŒä¸€å®¢æˆ·ï¼"); return;
+            //    }
                
 
-            }
+            //}
             var data = g.getData();
-            for (var d = 0; d < data.length; d++)
-            {
-                if (data[d]["CustomerID"] == customerid) {
+            //for (var d = 0; d < data.length; d++)
+            //{
+            //    if (data[d]["CustomerID"] == customerid) {
                    
-                    customer = data[d]["address"]; break;
+            //        customer = data[d]["address"]; break;
 
-                }
-            }
+            //    }
+            //}
            
         if (rowid.length > 0)
          //  alert(rowid);
-            f_openWindow('crm/purchase/SavePickList.aspx?rowid=' + rowid + '&cid=' + customerid + '&cname=' + encodeURI(customer), "Éú³É²É¹ºµ¥", 600, 350);
+            f_openWindow('crm/purchase/SavePickList.aspx?rowid=' + rowid + '&cid=0&cname=' + encodeURI("æ‰¹é‡ç”Ÿæˆ"),
+                //' + customerid + '& cname=' + encodeURI(customer), 
+                "ç”Ÿæˆé‡‡è´­å•", 600, 350);
             }
-        //½á°¸
+        //ç»“æ¡ˆ
         function close() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
@@ -377,17 +419,17 @@
                     url: "../../data/PurchaseList.ashx?Action=updatestatus&id=" + row.id + "&isstatus=7&rdm=" + Math.random(),
                     success: function (data) {
                         if (data == "false")
-                            f_error("±£´æÊ§°Ü£¡");
+                            f_error("ä¿å­˜å¤±è´¥ï¼");
 
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        f_error("±£´æÊ§°Ü£¡");
+                        f_error("ä¿å­˜å¤±è´¥ï¼");
                     }
                 });
                 // f_success();
                 f_load();
             } else
-                $.ligerDialog.warn('ÇëÑ¡Ôñ²úÆ·£¡');
+                $.ligerDialog.warn('è¯·é€‰æ‹©äº§å“ï¼');
         } 
          
        
@@ -398,20 +440,27 @@
         }
         function f_success() {
             //setTimeout(function () {
-            //    $.ligerDialog.confirm("ÊÇ·ñ¼ÌĞø±à¼­", "±£´æ³É¹¦", function (ok) {
+            //    $.ligerDialog.confirm("æ˜¯å¦ç»§ç»­ç¼–è¾‘", "ä¿å­˜æˆåŠŸ", function (ok) {
             //        if (!ok) {
             //            parent.$.ligerDialog.close();
             //        }
             //    });
             //}, 200);
         }
-        //¹Ø±ÕË¢ĞÂ
+        //å…³é—­åˆ·æ–°
         function f_close(item, dialog)
         {
             f_load();
             dialog.close();
         }
-        //±£´æĞÅÏ¢
+
+
+        function f_savePurList()
+        {
+
+        }
+
+        //ä¿å­˜ä¿¡æ¯
         function f_save(item, dialog)
         {
             var issave = dialog.frame.f_save();
@@ -423,7 +472,7 @@
                     success: function (data) {
                         if (data == 'false') {
                             dialog.frame.getmaxid();
-                            $.ligerDialog.error("±£´æ´íÎó£¡£¡£¡ÖØĞÂ±£´æ£¡");
+                            $.ligerDialog.error("ä¿å­˜é”™è¯¯ï¼ï¼ï¼é‡æ–°ä¿å­˜ï¼");
                         }
                         else {
 
@@ -431,7 +480,7 @@
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        top.$.ligerDialog.error("±£´æ´íÎó£¡£¡£¡");
+                        top.$.ligerDialog.error("ä¿å­˜é”™è¯¯ï¼ï¼ï¼");
                     }
                 });
                
@@ -442,18 +491,19 @@
         function savedetail(dialog, issave) {
        
             //var pidlist = "," + pidlist;
-            var url = '../../data/Purchase.ashx?Action=savedetail&'+issave;
+            var url = '../../data/Purchase.ashx?Action=savedetail&isauto=Y&'+issave;
             $.ajax({
                 type: 'post',
                 url: url,
                 success: function (data) {
                     dialog.frame.alertcgd();
                     dialog.close();
-                    dialog.closeWaitting('Êı¾İ±£´æÖĞ,ÇëÉÔºò...');
-                   // top.$.ligerDialog.waitting('Êı¾İ±£´æÖĞ,ÇëÉÔºò...');
+                   
+                    f_reload();//åˆ·æ–°ä¸ŠåŠéƒ¨åˆ†
+                   // top.$.ligerDialog.waitting('æ•°æ®ä¿å­˜ä¸­,è¯·ç¨å€™...');
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    top.$.ligerDialog.error("±£´æ´íÎó£¡£¡£¡");
+                    top.$.ligerDialog.error("ä¿å­˜é”™è¯¯ï¼ï¼ï¼");
                 }
             });
 
@@ -467,12 +517,12 @@
                 zindex: 9002,
                 width: width, height: height, title: title, url: url, buttons: [
                         {
-                            text: '±£´æ', onclick: function (item, dialog) {
+                            text: 'ä¿å­˜', onclick: function (item, dialog) {
                                 f_save(item, dialog);
                             }
                         },
                         {
-                            text: '¹Ø±Õ', onclick: function (item, dialog) {
+                            text: 'å…³é—­', onclick: function (item, dialog) {
                                 f_close(item, dialog);
                             }
                         }
@@ -484,9 +534,9 @@
 
         function view(id) {
             var dialogOptions = {
-                width: 770, height: 510, title: "²ÄÁÏµµ°¸Í¼ÎÄ½éÉÜ", url: '../view/product_view.aspx?pid=' + id + '&rnd=' + Math.random(), buttons: [
+                width: 1000, height: 650, title: "ææ–™æ¡£æ¡ˆå›¾æ–‡ä»‹ç»", url: '../view/product_view.aspx?id=' + id + '&rnd=' + Math.random(), buttons: [
                         {
-                            text: '¹Ø±Õ', onclick: function (item, dialog) {
+                            text: 'å…³é—­', onclick: function (item, dialog) {
                                 dialog.close();
                             }
                         }
@@ -494,23 +544,37 @@
             };
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
-
+                function viewfz(cid,id,sgjl) {
+            var dialogOptions = {
+                width: 800, height: 510, title: "è¾…åŠ©ä¿¡æ¯", url: "../../CRM/ConsExam/PurProductList_edit.aspx?cid=" + cid + "&id=" + id + "&sgjl=" + sgjl+ "&rnd=" + Math.random(), buttons: [
+                    {
+                        text: 'å…³é—­', onclick: function (item, dialog) {
+                            dialog.close();
+                        }
+                    }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
         /*
-        ±íµ¥·ÖÒ³¶àÑ¡
-        ¼´ÀûÓÃonCheckRow½«Ñ¡ÖĞµÄĞĞ¼ÇÒäÏÂÀ´£¬²¢ÀûÓÃisChecked½«¼ÇÒäÏÂÀ´µÄĞĞ³õÊ¼»¯Ñ¡ÖĞ
+        è¡¨å•åˆ†é¡µå¤šé€‰
+        å³åˆ©ç”¨onCheckRowå°†é€‰ä¸­çš„è¡Œè®°å¿†ä¸‹æ¥ï¼Œå¹¶åˆ©ç”¨isCheckedå°†è®°å¿†ä¸‹æ¥çš„è¡Œåˆå§‹åŒ–é€‰ä¸­
         */
         var checkedID = []; var checkedCustomerID = [];
         function f_onCheckAllRow(checked) {
-            for (var rowid in this.records) {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var data = manager.records;
+              //  alert(JSON.stringify(data));
+            for (var rowid in data) {
                 if (checked)
-                    addcheckedID(this.records[rowid]['product_id'], this.records[rowid]['CustomerID']);
+                    addcheckedID(data[rowid]['id'], data[rowid]['CustomerID']);
                 else
-                    removecheckedID(this.records[rowid]['product_id'], this.records[rowid]['CustomerID']);
+                    removecheckedID(data[rowid]['id'], data[rowid]['CustomerID']);
             }
         }
-        function findcheckedID(product_id) {
+        function findcheckedID(id) {
             for (var i = 0; i < checkedID.length; i++) {
-                if (checkedID[i] == product_id) return i;
+                if (checkedID[i] == id) return i;
             }
             
             return -1;
@@ -522,14 +586,14 @@
             }
             return -1;
         }
-        function addcheckedID(product_id,customerid) {
-            if (findcheckedID(product_id) == -1)
-                checkedID.push(product_id);
+        function addcheckedID(id, customerid) {
+            if (findcheckedID(id) == -1)
+                checkedID.push(id);
             if (findcheckedCustomerID(customerid) == -1)
                 checkedCustomerID.push(customerid);
         }
-        function removecheckedID(product_id,customerid) {
-            var i = findcheckedID(product_id);
+        function removecheckedID(id,customerid) {
+            var i = findcheckedID(id);
             if (i == -1) return;
             checkedID.splice(i, 1);
             var ii = findcheckedCustomerID(customerid);
@@ -537,18 +601,26 @@
             checkedCustomerID.splice(ii, 1);
         }
         function f_isChecked(rowdata) {
-            if (findcheckedID(rowdata.product_id) == -1)
+            if (findcheckedID(rowdata.id) == -1)
                 return false;
             return true;
         }
         function f_onCheckRow(checked, data) {
-            if (checked) addcheckedID(data.product_id, data.CustomerID);
-            else removecheckedID(data.product_id, data.CustomerID);
+            if (checked) addcheckedID(data.id, data.CustomerID);
+            else removecheckedID(data.id, data.CustomerID);
         }
+        function f_reload() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            manager.loadData(true);
+            checkedID = [];
+            //alert(1)
+        };
+
     </script>
+
     
 </head>
-<body style="padding: 0px; overflow: hidden;">
+<body style="padding: 0px; overflow: hidden;" onkeydown="key()">
    
       <form id="form1" onsubmit="return false">
         <div>

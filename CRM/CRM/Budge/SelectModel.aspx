@@ -26,7 +26,7 @@
        
         $(function () {
             //var strurl = "../../data/Budge.ashx?Action=gridselectmodel";
-            var strurl = "../../data/Budge.ashx?Action=grid&IsModel=Y";
+            var strurl = "../../data/Budge.ashx?Action=grid&IsModel=Y&ismj=" + getparastr("ismj");//是否面积
            
 
             $("#maingrid4").ligerGrid({
@@ -36,12 +36,10 @@
                          { return (page - 1) * pagesize + rowindex + 1; }
                      },
                       { display: '模板编号', name: 'id', width: 100, align: 'left' },
-                          { display: '模板名称', name: 'BudgetName', width: 120, align: 'left' },
-                    //  { display: '姓名', name: 'CustomerName', width: 60, align: 'left' },
-
-
-
-
+                      { display: '模板名称', name: 'BudgetName', width: 120, align: 'left' },
+                      { display: '套餐价', name: 'StandardAmount', width: 60, align: 'left' },
+                      { display: '平米单价', name: 'PerSquarePrice', width: 60, align: 'left' },
+                      { display: '标准面积', name: 'StandardArea', width: 60, align: 'left' },
 
                         { display: '创建人', name: 'name', width: 80, align: 'left' },
                         {
@@ -150,7 +148,8 @@
                 tree: {
                      data: [                
                 { text: '常规模板' },
-                { text: '套餐模板' } 
+                { text: '套餐模板' },
+                { text: '面积模板' } 
                      ],
                      checkbox: false
                 }
@@ -160,7 +159,7 @@
            }
            //查询
            function doserch() {
-               var strurl = "../../data/Budge.ashx?Action=grid&IsModel=Y";
+               var strurl = "../../data/Budge.ashx?Action=grid&IsModel=Y&ismj=" + getparastr("ismj");
 
                var sendtxt = "&rnd=" + Math.random();
                var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;

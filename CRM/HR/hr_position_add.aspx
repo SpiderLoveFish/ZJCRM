@@ -64,6 +64,7 @@
                     $("#T_position").val(obj.position_name);
                     $("#T_order").val(obj.position_order);
                     $("#T_level").val(obj.position_level);
+                    $("#T_zz").val(obj.zz);
                 }
             });
         }
@@ -99,6 +100,16 @@
                     <div style="float:left; height: 20px;">
                         <input type="text" id="T_order" name="T_order"   ltype='spinner' ligerui="{type:'int',width:180}" value="20" validate="{required:true}" />
                     </div>
+                </td>
+            </tr>
+                        <tr>
+                <td  width="65px"  ><div align="left" style="width: 61px">
+                    职务职责：</div></td>
+                <td   >
+                    <div style="float:left; height: 20px;">
+                          <textarea cols="100" id="T_zz" name="T_zz" rows="8" class="l-textarea" style="width: 380px"></textarea>
+                     <%--   <input type="text" id="T_zz" name="T_zz" ltype="text"   ligerui="{width:180}" validate="{required:true}" />--%>
+                    </div>                    
                 </td>
             </tr>
             <tr>

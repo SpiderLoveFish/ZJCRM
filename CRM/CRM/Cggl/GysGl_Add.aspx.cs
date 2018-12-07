@@ -55,7 +55,7 @@ namespace GysGl
                     var sb = new System.Text.StringBuilder();
                     if (string.IsNullOrWhiteSpace(ID) || ID == "null")
                     {
-                        sb.AppendLine("INSERT INTO dbo.CgGl_Gys_Main (Provinces,ProvincesID,City,CityID,Towns,TownsID,Name,Address,Gsdh,lxr,lxrdh,Zyyw,Remark,IsDel,InEmpID,InDate,xy) ");
+                        sb.AppendLine("INSERT INTO dbo.CgGl_Gys_Main (Provinces,ProvincesID,City,CityID,Towns,TownsID,Name,Address,Gsdh,lxr,lxrdh,Zyyw,Remark,fl_id,fl_name,IsDel,InEmpID,InDate,xy) ");
                         sb.AppendLine("VALUES  ('" + Request["Provinces"] + "', ");
                         sb.AppendLine("         '" + Request["Provinces_val"] + "', ");
                         sb.AppendLine("         '" + Request["City"] + "', ");
@@ -69,6 +69,8 @@ namespace GysGl
                         sb.AppendLine("         '" + Request["lxrdh"] + "', ");
                         sb.AppendLine("         '" + Request["Zyyw"] + "', ");
                         sb.AppendLine("         '" + Request["Remark"] + "', ");
+                        sb.AppendLine("         '" + Request["fl_val"] + "', ");
+                        sb.AppendLine("         '" + Request["fl"] + "', ");
                         sb.AppendLine("         'N', ");
                         sb.AppendLine("         '" + ticket.UserData+ "', ");
                         sb.AppendLine("         GETDATE(),  ");
@@ -91,6 +93,8 @@ namespace GysGl
                         sb.AppendLine("         lxrdh='" + Request["lxrdh"] + "', ");
                         sb.AppendLine("         Zyyw='" + Request["Zyyw"] + "', ");
                         sb.AppendLine("         Remark='" + Request["Remark"] + "', ");
+                        sb.AppendLine("         fl_id='" + Request["fl_val"] + "', ");
+                        sb.AppendLine("         fl_name='" + Request["fl"] + "', ");
                         sb.AppendLine("         xy='" + Request["T_xy"] + "', ");
                         sb.AppendLine("         EditEmpID='" + ticket.UserData + "',");
                         sb.AppendLine("         EditDate=GETDATE() ");

@@ -57,8 +57,12 @@ namespace XHD.BLL
 		{
 			return dal.Update(model);
 		}
-
-        public bool UpdateZT(int status, int empid, int cid, int id)
+        public bool UpdateRemarks(string SupplierName, string t_contents, int cid, int id
+            ,DateTime RequestDate,string Sender, string ShippingMethod, string Receiver, string b1, string b2, string b3)
+        {
+            return dal.UpdateRemarks(SupplierName,   t_contents,   cid,   id, RequestDate, Sender, ShippingMethod, Receiver, b1, b2, b3);
+        }
+            public bool UpdateZT(int status, int empid, int cid, int id)
         {
             return dal.UpdateZT(status,empid,cid,id);
         }
@@ -201,16 +205,20 @@ namespace XHD.BLL
         {
             return dal.GetTempList(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
-        public DataSet GetRefMaterialsList(int PageSize, int PageIndex, string strWhere)
+        public DataSet GetRefMaterialsList(int PageSize, int PageIndex, string strWhere,string strorder)
         {
-            return dal.GetRefMaterialsList(PageSize, PageIndex, strWhere);
+            return dal.GetRefMaterialsList(PageSize, PageIndex, strWhere, strorder);
         }
         public DataSet GetysList(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
         {
             return dal.GetysList(PageSize, PageIndex, strWhere, filedOrder, out Total);
       
         }
-        #endregion  ExtensionMethod
-	}
+        public DataSet GetTempListDB(int PageSize, int PageIndex, string strWhere,string cid, string filedOrder, out string Total)
+        {
+            return dal.GetTempListDB(PageSize, PageIndex, strWhere,cid, filedOrder, out Total);
+        }
+            #endregion  ExtensionMethod
+        }
 }
 

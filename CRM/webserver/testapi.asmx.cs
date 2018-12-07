@@ -12,6 +12,12 @@ using System.Security.Cryptography;
 using System.Data;
 using System.Text;
 using XHD.CRM.Data;
+using System.Xml;
+using Newtonsoft.Json;
+using XHD.DBUtility;
+using XHD.CRM.Data;
+using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace XHD.CRM.webserver
 {
@@ -26,12 +32,45 @@ namespace XHD.CRM.webserver
     public class testapi : System.Web.Services.WebService
     {
         string interfaceUrl = "http://expappapi.go-mobile.cn/Sc_FamilyExperience/v1.0/";
-
+        WX wx = new WX();
       
         [WebMethod]
         public string HelloWorld()
         {
             return "Hello World";
+        }
+
+        [WebMethod]
+        public string Getaccess_token()
+        {
+            string url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?";
+            string ret = "";string retrunstr = "";
+            string sql = "SELECT * FROM wx_config  WHERE ID=6 ";
+            DataSet ds = DBUtility.DbHelperSQL.Query(sql);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                url += "corpid=" + ds.Tables[0].Rows[0]["corpid"].ToString() + "&corpsecret=" + ds.Tables[0].Rows[0]["Secret"].ToString() + "";
+
+                ret = HttpHelper_GetStr(url, "", "GET", "");
+                Newtonsoft.Json.Linq.JObject jo = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject(ret); //result为上面的Json数据  
+                                                                                                                    // var jobj = JSON.parse(ret);
+
+                retrunstr = jo["access_token"].ToString();
+                if (jo["errcode"].ToString() == "0" && jo["errmsg"].ToString() == "ok")
+                {
+                    string sqls = "SELECT * FROM wx_config  WHERE ID=6 and DATEDIFF(SECOND,DoTime,GETDATE())>=expires_in";
+
+                    DataSet dss = DbHelperSQL.Query(sqls);
+                    if (dss.Tables[0].Rows.Count > 0)
+                    {
+                        string sqlexec = "   update wx_config set token = '" + jo["access_token"].ToString() + "', dotime = GETDATE(),expires_in=" + jo["expires_in"].ToString() + " where id = 6 ";
+                        DBUtility.DbHelperSQL.ExecuteSql(sqlexec);
+
+                        retrunstr = dss.Tables[0].Rows[0]["Token"].ToString();
+                    }
+                }
+            }
+            return retrunstr;  
         }
 
         [WebMethod]
@@ -77,7 +116,30 @@ namespace XHD.CRM.webserver
             result = HttpHelper_GetStr(api,null, "POST", buffer.ToString());
             return result;
         }
- 
+
+        [WebMethod]
+        public string GetAprList(string next_spnum)
+        {
+            IDictionary<string, string> postdata = new Dictionary<string, string>();
+            postdata.Add("loginname", "spider");
+            postdata.Add("pwd", "spider");
+            string result = "";
+            string token = wx.Getaccess_token("3");//审批
+            
+
+                string data = wx.PostProval(token, DateTime.Now.AddYears(-1), DateTime.Now, next_spnum);
+                Newtonsoft.Json.Linq.JObject jo = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject(data); //result为上面的Json数据  
+                                                                                                                     //   JArray ja = (JArray)jo["checkindata"];
+                                                                                                                     // var sb = new System.Text.StringBuilder();
+            if (jo["errmsg"].Value<string>() == "ok")
+            {
+                result = jo["data"].ToString();
+                wx.InsertWX_Proval(data);
+            }
+            return result;
+        }
+
+
         [WebMethod]
         public string getdata(string idindex,string data)
         {
@@ -129,7 +191,49 @@ namespace XHD.CRM.webserver
             result = HttpHelper_GetStr(api,header, "POST", buffer.ToString());
             return result;
         }
-         
+
+        [WebMethod]
+        public string gettest()
+        {
+            string test = "";
+               WX wx = new WX();
+            string token = wx.Getaccess_token("1");
+            //wx.GetAgens(token);
+            //wx.GetDepartments(token,"");
+            //wx.GetUsers(token,"1");
+            //wx.GetUsers(token,);
+            DataTable lsdt = wx.GetWXUserList("");
+            if (lsdt == null) { }
+            else
+            {
+                string userlist = "";
+                foreach (DataRow dr in lsdt.Rows)
+                {
+                    userlist += "\"" + dr["userid"].ToString() + "\",";
+                }
+                userlist = userlist.Substring(0, userlist.Length - 1);
+
+                string bt = "2017-08-01";
+
+                 test= wx.PostCheckIn(token, DateTime.Parse(bt), DateTime.Parse(bt).AddMonths(1), userlist);
+            }
+            // test = wx.PostProval(token, DateTime.Parse("2017-7-23"), DateTime.Parse("2017-8-23"), "");
+            // test = wx.PostMessage(token, "textcard", "");
+            // string sql = "  SELECT TOP 10   REPLACE(REPLACE(mediaids, '[', ''), ']', '')AS media,*FROM dbo.WX_CheckIn WHERE LEN(mediaids) > 10";
+            //DataTable lsdt = DbHelperSQL.Query(sql).Tables[0];
+            //foreach (DataRow dr in lsdt.Rows)
+            //{
+            //    //string a = "WWCISP_KxkUx5iCNgv3lOgos7OoOEmhbKxpCH3piIMovv2hdiHXyCXUdqn4cgEnn7BNrO7NUTnr7NHepH0j-ytOHh2ryA";
+            //    string[] str = dr["media"].ToString().Trim().Split('\"');
+            //    for(int i=0;i<str.Length;i++)
+            //    {
+            //        if(str[i].Length>2)
+            //        test = test+","+ wx.DownLoadFiles(token,str[i] );
+            //    }
+
+            //}
+            return test;
+        }
         private void writereturnstr(string returnstr)
         {
 
@@ -191,6 +295,7 @@ namespace XHD.CRM.webserver
             HttpItem item = new HttpItem()
             {
                 URL = Url,//URL这里都是测试     必需项
+                ContentType = "application/json",
                 Encoding = null,//编码格式（utf-8,gb2312,gbk）     可选项 默认类会自动识别
                 //Encoding = Encoding.Default,
                 Method = "GET",//URL     可选项 默认为Get
@@ -305,7 +410,7 @@ namespace XHD.CRM.webserver
                 Encoding = Encoding.UTF8,//编码格式（utf-8,gb2312,gbk）  
                 UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:18.0) Gecko/20100101 Firefox/18.0",//用户的浏览器类型，版本，操作系统     可选项有默认值
                 Accept = "text/html, application/xhtml+xml, */*",//    可选项有默认值
-                ContentType = "application/x-www-form-urlencoded",//返回类型    可选项有默认值
+                ContentType = "application/json",//返回类型    可选项有默认值
                 Referer = "",//来源URL     可选项
                 //Allowautoredirect = False,//是否根据３０１跳转     可选项
                 //AutoRedirectCookie = False,//是否自动处理Cookie     可选项

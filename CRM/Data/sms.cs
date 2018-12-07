@@ -8,14 +8,14 @@ using System.Net;
 using System.Text;
 using System.IO;
 using System.Xml;
-using System.Data;
 using XHD.BLL;
 using Newtonsoft.Json;
 
 using Aliyun.Acs.Core;
 using Aliyun.Acs.Core.Exceptions;
 using Aliyun.Acs.Core.Profile;
-using Aliyun.Acs.Sms.Model.V20160927;
+
+using Aliyun.Acs.Dysmsapi.Model.V20170525;
 
 namespace XHD.CRM.Data
 {
@@ -86,6 +86,11 @@ namespace XHD.CRM.Data
         }
 
 
+        static String product = "Dysmsapi";//短信API产品名称
+        static String domain = "dysmsapi.aliyuncs.com";//短信API产品域名
+        static String accessId = "";
+        static String accessSecret = "";
+        static String regionIdForPop = "cn-hangzhou";
         public string aliyunSendSMS(string tel,string type,string para)
         {
             string json = "";
@@ -103,19 +108,34 @@ namespace XHD.CRM.Data
             }
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou",dr["accessKey"].ToString() , dr["accessSecret"].ToString() );
-                IAcsClient client = new DefaultAcsClient(profile);
-                SingleSendSmsRequest request = new SingleSendSmsRequest();
+                //IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou",dr["accessKey"].ToString() , dr["accessSecret"].ToString() );
+                //IAcsClient client = new DefaultAcsClient(profile);
+                //SingleSendSmsRequest request = new SingleSendSmsRequest();
+                IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou", dr["accessKey"].ToString(), dr["accessSecret"].ToString());
+                DefaultProfile.AddEndpoint(regionIdForPop, regionIdForPop, product, domain);
+                IAcsClient acsClient = new DefaultAcsClient(profile);
+                SendSmsRequest request = new SendSmsRequest();
+
                 try
                 {
-                    request.SignName = dr["SignName"].ToString(); 
+                    request.PhoneNumbers = tel;
+                    request.SignName = dr["SignName"].ToString();
                     request.TemplateCode = dr["TemplateCode"].ToString();
-                    request.RecNum = tel;// "接收号码，多个号码可以逗号分隔";
                     if (para == "")
-                        request.ParamString = dr["ParamString"].ToString(); //"短信模板中的变量；数字需要转换为字符串；个人用户每个变量长度必须小于15个字符。";
-                    else request.ParamString = para;
-                    SingleSendSmsResponse httpResponse = client.GetAcsResponse(request);
-                    json = httpResponse.HttpResponse.Status.ToString();
+                        request.TemplateParam = dr["ParamString"].ToString();
+                    else request.TemplateParam = para;
+                    request.OutId = "xxxxxxxx";
+                    //请求失败这里会抛ClientException异常
+                    SendSmsResponse sendSmsResponse = acsClient.GetAcsResponse(request);
+                    json = sendSmsResponse.Message;
+                    //request.SignName = dr["SignName"].ToString(); 
+                    //request.TemplateCode = dr["TemplateCode"].ToString();
+                    //request.RecNum = tel;// "接收号码，多个号码可以逗号分隔";
+                    //if (para == "")
+                    //    request.ParamString = dr["ParamString"].ToString(); //"短信模板中的变量；数字需要转换为字符串；个人用户每个变量长度必须小于15个字符。";
+                    //else request.ParamString = para;
+                    //SingleSendSmsResponse httpResponse = client.GetAcsResponse(request);
+                    //json = httpResponse.HttpResponse.Status.ToString();
                 }
                 catch (ServerException e)
                 {

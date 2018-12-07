@@ -110,7 +110,8 @@
                     success: function (responseText) {
                         $("#headurl").val(responseText);
                         $("#userheadimg").attr("src", "../images/upload/portrait/" + responseText);
-                        $.ligerDialog.closeWaitting();
+                       
+                         $.ligerDialog.closeWaitting();
                     },
                     error: function () {
                         $.ligerDialog.closeWaitting();
@@ -120,7 +121,7 @@
             }
         }
 
-        function f_save() {
+        function f_saveupdate() {
             if ($(form1).valid()) {
                 var sendtxt = "&Action=PersonalUpdate&id=epu";
                 issave = $("form :input").fieldSerialize() + sendtxt;
@@ -131,7 +132,8 @@
                     success: function (responseText) {
                         if (responseText == "true") {
                             top.getuserinfo();
-                            setTimeout(function () { top.$.ligerDialog.close() },100);
+                            $.ligerDialog.success('操作成功！！');
+                            //setTimeout(function () { top.$.ligerDialog.close() }, 100);
                         }
                         else {
                             $.ligerDialog.error('操作失败！系统错误。');
@@ -217,10 +219,11 @@
                 </tr>
                 <tr>
                     <td>
-                        <div align="right" style="width: 62px">毕业院校：</div>
+                        <div align="right" style="width: 62px">岗位职责：</div>
                     </td>
                     <td colspan="3">
-                        <input type="text" id="T_school" name="T_school" ltype="text" ligerui="{width:433}" /></td>
+                          <textarea cols="100" id="T_school" name="T_school" rows="4" class="l-textarea" style="width: 442px"></textarea>
+                       <%-- <input type="text" id="T_school" name="T_school" ltype="text" ligerui="{width:433}" /></td>--%>
                 </tr>
                 <tr>
                     <td>

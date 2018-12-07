@@ -171,7 +171,7 @@
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                // alert(row.isNode);
+                 //alert(row.isNode);
                 if (row.isNode == 0)
                     f_openWindow("crm/purchase/PickingList_add.aspx?pid=" + row.CKID + "&status=" + row.isNode, "修改申请", 1100, 600);
                 else if (row.isNode == 1)//已经提交

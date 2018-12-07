@@ -223,7 +223,7 @@ namespace XHD.CRM.Data
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " id ";
+                    sortname = " Follow_date ";
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
 
@@ -269,6 +269,16 @@ namespace XHD.CRM.Data
                 {
                     if (request["T_smart"] != "输入关键词智能搜索跟进内容")
                         serchtxt += " and Follow like N'%" + PageValidate.InputText(request["T_smart"], 255) + "%'";
+                }
+                if (!string.IsNullOrEmpty(request["sectype1"]))
+                {
+                    string lx = "";
+                    if (request["sectype1"] == "kh") lx = "客户";
+                    if (request["sectype1"] == "sg") lx = "施工";
+                    if (request["sectype1"] == "wx") lx = "维修";
+                    if (request["sectype1"] == "sh") lx = "售后";
+                    if (request["sectype1"] != "全部")
+                        serchtxt += " and (lx   = '" + lx + "' OR lx='" + request["sectype1"] + "' )";
                 }
                 //权限
                 serchtxt += DataAuth(emp_id.ToString());

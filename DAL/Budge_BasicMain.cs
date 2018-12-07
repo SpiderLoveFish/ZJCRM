@@ -59,9 +59,9 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into Budge_BasicMain(");
-            strSql.Append("id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions,ModelStyle)");
+            strSql.Append("id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions,ModelStyle,PerSquarePrice,SquareAmount,SquareMeter,StandardArea,StandardAmount)");
 			strSql.Append(" values (");
-            strSql.Append("@id,@customer_id,@BudgetName,@DoPerson,@DoTime,@IsStatus,@ProjectDirectCost,@DirectCostDiscount,@AdditionalCost,@BudgetAmount,@DiscountAmount,@CostAmount,@SigningAmount,@SigningTime,@Profit,@Remarks,@Mmaterial,@MmaterialDiscount,@fbAmount,@versions,@ModelStyle)");
+            strSql.Append("@id,@customer_id,@BudgetName,@DoPerson,@DoTime,@IsStatus,@ProjectDirectCost,@DirectCostDiscount,@AdditionalCost,@BudgetAmount,@DiscountAmount,@CostAmount,@SigningAmount,@SigningTime,@Profit,@Remarks,@Mmaterial,@MmaterialDiscount,@fbAmount,@versions,@ModelStyle ,@PerSquarePrice,@SquareAmount,@SquareMeter,@StandardArea,@StandardAmount)");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.VarChar,15),
 					new SqlParameter("@customer_id", SqlDbType.Int,4),
@@ -83,7 +83,16 @@ namespace XHD.DAL
 					new SqlParameter("@MmaterialDiscount", SqlDbType.Decimal,9),
 					new SqlParameter("@fbAmount", SqlDbType.Decimal,9),
 					new SqlParameter("@versions", SqlDbType.SmallInt,2),
-                                        	new SqlParameter("@ModelStyle", SqlDbType.VarChar,50)};
+                    new SqlParameter("@ModelStyle", SqlDbType.VarChar,50),
+                    new SqlParameter("@PerSquarePrice", SqlDbType.Decimal,9),
+                    new SqlParameter("@SquareAmount", SqlDbType.Decimal,9),
+                    new SqlParameter("@SquareMeter", SqlDbType.Decimal,9),
+                    new SqlParameter("@StandardArea", SqlDbType.Decimal,9),
+                    new SqlParameter("@StandardAmount", SqlDbType.Decimal,9)
+
+                  
+
+        };
 			parameters[0].Value = model.id;
 			parameters[1].Value = model.customer_id;
 			parameters[2].Value = model.BudgetName;
@@ -105,8 +114,14 @@ namespace XHD.DAL
 			parameters[18].Value = model.fbAmount;
 			parameters[19].Value = model.versions;
             parameters[20].Value = model.ModelStyle;
+            parameters[21].Value = model.PerSquarePrice;
+            parameters[22].Value = model.SquareAmount; 
+            parameters[23].Value = model.SquareMeter;
+            parameters[24].Value = model.StandardArea;
+            parameters[25].Value = model.StandardAmount;
 
-			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+
+            int rows =DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
 			{
 				return true;
@@ -121,9 +136,9 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into Budge_BasicMain(");
-            strSql.Append("id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions,IsModel,ModelStyle,FromTimes)");
+            strSql.Append("id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions,IsModel,ModelStyle,FromTimes,PerSquarePrice,SquareAmount,SquareMeter,StandardArea,StandardAmount)");
             strSql.Append(" values (");
-            strSql.Append("@id,@customer_id,@BudgetName,@DoPerson,@DoTime,@IsStatus,@ProjectDirectCost,@DirectCostDiscount,@AdditionalCost,@BudgetAmount,@DiscountAmount,@CostAmount,@SigningAmount,@SigningTime,@Profit,@Remarks,@Mmaterial,@MmaterialDiscount,@fbAmount,@versions,'Y','"+mblx+"',0)");
+            strSql.Append("@id,@customer_id,@BudgetName,@DoPerson,@DoTime,@IsStatus,@ProjectDirectCost,@DirectCostDiscount,@AdditionalCost,@BudgetAmount,@DiscountAmount,@CostAmount,@SigningAmount,@SigningTime,@Profit,@Remarks,@Mmaterial,@MmaterialDiscount,@fbAmount,@versions,'Y','"+mblx+ "',0,@PerSquarePrice,@SquareAmount,@SquareMeter, @StandardArea,@StandardAmount)");
             SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.VarChar,15),
 					new SqlParameter("@customer_id", SqlDbType.Int,4),
@@ -144,7 +159,14 @@ namespace XHD.DAL
 					new SqlParameter("@Mmaterial", SqlDbType.Decimal,9),
 					new SqlParameter("@MmaterialDiscount", SqlDbType.Decimal,9),
 					new SqlParameter("@fbAmount", SqlDbType.Decimal,9),
-					new SqlParameter("@versions", SqlDbType.SmallInt,2)};
+					new SqlParameter("@versions", SqlDbType.SmallInt,2),
+                    new SqlParameter("@PerSquarePrice", SqlDbType.Decimal,9),
+                    new SqlParameter("@SquareAmount", SqlDbType.Decimal,9),
+                    new SqlParameter("@SquareMeter", SqlDbType.Decimal,9),
+                    new SqlParameter("@StandardArea", SqlDbType.Decimal,9),
+                    new SqlParameter("@StandardAmount", SqlDbType.Decimal,9)
+                          
+            };
             parameters[0].Value = model.id;
             parameters[1].Value = model.customer_id;
             parameters[2].Value = model.BudgetName;
@@ -165,6 +187,14 @@ namespace XHD.DAL
             parameters[17].Value = model.MmaterialDiscount;
             parameters[18].Value = model.fbAmount;
             parameters[19].Value = model.versions;
+            parameters[20].Value = model.PerSquarePrice;
+            parameters[21].Value = model.SquareAmount;
+            parameters[22].Value = model.SquareMeter;
+            parameters[21].Value = model.@StandardArea;
+            parameters[22].Value = model.@StandardAmount;
+
+
+
 
             int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             if (rows > 0)
@@ -191,9 +221,11 @@ namespace XHD.DAL
 			strSql.Append("DoTime=@DoTime,");
             if (mblx!="")
                 strSql.Append(" ModelStyle='"+mblx+"',");
-            //strSql.Append("IsStatus=@IsStatus,");
-            //strSql.Append("ProjectDirectCost=@ProjectDirectCost,");
-            //strSql.Append("DirectCostDiscount=@DirectCostDiscount,");
+            strSql.Append("SquareMeter=@SquareMeter,");
+            strSql.Append("PerSquarePrice=@PerSquarePrice,");
+            strSql.Append("SquareAmount=@SquareAmount,");
+            strSql.Append("StandardArea=@StandardArea,");
+            strSql.Append("StandardAmount=@StandardAmount,");
             //strSql.Append("AdditionalCost=@AdditionalCost,");
             //strSql.Append("BudgetAmount=@BudgetAmount,");
             //strSql.Append("DiscountAmount=@DiscountAmount,");
@@ -227,7 +259,15 @@ namespace XHD.DAL
 					new SqlParameter("@MmaterialDiscount", SqlDbType.Decimal,9),
 					new SqlParameter("@fbAmount", SqlDbType.Decimal,9),
 					new SqlParameter("@versions", SqlDbType.SmallInt,2),
-					new SqlParameter("@id", SqlDbType.VarChar,15)};
+					new SqlParameter("@id", SqlDbType.VarChar,15),
+                   new SqlParameter("@PerSquarePrice", SqlDbType.Decimal,9),               
+                    new SqlParameter("@SquareMeter", SqlDbType.Decimal,9),
+                     new SqlParameter("@SquareAmount", SqlDbType.Decimal,9),
+                      new SqlParameter("@StandardArea", SqlDbType.Decimal,9),
+                    new SqlParameter("@StandardAmount", SqlDbType.Decimal,9),
+                
+
+            };
 			parameters[0].Value = model.customer_id;
 			parameters[1].Value = model.BudgetName;
 			parameters[2].Value = model.DoPerson;
@@ -248,8 +288,15 @@ namespace XHD.DAL
 			parameters[17].Value = model.fbAmount;
 			parameters[18].Value = model.versions;
 			parameters[19].Value = model.id;
+            parameters[20].Value = model.PerSquarePrice;
+            parameters[21].Value = model.SquareMeter;
 
-			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+            parameters[22].Value = model.SquareAmount;
+            parameters[23].Value = model.StandardArea;
+            parameters[24].Value = model.StandardAmount;
+
+
+            int rows =DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
 			{
 				return true;
@@ -330,7 +377,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-            strSql.Append("select  top 1 id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions,ModelStyle from Budge_BasicMain ");
+            strSql.Append("select  top 1 id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions,ModelStyle,PerSquarePrice,SquareAmount,SquareMeter,StandardArea,StandardAmount from Budge_BasicMain ");
 			strSql.Append(" where id=@id ");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.VarChar,15)			};
@@ -441,7 +488,30 @@ namespace XHD.DAL
                 {
                     model.Remarks = row["ModelStyle"].ToString();
                 }
-			}
+                if (row["PerSquarePrice"] != null && row["PerSquarePrice"].ToString() != "")
+                {
+                    model.PerSquarePrice = decimal.Parse(row["PerSquarePrice"].ToString());
+                }
+                if (row["SquareAmount"] != null && row["SquareAmount"].ToString() != "")
+                {
+                    model.SquareAmount = decimal.Parse(row["SquareAmount"].ToString());
+                }
+                if (row["SquareMeter"] != null && row["SquareMeter"].ToString() != "")
+                {
+                    model.SquareMeter = decimal.Parse(row["SquareMeter"].ToString());
+                }
+                if (row["@StandardArea"] != null && row["@StandardArea"].ToString() != "")
+                {
+                    model.@StandardArea = decimal.Parse(row["@StandardArea"].ToString());
+                }
+                if (row["@StandardAmount"] != null && row["@StandardAmount"].ToString() != "")
+                {
+                    model.@StandardAmount = decimal.Parse(row["@StandardAmount"].ToString());
+                }
+
+
+
+            }
 			return model;
 		}
 
@@ -451,7 +521,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions ");
+			strSql.Append("select id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions ,PerSquarePrice,SquareAmount,SquareMeter, StandardArea, StandardAmount ");
 			strSql.Append(" FROM Budge_BasicMain ");
 			if(strWhere.Trim()!="")
 			{
@@ -471,7 +541,7 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions ");
+			strSql.Append(" id,customer_id,BudgetName,DoPerson,DoTime,IsStatus,ProjectDirectCost,DirectCostDiscount,AdditionalCost,BudgetAmount,DiscountAmount,CostAmount,SigningAmount,SigningTime,Profit,Remarks,Mmaterial,MmaterialDiscount,fbAmount,versions ,PerSquarePrice,SquareAmount,SquareMeter, StandardArea, StandardAmount ");
 			strSql.Append(" FROM Budge_BasicMain ");
 			if(strWhere.Trim()!="")
 			{

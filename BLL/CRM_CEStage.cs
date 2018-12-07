@@ -187,9 +187,9 @@ namespace XHD.BLL
         {
             return dal.AddCEstage(id);
         }
-        public bool UpdateStatus(string status, string id)
+        public bool UpdateStatus(string status, string id,DateTime jgrq)
         {
-            return dal.UpdateStatus(status,id);
+            return dal.UpdateStatus(status,id,jgrq);
         }
 
         /// <summary>
@@ -207,6 +207,18 @@ namespace XHD.BLL
         {
             return dal.GetListCustomer(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
+
+        //选择工地
+        public DataSet GetxzListCustomer(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetxzListCustomer(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+        //目标工地
+        public DataSet GetmbgdListCustomer(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetmbgdListCustomer(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+
         public DataSet GetListCountScorce(string wherestr, out string Total)
         {
             return dal.GetListCountScorce(wherestr,out  Total);

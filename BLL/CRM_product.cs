@@ -223,6 +223,18 @@ namespace XHD.BLL
                     {
                         model.zt = dt.Rows[n]["Themes"].ToString();
                     }
+                    if (dt.Rows[n]["clzt"] != null && dt.Rows[n]["clzt"].ToString() != "")
+                    {
+                        model.clzt = dt.Rows[n]["clzt"].ToString();
+                    }
+                    if (dt.Rows[n]["jbx"] != null && dt.Rows[n]["jbx"].ToString() != "")
+                    {
+                        model.jbx = int.Parse(dt.Rows[n]["jbx"].ToString());
+                    }
+                    if (dt.Rows[n]["fbj"] != null && dt.Rows[n]["fbj"].ToString() != "")
+                    {
+                        model.fbj = decimal.Parse(dt.Rows[n]["fbj"].ToString());
+                    }
                     modelList.Add(model);
                 }
             }
@@ -256,8 +268,11 @@ namespace XHD.BLL
         {
             return dal.Get_code(catid);
         }
-
-        public DataSet GetList_gys(string strWhere)
+        public DataSet Get_categorycode(int catid)
+        {
+            return dal.Get_categorycode(catid);
+        }
+            public DataSet GetList_gys(string strWhere)
         {
             return dal.GetList_gys(strWhere);
         }

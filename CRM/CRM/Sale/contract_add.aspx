@@ -233,7 +233,7 @@
                 switch (type) {
                     case ".jpg": case ".gif": case ".jpeg": case ".bmp": case ".png":
                         url = "file/view_image.aspx?page_id=" + getparastr("a") + "&filename=" + filename + "&realname=" + realname;
-                        f_openWindow(url, "【查看】" + filename, 1000, 500);
+                        f_openWindow(url, "【查看】" + filename, 900, 800);
                         break;
                     case ".doc": case ".docx":
                         //case ".xls": case ".xlsx": case ".ppt": case ".pptx":
@@ -290,7 +290,7 @@
                     else {
                         //$("#view").attr("src", "../file/contract/" + result);
                         url = "../../file/contract" + result;
-                        f_openWindow(url, "【查看】" + filename, 1000, 500);
+                        f_openWindow(url, "【查看】" + filename, 900, 800);
                     }
                 }
             });

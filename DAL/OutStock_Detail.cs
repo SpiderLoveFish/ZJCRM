@@ -343,18 +343,18 @@ namespace XHD.DAL
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("INSERT INTO dbo.OutStock_Detail");
-       sb.AppendLine("  ( CKID ,");
-        sb.AppendLine("   material_id ,");
-        sb.AppendLine("   material_name ,");
-        sb.AppendLine("   specifications ,");
-       sb.AppendLine("    model ,");
-        sb.AppendLine("   unit ,");
-       sb.AppendLine("    purprice ,");
-       sb.AppendLine("    pursum ,");
-       sb.AppendLine("    subtotal ,");
-        sb.AppendLine("   remarks");
-         sb.AppendLine("    )");
-            sb.AppendLine("SELECT '" + pid + "',product_id,product_name,specifications,ProModel,unit,price,0,0,''");
+            sb.AppendLine("  ( CKID ,");
+            sb.AppendLine("   material_id ,");
+            sb.AppendLine("   material_name ,");
+            sb.AppendLine("   specifications ,");
+            sb.AppendLine("    model ,");
+            sb.AppendLine("   unit ,");
+            sb.AppendLine("    purprice ,");
+            sb.AppendLine("    pursum ,");
+            sb.AppendLine("    subtotal ,");
+            sb.AppendLine("   remarks,Customer_id");//手动录入的时候，工地明细编号为0
+            sb.AppendLine("    )");
+            sb.AppendLine("SELECT '" + pid + "',product_id,product_name,specifications,ProModel,unit,price,0,0,'',0");
             sb.AppendLine(" FROM dbo.CRM_product WHERE product_id IN(" + list + ")");
             SqlParameter[] parameters = { };
             int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);

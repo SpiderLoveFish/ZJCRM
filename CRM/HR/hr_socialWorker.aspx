@@ -43,8 +43,10 @@
                             return html;
                         }
                     },
+                     { display: '电话', name: 'tel' },
                     { display: '相识日期', name: 'EntryDate' },
                     { display: '生日', name: 'birthday' },
+                    
                     { display: '性别', name: 'sex', width: 50 },
                     //{ display: '分组', name: 'dname' },
                     //{ display: '岗位', name: 'post' },
@@ -67,11 +69,16 @@
                             else if (item.status == "社会人员") {
                                 return html = "<span><div  style='background:#00FF00'>" + item.status + "</div></span>";
                             }
+                                 else if (item.status == "工人师傅") {
+                                return html = "<span><div  style='background:#81C0C0'>" + item.status + "</div></span>";
+                            }
                             else {
                                 return html = "<span><div  style='background:#000000'>" + item.status + "</div></span>";
                             }
                         }
-                    }
+                    },
+                     { display: '归属人', name: 'Emp_sg' },
+                { display: '创建人', name: 'create_name' }
                 ],
                 dataAction: 'server',
                 pageSize: 30,
@@ -202,7 +209,32 @@
                     arr[i].icon = "../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-                items.push({ type: 'textbox', id: 'stext', text: '姓名：' });
+                items.push({ line: true });
+                items.push({
+                    type: 'textbox',
+                    id: 'typejg',
+                    name: 'typejg',
+                    text: '价格'
+                });
+                items.push({
+                    type: 'textbox',
+                    id: 'typefw',
+                    name: 'typefw',
+                    text: '服务'
+                });
+                items.push({
+                    type: 'textbox',
+                    id: 'typezl',
+                    name: 'typezl',
+                    text: '质量'
+                });
+                items.push({
+                    type: 'textbox',
+                    id: 'typexy',
+                    name: 'typexy',
+                    text: '信誉'
+                });
+                items.push({ type: 'textbox', id: 'stext', text: '姓名电话：' });
                 items.push({ type: 'button', text: '搜索', icon: '../images/search.gif', disable: true, click: function () { doserch() } });
 
                 $("#toolbar").ligerToolBar({
@@ -212,8 +244,27 @@
                 menu = $.ligerMenu({
                     width: 120, items: getMenuItems(data)
                 });
-
-                $("#stext").ligerTextBox({ width: 200, nullText: "输入姓名搜索" })
+                $("#typexy").ligerComboBox({
+                    width: 80,
+                    isMultiSelect: false,
+                    url: "../../data/param_sysparam.ashx?Action=combo&parentid=34&rnd=" + Math.random()
+                })
+                $("#typejg").ligerComboBox({
+                    width: 80,
+                    isMultiSelect: false,
+                    url: "../../data/param_sysparam.ashx?Action=combo&parentid=33&rnd=" + Math.random()
+                })
+                $("#typezl").ligerComboBox({
+                    width: 80,
+                    isMultiSelect: false,
+                    url: "../../data/param_sysparam.ashx?Action=combo&parentid=32&rnd=" + Math.random()
+                })
+                $("#typefw").ligerComboBox({
+                    width: 80,
+                    isMultiSelect: false,
+                    url: "../../data/param_sysparam.ashx?Action=combo&parentid=35&rnd=" + Math.random()
+                })
+                $("#stext").ligerTextBox({ width: 80, nullText: "输入姓名搜索" })
                 $("#maingrid4").ligerGetGridManager().onResize();
             });
 
@@ -246,11 +297,11 @@
         function f_openWindow(url, title, width, height) {
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
-                        //{
-                        //    text: '保存', onclick: function (item, dialog) {
-                        //        f_save(item, dialog);
-                        //    }
-                        //},
+                        {
+                            text: '保存', onclick: function (item, dialog) {
+                                f_save(item, dialog);
+                            }
+                        },
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();
@@ -262,14 +313,14 @@
         }
 
         function add() {
-            f_openWindow("hr/hr_socialWorker_add.aspx", "新增人员", 730, 360);
+            f_openWindow("hr/hr_socialWorker_add.aspx", "新增人员", 730, 520);
         }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('hr/hr_socialWorker_add.aspx?empid=' + row.ID, "修改人员信息", 730, 360);
+                f_openWindow('hr/hr_socialWorker_add.aspx?empid=' + row.ID, "修改人员信息", 730, 520);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }

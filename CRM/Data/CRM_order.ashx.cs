@@ -238,6 +238,23 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+
+            if (request["Action"] == "form_khjdgl") //客户进度管理（应收汇总-定金汇总-装修款汇总=未付）
+            {
+                string pid = PageValidate.InputText(request["customerid"], 50);
+                string dt;
+                if (PageValidate.IsNumber(pid))
+                {
+                    DataSet ds = order.GetList_khjdgl("A.Customer_id=" + pid);
+                    dt = Common.DataToJson.DataToJSON(ds);
+                }
+                else
+                {
+                    dt = "{}";
+                }
+                context.Response.Write(dt);
+            }
+
             if (request["Action"] == "del")
             {
                 //参数安全过滤

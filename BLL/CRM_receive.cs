@@ -255,7 +255,30 @@ namespace XHD.BLL
             return dal.GetList(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
 
-        #endregion  Method
-    }
+        /// <summary>
+        /// 分页获取数据列表(客户进度管理)
+        /// </summary>
+        public DataSet GetList_khjdgl(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetList_khjdgl(PageSize, PageIndex, strWhere, filedOrder, out Total);
+        }
+        public DataSet GetList_Enter(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            return dal.GetList_Enter(PageSize, PageIndex, strWhere, filedOrder, out Total);
+
+        }
+
+        public bool UpdateIsDelete(string id)
+        {
+            return dal.UpdateIsDelete(id);
+        }
+
+        public bool UpdateIsDelete_del(string id)
+        {
+            return dal.UpdateIsDelete_del(id);
+        }
+
+            #endregion  Method
+        }
 }
 

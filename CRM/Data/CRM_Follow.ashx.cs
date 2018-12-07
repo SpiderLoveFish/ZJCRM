@@ -94,6 +94,24 @@ namespace XHD.CRM.Data
                     ccc.UpdateLastFollow(model.Customer_id.ToString());
 
                 }
+                //w微信  人员怎么取
+                //WX wx = new WX();
+                //string token = wx.Getaccess_token("7");
+                //string userlist = "";
+                //DataTable lsdt = wx.GetWXUserList(" where mobile='" + Request["Tel"] + "'");
+                //if (lsdt.Rows.Count > 0)
+                //{
+                //    foreach (DataRow dr in lsdt.Rows)
+                //    {
+                //        userlist = userlist + "|" + dr["userid"].ToString();
+                //    }
+                //    if (userlist.Length > 0)
+                //        userlist = userlist.Substring(1, userlist.Length - 1);
+                //}
+                //wx.PostMessage_textcard(token, userlist, "跟进通知"
+                //     , request["T_content"].ToString()
+                //     , request["T_content"].ToString(), "http://mb.xczs.co/CRM/shareto/jifen_share.html");
+                //微信结束
                 if (!string.IsNullOrEmpty(request["T_content"]))
                 {
                     BLL.Personal_Calendar calendar = new BLL.Personal_Calendar();
@@ -227,11 +245,16 @@ namespace XHD.CRM.Data
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
 
-                string sorttext = " " + sortname + " " + sortorder;
-
+             
                 string Total;
 
                  string serchtxt = "1=1";
+
+                if (!string.IsNullOrEmpty(request["cid"]))
+                    serchtxt += " and Customer_id=" + int.Parse(request["cid"]);
+
+                if (!string.IsNullOrEmpty(request["type"]))
+                    serchtxt += " and Follow_Type='" + PageValidate.InputText(request["type"], 255)+"'";
 
                 if (!string.IsNullOrEmpty(request["customer_id"]))
                     serchtxt += " and Customer_id=" + int.Parse(request["customer_id"]);
@@ -241,6 +264,163 @@ namespace XHD.CRM.Data
 
                 if (!string.IsNullOrEmpty(request["department"]))
                     serchtxt += " and department_id = " + int.Parse(request["department_val"]);
+
+                if (!string.IsNullOrEmpty(request["employee"]))
+                    serchtxt += " and employee_id = " + int.Parse(request["employee_val"]);
+
+                if (!string.IsNullOrEmpty(request["followtype"]))
+                    serchtxt += " and Follow_Type_id = " + int.Parse(request["followtype_val"]);
+
+                if (!string.IsNullOrEmpty(request["startdate"]))
+                    serchtxt += " and Follow_date >= '" + PageValidate.InputText(request["startdate"], 255) + "'";
+
+                if (!string.IsNullOrEmpty(request["enddate"]))
+                {
+                    DateTime enddate = DateTime.Parse(request["enddate"]).AddHours(23).AddMinutes(59).AddSeconds(59);
+                    serchtxt += " and Follow_date  <= '" + enddate + "'";
+                }
+                if (!string.IsNullOrEmpty(request["id"]))
+                    serchtxt += " and  id = " + int.Parse(request["id"]);
+
+
+                if (!string.IsNullOrEmpty(request["startdate_del"]))
+                    serchtxt += " and Delete_time >= '" + PageValidate.InputText(request["startdate_del"], 255) + "'";
+
+                if (!string.IsNullOrEmpty(request["enddate_del"]))
+                {
+                    DateTime enddate = DateTime.Parse(request["enddate_del"]).AddHours(23).AddMinutes(59).AddSeconds(59);
+                    serchtxt += " and Delete_time  <= '" + enddate + "'";
+                }
+                if (!string.IsNullOrEmpty(request["T_smart"]))
+                {
+                    if (request["T_smart"] != "输入关键词智能搜索跟进内容")
+                        serchtxt += " and Follow like N'%" + PageValidate.InputText(request["T_smart"], 255) + "%'";
+                }
+                if (!string.IsNullOrEmpty(request["sectype1"]))
+                {
+                  
+                    string lx = "";
+                    if (request["sectype1"] == "kh") lx = "客户";
+                    if (request["sectype1"] == "sg") lx = "施工";
+                    if (request["sectype1"] == "wx") lx = "维修";
+                    if (request["sectype1"] == "sh") lx = "售后";
+                    if(request["sectype1"]!="全部")
+                        serchtxt += " and (lx   = '" + lx + "' OR lx='"+  request["sectype1"] + "' )";
+                    //if (request["sectype1"] == "跟进方式")
+                    //    sortname = " Follow_Type";
+                    //else if (request["sectype1"] == "跟进内容")
+                    //    sortname = " Follow";
+                }
+
+                //权限
+                serchtxt += DataAuth(emp_id.ToString());
+                string sorttext = " " + sortname + " " + sortorder;
+
+                DataSet ds = follow.GetList(PageSize, PageIndex, serchtxt, sorttext, out Total);
+
+                string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                context.Response.Write(dt);
+            }
+
+            if (request["Action"] == "getprogrid")
+            {
+                string serchtxt = "1=1";
+                if (!string.IsNullOrEmpty(request["startdate"]))
+                    serchtxt += " and Follow_date >= '" + PageValidate.InputText(request["startdate"], 255) + "'";
+
+                if (!string.IsNullOrEmpty(request["enddate"]))
+                {
+                    DateTime enddate = DateTime.Parse(request["enddate"]).AddHours(23).AddMinutes(59).AddSeconds(59);
+                    serchtxt += " and Follow_date  <= '" + enddate + "'";
+                }
+                string dt = "";
+                string Total = "";
+                DataSet ds = follow.RunProcedureView_Schedule(serchtxt,out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "getprogrid_")
+            {
+                string serchtxt = "1=1";
+                if (!string.IsNullOrEmpty(request["startdate"]))
+                    serchtxt += " and Follow_date >= '" + PageValidate.InputText(request["startdate"], 255) + "'";
+
+                if (!string.IsNullOrEmpty(request["enddate"]))
+                {
+                    DateTime enddate = DateTime.Parse(request["enddate"]).AddHours(23).AddMinutes(59).AddSeconds(59);
+                    serchtxt += " and Follow_date  <= '" + enddate + "'";
+                }
+                string dt = "";
+                string Total = "";
+                DataSet ds = follow.RunProcedureView_Schedule_(serchtxt, out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+
+            if (request["Action"] == "getovgridjh")
+            {
+                string serchtxt = "1=1";
+                if (!string.IsNullOrEmpty(request["startdate"]))
+                    serchtxt += " and Follow_date >= '" + PageValidate.InputText(request["startdate"], 255) + "'";
+
+                if (!string.IsNullOrEmpty(request["enddate"]))
+                {
+                    DateTime enddate = DateTime.Parse(request["enddate"]).AddHours(23).AddMinutes(59).AddSeconds(59);
+                    serchtxt += " and Follow_date  <= '" + enddate + "'";
+                }
+                string dt = "";
+                string Total = "";
+                DataSet ds = follow.OView_Schedulejh(serchtxt, PageValidate.InputText(request["startdate"], 255), PageValidate.InputText(request["enddate"], 255), out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "getovgridsj")
+            {
+                string serchtxt = "1=1";
+                if (!string.IsNullOrEmpty(request["startdate"]))
+                    serchtxt += " and Follow_date >= '" + PageValidate.InputText(request["startdate"], 255) + "'";
+
+                if (!string.IsNullOrEmpty(request["enddate"]))
+                {
+                    DateTime enddate = DateTime.Parse(request["enddate"]).AddHours(23).AddMinutes(59).AddSeconds(59);
+                    serchtxt += " and Follow_date  <= '" + enddate + "'";
+                }
+                string dt = "";
+                string Total = "";
+                DataSet ds = follow.OView_Schedulesj(serchtxt, PageValidate.InputText(request["startdate"], 255), PageValidate.InputText(request["enddate"], 255), out Total);
+                dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+
+                context.Response.Write(dt);
+            }
+
+            if (request["Action"] == "grid1")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+                 
+
+
+                string Total;
+
+                string serchtxt = " ";
+
+                if (!string.IsNullOrEmpty(request["customer_id"]))
+                    serchtxt += " and Customer_id=" + int.Parse(request["customer_id"]);
+
+                if (!string.IsNullOrEmpty(request["company"]))
+                    serchtxt += " and Customer_name like N'%" + PageValidate.InputText(request["company"], 255) + "%'";
+
+                if (!string.IsNullOrEmpty(request["department"]))
+                    serchtxt += " and department_id = " + int.Parse(request["department_val"]);
+                if (!string.IsNullOrEmpty(request["ctype"]))
+                    serchtxt += " and CustomerType_id = " + int.Parse(request["ctype"]);
+
+                if (!string.IsNullOrEmpty(request["eid"]))
+                    serchtxt += " and a.employee_id = " + int.Parse(request["eid"]);
+
 
                 if (!string.IsNullOrEmpty(request["employee"]))
                     serchtxt += " and employee_id = " + int.Parse(request["employee_val"]);
@@ -270,15 +450,83 @@ namespace XHD.CRM.Data
                     if (request["T_smart"] != "输入关键词智能搜索跟进内容")
                         serchtxt += " and Follow like N'%" + PageValidate.InputText(request["T_smart"], 255) + "%'";
                 }
-                //权限
-                serchtxt += DataAuth(emp_id.ToString());
-
-                DataSet ds = follow.GetList(PageSize, PageIndex, serchtxt, sorttext, out Total);
-
+                
+                
+                
+                BLL.crm_customer_type report_follow = new BLL.crm_customer_type();
+                DataSet ds = report_follow.GetListDetail1(PageSize, PageIndex, serchtxt);
+                Total = ds.Tables[0].Rows.Count.ToString();
                 string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
                 context.Response.Write(dt);
             }
 
+
+            if (request["Action"] == "gridview")
+            {
+                int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
+                int PageSize = int.Parse(request["pagesize"] == null ? "30" : request["pagesize"]);
+
+
+
+                string Total;
+
+                string serchtxt = " ";
+
+                if (!string.IsNullOrEmpty(request["customer_id"]))
+                    serchtxt += " and Customer_id=" + int.Parse(request["customer_id"]);
+
+                if (!string.IsNullOrEmpty(request["company"]))
+                    serchtxt += " and Customer_name like N'%" + PageValidate.InputText(request["company"], 255) + "%'";
+
+                if (!string.IsNullOrEmpty(request["department"]))
+                    serchtxt += " and department_id = " + int.Parse(request["department_val"]);
+                if (!string.IsNullOrEmpty(request["ctype"]))
+                    serchtxt += " and CustomerType_id = " + int.Parse(request["ctype"]);
+
+                if (!string.IsNullOrEmpty(request["eid"]))
+                    serchtxt += " and a.employee_id = " + int.Parse(request["eid"]);
+
+
+                if (!string.IsNullOrEmpty(request["employee"]))
+                    serchtxt += " and employee_id = " + int.Parse(request["employee_val"]);
+
+                if (!string.IsNullOrEmpty(request["followtype"]))
+                    serchtxt += " and Follow_Type_id = " + int.Parse(request["followtype_val"]);
+
+                if (!string.IsNullOrEmpty(request["startdate"]))
+                    serchtxt += " and Follow_date >= '" + PageValidate.InputText(request["startdate"], 255) + "'";
+
+                if (!string.IsNullOrEmpty(request["enddate"]))
+                {
+                    DateTime enddate = DateTime.Parse(request["enddate"]).AddHours(23).AddMinutes(59).AddSeconds(59);
+                    serchtxt += " and Follow_date  <= '" + enddate + "'";
+                }
+                if (!string.IsNullOrEmpty(request["id"]))
+                    serchtxt += " and a.id = " + int.Parse(request["id"]);
+
+
+                if (!string.IsNullOrEmpty(request["startdate_del"]))
+                    serchtxt += " and Delete_time >= '" + PageValidate.InputText(request["startdate_del"], 255) + "'";
+
+                if (!string.IsNullOrEmpty(request["enddate_del"]))
+                {
+                    DateTime enddate = DateTime.Parse(request["enddate_del"]).AddHours(23).AddMinutes(59).AddSeconds(59);
+                    serchtxt += " and Delete_time  <= '" + enddate + "'";
+                }
+                if (!string.IsNullOrEmpty(request["T_smart"]))
+                {
+                    if (request["T_smart"] != "输入关键词智能搜索跟进内容")
+                        serchtxt += " and Follow like N'%" + PageValidate.InputText(request["T_smart"], 255) + "%'";
+                }
+
+
+
+                BLL.crm_customer_type report_follow = new BLL.crm_customer_type();
+                DataSet ds = report_follow.GetListview(PageSize, PageIndex, serchtxt);
+                Total = ds.Tables[0].Rows.Count.ToString();
+                string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "Compared_follow")
             {
                 string year1 = PageValidate.InputText(request["year1"], 50);
@@ -369,13 +617,13 @@ namespace XHD.CRM.Data
                         case "none": returntxt = " and 1=2 ";
                             break;
                         case "my":
-                            returntxt = " and ( privatecustomer='公客' or Emp_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(arr[1]) + ")";
+                            returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(arr[1]) + " or emp_id_hh=" + int.Parse(arr[1]) + "  )";
                             break;
                         case "dep":
                             if (string.IsNullOrEmpty(arr[1]))
-                                returntxt = " and ( privatecustomer='公客' or Emp_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or Create_id=" + int.Parse(uid) + ")";
+                                returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or Create_id=" + int.Parse(uid) + "  or emp_id_hh=" + int.Parse(uid) + "   )";
                             else
-                                returntxt = " and ( privatecustomer='公客' or Dep_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(uid) + ")";
+                                returntxt = " and ( privatecustomer='公客' or Dep_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(uid) + " or emp_id_hh=" + int.Parse(uid) + " )";
                             break;
                         case "depall":
                             BLL.hr_department dep = new BLL.hr_department();

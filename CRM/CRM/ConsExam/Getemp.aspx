@@ -5,34 +5,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+   <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/Toolbar.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/styles.css" rel="Stylesheet" type="text/css" />
+    <link href="../../CSS/input.css" rel="stylesheet" />
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-       <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
-   <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-   
-      <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
-     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
+    <script src="../../lib/jquery.form.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
+        <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
    
     <script type="text/javascript">
        
         $(function () {
             var style = getparastr("style");
-            var strurl = "../../data/PurchaseList.ashx?Action=allgrid";
+            var strurl = "../../data/PurchaseList.ashx?Action=allgridxc";
             if (style == "ALL")//全部产品
-                strurl = "../../data/PurchaseList.ashx?Action=allgrid";
+                strurl = "../../data/PurchaseList.ashx?Action=allgridxc";
             else if (style == "YS")//预算A
-                strurl = "../../data/PurchaseList.ashx?Action=ysgrid";
+                strurl = "../../data/PurchaseList.ashx?Action=ysgrid&cid=" + getparastr("cid");
             else if (style == "ysB")//预算A
-                strurl = "../../data/PurchaseList.ashx?Action=getlist";
+                strurl = "../../data/PurchaseList.ashx?Action=getlist&cid=" + getparastr("cid");
 
            
 
@@ -43,11 +52,26 @@
                   { display: '材料编号', name: 'C_code', width: 80, align: 'left' },
                   { display: '材料名称', name: 'product_name', width: 100, align: 'left' },
                   { display: '材料型号', name: 'ProModel', width: 100, align: 'left' },
-                  { display: '材料规格', name: 'specifications', width: 100, align: 'left' },
-                  { display: '所属品牌', name: 'Brand', width: 100, align: 'left' },
+                  { display: '材料规格', name: 'specifications', width: 60, align: 'left' },
+                    { display: '所属品牌', name: 'Brand', width: 60, align: 'left' },
+                  { display: '供应商', name: 'Suppliers', width: 60, align: 'left' },
+                   
+                      {
+                          display: '工艺说明', name: 'remarks', align: 'left', width: 250, render: function (item) {
+                              var html = "<div class='abc'>";
+                              if (item.remarks)
+                                  html += item.remarks;
+                              html += "</div>";
+                              return html;
+                          }
+                      },
+                  //{ display: '材料编号', name: 'C_code', width: 100, align: 'left' },
+
                   { display: '类别', name: 'category_name', width: 100, align: 'left' },
                   { display: '单位', name: 'unit', width: 40, align: 'left' },
-                     { display: '数量', name: 'SUM', width: 40, align: 'left' }
+                    { display: '数量', name: 'SUM', width: 40, align: 'left' }
+
+
                   //,
                   //{
                   //    display: '图文', width: 40, render: function (item) {
@@ -56,7 +80,15 @@
                   //    }
                   //}
                 ],
+                  onAfterShowData: function (grid) {
+                    $(".abc").hover(function (e) {
+                        $(this).ligerTip({ content: $(this).text(), width: 300, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                    }, function (e) {
+                        $(this).ligerHideTip(e);
+                    });
+                },
                 checkbox: true,
+
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
@@ -133,12 +165,28 @@
            
         
         }
+        function f_error1() {
+
+            $.ligerDialog.closeWaitting();
+            f_load();
+            $("#lbtip").css("display", 'inline');
+            $("#lbtip").addClass("red");
+            $("#lbtip").val('已存在，请修改数量！');
+            setTimeout(function () {
+                $("#lbtip").css("display", 'none');
+
+                // $.ligerDialog.error("添加失败,请检查后继续操作！");
+
+            }, 1000);
+
+
+        }
         function initsearchfilder(style)
         {
             $('#stextlx').ligerComboBox({
-                width: 97,
+                width: 150,
                 selectBoxWidth: 240,
-                selectBoxHeight: 200,
+                selectBoxHeight: 250,
                 valueField: 'id',
                 textField: 'text',
                 treeLeafOnly: false,
@@ -165,8 +213,13 @@
                             type: 'post',
                             url: "../../data/PurchaseList.ashx?Action=savelist&style=" + getparastr("style") + "&cid=" + getparastr("cid") + "&pid=" + prouductid + '&rdm=' + Math.random(),
                             success: function (data) {
-                              
-                              f_sucess();
+                                if (data == "false") {
+                                    f_error1();
+                                }
+                                else {
+                                    f_sucess();
+                                }
+                           
 
                             },
                             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -178,7 +231,8 @@
         function toolbar(style) {
             var items = [];
 
-            items.push({ type: 'textbox', id: 'stext', text: '名称：' });
+            items.push({ type: 'textbox', id: 'stext', text: '条件一：' });
+            items.push({ type: 'textbox', id: 'stextpp', text: '条件二：' });
             if (style == "ALL")
             items.push({ type: 'textbox', id: 'stextlx', text: '类型：' });
             items.push({ type: 'button', text: '搜索', icon: '../images/search.gif', disable: true, click: function () { doserch() } });
@@ -189,6 +243,7 @@
             });
 
             $("#stext").ligerTextBox({ width: 200 });
+             $("#stextpp").ligerTextBox({ width: 100 });
             if (style == "ALL")
                 initsearchfilder(style);
             $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=150&rnd=" + Math.random(), function (data, textStatus) {
@@ -203,9 +258,9 @@
         //查询
         function doserch() {
             var style = getparastr("style");
-            var strurl = "../../data/PurchaseList.ashx?Action=allgrid";
+            var strurl = "../../data/PurchaseList.ashx?Action=allgridxc";
             if (style == "ALL")//全部产品
-                strurl = "../../data/PurchaseList.ashx?Action=allgrid";
+                strurl = "../../data/PurchaseList.ashx?Action=allgridxc";
             else if (style == "ysA")//预算A
                 strurl = "../../data/PurchaseList.ashx?Action=getlist";
             else if (style == "ysB")//预算A

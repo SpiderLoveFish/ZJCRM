@@ -41,7 +41,7 @@ namespace XHD.CRM.Data
                 string sortorder = request["sortorder"];
 
                 if (string.IsNullOrEmpty(sortname))
-                    sortname = " status desc, name,ID ";
+                    sortname = " status desc, work_id,name,ID ";
                 if (string.IsNullOrEmpty(sortorder))
                     sortorder = " desc";
 
@@ -66,6 +66,10 @@ namespace XHD.CRM.Data
                             break;
                     }
                 }
+                if (!string.IsNullOrEmpty(request["thtype_val"]))
+                {
+                    serchtxt += " and isnull(jbx,'') in("+ request["thtype_val"] + ")"  ;
+                }
                 if (!string.IsNullOrEmpty(request["stext"]))
                 {
                     if (request["stext"] != "输入姓名搜索")
@@ -77,6 +81,28 @@ namespace XHD.CRM.Data
                 string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
                 context.Response.Write(dt);
             }
+
+            if (request["Action"] == "gridbir")
+            {
+                //XHD.CRM.webserver.RetrunStrCode rsc = new webserver.RetrunStrCode();
+
+              System.Data.SqlClient.SqlParameter[] parameters = { };
+
+                var sb = new System.Text.StringBuilder();
+                string s =  getbirstring();
+                sb.AppendLine("");
+                //if (strWhere.Trim() != "")
+                //{
+                //    sb.AppendLine(" AND ts<" + strWhere + "");
+                //}
+              // sb.AppendLine(" and id in ( select id from hr_employee where status='在职') ");
+                sb.AppendLine("ORDER BY ts");
+                DataSet ds =XHD.DBUtility.DbHelperSQL.Query(s + sb.ToString(), parameters);
+
+                string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], ds.Tables[0].Rows.Count.ToString());
+                context.Response.Write(dt);
+            }
+
             //表格json
             if (request["Action"] == "getRole")
             {
@@ -130,13 +156,14 @@ namespace XHD.CRM.Data
                 model.status = PageValidate.InputText(request["T_status"], 255);
                 model.EntryDate = PageValidate.InputText(request["T_entryDate"], 255);
                 model.address = PageValidate.InputText(request["T_Adress"], 255);
-                model.schools = PageValidate.InputText(request["T_school"], 255);
+                model.schools = PageValidate.InputText(request["T_school"], 550);
                 model.education = PageValidate.InputText(request["T_edu"], 255);
                 model.work_id = PageValidate.InputText(request["T_work_id"], 255);
-                //model.professional = PageValidate.InputText(request["T_professional"], 255);
+                model.professional = PageValidate.InputText(request["T_professional"], 255);
                 model.remarks = PageValidate.InputText(request["T_remarks"], 255);
                 //model.title = PageValidate.InputText(request["headurl"], 255);
                 model.canlogin = int.Parse(request["canlogin"]);
+                model.jbx = int.Parse(request["jbx"]);
                 model.Delete_time = DateTime.Now;
                 int empid;
                 string id = PageValidate.InputText(request["id"], 50);
@@ -199,6 +226,9 @@ namespace XHD.CRM.Data
 
                     if (dr["canlogin"].ToString() != request["canlogin"])
                         log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "能否登录", dr["canlogin"].ToString(), request["canlogin"]);
+
+                    if (dr["jbx"].ToString() != request["jbx"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "交保险", dr["jbx"].ToString(), request["jbx"]);
 
 
                     context.Response.Write(id + "|" + model.name);
@@ -264,7 +294,7 @@ namespace XHD.CRM.Data
                 model.idcard = PageValidate.InputText(request["T_idcard"], 255);
                 model.tel = PageValidate.InputText(request["T_tel"], 255);
                 model.address = PageValidate.InputText(request["T_Adress"], 255);
-                model.schools = PageValidate.InputText(request["T_school"], 255);
+                model.schools = PageValidate.InputText(request["T_school"], 550);
                 model.education = PageValidate.InputText(request["T_edu"], 255);
                 model.professional = PageValidate.InputText(request["T_professional"], 255);
                 model.remarks = PageValidate.InputText(request["T_remarks"], 255);
@@ -475,6 +505,15 @@ namespace XHD.CRM.Data
                 }
             }
         }
+
+        public string getbirstring()
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("SELECT * FROM v_birthday where 1=1 " );
+           
+            return sb.ToString();
+        }
+
         public class PostData
         {
             private int post_id;

@@ -13,7 +13,7 @@
      
     
     <script src="../../jlui3.2/lib/jquery/jquery-1.9.0.min.js"></script>
-    
+ 
     <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
      <script src="../../lib/ligerUI/js/ligerui.all.js"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
@@ -32,32 +32,44 @@
    <script src="../../jlib/ligerUI/js/plugins/ligerListBox.js"></script>
      <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
-
-
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js"></script>
     <script src="../../lib/jquery-validation/jquery.validate.js" type="text/javascript"></script>
     <script src="../../lib/jquery-validation/jquery.metadata.js" type="text/javascript"></script>
     <script src="../../lib/jquery-validation/messages_cn.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/common.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
+      <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
     <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
-    
+        <%--<script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>--%>
 
-     
+<%--      <script type="text/javascript" charset="utf-8" src="../../ueditor1_2_5_1-utf8-net/editor_config.js"></script>
+    <script src="../../ueditor1_2_5_1-utf8-net/editor_all.js" type="text/javascript"></script>
+    <script src="../../ueditor1_2_5_1-utf8-net/lang/zh-cn/zh-cn.js" type="text/javascript"></script>
+    <link href="../../ueditor1_2_5_1-utf8-net/themes/default/css/ueditor.css" rel="stylesheet" />
+  --%>
 
     <script type="text/javascript">
         var manager, g;
-        var pushry = [];
+        var pushry = []; var IsPlan = "N";
         $(function () {
-            
+            IsPlan = getparastr("IsPlan");
             $.metadata.setType("attr", "validate");
             XHD.validate($(form1));
            
             $("form").ligerForm();
-
-           
-
+          //var ue=  UE.getEditor('editor', {
+          //      initialFrameWidth: 100, initialFrameHeight:550, toolbars: [
+          //          ['source', '|', 'undo', 'redo', '|',
+          //              'bold', 'italic', 'underline', 'blockquote', 'pasteplain', '|',  
+          //              'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+          //              'insertimage', 'emotion', '|',
+          //              'horizontal', 'date', 'time', 'spechars']
+          //      ],
+          //      autoHeightEnabled: false
+          //  });
+          
             initLayout();
             $(window).resize(function () {
                 initLayout();
@@ -75,8 +87,10 @@
             divchecksgxmInit();
               T_privateInit();
             
-            
-           
+             
+
+              $("#T_sgrq").ligerDateEditor();
+
            
         });
 
@@ -111,7 +125,7 @@
                 success: function (result) {
                     var obj = eval(result);
                     $("#T_private").ligerComboBox({
-                        width:150,
+                        width:180,
                         data: obj 
                     });
 
@@ -166,7 +180,7 @@
                     $.ajax({
                         type: "GET",
                         url: "../../data/SGJD_LIST.ashx", /* 注意后面的名字对应CS的方法名称 */
-                        data: { Action: 'formgrid', cid: getparastr("cid"), rnd: Math.random() }, /* 注意参数的格式和名称 */
+                        data: { Action: 'formgrid', cid: getparastr("cid"), IsPlan: getparastr("IsPlan"),rnd: Math.random() }, /* 注意参数的格式和名称 */
                         //url: "../../data/SGJD_LIST.ashx?Action=formgrid&cid=" + getparastr("cid") + "&rdm=" + Math.random(),
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
@@ -253,7 +267,9 @@
                     $("#T_khxq").val(obj.Community);
                     $("#T_khlh").val(obj.BNo + '栋' + obj.RNo + '室');
                     $("#T_yzxm").val(obj.Customer);
-                    
+                    //$("#T_remarks").val(obj.remarks);
+                    //$("#T_sgrq").val(obj.remarks);
+                    //$("#T_tq").val(obj.remarks);
 
                 }
             });
@@ -268,7 +284,7 @@
                 return;
             }
             var sendtxt =  getparastr("cid")
-                  + ";" + sgxmvalue ; 
+                + ";" + sgxmvalue + ";" + getparastr("tel"); 
             return   sendtxt;
         }
 
@@ -291,11 +307,13 @@
             }
             //var sgryvalue = liger.get("divsgry").getValue();
             var sgryvalue = getry();
-            
+           // var arr = [];
+           // arr.push(UE.getEditor('editor').getContent());
+
             if ($(form1).valid()) {
-                var sendtxt = "&Action=save&id=" + getparastr("cid")  
-                    + "&sgxm=" + sgxmvalue
-                + "&sgry=" + sgryvalue
+                var sendtxt = "&Action=save&id=" + getparastr("cid")
+                    + "&sgxm=" + sgxmvalue +"&IsPlan=" + IsPlan
+                    + "&sgry=" + sgryvalue + "&T_content=" + $("#T_content").val()
                 ;
                 return $("form :input").fieldSerialize() + sendtxt;
             }
@@ -520,6 +538,7 @@ margin-right: 20px;
 
             <tr>
                 <td colspan="4" class="table_title1">基础参数</td>
+              
             </tr>
             <tr>
                 <td>
@@ -532,7 +551,7 @@ margin-right: 20px;
                     <div align="left" style="width: 90px">客户名称：</div>
                 </td>
                 <td>
-                    <input type='text' id="T_khmc" name="T_khmc" ltype='text' ligerui="{width:140,disabled:true}" /></td>
+                    <input type='text' id="T_khmc" name="T_khmc" ltype='text' ligerui="{width:180,disabled:true}" /></td>
             </tr>
             <tr>
                 <td>
@@ -545,7 +564,7 @@ margin-right: 20px;
                     <div align="left" style="width: 90px">客户楼号：</div>
                 </td>
                 <td>
-                    <input type='text' id="T_khlh" name="T_khlh" ltype='text' ligerui="{width:140,disabled:true}" /></td>
+                    <input type='text' id="T_khlh" name="T_khlh" ltype='text' ligerui="{width:180,disabled:true}" /></td>
             </tr>
             <tr>
                 <td>
@@ -558,7 +577,24 @@ margin-right: 20px;
                     <div align="left" style="width: 90px">联系电话：</div>
                 </td>
                 <td>
-                    <input type='text' id="T_tel" name="T_tel" ltype='text' ligerui="{width:140,disabled:true}" /></td>
+                    <input type='text' id="T_tel" name="T_tel" ltype='text' ligerui="{width:180,disabled:true}" /></td>
+            </tr>
+                <tr>
+                <td>
+                    <div align="left" style="width: 60px">施工时间：</div>
+                </td>
+                <td>
+                      <input type='text' id='T_sgrq' name='T_sgrq' ligerui="{width:180}" />
+                </td>
+                <td>
+                    <div align="left" style="width: 90px">天气：</div>
+                </td>
+                <td>
+                     <input id="T_tq" name="T_tq" type="text" ltype="text" ligerui="{width:180}" />
+                          
+
+
+                </td>
             </tr>
             <tr>
                 <td>
@@ -571,20 +607,19 @@ margin-right: 20px;
                     <div align="left" style="width: 90px">施工进度：</div>
                 </td>
                 <td>
-                     <input type='text' id='T_private' name='T_private' />
+                     <input type='text' id='T_private' name='T_private'  />
                           
 
 
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <div align="left" style="width: 60px">说明：</div>
+              <tr><td>
+                    <div align="left" style="width: 60px">内容：</div>
                 </td>
-                <td colspan="3">
-                    <input type="text" id="T_Remark" name="T_Remark" validate="{required:true}" ltype='text' ligerui="{width:637}" /></td>
-
-            </tr>
+                    <td colspan="4">  <textarea rows="8" id="T_content" style="width: 650px; " ></textarea></td>
+                  <%--editor--%>
+              </tr>
+        
               <tr>
                 <td colspan="4" class="table_title1">施工项目</td>
             </tr>
@@ -611,12 +646,14 @@ margin-right: 20px;
                     <div id="divsgry" style="margin: -1px;height:100px;   overflow:auto; " ></div>
                 </td>
             </tr>
+           
             <%--<tr>
                 <td colspan="4">
                     <textarea id="editor" style="width: 637px;"></textarea>
                 </td>
             </tr>--%>
         </table>
+           
     </form>
 </body>
 </html>

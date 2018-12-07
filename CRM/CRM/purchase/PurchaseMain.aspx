@@ -7,24 +7,36 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
       <meta http-equiv="X-UA-Compatible" content="ie=8 chrome=1" />
     <title></title>
-    <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+   <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/Toolbar.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
-    <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
-
+    <link href="../../CSS/styles.css" rel="Stylesheet" type="text/css" />
+    <link href="../../CSS/input.css" rel="stylesheet" />
     <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-     <script src="../../lib/jquery.form.js" type="text/javascript"></script>
-   <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerLayout.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerForm.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
-    <script src="../../lib/json2.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerRadio.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerSpinner.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTree.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerResizable.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerTip.js" type="text/javascript"></script>
+    <script src="../../lib/jquery.form.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
-    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+        <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script type="text/javascript">
-        var manager = ""; var Apr = "E";
+        var manager = ""; var Apr = "E"; var typename = "";
         if (getparastr("Apr") == "Y") Apr = "Y";
         else if (getparastr("Apr") == "YY") Apr = "YY";
+        else if (getparastr("Apr") == "YYY") Apr = "YYY";
         else if (getparastr("Apr") == "Print") Apr = "";
         $(function () {
             $("#maingrid4").ligerGrid({
@@ -34,27 +46,42 @@
                          { return (page - 1) * pagesize + rowindex + 1; }
                      },
                       { display: '采购编号', name: 'Purid', width: 100, align: 'left' },
-                          { display: '供应商', name: 'supplier_name', width: 150, align: 'left' },
-                      { display: '客户', name: 'Customer', width: 80, align: 'left' },
-                       { display: '客户地址', name: 'address', width: 120, align: 'left' },
-                        { display: '客户电话', name: 'tel', width: 80, align: 'left' },
+                    { display: '供应商', name: 'supplier_name', width: 150, align: 'left' },
+                          {
+                          display: '客户信息', name: 'nr', align: 'left', width: 300, render: function (item) {
+                              var html = "<div class='abc'>";
+                              if (item.nr)
+                                  html += item.nr;
+                              html += "</div>";
+                              return html;
+                          }
+                      },
+                     // { display: '客户信息', name: 'nr', width: 400, align: 'left' },
+                       { display: '施工监理', name: 'sg', width: 120, align: 'left' },
+                       // { display: '客户电话', name: 'tel', width: 80, align: 'left' },
 
-                     { display: '已付金额', name: 'paid_amount', width: 80, align: 'left' },
-                       { display: '应付金额', name: 'payable_amount', width: 100, align: 'left' },
-                        { display: '欠款', name: 'arrears', width: 80, align: 'left' },
+                    // { display: '已付金额', name: 'paid_amount', width: 80, align: 'left' },
+                      // { display: '应付金额', name: 'payable_amount', width: 100, align: 'left' },
+                        //{ display: '欠款', name: 'arrears', width: 80, align: 'left' },
                      {
                          display: '单据状态', name: 'isNode', width: 60, align: 'left'
                         , render: function (item) {
                              var st;
                              if (item.isNode == "0") st = "待提交";
-                             else if (item.isNode == "1") st = "待审核";
+                             //else if (item.isNode == "1") st = "待审核";
                              else if (item.isNode == "2") st = "待确认";
-                             else if (item.isNode == "3") st = "已确认";
+                             else if (item.isNode == "3") st = "待回单";
+                             //else if (item.isNode == "4") st = "已回单";
                              else if (item.isNode == "99") st = "已废除";
                              else st = item.isNode;
                              if (item.isNode == "1") {
                                  st = "<div style='color:#FF0000'>";
                                  st += "待审核";
+                                 st += "</div>";
+                             }
+                             if (item.isNode == "4") {
+                                 st = "<div style='color:#00CD66'>";
+                                 st += "已回单";
                                  st += "</div>";
                              }
                              return st;
@@ -71,10 +98,17 @@
                             { display: '备注', name: 'remarks', width: 200, align: 'left' }
 
                 ],
+                                  onAfterShowData: function (grid) {
+                    $(".abc").hover(function (e) {
+                        $(this).ligerTip({ content: $(this).text(), width: 300, distanceX: event.clientX - $(this).offset().left - $(this).width() + 15 });
+                    }, function (e) {
+                        $(this).ligerHideTip(e);
+                    });
+                },
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/Purchase.ashx?Action=grid&Apr="+Apr,
+                url: "../../data/Purchase.ashx?Action=grid&type=" + getparastr("type") +"&Apr="+Apr,
                 width: '100%',
                 height: '100%',
                 //tree: { columnName: 'StageDescription' },
@@ -101,6 +135,8 @@
             var url = "../../data/toolbar.ashx?Action=GetSys&mid=159&rnd=" + Math.random();
             if (getparastr("Apr") == "Y") url = "../../data/toolbar.ashx?Action=GetSys&mid=161&rnd=" + Math.random();
             if (getparastr("Apr") == "YY") url = "../../data/toolbar.ashx?Action=GetSys&mid=162&rnd=" + Math.random();
+            if (getparastr("Apr") == "YYY") url = "../../data/toolbar.ashx?Action=GetSys&mid=162&rnd=" + Math.random();
+
             if (getparastr("Apr") == "Print") url = "../../data/toolbar.ashx?Action=GetSys&mid=167&rnd=" + Math.random();
             $.getJSON(url, function (data, textStatus) {
                 //alert(data);
@@ -158,7 +194,7 @@
 
         //查询
         function doserch() {
-            var sendtxt = "&Action=grid&Apr="+Apr+"&rnd=" + Math.random();
+            var sendtxt = "&Action=grid&type=" + getparastr("type")+"&Apr="+Apr+"&rnd=" + Math.random();
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
             //  alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -253,8 +289,11 @@
             activeDialogssh = parent.jQuery.ligerDialog.open(dialogOptions);
         }
 
-      function add() {
-          f_openWindow("crm/purchase/PurchaseMainAdd.aspx?status=0", "新增采购", 1100, 600);
+        function add() {
+         if(getparastr("type")=="kccg")
+             f_openWindow("crm/purchase/PurchaseMainAdd.aspx?status=0&type=" + getparastr("type"), "库存采购新增", 1100, 600);
+            else
+             f_openWindow("crm/purchase/PurchaseMainAdd.aspx?status=0", "新增采购", 1100, 600);
         }
 
         function edit() {
@@ -263,27 +302,32 @@
             if (row) {
                // alert(row.isNode);
                 if (row.isNode == 0)
-                    f_openWindow("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode, "审核采购单", 1100, 600);
+                    f_openWindow("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&isauto=" + row.customid + "&status=" + row.isNode + "&type=" + getparastr("type") , "审核采购单", 1200, 600);
                 else if (row.isNode == 1)//已经提交
                 {
                     if (getparastr("Apr") == 'Y')
-                        f_openWindow_sh("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apr", "审核采购单", 1100, 600, '审核');
+                        f_openWindow_sh("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apr" + "&type=" + getparastr("type") , "审核采购单", 1200, 600, '审核');
                   else 
-                        f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=ret", "审核采购单", 1100, 600, '撤回');
+                        f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=ret" + "&type=" + getparastr("type") , "审核采购单", 1200, 600, '撤回');
                 
                 }
                 else if (row.isNode == 2)//已经提交
                 {
 
                     if (getparastr("Apr") == 'YY')
-                        f_openWindow_sh("crm/purchase/PurchaseMainAdd_CK.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apry", "审核采购单", 1100, 600, '确认');
+                        f_openWindow_sh("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apry" + "&type=" + getparastr("type") , "审核采购单", 1200, 600, '确认');
                     else
-                        f_openWindow_ch("crm/purchase/PurchaseMainAdd_CK.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=ret", "审核采购单", 1100, 600, '撤回');
+                        f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=ret" + "&type=" + getparastr("type") , "审核采购单", 1200, 600, '撤回');
 
                   
 
-                } else if (row.isNode == 3)//已经提交
-                    f_openWindow_ch("crm/purchase/PurchaseMainAdd_CK.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apry", "审核采购单", 1100, 600, '确认');
+                } else if (row.isNode == 3)//待回单
+                    if (getparastr("Apr") == 'YYY')
+                        f_openWindow_sh("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apryy" + "&type=" + getparastr("type") , "回单采购单", 1200, 600, '确认');
+                    else
+                        f_openWindow_ch("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=ret" + "&type=" + getparastr("type") , "回单采购单", 1200, 600, '撤回');
+
+                  //  f_openWindow_ch("crm/purchase/PurchaseMainAdd_CK.aspx?pid=" + row.Purid + "&status=" + row.isNode + "&style=apry", "审核采购单", 1100, 600, '确认');
 
             } else {
                 $.ligerDialog.warn('请选择行！');
@@ -293,9 +337,33 @@
         function print() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
+            
             if (row) {
-                f_openWindowview("crm/Print/PurchasePrint.aspx?pid=" + row.Purid, "打印", 1100, 600);
-            } else {
+                if (row.isNode == 3 || row.isNode == 2 || row.isNode == 4)//已经审核或者待审核
+                {
+                    f_openWindowview("crm/Print/PurchasePrint.aspx?pid=" + row.Purid + "&type=" + getparastr("type") , "打印", 1100, 600);
+
+                } else {
+                    $.ligerDialog.warn('已审核或者待审核的采购单才能打印！');
+                }
+            }
+            else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+
+        //查看
+        function view() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+
+            if (row) {
+                
+                f_openWindowview("crm/purchase/PurchaseMainAdd.aspx?pid=" + row.Purid + "&isauto=" + row.customid + "&status=" + row.isNode + "&type=" + getparastr("type") , "查看采购单", 1100, 600);
+
+                
+            }
+            else {
                 $.ligerDialog.warn('请选择行！');
             }
         }
@@ -506,14 +574,14 @@
             <table style='width: 960px' class="bodytable1">
                 <tr>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>客户姓名：</div>
+                        <div style='width: 60px; text-align: right; float: right'>客户信息：</div>
                     </td>
                     <td>
 
                         <input  ltype='text' ligerui='{width:120}' type='text' id='khstext' name='khstext'  /></td>
 
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>地址：</div>
+                        <div style='width: 60px; text-align: right; float: right'>施工监理：</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
@@ -522,7 +590,7 @@
                     
                     </td>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>电话：</div>
+                        <div style='width: 60px; text-align: right; float: right'>采购单号：</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>

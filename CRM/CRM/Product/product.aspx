@@ -25,8 +25,8 @@
         var treemanager;
         $(function () {
             //style=0 材料，1预算
-            $("#layout1").ligerLayout({ leftWidth: 200, allowLeftResize: false, allowLeftCollapse: true, space: 2, heightDiff: -1 });
-            $("#tree1").ligerTree({
+            $("#layout1").ligerLayout({ leftWidth: 200,    allowLeftResize: false, allowLeftCollapse: true, space: 2, heightDiff: -1 });
+           $("#tree1").ligerTree({
                 url: '../../data/crm_product_category.ashx?Action=tree&style=' + getparastr("style") + '&rnd=' + Math.random(),
                 onSelect: onSelect,
                 idFieldName: 'id',
@@ -36,16 +36,17 @@
                 itemopen: false,
                 onSuccess: function () {
                     $(".l-first div:first").click();
+                    $(".l-expandable-open").click();
+                    //$("#tree1").ligerGetTreeManager().collapseAll();
                 }
             });
-
-            treemanager = $("#tree1").ligerGetTreeManager();
-
+       
+           //$("#tree1").ligerGetTreeManager().collapseAll();
             initLayout();
             $(window).resize(function () {
                 initLayout();
             });
-
+        
             $("#maingrid4").ligerGrid({
                 columns: [
                     { display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize) { return (page - 1) * pagesize + rowindex + 1; } },
@@ -84,11 +85,23 @@
                     { display: '产品类别', name: 'category_name', width: 120 },
                     { display: '产品规格', name: 'specifications', width: 120 },
                     {
-                        display: '价格（￥）', name: 'price', width: 120, align: 'right', render: function (item) {
+                        display: '价格（￥）', name: 'price', width: 80, align: 'right', render: function (item) {
                             return toMoney(item.price);
                         }
                     },
-                    { display: '单位', name: 'unit', width: 40 },
+                                        {
+                        display: '采购价（￥）', name: 'InternalPrice', width: 100, align: 'right', render: function (item) {
+                            return toMoney(item.InternalPrice);
+                        }
+                    },
+                                                            {
+                        display: '发包价（￥）', name: 'fbj', width: 100, align: 'right', render: function (item) {
+                            return toMoney(item.fbj);
+                        }
+                    },
+                    { display: '单位', name: 'unit', width: 50 },
+                    { display: '类型', name: 'c_style', width: 50 },
+                     { display: '状态', name: 'clzt', width: 80 },
                     { display: '备注', name: 'remarks', width: 120 }
 
                 ],
@@ -108,6 +121,8 @@
             });
             toolbar();
             $("#maingrid4 .l-grid-hd-cell-btn-checkbox").hide();
+          
+
         });
         function toolbar() {
             $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=39&rnd=" + Math.random(), function (data, textStatus) {
@@ -118,7 +133,7 @@
                     arr[i].icon = "../../" + arr[i].icon;
                     items.push(arr[i]);
                 }
-                items.push({ type: 'textbox', id: 'stext', text: '产品名称：' });
+                items.push({ type: 'textbox', id: 'stext', text: '关键字：' });
                 items.push({ type: 'button', text: '搜索', icon: '../../images/search.gif', disable: true, click: function () { doserch() } });
 
                 $("#toolbar").ligerToolBar({
@@ -134,6 +149,7 @@
         }
 
         function onSelect(note) {
+            //$(".l-expandable-open").click();
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.showData({ Rows: [], Total: 0 });
             var url = "../../data/Crm_product.ashx?Action=grid&categoryid=" + note.data.id + "&rnd=" + Math.random();
@@ -190,7 +206,7 @@
         }
         function viewdetail(id) {
             var dialogOptions = {
-                width: 770, height: 510, title: "查看详情", url: 'crm/product/product_add.aspx?style=' + getparastr("style") + '&pid=' + id + '&rnd=' + Math.random(), buttons: [
+                width: 1000, height: 600, title: "查看详情", url: 'crm/product/product_add.aspx?style=' + getparastr("style") + '&pid=' + id + '&rnd=' + Math.random(), buttons: [
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();
@@ -380,11 +396,12 @@
                     <ul id="tree1"></ul>
                 </div>
             </div>
+           
             <div position="center">
                 <div id="toolbar"></div>
                 <div id="maingrid4" style="margin: -1px;"></div>
             </div>
-        </div>
+         </div>
     </form>
 </body>
 </html>

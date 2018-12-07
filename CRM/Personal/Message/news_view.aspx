@@ -21,15 +21,30 @@
                     for (var n in obj) {
                         
                     }
-                    var	imgs=obj.news_content.split('.jpg')
+                    var content = myFWBtoString(obj.news_content);
+                    var imgs = obj.news_content.split('.jpg');
+                    var regExp = /..\..\..\\/g;
                     if(imgs.length>1)
                         for (var t = 0; t < imgs.length - 1; t++) {
-                            $("#news_content").html(imgs[t] + '.jpg');
+                           // console.log(imgs[t]);
+                            if (imgs[t].indexOf("http") < 0)
+                            {
+                            
+
+                                var imags2 = imgs[t].split("../../../");
+                                //console.log(t+imags2[1]);
+                                $("#news_content").append(myHTMLDeCode(imags2[0]));
+                                if (imags2.length >= 1)
+                                    $("#news_content").append(" <img src='http://mb.xczs.co/" + imags2[1]+ ".jpg' />");
+                            }
+                            else {
+                                $("#news_content").append(" <img src='" + imgs[t].replace('  </br>', '').replace(' ', '') + ".jpg' />");
+                            }
                         }
                     //alert(obj.constructor); //String 构造函数
                     $("#news_title").html(obj.news_title);
                     $("#fly_title").html(formatTimebytype(obj.news_time, 'yyyy-MM-dd') + "　　　编辑：" + obj.create_name);
-                    $("#news_content").html(myHTMLDeCode(imgs[imgs.length - 1]));
+                    $("#news_content").append(myHTMLDeCode(imgs[imgs.length - 1] ));
                 }
             });
         })

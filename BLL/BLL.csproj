@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -37,7 +37,7 @@
     </SccProvider>
     <OldToolsVersion>3.5</OldToolsVersion>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <PublishUrl>http://localhost/Maticsoft.BLL/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
@@ -52,6 +52,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -76,6 +77,7 @@
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -100,6 +102,7 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -126,6 +129,9 @@
     <Compile Include="Budge_Model.cs" />
     <Compile Include="budge_modelMain.cs" />
     <Compile Include="Budge_Rate.cs" />
+    <Compile Include="Car_Basic.cs" />
+    <Compile Include="Car_Use.cs" />
+    <Compile Include="Car_Use_Log.cs" />
     <Compile Include="CERep_Schedule.cs" />
     <Compile Include="CE_Para.cs" />
     <Compile Include="budge.cs" />
@@ -133,16 +139,29 @@
     <Compile Include="Crm_Classic_case.cs" />
     <Compile Include="CRM_Cope.cs" />
     <Compile Include="CRM_Cope_invoice.cs" />
+    <Compile Include="crm_customer_type.cs" />
+    <Compile Include="Financial_Change_Cost.cs" />
+    <Compile Include="Financial_Fixed_Cost.cs" />
+    <Compile Include="Financial_Labour_Cost.cs" />
+    <Compile Include="Financial_Labour_Cost_Recive.cs" />
+    <Compile Include="Financial_Profit.cs" />
+    <Compile Include="Financial_Reports_SingleCustomer.cs" />
+    <Compile Include="hr_employee_accounts.cs" />
     <Compile Include="hr_socialWorker.cs" />
     <Compile Include="hr_socialWorker_Follow.cs" />
     <Compile Include="InStock_Detail.cs" />
     <Compile Include="INStock_Main.cs" />
+    <Compile Include="KcGl_Jcb_Cklb_KW.cs" />
     <Compile Include="MasterStock.cs" />
     <Compile Include="OutStock_Detail.cs" />
     <Compile Include="OutStock_Main.cs" />
+    <Compile Include="Purchase_CGLY.cs" />
+    <Compile Include="Purchase_CGLY_Detail.cs" />
     <Compile Include="Purchase_Detail.cs" />
     <Compile Include="Purchase_Main.cs" />
     <Compile Include="ScoreShop.cs" />
+    <Compile Include="tools_use.cs" />
+    <Compile Include="tools_use_mx.cs" />
     <Compile Include="webservers1.cs" />
     <Compile Include="f_bbs.cs" />
     <Compile Include="Crm_CEDetail.cs" />

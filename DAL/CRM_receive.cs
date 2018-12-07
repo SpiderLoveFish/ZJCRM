@@ -31,7 +31,7 @@ namespace XHD.DAL
             strSql.Append("select count(1) from CRM_receive");
             strSql.Append(" where id=@id ");
             SqlParameter[] parameters = {
-					new SqlParameter("@id", SqlDbType.Int,4)};
+                    new SqlParameter("@id", SqlDbType.Int,4)};
             parameters[0].Value = id;
 
             return DbHelperSQL.Exists(strSql.ToString(), parameters);
@@ -50,25 +50,25 @@ namespace XHD.DAL
             strSql.Append("@Customer_id,@Customer_name,@Receive_num,@Pay_type_id,@Pay_type,@Receive_amount,@Receive_date,@C_depid,@C_depname,@C_empid,@C_empname,@create_id,@create_name,@create_date,@companyid,@order_id,@remarks,@isDelete,@Delete_time,@receive_direction_id,@receive_direction_name,@Receive_real)");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
-					new SqlParameter("@Customer_id", SqlDbType.Int,4),
-					new SqlParameter("@Customer_name", SqlDbType.VarChar,250),
-					new SqlParameter("@Receive_num", SqlDbType.VarChar,250),
-					new SqlParameter("@Pay_type_id", SqlDbType.Int,4),               
-					new SqlParameter("@Pay_type", SqlDbType.VarChar,250),
-					new SqlParameter("@Receive_amount", SqlDbType.Float,8),
-					new SqlParameter("@Receive_date", SqlDbType.DateTime),
-					new SqlParameter("@C_depid", SqlDbType.Int,4),
-					new SqlParameter("@C_depname", SqlDbType.VarChar,250),
-					new SqlParameter("@C_empid", SqlDbType.Int,4),
-					new SqlParameter("@C_empname", SqlDbType.VarChar,250),
-					new SqlParameter("@create_id", SqlDbType.Int,4),
-					new SqlParameter("@create_name", SqlDbType.VarChar,250),
-					new SqlParameter("@create_date", SqlDbType.DateTime),
-					new SqlParameter("@companyid", SqlDbType.Int,4),
-					new SqlParameter("@order_id", SqlDbType.Int,4),
-					new SqlParameter("@remarks", SqlDbType.VarChar,-1),
-					new SqlParameter("@isDelete", SqlDbType.Int,4),
-					new SqlParameter("@Delete_time", SqlDbType.DateTime),
+                    new SqlParameter("@Customer_id", SqlDbType.Int,4),
+                    new SqlParameter("@Customer_name", SqlDbType.VarChar,250),
+                    new SqlParameter("@Receive_num", SqlDbType.VarChar,250),
+                    new SqlParameter("@Pay_type_id", SqlDbType.Int,4),
+                    new SqlParameter("@Pay_type", SqlDbType.VarChar,250),
+                    new SqlParameter("@Receive_amount", SqlDbType.Float,8),
+                    new SqlParameter("@Receive_date", SqlDbType.DateTime),
+                    new SqlParameter("@C_depid", SqlDbType.Int,4),
+                    new SqlParameter("@C_depname", SqlDbType.VarChar,250),
+                    new SqlParameter("@C_empid", SqlDbType.Int,4),
+                    new SqlParameter("@C_empname", SqlDbType.VarChar,250),
+                    new SqlParameter("@create_id", SqlDbType.Int,4),
+                    new SqlParameter("@create_name", SqlDbType.VarChar,250),
+                    new SqlParameter("@create_date", SqlDbType.DateTime),
+                    new SqlParameter("@companyid", SqlDbType.Int,4),
+                    new SqlParameter("@order_id", SqlDbType.Int,4),
+                    new SqlParameter("@remarks", SqlDbType.VarChar,-1),
+                    new SqlParameter("@isDelete", SqlDbType.Int,4),
+                    new SqlParameter("@Delete_time", SqlDbType.DateTime),
                     new SqlParameter("@receive_direction_id",SqlDbType.Int,4),
                     new SqlParameter("@receive_direction_name",SqlDbType.VarChar,250),
                     new SqlParameter("@Receive_real",SqlDbType.Float,8)};
@@ -122,7 +122,7 @@ namespace XHD.DAL
             strSql.Append("C_depid=@C_depid,");
             strSql.Append("C_depname=@C_depname,");
             strSql.Append("C_empid=@C_empid,");
-            strSql.Append("C_empname=@C_empname,");            
+            strSql.Append("C_empname=@C_empname,");
             strSql.Append("companyid=@companyid,");
             strSql.Append("order_id=@order_id,");
             strSql.Append("remarks=@remarks,");
@@ -131,24 +131,24 @@ namespace XHD.DAL
             strSql.Append("Receive_real=@Receive_real");
             strSql.Append(" where id=@id");
             SqlParameter[] parameters = {
-					new SqlParameter("@Customer_id", SqlDbType.Int,4),
-					new SqlParameter("@Customer_name", SqlDbType.VarChar,250),
-					new SqlParameter("@Receive_num", SqlDbType.VarChar,250),
-					new SqlParameter("@Pay_type_id", SqlDbType.Int,4),
-					new SqlParameter("@Pay_type", SqlDbType.VarChar,250),
-					new SqlParameter("@Receive_amount", SqlDbType.Float,8),
-					new SqlParameter("@Receive_date", SqlDbType.DateTime),
-					new SqlParameter("@C_depid", SqlDbType.Int,4),
-					new SqlParameter("@C_depname", SqlDbType.VarChar,250),
-					new SqlParameter("@C_empid", SqlDbType.Int,4),
-					new SqlParameter("@C_empname", SqlDbType.VarChar,250),					
-					new SqlParameter("@companyid", SqlDbType.Int,4),
-					new SqlParameter("@order_id", SqlDbType.Int,4),
-					new SqlParameter("@remarks", SqlDbType.VarChar,-1), 
+                    new SqlParameter("@Customer_id", SqlDbType.Int,4),
+                    new SqlParameter("@Customer_name", SqlDbType.VarChar,250),
+                    new SqlParameter("@Receive_num", SqlDbType.VarChar,250),
+                    new SqlParameter("@Pay_type_id", SqlDbType.Int,4),
+                    new SqlParameter("@Pay_type", SqlDbType.VarChar,250),
+                    new SqlParameter("@Receive_amount", SqlDbType.Float,8),
+                    new SqlParameter("@Receive_date", SqlDbType.DateTime),
+                    new SqlParameter("@C_depid", SqlDbType.Int,4),
+                    new SqlParameter("@C_depname", SqlDbType.VarChar,250),
+                    new SqlParameter("@C_empid", SqlDbType.Int,4),
+                    new SqlParameter("@C_empname", SqlDbType.VarChar,250),
+                    new SqlParameter("@companyid", SqlDbType.Int,4),
+                    new SqlParameter("@order_id", SqlDbType.Int,4),
+                    new SqlParameter("@remarks", SqlDbType.VarChar,-1),
                     new SqlParameter("@receive_direction_id",SqlDbType.Int,4),
                     new SqlParameter("@receive_direction_name",SqlDbType.VarChar,250),
                     new SqlParameter("@Receive_real",SqlDbType.Float,8),
-					new SqlParameter("@id", SqlDbType.Int,4)};
+                    new SqlParameter("@id", SqlDbType.Int,4)};
             parameters[0].Value = model.Customer_id;
             parameters[1].Value = model.Customer_name;
             parameters[2].Value = model.Receive_num;
@@ -159,10 +159,10 @@ namespace XHD.DAL
             parameters[7].Value = model.C_depid;
             parameters[8].Value = model.C_depname;
             parameters[9].Value = model.C_empid;
-            parameters[10].Value = model.C_empname;           
+            parameters[10].Value = model.C_empname;
             parameters[11].Value = model.companyid;
             parameters[12].Value = model.order_id;
-            parameters[13].Value = model.remarks; 
+            parameters[13].Value = model.remarks;
             parameters[14].Value = model.receive_direction_id;
             parameters[15].Value = model.receive_direction_name;
             parameters[16].Value = model.receive_real;
@@ -211,7 +211,7 @@ namespace XHD.DAL
             strSql.Append("delete from CRM_receive ");
             strSql.Append(" where id=@id");
             SqlParameter[] parameters = {
-					new SqlParameter("@id", SqlDbType.Int,4)
+                    new SqlParameter("@id", SqlDbType.Int,4)
 };
             parameters[0].Value = id;
 
@@ -255,7 +255,7 @@ namespace XHD.DAL
             strSql.Append("select  top 1 id,Customer_id,Customer_name,Receive_num,Pay_type_id,Pay_type,Receive_amount,Receive_date,C_depid,C_depname,C_empid,C_empname,create_id,create_name,create_date,companyid,order_id,remarks,isDelete,Delete_time from CRM_receive ");
             strSql.Append(" where id=@id");
             SqlParameter[] parameters = {
-					new SqlParameter("@id", SqlDbType.Int,4)
+                    new SqlParameter("@id", SqlDbType.Int,4)
 };
             parameters[0].Value = id;
 
@@ -337,7 +337,7 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select * ");
-            strSql.Append(" FROM CRM_receive ");
+            strSql.Append(" FROM CRM_receive a LEFT JOIN (SELECT id AS khid,Customer +'【'+address+'】'AS khname FROM  dbo.CRM_Customer)b ON a.Customer_id=b.khid ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" where " + strWhere);
@@ -357,7 +357,7 @@ namespace XHD.DAL
                 strSql.Append(" top " + Top.ToString());
             }
             strSql.Append(" * ");
-            strSql.Append(" FROM CRM_receive ");
+            strSql.Append(" FROM CRM_receive a LEFT JOIN (SELECT id AS khid,Customer +'【'+address+'】'AS khname FROM  dbo.CRM_Customer)b ON a.Customer_id=b.khid ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" where " + strWhere);
@@ -373,7 +373,7 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " * FROM CRM_receive ");
+            strSql.Append(" top " + PageSize + " * FROM CRM_receive a LEFT JOIN (SELECT id AS khid,Customer +'【'+address+'】'AS khname FROM  dbo.CRM_Customer)b ON a.Customer_id=b.khid ");
             strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_receive ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
 
@@ -388,6 +388,154 @@ namespace XHD.DAL
 
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
             return DbHelperSQL.Query(strSql.ToString());
+        }
+        /// <summary>
+        /// 分页获得前几行数据（客户进度管理）
+        /// </summary>
+        public DataSet GetList_khjdgl(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            //StringBuilder strSql = new StringBuilder();
+            //StringBuilder strSql1 = new StringBuilder();
+            //strSql.Append("select ");
+            //strSql.Append(" top " + PageSize + " * FROM CRM_receive ");
+            //strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_receive ");
+            //strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            //strSql1.Append("select count(id) FROM CRM_receive ");
+            //if (strWhere.Trim() != "")
+            //{
+            //    strSql.Append(" and " + strWhere);
+            //    strSql1.Append(" where " + strWhere);
+            //}
+            //strSql.Append(" order by " + filedOrder);
+
+            string sqlCount = "SELECT count(*) "
+        + "  FROM("
+        + "       SELECT ROW_NUMBER() OVER(ORDER BY C.Receive_date) AS rowId, id, Receive_num, receive_direction_name, Pay_type, Receive_amount, C_depname, C_empname, Receive_date, create_name,IsStatus FROM"
+        + "         ("
+        + "      SELECT id, '' AS Receive_num, '应收' AS receive_direction_name, Pay_type, Total_Money AS Receive_amount, C_dep_name AS C_depname, C_emp_name AS C_empname, Order_date AS Receive_date, C_emp_name AS create_name,''IsStatus"
+         + "   FROM dbo.CRM_order"
+         + "   WHERE " + strWhere
+        + "      UNION ALL"
+         + "   SELECT id, Receive_num, receive_direction_name, Pay_type, Receive_amount, C_depname, C_empname, Receive_date, create_name"
+         + " ,CASE  isDelete WHEN 0 THEN '待确认' WHEN	1 THEN	 '已确认' WHEN	7 THEN '作废' END	 AS	 IsStatus"
+            + " FROM    CRM_receive"
++ "            WHERE  ISNULL(Customer_name,'') =''  AND " + strWhere
+   + "         )C"
+      + "   )D";
+
+            string sql = "SELECT TOP " + PageSize + ""
+        + "D.*"
+        + " FROM("
+        + "       SELECT ROW_NUMBER() OVER(ORDER BY C.Receive_date) AS rowId, id, Receive_num, receive_direction_name, Pay_type, Receive_amount, C_depname, C_empname, Receive_date, create_name,IsStatus FROM"
+        + "         ("
+        + "      SELECT id, '' AS Receive_num, '应收' AS receive_direction_name, Pay_type, Total_Money AS Receive_amount, C_dep_name AS C_depname, C_emp_name AS C_empname, Order_date AS Receive_date, C_emp_name AS create_name,''IsStatus"
+         + "   FROM dbo.CRM_order"
+         + "   WHERE "+ strWhere
+        + "      UNION ALL"
+         + "   SELECT id, Receive_num, receive_direction_name, Pay_type, Receive_amount, C_depname, C_empname, Receive_date, create_name"
+          + " ,CASE  isDelete WHEN 0 THEN '待确认' WHEN	1 THEN	 '已确认'  WHEN	7 THEN '作废' END	 AS	 IsStatus"
+         + " FROM    CRM_receive"
++ "            WHERE  ISNULL(Customer_name,'') =''  AND " + strWhere
+   + "         )C"
+      + "   )D"
++ "   WHERE   D.rowId NOT IN(SELECT TOP " + (PageIndex - 1) * PageSize 
+   + "                         B.rowId"
+      + "              FROM("
+         + "                       SELECT ROW_NUMBER() OVER(ORDER BY A.Receive_date) AS rowId, id, Receive_num, receive_direction_name, Pay_type, Receive_amount, C_depname, C_empname, Receive_date, create_name,IsStatus FROM"
+            + "                    ("
+               + "                 SELECT id, '' AS Receive_num, '应收' AS receive_direction_name, Pay_type, Total_Money AS Receive_amount, C_dep_name AS C_depname, C_emp_name AS C_empname, Order_date AS Receive_date, C_emp_name AS create_name,''IsStatus"
+
+                  + "              FROM dbo.CRM_order"
+
+                     + "           WHERE " + strWhere
+
+                        + "        UNION ALL"
+
+                           + "     SELECT id, Receive_num, receive_direction_name, Pay_type, Receive_amount, C_depname, C_empname, Receive_date, create_name"
+                               + " ,CASE  isDelete WHEN 0 THEN '待确认' WHEN	 1 THEN	 '已确认'  WHEN	7 THEN '作废' END	 AS	 IsStatus"
+
+                              + "  FROM    CRM_receive"
+
+                           + "     WHERE  ISNULL(Customer_name,'') =''  AND " + strWhere
+                              + "  )A"
+                           + "  )B"
+                + "   )"
++ "  ORDER BY D.rowId ";
+
+            Total = DbHelperSQL.Query(sqlCount).Tables[0].Rows[0][0].ToString();  
+            return DbHelperSQL.Query(sql);
+        }
+
+        //待确认的
+        public DataSet GetList_Enter(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            string sqls =
+                "   SELECT  count(*) FROM  dbo.CRM_receive A" +
+                    " INNER JOIN dbo.CRM_Customer B ON	A.Customer_id=B.id" +
+
+                " WHERE	 A.isDelete=0 " + strWhere;
+            string sql = "SELECT TOP " + PageSize + ""+
+                 "* FROM(" +
+                "   SELECT ROW_NUMBER() OVER(ORDER BY A.id) AS rowId, A.*,B.Customer,b.address FROM  dbo.CRM_receive A" +
+                    " INNER JOIN dbo.CRM_Customer B ON	A.Customer_id=B.id"+
+
+                " WHERE	 A.isDelete=0 " + strWhere  
+           + "   )D"  
+            + "   WHERE   D.rowId NOT IN(SELECT TOP " + (PageIndex - 1) * PageSize
+             + "                         B.rowId"+
+              " FROM(" +
+                "   SELECT ROW_NUMBER() OVER(ORDER BY A.id) AS rowId, A.*,B.Customer,b.address FROM  dbo.CRM_receive A" +
+                    " INNER JOIN dbo.CRM_Customer B ON	A.Customer_id=B.id" +
+
+                " WHERE	 A.isDelete=0 " + strWhere 
+           + "   )B"
+            + ")  ORDER BY D.rowId ";
+            Total = DbHelperSQL.Query(sqls).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(sql);
+        }
+
+        public bool UpdateIsDelete(string id)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update CRM_receive set ");
+             
+            strSql.Append("isDelete=1 "); 
+            strSql.Append(" where id="+id);
+
+
+            SqlParameter[] parameters = { };
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateIsDelete_del(string id)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update CRM_receive set ");
+
+            strSql.Append("isDelete=7 ");
+            strSql.Append(" where id=" + id);
+
+
+            SqlParameter[] parameters = { };
+
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
 

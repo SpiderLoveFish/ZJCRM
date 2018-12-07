@@ -71,9 +71,32 @@ namespace XHD.CRM.Data
                 if (!string.IsNullOrEmpty(request["stext"]))
                 {
                     if (request["stext"] != "输入姓名搜索")
-                        serchtxt += " and name like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
+                        serchtxt += " and name+tel like N'%" + PageValidate.InputText(request["stext"], 255) + "%'";
                 }
-                //权限
+                if (!string.IsNullOrEmpty(request["typezl"]))
+                {
+                    
+                        serchtxt += " and zldj like N'%" + PageValidate.InputText(request["typezl"], 255) + "%'";
+                }
+                if (!string.IsNullOrEmpty(request["typexy"]))
+                {
+                    
+                        serchtxt += " and xydj like N'%" + PageValidate.InputText(request["typexy"], 255) + "%'";
+                }
+                if (!string.IsNullOrEmpty(request["typejg"]))
+                {
+                    
+                        serchtxt += " and jgdj like N'%" + PageValidate.InputText(request["typejg"], 255) + "%'";
+                }
+                if (!string.IsNullOrEmpty(request["typefw"]))
+                {
+           
+                        serchtxt += " and fwdj like N'%" + PageValidate.InputText(request["typefw"], 255) + "%'";
+                }
+                //权限(6、	登录ERP的帐号，只能看到录入人，或归属人是自己的，或共享的其他人员。Admin可以看到所有人)
+                if (uid!="admin")
+                serchtxt += " AND ( private_per='共有' or Emp_sg like '%;" + emp_id+ ",%' or 1= (SELECT  count(1) FROM  dbo.sys_role_emp A  INNER JOIN dbo.Sys_role B ON	B.RoleID = A.RoleID   WHERE empID="+ emp_id + " AND	 ISNULL(B.IsCanViewSf,0)=1)   )";
+            
                 DataSet ds = emp.GetList(PageSize, PageIndex, serchtxt, sorttext, out Total);
 
                 string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
@@ -131,11 +154,24 @@ namespace XHD.CRM.Data
                 model.tel = PageValidate.InputText(request["T_tel"], 255);
                 model.status = PageValidate.InputText(request["T_status"], 255);
 
+                model.zldj = PageValidate.InputText(request["T_sfzldj"], 50);
+                model.fwdj = PageValidate.InputText(request["T_sffwdj"], 50);
+                model.jgdj = PageValidate.InputText(request["T_sfjgdj"], 50);
+                model.xydj = PageValidate.InputText(request["T_sfxydj"], 50);
+
+              
                 string strZhiwuid = PageValidate.InputText(request["T_zhiwu_val"], 255);
                 if (string.IsNullOrEmpty(strZhiwuid))
                     strZhiwuid = "0";
                 model.zhiwuid = int.Parse(strZhiwuid);
-
+                //string T_Emp_id_sg = PageValidate.InputText(request["T_employee_sg_val"], 50);
+                //if (string.IsNullOrEmpty(T_Emp_id_sg))
+                //    T_Emp_id_sg = "0";
+                //model.Emp_id_sg=int.Parse(T_Emp_id_sg);
+                //model.Emp_sg = PageValidate.InputText(request["bq"], 50);
+                    //PageValidate.InputText(request["T_employee_sg"], 50);
+                model.private_per = PageValidate.InputText(request["T_private"], 255);  
+                
                 model.zhiwu = PageValidate.InputText(request["T_zhiwu"], 255);
                 model.EntryDate = PageValidate.InputText(request["T_entryDate"], 255);
                 model.address = PageValidate.InputText(request["T_Adress"], 255);
@@ -145,6 +181,19 @@ namespace XHD.CRM.Data
                 model.remarks = PageValidate.InputText(request["T_remarks"], 255);
                 model.title = PageValidate.InputText(request["headurl"], 255);
                 model.canlogin = int.Parse(request["canlogin"]);
+                model.jbx = int.Parse(request["jbx"]);
+                model.zt = PageValidate.InputText(request["T_zt"], 255);
+                model.xj = PageValidate.InputText(request["T_xj"], 255);
+                model.private_per = PageValidate.InputText(request["T_private"], 255);
+                model.create_id = emp_id;
+                model.create_name = empname;
+
+                //string empid_sg = request["T_employee_sg_val"];
+                //if (string.IsNullOrEmpty(empid_sg))
+                //    empid_sg = "0";
+                //model.Emp_id_sg = int.Parse(empid_sg);
+                //model.Emp_sg = PageValidate.InputText(request["T_employee1_sg"], 50);
+                model.Emp_sg = PageValidate.InputText(request["bq"], 50);
                 model.Delete_time = DateTime.Now;
                 int empid;
                 string id = PageValidate.InputText(request["id"], 50);

@@ -77,6 +77,10 @@ namespace XHD.Model
         private string _JKDZ;
         private string _hxt;
         private string _jgqjt;
+        private string _birthday_lunar;
+        private string _birthday;
+        private int? _emp_id_hh;
+        private string _emp_hh;
 
         /// <summary>
         /// 
@@ -547,6 +551,33 @@ namespace XHD.Model
             get { return _jgqjt; }
         }
 
+        public string birthday_lunar
+        {
+            set { _birthday_lunar = value; }
+            get { return _birthday_lunar; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string birthday
+        {
+            set { _birthday = value; }
+            get { return _birthday; }
+        }
+
+        public int? Emp_id_hh
+        {
+            set { _emp_id_hh = value; }
+            get { return _emp_id_hh; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Emp_hh
+        {
+            set { _emp_hh = value; }
+            get { return _emp_hh; }
+        }
         #endregion Model
 
     }

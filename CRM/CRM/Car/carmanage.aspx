@@ -1,0 +1,313 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <link href="../../CSS/Toolbar.css" rel="stylesheet" type="text/css" />
+    <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
+    <link href="../../CSS/input.css" rel="stylesheet" type="text/css" />
+
+    <script src="../../lib/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerComboBox.js" type="text/javascript"></script>
+    <script src="../../lib/json2.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
+    <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+    <script src="../../JS/XHD.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#maingrid4").ligerGrid({
+                columns: [
+                    {
+                        display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                        { return (page - 1) * pagesize + rowindex + 1; }
+                    },
+                    { display: '车辆类别', name: 'cartype', width: 100, align: 'left' },
+                    { display: '车牌号', name: 'carNumber', width: 150, align: 'left' },
+                    { display: '负责人', name: 'leadPerson', width: 100, align: 'left' },
+                      {
+                           display: '已年检日期', name: 'lastMOT', width: 120, render: function (item) {
+                               var lastMOT = formatTimebytype(item.lastMOT, 'yyyy-MM-dd');
+                               return lastMOT;
+                           }
+                    },
+                        {
+                           display: '下次年检', name: 'NextMot', width: 120, render: function (item) {
+                               var NextMot = formatTimebytype(item.NextMot, 'yyyy-MM-dd');
+                               return NextMot;
+                           }
+                       },
+                   {
+                           display: '已投保日期', name: 'LastTimeInsured', width: 120, render: function (item) {
+                               var LastTimeInsured = formatTimebytype(item.LastTimeInsured, 'yyyy-MM-dd');
+                               return LastTimeInsured;
+                           }
+                    },
+                   {
+                           display: '下次保险日', name: 'NextTimeInsured', width: 120, render: function (item) {
+                               var NextTimeInsured = formatTimebytype(item.NextTimeInsured, 'yyyy-MM-dd');
+                               return NextTimeInsured;
+                           }
+                       },
+                      {
+                        display: '状态', name: 'IsStatus', width: 60, align: 'right', render: function (item) {
+
+                            var html;
+                            if (item.IsStatus == "Y") {
+                                html = "<div style='color:#FF0000'>生效";
+                                html += "</div>";
+                            }
+                            if (item.IsStatus == "U") {
+                                html = "<div style='color:#FF1111'>使用中";
+                                html += "</div>";
+                            }
+                            else if (item.IsStatus == "N") {
+                                html = "停用";
+                            }
+                            return html;
+                        }
+                    },
+                      {
+                        display: '年检提醒', name: 'MotDays', width: 100, align: 'right', render: function (item) {
+
+                            var html;
+                           
+                            if (item.MotDays<30) {
+                                html = "<div  style='color:#FF0000'>还剩 ";
+                                  html += item.MotDays+" 天";
+                                html += "</div>";
+                            }
+                          
+                            else {
+
+                                html = item.MotDays;
+                             
+                            }
+                            return html;
+                        }
+                    },
+                      {
+                        display: '保险提醒', name: 'TimeInsuredDays', width: 100, align: 'right', render: function (item) {
+
+                            var html;
+                           
+                            if (item.TimeInsuredDays<30) {
+                                html = "<div  style='color:#FF0000'>还剩 ";
+                                  html += item.TimeInsuredDays+" 天";
+                                html += "</div>";
+                            }
+                          
+                            else {
+
+                                html = item.TimeInsuredDays;
+                             
+                            }
+                            return html;
+                        }
+                    }
+
+                ],
+                dataAction: 'server',
+                pageSize: 30,
+                pageSizeOptions: [20, 30, 50, 100],
+                url: "../../data/carmanage.ashx?Action=grid",
+                width: '100%',
+                height: '100%',
+              //  tree: { columnName: 'CEStage_category' },
+                heightDiff: -1,
+                onRClickToSelect: true,
+                onContextmenu: function (parm, e) {
+                    actionCustomerID = parm.data.id;
+                    menu.show({ top: e.pageY, left: e.pageX });
+                    return false;
+                }
+
+            });
+
+
+
+            initLayout();
+            $(window).resize(function () {
+                initLayout();
+            });
+            toolbar();
+        });
+        function toolbar() {
+            $.getJSON("../../data/toolbar.ashx?Action=GetSys&mid=263&rnd=" + Math.random(), function (data, textStatus) {
+                //alert(data);
+                var items = [];
+                var arr = data.Items;
+                for (var i = 0; i < arr.length; i++) {
+                    arr[i].icon = "../../" + arr[i].icon;
+                    items.push(arr[i]);
+                }
+                $("#toolbar").ligerToolBar({
+                    items: items
+
+                });
+                menu = $.ligerMenu({
+                    width: 120, items: getMenuItems(data)
+                });
+
+                $("#maingrid4").ligerGetGridManager().onResize();
+            });
+        }
+
+        var activeDialog = null;
+        function f_openWindow(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+                        {
+                            text: '保存', onclick: function (item, dialog) {
+                                f_save(item, dialog);
+                            }
+                        },
+                        {
+                            text: '关闭', onclick: function (item, dialog) {
+                                dialog.close();
+                            }
+                        }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+
+
+        function add() {
+            f_openWindow("crm/car/carmanage_add.aspx?edit=N", "新增车辆", 680, 400);
+        }
+
+        function edit() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow('crm/car/carmanage_add.aspx?edit=Y&cid=' + row.id + '&cname=' + encodeURI(row.carNumber), "修改车辆信息", 680, 400);
+            } else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+        function StartStop() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                $.ligerDialog.confirm("确定要修改状态，如果停用，则后续无法选择此车辆！？", function (yes) {
+                    if (yes) {
+                        $.ajax({
+                            url: "../../data/carmanage.ashx", type: "POST",
+                            data: { Action: "StartStop", id: row.id, rnd: Math.random() },
+                            success: function (responseText) {
+                                if (responseText == "true") {
+                                    top.$.ligerDialog.closeWaitting();
+                                    f_reload();
+                                }
+
+                                else {
+                                    top.$.ligerDialog.closeWaitting();
+                                    top.$.ligerDialog.error('修改失败！');
+                                }
+                            },
+                            error: function () {
+                                top.$.ligerDialog.closeWaitting();
+                                top.$.ligerDialog.error('修改失败！', "", null, 9003);
+                            }
+                        });
+                    }
+                })
+            } else {
+                $.ligerDialog.warn("请选择车辆！");
+            }
+        }
+        function del() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                $.ligerDialog.confirm("车辆删除不能恢复，确定删除？", function (yes) {
+                    if (yes) {
+                        $.ajax({
+                            url: "../../data/carmanage.ashx", type: "POST",
+                            data: { Action: "del", id: row.id, rnd: Math.random() },
+                            success: function (responseText) {
+                                if (responseText == "true") {
+                                    top.$.ligerDialog.closeWaitting();
+                                    f_reload();
+                                }
+                                else if (responseText == "false:exist")
+                                {
+                                    top.$.ligerDialog.closeWaitting();
+                                    top.$.ligerDialog.error('删除失败！此车辆已经在使用中！！');
+                                }
+                                else {
+                                    top.$.ligerDialog.closeWaitting();
+                                    top.$.ligerDialog.error('删除失败！');
+                                }
+                            },
+                            error: function () {
+                                top.$.ligerDialog.closeWaitting();
+                                top.$.ligerDialog.error('删除失败！', "", null, 9003);
+                            }
+                        });
+                    }
+                })
+            } else {
+                $.ligerDialog.warn("请选择车辆！");
+            }
+        }
+        function f_save(item, dialog) {
+            var issave = dialog.frame.f_save();
+            if (issave) {
+                dialog.close();
+                top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                $.ajax({
+                    url: "../../data/carmanage.ashx", type: "POST",
+                    data: issave,
+                    success: function (responseText) {
+                        top.$.ligerDialog.closeWaitting();
+                     if (responseText == "false:exist")
+                        {
+                            top.$.ligerDialog.closeWaitting();
+                            top.$.ligerDialog.error('车辆修改失败！此车辆名称已经在使用中！！');
+                        }
+                     else
+                         if (responseText == "false:type") {
+                            top.$.ligerDialog.error('操作失败，上级类别不能是自己！');
+                        }
+                        else {
+                            f_reload();
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+
+                    }
+                });
+
+            }
+        }
+        function f_reload() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            manager.loadData(true);
+            top.flushiframegrid("tabid39");
+        };
+    </script>
+    <style type="text/css">
+        .l-leaving { background: #eee; color: #999; }
+    </style>
+
+</head>
+<body>
+
+    <form id="form1" onsubmit="return false">
+        <div>
+            <div id="toolbar" style="color:#06993d"></div>
+            
+            <div id="maingrid4" style="margin: -1px;"></div>
+        </div>
+    </form>
+
+
+</body>
+</html>

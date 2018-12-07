@@ -46,10 +46,27 @@ namespace XHD.DAL
 
             // return DbHelperSQL.GetMaxID("id", "CRM_CEStage");
         }
-		/// <summary>
-		/// 增加一条数据
-		/// </summary>
-		public bool Add(XHD.Model.Purchase_Main model)
+        public string GetMaxDBId()
+        {
+            string per = "DB";
+            per = per + DateTime.Now.ToString("yyMMdd-");
+            string strsql = "select max(REPLACE(Purid,'" + per + "',''))+1 from Purchase_Main where Purid like '" + per + "%'";
+            object obj = DbHelperSQL.GetSingle(strsql);
+            if (obj == null)
+            {
+                return per + "001";
+            }
+            else
+            {
+                return per + int.Parse(obj.ToString()).ToString("000");
+            }
+
+            // return DbHelperSQL.GetMaxID("id", "CRM_CEStage");
+        }
+        /// <summary>
+        /// 增加一条数据
+        /// </summary>
+        public bool Add(XHD.Model.Purchase_Main model)
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into Purchase_Main(");
@@ -160,8 +177,11 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("delete from Purchase_Main ");
+            strSql.Append("delete from OutStock_Main ");
+            strSql.Append(" where CKID='" + Purid + "'  and isNode=0");
+            strSql.Append("delete from Purchase_Main ");
             strSql.Append(" where Purid='" + Purid + "'  and isNode=0");
+
 			SqlParameter[] parameters = { 	};
 		 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
@@ -404,22 +424,48 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + "   A.*,B.Customer,B.tel,B.address FROM  dbo.Purchase_Main  A");
-            strSql.Append(" INNER JOIN  dbo.CRM_Customer B ON A.customid=B.id ");
+            strSql.Append(" top " + PageSize + "   A.*,isnull(B.Customer,'批量生成')Customer,B.tel,B.address,c.nr,c.sg FROM  dbo.Purchase_Main  A");
+            strSql.Append(" LEFT JOIN  dbo.CRM_Customer B ON A.customid=B.id ");
+            strSql.Append(" LEFT JOIN  dbo.V_Purchase_info C ON A.purid=C.cgid ");
             strSql.Append(" WHERE  Purid not in ( SELECT top " + (PageIndex - 1) * PageSize + " Purid FROM Purchase_Main  ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-            strSql1.Append(" select count(Purid) FROM Purchase_Main   ");
+            strSql1.Append(" select count(Purid) FROM Purchase_Main a LEFT JOIN  dbo.CRM_Customer B ON A.customid=B.id  LEFT JOIN  dbo.V_Purchase_info C ON A.purid=C.cgid   where 1=1  ");
 
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);
+                strSql1.Append(" and " + strWhere);
                 //strSql1.Append(" where " + strWhere);
             }
             strSql.Append(" order by " + filedOrder);
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
             return DbHelperSQL.Query(strSql.ToString());
         }
-      
+
+        public DataSet GetPurchase_Main_gsyp(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "   A.*,isnull(B.d_name,'未知部门')Customer, c.nr,c.sg FROM  dbo.Purchase_Main  A");
+            strSql.Append(" LEFT JOIN  dbo.hr_department B ON A.customid=B.id  ");
+            strSql.Append(" LEFT JOIN  dbo.V_Purchase_info C ON A.purid=C.cgid ");
+            strSql.Append(" WHERE  Purid not in ( SELECT top " + (PageIndex - 1) * PageSize + " Purid FROM Purchase_Main  ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(Purid) FROM Purchase_Main a LEFT JOIN  dbo.hr_department B ON A.customid=B.id LEFT JOIN  dbo.V_Purchase_info C ON A.purid=C.cgid   where 1=1  ");
+
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" and " + strWhere);
+                //strSql1.Append(" where " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+
+
         public DataSet GetCgGl_Gys_Main(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
         {
             StringBuilder strSql = new StringBuilder();
@@ -441,7 +487,39 @@ namespace XHD.DAL
         }
 
 
-        public bool Add(string pid,string supid,string user,string cid,string remarks,string isgdd)
+        public bool Add(string pid,string supid,string user,string cid,string remarks,string isgdd,string cgy)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("INSERT INTO dbo.Purchase_Main");
+            sb.AppendLine("        ( Purid ,");
+            sb.AppendLine("          supplier_id ,");
+            sb.AppendLine("          supplier_name ,");
+            sb.AppendLine("          purdate ,");
+            sb.AppendLine("          paid_amount ,");
+            sb.AppendLine("          payable_amount ,");
+            sb.AppendLine("          arrears ,");
+            sb.AppendLine("          isNode ,");
+            sb.AppendLine("          remarks ,");
+            sb.AppendLine("          correlation_id ,");
+            sb.AppendLine("          materialman ,");
+            sb.AppendLine("          customid ,");
+            sb.AppendLine("          txm,IsGD,cgy");
+            sb.AppendLine("        )");
+            sb.AppendLine("SELECT '" + pid + "',ID,Name,GETDATE(),0,0,0,0,'" + remarks + "','','" + user + "','" + cid + "',''," + isgdd + ",'"+cgy+"'");
+            sb.AppendLine(" FROM dbo.CgGl_Gys_Main");
+            sb.AppendLine("  WHERE ID="+supid+"");
+            SqlParameter[] parameters = { };
+            int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool AddDB(string pid, string supid, string user, string cid, string remarks, string isgdd)
         {
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("INSERT INTO dbo.Purchase_Main");
@@ -459,9 +537,9 @@ namespace XHD.DAL
             sb.AppendLine("          customid ,");
             sb.AppendLine("          txm,IsGD");
             sb.AppendLine("        )");
-            sb.AppendLine("SELECT '" + pid + "',ID,Name,GETDATE(),0,0,0,0,'" + remarks + "','','" + user + "','" + cid + "',''," + isgdd + "");
-            sb.AppendLine(" FROM dbo.CgGl_Gys_Main");
-            sb.AppendLine("  WHERE ID="+supid+"");
+            sb.AppendLine("SELECT '" + pid + "',ID,Customer+'('+address+')',GETDATE(),0,0,0,0,'" + remarks + "','','" + user + "','" + cid + "','',3");//ISGD改成3
+            sb.AppendLine("   FROM dbo.CRM_Customer");
+            sb.AppendLine("  WHERE ID=" + supid + "");
             SqlParameter[] parameters = { };
             int rows = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
             if (rows > 0)
@@ -501,9 +579,9 @@ namespace XHD.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select A.* ");
-            strSql.Append(" ,B.Customer,B.address,B.tel,B.Emp_sg,C.Address as gysdz");
+            strSql.Append(" ,ISNULL(B.Customer,'批量生成')Customer,B.address,B.tel,B.Emp_sg,C.Address as gysdz");
             strSql.Append(" FROM Purchase_Main A");
-            strSql.Append(" INNER JOIN  dbo.CRM_Customer B ON A.customid=B.id");
+            strSql.Append(" LEFT JOIN  dbo.CRM_Customer B ON A.customid=B.id");
             strSql.Append(" INNER JOIN  dbo.CgGl_Gys_Main C ON A.supplier_id=C.id");
             if (strWhere.Trim() != "")
             {
@@ -511,7 +589,35 @@ namespace XHD.DAL
             }
             return DbHelperSQL.Query(strSql.ToString());
         }
+        public DataSet GetListdetail_GSYP(string strWhere)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(" SELECT a.*,ISNULL(B.d_name,'未知部门')Customer  ,C.Address as gysdz   ");
+            sb.AppendLine("        FROM Purchase_Main A   ");
+            sb.AppendLine("       LEFT JOIN  dbo.hr_department B ON A.customid=B.id   ");
+            sb.AppendLine("        INNER JOIN  dbo.CgGl_Gys_Main C ON A.supplier_id=C.id   ");
 
+            if (strWhere.Trim() != "")
+            {
+                sb.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(sb.ToString());
+        }
+        //调拨
+        public DataSet GetListdetailDB(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select A.* ");
+            strSql.Append(" ,ISNULL(B.Customer,'未知')Customer,B.address,B.tel,B.Emp_sg,C.Address as gysdz");
+            strSql.Append(" FROM Purchase_Main A");
+            strSql.Append(" LEFT JOIN  dbo.CRM_Customer B ON A.customid=B.id");
+            strSql.Append(" INNER JOIN  dbo.CRM_Customer C ON A.supplier_id=C.id");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
         public int updatetotal(string pid, decimal status)
         {
             SqlParameter[] parameters = {

@@ -18,7 +18,10 @@
 
     <script src="../JS/XHD.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $(function () {   
+        $(function () { 
+            var strurl = "../data/hr_employee.ashx?Action=grid";
+            if (getparastr("type") == "other")//合伙人客户
+                strurl = "../data/hr_socialWorker.ashx?Action=grid";
             $("#maingrid4").ligerGrid({
                 columns: [
                     //{ display: 'ID', name: 'ID', type: 'int', width: 50 },
@@ -32,7 +35,7 @@
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../data/hr_employee.ashx?Action=grid",
+                url: strurl,
                 width: '100%',
                 height: '100%',
                 //title: "员工列表",

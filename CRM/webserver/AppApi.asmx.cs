@@ -286,11 +286,27 @@ namespace XHD.CRM.webserver
               DSToJSON(ds);
 
           }
-            /// <summary>
-          /// 个人信息
-          /// </summary>
-          /// <returns></returns>
-          [WebMethod]
+
+        /// <summary>
+        /// 个人信息
+        /// </summary>
+        /// <returns></returns>
+        [WebMethod]
+        public void GetAccountList(  string ID)
+        {
+            SqlParameter[] parameters = { };
+            string SQL = rsc.GetAccountList(ID);
+            DataSet ds = DbHelperSQL.Query(SQL, parameters);
+
+            DSToJSON(ds);
+
+        }
+
+        /// <summary>
+        /// 个人信息
+        /// </summary>
+        /// <returns></returns>
+        [WebMethod]
           public void GetAppVersion(string ver )
           {
                SqlParameter[] parameters = { };
@@ -620,7 +636,7 @@ namespace XHD.CRM.webserver
               mcp.Community = str[9];// 
               mcp.Fwhx_id = int.Parse(str[10]);//户型
               mcp.Fwhx = str[11];//户型
-              mcp.privatecustomer = "公客";
+              mcp.privatecustomer = "私客";
               mcp.Remarks = str[12];
               //str[10]用户ID
               string sqlemplooye = "SELECT * FROM  dbo.hr_employee WHERE ID='" + str[13] + "'	";
@@ -669,12 +685,29 @@ namespace XHD.CRM.webserver
               DSToJSON(ds);
 
           }
+        [WebMethod]
+        public void GetCustomerDetail_tel(string tel)
+        {
+            SqlParameter[] parameters = { };
+            var sb = new System.Text.StringBuilder();
+
+            string serchtxt = "";
+            sb.AppendLine(" SELECT A.*");
+            sb.AppendLine(" FROM dbo.CRM_Customer A");
+            sb.AppendLine(" where ISNULL(isDelete,0)='0' AND a.tel='" + tel + "'");
+
+
+            DataSet ds = DbHelperSQL.Query(sb.ToString() + serchtxt, parameters);
+
+            DSToJSON(ds);
+
+        }
 
         /// <summary>
         /// 跟进
         /// </summary>
         /// <param name="id"></param>
-          [WebMethod]
+        [WebMethod]
           public void GetCRM_Follow(string id,string url,string nowindex)
           {
               SqlParameter[] parameters = { };
@@ -759,7 +792,7 @@ namespace XHD.CRM.webserver
               //调查问卷
               //string DCstr = "[]";
               sb.Clear();
-               string s=  getbirstring()  ;
+               string s=  rsc.getbirstring()  ;
               string DCstr = "";
               DataSet dsDC = DbHelperSQL.Query(s + " AND ts< 7", parameters);
               if (dsDC.Tables[0].Rows.Count <= 0)
@@ -1376,8 +1409,7 @@ namespace XHD.CRM.webserver
                   detail = Common.GetGridJSON.DataTableToJSON2(dsd.Tables[0]);
 
                   
-                  string sortfjtext = "  ";
-              
+           
                   BLL.budge bd = new budge();
                   DataSet dsfj = bd.GetBudge_Rate_Ver(9999, 1, serchtxt, "  id  ", out Total);
                   fjdetail = Common.GetGridJSON.DataTableToJSON2(dsfj.Tables[0]);
@@ -1393,42 +1425,6 @@ namespace XHD.CRM.webserver
           }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="strWhere">比如30内的</param>
-        /// <param name="lx">客户还是员工</param>
-        /// 
-          private string getbirstring()
-          {
-              var sb = new System.Text.StringBuilder();
-              sb.AppendLine("SELECT * FROM");
-              sb.AppendLine("(");
-              sb.AppendLine("SELECT *,");
-              sb.AppendLine("CASE WHEN  datediff(day,getdate(),bir_thisyear)<0 THEN  datediff(day,getdate(),bir_nextyear) ELSE datediff(day,getdate(),bir_thisyear) END");
-              sb.AppendLine(" AS ts,datediff(yy,b,bir_thisyear) AS age,  ");//年龄
-              sb.AppendLine(" RIGHT(b,5) AS birthday,");
-              sb.AppendLine("  CONVERT(VARCHAR(10),CASE WHEN  datediff(day,getdate(),bir_thisyear)<0 THEN  bir_nextyear  ELSE  bir_thisyear  END,120)");
-              sb.AppendLine(" AS nearbir");//最近的年份生日
-              sb.AppendLine(" FROM (");
-              sb.AppendLine("SELECT birthday as b, rqlx,uid,");
-              sb.AppendLine("birthday_lunar,ID,name AS  UserName,tel,dname as DepartmentName,address,ISNULL(title,'') AS Avatar");
-              sb.AppendLine(",token as UserId,");
-              sb.AppendLine("dateadd(yy,datediff(yy,bir,getdate()),bir) AS bir_thisyear");
-              sb.AppendLine(",dateadd(yy,datediff(yy,bir,getdate())+1,bir) AS bir_nextyear");
-              sb.AppendLine("FROM");
-              sb.AppendLine("(");
-              sb.AppendLine("SELECT CASE WHEN rqlx='阳历' THEN birthday ELSE");
-              sb.AppendLine("LEFT(birthday,4)+RIGHT( (SELECT TOP 1 lunar FROM dbo.Lunar_Solar_List WHERE solar=CONVERT(VARCHAR(4),GETDATE(),120)+RIGHT(birthday,6)),6) ");
-              sb.AppendLine("END AS bir,");
-              sb.AppendLine(" *    FROM  dbo.hr_employee");
-              sb.AppendLine("WHERE uid NOT IN('NoVerer','admin')");
-              sb.AppendLine(")AA");
-              sb.AppendLine(")AAA");
-              sb.AppendLine(")AAAA");
-              sb.AppendLine("WHERE 1=1");
-              return sb.ToString();
-          }
        
           [WebMethod]
           public void GetUserBirthday(string strWhere, string lx )
@@ -1436,7 +1432,7 @@ namespace XHD.CRM.webserver
               SqlParameter[] parameters = { };
  
               var sb = new System.Text.StringBuilder();
-              string s = getbirstring();
+              string s = rsc.getbirstring();
               sb.AppendLine("");
               if (strWhere.Trim() != "")
               {
@@ -1710,24 +1706,406 @@ namespace XHD.CRM.webserver
           {
 
               SqlParameter[] parameters = { };
-              string sql =" SELECT TOP 1 A.id,A.NoticeContent FROM dbo.NoticeAlarm A "+
-                            " LEFT JOIN  dbo.NoticeAlarm_Log B ON A.id=B.NoticeID  AND HostName='" + hostname + "' " +
-                            " WHERE B.id IS NULL";
+            string sql = " SELECT TOP 1 A.id,A.NoticeContent FROM dbo.NoticeAlarm A " +
+                          " LEFT JOIN  dbo.NoticeAlarm_Log B ON A.id=B.NoticeID  AND HostName='" + hostname + "' " +
+                          " WHERE isnull(isuse,'N')='N' and (B.id IS NULL ) " +
+                          " OR (  NOTICETIME<GETDATE()) " +
+
+                          "  update dbo.NoticeAlarm " +
+                          " set noticetime=GETDATE()" +
+                            " where id= (SELECT TOP 1  id  FROM dbo.NoticeAlarm   " +            
+                          " WHERE isnull(isuse,'N')='N' " +
+                          "     AND NOTICETIME<GETDATE() ) ";
+
               DataSet ds = DbHelperSQL.Query(sql, parameters);
              
               var sb = new System.Text.StringBuilder();
              
-              sb.AppendLine(" INSERT INTO dbo.NoticeAlarm_Log ");
+             sb.AppendLine(" INSERT INTO dbo.NoticeAlarm_Log ");
              sb.AppendLine("  ( NoticeID, HostName, DoTime ) ");
              sb.AppendLine("  SELECT TOP 1 A.id,'" + hostname + "',GETDATE() FROM dbo.NoticeAlarm A   ");
              sb.AppendLine("                LEFT JOIN  dbo.NoticeAlarm_Log B ON A.id=B.NoticeID  AND HostName='" + hostname + "' ");
-                        sb.AppendLine("            WHERE B.id IS NULL ");
-            
-              var RV = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
+             sb.AppendLine("      WHERE isnull(isuse,'N')='N' and (B.id IS NULL )");
+            sb.AppendLine("    OR (  NOTICETIME<GETDATE()) ");
+          
+            var RV = DbHelperSQL.ExecuteSql(sb.ToString(), parameters);
              
               DSToJSON(ds);
           }
-         
+
+        [WebMethod]
+        public void GetJPGL(string type, string strwhere)
+        {
+            SqlParameter[] parameters = { };
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("SELECT  ");
+            if (type == "lx")
+                sb.AppendLine(" DISTINCT params_id, B.params_name ");
+            else sb.AppendLine("  A.* ");
+            sb.AppendLine("   FROM dbo.smsmodel A");
+            sb.AppendLine("  INNER JOIN  dbo.Param_SysParam B ON A.params_id=B.id ");
+            if (strwhere != "")
+                sb.AppendLine(strwhere);
+            DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+
+            DSToJSON(ds);
+
+
+        }
+
+
+        [WebMethod]
+        public void GetFinance(string type, string strwhere)
+        {
+            SqlParameter[] parameters = { };
+            string sqlstr = rsc.GetFinance(type, strwhere);
+            DataSet ds = DbHelperSQL.Query(sqlstr, parameters);
+
+            DSToJSON(ds);
+
+
+        }
+
+        /// <summary>
+        /// 项目名称
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="strwhere"></param>
+        [WebMethod]
+        public void GetXMLIST(string type, string strwhere)
+        {
+            BLL.CE_Para cp = new CE_Para();
+            DataSet ds = cp.GetList("");
+
+            DSToJSON(ds);
+
+
+        }
+
+
+
+
+        /// <summary>
+        /// 增加维修记录
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="userid"></param>
+        /// <param name="username"></param>
+        /// <param name="follow"></param>
+        /// <param name="departid"></param>
+        [WebMethod]
+        public void AddCRM_Repair(string khbh ,string wxlbid, string wxyy,string sfkh,string wxrq,string wxsj,
+         string userid,string khmc,string tel,string address
+         )
+        {
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("             INSERT   INTO dbo.CRM_Repair  ");
+            sb.AppendLine("                         ( Sfkh ,  ");
+            sb.AppendLine("                           Khbh ,  ");
+            sb.AppendLine("                           Khmc ,  ");
+            sb.AppendLine("                           Khdh ,  ");
+            sb.AppendLine("                           Khyx ,  ");
+            sb.AppendLine("                           Khdz ,  ");
+            sb.AppendLine("                           Khxq ,  ");
+            sb.AppendLine("                           Khxb ,  ");
+            sb.AppendLine("                           Wxrq ,  ");
+            sb.AppendLine("                           Wxsj ,  ");
+            sb.AppendLine("                           WxlbID ,  ");
+            sb.AppendLine("                           Wxyy ,  ");
+            sb.AppendLine("                           Clrq ,  ");
+            sb.AppendLine("                           Wcrq ,  ");
+            sb.AppendLine("                           Wczt ,  ");
+            sb.AppendLine("                           Fzxs ,  ");
+            sb.AppendLine("                           WxEmpID ,  ");
+            sb.AppendLine("                           GdEmpID ,  ");
+            sb.AppendLine("                           Hfxx ,  ");
+            sb.AppendLine("                           Pjxx ,  ");
+            sb.AppendLine("                           InEmpID ,  ");
+            sb.AppendLine("                           InDate ,  ");
+            sb.AppendLine("                           IsDel    ");
+            sb.AppendLine(" 			            ");
+            sb.AppendLine(" 			            )  ");
+            sb.AppendLine("                         SELECT  '"+sfkh+"' ,  ");
+            sb.AppendLine("                                 "+ khbh + " ,  ");
+            sb.AppendLine("                                 '"+ khmc + "' ,  ");
+            sb.AppendLine("                                 '"+tel+"' ,  ");
+            sb.AppendLine("                                 '' ,  ");
+            sb.AppendLine("                                 '"+ address + "' ,  ");
+            sb.AppendLine("                                  '" + address + "' ,  ");
+            sb.AppendLine("                                 '' ,  ");
+            sb.AppendLine("                                 '"+wxrq+"' ,  ");
+            sb.AppendLine("                                 '"+wxsj+"' ,  ");
+            sb.AppendLine("                                 "+wxlbid+" ,  ");
+            sb.AppendLine("                                 '"+wxyy+"' ,  ");
+            sb.AppendLine("                                 NULL ,  ");
+            sb.AppendLine("                                 NULL ,  ");
+            sb.AppendLine("                                 '未处理' ,  ");
+            sb.AppendLine("                                 0 ,  ");
+            sb.AppendLine("                                 '' ,  ");
+            sb.AppendLine("                                 '' ,  ");
+            sb.AppendLine("                                 '' ,  ");
+            sb.AppendLine("                                 '' ,  ");
+            sb.AppendLine("                                 "+userid+" ,  ");
+            sb.AppendLine("                                 GETDATE() ,  ");
+            sb.AppendLine("                                 'N'  ");
+            //sb.AppendLine("                         FROM    dbo.CRM_Customer where id="+ khbh + "   ");
+
+            if (DbHelperSQL.ExecuteSql(sb.ToString())> 0)
+                ReturnStr(true, "\"success\"");
+            else ReturnStr(false, "\"faile\"");
+
+
+        }
+        /// <summary>
+        /// 材料发单
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <param name="startindex"></param>
+
+        [WebMethod]
+        public void GetCEStage(string uid, string startindex,string strwhere)
+        {
+            int nowindex = int.Parse(startindex) - 10;
+
+            StringBuilder sb = new StringBuilder();
+            string auth = DataAuth(uid);
+            sb.AppendLine(" SELECT  top 10 * FROM (  ");
+            sb.AppendLine(" SELECT  row_number() OVER (ORDER BY B.id  DESC ) n ,B.*,ISNULL(BeginDate,Jh_date) btime,A.address FROM dbo.CRM_CEStage B  ");
+            sb.AppendLine(" INNER JOIN  dbo.CRM_Customer A ON	B.CustomerID=A.id  ");
+            sb.AppendLine(" where 1=1 ");
+            sb.AppendLine(" AND Stage_icon='正在施工' ");
+            if (strwhere != "")
+                sb.AppendLine(" and ( CustomerName like '%"+strwhere+ "%' or b.tel like '%" + strwhere + "%' )");
+                sb.AppendLine(auth);
+            sb.AppendLine(" )AA  ");
+            sb.AppendLine(" WHERE n>" + nowindex);
+            DataSet ds = DbHelperSQL.Query(sb.ToString());
+
+            DSToJSON(ds);
+
+
+        }
+
+        /// <summary>
+        /// 申请材料明细
+        /// </summary> 
+        /// <param name="strwhere"></param>
+        [WebMethod]
+        public void GetPurchaseList(string starIndex, string cid,string strwhere,string id,string uid)
+        {
+         string  sql= rsc.GetPurchaseList(starIndex, cid, strwhere,id,  uid);
+            SqlParameter[] parameters = { }; 
+            DataSet ds = DbHelperSQL.Query(sql, parameters);
+
+            DSToJSON(ds);
+
+
+        }
+
+        /// <summary>
+        /// 选材产品
+        /// </summary>
+        /// <param name="strwhere"></param>
+        [WebMethod]
+        public void GetSelectProduct(string strwhere)
+        {
+            StringBuilder sb = new StringBuilder();
+            string serchtxt = "";
+            sb.AppendLine(" SELECT TOP 20 * FROM	(  ");
+            sb.AppendLine(" SELECT  ROW_NUMBER() OVER ( ORDER BY A.product_id DESC ) n ,  product_id,product_name,LEFT(B.C_CODE,1) header,A.specifications,A.Brand,A.ProSeries  ");
+            sb.AppendLine(" ,A.c_style,A.price,AddOneStatistics  FROM dbo.CRM_product A  ");
+            sb.AppendLine(" INNER JOIN CRM_product_category B ON	A.category_id=B.id  ");
+            sb.AppendLine(" WHERE A.isDelete=0 AND	jbx in(3,1)   ");
+                if (strwhere != "")
+                    serchtxt += " AND (product_name LIKE '%" + strwhere + "%' or category_name LIKE '%" + strwhere + "%' )";
+
+            sb.AppendLine(serchtxt);
+        
+            sb.AppendLine(" )AA  ");
+
+            sb.AppendLine("  ORDER BY AA.AddOneStatistics DESC  ");
+
+            SqlParameter[] parameters = { };
+            DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+
+            DSToJSON(ds);
+
+
+        }
+
+        /// <summary>
+        /// 新增工地选材
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <param name="pid">产品，可以逗号增加list</param>
+        /// <param name="uid"></param>
+        /// <param name="style">all</param>
+        [WebMethod]
+        public void InsertPurList(int cid, string pid, string uid, string style)
+        {
+            BLL.PurchaseList pl = new BLL.PurchaseList();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(" SELECT * FROM  dbo.PurchaseList WHERE CustomerID=" + cid + "  ");
+            sb.AppendLine(" AND	 product_id IN(" + pid + ")  ");
+            object obj = DbHelperSQL.GetSingle(sb.ToString());
+            if (Convert.ToInt32(obj) > 0)
+            {
+                ReturnStr(false, "\"faile\"");
+            }
+            else
+            {
+                if (pl.InsertList(cid, pid, uid, "ALL") > 0)
+                    ReturnStr(true, "\"success\"");
+                else ReturnStr(false, "\"faile\"");
+            }
+
+
+        }
+
+        /// <summary>
+        /// 更新数量
+        /// </summary>
+        /// <param name="sum"></param>
+        /// <param name="cid"></param>
+        /// <param name="id"></param>
+        [WebMethod]
+        public void UpdatePurchaseListSum(decimal sum,string remarks,int cid, int id)
+        {
+           
+            // ph.UpdateSUM(sum,0,cid,id);
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update PurchaseList set ");
+            strSql.Append(" b1='" + remarks + "',");
+            strSql.Append("AmountSum=" + sum + "");
+            strSql.Append(" where id=" + id + "");
+            strSql.Append(" and CustomerID=" + cid + "");
+            if (DbHelperSQL.ExecuteSql(strSql.ToString())>0)
+                ReturnStr(true, "\"success\"");
+            else ReturnStr(false, "\"faile\"");
+
+
+        }
+        /// <summary>
+        /// 更新状态
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="cid"></param>
+        /// <param name="id"></param>
+        [WebMethod]
+        public void UpdatePurchaseListStatus(decimal sum, string remarks, int  status, int cid, int id)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update PurchaseList set ");
+ 
+            strSql.Append("IsStatus=" + status + " ");
+            if (status == 1)//提交
+            {
+                strSql.Append(" ,AmountSum=" + sum + "");
+                strSql.Append(" , b1='" + remarks + "'");
+            }
+              
+            strSql.Append(" where id=" + id + "");
+            strSql.Append(" and CustomerID=" + cid + "");
+            if (DbHelperSQL.ExecuteSql(strSql.ToString()) > 0)
+                ReturnStr(true, "\"success\"");
+            else ReturnStr(false, "\"faile\"");
+          
+
+        }
+        /// <summary>
+        /// 采购单
+        /// </summary>
+        /// <param name="nowindex"></param>
+        /// <param name="strwhere"></param>
+        [WebMethod]
+        public void GetPurchase(string nowindex,string isnode, string strwhere)
+        {
+            int startindex = int.Parse(nowindex) - 10;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(" SELECT TOP "+nowindex+" * FROM	(  ");
+            sb.AppendLine(" SELECT  ROW_NUMBER() OVER ( ORDER BY cgid DESC ) n ,  ");
+            sb.AppendLine("         *  ");
+            sb.AppendLine(" FROM  dbo.Purchase_Main A   ");
+            sb.AppendLine("  INNER JOIN  dbo.V_Purchase_info B ON	 A.Purid=B.cgid  ");
+            sb.AppendLine(" where 1=1");
+            if (strwhere != "")
+                sb.AppendLine("  and ( Purid like '%"+strwhere+ "%' OR nr like '%" + strwhere + "%')");
+            sb.AppendLine(" )AA  WHERE 1=1   ");
+            sb.AppendLine(" and  AA.isNode=" + isnode + "");
+
+            sb.AppendLine(" AND	 AA.n>"+ startindex + "  ");
+            //if (strwhere != "")
+            //    sb.AppendLine( strwhere );
+
+            SqlParameter[] parameters = { };
+            DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+
+            DSToJSON(ds);
+
+
+        }
+        /// <summary>
+        /// 采购单明细
+        /// </summary>
+        /// <param name="strwhere"></param>
+        [WebMethod]
+        public void GetPurchaseDetail( string pid, string strwhere)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("  SELECT     A.*,'【'+isnull(b.customer,'自己')+'】'+b.address customer,Emp_sg,Emp_sg,Emp_sj,isnull(c.b1,'') b1,cp.c_code FROM  dbo.Purchase_Detail A   ");
+            sb.AppendLine("              LEFT JOIN CRM_CUSTOMER b on a.customer_id=b.id   ");
+            sb.AppendLine("              LEFT JOIN crm_product cp on cp.product_id=a.material_id   ");
+            sb.AppendLine("              LEFT JOIN (SELECT  CustomerID,product_id,MAX(b1) AS b1 FROM  dbo.PurchaseList GROUP BY CustomerID,product_id) c on a.customer_id=c.CustomerID and a.material_id=c.product_id   ");
+            sb.AppendLine("  where 1=1  ");
+            sb.AppendLine(" and Purid='"+pid+"'");
+             
+            if (strwhere != "")
+                sb.AppendLine(strwhere);
+
+            SqlParameter[] parameters = { };
+            DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
+
+            DSToJSON(ds);
+
+
+        }
+        /// <summary>
+        /// 采购单审核，确认
+        /// </summary>
+        /// <param name="status"></param> 
+        /// <param name="pid"></param>
+        [WebMethod]
+        public void UpdatePurchaseStatus(string status,   string pid)
+        {
+            BLL.Purchase_Main bpm = new BLL.Purchase_Main();
+            BLL.Sys_log log = new BLL.Sys_log();
+            // ph.UpdateSUM(sum,0,cid,id);
+            if (bpm.Updatestatus(pid, status))
+            {
+                if (StringToDecimal(status) == 3)//当确认的时候，重新计算下                     
+                {
+                    if (bpm.updatetotal(pid, StringToDecimal(status)) > 0)
+                    {
+                        log.add_trace(pid, status, "", "app");
+                        ReturnStr(true, "\"success\"");
+                    }
+                    else
+                    {
+                        ReturnStr(false, "\"faile\"");
+                    }
+                }
+                else
+                {
+                    ReturnStr(true, "\"success\"");
+                }
+            }
+                
+            else ReturnStr(false, "\"faile\"");
+
+
+        }
 
 
         /// <summary>
@@ -1802,11 +2180,11 @@ namespace XHD.CRM.webserver
              string rstr="";
              if (!flag)//StringToUnicodeHex
              {
-                 rstr = " {\"meta\":\"" + data + "\",\"data\":null}";
+                 rstr = " {\"meta\":" + data + ",\"data\":null}";
              }
              else
              {
-                 rstr = " {\"meta\":null,\"data\":" + data + "}";
+                 rstr = " {\"meta\":null,\"data\":" +  (data) + "}";
              }
                ;
 
@@ -1816,12 +2194,37 @@ namespace XHD.CRM.webserver
 
              Context.Response.End();
          }
+        /// <summary>
+        /// 字符串转Unicode
+        /// </summary>
+        /// <param name="source">源字符串</param>
+        /// <returns>Unicode编码后的字符串</returns>
+        internal static string String2Unicode(string source)
+        {
+            var bytes = Encoding.Unicode.GetBytes(source);
+            var stringBuilder = new StringBuilder();
+            for (var i = 0; i < bytes.Length; i += 2)
+            {
+                stringBuilder.AppendFormat("\\u{0}{1}", bytes[i + 1].ToString("x").PadLeft(2, '0'), bytes[i].ToString("x").PadLeft(2, '0'));
+            }
+            return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Unicode转字符串
+        /// </summary>
+        /// <param name="source">经过Unicode编码的字符串</param>
+        /// <returns>正常字符串</returns>
+        internal static string Unicode2String(string source)
+        {
+            return new Regex(@"\\u([0-9A-F]{4})", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace(source, x => Convert.ToChar(Convert.ToUInt16(x.Result("$1"), 16)).ToString());
+        }
 
         /// <summary>
         /// 手机推送
         /// </summary>
         /// <param name="lx">发送类型</param>
-         private string push(string lx,string ClientWhere,string Title_add,string body_add)
+        private string push(string lx,string ClientWhere,string Title_add,string body_add)
          {
              string SQL = "SELECT * FROM dbo.App_PushSetting  where id="+lx;
              SqlParameter[] parameters = { };
@@ -2010,31 +2413,26 @@ namespace XHD.CRM.webserver
              return str.ToString();
          }
 
+
+        private static decimal StringToDecimal(string code)
+        {
+            try
+            {
+                return decimal.Parse(code);
+            }
+            catch
+            {
+
+                return 0;
+            }
+        }
+
         /// <summary>
         /// 短信模板，金牌服务
         /// </summary>
         /// <param name="url"></param>
 
-         [WebMethod]
-         public void GetJPGL(string type,string strwhere)
-         {
-             SqlParameter[] parameters = { };
-             var sb = new System.Text.StringBuilder();
-             sb.AppendLine("SELECT  ");
-             if (type == "lx")
-                 sb.AppendLine(" DISTINCT params_id, B.params_name ");
-             else sb.AppendLine("  A.* ");
-             sb.AppendLine("   FROM dbo.smsmodel A");
-             sb.AppendLine("  INNER JOIN  dbo.Param_SysParam B ON A.params_id=B.id ");
-             if (strwhere != "")
-                 sb.AppendLine( strwhere);
-             DataSet ds = DbHelperSQL.Query(sb.ToString(), parameters);
 
-             DSToJSON(ds);
-
-
-         }
-       
 
 
     }

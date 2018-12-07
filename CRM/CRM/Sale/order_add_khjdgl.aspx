@@ -52,8 +52,17 @@
                 onBeforeOpen: f_selectContact
             })
 
-            loadForm(getparastr("orderid"));
-            alert("customerid:" + getparastr("customerid"));
+            if (getparastr("orderid"))
+            {
+                //alert("orderid:"+getparastr("orderid"));
+                loadForm(getparastr("orderid"));
+            }
+            else if (getparastr("customerid"))
+            {
+                loadForm(getparastr("customerid"));
+            }
+            
+        
             $("#customerid").val(getparastr("customerid"));
 
             //$("#maingrid4").ligerGrid({
@@ -164,10 +173,17 @@
             $("#f_dep_val").val(depid);
         }
         function loadForm(oaid) {
+            var varUrl="";
+            if (getparastr("orderid")) {
+                varUrl="CRM_order";
+            }
+            else if (getparastr("customerid")) {
+                varUrl = "crm_customer";
+            }
             $.ajax({
                 type: "GET",
-                url: "../../data/CRM_order.ashx", /* 注意后面的名字对应CS的方法名称 */
-                data: { Action: 'form', orderid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+                url: "../../data/" + varUrl + ".ashx", /* 注意后面的名字对应CS的方法名称 */
+                data: { Action: 'form', cid: oaid, rnd: Math.random() }, /* 注意参数的格式和名称 */
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
@@ -178,11 +194,20 @@
                     }
                     //alert(UrlDecode("2013%2F4%2F14%200%3A00%3A00"));
                     //alert(obj.constructor); //String 构造函数
-                   // alert(obj.budget_money);
-                    $("#customerid").val(obj.Customer_id);
-                    $("#T_Customer").val(obj.Customer_name);
-                    $("#T_Customer_val").val(obj.Customer_id);
-
+                    //alert(JSON.stringify( obj));
+                    $("#customerid").val(obj.id);
+                    $("#T_Customer").val(obj.Customer + '【' + obj.address + '】');
+                    $("#T_Customer_val").val(obj.id);
+                    $("#c_emp_view").val('【' + obj.Department + '】' + obj.Employee);
+                    $("#f_emp_view").val('【' + obj.Dpt_sj + '】' + obj.Emp_sj);
+                    $("#f_dep_val").val(obj.Dpt_id_sj);
+                    $("#f_dep").val(obj.Dpt_sj);
+                    $("#f_emp_val").val(obj.Emp_id_sj);
+                    $("#f_emp").val(obj.Emp_sj);
+                    $("#c_dep").val(obj.Department);
+                    $("#c_dep_val").val(obj.Department_id);
+                    $("#c_emp").val(obj.Employee);
+                    $("#c_emp_val").val(obj.Employee_id);
                     $("#T_date").val(formatTimebytype(obj.Order_date, "yyyy-MM-dd"));
                     $("#T_details").val(obj.Order_details);
                     $("#T_amount").val(toMoney(obj.Order_amount));
@@ -251,7 +276,7 @@
         }
 
         function addys() {
-            //alert($("#customerid").val());
+            //alert("addys-customerid:" + $("#customerid").val());
             if ($("#customerid").val() == "") {
                 alert('请选择客户！!');
             }else{
@@ -268,6 +293,7 @@
 
       
         function f_getys(item, dialog) {
+            //alert("f_getys--");
             var rows = null;
             if (!dialog.frame.f_select()) {
                 alert('请选择有效预算!');
@@ -275,47 +301,15 @@
             }
             else {
                 rows = dialog.frame.f_select();
+                //alert("rows.DiscountAmount:" + rows.DiscountAmount);
                 $("#T_ysje").val(toMoney(rows.DiscountAmount));
-                $("#ysid").html(rows.id); gcus.setReadOnly();
-                //if (rows.id) {
-                //    $.ajax({
-                //        url: "../../data/Budge.ashx", type: "POST",
-                //        data: { Action: "griddetail", bid: rows.id, rnd: Math.random() },
-                //        dataType: "json",
-                //        success: function (responseText) {
-                           
-                //            var rows = responseText.Rows
-                //            //过滤重复
-                        var manager = $("#maingrid4").ligerGetGridManager();
-                        var data = manager.getCurrentData();
-
-                //            for (var i = 0; i < rows.length; i++) {
-
-                //                var add = 1;
-                //                for (var j = 0; j < data.length; j++) {
-                //                    if (rows[i].product_id == data[j].product_id) {
-                //                        add = 0;
-                //                    }
-                //                }
-                //                if (add == 1) {
-                //                    //price
-                //                    rows[i].quantity = 1;
-                //                    rows[i]["amount"] = rows[i].price * rows[i].quantity;
-                //                    manager.addRow(rows[i]);
-                //                }
-                //            }
-                            dialog.close();
-                            $("#T_amount").val(toMoney(manager.getColumnDateByType('amount', 'sum') * 1.0));
-
-                            f_checkquantity();
-                //        },
-                //        error: function () {
-                //            top.$.ligerDialog.closeWaitting();
-                //            top.$.ligerDialog.error('修改失败！', "", null, 9003);
-                //        }
-                //    });
-                //}
-                
+                $("#ysid").html(rows.id);
+                gcus.setReadOnly();
+                //var manager = $("#maingrid4").ligerGetGridManager();
+                //var data = manager.getCurrentData();
+                dialog.close();
+                //$("#T_amount").val(toMoney(manager.getColumnDateByType('amount', 'sum') * 1.0));
+                //f_checkquantity();
             }
            
         }
@@ -407,6 +401,12 @@
             f_openWindow_ch("crm/Budge/BudgeMainAdd.aspx?bid=" + $("#ysid").text() + "&style=view", "查看预算", 1100, 600);
 
         }
+
+        function computerBcje() {
+            //if (txt.value == "")       
+            $("#T_amount").val(($("#T_zje").val() - $("#T_ysje").val()).toFixed(2));
+        }
+
     </script>
 
 </head>
@@ -466,7 +466,7 @@
                     </td>
                     <td width="62px">
                         <div align="right" style="width: 61px">
-                            订单状态：
+                            应收类型：
                         </div>
                     </td>
                     <td>
@@ -475,7 +475,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <div align="right" style="width: 62px">订单详情：</div>
+                        <div align="right" style="width: 62px">备注：</div>
                     </td>
                     <td colspan="3">
                         <textarea cols="100" id="T_details" name="T_details" rows="3" class="l-textarea" style="width: 488px"></textarea></td>
@@ -483,7 +483,7 @@
 
                 <tr>
                     <td>
-                        <div align="right" style="width: 62px">支付方式：</div>
+                        <div align="right" style="width: 62px">可能使用：</div>
                     </td>
                     <td>
                         <input type="text" id="T_paytype" name="T_paytype"   validate="{required:true}" />
@@ -492,22 +492,26 @@
                         <div align="right" style="width: 62px">总金额：</div>
                     </td>
                     <td>
-                        <input type="text" id="T_zje" name="T_zje" ltype="text" style="text-align: right" value="0" validate="{required:true}" ligerui="{width:182,disabled:true}" /></td>
+                        <input type="text" id="T_zje" name="T_zje" ltype="text" style="text-align: right" value="0" validate="{required:true}" ligerui="{width:182,disabled:false,number:true}" onblur="computerBcje()" /></td>
                 </tr>
                  <tr>
                     <td>
                         <div align="right" style="width: 62px">预算金额：</div>
                     </td>
                     <td>
-                            <input type="text" id="T_ysje" name="T_ysje" ltype="text" style="text-align: right" value="0" validate="{required:true}" ligerui="{width:182,disabled:true}" /></td>
-               
+                            <input type="text" id="T_ysje" name="T_ysje" ltype="text" style="text-align: right" value="0" validate="{required:true}" ligerui="{width:152,disabled:true}" />  
+                        <input id="Button5" type="button" value="选择预算" style="height: 21px" onclick="addys()" /> 
+                        <a  position="right" style="width:150px;" onClick="viewys()">
+                            <span  style="cursor:hand; cursor:pointer;" id="ysid" ></span>
+                        </a>                   
+                    </td>
                     <td>
                         <div align="right" style="width: 62px">补差金额：</div>
                     </td>
                     <td>
                         <input type="text" id="T_amount" name="T_amount" ltype="text" style="text-align: right" value="0" validate="{required:true}" ligerui="{width:182,disabled:true}" /></td>
                 </tr>
-                <tr>
+                <%--<tr>
                     <td colspan="3" class="table_title1">订单产品</td>
                     <td class="table_title1">
                         <a  position="right" style="width:150px;" onClick="viewys()">
@@ -524,9 +528,7 @@
                         <input id="Button3" type="button" value="新增" style="height: 21px" onclick="add()" />
                         <input id="Button4" type="button" value="删除" style="height: 21px" onclick="pro_remove()" />
                      <input id="Button5" type="button" value="选择预算" style="height: 21px" onclick="addys()" /></td>
-
-
-                </tr>
+                </tr>--%>
             </table>
         </div>
     </form>

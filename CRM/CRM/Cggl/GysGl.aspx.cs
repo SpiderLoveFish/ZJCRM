@@ -29,7 +29,7 @@ namespace GysGl
                     string sorttext = sortname + " " + sortorder;
                     string serchtxt = "IsDel=''N'' ";
                     if (!string.IsNullOrEmpty(Request["stext"]))
-                        serchtxt += "AND Name LIKE ''%" + Request["stext"] + "%'' ";
+                        serchtxt += "AND Name+address+fl_name LIKE ''%" + Request["stext"] + "%'' ";
 
                     var sb = new System.Text.StringBuilder();
                     sb.AppendLine("DECLARE @recordTotal INT ");

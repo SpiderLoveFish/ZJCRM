@@ -25,10 +25,14 @@ namespace XHD.Model
 		private string _czr;
 		private string _cmob;
 		private int _status;
-		/// <summary>
-		/// 
-		/// </summary>
-		public int KHJDID
+        private DateTime _sgrq;
+        private string _tq;
+        private string _IsPlan;
+        private string _IsNew; 
+        /// <summary>
+        /// 
+        /// </summary>
+        public int KHJDID
 		{
 			set{ _khjdid=value;}
 			get{return _khjdid;}
@@ -145,8 +149,28 @@ namespace XHD.Model
 			set{ _status=value;}
 			get{return _status;}
 		}
-		#endregion Model
+        public DateTime SGRQ
+        {
+            set { _sgrq = value; }
+            get { return _sgrq; }
+        }
+        public string TQ
+        {
+            set { _tq = value; }
+            get { return _tq; }
+        }
+        public string IsPlan
+        {
+            set { _IsPlan = value; }
+            get { return _IsPlan; }
+        }
+        public string IsNew
+        {
+            set { _IsNew = value; }
+            get { return _IsNew; }
+        }
+        #endregion Model
 
-	}
+    }
 }
 

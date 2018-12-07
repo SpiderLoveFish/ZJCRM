@@ -1,0 +1,99 @@
+.ui-artZoom img {
+	-ms-interpolation-mode: bicubic;
+}
+.ui-artZoom-toolbar {
+	padding: 5px 0px; height: 26px; line-height: 26px;
+}
+.ui-artZoom-buttons {
+	border-radius: 5px; transition:box-shadow 0.2s linear; height: 26px; line-height: 0; margin-right: 5px; display: inline-block; -moz-transition: -moz-box-shadow linear .2s; -webkit-transition: -webkit-box-shadow linear .2s;
+}
+.ui-artZoom-buttons:hover {
+	box-shadow: 0px 0px 3px rgba(29,79,132,0.2); -webkit-box-shadow: 0 0 3px rgba(29, 79, 132, .2);
+}
+.ui-artZoom-buttons:hover a {
+	border-color: rgb(171, 171, 171);
+}
+.ui-artZoom-loading {
+	color: rgb(128, 128, 128); font-size: 12px; text-shadow: 0px 1px 0px rgba(255,255,255,0.7);
+}
+.ui-artZoom-buttons a {
+	background: url("css3buttons_backgrounds.png") no-repeat 0px 0px rgb(236, 236, 236); font: 12px/1.11 "Microsoft Yahei", Tahoma, Arial, Helvetica, STHeiti; padding: 5px 8px; border-radius: 3px; border: 1px solid rgb(202, 202, 202); border-image: none; color: rgb(60, 60, 61); overflow: visible; text-decoration: none; display: inline-block; white-space: nowrap; position: relative; cursor: pointer; -ms-zoom: 1; font-size-adjust: none; font-stretch: normal; text-shadow: 1px 1px 0px #ffffff; _font-family: Tahoma, Arial, Helvetica, STHeiti; -o-font-family: Tahoma, Arial; _font-size: 12px; -webkit-border-radius: 3px; -moz-border-radius: 3px; -moz-user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); -webkit-user-select: none; -webkit-touch-callout: none;
+}
+.ui-artZoom-buttons a:hover {
+	background-position: 0px -40px; border-color: rgb(56, 138, 212); color: rgb(255, 255, 255); text-decoration: none; text-shadow: -1px -1px 0px rgba(0,0,0,0.3); background-color: rgb(45, 125, 197);
+}
+.ui-artZoom-buttons a:active {
+	background-position: 0px -81px; border-color: rgb(52, 123, 186); top: 1px; color: rgb(255, 255, 255); text-shadow: none; background-color: rgb(15, 94, 162);
+}
+.ui-artZoom-noLoad a.ui-artZoom-left {
+	background-position: 0px 0px; border-color: rgb(202, 202, 202); color: rgb(153, 153, 153); cursor: default; opacity: 0.5; text-shadow: 1px 1px 0px #ffffff;
+}
+.ui-artZoom-noLoad a.ui-artZoom-right {
+	background-position: 0px 0px; border-color: rgb(202, 202, 202); color: rgb(153, 153, 153); cursor: default; opacity: 0.5; text-shadow: 1px 1px 0px #ffffff;
+}
+.ui-artZoom-ready .ui-artZoom-loading span {
+	width: 5px; overflow: hidden; visibility: hidden;
+}
+a.ui-artZoom-left {
+	margin-right: 0px; border-right-color: currentColor; border-right-width: medium; border-right-style: none; border-top-right-radius: 0px; border-bottom-right-radius: 0px; -webkit-border-bottom-right-radius: 0px; -webkit-border-top-right-radius: 0px; -moz-border-radius-bottomright: 0px; -moz-border-radius-topright: 0px;
+}
+a.ui-artZoom-right {
+	border-radius: 0px; margin-right: 0px; margin-left: 0px; border-right-color: currentColor; border-right-width: medium; border-right-style: none; -webkit-border-radius: 0px; -moz-border-radius: 0px;
+}
+a.ui-artZoom-source {
+	margin-left: 0px; border-top-left-radius: 0px; border-bottom-left-radius: 0px; -webkit-border-bottom-left-radius: 0px; -webkit-border-top-left-radius: 0px; -moz-border-radius-bottomleft: 0px; -moz-border-radius-topleft: 0px;
+}
+a.ui-artZoom-left:active {
+	top: 0px;
+}
+a.ui-artZoom-right:active {
+	top: 0px;
+}
+a.ui-artZoom-source:active {
+	top: 0px;
+}
+.ui-artZoom-buttons a span {
+	margin: auto 3px auto auto; top: 0px; width: 12px; height: 12px; vertical-align: middle; display: inline-block; position: relative; background-image: url("icons.png"); background-repeat: no-repeat;
+}
+.ui-artZoom-hide {
+	display: none !important;
+}
+a.ui-artZoom-right span {
+	background-position: 0px 0px;
+}
+.ui-artZoom-noLoad .ui-artZoom-buttons a.ui-artZoom-right span {
+	background-position: 0px 0px;
+}
+a.ui-artZoom-left span {
+	background-position: -12px 0px;
+}
+.ui-artZoom-noLoad .ui-artZoom-buttons a.ui-artZoom-left span {
+	background-position: -12px 0px;
+}
+a.ui-artZoom-source span {
+	background-position: -24px 0px;
+}
+a.ui-artZoom-right:hover span {
+	background-position: 0px -12px;
+}
+a.ui-artZoom-right:active span {
+	background-position: 0px -12px;
+}
+a.ui-artZoom-left:hover span {
+	background-position: -12px -12px;
+}
+a.ui-artZoom-left:active span {
+	background-position: -12px -12px;
+}
+a.ui-artZoom-source:hover span {
+	background-position: -24px -12px;
+}
+a.ui-artZoom-source:active span {
+	background-position: -24px -12px;
+}
+.ui-artZoom-show {
+	background: none; border-radius: 3px; border: 3px solid rgb(255, 255, 255) !important; border-image: none !important;
+}
+.ui-artZoom-ready .ui-artZoom-photo {
+	background: url("img.png") rgb(255, 255, 255); border-radius: 3px; border: 1px solid rgb(214, 214, 214); border-image: none; line-height: 0; font-size: 0px; box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}

@@ -12,6 +12,8 @@
     <script src="../../jlui3.2/lib/ligerUI/js/ligerui.all.js"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
        <script src="../../jlui3.2/lib/ligerUI/js/plugins/ligerTip.js" ></script>
+     <script src="../../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
+        <script src="../../JS/Toolbar.js" type="text/javascript"></script>
 <%--     
     <link href="../../jlui3.2/lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css">
      <script src="../../jlui3.2/lib/ligerUI/js/core/base.js" type="text/javascript"></script>
@@ -24,7 +26,7 @@
     <script type="text/javascript">
         var g;
         $(function () {
-            var urlheadcol = "../../data/CERep_Schedule.ashx?Action=getprogrid&rnd=" + Math.random();
+            var urlheadcol = "../../data/CERep_Schedule.ashx?Action=getprogrid&IsPlan=N&rnd=" + Math.random();
             $.getJSON(urlheadcol,
             function (json, textStatus)
             {
@@ -40,11 +42,11 @@
                     //    return "<b>" + column.display + "</b>"; 
                     //}, json.Rows[i]["testid"]
                     x++;
-                    if (x < 5) {
-                        if (x == 1)
-                            col.push({ display: i, name: i, align: 'left', width: 40 });
+                    if (x <= 5) {
+                        if (x == 4) { }
+                            //col.push({ display: i, name: i, align: 'left', width: 60, hide:true });
                             else
-                          col.push({ display: i, name: i, align: 'left', width: 80});
+                          col.push({ display: i, name: i, align: 'left', width: 60});
                          //colnames += ",{name:'" + i + "',display:'" + i + "', width: 80, frozen: true    " +
                          //   " }";
                     }
@@ -128,7 +130,7 @@
                                 $(this).ligerHideTip(e);
                             });
                         },
-                        autoFilter: true,
+                        autoFilter: false,
                        enabledSort:false,
                         dataType: 'server',
                         dataAction: 'server',
@@ -161,8 +163,11 @@
                     var b = a.replace(/\d+/g, '')
                     $(this).find("span.l-grid-hd-cell-text").html(b)
                 });
-               
-                //toolbar();
+                 
+               // var p = g.find(".l-panel-bar:first").html();
+               // alert(JSON.stringify(g));
+                $("#grid").height(document.documentElement.clientHeight - $(".toolbar").height());
+                toolbar();
             });
      
 
@@ -172,12 +177,113 @@
             });
             
         });
-    
+
+        function toolbar() {
+            var items = [];
+            items.push({ line: true });
+            items.push({
+                type: 'button',
+                text: '全屏',
+                icon: '../../images/search.gif',
+                disable: true,
+                click: function () {
+                  window.open(document.location, 'big', 'fullscreen=yes')   
+                }
+            });     
+            items.push({
+                type: 'button',
+                text: '全景图',
+                icon: '../../images/search.gif',
+                disable: true,
+                click: function () {
+                    viewdy()
+                }
+            });   
+          
+            $("#toolbar").ligerToolBar({
+                items: items
+            });
+            //menu = $.ligerMenu({
+            //    width: 120, items: getMenuItems(data)
+            //});
+        }
         function f_reload() {
             var manager = $("#maingrid4").ligerGetGridManager();
             manager.loadData(true);
             
         };
+
+        function viewdy() {
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                // viewkjl('../../CRM/ConsExam/kjl_index.aspx?cid=' + row.id+ '&name=' + encodeURI("【" + row.Customer + "】" + row.address), "【" + row.address + "】");
+                f_openWindow_view('CRM/Customer/Customer_DynamicGraphics.aspx?cid=' + row.CID + '&name=' + encodeURI(row.小区名称)
+                    + '&tel=' + row.电话 , "【" + row.具体地址 + "】全景图库", 660, 550);
+            }
+            else {
+                $.ligerDialog.warn('请选择行！');
+            }
+        }
+        var activeDialog = null;
+        function f_openWindow_view(url, title, width, height) {
+            var dialogOptions = {
+                width: width, height: height, title: title, url: url, buttons: [
+
+                    {
+                        text: '关闭', onclick: function (item, dialog) {
+                            dialog.close();
+                        }
+                    }
+                ], isResize: true, showToggle: true, timeParmName: 'a'
+            };
+            activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
+        //function viewdy() {
+        //    //url, newname
+        //    var manager = $("#maingrid4").ligerGetGridManager();
+        //    var row = manager.getSelectedRow();
+        //    //alert(JSON.stringify(row));
+        //    if (row) {
+        //        $.ajax({
+        //            url: "../../Data/website.ashx", type: "GET",
+        //            data: { Action: "getqjapi", tel: row.电话, rnd: Math.random() },
+        //            //data: { tel: row.tel},
+        //            success: function (result) {
+
+        //                var obj = eval("(" + result + ")");
+
+
+        //                if (obj.status == 1) {
+        //                    $.each(obj.data, function (i, data) {
+        //                        if (data.project.length > 0) {
+        //                            $.each(data.project, function (i, r) {
+        //                                window.open(r["thumb_path"] + "?1=1&width=" + screen.width +
+        //                                    "&height=" + (screen.height - 70), r["name"],
+        //                                    "top=0,left=0,toolbar=no, menubar=no, scrollbars=yes,resizable=no,location=no,status=no,width=" +
+        //                                    screen.width + ",height=" +
+        //                                    (screen.height - 70));
+        //                                //alert(r["name"]);
+        //                            })
+        //                        } else {
+        //                            alert("没有获取到有效得全景图！");
+        //                        }
+        //                    });
+        //                } else {
+        //                    alert("获取失败！！");
+        //                }
+
+
+        //            },
+        //            error: function () {
+
+        //                alert("获取失败2！");
+
+        //            }
+        //        });
+        //    }
+
+        //}
     </script>
     <style type="text/css">
         .l-leaving { background: #eee; color: #999; }
@@ -189,7 +295,9 @@
 
     <form id="form1" onsubmit="return false">
         <div>
-            <div id="toolbar"></div>
+            <div id="toolbar">
+                <%--<input type="BUTTON" name="FullScreen" value="全屏" class="box_inp2" onClick="window.open(document.location, 'big', 'fullscreen=yes')">--%>
+            </div>
               <div id="grid">
             <div id="maingrid4" style="margin: -1px;"></div>
                   </div>

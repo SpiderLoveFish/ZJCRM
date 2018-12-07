@@ -35,8 +35,12 @@
     <script src="../../JS/XHD.js" type="text/javascript"></script>
      <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
     <script type="text/javascript">
-        var manager = "";
+
+        var manager = ""; var iszb = ""; var type = "";
         $(function () {
+            iszb = getparastr("ISZB");//Z增补
+            type = getparastr("type");//普通/面积类型
+
             $("#maingrid4").ligerGrid({
                 columns: [
                      {
@@ -58,8 +62,10 @@
                           }
  
                       },
-                        { display: '客户地址', name: 'address', width: 200, align: 'left' },    
-		 {                        display: '金额', name: 'BudgetAmount', width: 80, align: 'right', render: function (item) {                            return "<div style='color:#135294'>" + toMoney((item.BudgetAmount + item.FJAmount)) + "</div>";                        }                    },
+                    { display: '客户地址', name: 'address', width: 200, align: 'left' },    
+                         
+		 {             display: '金额', name: 'BudgetAmount', width: 80, align: 'right', render: function (item) {                 var html                 if (item.ModelStyle=="面积模板") {                     return "<div style='color:#135294'>" + toMoney((item.SquareAmount)) + "</div>";             }             else {                 return "<div style='color:#135294'>" + toMoney((item.BudgetAmount + item.FJAmount)) + "</div>";
+             }         }                    },
                       {
                           display: '状态', name: 'txtstatus', width: 60, align: 'left', render: function (item) {
 
@@ -97,7 +103,7 @@
                 dataAction: 'server',
                 pageSize: 30,
                 pageSizeOptions: [20, 30, 50, 100],
-                url: "../../data/Budge.ashx?Action=grid&str_condition=0",//增加选择条件 0 编辑 1 审核
+                url: "../../data/Budge.ashx?Action=grid&str_condition=0&ISZB=" + getparastr("ISZB") + "&type=" + getparastr("type"),//增加选择条件 0 编辑 1 审核
                 width: '100%',
                 height: '100%',
                 //tree: { columnName: 'StageDescription' },
@@ -176,7 +182,8 @@
                     tree: {
                         data: [
                    { text: '常规' },
-                   { text: '套餐' }
+                   { text: '套餐' },
+                   { text: '增补' }
                         ],
                         checkbox: false
                     }
@@ -223,7 +230,7 @@
 
         //查询
         function doserch() {
-            var sendtxt = "&Action=grid&rnd=" + Math.random();
+            var sendtxt = "&Action=grid&rnd=" + Math.random() + "&ISZB=" + getparastr("ISZB") + "&type=" + getparastr("type");
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
             var sertxt = $("#form1 :input").fieldSerialize() +"&"+ serchtxt;
             //  alert(serchtxt);
@@ -297,29 +304,48 @@
             activeDialog = parent.jQuery.ligerDialog.open(dialogOptions);
         }
      
-      function add() {
-            f_openWindow("crm/Budge/BudgeMainAdd.aspx", "新增预算", 1100, 660);
+
+        function add() {
+            if (getparastr("type") == "mj") {
+                f_openWindow("crm/Budge/BudgeMainAdd_Area.aspx?ISZB=" + getparastr("ISZB"), "新增预算（面积）", 1155, 660);
+            } else
+                f_openWindow("crm/Budge/BudgeMainAdd.aspx?ISZB=" + getparastr("ISZB"), "新增预算", 1155, 660);
         }
-      function cs() {
-          var manager = $("#maingrid4").ligerGetGridManager();
-          var row = manager.getSelectedRow();
-          if (row) {
-              f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus+"&isshowzk=Y", "修改预算", 1100, 600);
-          }
-      }
-        function edit() {
+        function cs() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                if (row.IsStatus==0)
-                f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus, "修改预算", 1100, 600);
-                else  if (row.IsStatus==1)//已经提交
-                    f_openWindow_ch("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus, "修改预算", 1100, 600);
+                if (getparastr("type") == "mj") {
+                    f_openWindow("crm/Budge/BudgeMainAdd_Area.aspx?bid=" + row.id + "&status=" + row.IsStatus + "&isshowzk=Y&ISZB=" + getparastr("ISZB"), "修改预算（面积）", 1155, 600);
+                } else {
+                    f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus + "&isshowzk=Y&ISZB=" + getparastr("ISZB"), "修改预算", 1155, 600);
 
+                }
+            }
+        }
+        function edit() {
+
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                if (getparastr("type") == "mj") {
+                    if (row.IsStatus == 0)
+                        f_openWindow("crm/Budge/BudgeMainAdd_Area.aspx?bid=" + row.id + "&status=" + row.IsStatus + "&ISZB=" + getparastr("ISZB"), "修改预算（面积）", 1155, 600);
+                    else if (row.IsStatus == 1)//已经提交
+                        f_openWindow_ch("crm/Budge/BudgeMainAdd_Area.aspx?bid=" + row.id + "&status=" + row.IsStatus + "&ISZB=" + getparastr("ISZB"), "修改预算（面积）", 1155, 600);
+
+                }
+                else {
+                    if (row.IsStatus == 0)
+                        f_openWindow("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus + "&ISZB=" + getparastr("ISZB"), "修改预算", 1155, 600);
+                    else if (row.IsStatus == 1)//已经提交
+                        f_openWindow_ch("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&status=" + row.IsStatus + "&ISZB=" + getparastr("ISZB"), "修改预算", 1155, 600);
+                }
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
         }
+
         function f_saveret(item, dialog)
         {
 

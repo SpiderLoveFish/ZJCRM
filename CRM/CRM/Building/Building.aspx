@@ -50,16 +50,30 @@
                             return (page - 1) * pagesize + rowindex + 1;
                         }
                     },
-                    {
-                        display: '楼盘名称', name: 'Name', width: 150, align: 'left', render: function (item) {
-                            //debugger;
-                            var html = "<a href='javascript:void(0)' >";//onclick=view(1," + item.ID + ")
-                            if (item.Name)
-                                html += item.Name;
-                            html += "</a>";
-                            return html;
-                        }
-                    }, 
+                     {
+                         display: '全景', width: 40, render: function (item) {
+                             var html;
+                             if (item.Jtzk != "") {
+                                 html = "<a href='" + item.Jtzk + "' target='_blank'>";
+                                 html += "查看";
+                                 html += "</a>";
+                             }
+                             else
+                                 html = "无";
+                             return html;
+                         } 
+                     },
+                     { display: '楼盘名称', name: 'Name', width: 150, align: 'left' },
+                    //{
+                    //    display: '楼盘名称', name: 'Name', width: 150, align: 'left', render: function (item) {
+                    //        //debugger;
+                    //        var html = "<a href='javascript:void(0)' >";//onclick=view(1," + item.ID + ")
+                    //        if (item.Name)
+                    //            html += item.Name;
+                    //        html += "</a>";
+                    //        return html;
+                    //    }
+                    //}, 
                     { display: '楼盘地址', name: 'Address', width: 200, align: 'left' },
                     //{ display: '建筑类别', name: 'Jzlb', width: 100, align: 'left' },
                     //{ display: '容积率', name: 'Rjl', width: 60 },

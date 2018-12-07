@@ -111,14 +111,14 @@
 
 
         function add() {
-            f_openWindow("crm/Budge/Budge_BasicPart_add.aspx", "新增类别", 480, 320);
+            f_openWindow("crm/Budge/Budge_BasicPart_add.aspx?edit=N", "新增类别", 480, 320);
         }
 
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
             if (row) {
-                f_openWindow('crm/Budge/Budge_BasicPart_add.aspx?cid=' + row.id + '&cname=' + encodeURI(row.BP_Name), "修改类别", 480, 320);
+                f_openWindow('crm/Budge/Budge_BasicPart_add.aspx?edit=Y&cid=' + row.id + '&cname=' + encodeURI(row.BP_Name), "修改部位", 480, 320);
             } else {
                 $.ligerDialog.warn('请选择行！');
             }
@@ -204,7 +204,8 @@
                             top.$.ligerDialog.closeWaitting();
                             top.$.ligerDialog.error('部件修改失败！此部件名称已经在使用中！！');
                         }
-                     else if (responseText == "false:type") {
+                     else
+                         if (responseText == "false:type") {
                             top.$.ligerDialog.error('操作失败，上级类别不能是自己！');
                         }
                         else {

@@ -39,6 +39,7 @@
                 initLayout();
             });
 
+           
 
             $("#maingrid4").ligerGrid({
                 columns: [
@@ -84,7 +85,7 @@
                 },
                 dataAction: 'server', pageSize: 30, pageSizeOptions: [20, 30, 50, 100],
                 //checkbox:true,
-                url: "../../data/CRM_Follow.ashx?Action=grid",
+                url: "../../data/CRM_Follow.ashx?Action=grid&cid=" + getparastr("cid") + "&type=" + getparastr("type"),
                 width: '100%', height: '100%',
                 //title: "跟进信息",
                 heightDiff: -1,
@@ -95,6 +96,7 @@
                     return false;
                 }
             });
+            //if (getparastr("cid") = "" || getparastr("cid") == null || getparastr("cid")=="null")
             $("#toolbar").ligerToolBar({
                 items: [ {type: 'serchbtn',text: '高级搜索', icon: '../../images/search.gif',   disable: true, click: function () {  serchpanel() } }  ]
             });

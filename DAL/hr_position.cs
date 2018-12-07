@@ -45,9 +45,9 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into hr_position(");
-			strSql.Append("position_name,position_order,position_level,create_id,create_date,isDelete,Delete_time)");
+			strSql.Append("position_name,position_order,position_level,create_id,create_date,isDelete,Delete_time,zz)");
 			strSql.Append(" values (");
-			strSql.Append("@position_name,@position_order,@position_level,@create_id,@create_date,@isDelete,@Delete_time)");
+			strSql.Append("@position_name,@position_order,@position_level,@create_id,@create_date,@isDelete,@Delete_time,@zz)");
 			strSql.Append(";select @@IDENTITY");
 			SqlParameter[] parameters = {
 					new SqlParameter("@position_name", SqlDbType.VarChar,250),
@@ -56,7 +56,8 @@ namespace XHD.DAL
 					new SqlParameter("@create_id", SqlDbType.Int,4),
 					new SqlParameter("@create_date", SqlDbType.DateTime),
 					new SqlParameter("@isDelete", SqlDbType.Int,4),
-					new SqlParameter("@Delete_time", SqlDbType.DateTime)};
+					new SqlParameter("@Delete_time", SqlDbType.DateTime),
+                    new SqlParameter("@zz", SqlDbType.VarChar,550)};
 			parameters[0].Value = model.position_name;
 			parameters[1].Value = model.position_order;
 			parameters[2].Value = model.position_level;
@@ -64,6 +65,7 @@ namespace XHD.DAL
 			parameters[4].Value = model.create_date;
 			parameters[5].Value = model.isDelete;
 			parameters[6].Value = model.Delete_time;
+            parameters[7].Value = model.zz;
 
 			object obj = DbHelperSQL.GetSingle(strSql.ToString(),parameters);
 			if (obj == null)
@@ -84,17 +86,20 @@ namespace XHD.DAL
 			strSql.Append("update hr_position set ");
 			strSql.Append("position_name=@position_name,");
 			strSql.Append("position_order=@position_order,");
-			strSql.Append("position_level=@position_level");    
+			strSql.Append("position_level=@position_level,");
+            strSql.Append("zz=@zz");    
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@position_name", SqlDbType.VarChar,250),
 					new SqlParameter("@position_order", SqlDbType.Int,4),
 					new SqlParameter("@position_level", SqlDbType.VarChar,50), 
+                    new SqlParameter("@zz", SqlDbType.VarChar,550),
 					new SqlParameter("@id", SqlDbType.Int,4)};
 			parameters[0].Value = model.position_name;
 			parameters[1].Value = model.position_order;
-			parameters[2].Value = model.position_level; 
-			parameters[3].Value = model.id;
+			parameters[2].Value = model.position_level;
+            parameters[3].Value = model.zz; 
+			parameters[4].Value = model.id;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -178,7 +183,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 id,position_name,position_order,position_level,create_id,create_date,isDelete,Delete_time from hr_position ");
+			strSql.Append("select  top 1 id,position_name,position_order,position_level,create_id,create_date,isDelete,Delete_time,zz from hr_position ");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)
@@ -221,6 +226,10 @@ namespace XHD.DAL
 				{
 					model.Delete_time=DateTime.Parse(ds.Tables[0].Rows[0]["Delete_time"].ToString());
 				}
+                if (ds.Tables[0].Rows[0]["zz"] != null && ds.Tables[0].Rows[0]["zz"].ToString() != "")
+                {
+                    model.zz = ds.Tables[0].Rows[0]["zz"].ToString();
+                }
 				return model;
 			}
 			else
@@ -235,7 +244,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select id,position_name,position_order,position_level,create_id,create_date,isDelete,Delete_time ");
+			strSql.Append("select id,position_name,position_order,position_level,create_id,create_date,isDelete,Delete_time,zz ");
 			strSql.Append(" FROM hr_position ");
 			if(strWhere.Trim()!="")
 			{
@@ -255,7 +264,7 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-			strSql.Append(" id,position_name,position_order,position_level,create_id,create_date,isDelete,Delete_time ");
+			strSql.Append(" id,position_name,position_order,position_level,create_id,create_date,isDelete,Delete_time,zz ");
 			strSql.Append(" FROM hr_position ");
 			if(strWhere.Trim()!="")
 			{

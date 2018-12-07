@@ -42,7 +42,14 @@ namespace XHD.CRM.Data
                 model.RoleName = PageValidate.InputText(request["T_role"], 250);
                 model.RoleSort = int.Parse(request["T_RoleOrder"]);
                 model.RoleDscript = PageValidate.InputText(request["T_Descript"], 255);
-
+                string ck = PageValidate.InputText(request["ckisgd"], 255);
+                string cksf = PageValidate.InputText(request["cksf"], 255);
+                if (ck == "on")
+                    model.IsCanViewTel = 1;
+                else model.IsCanViewTel = 0;
+                if (cksf == "on")
+                    model.IsCanViewSf = 1;
+                else model.IsCanViewSf = 0;
                 string id = PageValidate.InputText( request["id"],50);
 
                 if (!string.IsNullOrEmpty(id) && id != "null")
@@ -116,6 +123,19 @@ namespace XHD.CRM.Data
 
                 context.Response.Write(dt);
             }
+            if (request["Action"] == "IsExistTelRight")
+            {
+                if(emp_id==1)
+                    context.Response.Write("true");
+                else {
+                    if (role.IsExistTelRight(emp_id))
+
+                        context.Response.Write("true");
+                    else context.Response.Write("false");
+                }
+                
+            }
+
             //del
             if (request["Action"] == "del")
             {

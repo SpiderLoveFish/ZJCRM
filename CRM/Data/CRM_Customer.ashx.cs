@@ -10,7 +10,6 @@ using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-
 namespace XHD.CRM.Data
 {
     /// <summary>
@@ -303,6 +302,12 @@ namespace XHD.CRM.Data
                 model.Employee_id = int.Parse(empid);
                 model.Employee = PageValidate.InputText(request["T_employee1"], 255);
 
+                string  employee_hh = request["T_employee_hh_val"];
+                if (string.IsNullOrEmpty(employee_hh))
+                    employee_hh = "0";
+                model.Emp_id_hh = int.Parse(employee_hh);
+                model.Emp_hh = PageValidate.InputText(request["T_employee_hh"], 255);
+
                 model.Jfrq = PageValidate.InputText(request["T_jfrq"], 50);
                 model.Zxrq = PageValidate.InputText(request["T_zxrq"], 50);
                 model.Jhrq1 = PageValidate.InputText(request["T_jhrq1"], 50);
@@ -362,10 +367,26 @@ namespace XHD.CRM.Data
                 model.JKDZ = PageValidate.InputText(request["T_JKDZ"], 50).Trim(' ');
                 model.hxt = PageValidate.InputText(request["T_hxt"], 50).Trim(' ');
                 model.jgqjt = PageValidate.InputText(request["T_jgqjt"], 50).Trim(' ');
+                model.Jhrq2 = PageValidate.InputText(request["T_jhrq2"], 50);
+                model.birthday_lunar = PageValidate.InputText(request["T_birthday_lunar"], 50);
+                model.birthday = PageValidate.InputText(request["T_birthday"], 50);
                 string id = PageValidate.InputText(request["id"], 50);
 
                 //DataSet dstel = customer.GetList(" tel=");
+                string type = PageValidate.InputText(request["type"], 255);
+                int isDelete = 0;
+                if (type == "2")//名单客户
+                {  string iszz = PageValidate.InputText(request["iszz"], 255);//是否转正
+                    if(iszz=="Y")
+                        isDelete = 0;
+                    else
+                        isDelete = 2;
+                    }
 
+                else isDelete = 0;
+                model.isDelete = isDelete;
+                DateTime nowtime = DateTime.Now;
+                model.Delete_time = nowtime;//修改日期
                 if (!string.IsNullOrEmpty(id) && id != "null")
                 {
                     DataSet ds = customer.GetList("id=" + int.Parse(id));
@@ -375,66 +396,55 @@ namespace XHD.CRM.Data
 
                     model.id = int.Parse(id);
                     customer.Update(model);
+                    customer.UpdateIsDelete(int.Parse(id),   isDelete );
+                    //日志
+                    C_Sys_log log = new C_Sys_log();
 
-                    ////日志
-                    //C_Sys_log log = new C_Sys_log();
+                    int UserID = emp_id;
+                    string UserName = empname;
+                    string IPStreet = request.UserHostAddress;
+                    string EventTitle = model.Customer;
+                    string EventType = "客户修改";
+                    int EventID = model.id;
 
-                    //int UserID = emp_id;
-                    //string UserName = empname;
-                    //string IPStreet = request.UserHostAddress;
-                    //string EventTitle = model.Customer;
-                    //string EventType = "客户修改";
-                    //int EventID = model.id;
+                    if (dr["Customer"].ToString() != request["T_company"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "公司名", dr["Customer"].ToString(), request["T_company"].ToString());
 
-                    //if (dr["Customer"].ToString() != request["T_company"])
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "公司名", dr["Customer"].ToString(), request["T_company"].ToString());
+                    if (dr["address"].ToString() != request["T_address"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "地址", dr["address"].ToString(), request["T_address"].ToString());
 
-                    //if (dr["address"].ToString() != request["T_address"])
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "地址", dr["address"].ToString(), request["T_address"].ToString());
+                    
+                    
+                    if (dr["industry"].ToString() != request["T_industry"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "行业", dr["industry"].ToString(), request["T_industry"].ToString());
 
-                    ////if (dr["fax"].ToString() != request["T_fax"])
-                    ////    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "传真", dr["fax"].ToString(), request["T_fax"].ToString());
+                    
+                    
+                    if (dr["CustomerType"].ToString() != request["T_customertype"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "客户类型", dr["CustomerType"].ToString(), request["T_customertype"].ToString());
 
-                    ////if (dr["site"].ToString() != request["T_Website"])
-                    ////    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "网址", dr["site"].ToString(), request["T_Website"].ToString());
+                    if (dr["CustomerLevel"].ToString() != request["T_customerlevel"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "客户级别", dr["CustomerLevel"].ToString(), request["T_customerlevel"].ToString());
 
-                    //if (dr["industry"].ToString() != request["T_industry"])
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "行业", dr["industry"].ToString(), request["T_industry"].ToString());
+                    if (dr["CustomerSource"].ToString() != request["T_CustomerSource"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "客户来源", dr["CustomerSource"].ToString(), request["T_CustomerSource"].ToString());
+ 
+                    if (dr["Remarks"].ToString() != request["T_remarks"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "备注", dr["Remarks"].ToString(), request["T_remarks"].ToString());
 
-                    //if (dr["Provinces"].ToString() != request["T_Provinces"])
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "省份", dr["Provinces"].ToString(), request["T_Provinces"].ToString());
+                    if (dr["privatecustomer"].ToString() != request["T_private"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "公私", dr["privatecustomer"].ToString(), request["T_private"].ToString());
 
-                    //if (dr["City"].ToString() != request["T_City"])
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "城市", dr["City"].ToString(), request["T_City"].ToString());
+                    if (dr["Department"].ToString() != request["T_dep"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "部门", dr["Department"].ToString(), request["T_dep"].ToString());
 
-                    //if (dr["CustomerType"].ToString() != request["T_customertype"])
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "客户类型", dr["CustomerType"].ToString(), request["T_customertype"].ToString());
-
-                    //if (dr["CustomerLevel"].ToString() != request["T_customerlevel"])
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "客户级别", dr["CustomerLevel"].ToString(), request["T_customerlevel"].ToString());
-
-                    //if (dr["CustomerSource"].ToString() != request["T_CustomerSource"])
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "客户来源", dr["CustomerSource"].ToString(), request["T_CustomerSource"].ToString());
-
-                    //if (dr["DesCripe"].ToString() != request["T_descript"])
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "客户描述", dr["DesCripe"].ToString(), request["T_descript"].ToString());
-
-                    //if (dr["Remarks"].ToString() != request["T_remarks"])
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "备注", dr["Remarks"].ToString(), request["T_remarks"].ToString());
-
-                    //if (dr["privatecustomer"].ToString() != request["T_private"])
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "公私", dr["privatecustomer"].ToString(), request["T_private"].ToString());
-
-                    //if (dr["Department"].ToString() != request["T_dep"])
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "部门", dr["Department"].ToString(), request["T_dep"].ToString());
-
-                    //if (dr["Employee"].ToString() != request["T_employee1"])
-                    //    log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "员工", dr["Employee"].ToString(), request["T_employee1"].ToString());
+                    if (dr["Employee"].ToString() != request["T_employee1"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "员工", dr["Employee"].ToString(), request["T_employee1"].ToString());
                 }
                 else
                 {
-                    model.isDelete = 0;
-                    DateTime nowtime = DateTime.Now;
+                    //model.isDelete = 0;
+                 
                     model.Create_date = nowtime;
                     model.Serialnumber = nowtime.AddMilliseconds(3).ToString("yyyyMMddHHmmssfff").Trim();
                     model.Create_id = emp_id;
@@ -478,6 +488,13 @@ namespace XHD.CRM.Data
                 //int id = int.Parse(id);
                 customer.Update_GJXG(id,tel,Create_date);
             }
+            //转正
+            if (request["Action"] == "save_change")
+            {
+                string id = PageValidate.InputText(request["id"], 255);
+                string isdelete = PageValidate.InputText(request["isdelete"], 255);
+                customer.UpdateIsDelete(int.Parse(id), int.Parse(isdelete));
+            }
 
             //订单保存
             if (request["Action"] == "saveOrder")
@@ -490,10 +507,10 @@ namespace XHD.CRM.Data
                 modelOrder.Customer_name = PageValidate.InputText(request["T_Customer"], 255);
 
                 modelOrder.Order_date = DateTime.Parse(request["T_date"]);
-                modelOrder.pay_type_id = int.Parse(request["T_paytype_val"]);
+                modelOrder.pay_type_id = StrToInt(request["T_paytype_val"]);
                 modelOrder.pay_type = PageValidate.InputText(request["T_paytype"], 255);
                 modelOrder.Order_details = PageValidate.InputText(request["T_details"].ToString(), 4000);
-                modelOrder.Order_status_id = int.Parse(request["T_status_val"]);
+                modelOrder.Order_status_id = StrToInt(request["T_status_val"]);
                 modelOrder.Order_status = PageValidate.InputText(request["T_status"], 255);
                 modelOrder.Order_amount = decimal.Parse(request["T_amount"]);
 
@@ -506,21 +523,21 @@ namespace XHD.CRM.Data
                 modelOrder.create_id = emp_id;
                 modelOrder.create_date = DateTime.Now;
 
-                modelOrder.C_dep_id = int.Parse(request["c_dep_val"]);
+                modelOrder.C_dep_id = StrToInt(request["c_dep_val"]);
                 modelOrder.C_dep_name = PageValidate.InputText(request["c_dep"], 255);
-                modelOrder.C_emp_id = int.Parse(request["c_emp_val"]);
+                modelOrder.C_emp_id = StrToInt(request["c_emp_val"]);
                 modelOrder.C_emp_name = PageValidate.InputText(request["c_emp"], 255);
 
-                modelOrder.F_dep_id = int.Parse(request["f_dep_val"]);
+                modelOrder.F_dep_id = StrToInt(request["f_dep_val"]);
                 modelOrder.F_dep_name = PageValidate.InputText(request["f_dep"], 255);
-                modelOrder.F_emp_id = int.Parse(request["f_emp_val"]);
+                modelOrder.F_emp_id = StrToInt(request["f_emp_val"]);
                 modelOrder.F_emp_name = PageValidate.InputText(request["f_emp"], 255);
 
                 int orderid;
                 string pid = PageValidate.InputText(request["orderid"], 50);
                 if (!string.IsNullOrEmpty(pid) && pid != "null")
                 {
-                    modelOrder.id = int.Parse(PageValidate.IsNumber(pid) ? pid : "-1");
+                    modelOrder.id = StrToInt(PageValidate.IsNumber(pid) ? pid : "-1");
                     DataSet ds = bllOrder.GetList("id=" + modelOrder.id);
                     DataRow dr = ds.Tables[0].Rows[0];
                     orderid = modelOrder.id;
@@ -597,6 +614,138 @@ namespace XHD.CRM.Data
 
                 //    cod.Add(modeldel);
                 //}
+            }
+
+            if (request["Action"] == "save_khjdgl")
+            {
+                DataRow dremp = dsemp.Tables[0].Rows[0];
+                Model.CRM_receive modelReceive = new Model.CRM_receive();
+                BLL.CRM_receive cci = new BLL.CRM_receive();
+                string pzm= PageValidate.InputText(request["T_invoice_num"], 255);
+                modelReceive.Receive_num = pzm;
+
+                //string orderid = PageValidate.InputText(request["orderid"], 50);
+
+                //BLL.CRM_order order = new BLL.CRM_order();
+                //DataSet dsorder = order.GetList("id=" + int.Parse(orderid));
+
+                //model.order_id = int.Parse(orderid);
+                //if (dsorder.Tables[0].Rows.Count > 0)
+                //{
+                //    model.Customer_id = int.Parse(dsorder.Tables[0].Rows[0]["Customer_id"].ToString());
+                //    model.Customer_name = PageValidate.InputText(dsorder.Tables[0].Rows[0]["Customer_name"].ToString(), 255);
+                //}
+                modelReceive.Customer_id = int.Parse(request["customerid"].ToString());
+
+                //modelReceive.Customer_name = PageValidate.InputText(request["Customer_name"].ToString(), 255);
+                modelReceive.C_depid = int.Parse(request["T_dep_val"].ToString());
+                modelReceive.C_depname = PageValidate.InputText(request["T_dep"].ToString(), 255);
+                modelReceive.C_empid = int.Parse(request["T_employee_val"].ToString());
+                modelReceive.C_empname = PageValidate.InputText(request["T_employee1"].ToString(), 255);
+                decimal skje= decimal.Parse(request["T_invoice_amount"]);
+                modelReceive.receive_real = skje;
+                DateTime sksj= DateTime.Parse(request["T_invoice_date"].ToString());
+                modelReceive.Receive_date = sksj;
+                modelReceive.Pay_type_id = int.Parse(request["T_invoice_type_val"].ToString());
+                string fkfs= PageValidate.InputText(request["T_invoice_type"].ToString(), 255);
+                modelReceive.Pay_type = fkfs;
+                modelReceive.remarks = PageValidate.InputText(request["T_content"].ToString(), 12000);
+                modelReceive.receive_direction_id = int.Parse(request["T_receive_direction_val"].ToString());
+                string sklb = PageValidate.InputText(request["T_receive_direction"], 255);
+                modelReceive.receive_direction_name = sklb;
+                int i = 1; //1表示收款，-1表示退款
+                if (modelReceive.receive_direction_id == -2 || modelReceive.receive_direction_id == -3)
+                    i = -1;
+                modelReceive.Receive_amount = i * modelReceive.receive_real;
+
+                string cid = PageValidate.InputText(request["receiveid"], 50);
+                if (!string.IsNullOrEmpty(cid) && cid != "null")
+                {
+                    modelReceive.id = int.Parse(PageValidate.IsNumber(cid) ? cid : "-1");
+
+                    DataSet ds = cci.GetList(" id=" + modelReceive.id);
+                    DataRow dr = ds.Tables[0].Rows[0];
+
+                    cci.Update(modelReceive);
+
+                    C_Sys_log log = new C_Sys_log();
+
+                    int UserID = emp_id;
+                    string UserName = empname;
+                    string IPStreet = request.UserHostAddress;
+                    string EventTitle = modelReceive.Receive_num;
+                    string EventType = "收款修改";
+                    int EventID = modelReceive.id;
+
+                    if (dr["Receive_amount"].ToString() != request["T_invoice_amount"].Replace(",", "").Replace(".00", ""))
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "收款金额", dr["Receive_amount"].ToString(), request["T_invoice_amount"].Replace(",", "").Replace(".00", ""));
+
+                    if (dr["Pay_type"].ToString() != request["T_invoice_type"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "付款方式", dr["Pay_type"].ToString(), request["T_invoice_type"]);
+
+                    if (dr["receive_direction_name"].ToString() != request["T_receive_direction"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "收款类别", dr["receive_direction_name"].ToString(), request["T_receive_direction"]);
+
+                    if (dr["Receive_num"].ToString() != request["T_invoice_num"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "凭证号码", dr["Receive_num"].ToString(), request["T_invoice_num"]);
+
+                    if (dr["Receive_date"].ToString() != request["T_invoice_date"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "收款时间", dr["Receive_date"].ToString(), request["T_invoice_date"]);
+
+                    if (dr["remarks"].ToString() != request["T_content"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "收款内容", "原内容被修改", "原内容被修改");
+
+                    if (dr["C_depname"].ToString() != request["T_dep"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "收款人部门", dr["C_depname"].ToString(), request["T_dep"]);
+
+                    if (dr["C_empname"].ToString() != request["T_employee1"])
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "收款人姓名", dr["C_empname"].ToString(), request["T_employee1"]);
+                }
+                else
+                {
+                    modelReceive.isDelete = 0;
+                    modelReceive.create_id = emp_id;
+                    modelReceive.create_name = dremp["name"].ToString();
+                    modelReceive.create_date = DateTime.Now;
+
+                    cci.Add(modelReceive);
+                }
+                try
+                {
+                    WX wx = new WX();
+                    string token = wx.Getaccess_token("7");
+                    string t_customer = PageValidate.InputText(request["T_Customer"].ToString(), 12000); ;
+                    string userlist = "";
+                    string SQL = "SELECT * FROM dbo.WX_UserList WHERE mobile IN(" +
+                                "SELECT tel FROM dbo.hr_employee WHERE ID IN(" +
+                                "SELECT empID FROM dbo.sys_role_emp WHERE RoleID IN(SELECT Role_id FROM dbo.Sys_authority WHERE	Menu_ids LIKE '%,m194%')" +
+                                ")" +
+                                ")";
+
+                    //  SELECT* FROM dbo.Sys_Menu WHERE    Menu_name = '客户高级管理'
+                    DataTable lsdt = DBUtility.DbHelperSQL.Query(SQL).Tables[0];
+                    if (lsdt.Rows.Count > 0)
+                    {
+                        foreach (DataRow dr in lsdt.Rows)
+                        {
+                            userlist = userlist + "|" + dr["userid"].ToString();
+                        }
+                        if (userlist.Length > 0)
+                            userlist = userlist.Substring(1, userlist.Length - 1);
+                    }
+                    string title_customer = "";string type = "";
+                    //type = PageValidate.InputText(request["type"].ToString(), 50); ;
+                    if (t_customer.Length > 0)
+                        title_customer = "【"+ t_customer.Split('【')[0] + "】";
+                    if ( sksj == null) sksj = DateTime.Now;
+                    wx.PostMessage_textcard(token, userlist, sklb + ":￥" + skje + " \n" + t_customer
+                      //, "【客户名称】:" + t_customer + "</div><div class='normal'>【付款金额】:" + skje + " </div><div class='normal'>"
+                    ,"【付款方式】:" + fkfs + "</div><div class='normal'>【付款时间】:" + sksj.ToString("yyyy-MM-dd") + " </div><div class='normal'>【付款类型】:" + sklb + "</div><div class='normal'>【凭证号】:" + pzm,
+                        "待确认（系统有更新）",  "http://mb.xczs.co/CRM/shareto/jifen_share.html?uid=");
+                }
+                catch { }
+                //更新订单收款金额
+                //order.UpdateReceive(orderid);
             }
 
             //其他联系人保存
@@ -726,6 +875,68 @@ namespace XHD.CRM.Data
 
                 }
             }
+            //客户类型报表
+            if (request["Action"] == "gridrep")
+            {
+
+                string serchtxt = "  'WHERE ISNULL(isDelete,0)=0 AND customertype<>''''  ";
+                if (!string.IsNullOrEmpty(request["startfollow"]))
+                    serchtxt += " and  Convert(varchar(10),log_time,120)>=''" + PageValidate.InputText(request["startfollow"], 255) + "''";
+
+                if (!string.IsNullOrEmpty(request["endfollow"]))
+                {
+                    DateTime enddate = DateTime.Parse(request["endfollow"]).AddHours(23).AddMinutes(59).AddSeconds(59);
+                    serchtxt += " and Convert(varchar(10),log_time,120)<=''" + enddate + "''";
+                }
+                string keyword = PageValidate.InputText(request["keyword1"], 500);
+                if (!string.IsNullOrEmpty(keyword) && keyword != "输入关键词搜索")
+                {
+                    serchtxt += string.Format(" and ( Emp_sj like N'%{0}%' or Emp_sg  like N'%{0}%' or Employee like N'%{0}%'   or Customer like N'%{0}%'     ) ", keyword);
+                }
+                string xtype = "Employee";
+                string ytype = "customertype";
+                if (!string.IsNullOrEmpty(request["sectype1"]))
+                {
+                    xtype = PageValidate.InputText(request["sectype1"], 100);
+                }
+                
+                serchtxt += "'";
+                DataSet ds = customer.GetDSRep(xtype,ytype,serchtxt);
+
+                string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], ds.Tables[0].Rows.Count.ToString());
+                context.Response.Write(dt);
+            }
+            //客户类型反
+            if (request["Action"] == "gridrep_")
+            {
+
+                string serchtxt = "  'WHERE ISNULL(isDelete,0)=0 AND customertype<>''''  ";
+                if (!string.IsNullOrEmpty(request["startfollow"]))
+                    serchtxt += " and  Convert(varchar(10),log_time,120)>=''" + PageValidate.InputText(request["startfollow"], 255) + "''";
+
+                if (!string.IsNullOrEmpty(request["endfollow"]))
+                {
+                    DateTime enddate = DateTime.Parse(request["endfollow"]).AddHours(23).AddMinutes(59).AddSeconds(59);
+                    serchtxt += " and Convert(varchar(10),log_time,120)<=''" + enddate + "''";
+                }
+                string keyword = PageValidate.InputText(request["keyword1"], 500);
+                if (!string.IsNullOrEmpty(keyword) && keyword != "输入关键词搜索")
+                {
+                    serchtxt += string.Format(" and ( Emp_sj like N'%{0}%' or Emp_sg  like N'%{0}%' or Employee like N'%{0}%'   or Customer like N'%{0}%'     ) ", keyword);
+                }
+                string ytype = "Employee";
+                string xtype = "customertype";
+                if (!string.IsNullOrEmpty(request["sectype1"]))
+                {
+                    ytype = PageValidate.InputText(request["sectype1"], 100);
+                }
+
+                serchtxt += "'";
+                DataSet ds = customer.GetDSRep(xtype,ytype, serchtxt);
+
+                string dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], ds.Tables[0].Rows.Count.ToString());
+                context.Response.Write(dt);
+            }
             if (request["Action"] == "grid")
             {
                 int PageIndex = int.Parse(request["page"] == null ? "1" : request["page"]);
@@ -746,15 +957,21 @@ namespace XHD.CRM.Data
                 string serchtxt = null;
                 string serchtype = request["isdel"];
                 if (serchtype == "1")
-                    serchtxt += " isDelete=1 ";
+                    serchtxt += " ISNULL(isDelete,0)=1 ";
                 else
-                    serchtxt += " isDelete=0 ";
+                {
+                    if (!string.IsNullOrEmpty(request["type"]))//2位名单客户
+                        serchtxt += " ISNULL(isDelete,0)=" + request["type"];
+                    else
+                    serchtxt += " ISNULL(isDelete,0)=0 ";
+                }
+              
 
                 if (!string.IsNullOrEmpty(request["companyid"]))
                     serchtxt += " and id =" + int.Parse(request["companyid"]);
 
-                if (!string.IsNullOrEmpty(request["company"]))
-                    serchtxt += " and Customer like N'%" + PageValidate.InputText(request["company"], 255) + "%'";
+                //if (!string.IsNullOrEmpty(request["company"])&& request["company"]!="")
+                //    serchtxt += " and Customer like N'%" + PageValidate.InputText(request["company"], 255) + "%'";
 
                 if (!string.IsNullOrEmpty(request["address"]))
                     serchtxt += " and address like N'%" + PageValidate.InputText(request["address"], 255) + "%'";
@@ -765,6 +982,9 @@ namespace XHD.CRM.Data
                 if (!string.IsNullOrEmpty(request["tel"]))
                     serchtxt += " and tel like N'%" + PageValidate.InputText(request["tel"], 255) + "%'";
 
+                if (!string.IsNullOrEmpty(request["emp_hh"]))
+                    serchtxt += " and emp_hh like N'%" + PageValidate.InputText(request["emp_hh"], 255) + "%'";
+
                 if (!string.IsNullOrEmpty(request["mobil"]))
                     serchtxt += " and mobil like N'%" + PageValidate.InputText(request["mobil"], 255) + "%'";
 
@@ -774,11 +994,51 @@ namespace XHD.CRM.Data
                     serchtxt += " and CustomerSource like N'%" + PageValidate.InputText(request["cus_sourse"], 255) + "%'";
                 if (!string.IsNullOrEmpty(request["WXZHT"]))
                     serchtxt += " and WXZT_NAME like N'%" + PageValidate.InputText(request["WXZHT"], 255) + "%'";
-               
-                string keyword = PageValidate.InputText(request["keyword"], 500);
+                string ck = (request["ckisgd"]);
+                if (ck == "on")
+                {
+                    serchtxt += " and DATEDIFF(HOUR,ISNULL( lastfollow,a.Create_date),GETDATE())>c_type.followhours ";
+                }
+                    string keyword = PageValidate.InputText(request["keyword"], 500);
                 if (!string.IsNullOrEmpty(keyword) && keyword != "输入关键词搜索地址、描述、备注")
                 {
-                    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
+                    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%'   or hxt like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' or Emp_hh like N'%{0}%' ) ", keyword);
+                }
+                string khtype = PageValidate.InputText(request["khtype"], 50);//客户类型
+                string searchtype = PageValidate.InputText(request["searchtype"], 50);//查询类型
+                if (!string.IsNullOrEmpty(khtype))
+                {
+                    string kh = System.Web.HttpUtility.UrlDecode(request["kh"]);   //查询类型
+                    if (!string.IsNullOrEmpty(searchtype)&& searchtype=="fan")//反查
+                    {
+                        if (khtype == "CustomerType")
+                            serchtxt += " and CustomerType='" + kh + "'";
+                        string CustomerType = System.Web.HttpUtility.UrlDecode(request["CType"]);   //查询类型
+                        serchtxt += " and Employee='" + CustomerType + "'";
+                        if (khtype == "Employee")
+                            serchtxt += " and employee='" + CustomerType + "'";
+                        if (khtype == "Emp_sj")
+                            serchtxt += " and Emp_sj='" + CustomerType + "'";
+                        if (khtype == "Emp_sg")
+                            serchtxt += " and Emp_sg='" + CustomerType + "'";
+                        if (khtype == "Emp_hh")
+                            serchtxt += " and Emp_hh='" + CustomerType + "'";
+                    }
+                    else
+                    {
+                        if (khtype == "Employee")
+                            serchtxt += " and employee='" + kh + "'";
+                        if (khtype == "Emp_sj")
+                            serchtxt += " and Emp_sj='" + kh + "'";
+                        if (khtype == "Emp_sg")
+                            serchtxt += " and Emp_sg='" + kh + "'";
+                        if (khtype == "Emp_hh")
+                            serchtxt += " and Emp_hh='" + kh + "'";
+                        string CustomerType = System.Web.HttpUtility.UrlDecode(request["CType"]);   //查询类型
+                        serchtxt += " and CustomerType='" + CustomerType + "'";
+                    }
+                   
+                   
                 }
                 string t_mapstasus = PageValidate.InputText(request["t_mapstasus"], 50);
                 if (!string.IsNullOrEmpty(t_mapstasus))
@@ -791,17 +1051,17 @@ namespace XHD.CRM.Data
                 string keyword1 = PageValidate.InputText(request["keyword1"], 500);
                 if (!string.IsNullOrEmpty(keyword1) && keyword1 != "输入关键词搜索")
                 {
-                    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword1);
+                    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%'  or hxt like N'%{0}%'  or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' or Emp_hh like N'%{0}%' ) ", keyword1);
                 }
                 string items = PageValidate.InputText(context.Request["stype_val"], 255);
                 if (!string.IsNullOrEmpty(items) && items != "null")
                     serchtxt += string.Format(" and a.CustomerType_id in({0})", items.Replace(';', ','));
 
                 if (!string.IsNullOrEmpty(request["customertype"]))
-                    serchtxt += " and CustomerType_id = " + int.Parse(request["customertype_val"]);
+                    serchtxt += " and CustomerType_id = " + StrToInt(request["customertype_val"]);
 
                 if (!string.IsNullOrEmpty(request["customerlevel"]))
-                    serchtxt += " and CustomerLevel_id = " + int.Parse(request["customerlevel_val"]);
+                    serchtxt += " and CustomerLevel_id = " + StrToInt(request["customerlevel_val"]);
 
                 if (!string.IsNullOrEmpty(request["sbq"]))
                 {
@@ -816,37 +1076,37 @@ namespace XHD.CRM.Data
                     //serchtxt += " and DesCripe like ('" + PageValidate.InputText(request["sbq"], 255).Replace(";", "','") + "')";
                 }
                 if (!string.IsNullOrEmpty(request["T_CustomerSource"]))
-                    serchtxt += " and CustomerSource_id = " + int.Parse(request["T_CustomerSource_val"]);
+                    serchtxt += " and CustomerSource_id = " + StrToInt(request["T_CustomerSource_val"]);
 
                 if (!string.IsNullOrEmpty(request["T_Community"]))
-                    serchtxt += " and Community_id = " + int.Parse(request["T_Community_val"]);
+                    serchtxt += " and Community_id = " + StrToInt(request["T_Community_val"]);
                
                 if (!string.IsNullOrEmpty(request["T_Towns"]))
-                    serchtxt += " and Towns_id = " + int.Parse(request["T_Towns_val"]);
+                    serchtxt += " and Towns_id = " + StrToInt(request["T_Towns_val"]);
 
                 if (!string.IsNullOrEmpty(request["T_Provinces"]))
-                    serchtxt += " and Provinces_id = " + int.Parse(request["T_Provinces_val"]);
+                    serchtxt += " and Provinces_id = " + StrToInt(request["T_Provinces_val"]);
 
                 if (!string.IsNullOrEmpty(request["T_City"]))
-                    serchtxt += " and City_id = " + int.Parse(request["T_City_val"]);
+                    serchtxt += " and City_id = " + StrToInt(request["T_City_val"]);
 
                 if (!string.IsNullOrEmpty(request["department"]))
-                    serchtxt += " and Department_id = " + int.Parse(request["department_val"]);
+                    serchtxt += " and Department_id = " + StrToInt(request["department_val"]);
 
                 if (!string.IsNullOrEmpty(request["employee"]))
-                    serchtxt += " and Employee_id = " + int.Parse(request["employee_val"]);
+                    serchtxt += " and Employee_id = " + StrToInt(request["employee_val"]);
 
                 if (!string.IsNullOrEmpty(request["department_sg"]))
-                    serchtxt += " and Dpt_id_sg = " + int.Parse(request["department_sg_val"]);
+                    serchtxt += " and Dpt_id_sg = " + StrToInt(request["department_sg_val"]);
 
                 if (!string.IsNullOrEmpty(request["employee_sg"]))
-                    serchtxt += " and Emp_id_sg = " + int.Parse(request["employee_sg_val"]);
+                    serchtxt += " and Emp_id_sg = " + StrToInt(request["employee_sg_val"]);
 
                 if (!string.IsNullOrEmpty(request["department_sj"]))
-                    serchtxt += " and Dpt_id_sj = " + int.Parse(request["department_sj_val"]);
+                    serchtxt += " and Dpt_id_sj = " + StrToInt(request["department_sj_val"]);
 
                 if (!string.IsNullOrEmpty(request["employee_sj"]))
-                    serchtxt += " and Emp_id_sj = " + int.Parse(request["employee_sj_val"]);
+                    serchtxt += " and Emp_id_sj = " + StrToInt(request["employee_sj_val"]);
 
                 if (!string.IsNullOrEmpty(request["startdate"]))
                     serchtxt += " and a.Create_date >= '" + PageValidate.InputText(request["startdate"], 255) + "'";
@@ -875,9 +1135,42 @@ namespace XHD.CRM.Data
                     serchtxt += " and lastfollow <= '" + enddate + "'";
                 }
 
-                //权限
-                serchtxt += DataAuth(emp_id.ToString());
+                if (!string.IsNullOrEmpty(request["thtype"]))
+                {
+                    string thtype = request["thtype"];
+                    if (thtype == "未签单")
+                    { serchtxt += " and ISNULL(a.site,'')=''and ISNULL(d.Stage_icon, '')='' "; }
+                    else if (thtype == "签单未施工")
+                        serchtxt += " and isnull(a.site,'')='1' and ISNULL(d.Stage_icon, '')='' ";
+                    else if (thtype == "正在施工")
+                        serchtxt += " and ISNULL(d.Stage_icon, '')='正在施工' ";
+                    else if (thtype == "施工完成")
+                        serchtxt += " and ISNULL(d.Stage_icon, '')='施工完成' ";
+                    else
+                        serchtxt += " and isnull(a.site,'')='" + thtype + "' ";
+                }
+                if (!string.IsNullOrEmpty(request["sectype"]))
+                {
+                    string sectype = request["sectype"];
+                    if (sectype == "仅付定金")
+                    { serchtxt += " and dj_amount>0 and isnull(zx_amount,0)=0 "; }
+                    else if (sectype == "需要退款")
+                        serchtxt += " and ISNULL(Order_amount,0)-ISNULL(dj_amount,0)-ISNULL(zx_amount,0)<0 ";
+                    else if (sectype == "应收未收")
+                        serchtxt += " and ISNULL(Order_amount,0)-ISNULL(dj_amount,0)-ISNULL(zx_amount,0)>0 ";
+                    else if (sectype == "有效果图")
+                        serchtxt += " and f.curstomerid is not null ";
+                    else if (sectype == "无效果图")
+                        serchtxt += " and f.curstomerid is  null ";
+                    else
+                        serchtxt += " and isnull(a.site,'')='" + sectype + "' ";               
 
+                }
+                //权限
+                if (string.IsNullOrEmpty(khtype))
+                {
+                    serchtxt += DataAuth(emp_id.ToString());
+                }
                 //context.Response.Write(serchtxt);
 
                 DataSet ds = customer.GetList(PageSize, PageIndex, serchtxt, sorttext, out Total);
@@ -931,6 +1224,28 @@ namespace XHD.CRM.Data
                 if (PageValidate.IsNumber(id))
                 {
                     DataSet ds = customer.GetList("id=" + id + DataAuth(emp_id.ToString()));
+                    dt = Common.DataToJson.DataToJSON(ds);
+                }
+                else
+                {
+                    dt = "{}";
+                }
+
+
+                context.Response.Write(dt);
+            }
+            if (request["Action"] == "formjf")
+            {
+                string id = PageValidate.InputText(request["cid"], 50);
+                string dt;
+                if (PageValidate.IsNumber(id))
+                {
+                    var sb = new System.Text.StringBuilder();
+                    sb.AppendLine(" SELECT sum(case jflx when '0' then Jf when '1' then -Jf end)as Jf ,ID ");
+                    sb.AppendLine(" FROM dbo.CRM_Jifen ");
+                    sb.AppendLine(" WHERE ID='" +id + "'");
+                    sb.AppendLine("  group by ID");
+                    DataSet ds = XHD.DBUtility.DbHelperSQL.Query(sb.ToString());
                     dt = Common.DataToJson.DataToJSON(ds);
                 }
                 else
@@ -1131,6 +1446,9 @@ namespace XHD.CRM.Data
                 if (!string.IsNullOrEmpty(request["tel"]))
                     serchtxt += " and tel like N'%" + PageValidate.InputText(request["tel"], 255) + "%'";
 
+                if (!string.IsNullOrEmpty(request["emp_hh"]))
+                    serchtxt += " and emp_hh like N'%" + PageValidate.InputText(request["emp_hh"], 255) + "%'";
+
                 if (!string.IsNullOrEmpty(request["mobil"]))
                     serchtxt += " and mobil like N'%" + PageValidate.InputText(request["mobil"], 255) + "%'";
 
@@ -1144,7 +1462,7 @@ namespace XHD.CRM.Data
                 string keyword = PageValidate.InputText(request["keyword"], 500);
                 if (!string.IsNullOrEmpty(keyword) && keyword != "输入关键词搜索地址、描述、备注")
                 {
-                    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword);
+                    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or hxt like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' or Emp_hh like N'%{0}%' ) ", keyword);
                 }
                 string t_mapstasus = PageValidate.InputText(request["t_mapstasus"], 50);
                 if (!string.IsNullOrEmpty(t_mapstasus))
@@ -1157,7 +1475,7 @@ namespace XHD.CRM.Data
                 string keyword1 = PageValidate.InputText(request["keyword1"], 500);
                 if (!string.IsNullOrEmpty(keyword1) && keyword1 != "输入关键词搜索")
                 {
-                    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' ) ", keyword1);
+                    serchtxt += string.Format(" and ( Customer like N'%{0}%' or tel  like N'%{0}%' or Community like N'%{0}%'  or hxt like N'%{0}%' or address like N'%{0}%' or DesCripe like N'%{0}%' or Remarks like N'%{0}%' or Emp_hh like N'%{0}%' ) ", keyword1);
                 }
                 if (!string.IsNullOrEmpty(request["customertype"]))
                     serchtxt += " and CustomerType_id = " + int.Parse(request["customertype_val"]);
@@ -1624,6 +1942,9 @@ namespace XHD.CRM.Data
                 if (!string.IsNullOrEmpty(request["tel"]))
                     serchtxt += " and tel like N'%" + PageValidate.InputText(request["tel"], 255) + "%'";
 
+                if (!string.IsNullOrEmpty(request["emp_hh"]))
+                    serchtxt += " and emp_hh like N'%" + PageValidate.InputText(request["emp_hh"], 255) + "%'";
+
                 if (!string.IsNullOrEmpty(request["mobil"]))
                     serchtxt += " and mobil like N'%" + PageValidate.InputText(request["mobil"], 255) + "%'";
 
@@ -1693,23 +2014,7 @@ namespace XHD.CRM.Data
                     + "<th>客户</th>"
                     + "<th>地址</th>"
                     + "<th>电话</th>"
-                    + "<th>传真</th>"
-                    + "<th>网站</th>"
-                    + "<th>行业</th>"
-                    + "<th>省份</th>"
-                    + "<th>城市</th>"
-                    + "<th>区镇</th>"
-                    + "<th>小区</th>"
-                    + "<th>楼号</th>"
-                    + "<th>房号</th>"
-                    + "<th>客户类型</th>"
-                    + "<th>客户级别</th>"
-                    + "<th>客户来源</th>"
-                    + "<th>描述</th>"
-                    + "<th>备注</th>"
-                    + "<th>部门</th>"
-                    + "<th>员工</th>"
-                    + "<th>公私</th>"
+ 
                     + "</tr>";
                 respon.Write(tb_header);
 
@@ -1718,23 +2023,6 @@ namespace XHD.CRM.Data
                 dt.Columns.Add("客户");
                 dt.Columns.Add("地址");
                 dt.Columns.Add("电话");
-                dt.Columns.Add("传真");
-                dt.Columns.Add("网站");
-                dt.Columns.Add("行业");
-                dt.Columns.Add("省份");
-                dt.Columns.Add("城市");
-                dt.Columns.Add("区镇");
-                dt.Columns.Add("小区");
-                dt.Columns.Add("楼号");
-                dt.Columns.Add("房号");
-                dt.Columns.Add("客户类型");
-                dt.Columns.Add("客户级别");
-                dt.Columns.Add("客户来源");
-                dt.Columns.Add("描述");
-                dt.Columns.Add("备注");
-                dt.Columns.Add("部门");
-                dt.Columns.Add("员工");
-                dt.Columns.Add("公私");
 
                 DataRow dr0 = null, dr1 = null;
 
@@ -1745,23 +2033,7 @@ namespace XHD.CRM.Data
                     dr0[0] = dr1["客户"];
                     dr0[1] = dr1["地址"];
                     dr0[2] = dr1["电话"];
-                    dr0[3] = dr1["传真"];
-                    dr0[4] = dr1["网站"];
-                    dr0[5] = dr1["行业"];
-                    dr0[6] = dr1["省份"];
-                    dr0[7] = dr1["城市"];
-                    dr0[8] = dr1["区镇"];
-                    dr0[9] = dr1["小区"];
-                    dr0[10] = dr1["楼号"];
-                    dr0[11] = dr1["房号"];
-                    dr0[12] = dr1["客户类型"];
-                    dr0[13] = dr1["客户级别"];
-                    dr0[14] = dr1["客户来源"];
-                    dr0[15] = dr1["描述"];
-                    dr0[16] = dr1["备注"];
-                    dr0[17] = dr1["部门"];
-                    dr0[18] = dr1["员工"];
-                    dr0[19] = dr1["公私"];
+                   
 
                     dt.Rows.Add(dr0);
                 }
@@ -1781,7 +2053,7 @@ namespace XHD.CRM.Data
             if (request["Action"] == "import")
             {
                 string filename = PageValidate.InputText(request["file"], 50);
-
+                string type = PageValidate.InputText(request["type"], 50);  
                 string filepath = context.Server.MapPath(@"~/file/customer/" + filename);
 
                 string myString = "Provider = Microsoft.Jet.OLEDB.4.0 ; Data Source =  " + filepath + ";Extended Properties=Excel 8.0";
@@ -1791,10 +2063,20 @@ namespace XHD.CRM.Data
                 OleDbDataAdapter oda = new OleDbDataAdapter("select * from [Sheet1$]", oconn);
                 oda.Fill(ds);
                 oconn.Close();
+                 foreach(DataRow dw in ds.Tables[0].Rows)
+                 {
+                     DataSet codeds = customer.GetList(" tel='" + dw["电话"].ToString() + "' ");
+                     //and id!=" + PageValidate.InputText(request["cid"], 50) + " ");
+                     if (codeds.Tables[0].Rows.Count > 0)
+                     {
+                         context.Response.Write("电话:" + dw["电话"].ToString()+"已存在！");
+                         return;
+                     }
+                 }
 
-                string dt = Common.GetGridJSON.DataTableToJSON(ds.Tables[0]);
-                context.Response.Write(dt);
-
+                 string dt = Common.GetGridJSON.DataTableToJSON(ds.Tables[0]);
+                 context.Response.Write(dt);
+               
                 string connectionString = XHD.DBUtility.PubConstant.ConnectionString;
                 //context.Response.Write(connectionString);
                 SqlConnection conn = new SqlConnection(connectionString);
@@ -1809,32 +2091,16 @@ namespace XHD.CRM.Data
 
                     sqlBC.DestinationTableName = "dbo.CRM_Customer";
 
-                    sqlBC.ColumnMappings.Add("客户", "Customer");
+                    sqlBC.ColumnMappings.Add("客户姓名", "Customer");
                     sqlBC.ColumnMappings.Add("地址", "address");
                     sqlBC.ColumnMappings.Add("电话", "tel");
-                    sqlBC.ColumnMappings.Add("传真", "fax");
-                    sqlBC.ColumnMappings.Add("网站", "site");
-                    sqlBC.ColumnMappings.Add("行业", "industry");
-                    sqlBC.ColumnMappings.Add("省份", "Provinces");
-                    sqlBC.ColumnMappings.Add("城市", "City");
-                    sqlBC.ColumnMappings.Add("区镇", "Towns");
-                    sqlBC.ColumnMappings.Add("小区", "Community");
-                    sqlBC.ColumnMappings.Add("楼号", "BNo");
-                    sqlBC.ColumnMappings.Add("房号", "RNo");
-                    sqlBC.ColumnMappings.Add("客户类型", "CustomerType");
-                    sqlBC.ColumnMappings.Add("客户级别", "CustomerLevel");
-                    sqlBC.ColumnMappings.Add("客户来源", "CustomerSource");
-                    sqlBC.ColumnMappings.Add("描述", "DesCripe");
-                    sqlBC.ColumnMappings.Add("备注", "Remarks");
-                    sqlBC.ColumnMappings.Add("部门", "Department");
-                    sqlBC.ColumnMappings.Add("员工", "Employee");
-                    sqlBC.ColumnMappings.Add("公私", "privatecustomer");
+                   
 
                     sqlBC.WriteToServer(ds.Tables[0]);
                 }
                 try
                 {
-                    customer.ToImport(emp_id, empname, DateTime.Now);
+                    customer.ToImport(emp_id, empname, DateTime.Now,type);
                 }
                 catch
                 {
@@ -1892,8 +2158,58 @@ namespace XHD.CRM.Data
                 }
             }
 
+            //全景API
+            if (request["Action"] == "getqjapi")
+            {
+                string openid = "";
+              DataSet ds=    emp.GetAllList();
+                
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if (dr["professional"].ToString().Length > 15)
+                        openid =openid+","+ dr["professional"].ToString();
+                }
+                if (openid == "")
+                {
+                    context.Response.Write("false:没有任何有效openid");
+                    return;
+                }
+                openid = openid.Substring(1);
+                string tel = Common.PageValidate.InputText(request["tel"], 50);
+                // Common.PageValidate.InputText(request["designId"], 50)
+                string api = "https://www.33qjvr.com/api/case?act=casebyphone&";
+                //code=13451760505&openid=5248c9be8592751a58b8eef6258e6578
+                object currenttimemillis = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                string timestamp = currenttimemillis.ToString(); //2分钟
+
+                StringBuilder apiBuilder = new StringBuilder();
+                apiBuilder.Append(api)
+                .Append("&code=").Append(tel)
+                .Append("&openid=").Append(openid);
+                string result = "";
+                //var result = HttpHelper_GetStr(apiurl + apikey + "/key/" + keytel, "GET", buffer.ToString());
+                result = HttpHelper_GetStr(apiBuilder.ToString(), "GET", "");
+                Newtonsoft.Json.Linq.JObject joo = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject(result);
+                Newtonsoft.Json.Linq.JObject jo = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject( "{"+joo["data"].First.Last.ToString()+"}");
+
+               
+                DataTable dtjson = JsonToDataTable(jo["project"].ToString());
+                string dt = Common.GetGridJSON.DataTableToJSON1(dtjson, "99");
+
+                context.Response.Write(dt);
+            }
+
         }
 
+        private int StrToInt(string str)
+        {
+            int a = 0;
+            try {
+                a = int.Parse(str);
+            } catch { }
+
+            return a;
+        }
         private string DataAuth(string uid)
         {
             //权限
@@ -1915,13 +2231,13 @@ namespace XHD.CRM.Data
                         case "none": returntxt = " and 1=2 ";
                             break;
                         case "my":
-                            returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or a.Create_id=" + int.Parse(arr[1]) + ")";
+                            returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or a.Create_id=" + int.Parse(arr[1]) + " or Emp_id_hh=" + int.Parse(arr[1]) + " )";
                             break;
                         case "dep":
                             if (string.IsNullOrEmpty(arr[1]))
-                                returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or a.Create_id=" + int.Parse(uid) + ")";
+                                returntxt = " and ( privatecustomer='公客' or Employee_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or a.Create_id=" + int.Parse(uid) + " or Emp_id_hh=" + int.Parse(uid) + "  )";
                             else
-                                returntxt = " and ( privatecustomer='公客' or Department_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or a.Create_id=" + int.Parse(uid) + ")";
+                                returntxt = " and ( privatecustomer='公客' or Department_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or a.Create_id=" + int.Parse(uid) + " or Emp_id_hh=" + int.Parse(uid) + ")";
                             break;
                         case "depall":
                             BLL.hr_department dep = new BLL.hr_department();

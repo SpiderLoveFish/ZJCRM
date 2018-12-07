@@ -153,28 +153,48 @@ namespace XHD.BLL
 		{
 			return dal.GetListByPage( strWhere,  orderby,  startIndex,  endIndex);
 		}
-		/// <summary>
-		/// 分页获取数据列表
-		/// </summary>
-		//public DataSet GetList(int PageSize,int PageIndex,string strWhere)
-		//{
-			//return dal.GetList(PageSize,PageIndex,strWhere);
-		//}
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        //public DataSet GetList(int PageSize,int PageIndex,string strWhere)
+        //{
+        //return dal.GetList(PageSize,PageIndex,strWhere);
+        //}
 
-		#endregion  BasicMethod
-		#region  ExtensionMethod
-        public bool Addlist(string pid, string list)
+        public DataSet GetPur_ViewList(int PageSize, int PageIndex, string strWhere)
         {
-            return dal.Addlist(pid,list);
+            return dal.GetPur_ViewList( PageSize,  PageIndex,  strWhere);
         }
-        public DataSet GetPurchase_Detail(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+            #endregion  BasicMethod
+            #region  ExtensionMethod
+            public bool Addlist(string pid, string list,string isauto)
+        {
+            return dal.Addlist(pid,list, isauto);
+        }
+        public bool AddlistDB(string pid, string list, string cid)
+        {
+            return dal.AddlistDB(pid, list, cid);
+        }
+            public DataSet GetPurchase_Detail(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
         {
             return dal.GetPurchase_Detail(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
 
-        public bool Updatedetail(string pid, string mid, decimal price, decimal sum, string remarks)
+        public DataSet GetSuppPur_ViewList(int PageSize, int PageIndex, string strWhere, string starttime, string endtime)
         {
-            return  dal.Updatedetail(pid, mid, price, sum, remarks);
+            return dal.GetSuppPur_ViewList(  PageSize,   PageIndex,   strWhere,   starttime,   endtime);
+        }
+        public DataSet GetSuppPur_DetailList(int PageSize, int PageIndex, string strWhere, string starttime, string endtime)
+        {
+            return dal.GetSuppPur_DetailList( PageSize, PageIndex,  strWhere,  starttime,  endtime);
+        }
+            public bool Updatedetail(string pid, string mid, decimal price, decimal sum, string remarks,string cid)
+        {
+            return  dal.Updatedetail(pid, mid, price, sum, remarks,cid);
+        }
+        public bool UpdatedetailDB(string pid, string mid, decimal price, decimal sum, string remarks, string cid)
+        {
+            return dal.UpdatedetailDB(pid, mid, price, sum, remarks, cid);
         }
         public bool Updatestock(string pid,string mid, string stockid)
         {

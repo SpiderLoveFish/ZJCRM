@@ -178,6 +178,7 @@
                    // $("#T_uid").ligerGetTextBoxManager().setDisabled();
                    // $("#T_uid").attr("validate", "{required:true}");
                     $("input[type=radio][value=" + obj.canlogin + "]").attr("checked", 'checked');
+                    $("input[type=radio][value=" + obj.jbx + "]").attr("checked", 'checked');
                     $("#headurl").val(obj.title);
                     $("#userheadimg").attr("src", "../images/upload/portrait/" + obj.title);
                     searchCustomer();
@@ -307,43 +308,43 @@
             return checked;
         }
         
-        function bind() {
+        //function bind() {
 
-            if (getparastr("empid") == undefined || getparastr("empid") == "" || getparastr("empid") == null || getparastr("empid")=="null")
-            {
-                alert('新增账号无法绑定，请先保存在编辑状态绑定!');
-                return;
-            }
+        //    if (getparastr("empid") == undefined || getparastr("empid") == "" || getparastr("empid") == null || getparastr("empid")=="null")
+        //    {
+        //        alert('新增账号无法绑定，请先保存在编辑状态绑定!');
+        //        return;
+        //    }
 
-            if ($("#T_professional").val() == ""|| $("#T_uid").val()=="")
-            {
-                alert('请手工填入需要绑定的酷家乐账号!');
-                return;
-            }
-            top.$.ligerDialog.confirm("绑定为一次性，请谨慎操作！！", "确认操作？",
-                function (yes) {
-                    if(yes==true)
-            $.ajax({
-                url: "../data/SingleSignOn.ashx", type: "POST",
-                data: { Action: "bind",id:getparastr("empid"),uid:$("#T_uid").val(),bindid:$("#T_professional").val(), rnd: Math.random() },
-                success: function (responseText) {
-                    //if (responseText == "true") {
-                        // fload();
-                        alert("绑定结果：" + responseText);
-                    //}
+        //    if ($("#T_professional").val() == ""|| $("#T_uid").val()=="")
+        //    {
+        //        alert('请手工填入需要绑定的酷家乐账号!');
+        //        return;
+        //    }
+        //    top.$.ligerDialog.confirm("绑定为一次性，请谨慎操作！！", "确认操作？",
+        //        function (yes) {
+        //            if(yes==true)
+        //    $.ajax({
+        //        url: "../data/SingleSignOn.ashx", type: "POST",
+        //        data: { Action: "bind",id:getparastr("empid"),uid:$("#T_uid").val(),bindid:$("#T_professional").val(), rnd: Math.random() },
+        //        success: function (responseText) {
+        //            //if (responseText == "true") {
+        //                // fload();
+        //                alert("绑定结果：" + responseText);
+        //            //}
 
-                    //else {
-                    //    alert('绑定失败！' + responseText);
-                    //}
+        //            //else {
+        //            //    alert('绑定失败！' + responseText);
+        //            //}
 
-                },
-                error: function () {
-                    alert('绑定失败！');
-                }
-            });
+        //        },
+        //        error: function () {
+        //            alert('绑定失败！');
+        //        }
+        //    });
             
-            });
-        }
+        //    });
+        //}
 
     </script>
 
@@ -441,10 +442,11 @@
                 </tr>
                 <tr>
                     <td>
-                        <div align="right" style="width: 62px">毕业院校：</div>
+                        <div align="right" style="width: 62px">岗位职责：</div>
                     </td>
                     <td colspan="5">
-                        <input type="text" id="T_school" name="T_school" ltype="text" ligerui="{width:446}" /></td>
+                          <textarea cols="100" id="T_school" name="T_school" rows="3" class="l-textarea" style="width: 442px"></textarea>
+                      <%--  <input type="text" id="T_school" name="T_school" ltype="text" ligerui="{width:446}" /></td>--%>
                     <td>
                         <div style="text-align: center">
                             <input type="button" value="上传头像" style="width: 80px; height: 22px;" onclick="uploadimg()" />
@@ -480,6 +482,59 @@
                     <td>
                         <input type="hidden" id="headurl" name="headurl" />
                     </td>--%>
+                </tr>
+                <tr>
+                    <td>
+                        <div align="right" style="width: 61px">
+                            VRID：
+                        </div>
+                    </td>
+                    <td colspan="3">
+                        <input type="text" id="T_professional" name="T_professional" ltype="text" ligerui="{width:180}" />
+                    </td>
+                    <td>
+                        <div align="right" style="width: 61px">
+                          
+                        </div>
+                    </td>
+                    <td colspan="3">
+                       
+                    </td>
+                    </tr>
+                <tr>
+                    <td>
+                        <div align="right" style="width: 61px">
+                            交保险：
+                        </div>
+                    </td>
+                    <td colspan="5">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="radio" value="1" name="jbx" checked="checked" /></td>
+                                <td>交社保 </td>
+                                <td>
+                                    <input type="radio" value="2" name="jbx" checked="checked" /></td>
+                                <td>交意外保险 </td>
+                                <td>
+                                    <input type="radio" value="3" name="jbx" checked="checked" /></td>
+                                <td>交社保&意外保险 </td>
+                                <td>
+                                    <input type="radio" value="0" name="jbx" /></td>
+                                <td>不交 </td>
+
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <div align="right" style="width: 61px">
+                            
+                        </div>
+                    </td>
+                    <td colspan="3">
+                         
+                    </td>
+                  
                 </tr>
                 <tr>
                     <td>

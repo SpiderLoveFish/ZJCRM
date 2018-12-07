@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,13 +13,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>XHD.CRM</RootNamespace>
     <AssemblyName>CRM</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,9 +46,21 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\aliyun-net-sdk-core.dll</HintPath>
     </Reference>
+    <Reference Include="aliyun-net-sdk-dybaseapi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\aliyun-net-sdk-dybaseapi.dll</HintPath>
+    </Reference>
+    <Reference Include="aliyun-net-sdk-dysmsapi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\aliyun-net-sdk-dysmsapi.dll</HintPath>
+    </Reference>
     <Reference Include="aliyun-net-sdk-sms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\aliyun-net-sdk-sms.dll</HintPath>
+    </Reference>
+    <Reference Include="Aliyun.MNS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Aliyun.MNS.dll</HintPath>
     </Reference>
     <Reference Include="GetuiServerApiSDK">
       <HintPath>..\..\..\..\Downloads\GETUI_C#_SDK\GETUI_C#_SDK\CSharpDemo\protobuffer\GetuiServerApiSDK.dll</HintPath>
@@ -110,6 +123,8 @@
   <ItemGroup>
     <Content Include="copyright.html" />
     <Content Include="CRM\Budge\BudgeMain.aspx" />
+    <Content Include="CRM\Budge\BudgeMainAdd_ModelArea.aspx" />
+    <Content Include="CRM\Budge\BudgeMainAdd_Area.aspx" />
     <Content Include="CRM\Budge\BudgeModelMain_bak.aspx" />
     <Content Include="CRM\Budge\BudgeMainAdd.aspx" />
     <Content Include="CRM\Budge\BudgeModelMainAdd.aspx" />
@@ -135,6 +150,14 @@
     <Content Include="CRM\Building\Building_Add.aspx" />
     <Content Include="CRM\Building\Building_map.aspx" />
     <Content Include="CRM\Building\map_mark.aspx" />
+    <Content Include="CRM\Car\SelectProduct.aspx" />
+    <Content Include="CRM\Car\toolsmanage.aspx" />
+    <Content Include="CRM\Car\toolsmanage_add.aspx" />
+    <Content Include="CRM\Car\carmanage_use.aspx" />
+    <Content Include="CRM\Car\carmanage.aspx" />
+    <Content Include="CRM\Car\carmanageuse_add.aspx" />
+    <Content Include="CRM\Car\carmanage_add.aspx" />
+    <Content Include="CRM\Car\Getemp.aspx" />
     <Content Include="CRM\Cggl\Cg_order.aspx" />
     <Content Include="CRM\Cggl\GysGl.aspx" />
     <Content Include="CRM\Cggl\GysGl_Add.aspx" />
@@ -142,10 +165,13 @@
     <Content Include="CRM\Cggl\LJ_Ewm.aspx" />
     <Content Include="CRM\Cggl\LJ_Ewm_Add.aspx" />
     <Content Include="CRM\Cggl\map_mark.aspx" />
+    <Content Include="CRM\Cggl\SupplierPurchase_Detail.aspx" />
+    <Content Include="CRM\Cggl\SupplierlPurchase_View.aspx" />
     <Content Include="CRM\Cggl\Sgry.aspx" />
     <Content Include="CRM\Cggl\Sgry_Add.aspx" />
     <Content Include="CRM\Cggl\Sgry_Rq.aspx" />
     <Content Include="CRM\ConsExam\CEReferenceMaterials.aspx" />
+    <Content Include="CRM\ConsExam\CRM_Schedule_View.aspx" />
     <Content Include="CRM\ConsExam\CEStage.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category.aspx" />
     <Content Include="CRM\ConsExam\CEStage_category_add.aspx" />
@@ -173,10 +199,17 @@
     <Content Include="CRM\ConsExam\kjl_search_lf.aspx" />
     <Content Include="CRM\ConsExam\kjl_search_my.aspx" />
     <Content Include="CRM\ConsExam\kjl_view.aspx" />
-    <Content Include="CRM\ConsExam\SelectQxfw.aspx" />
+    <Content Include="CRM\ConsExam\PurProductList_edit.aspx" />
     <Content Include="CRM\ConsExam\SelectMaterials_add.aspx" />
     <Content Include="CRM\ConsExam\SelectMaterials.aspx" />
     <Content Include="CRM\ConsExam\kjl.aspx" />
+    <Content Include="CRM\ConsExam\SelectMaterials_pro.aspx" />
+    <Content Include="CRM\ConsExam\SelectMaterials_pro_dil.aspx" />
+    <Content Include="CRM\ConsExam\SelectMaterials_pro_ino.aspx" />
+    <Content Include="CRM\ConsExam\SelectMaterials_pro_pus.aspx" />
+    <Content Include="CRM\ConsExam\SelectMaterials_pro_req.aspx" />
+    <Content Include="CRM\ConsExam\SelectMaterials_pro_sto.aspx" />
+    <Content Include="CRM\ConsExam\SelectQxfw.aspx" />
     <Content Include="CRM\ConsExam\SGJD_List_View.aspx" />
     <Content Include="CRM\ConsExam\SGJD_LIST.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST_add.aspx" />
@@ -185,7 +218,14 @@
     <Content Include="CRM\ConsExam\XM_LIST.aspx" />
     <Content Include="CRM\ConsExam\JD_LIST.aspx" />
     <Content Include="CRM\ConsExam\SelectCEStageCustomer.aspx" />
+    <Content Include="CRM\Customer\Customer_EndDate.aspx" />
+    <Content Include="CRM\Customer\Customer_follow_view.aspx" />
+    <Content Include="CRM\Customer\Customer_import_ht.aspx" />
+    <Content Include="CRM\Customer\Follow_report.aspx" />
+    <Content Include="CRM\Customer\Customer_Rep.aspx" />
     <Content Include="CRM\Customer\Customer_add_GJXG.aspx" />
+    <Content Include="CRM\Customer\Customer_type.aspx" />
+    <Content Include="CRM\Customer\Customer_type_add.aspx" />
     <Content Include="CRM\Customer\ScoreShop_add.aspx" />
     <Content Include="CRM\Customer\ScoreShop.aspx" />
     <Content Include="CRM\Customer\ClassicCase.aspx" />
@@ -208,6 +248,7 @@
     <Content Include="CRM\Customer\SelectCommunity.aspx" />
     <Content Include="CRM\Customer\Score_img_add.aspx" />
     <Content Include="CRM\Customer\SendSMS.aspx" />
+    <Content Include="CRM\Customer\EnterInovice.aspx" />
     <Content Include="CRM\DataShare\Favorites_View.aspx" />
     <Content Include="CRM\DataShare\public_data_share.aspx" />
     <Content Include="CRM\DataShare\public_data_view_share.aspx" />
@@ -227,13 +268,33 @@
     <Content Include="CRM\finance\CRM_Cope_invoice_list.aspx" />
     <Content Include="CRM\finance\CRM_Cope_invoice_add.aspx" />
     <Content Include="CRM\finance\CRM_Cope_invoice.aspx" />
+    <Content Include="CRM\finance\Financial_Labour_Cost_add_FK.aspx" />
+    <Content Include="CRM\finance\Financial_Labour_Cost_FK.aspx" />
+    <Content Include="CRM\finance\Financial_Labour_Cost_mx.aspx" />
+    <Content Include="CRM\finance\Financial_Labour_Cost_add_mx.aspx" />
+    <Content Include="CRM\finance\Financial_Reports_SingleCustomer1.aspx" />
+    <Content Include="CRM\finance\Financial_Reports_SingleCustomer_add1.aspx" />
+    <Content Include="CRM\finance\Financial_Reports_SingleCustomer_add.aspx" />
+    <Content Include="CRM\finance\Financial_Reports_SingleCustomer.aspx" />
+    <Content Include="CRM\finance\Financial_Profit.aspx" />
+    <Content Include="CRM\finance\Financial_Profit_add.aspx" />
+    <Content Include="CRM\finance\Financial_Labour_Cost.aspx" />
+    <Content Include="CRM\finance\Financial_Change_Cost.aspx" />
+    <Content Include="CRM\finance\Financial_Labour_Cost_add.aspx" />
+    <Content Include="CRM\finance\Financial_Fixed_Cost.aspx" />
+    <Content Include="CRM\finance\Financial_Change_Cost_add.aspx" />
+    <Content Include="CRM\finance\Financial_Fixed_Cost_add.aspx" />
     <Content Include="CRM\finance\invoice.aspx" />
     <Content Include="CRM\finance\invoice_add.aspx" />
     <Content Include="CRM\finance\invoice_list.aspx" />
+    <Content Include="CRM\finance\Financial_Labour_Cost_add_add.aspx" />
     <Content Include="CRM\finance\Receive.aspx" />
     <Content Include="CRM\finance\receiveanduncollected.aspx" />
     <Content Include="CRM\finance\Receive_add.aspx" />
+    <Content Include="CRM\finance\Receive_add_Financial_Labour.aspx" />
+    <Content Include="CRM\finance\Receive_add_khjdgl.aspx" />
     <Content Include="CRM\finance\Receive_list.aspx" />
+    <Content Include="CRM\finance\SyncWX_Change_Cost.aspx" />
     <Content Include="CRM\Help\help_category.aspx" />
     <Content Include="CRM\Help\help_category_add.aspx" />
     <Content Include="CRM\Help\help.aspx" />
@@ -243,6 +304,7 @@
     <Content Include="CRM\Help\help_share.aspx" />
     <Content Include="CRM\IPCam\view.aspx" />
     <Content Include="CRM\IPCam\view.html" />
+    <Content Include="CRM\Jifen\jifen_yg_view.aspx" />
     <Content Include="CRM\Jifen\Jifen_kh.aspx" />
     <Content Include="CRM\Jifen\Jifen_kh_add.aspx" />
     <Content Include="CRM\Jifen\Jifen_yg.aspx" />
@@ -251,6 +313,8 @@
     <Content Include="CRM\KcGl\Budge_Rate_Add.aspx" />
     <Content Include="CRM\KcGl\Jcb_Ckgl.aspx" />
     <Content Include="CRM\KcGl\Jcb_Ckgl_Add.aspx" />
+    <Content Include="CRM\KcGl\CKKW.aspx" />
+    <Content Include="CRM\KcGl\CKKW_add.aspx" />
     <Content Include="CRM\Print\BudgePrint.aspx" />
     <Content Include="CRM\Print\BudgePrintlist.aspx" />
     <Content Include="CRM\Print\BudgePrint_01.aspx" />
@@ -266,10 +330,19 @@
     <Content Include="CRM\Product\SelectGYS.aspx" />
     <Content Include="CRM\purchase\PickingList.aspx" />
     <Content Include="CRM\purchase\PickingList_add.aspx" />
+    <Content Include="CRM\purchase\PurchaseMainAdd_GSYP.aspx" />
+    <Content Include="CRM\purchase\PurchaseMain_GSYP.aspx" />
+    <Content Include="CRM\purchase\PurchaseMainAdd_DB.aspx" />
+    <Content Include="CRM\purchase\PurchaseMain_DB.aspx" />
+    <Content Include="CRM\purchase\purchase_gsyp.aspx" />
+    <Content Include="CRM\purchase\purchase_gsyp_add.aspx" />
+    <Content Include="CRM\purchase\PurchaseMain_View.aspx" />
     <Content Include="CRM\purchase\PurchaseMain.aspx" />
     <Content Include="CRM\purchase\PurchaseMainAdd.aspx" />
     <Content Include="CRM\purchase\PurchaseMainAdd_CK.aspx" />
     <Content Include="CRM\purchase\SavePickList.aspx" />
+    <Content Include="CRM\purchase\SelectCustomer.aspx" />
+    <Content Include="CRM\purchase\SelectProduct_DB.aspx" />
     <Content Include="CRM\purchase\SelectProduct.aspx" />
     <Content Include="CRM\purchase\SelectSupplier.aspx" />
     <Content Include="CRM\purchase\StockView.aspx" />
@@ -277,7 +350,39 @@
     <Content Include="CRM\purchase\StockView_out.aspx" />
     <Content Include="CRM\Repair\Repairphone.aspx" />
     <Content Include="CRM\Repair\UploadImg.aspx" />
+    <Content Include="CRM\Sale\GetCustomer.aspx" />
+    <Content Include="CRM\Sale\GetProduct.aspx" />
+    <Content Include="CRM\Sale\order_add_khjdgl.aspx" />
     <Content Include="CRM\Sale\SelectBudge.aspx" />
+    <Content Include="CRM\shareto\css\bootstrap.min.css" />
+    <Content Include="CRM\shareto\css\flexslider.css" />
+    <Content Include="CRM\shareto\css\menu_elastic.css" />
+    <Content Include="CRM\shareto\css\style.css" />
+    <Content Include="CRM\shareto\images\hbg.png" />
+    <Content Include="CRM\shareto\images\kitchen_adventurer_caramel.jpg" />
+    <Content Include="CRM\shareto\images\kitchen_adventurer_cheesecake_brownie.jpg" />
+    <Content Include="CRM\shareto\images\tx.jpg" />
+    <Content Include="CRM\shareto\js\area.js" />
+    <Content Include="CRM\shareto\js\awardRotate.js" />
+    <Content Include="CRM\shareto\js\bootstrap.min.js" />
+    <Content Include="CRM\shareto\js\classie.js" />
+    <Content Include="CRM\shareto\js\html5.js" />
+    <Content Include="CRM\shareto\js\jquery.flexslider.js" />
+    <Content Include="CRM\shareto\js\jquery.gcjs.js" />
+    <Content Include="CRM\shareto\js\jquery.min.js" />
+    <Content Include="CRM\shareto\js\js.js" />
+    <Content Include="CRM\shareto\js\main3.js" />
+    <Content Include="CRM\shareto\js\snap.svg-min.js" />
+    <Content Include="CRM\shareto\product_share.html" />
+    <Content Include="CRM\shareto\WXtest.html" />
+    <Content Include="CRM\shareto\材料分享.html" />
+    <Content Include="CRM\shareto\jifen_share.html" />
+    <Content Include="CRM\shareto\积分分享.html" />
+    <Content Include="CRM\Share\product_view.aspx" />
+    <Content Include="CRM\WX\toexecl.aspx" />
+    <Content Include="CRM\WX\WebForm1.aspx" />
+    <Content Include="CRM\WX\WXUserlist.aspx" />
+    <Content Include="CRM\WX\WXCheckIn.aspx" />
     <Content Include="CSS\base.css" />
     <Content Include="CSS\LockScreen.css" />
     <Content Include="CSS\DragFlow\history.css" />
@@ -327,7 +432,27 @@
     <Content Include="FakesAssemblies\XHD.BLL.Fakes.dll" />
     <Content Include="FakesAssemblies\XHD.BLL.Fakes.xml" />
     <Content Include="GetRegNum.aspx" />
+    <Content Include="HR\Getemp_SocialWorker.aspx" />
+    <Content Include="HR\hr_master.aspx" />
+    <Content Include="HR\hr_master_add.aspx" />
+    <Content Include="jlui3.2\lib\ligerUI\echarts-all.js" />
+    <Content Include="JS\base64.js" />
+    <Content Include="JS\wangEditor\wangEditor.min.css" />
+    <Content Include="JS\wangEditor\wangEditor.min.js" />
+    <Content Include="lib\ligerUI\ligerComboBox1.1.5.js" />
+    <Content Include="ReportForm\emp\customer_follow_fan - 复制.aspx" />
+    <Content Include="ReportForm\emp\customer_follow_fan.aspx" />
+    <Content Include="View\forgetPwd\css\css.css" />
+    <Content Include="View\forgetPwd\css\yzm.gif" />
+    <Content Include="View\forgetPwd\forgetPwd1.htm" />
+    <Content Include="View\forgetPwd\forgetPwd2.htm" />
+    <Content Include="View\forgetPwd\forgetPwd3.htm" />
+    <Content Include="View\forgetPwd\forgetPwd4.htm" />
     <Content Include="HR\hr_changepwd.aspx" />
+    <Content Include="HR\hr_insurance.aspx" />
+    <Content Include="HR\hr_employee_accounts.aspx" />
+    <Content Include="HR\hr_employee_accounts_add.aspx" />
+    <Content Include="HR\hr_birthday.aspx" />
     <Content Include="HR\hr_socialWorker.aspx" />
     <Content Include="HR\hr_socialWorker_add.aspx" />
     <Content Include="HR\hr_socialWorker_Calendar.aspx" />
@@ -858,14 +983,15 @@
     <Content Include="NoVerified\NVRepairTelphone.aspx" />
     <Content Include="QQ_Login.aspx" />
     <Content Include="qq_rebind.aspx" />
-    <Content Include="System\sendsmsmodel.aspx" />
-    <Content Include="System\smsmodel_add.aspx" />
-    <Content Include="System\smsmodel.aspx" />
     <Content Include="System\push.aspx" />
+    <Content Include="System\sendsmsmodel.aspx" />
     <Content Include="System\sms.aspx" />
     <Content Include="System\SingleSignOn.aspx" />
     <Content Include="CRM\Customer\thum_img_add.aspx" />
+    <Content Include="System\smsmodel.aspx" />
+    <Content Include="System\smsmodel_add.aspx" />
     <Content Include="testcookie.html" />
+    <Content Include="View\score_view.aspx" />
     <Content Include="View\product_view.aspx" />
     <Content Include="CRM\Product\product.aspx" />
     <Content Include="CRM\Product\product_add.aspx" />
@@ -913,9 +1039,9 @@
     <Content Include="Images\swfupload\upload.gif" />
     <Content Include="Images\swfupload\upload_normal.gif" />
     <Content Include="Images\swfupload\upload_waiting.gif" />
-    <Content Include="JS\install\sql.sql" />
-    <Content Include="JS\install\success.aspx" />
-    <Content Include="JS\install\remind.aspx" />
+    <Content Include="install\sql.sql" />
+    <Content Include="install\success.aspx" />
+    <Content Include="install\remind.aspx" />
     <Content Include="JS\DragFlow\DragFlow.Init.js" />
     <Content Include="JS\DragFlow\DragFlow.JQuery.js" />
     <Content Include="JS\DragFlow\DragFlow.Render.js" />
@@ -945,7 +1071,7 @@
     <Content Include="Data\PurchaseList.ashx" />
     <Content Include="Data\Budge.ashx" />
     <Content Include="Data\uploadbbs.ashx" />
-    <Content Include="Data\Purchase.ashx" />
+    <Content Include="Data\Purchase_CGLY.ashx" />
     <Content Include="Data\sys_sms.ashx" />
     <Content Include="Data\PickingList.ashx" />
     <Content Include="Data\Budge_BasicPart.ashx" />
@@ -961,7 +1087,21 @@
     <Content Include="Data\hr_socialWorker.ashx" />
     <Content Include="Data\hr_socialWorker_Follow.ashx" />
     <Content Include="Data\hr_socialWorker_Calendar.ashx" />
+    <Content Include="Data\hr_employee_accounts.ashx" />
     <Content Include="Data\smsmodel.ashx" />
+    <Content Include="Data\CKKW.ashx" />
+    <Content Include="Data\WX_Base.ashx" />
+    <Content Include="Data\Financial_Fixed_Cost.ashx" />
+    <Content Include="Data\Financial_Change_Cost.ashx" />
+    <Content Include="Data\Financial_Labour_Cost.ashx" />
+    <Content Include="Data\Financial_Profit.ashx" />
+    <Content Include="Data\Financial_Reports_SingleCustomer.ashx" />
+    <Content Include="Data\Customer_type.ashx" />
+    <Content Include="Data\Financial_Labour_Cost_Recive.ashx" />
+    <Content Include="Data\carmanage.ashx" />
+    <Content Include="Data\carmanageuse.ashx" />
+    <Content Include="Data\toolsmanage.ashx" />
+    <Content Include="Data\Purchase.ashx" />
     <None Include="JS\DragFlow\jquery-1.4.1-vsdoc.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.js" />
     <Content Include="JS\DragFlow\jquery-1.4.1.min.js" />
@@ -2656,9 +2796,9 @@
     <Content Include="Images\xgcalendar\turnback.png" />
     <Content Include="Images\xgcalendar\us.gif" />
     <Content Include="Images\xgcalendar\view.png" />
-    <Content Include="JS\install\index.aspx" />
-    <Content Include="JS\install\step2.aspx" />
-    <Content Include="JS\install\step3.aspx" />
+    <Content Include="install\index.aspx" />
+    <Content Include="install\step2.aspx" />
+    <Content Include="install\step3.aspx" />
     <Content Include="Data\sys_log_err.ashx" />
     <Content Include="ReportForm\emp\customer_add_month.aspx" />
     <Content Include="ReportForm\funnel\CRM_Report_funnel.aspx" />
@@ -2956,11 +3096,13 @@
     <Content Include="View\QrCode_Generate.aspx" />
     <Content Include="webserver\AppApi.asmx" />
     <Content Include="webserver\bbsapi.asmx" />
+    <Content Include="webserver\qjapi.asmx" />
     <Content Include="webserver\testapi.asmx" />
     <Content Include="webserver\kjlapi.asmx" />
     <Content Include="webserver\sms.asmx" />
     <Content Include="webserver\WebService1.asmx" />
     <Content Include="WebSite\about.html" />
+    <Content Include="WebSite\barcode.html" />
     <Content Include="WebSite\bj\css\baojia.css" />
     <Content Include="WebSite\bj\images\anbtton.gif" />
     <Content Include="WebSite\bj\images\close.gif" />
@@ -2982,7 +3124,27 @@
     <Content Include="WebSite\bootstrap\js\bootstrap-datetimepicker.js" />
     <Content Include="WebSite\bootstrap\js\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="WebSite\bootstrap\js\bootstrap.min.js" />
+    <Content Include="WebSite\classicmobile\css\amazeui.min.css" />
+    <Content Include="WebSite\classicmobile\images\1.jpg" />
+    <Content Include="WebSite\classicmobile\images\2.jpg" />
+    <Content Include="WebSite\classicmobile\images\3.jpg" />
+    <Content Include="WebSite\classicmobile\images\4.jpg" />
+    <Content Include="WebSite\classicmobile\images\5.jpg" />
+    <Content Include="WebSite\classicmobile\images\a2.jpg" />
+    <Content Include="WebSite\classicmobile\images\jiahao.png" />
+    <Content Include="WebSite\classicmobile\images\jianhao.png" />
+    <Content Include="WebSite\classicmobile\images\shang.png" />
+    <Content Include="WebSite\classicmobile\images\xia.png" />
+    <Content Include="WebSite\classicmobile\images\xuanzhuan.png" />
+    <Content Include="WebSite\classicmobile\images\you.png" />
+    <Content Include="WebSite\classicmobile\images\zhong.png" />
+    <Content Include="WebSite\classicmobile\images\zuo.png" />
+    <Content Include="WebSite\classicmobile\js\amazeui.js" />
+    <Content Include="WebSite\classicmobile\js\classes.js" />
+    <Content Include="WebSite\classicmobile\js\jquery.js" />
+    <Content Include="WebSite\classicmobile\js\jquery.min.js" />
     <Content Include="WebSite\contact.html" />
+    <Content Include="WebSite\js\jquery-barcode.js" />
     <Content Include="WebSite\memberEdit.aspx" />
     <Content Include="WebSite\member.aspx" />
     <Content Include="WebSite\css\about.css" />
@@ -4287,7 +4449,6 @@
     </Content>
     <Content Include="lib\ligerUI\skins\ext\image\flexigrid_blue\indicator_waitanim.gif.bak" />
     <Content Include="lib\ligerUI\skins\ext\image\flexigrid_blue\vssver2.scc" />
-    <Content Include="lib\ligerUI\skins\ext\images\tree\Thumbs.db" />
     <Content Include="lib\ligerUI\skins\ext-purple\image\flexigrid_blue\indicator_waitanim.gif.bak" />
     <Content Include="lib\ligerUI\skins\ext-purple\image\flexigrid_blue\vssver2.scc" />
     <Content Include="lib\ligerUI\skins\icons\1.bat" />
@@ -4552,6 +4713,35 @@
     <Compile Include="CRM\Repair\Repair_Process.aspx.designer.cs">
       <DependentUpon>Repair_Process.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CRM\WX\toexecl.aspx.cs">
+      <DependentUpon>toexecl.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CRM\WX\toexecl.aspx.designer.cs">
+      <DependentUpon>toexecl.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CRM\WX\WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CRM\WX\WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Purchase.ashx.cs">
+      <DependentUpon>Purchase.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\toolsmanage.ashx.cs">
+      <DependentUpon>toolsmanage.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\carmanageuse.ashx.cs">
+      <DependentUpon>carmanageuse.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\carmanage.ashx.cs">
+      <DependentUpon>carmanage.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CKKW.ashx.cs">
+      <DependentUpon>CKKW.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Data\base.ashx.cs">
       <DependentUpon>base.ashx</DependentUpon>
     </Compile>
@@ -4571,8 +4761,29 @@
     <Compile Include="Data\CRM_CEStage_Follow.ashx.cs">
       <DependentUpon>CRM_CEStage_Follow.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Data\smsmodel.ashx.cs">
-      <DependentUpon>smsmodel.ashx</DependentUpon>
+    <Compile Include="Data\Customer_type.ashx.cs">
+      <DependentUpon>Customer_type.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Financial_Labour_Cost_Recive.ashx.cs">
+      <DependentUpon>Financial_Labour_Cost_Recive.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Financial_Reports_SingleCustomer.ashx.cs">
+      <DependentUpon>Financial_Reports_SingleCustomer.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Financial_Profit.ashx.cs">
+      <DependentUpon>Financial_Profit.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Financial_Labour_Cost.ashx.cs">
+      <DependentUpon>Financial_Labour_Cost.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Financial_Change_Cost.ashx.cs">
+      <DependentUpon>Financial_Change_Cost.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\hr_employee_accounts.ashx.cs">
+      <DependentUpon>hr_employee_accounts.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Financial_Fixed_Cost.ashx.cs">
+      <DependentUpon>Financial_Fixed_Cost.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\hr_socialWorker.ashx.cs">
       <DependentUpon>hr_socialWorker.ashx</DependentUpon>
@@ -4589,6 +4800,9 @@
     </Compile>
     <Compile Include="Data\CRM_Classic_case.ashx.cs">
       <DependentUpon>CRM_Classic_case.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\smsmodel.ashx.cs">
+      <DependentUpon>smsmodel.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\uploadapp.ashx.cs">
       <DependentUpon>uploadapp.ashx</DependentUpon>
@@ -4612,8 +4826,8 @@
       <DependentUpon>sys_sms.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\sms.cs" />
-    <Compile Include="Data\Purchase.ashx.cs">
-      <DependentUpon>Purchase.ashx</DependentUpon>
+    <Compile Include="Data\Purchase_CGLY.ashx.cs">
+      <DependentUpon>Purchase_CGLY.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\PurchaseList.ashx.cs">
       <DependentUpon>PurchaseList.ashx</DependentUpon>
@@ -4626,6 +4840,10 @@
     </Compile>
     <Compile Include="Data\uploadbbs.ashx.cs">
       <DependentUpon>uploadbbs.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\WX.cs" />
+    <Compile Include="Data\WX_Base.ashx.cs">
+      <DependentUpon>WX_Base.ashx</DependentUpon>
     </Compile>
     <Compile Include="Data\XM_LIST.ashx.cs">
       <DependentUpon>XM_LIST.ashx</DependentUpon>
@@ -4825,6 +5043,9 @@
     <Compile Include="View\QrCodeHandler.ashx.cs">
       <DependentUpon>QrCodeHandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="View\View_APP.ashx.cs">
+      <DependentUpon>View_APP.ashx</DependentUpon>
+    </Compile>
     <Compile Include="webserver\AppApi.asmx.cs">
       <DependentUpon>AppApi.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -4833,6 +5054,10 @@
     <Compile Include="webserver\app_kjl_api.cs" />
     <Compile Include="webserver\bbsapi.asmx.cs">
       <DependentUpon>bbsapi.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="webserver\qjapi.asmx.cs">
+      <DependentUpon>qjapi.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="webserver\PushMessage.cs" />
@@ -4929,10 +5154,12 @@
     <Content Include="ueditor1_2_5_1-utf8-net\net\scrawlUp.ashx" />
     <Content Include="file\template\customer_template.xls" />
     <Content Include="packages.config" />
+    <Content Include="JS\wangEditor\fonts\w-e-icon.woff" />
     <None Include="Properties\PublishProfiles\11.pubxml" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
     <Content Include="View\QrCodeHandler.ashx" />
     <Content Include="View\product_handler.ashx" />
+    <Content Include="View\View_APP.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -23,7 +23,7 @@
     <script src="../../JS/XHD.js" type="text/javascript"></script>
    
     <script type="text/javascript">
-        var bjmc = getparastr("bjmc");
+        var bjmc = decodeURI(getparastr("bjmc"));
         $(function () {
             var strurl = "../../data/Budge.ashx?Action=selecttree";
         var  g=   $("#maingrid4").ligerGrid({

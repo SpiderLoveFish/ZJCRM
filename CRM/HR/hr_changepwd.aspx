@@ -15,7 +15,8 @@
     <script src="../lib/ligerUI/js/plugins/ligerTextBox.js" type="text/javascript"></script>
     <script src="../lib/ligerUI/js/plugins/ligerDateEditor.js" type="text/javascript"></script>
     <script src="../lib/ligerUI/js/plugins/ligerCheckBox.js" type="text/javascript"></script>
-    
+     <script src="../lib/ligerUI/js/plugins/ligerToolBar.js" type="text/javascript"></script>
+  
     <script src="../lib/ligerUI/js/plugins/ligerDialog.js" type="text/javascript"></script>
     
     <script src="../lib/jquery-validation/jquery.validate.js" type="text/javascript"></script>
@@ -43,7 +44,8 @@
                     data: issave,
                     success: function (responseText) {
                         if (responseText == "true") {
-                            parent.$.ligerDialog.close();
+                            $.ligerDialog.success('操作成功！。');
+                          //  parent.$.ligerDialog.close();
                         }
                         else {
                             $.ligerDialog.error('操作失败！请输入正确的原密码。');

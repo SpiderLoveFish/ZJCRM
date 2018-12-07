@@ -46,6 +46,7 @@ namespace XHD.CRM.Data
                 model.position_name = PageValidate.InputText(request["T_position"], 255);
                 model.position_order = int.Parse( request["T_order"]);
                 model.position_level =  PageValidate.InputText( request["T_level"],50);
+                model.zz = PageValidate.InputText(request["T_zz"], 550);
 
                 string id = PageValidate.InputText(request["id"], 250);
 
@@ -77,6 +78,10 @@ namespace XHD.CRM.Data
                     if (dr["position_order"].ToString() != request["T_order"])
                     {
                         log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "行号", dr["position_order"].ToString(), request["T_order"]);
+                    }
+                    if (dr["zz"].ToString() != request["T_zz"])
+                    {
+                        log.Add_log(UserID, UserName, IPStreet, EventTitle, EventType, EventID, "职务职责", dr["zz"].ToString(), request["T_zz"]);
                     }
                 }
                 else

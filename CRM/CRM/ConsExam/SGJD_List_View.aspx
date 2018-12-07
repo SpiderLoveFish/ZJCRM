@@ -198,7 +198,7 @@ table {
    <script type="text/javascript">
        var t = ""; var tt = "";
        $(function () {
-
+          
            $('#title').append("<h2 id='titleh2' class='top_title'>客户：" + decodeURI(getparastr("khmc")) + "<lable >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电话：" + getparastr("tel") + "</lable></h2>")
            var t2 = "";
            //alert(getparastr("jhdate"));
@@ -248,7 +248,7 @@ table {
            $.ajax({
                type: "GET",
                url: "../../data/SGJD_LIST.ashx", /* 注意后面的名字对应CS的方法名称 */
-               data: { Action: 'detailform', cid: getparastr("cid"), ry: ryid, rnd: Math.random() }, /* 注意参数的格式和名称 */
+               data: { Action: 'detailform', cid: getparastr("cid"), ry: ryid, IsPlan: getparastr("IsPlan") , rnd: Math.random() }, /* 注意参数的格式和名称 */
                //url: "../../data/SGJD_LIST.ashx?Action=formgrid&cid=" + getparastr("cid") + "&rdm=" + Math.random(),
                contentType: "application/json; charset=utf-8",
                dataType: "json",

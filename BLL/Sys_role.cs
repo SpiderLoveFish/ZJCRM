@@ -195,8 +195,11 @@ namespace XHD.BLL
 		{
 			return dal.GetList(PageSize, PageIndex, strWhere, filedOrder, out Total);
 		}
-
-		#endregion  Method
-	}
+        public bool IsExistTelRight(int empid)
+        {
+            return dal.IsExistTelRight(empid);
+        }
+            #endregion  Method
+        }
 }
 

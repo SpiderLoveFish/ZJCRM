@@ -174,6 +174,10 @@ namespace XHD.BLL
 					{
 						model.Delete_time=DateTime.Parse(dt.Rows[n]["Delete_time"].ToString());
 					}
+                    if (dt.Rows[n]["zz"] != null && dt.Rows[n]["zz"].ToString() != "")
+                    {
+                        model.position_name = dt.Rows[n]["zz"].ToString();
+                    }
 					modelList.Add(model);
 				}
 			}

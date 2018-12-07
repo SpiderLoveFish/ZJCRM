@@ -31,11 +31,19 @@ namespace XHD.Model
 		private decimal? _fbamount;
 		private int? _versions;
         private string _ModelStyle;
-        
-		/// <summary>
-		/// 
-		/// </summary>
-		public string id
+        private decimal? _PerSquarePrice;
+        private decimal? _SquareAmount;
+        private decimal? _SquareMeter;
+        private decimal? _StandardAmount;
+        private decimal? _StandardArea;
+
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string id
 		{
 			set{ _id=value;}
 			get{return _id;}
@@ -198,8 +206,37 @@ namespace XHD.Model
             set { _ModelStyle = value; }
             get { return _ModelStyle; }
         }
-		#endregion Model
 
-	}
+        public decimal? PerSquarePrice
+        {
+            set { _PerSquarePrice = value; }
+            get { return _PerSquarePrice; }
+        }
+
+        public decimal? SquareAmount
+        {
+            set { _SquareAmount = value; }
+            get { return _SquareAmount; }
+        }
+
+        public decimal? SquareMeter
+        {
+            set { _SquareMeter = value; }
+            get { return _SquareMeter; }
+        }
+
+        public decimal? StandardAmount
+        {
+            set { _StandardAmount = value; }
+            get { return _StandardAmount; }
+        }
+        public decimal? StandardArea
+        {
+            set { _StandardArea = value; }
+            get { return _StandardArea; }
+        }
+        #endregion Model
+
+    }
 }
 

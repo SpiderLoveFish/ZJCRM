@@ -75,9 +75,9 @@
         function doserch() {
             var sendtxt = "&Action=gridselectgys&rnd=" + Math.random();
             var serchtxt = $("#form1 :input").fieldSerialize() + sendtxt;
-            //  alert(serchtxt);
+               //alert(serchtxt);
             var manager = $("#maingrid4").ligerGetGridManager();
-            manager.GetDataByURL("../../data/Budge.ashx?" + serchtxt);
+            manager.GetDataByURL("../../data/Purchase.ashx?" + serchtxt);
         }
         
          

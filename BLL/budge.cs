@@ -38,13 +38,13 @@ namespace XHD.BLL
         {
             return dal.Add(model);
         }
-        public int AddModel(string bid,string modelid,string modelname, int empid, string remaks)
-        { return dal.AddModel(bid, modelid,modelname, empid, remaks); }
+        public int AddModel(string bid,string modelid,string modelname,string mjprice, int empid, string remaks)
+        { return dal.AddModel(bid, modelid,modelname,mjprice, empid, remaks); }
 
 
-        public int AddModelToBudge(string bid, string modelid)
+        public int AddModelToBudge(string bid, string modelid,decimal PerSquarePrice)
         {
-            return dal.AddModelToBudge(bid,modelid);
+            return dal.AddModelToBudge(bid,modelid, PerSquarePrice);
         }
         public int AddBJlist(int cid, string bid,   string plist)
         {

@@ -96,6 +96,14 @@ namespace XHD.CRM.Data
                                     sol.Delete(" LastLogTime<DATEADD(MI,-1,getdate())");
 
                                     //验证完毕，允许登录
+                                    //string sql = "SELECT * FROM dbo.sys_info WHERE sys_key='sms_login' AND sys_value='Y'";
+                                    //if (DBUtility.DbHelperSQL.Query(sql).Tables[0].Rows.Count > 0)
+                                    //{
+                                    //    if (ds.Tables[0].Rows[0]["tel"].ToString().Length>9)
+                                    //    context.Response.Write("5");
+                                    //    else context.Response.Write("6");//此帐号未维护手机号，请联系管理员
+                                    //}
+                                    //else
                                     context.Response.Write("2");
                                 }
                                 else
@@ -123,9 +131,23 @@ namespace XHD.CRM.Data
                     context.Response.Write(ex.ToString());
                 }
             }
-             
+            if (request["Action"] == "checkyzm")
+            {
+                string username = PageValidate.InputText(request["username"], 255);
 
-            if (request["Action"] == "logout")
+                string sqls = "select * FROM dbo.hr_employee WHERE uid='" + username + "'";
+                DataSet ds = DBUtility.DbHelperSQL.Query(sqls);
+                string sql = "SELECT * FROM dbo.sys_info WHERE sys_key='sms_login' AND sys_value='Y'";
+                if (DBUtility.DbHelperSQL.Query(sql).Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["tel"].ToString().Length > 9)
+                        context.Response.Write("true");
+                    else context.Response.Write("false");//此帐号未维护手机号，请联系管理员
+                }
+                else context.Response.Write("");
+            }
+
+                if (request["Action"] == "logout")
             {
                 var cookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
 

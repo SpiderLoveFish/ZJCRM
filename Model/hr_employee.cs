@@ -41,6 +41,7 @@ namespace XHD.Model
         private string _portal;
         private string _theme;
         private int? _canlogin;
+        private int? _jbx;
         private string _default_city;
         private string _workID;
         /// <summary>
@@ -290,6 +291,12 @@ namespace XHD.Model
         {
             set { _canlogin = value; }
             get { return _canlogin; }
+        }
+
+        public int? jbx
+        {
+            set { _jbx = value; }
+            get { return _jbx; }
         }
         /// <summary>
         /// 

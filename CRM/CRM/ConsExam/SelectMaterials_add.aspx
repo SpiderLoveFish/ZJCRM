@@ -35,58 +35,145 @@
                        display: '序号', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                        { return (page - 1) * pagesize + rowindex + 1; }
                    },
-                     { display: '材料编号', name: 'C_code', width: 80, align: 'left' },
-                      { display: '材料名称', name: 'product_name', width: 100, align: 'left' },
+                     
+                      { display: '材料名称', name: 'product_name', width: 150, align: 'left' },
                      { display: '材料型号', name: 'ProModel', width: 100, align: 'left' },
                         { display: '材料规格', name: 'specifications', width: 100, align: 'left' },
                          { display: '所属品牌', name: 'Brand', width: 100, align: 'left' },
-                          { display: '类别', name: 'category_name', width: 80, align: 'left' },
+                      //    { display: '类别', name: 'category_name', width: 80, align: 'left' },
                         { display: '单位', name: 'unit', width: 40, align: 'left' },
                         {
-                            display: '数量', name: 'AmountSum', width: 60, align: 'left'
-                            , type: 'int', editor: { type: 'int' } 
+                            display: '申请数量', name: 'AmountSum', width: 60, align: 'right'
+                            , type: 'float', editor: { type: 'float' }
+                             
+                    },
+                         {
+                            display: '单价', name: 'InternalPrice', width: 60, align: 'right'
+                            , type: 'float', editor: { type: 'float' }
                              
                         },
+                        {
+                            display: '工地数量', name: 'wcsl', width: 60, align: 'right'
+                            , type: 'float'
+
+                        },
+                          {
+                              display: '在途数量', name: 'ztsl', width: 60, align: 'right'
+                            , type: 'float'
+
+                          },
+                           {
+                               display: '可提交量', name: 'ktjl', width: 90, align: 'right', render: function (item) {
+                                   var ktjl = item.AmountSum - item.wcsl - item.ztsl;
+                                   var html
+                                   if (ktjl <= 0) {
+                                       html = "<font color='#CC0000'>"+ktjl+"</font>"
+                                   }
+                                   else
+                                       html=ktjl
+
+                                   return html;
+                               }
+                           },
                     {
-                        display: '提交采购', width: 60, render: function (item) {
+                        display: '提交申请', width: 60, render: function (item) {
                             var html;
+
+                        
+                                    if (item.AmountSum <=item.wcsl+item.ztsl ) {
+                                html = "<font color='#007F00'>已完成</font>"
+
+                                    }
+                            else
                             if (item.IsStatus == 0) {
                                 html = "<a href='javascript:void(0)' onclick=Submit(" + item.id + ")>提交</a>"
  
                             }
-                            else html = "<a href='javascript:void(0)' onclick=Revoke(" + item.id + ") ><font color='CC0000'>撤回</font></a>";
+
+                            else
+                                if (item.IsStatus == 1) {
+                                html = "<a href='javascript:void(0)' onclick=Revoke(" + item.id + ") ><font color='#CC0000'>撤回</font></a>";
+
+                                }
+                              
+                               
+                                else
+                                    if (item.IsStatus == 7) {
+                                        html = "<a href='javascript:void(0)' onclick=Submit(" + item.id + ")><font color='#AA5FFF'>再次提交</font></a>"
+
+                                    }
+                                  
+                  
+                            
+                            else html = "<font color='#F00'>异常</font>";
                            
 
                             return html;
                         }
 
                     }, {
-                        display: '状态', width: 80, render: function (item) {
+                        display: '提交退货', width: 60, render: function(item) {
                             var html;
-                            if (item.IsStatus == 0) {
-                                html = "未提交\已提交";
-                             
+
+                            if (item.AmountSum < item.wcsl + item.ztsl & item.IsStatus == 1) {
+                                html = "<a href='javascript:void(0)' onclick=Revoke(" + item.id + ") ><font color='#CC0000'>撤回</font></a>";
+
                             }
-                            else html = "<font color='CC0000'>已采购\已领用</font>";
+
+
+                            else
+                            if (item.AmountSum <item.wcsl + item.ztsl) {
+                                html = "<a href='javascript:void(0)' onclick=Submit(" + item.id + ")><font color='#AA5FFF'>提交</font></a>"
+
+                            }
+                     
+                         
+
+
+                         
+
+
+
+                            else html = "<font color='#F00'>不可提交</font>";
 
 
                             return html;
                         }
 
                     },
-                        { display: '添加人', name: 'name', width: 60, align: 'left' },
+                        //{
+                    //    display: '状态', width: 80, render: function (item) {
+                    //        var html;
+                    //        if (item.IsStatus == 0) {
+                    //            html = "未提交\已提交";
+                             
+                    //        }
+                    //        else html = "<font color='CC0000'>已采购\已领用</font>";
+
+
+                    //        return html;
+                    //    }
+
+                    //},
+                        { display: '申请人', name: 'name', width: 60, align: 'left' },
                         {
-                            display: '添加时间', name: 'DoTime', width: 90, render: function (item) {
+                            display: '申请时间', name: 'DoTime', width: 90, render: function (item) {
                                 var DoTime = formatTimebytype(item.DoTime, 'yyyy-MM-dd');
                                 return DoTime;
                             }
                         },
-                         {
-                             display: '图文', width: 40, render: function (item) {
+                        { display: '材料编号', name: 'C_code', width: 80, align: 'left' },
+                        { display: '供应商', name: 'SupplierName', width: 100, align: 'left' },
+                   
+                        { display: '备注', name: 'b1', width: 200, align: 'left' },
+
+                        {
+                             display: '详细', width: 40, render: function (item) {
                                  var html = "<a href='javascript:void(0)' onclick=view(" + item.product_id + ")>查看</a>"
                                  return html;
                              }
                          }
+              
               
 
                 ],
@@ -187,13 +274,12 @@
                 $("#maingrid4").ligerGetGridManager().onResize();
             });
         }
-        doserch()
-        {
+     
             function doserch() {
                 var manager = $("#maingrid4").ligerGetGridManager();
                 manager.GetDataByURL("../../data/PurchaseList.ashx?Action=tempgrid&cid=" + getparastr("cid") + "&stext=" + $("#stext").val());
             }
-        }
+ 
         //提交
         function Submit(id)
         {
@@ -294,6 +380,19 @@
 
 
         }
+        //编辑
+        function editt() {
+ 
+            var manager = $("#maingrid4").ligerGetGridManager();
+            var row = manager.getSelectedRow();
+            if (row) {
+                f_openWindow_("../../CRM/ConsExam/PurProductList_edit.aspx?cid=" + getparastr("cid") + "&id=" + row.id + "&sgjl="+getparastr("sgjl"), "辅助信息", 800, 500);
+            } else {
+                $.ligerDialog.warn("请选择类别！");
+            }
+
+        }
+
         //获取返回人员
         function f_getry(item, dialog) {
             var rows = null;
@@ -317,7 +416,13 @@
                         //setTimeout(function () {
                         //    f_success();
                         //}, 10);
-                        dialog.frame.f_sucess();
+                        if (data == "false")
+                        {
+                            dialog.frame.f_error1();
+                        }
+                        else {
+                            dialog.frame.f_sucess();
+                        }
 
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -352,10 +457,33 @@
             dialog.close();
         }
         //
-        function f_save()
+        function f_save(item, dialog)
         {
-            //var sendtxt = "&Action=savetotal";
-            //return $("form :input").fieldSerialize() + sendtxt;
+            var issave = dialog.frame.f_save();
+            if (issave) {
+                top.$.ligerDialog.waitting('数据保存中,请稍候...');
+                $.ajax({
+                    url: "../../data/PurchaseList.ashx", type: "POST",
+                    data: issave,
+                    success: function (responseText) {
+                        if (responseText == "flase") {
+                            top.$.ligerDialog.error("保存错误！");
+                            top.$.ligerDialog.closeWaitting();
+                        }
+                        else {
+                            dialog.close();
+                            top.$.ligerDialog.closeWaitting();
+                            f_load();
+                        }
+                    },
+                    error: function () {
+                        top.$.ligerDialog.closeWaitting();
+                        top.$.ligerDialog.error('操作失败！');
+                    }
+                });
+
+            }
+            
         }
 
         //添加自定义材料
@@ -429,11 +557,30 @@
             };
             activeDialogs = parent.jQuery.ligerDialog.open(dialogOptions);
         }
+        var activeDialogs_1 = null;
+        function f_openWindow_(url, title, width, height) {
+            var dialogOptions = {
+                zindex: 9002,
+                width: width, height: height, title: title, url: url, buttons: [
+                    {
+                        text: '保存', onclick: function (item, dialog) {
+                            f_save(item, dialog);
+                        }
+                    },
+                    {
+                        text: '关闭', onclick: function (item, dialog) {
+                            f_close(item, dialog);
+                        }
+                    }
+                ], isResize: true, timeParmName: 'a'
+            };
+            activeDialogs_1 = parent.jQuery.ligerDialog.open(dialogOptions);
+        }
 
 
         function view(id) {
             var dialogOptions = {
-                width: 770, height: 510, title: "材料档案图文介绍", url: '../view/product_view.aspx?pid=' + id + '&rnd=' + Math.random(), buttons: [
+                width: 1000, height: 600, title: "材料档案图文介绍", url: '../view/product_view.aspx?id=' + id + '&rnd=' + Math.random(), buttons: [
                         {
                             text: '关闭', onclick: function (item, dialog) {
                                 dialog.close();

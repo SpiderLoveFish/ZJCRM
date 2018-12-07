@@ -26,11 +26,15 @@ namespace XHD.BLL
         {
             return dal.GetMaxPurId();
         }
-
-		/// <summary>
-		/// 增加一条数据
-		/// </summary>
-		public bool Add(XHD.Model.Purchase_Main model)
+        public string GetMaxDBId()
+        {
+            return dal.GetMaxDBId();
+        }
+        
+        /// <summary>
+        /// 增加一条数据
+        /// </summary>
+        public bool Add(XHD.Model.Purchase_Main model)
 		{
 			return dal.Add(model);
 		}
@@ -158,17 +162,23 @@ namespace XHD.BLL
 		{
 			return dal.GetListByPage( strWhere,  orderby,  startIndex,  endIndex);
 		}
-		/// <summary>
-		/// 分页获取数据列表
-		/// </summary>
-		//public DataSet GetList(int PageSize,int PageIndex,string strWhere)
-		//{
-			//return dal.GetList(PageSize,PageIndex,strWhere);
-		//}
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        //public DataSet GetList(int PageSize,int PageIndex,string strWhere)
+        //{
+        //return dal.GetList(PageSize,PageIndex,strWhere);
+        //}
 
-		#endregion  BasicMethod
-		#region  ExtensionMethod
-        public DataSet GetPurchase_Main(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        #endregion  BasicMethod
+        #region  ExtensionMethod
+
+        public DataSet GetListdetail_GSYP(string strWhere)
+        {
+            return dal.GetListdetail_GSYP(strWhere);
+        }
+
+            public DataSet GetPurchase_Main(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
         {
             return dal.GetPurchase_Main(PageSize,PageIndex,strWhere,filedOrder,out Total);
         }
@@ -176,12 +186,20 @@ namespace XHD.BLL
         {
             return dal.GetCgGl_Gys_Main(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
-
-        public bool Add(string pid, string supid, string user, string cid, string remarks, string isgd)
+        public DataSet GetPurchase_Main_gsyp(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
         {
-            return dal.Add( pid,  supid,  user,  cid,  remarks,isgd);
+            return dal.GetPurchase_Main_gsyp(PageSize, PageIndex, strWhere, filedOrder, out Total);
         }
-        public bool updateremarks(string pid, string remarks, string date, string isgd)
+
+            public bool Add(string pid, string supid, string user, string cid, string remarks, string isgd,string cgy)
+        {
+            return dal.Add( pid,  supid,  user,  cid,  remarks,isgd,  cgy);
+        }
+        public bool AddDB(string pid, string supid, string user, string cid, string remarks, string isgdd)
+        {
+            return dal.AddDB(pid, supid, user, cid, remarks, isgdd);
+        }
+            public bool updateremarks(string pid, string remarks, string date, string isgd)
         {
             return dal.updateremarks(pid,remarks,date,isgd);
         }
@@ -190,8 +208,12 @@ namespace XHD.BLL
         {
             return dal.GetListdetail(strWhere);
         }
+        public DataSet GetListdetailDB(string strWhere)
+        {
+            return dal.GetListdetailDB(strWhere);
+        }
 
-        public int updatetotal(string pid, decimal status)
+            public int updatetotal(string pid, decimal status)
         {
             return dal.updatetotal(pid,status);
         }

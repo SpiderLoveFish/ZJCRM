@@ -372,26 +372,26 @@ namespace XHD.CRM.Data
                     string[] arr = txt.Split(':');
                     switch (arr[0])
                     {
-                        case "none": returntxt = " and 1=2 ";
-                            break;
-                        case "my":
-                            returntxt = " and ( privatecustomer='公客' or Emp_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(arr[1]) + ")";
-                            break;
-                        case "dep":
-                            if (string.IsNullOrEmpty(arr[1]))
-                                returntxt = " and ( privatecustomer='公客' or Emp_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or Create_id=" + int.Parse(uid) + ")";
-                            else
-                                returntxt = " and ( privatecustomer='公客' or Dep_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(uid) + ")";
-                            break;
-                        case "depall":
-                            BLL.hr_department dep = new BLL.hr_department();
-                            DataSet ds = dep.GetAllList();
-                            string deptask = GetDepTask(int.Parse(arr[1]), ds.Tables[0]);
-                            string intext = arr[1] + "," + deptask;
+                        //case "none": returntxt = " and 1=2 ";
+                        //    break;
+                        //case "my":
+                        //    returntxt = " and ( privatecustomer='公客' or Emp_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(arr[1]) + ")";
+                        //    break;
+                        //case "dep":
+                        //    if (string.IsNullOrEmpty(arr[1]))
+                        //        returntxt = " and ( privatecustomer='公客' or Emp_id=" + int.Parse(uid) + " or Emp_id_sg=" + int.Parse(uid) + " or Emp_id_sj=" + int.Parse(uid) + " or Create_id=" + int.Parse(uid) + ")";
+                        //    else
+                        //        returntxt = " and ( privatecustomer='公客' or Dep_id=" + int.Parse(arr[1]) + " or Emp_id_sg=" + int.Parse(arr[1]) + " or Emp_id_sj=" + int.Parse(arr[1]) + " or Create_id=" + int.Parse(uid) + ")";
+                        //    break;
+                        //case "depall":
+                        //    BLL.hr_department dep = new BLL.hr_department();
+                        //    DataSet ds = dep.GetAllList();
+                        //    string deptask = GetDepTask(int.Parse(arr[1]), ds.Tables[0]);
+                        //    string intext = arr[1] + "," + deptask;
 
-                            returntxt = " and ( privatecustomer='公客' or Create_id=" + int.Parse(uid) + "  or Dep_id in (" + intext.TrimEnd(',') + ") or Dpt_id_sg in (" + intext.TrimEnd(',') + ") or Dpt_id_sj in (" + intext.TrimEnd(',') + "))";
-                            //or Create_id=32 or Department_id in (" + intext.TrimEnd(',') + " or Dpt_id_sg in (" + intext.TrimEnd(',') + " or Dpt_id_sj in (" + intext.TrimEnd(',') + ")
-                            break;
+                        //    returntxt = " and ( privatecustomer='公客' or Create_id=" + int.Parse(uid) + "  or Dep_id in (" + intext.TrimEnd(',') + ") or Dpt_id_sg in (" + intext.TrimEnd(',') + ") or Dpt_id_sj in (" + intext.TrimEnd(',') + "))";
+                        //    //or Create_id=32 or Department_id in (" + intext.TrimEnd(',') + " or Dpt_id_sg in (" + intext.TrimEnd(',') + " or Dpt_id_sj in (" + intext.TrimEnd(',') + ")
+                        //    break;
                     }
                 }
             }

@@ -72,7 +72,8 @@
 
                       },
                         { display: '客户地址', name: 'address', width: 200, align: 'left' },
-                       {                        display: '金额', name: 'BudgetAmount', width: 80, align: 'right', render: function (item) {                            return "<div style='color:#135294'>" + toMoney((item.BudgetAmount + item.FJAmount)) + "</div>";                        }                         },
+                       {             display: '金额', name: 'BudgetAmount', width: 80, align: 'right', render: function (item) {                 var html                 if (item.ModelStyle=="面积模板") {                     return "<div style='color:#135294'>" + toMoney((item.SquareAmount)) + "</div>";             }             else {                 return "<div style='color:#135294'>" + toMoney((item.BudgetAmount + item.FJAmount)) + "</div>";
+             }         }                    },
                       {
                           display: '状态', name: 'txtstatus', width: 60, align: 'left', render: function (item) {
 
@@ -198,7 +199,8 @@
                     tree: {
                         data: [
                    { text: '常规' },
-                   { text: '套餐' }
+                   { text: '套餐' },
+                   { text: '增补' }
                         ],
                         checkbox: false
                     }
@@ -330,8 +332,15 @@
     
           var manager = $("#maingrid4").ligerGetGridManager();
           var row = manager.getSelectedRow();
+
           if (row) {
-              f_openWindow_sh("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&style=" + aprstyle, "审核预算", 1100, 600, "审核");
+                if (row.ModelStyle=="面积模板") {
+              f_openWindow_sh("crm/Budge/BudgeMainAdd_Area.aspx?bid=" + row.id + "&style=" + aprstyle, "审核预算", 1155, 600, "审核");
+                }
+            else
+             { f_openWindow_sh("crm/Budge/BudgeMainAdd.aspx?bid=" + row.id + "&style=" + aprstyle, "审核预算", 1155, 600, "审核");
+                }
+
           } else {
               $.ligerDialog.warn('请选择行！');
           }
@@ -464,6 +473,7 @@
                           top.$.ligerDialog.error('操作失败！');
                       }
                       else {
+                          top.$.ligerDialog.success('操作成功！新的单据为' + responseText);
                           f_reload();
                       }
                   },
@@ -496,7 +506,7 @@
                                   top.$.ligerDialog.error('操作失败！');
                               }
                               else {
-                                  top.$.ligerDialog.alert("新单据：" + responseText);
+                                  top.$.ligerDialog.success("新单据：" + responseText);
 
                                   f_reload();
                               }

@@ -58,6 +58,14 @@
                             return html;
                         }
                     },
+                     {
+                         display: '交保险', width: 50, render: function (item) {
+                             var html = "<div style='margin-top:5px;'><input type='checkbox'";
+                             if (item.jbx != 0) html += "checked='checked'  ";
+                             html += " disabled='disabled' /></div>";
+                             return html;
+                         }
+                     },
                     { display: '状态', name: 'status' }
                 ],
                 dataAction: 'server',
@@ -126,6 +134,12 @@
                     arr[i].icon = "../" + arr[i].icon;
                     items.push(arr[i]);
                 }
+                items.push({
+                    type: 'textbox',
+                    id: 'thtype',
+                    name: 'sectype',
+                    text: '筛选'
+                });
                 items.push({ type: 'textbox', id: 'stext', text: '姓名：' });
                 items.push({ type: 'button', text: '搜索', icon: '../images/search.gif', disable: true, click: function () { doserch() } });
 
@@ -137,6 +151,27 @@
                     width: 120, items: getMenuItems(data)
                 });
 
+                $('#thtype').ligerComboBox({
+                    width: 80,
+                    isMultiSelect: true,
+                    selectBoxWidth: 120,
+                    selectBoxHeight: 120,
+                    valueField: 'id',
+                    textField: 'text',
+                    treeLeafOnly: true,
+                    tree: {
+                        data: [
+                            {id:'', text: '全部' },
+                            {id:'0', text: '不交' },
+                            { id: '1',text: '交社保' },
+                            { id: '2', text: '交意外保险' },
+                            { id: '3', text: '都交' }
+
+
+                        ],
+                        checkbox: false
+                    }
+                });
                 $("#stext").ligerTextBox({ width: 200, nullText: "输入姓名搜索" })
                 $("#maingrid4").ligerGetGridManager().onResize();
             });

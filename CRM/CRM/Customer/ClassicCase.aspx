@@ -49,6 +49,15 @@
                         display: '序号', width: 30, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                         { return (page - 1) * pagesize + rowindex + 1; }
                     },
+                      {
+                          display: '', width: 60, align:'center', render: function (item) {
+                              var html;
+                              html = "<a href='" + item.URL + "' title='" + item.URL + "' target='_blank'>";
+                              html += '查看';
+                              html += "</a>";
+                              return html;
+                          }
+                      },
                  
                      { display: '案例标题', name: 'c_title', width: 120 },
                     { display: '客户', name: 'customer_name', width: 120 },
@@ -109,7 +118,8 @@
 
         function toolbar() {
             var url="../../data/toolbar.ashx?Action=GetSys&mid=189&rnd=" + Math.random();
-            if(getparastr("Apr")=="Y")url="../../data/toolbar.ashx?Action=GetSys&mid=190&rnd=" + Math.random();
+            if (getparastr("Apr") == "Y") url = "../../data/toolbar.ashx?Action=GetSys&mid=190&rnd=" + Math.random();
+            if (getparastr("Apr") == "V") url = "../../data/toolbar.ashx?Action=GetSys&mid=197&rnd=" + Math.random();
           
             $.getJSON(url, function (data, textStatus) {
                 //alert(data);

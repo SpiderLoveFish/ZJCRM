@@ -39,7 +39,10 @@
             $("form").ligerForm();
             $("#menuicon").bind("click", f_selectContact);
             $("#T_category_icon").bind("click", f_selectContact);
-
+            var edit = decodeURI(getparastr("edit"))
+            if (edit == 'Y') {
+                $("#T_bp_name").attr("readonly", "true");
+            }
            
             loadForm(getparastr("cid"));
 
@@ -48,24 +51,29 @@
         });
 
         function f_save() {
-            $.ajax({
-                url: "../../data/budge.ashx", type: "get",
-                data: { Action: "isexistbpname", cid: getparastr("cid"), cname: decodeURI(getparastr("cname")), rnd: Math.random() },
-                contentType: "application/json; charset=utf-8",
+            if ($(form1).valid()) {
+                var sendtxt = "&Action=save&bpid=" + getparastr("cid");
+                return $("form :input").fieldSerialize() + sendtxt;
+            }
+ 
+            //$.ajax({
+            //    url: "../../data/budge.ashx", type: "get",
+            //    data: { Action: "isexistbpname", cid: getparastr("cid"), cname: decodeURI(getparastr("cname")), rnd: Math.random() },
+            //    contentType: "application/json; charset=utf-8",
              
-                success: function (data) {
-                    if (data == "true") {
-                        if ($(form1).valid()) {
-                            var sendtxt = "&Action=save&bpid=" + getparastr("cid");
-                            return $("form :input").fieldSerialize() + sendtxt;
-                        }
-                    }
-                    else {
-                        alert("您录入的部位已存在！！！");
-                    }
-                }
+            //    success: function (data) {
+            //        if (data == "true") {
+            //            if ($(form1).valid()) {
+            //                var sendtxt = "&Action=save&bpid=" + getparastr("cid");
+            //                return $("form :input").fieldSerialize() + sendtxt;
+            //            }
+            //        }
+            //        else {
+            //            alert("您录入的部位已存在！！！");
+            //        }
+            //    }
 
-            });
+            //});
        
 
             
@@ -85,6 +93,7 @@
                     }
                     // alert(obj.BP_Name); //String 构造函数
                     $("#T_bp_name").val(obj.BP_Name);
+                    $("#T_orderby").val(obj.OrderBy);
                  
                    
                 }

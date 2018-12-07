@@ -48,6 +48,7 @@
                   { display: '材料规格', name: 'specifications', width: 100, align: 'left' },
                   { display: '所属品牌', name: 'Brand', width: 100, align: 'left' },
                   { display: '类别', name: 'category_name', width: 100, align: 'left' },
+                  { display: '销售价格(¥)', name: 'price', width: 80, align: 'left' },
                      { display: '价格(¥)', name: 'price', width: 80, align: 'left' },
                   { display: '单位', name: 'unit', width: 40, align: 'left' },
                

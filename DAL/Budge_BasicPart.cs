@@ -45,6 +45,7 @@ namespace XHD.DAL
 		public int Add(XHD.Model.Budge_BasicPart model)
 		{
 			StringBuilder strSql=new StringBuilder();
+            strSql.Append("if NOT exists(SELECT * FROM Budge_BasicPart WHERE BP_Name=@BP_Name)  ");
 			strSql.Append("insert into Budge_BasicPart(");
             strSql.Append("BP_Name,OrderBy)");
 			strSql.Append(" values (");

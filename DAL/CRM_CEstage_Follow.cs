@@ -296,7 +296,8 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("select id,CEStage_id,Customer_id,Customer_name,Follow,Follow_date,Follow_Type_id,Follow_Type,department_id,department_name,employee_id,employee_name,isDelete,Delete_time ");
-			strSql.Append(" FROM CRM_CEstage_Follow ");
+            strSql.Append(" FROM CRM_Follow_view ");
+
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -316,7 +317,7 @@ namespace XHD.DAL
 				strSql.Append(" top "+Top.ToString());
 			}
 			strSql.Append(" id,CEStage_id,Customer_id,Customer_name,Follow,Follow_date,Follow_Type_id,Follow_Type,department_id,department_name,employee_id,employee_name,isDelete,Delete_time ");
-			strSql.Append(" FROM CRM_CEstage_Follow ");
+			strSql.Append(" FROM CRM_Follow_view ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -331,7 +332,7 @@ namespace XHD.DAL
 		public int GetRecordCount(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select count(1) FROM CRM_CEstage_Follow ");
+            strSql.Append("select count(1) FROM CRM_Follow_view ");
 			if(strWhere.Trim()!="")
 			{
 				strSql.Append(" where "+strWhere);
@@ -362,7 +363,7 @@ namespace XHD.DAL
 			{
 				strSql.Append("order by T.id desc");
 			}
-			strSql.Append(")AS Row, T.*  from CRM_CEstage_Follow T ");
+            strSql.Append(")AS Row, T.*  from CRM_Follow_view T ");
 			if (!string.IsNullOrEmpty(strWhere.Trim()))
 			{
 				strSql.Append(" WHERE " + strWhere);
@@ -408,10 +409,10 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " * FROM CRM_CEstage_Follow left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj FROM  dbo.CRM_Customer) CRM_Customer on CRM_CEstage_Follow.Customer_id=CRM_Customer.khid   ");
-            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_CEstage_Follow ");
+            strSql.Append(" top " + PageSize + " * FROM CRM_Follow_view left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj FROM  dbo.CRM_Customer) CRM_Customer on CRM_Follow_view.Customer_id=CRM_Customer.khid   ");
+            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM CRM_Follow_view ");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-            strSql1.Append(" select count(id) FROM CRM_CEstage_Follow left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj FROM  dbo.CRM_Customer) CRM_Customer on CRM_CEstage_Follow.Customer_id=CRM_Customer.khid ");
+            strSql1.Append(" select count(id) FROM CRM_Follow_view left join (SELECT id AS khid,address,privatecustomer,Employee_id AS Emp_id,Emp_id_sg,Emp_id_sj,Create_id,Department_id AS Dep_id,Dpt_id_sg,Dpt_id_sj FROM  dbo.CRM_Customer) CRM_Customer on CRM_Follow_view.Customer_id=CRM_Customer.khid ");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);
@@ -432,7 +433,7 @@ namespace XHD.DAL
             //strSql.Append("    --预统计表 #t");
             strSql.Append("    select ");
             strSql.Append("        " + items + ",'m'+convert(varchar,month(Follow_date)) mm,count(id)tNum into #t ");
-            strSql.Append("    from dbo.CRM_CEstage_Follow ");
+            strSql.Append("    from dbo.CRM_Follow_view ");
             strSql.Append("    where datediff(YEAR,[Follow_date],'" + year + "-1-1')=0 ");
             if (where.Trim() != "")
             {
@@ -466,7 +467,7 @@ namespace XHD.DAL
             strSql.Append(" select Follow_Type as yy, count(Follow_Type)as xx,");
             strSql.Append(" SUM(case when YEAR( Follow_date)=('" + year1 + "') and MONTH(Follow_date)=('" + month1 + "') then 1 else 0 end) as dt1, ");
             strSql.Append(" SUM(case when YEAR( Follow_date)=('" + year2 + "') and MONTH(Follow_date)=('" + month2 + "') then 1 else 0 end) as dt2 ");
-            strSql.Append(" FROM CRM_CEstage_Follow group by Follow_Type");
+            strSql.Append(" FROM CRM_Follow_view group by Follow_Type");
 
             return DbHelperSQL.Query(strSql.ToString());
         }

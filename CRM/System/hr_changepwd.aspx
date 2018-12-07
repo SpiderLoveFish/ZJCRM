@@ -45,7 +45,8 @@
                         data: issave,
                         success: function (responseText) {
                             if (responseText == "true") {
-                                setTimeout(function () { parent.$.ligerDialog.close(); }, 100);
+                                $.ligerDialog.success('操作成功！。');
+                                //setTimeout(function () {  $.ligerDialog.close(); }, 100);
                             }
                             else {
                                 $.ligerDialog.error('操作失败！请输入正确的原密码。');

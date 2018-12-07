@@ -46,10 +46,10 @@ namespace XHD.DAL
         strSql.Append("  INSERT INTO Budge_BasicDetail ");
         strSql.Append(" (budge_id,xmid,unit,ComponentID,ComponentName,Cname,TotalPrice,discount,totaldiscountprice,fc_price,rg_price,zc_price,Remarks) ");
         strSql.Append(" SELECT '" + bid + "',product_id,unit,'" + compid + "','" + compname + "',category_name,price,1,price,fc_price,rg_price,zc_price,remarks FROM dbo.CRM_product WHERE product_id IN(" + xmlistid + ") ");
-strSql.Append(";select @@IDENTITY");
+        strSql.Append(";select @@IDENTITY");
         SqlParameter[] parameters = { };
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
-      
+          
             if (obj == null)
         {
             return 0;
@@ -209,20 +209,28 @@ strSql.Append(";select @@IDENTITY");
         public bool UpdateSum(decimal sum, int id, string bid,int orderby)
         {
             StringBuilder strSql = new StringBuilder();
-             if (orderby>=0)
-             {
-                 strSql.Append("update Budge_BasicDetail set ");
+            if (orderby >= 0)
+            {
+                strSql.Append("update Budge_BasicDetail set ");
 
-                 strSql.Append("OrderBy=" + orderby + "");
-                 strSql.Append(" where id=" + id + " and budge_id='" + bid + "'");
-             }
-          
-            else if (sum >=  0)
-             {
-                 strSql.Append("update Budge_BasicDetail set ");
-                 strSql.Append("SUM=" + sum + "");
-                 strSql.Append(" where id=" + id + " and budge_id='" + bid + "'");
-             }
+                strSql.Append("OrderBy=" + orderby + "");
+                strSql.Append(" where id=" + id + " and budge_id='" + bid + "'");
+            }
+
+            else if (sum >= 0)
+            {
+                strSql.Append("update Budge_BasicDetail set ");
+                strSql.Append("SUM=" + sum + "");
+                strSql.Append(" where id=" + id + " and budge_id='" + bid + "'");
+            }
+            else if (sum < 0)
+            {
+               
+                    strSql.Append("update Budge_BasicDetail set ");
+                    strSql.Append("SUM=" + sum + "");
+                    strSql.Append(" where id=" + id + " and budge_id='" + bid + "'");
+                
+            }
              if (sum == 0 && orderby == 0)
                  return true;
             else

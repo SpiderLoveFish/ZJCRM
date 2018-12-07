@@ -46,9 +46,9 @@ namespace XHD.DAL
 		{
 			StringBuilder strSql=new StringBuilder();
 			strSql.Append("insert into CRM_CEStage(");
-			strSql.Append("CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,Jh_date)");
+			strSql.Append("CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,Jh_date,BeginDate)");
 			strSql.Append(" values (");
-            strSql.Append("@CustomerID,@tel,@CustomerName,@sgjl,@sgjlid,@sjs,@sjsid,@ywy,@ywyid,@StageScore,@SpecialScore,@Stage_icon,@Remarks,@IsColse,@Jh_date)");
+            strSql.Append("@CustomerID,@tel,@CustomerName,@sgjl,@sgjlid,@sjs,@sjsid,@ywy,@ywyid,@StageScore,@SpecialScore,@Stage_icon,@Remarks,@IsColse,@Jh_date,@BeginDate)");
 			strSql.Append(";select @@IDENTITY");
 			SqlParameter[] parameters = {
 					new SqlParameter("@CustomerID", SqlDbType.Int,4),
@@ -65,7 +65,10 @@ namespace XHD.DAL
 					new SqlParameter("@Stage_icon", SqlDbType.VarChar,50),
 					new SqlParameter("@Remarks", SqlDbType.VarChar,50),
 					new SqlParameter("@IsColse", SqlDbType.Int,4),
-                                        new SqlParameter("@Jh_date", SqlDbType.DateTime)};
+                                        new SqlParameter("@Jh_date", SqlDbType.DateTime),
+                                            new SqlParameter("@BeginDate", SqlDbType.DateTime)
+
+            };
 			parameters[0].Value = model.CustomerID;
 			parameters[1].Value = model.tel;
 			parameters[2].Value = model.CustomerName;
@@ -81,7 +84,8 @@ namespace XHD.DAL
 			parameters[12].Value = model.Remarks;
 			parameters[13].Value = model.IsColse;
             parameters[14].Value = model.Jh_date;
-			object obj = DbHelperSQL.GetSingle(strSql.ToString(),parameters);
+            parameters[15].Value = model.Begindate;
+            object obj = DbHelperSQL.GetSingle(strSql.ToString(),parameters);
 			if (obj == null)
 			{
 				return 0;
@@ -100,21 +104,25 @@ namespace XHD.DAL
             sb.Append("Stage_icon=@Stage_icon,");
 			sb.Append("Remarks=@Remarks,");
             sb.Append("Jh_date=@Jh_date,");
-			sb.Append("IsColse=@IsColse");
+            sb.Append("BeginDate=@BeginDate,");
+            sb.Append("IsColse=@IsColse");
             sb.Append(" where id="+id+"");
             SqlParameter[] parameters = {
                     new SqlParameter("@SpecialScore", SqlDbType.Decimal,9),
 					new SqlParameter("@Stage_icon", SqlDbType.VarChar,50),
 					new SqlParameter("@Remarks", SqlDbType.VarChar,50),
                     	new SqlParameter("@Jh_date", SqlDbType.DateTime),
-					new SqlParameter("@IsColse", SqlDbType.Int,4),
+                            new SqlParameter("@BeginDate", SqlDbType.DateTime),
+                    new SqlParameter("@IsColse", SqlDbType.Int,4),
 					new SqlParameter("@id", SqlDbType.Int,4)};
             parameters[0].Value = model.SpecialScore;
 			parameters[1].Value = model.Stage_icon;
 			parameters[2].Value = model.Remarks;
             parameters[3].Value = model.Jh_date;
-			parameters[4].Value = model.IsColse;
-			parameters[5].Value = model.id;
+            parameters[4].Value = model.Begindate;
+            parameters[5].Value = model.IsColse;
+			parameters[6].Value = model.id;
+
             int rows=DbHelperSQL.ExecuteSql(sb.ToString(),parameters);
 			if (rows > 0)
 			{
@@ -147,7 +155,8 @@ namespace XHD.DAL
 			strSql.Append("Stage_icon=@Stage_icon,");
 			strSql.Append("Remarks=@Remarks,");
             strSql.Append("Jh_date=@Jh_date,");
-			strSql.Append("IsColse=@IsColse");
+            strSql.Append("BeginDate=@BeginDate,");
+            strSql.Append("IsColse=@IsColse");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@CustomerID", SqlDbType.Int,4),
@@ -164,7 +173,8 @@ namespace XHD.DAL
 					new SqlParameter("@Stage_icon", SqlDbType.VarChar,50),
 					new SqlParameter("@Remarks", SqlDbType.VarChar,50),
                     new SqlParameter("@Jh_date", SqlDbType.DateTime),
-					new SqlParameter("@IsColse", SqlDbType.Int,4),
+                           new SqlParameter("@BeginDate", SqlDbType.DateTime),
+                    new SqlParameter("@IsColse", SqlDbType.Int,4),
 					new SqlParameter("@id", SqlDbType.Int,4)};
 			parameters[0].Value = model.CustomerID;
 			parameters[1].Value = model.tel;
@@ -180,8 +190,9 @@ namespace XHD.DAL
 			parameters[10].Value = model.Stage_icon;
 			parameters[11].Value = model.Remarks;
             parameters[12].Value = model.Jh_date;
-			parameters[13].Value = model.IsColse;
-			parameters[14].Value = model.id;
+            parameters[13].Value = model.Begindate; 
+            parameters[14].Value = model.IsColse;
+			parameters[15].Value = model.id;
 
 			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
@@ -245,7 +256,7 @@ namespace XHD.DAL
 		{
 			
 			StringBuilder strSql=new StringBuilder();
-			strSql.Append("select  top 1 id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,Jh_date from CRM_CEStage ");
+			strSql.Append("select  top 1 id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,Jh_date,BeginDate from CRM_CEStage ");
 			strSql.Append(" where id=@id");
 			SqlParameter[] parameters = {
 					new SqlParameter("@id", SqlDbType.Int,4)
@@ -335,9 +346,13 @@ namespace XHD.DAL
 				}
                 if (row["Jh_date"] != null && row["Jh_date"].ToString() != "")
                 {
-                    model.Jh_date = DateTime.Parse(row["IsColse"].ToString());
+                    model.Jh_date = DateTime.Parse(row["Jh_date"].ToString());
                 }
-			}
+                if (row["BeginDate"] != null && row["BeginDate"].ToString() != "")
+                {
+                    model.Begindate = DateTime.Parse(row["BeginDate"].ToString());
+                }
+            }
 			return model;
 		}
 
@@ -347,8 +362,7 @@ namespace XHD.DAL
 		public DataSet GetList(string strWhere)
 		{
 			StringBuilder strSql=new StringBuilder();
-            strSql.Append("select id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,address,sum_Score,TotalScorce,Scoring,Jh_date,sl,cgsl ");
-            strSql.Append(" ,comp,szDevIP ");
+            strSql.Append("select * ");
             strSql.Append(" FROM V_CRM_CEStage ");
 			if(strWhere.Trim()!="")
 			{
@@ -368,7 +382,7 @@ namespace XHD.DAL
 			{
 				strSql.Append(" top "+Top.ToString());
 			}
-            strSql.Append(" id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,address,sum_Score,TotalScorce,Scoring,Jh_date,sl,cgsl ");
+            strSql.Append(" id,CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,address,sum_Score,TotalScorce,Scoring,Jh_date,sl,cgsl,BeginDate ");
 			strSql.Append(" FROM V_CRM_CEStage ");
 			if(strWhere.Trim()!="")
 			{
@@ -471,8 +485,8 @@ namespace XHD.DAL
         public int AddCEstage(string id)
         {
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine("INSERT dbo.CRM_CEStage( CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,Jh_date)");
-            sb.AppendLine("SELECT id,tel,Customer,Emp_sg,Emp_id_sg,Emp_sj,Emp_id_sj,Employee,Employee_id,0,0,'正在施工' ,'',0,Jhrq2 FROM dbo.CRM_Customer WHERE id="+id);
+            sb.AppendLine("INSERT dbo.CRM_CEStage( CustomerID,tel,CustomerName,sgjl,sgjlid,sjs,sjsid,ywy,ywyid,StageScore,SpecialScore,Stage_icon,Remarks,IsColse,Jh_date,BeginDate)");
+            sb.AppendLine("SELECT id,tel,Customer,Emp_sg,Emp_id_sg,Emp_sj,Emp_id_sj,Employee,Employee_id,0,0,'正在施工' ,'',0,Jhrq2,getdate() FROM dbo.CRM_Customer WHERE id="+id);
             sb.AppendLine("");
             sb.Append(";select @@IDENTITY");
             SqlParameter[] parameters = { };
@@ -488,12 +502,15 @@ namespace XHD.DAL
             }
         }
 
-        public bool UpdateStatus(string status,string id)
+        public bool UpdateStatus(string status,string id,DateTime jgrq)
         {
             StringBuilder strSql = new StringBuilder();
             SqlParameter[] parameters = { };
+            if(status== "施工完成")
+            strSql.AppendLine(" UPDATE	CRM_CEStage SET Stage_icon='" + status + "',EndDate='"+jgrq+"' WHERE id=" + id);
+            else
             strSql.AppendLine(" UPDATE	CRM_CEStage SET Stage_icon='" + status + "' WHERE id=" + id);
-			int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+            int rows=DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
 			if (rows > 0)
 			{
 				return true;
@@ -511,10 +528,10 @@ namespace XHD.DAL
             StringBuilder strSql = new StringBuilder();
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("select ");
-            strSql.Append(" top " + PageSize + " * FROM V_CRM_CEStage ");
-            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM V_CRM_CEStage ");
+            strSql.Append(" top " + PageSize + " * FROM V_CRM_CEStage A inner join crm_customer B on A.customerid=B.id");
+            strSql.Append(" WHERE a.id not in ( SELECT top " + (PageIndex - 1) * PageSize + " a.id FROM V_CRM_CEStage A inner join crm_customer B on A.customerid=B.id");
             strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
-            strSql1.Append(" select count(id) FROM V_CRM_CEStage ");
+            strSql1.Append(" select count(a.id) FROM V_CRM_CEStage A inner join crm_customer B on A.customerid=B.id");
             if (strWhere.Trim() != "")
             {
                 strSql.Append(" and " + strWhere);
@@ -548,7 +565,80 @@ namespace XHD.DAL
             Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
             return DbHelperSQL.Query(strSql.ToString());
         }
-
+        //选择工地
+        public DataSet GetxzListCustomer(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "   * FROM ( SELECT ROW_NUMBER() OVER(ORDER BY AA.CustomerID) AS id,* ");
+            strSql.AppendLine("   FROM  (  ");
+            strSql.AppendLine(" SELECT DISTINCT  id AS CustomerID,tel,Customer AS CustomerName,Emp_sg AS sgjl,address,    ");
+            strSql.AppendLine("  Emp_id_sg AS sgjlid,Emp_sj AS sjs,Emp_id_sj AS sjsid,   ");
+            strSql.AppendLine("   Employee AS ywy,Employee_id AS ywyid,Fwmj    FROM  dbo.OutStock_Detail A   ");
+            strSql.AppendLine(" INNER JOIN CRM_Customer B ON	A.Customer_id=B.id  ");
+            strSql.AppendLine(" )AA )AAA ");
+             
+            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM  (");
+            strSql.AppendLine(" SELECT DISTINCT ROW_NUMBER() OVER(ORDER BY B.id) AS id, id AS CustomerID,tel,Customer AS CustomerName,Emp_sg AS sgjl,address,    ");
+            strSql.AppendLine("  Emp_id_sg AS sgjlid,Emp_sj AS sjs,Emp_id_sj AS sjsid,   ");
+            strSql.AppendLine("   Employee AS ywy,Employee_id AS ywyid,Fwmj    FROM  dbo.OutStock_Detail A   ");
+            strSql.AppendLine(" INNER JOIN CRM_Customer B ON	A.Customer_id=B.id  ");
+            strSql.AppendLine(" )AA  ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(id) FROM ( ");
+            strSql1.AppendLine(" SELECT DISTINCT ROW_NUMBER() OVER(ORDER BY B.id) AS id, id AS CustomerID,tel,Customer AS CustomerName,Emp_sg AS sgjl,address,    ");
+            strSql1.AppendLine("  Emp_id_sg AS sgjlid,Emp_sj AS sjs,Emp_id_sj AS sjsid,   ");
+            strSql1.AppendLine("   Employee AS ywy,Employee_id AS ywyid,Fwmj    FROM  dbo.OutStock_Detail A   ");
+            strSql1.AppendLine(" INNER JOIN CRM_Customer B ON	A.Customer_id=B.id  ");
+            strSql1.AppendLine(" )AA  ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where  " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
+        //目标工地
+        public DataSet GetmbgdListCustomer(int PageSize, int PageIndex, string strWhere, string filedOrder, out string Total)
+        {
+            StringBuilder strSql = new StringBuilder();
+            StringBuilder strSql1 = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top " + PageSize + "    ");
+            strSql.AppendLine("   * FROM (  ");
+            strSql.AppendLine("  SELECT  DISTINCT ROW_NUMBER() OVER(ORDER BY B.id) AS id, B.id AS CustomerID,B.tel,Customer AS CustomerName,Emp_sg AS sgjl,address,    ");
+            strSql.AppendLine("  Emp_id_sg AS sgjlid,Emp_sj AS sjs,Emp_id_sj AS sjsid,   ");
+            strSql.AppendLine("   Employee AS ywy,Employee_id AS ywyid,Fwmj  FROM dbo.CRM_CEStage  A  ");
+            strSql.AppendLine("  INNER JOIN CRM_Customer B ON	A.CustomerID=B.id  ");
+            strSql.AppendLine("  WHERE A.Stage_icon='正在施工'  ");
+            strSql.AppendLine("  )AA  ");
+            strSql.Append(" WHERE id not in ( SELECT top " + (PageIndex - 1) * PageSize + " id FROM ( ");
+            strSql.AppendLine("  SELECT  DISTINCT ROW_NUMBER() OVER(ORDER BY B.id) AS id, B.id AS CustomerID,B.tel,Customer AS CustomerName,Emp_sg AS sgjl,address,    ");
+            strSql.AppendLine("  Emp_id_sg AS sgjlid,Emp_sj AS sjs,Emp_id_sj AS sjsid,   ");
+            strSql.AppendLine("   Employee AS ywy,Employee_id AS ywyid,Fwmj  FROM dbo.CRM_CEStage  A  ");
+            strSql.AppendLine("  INNER JOIN CRM_Customer B ON	A.CustomerID=B.id  ");
+            strSql.AppendLine("  WHERE A.Stage_icon='正在施工'  ");
+            strSql.AppendLine("  )AA  ");
+            strSql.Append(" where " + strWhere + " order by " + filedOrder + " ) ");
+            strSql1.Append(" select count(id) FROM ( ");
+            strSql1.AppendLine("  SELECT  DISTINCT ROW_NUMBER() OVER(ORDER BY B.id) AS id, B.id AS CustomerID,B.tel,Customer AS CustomerName,Emp_sg AS sgjl,address,    ");
+            strSql1.AppendLine("  Emp_id_sg AS sgjlid,Emp_sj AS sjs,Emp_id_sj AS sjsid,   ");
+            strSql1.AppendLine("   Employee AS ywy,Employee_id AS ywyid,Fwmj  FROM dbo.CRM_CEStage  A  ");
+            strSql1.AppendLine("  INNER JOIN CRM_Customer B ON	A.CustomerID=B.id  ");
+            strSql1.AppendLine("  WHERE A.Stage_icon='正在施工'  ");
+            strSql1.AppendLine("  )AA  ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" and " + strWhere);
+                strSql1.Append(" where  " + strWhere);
+            }
+            strSql.Append(" order by " + filedOrder);
+            Total = DbHelperSQL.Query(strSql1.ToString()).Tables[0].Rows[0][0].ToString();
+            return DbHelperSQL.Query(strSql.ToString());
+        }
 
         /// <summary>
         /// 获得数据列表
@@ -559,7 +649,7 @@ namespace XHD.DAL
             StringBuilder strSql1 = new StringBuilder();
             strSql.Append("SELECT COUNT(versions) AS ver,A.projectid,A.stageid ");
             strSql.Append(" ,B.CEStage_category,AVG(A.TotalScore) AS TotalScore  ");
-             strSql.Append(" ,AVG(A.AssTime*1.00) AS AssTime,SUM(a.AssTime*1.00)/SUM(A.TotalScore)*100 AS dcl ");
+             strSql.Append(" ,AVG(A.AssTime*1.00) AS AssTime,SUM(a.AssTime*1.00)/SUM(isnull(A.TotalScore,1))*100 AS dcl ");
               strSql.Append(" FROM dbo.Crm_CEDetail A ");
              strSql.Append(" INNER JOIN  dbo.CRM_CEStage_category B ON	 A.stageid =B.id ");
  

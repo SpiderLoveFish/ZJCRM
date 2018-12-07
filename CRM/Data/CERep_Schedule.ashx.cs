@@ -116,7 +116,8 @@ namespace XHD.CRM.Data
             {
                 string dt = "";
                 string Total="";
-                DataSet ds = ccpc.RunProcedureView_Schedule(out Total);
+                string IsPlan = request["IsPlan"]; 
+                DataSet ds = ccpc.RunProcedureView_Schedule(IsPlan,out Total);
                 dt = Common.GetGridJSON.DataTableToJSON1(ds.Tables[0], Total);
 
                 context.Response.Write(dt);

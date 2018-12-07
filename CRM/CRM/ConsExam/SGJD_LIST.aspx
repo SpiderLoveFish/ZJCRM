@@ -1,10 +1,11 @@
-<%@ Page Language="C#" AutoEventWireup="true" %>
+ï»¿<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
+ 
     <link href="../../lib/ligerUI/skins/ext/css/ligerui-all.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/Toolbar.css" rel="stylesheet" type="text/css" />
     <link href="../../CSS/core.css" rel="stylesheet" type="text/css" />
@@ -30,25 +31,30 @@
     <script src="../../JS/Toolbar.js" type="text/javascript"></script>
     <script src="../../JS/XHD.js" type="text/javascript"></script>
     <script src="../../lib/ligerUI/js/plugins/ligerMenu.js" type="text/javascript"></script>
+   
+
     <script type="text/javascript">
-        var manager = "";
+        var manager = ""; var IsPlan = "N";
         $(function () {
+          
+            if (getparastr("IsPlan") != "" && getparastr("IsPlan") != "null" && getparastr("IsPlan") != null)
+                IsPlan = getparastr("IsPlan");
             var isview = getparastr("isview");
-            var strurl = "../../data/Crm_CEStage.ashx?Action=grid1";
+            var strurl = "../../data/Crm_CEStage.ashx?Action=grid1&IsPlan=" + IsPlan;
             if (isview == "Y")
             {
-                strurl = "../../data/Crm_CEStage.ashx?Action=grid1&isview=Y";
+                strurl = "../../data/Crm_CEStage.ashx?Action=grid1&isview=Y&IsPlan=" + IsPlan;
             }
             $("#maingrid4").ligerGrid({
                 columns: [
                    {
-                       display: 'ĞòºÅ', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
+                       display: 'åºå·', width: 50, render: function (rowData, rowindex, value, column, rowid, page, pagesize)
                        { return (page - 1) * pagesize + rowindex + 1; }
                    },
-                    // { display: '¿Í»§±àºÅ', name: 'CustomerID', width: 50, align: 'left' },
-                      { display: 'ĞÕÃû', name: 'CustomerName', width: 60, align: 'left' },
+                    // { display: 'å®¢æˆ·ç¼–å·', name: 'CustomerID', width: 50, align: 'left' },
+                      { display: 'å§“å', name: 'CustomerName', width: 60, align: 'left' },
                        {
-                           display: 'µç»°', name: 'tel', align: 'left', width: 40, render: function (item) {
+                           display: 'ç”µè¯', name: 'tel', align: 'left', width: 40, render: function (item) {
                                var html = "<div class='abc'>";
                                if (item.tel)
                                    html += item.tel;
@@ -56,20 +62,20 @@
                                return html;
                            }
                        },
-                        { display: '¿Í»§µØÖ·', name: 'address', width: 150, align: 'left' },
-                      { display: 'Ê©¹¤¼àÀí', name: 'sgjl', width: 80, align: 'left' },
-                        { display: 'ÒµÎñÔ±', name: 'ywy', width: 80, align: 'left' },
-                   // { display: 'Éè¼ÆÊ¦', name: 'sjs', width: 120, align: 'left' },
-                    { display: '¸½¼Ó·Ö', name: 'SpecialScore', width: 50, align: 'right' },
+                        { display: 'å®¢æˆ·åœ°å€', name: 'address', width: 150, align: 'left' },
+                      { display: 'æ–½å·¥ç›‘ç†', name: 'sgjl', width: 80, align: 'left' },
+                        { display: 'ä¸šåŠ¡å‘˜', name: 'ywy', width: 80, align: 'left' },
+                   // { display: 'è®¾è®¡å¸ˆ', name: 'sjs', width: 120, align: 'left' },
+                    { display: 'é™„åŠ åˆ†', name: 'SpecialScore', width: 50, align: 'right' },
                 {
-                    display: '¿¼ºË·Ö', name: 'StageScore', width: 50, align: 'right', render: function (item) {
+                    display: 'è€ƒæ ¸åˆ†', name: 'StageScore', width: 50, align: 'right', render: function (item) {
                         return "<div style='color:#135294'>" + item.StageScore + "</div>";
                     }
                 },
-                 { display: '×ÜµÃ·Ö', name: 'sum_Score', width: 50, align: 'right' },
-                 { display: 'Âú·Ö', name: 'TotalScorce', width: 50, align: 'right' },
+                 { display: 'æ€»å¾—åˆ†', name: 'sum_Score', width: 50, align: 'right' },
+                 { display: 'æ»¡åˆ†', name: 'TotalScorce', width: 50, align: 'right' },
                  {
-                     display: '´ï³ÉÂÊ', name: 'Scoring', width: 80, align: 'right', render: function (item) {
+                     display: 'è¾¾æˆç‡', name: 'Scoring', width: 80, align: 'right', render: function (item) {
 
                          var html;
                          if (item.sum_Score / item.TotalScorce > 0.9) {
@@ -91,20 +97,20 @@
                      }
                  },
                   {
-                      display: 'ÒªÇóÈÕÆÚ', name: 'Jh_date', width: 90, align: 'left', render: function (item) {
+                      display: 'è¦æ±‚æ—¥æœŸ', name: 'Jh_date', width: 90, align: 'left', render: function (item) {
                           return formatTimebytype(item.Jh_date, 'yyyy/MM/dd');
                       }
                   },
                                              //{
-                                             //    display: 'ÏÖ×´', name: 'Jh_date', width: 100, align: 'left', render: function (item) {
+                                             //    display: 'ç°çŠ¶', name: 'Jh_date', width: 100, align: 'left', render: function (item) {
                                              //        var html;
                                              //        var myDate = new Date();
                                              //        var days = getdays(formatTimebytype(item.Jh_date, 'yyyy/MM/dd'), myDate);
                                              //        days = -days;
                                              //        if (days < 0)
-                                             //            html = "<span  class='gj'> ÍÏÆÚ " + days * -1 + " Ìì</span>";
+                                             //            html = "<span  class='gj'> æ‹–æœŸ " + days * -1 + " å¤©</span>";
                                              //        else
-                                             //            html = "<span  class='blue'>Ê£Óà " + days + " Ìì</span>";
+                                             //            html = "<span  class='blue'>å‰©ä½™ " + days + " å¤©</span>";
 
 
 
@@ -112,8 +118,8 @@
                                              //        return html;
                                              //    }
                                              //},
-                        { display: '×´Ì¬', name: 'Stage_icon', width: 80, align: 'left' },
-                { display: '±¸×¢', name: 'Remarks', width: 100, align: 'left' }
+                        { display: 'çŠ¶æ€', name: 'Stage_icon', width: 80, align: 'left' },
+                { display: 'å¤‡æ³¨', name: 'Remarks', width: 100, align: 'left' }
 
                 ],
                 onAfterShowData: function (grid) {
@@ -159,7 +165,7 @@
                 }
                 items.push({
                     type: 'serchbtn',
-                    text: '¸ß¼¶ËÑË÷',
+                    text: 'é«˜çº§æœç´¢',
                     icon: '../../images/search.gif',
                     disable: true,
                     click: function () {
@@ -209,7 +215,7 @@
                 width: width, height: height, title: title, url: url, buttons: [
                          
                         {
-                            text: '¹Ø±Õ', onclick: function (item, dialog) {
+                            text: 'å…³é—­', onclick: function (item, dialog) {
                                 dialog.close();
                             }
                         }
@@ -223,12 +229,12 @@
             var dialogOptions = {
                 width: width, height: height, title: title, url: url, buttons: [
                         {
-                            text: '±£´æ', onclick: function (item, dialog) {
+                            text: 'ä¿å­˜', onclick: function (item, dialog) {
                                 f_save(item, dialog);
                             }
                         },
                         {
-                            text: '¹Ø±Õ', onclick: function (item, dialog) {
+                            text: 'å…³é—­', onclick: function (item, dialog) {
                                 dialog.close();
                             }
                         }
@@ -240,10 +246,10 @@
         var activeDialogs = null;
         function f_openWindow_view(url, title, width, height) {
             var dialogOptions = {
-                width: width, height: height, title: title, url: url, buttons: [
+                width: width, height: height, title: title,   url: url, buttons: [
                      
                         {
-                            text: '¹Ø±Õ', onclick: function (item, dialog) {
+                            text: 'å…³é—­', onclick: function (item, dialog) {
                                 dialog.close();
                             }
                         }
@@ -258,7 +264,7 @@
                 width: width, height: height, title: title, url: url, buttons: [
 
                         {
-                            text: '½ğÅÆ¹Ü¼Ò', onclick: function (item, dialog) {
+                            text: 'é‡‘ç‰Œç®¡å®¶', onclick: function (item, dialog) {
                                 f_jpgj(item, dialog);
                             }
                         }
@@ -273,18 +279,18 @@
             if (row) {
               //  alert(isview);
                 if (getparastr("isview") == "Y")
-                    f_openWindow_view("crm/ConsExam/SGJD_LIST_add.aspx?cid=" + row.CustomerID
+                    f_openWindow_view("crm/ConsExam/SGJD_LIST_add.aspx?cid=" + row.CustomerID + "&IsPlan=" + IsPlan
                    ,
-                    "½ø¶È¸ú½ø", 800, 550);
+                    "è¿›åº¦è·Ÿè¿›", 900, 750);
                     else
-                f_openWindow("crm/ConsExam/SGJD_LIST_add.aspx?cid=" + row.CustomerID
+                    f_openWindow("crm/ConsExam/SGJD_LIST_add.aspx?cid=" + row.CustomerID + "&IsPlan=" + IsPlan
                    ,
-                    "½ø¶È¸ú½ø", 800, 550);
+                    "è¿›åº¦è·Ÿè¿›", 900, 750);
             } else {
-                $.ligerDialog.warn('ÇëÑ¡ÔñĞĞ£¡');
+                $.ligerDialog.warn('è¯·é€‰æ‹©è¡Œï¼');
             }
             //f_openWindow("crm/ConsExam/SGJD_LIST_add.aspx?id="+,
-            //    "½ø¶È¸ú½ø", 800, 600);
+            //    "è¿›åº¦è·Ÿè¿›", 800, 600);
         }
         function edit() {
             var manager = $("#maingrid4").ligerGetGridManager();
@@ -296,24 +302,26 @@
                 + "&sjzt=" + encodeURI(row.Stage_icon)
                 + "&sgjl=" + encodeURI(row.sgjl)
                 + "&jhdate=" + row.Jh_date
+                    + "&IsPlan" + getparastr("IsPlan")
                    ,
-                    "Ê±¼äÖá²éÑ¯", 800, 550);
+                    "æ—¶é—´è½´æŸ¥è¯¢", 800, 550);
             } else {
-                $.ligerDialog.warn('ÇëÑ¡ÔñĞĞ£¡');
+                $.ligerDialog.warn('è¯·é€‰æ‹©è¡Œï¼');
             }
             //f_openWindow("crm/ConsExam/SGJD_LIST_add.aspx?id="+,
-            //    "½ø¶È¸ú½ø", 800, 600);
+            //    "è¿›åº¦è·Ÿè¿›", 800, 600);
         }
         
         function jpgj() {
             var manager = $("#maingrid4").ligerGetGridManager();
             var row = manager.getSelectedRow();
+            //alert(JSON.stringify(row))
             if (row) {
-                f_openWindow_jpgj("crm/ConsExam/SGJD_LIST_add.aspx?cid=" + row.CustomerID + "&style=JPGJ"
+                f_openWindow_jpgj("crm/ConsExam/SGJD_LIST_add.aspx?cid=" + row.CustomerID + "&tel=" + row.tel + "&style=JPGJ" + "&IsPlan=" + IsPlan
                    ,
-                    "½ğÅÆ¹Ü¼Ò", 800, 550);
+                    "é‡‘ç‰Œç®¡å®¶", 800, 550);
             } else {
-                $.ligerDialog.warn('ÇëÑ¡ÔñĞĞ£¡');
+                $.ligerDialog.warn('è¯·é€‰æ‹©è¡Œï¼');
             }
         }
         function f_jpgj(item, dialog) {
@@ -322,14 +330,15 @@
             if (issave) {
                 dialog.close();
                 var str = issave.split(";");
+               
                 top.$.ligerDialog.open({
                     zindex: 9003,
-                    title: '½ğÅÆ¹Ü¼Ò-' + str[0], width: 650, height: 500,
+                    title: 'é‡‘ç‰Œç®¡å®¶-' + str[0], width: 650, height: 500,
 
                     //url: " hr/Getemp_Auth.aspx?auth=1", buttons: [
-                    url: "system/sendsmsmodel.aspx?id=" + str[1] + "&cid=" + str[0] + "&style=JPGJ", buttons: [
-                        { text: '·¢ËÍ¶ÌĞÅ', onclick: f_sendsmsOK },
-                        { text: '¹Ø±Õ', onclick: f_selectContactCancel }
+                    url: "system/sendsmsmodel.aspx?id=" + str[1] + "&cid=" + str[0] + "&tel="+str[2]+"&style=JPGJ", buttons: [
+                        { text: 'å‘é€çŸ­ä¿¡', onclick: f_sendsmsOK },
+                        { text: 'å…³é—­', onclick: f_selectContactCancel }
                     ]
                 });
                     
@@ -351,7 +360,7 @@
              
             if (issave) {
                 dialog.close();
-                top.$.ligerDialog.waitting('Êı¾İ±£´æÖĞ,ÇëÉÔºò...');
+                top.$.ligerDialog.waitting('æ•°æ®ä¿å­˜ä¸­,è¯·ç¨å€™...');
                 $.ajax({
                     url: "../../data/SGJD_LIST.ashx", type: "POST",
                     data: issave,
@@ -359,7 +368,7 @@
                         top.$.ligerDialog.closeWaitting();
                         if (responseText == "false")
                         {
-                            top.$.ligerDialog.error('²Ù×÷Ê§°Ü1£¡');
+                            top.$.ligerDialog.error('æ“ä½œå¤±è´¥1ï¼');
                         }
                         else
                         {                              
@@ -367,7 +376,7 @@
                         }
                     },
                     error: function () {
-                        top.$.ligerDialog.error('²Ù×÷Ê§°Ü£¡');
+                        top.$.ligerDialog.error('æ“ä½œå¤±è´¥ï¼');
 
                         top.$.ligerDialog.closeWaitting();
                         
@@ -382,7 +391,7 @@
             
         };
 
-        //²éÑ¯
+        //æŸ¥è¯¢
         function doserch() {
             var sendtxt = "&Action=grid&rnd=" + Math.random();
             var serchtxt = $("#serchform :input").fieldSerialize() + sendtxt;
@@ -415,14 +424,14 @@
             <table style='width: 960px' class="bodytable1">
                 <tr>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>¿Í»§ĞÕÃû£º</div>
+                        <div style='width: 60px; text-align: right; float: right'>å®¢æˆ·å§“åï¼š</div>
                     </td>
                     <td>
 
                         <input  ltype='text' ligerui='{width:120}' type='text' id='khstext' name='khstext'  /></td>
 
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>µØÖ·£º</div>
+                        <div style='width: 60px; text-align: right; float: right'>åœ°å€ï¼š</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
@@ -431,7 +440,7 @@
                     
                     </td>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>µç»°£º</div>
+                        <div style='width: 60px; text-align: right; float: right'>ç”µè¯ï¼š</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
@@ -440,30 +449,30 @@
                        
                     </td>
                     <td>
-                          <input id='Button1' type='button' value='ËÑË÷' style='width: 80px; height: 24px' onclick="doserch()" />
+                          <input id='Button1' type='button' value='æœç´¢' style='width: 80px; height: 24px' onclick="doserch()" />
                   
-                        <input id='Button2' type='button' value='ÖØÖÃ' style='width: 80px; height: 24px'
+                        <input id='Button2' type='button' value='é‡ç½®' style='width: 80px; height: 24px'
                             onclick="doclear()" />
                         </td> 
                 </tr>
                 <tr>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>Ê©¹¤¼àÀí£º</div>
+                        <div style='width: 60px; text-align: right; float: right'>æ–½å·¥ç›‘ç†ï¼š</div>
                     </td>
                     <td>
                         <input id='sgjlstext' name="sgjlstext" type='text'  ltype='text' ligerui='{width:120}' /></td>
 
                     <td>
-                        <div style='width: 60px; text-align: right; float: right' >×´Ì¬£º</div>
+                        <div style='width: 60px; text-align: right; float: right' >çŠ¶æ€ï¼š</div>
                     </td>
                     <td>
                         <div style='width: 100px; float: left'>
-                            <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui="{width:196,data:[{id:'ÕıÔÚÊ©¹¤',text:'ÕıÔÚÊ©¹¤'},{id:'Ê©¹¤Íê³É',text:'Ê©¹¤Íê³É'}]}" validate="{required:false}" />
+                            <input type='text' id='ztstext' name='ztstext'  ltype='text' ligerui="{width:196,data:[{id:'æ­£åœ¨æ–½å·¥',text:'æ­£åœ¨æ–½å·¥'},{id:'æ–½å·¥å®Œæˆ',text:'æ–½å·¥å®Œæˆ'}]}" validate="{required:false}" />
                         </div>
                          
                     </td>
                     <td>
-                        <div style='width: 60px; text-align: right; float: right'>´ï³ÉÂÊ£º</div>
+                        <div style='width: 60px; text-align: right; float: right'>è¾¾æˆç‡ï¼š</div>
                     </td>
                     <td>
                         <div style='width: 300px; float: left'>

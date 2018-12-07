@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>好孩子科技</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand" />
+     
+
+    <style>
+        .ms-controller, .ms-important, [ms-controller], [ms-important] {
+            visibility: hidden;
+        }
+
+        .szhl_getPeoples {
+            display: none;
+        }
+
+        .modal {
+            top: 100px;
+        }
+
+        .modal-backdrop {
+            background-color: transparent;
+            display: none;
+        }
+
+
+        /*Webkit and Opera*/
+       /*@media screen and (-webkit-min-device-pixel-ratio:0)  {
+            .modal-backdrop {
+                background-color: #000;
+                display: block !important;
+            }
+        }*/
+    </style>
+</head>
+<body >      
+    <!--引导html内容-->
+    <div id="barcode" name="barcode">
+         
+    </div>
+    <!--<script src="js/jquery.min.js"></script>-->
+
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <script src="js/jquery-barcode.js"></script>
+
+    <script type="text/javascript">
+         $("#barcode").barcode("5693691811000083", "code128",{
+          output:'css',       //渲染方式 css/bmp/svg/canvas
+          //bgColor: '#ff0000', //条码背景颜色
+          color: '#00ff00',   //条码颜色
+          barWidth: 2,        //单条条码宽度
+          barHeight: 100,     //单体条码高度
+          // moduleSize: 5,   //条码大小
+          // posX: 10,        //条码坐标X
+          // posY: 5,         //条码坐标Y
+		   showHRI: true,    //是否显示条码下方文字
+          addQuietZone: true  //是否添加空白区（内边距）
+        });
+
+    </script>
+
+
+</body>
+</html>
